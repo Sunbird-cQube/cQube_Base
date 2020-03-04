@@ -9,7 +9,7 @@
 7. Query the Aggregation table .
 8. Stored into s3 output dir required for final charts[chart js]</description>
     <groupId>c2d9cd60-016f-1000-a20e-63cee177ef48</groupId>
-    <name>CQube-Ver1.0</name>
+    <name>CQube-ver-0.1</name>
     <snippet>
         <controllerServices>
             <id>02b0814d-4496-3b5d-0000-000000000000</id>
@@ -9620,5 +9620,5 @@ UNION
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/04/2020 21:05:42 IST</timestamp>
+    <timestamp>03/04/2020 21:18:32 IST</timestamp>
 </template>
