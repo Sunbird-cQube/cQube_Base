@@ -1,0 +1,29 @@
+.logo {
+    padding: 10px 10px 0 10px;
+  }
+  
+  .name {
+    font-size: 14px;
+    color: #333;
+    padding-top: 15px;
+  }
+  .head{
+      left: 0;
+      right: 0;
+  }
+  .navbar-nav.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 20px;
+ }
