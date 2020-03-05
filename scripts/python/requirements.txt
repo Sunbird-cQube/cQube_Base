@@ -22,7 +22,7 @@ cycler==0.10.0
 cymem==2.0.3
 decorator==4.4.1
 defusedxml==0.6.0
-Django==2.2.5
+Django==2.2.10
 djangorestframework==3.10.3
 dnspython==1.16.0
 docutils==0.15.2
