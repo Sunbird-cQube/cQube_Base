@@ -1,0 +1,146 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  become: yes
+  vars:
+    NODEJS_VERSION: "12"
+    ansible_distribution_release: trusty
+  tasks:
+    - name: Installing jdk
+      apt: name=openjdk-8-jdk 
+    - name: Installing python3 and pip
+      apt: name=python3
+      apt: name=python-pip
+    - pip:
+       name: boto
+       #executable: pip3
+      
+    - name: Downloading nifi
+      action: shell wget https://archive.apache.org/dist/nifi/1.10.0/nifi-1.10.0-bin.tar.gz
+    - name: Extracting nifi to /opt
+      unarchive:
+        src: nifi-1.10.0-bin.tar.gz
+        dest: /opt/
+
+    - name: Creating S3 Input bucket
+      s3_bucket: 
+        name: ansibleinputbucket
+        aws_access_key: <access_key>
+        aws_secret_key: <secret_key>
+        state: present
+        region: ap-south-1
+        versioning: yes
+        tags:
+           name: ansibleinputbucket
+           type: example
+
+    - name: Creating S3 Output bucket
+      s3_bucket:
+        name: ansibleoutputbucket
+        aws_access_key: <access_key>
+        aws_secret_key: <secret_key>
+        state: present
+        region: ap-south-1
+        versioning: yes
+        tags:
+           name: ansibleoutputbucket
+           type: example
+
+    - name: Installing and Configuring sftp 
+      apt: name=vsftpd
+    - name: Ensure group "sftpgroup" exists
+      group:
+        name: sftpgroup
+        state: present
+    - name: Add the user 'sftpuser' to a primary group of 'sftpgroup'
+      user:
+            name: sftpuser
+            comment: sftp user
+            group: sftpgroup
+    - name: Create a SSH key for user sftpuser in ~sftpuser/.ssh/id_rsa
+      user:
+            name: sftpuser
+            generate_ssh_key: yes
+            ssh_key_file: .ssh/id_rsa
+    - name: copying id_rsa to authorized_keys
+      action: shell cp ~sftpuser/.ssh/id_rsa.pub ~sftpuser/.ssh/authorized_keys
+    - name: Change file ownership, group and permissions
+      file:
+            path: ~sftpuser/.ssh
+            mode: '1700'
+    - name: Change file ownership, group and permissions
+      file:
+            path: ~sftpuser/.ssh/authorized_keys
+            mode: '0600'
+    - name: Recursively change ownership of a directory
+      file:
+            path: ~sftpuser/.ssh
+            state: directory
+            recurse: yes
+            owner: sftpuser
+            group: sftpgroup
+    - name: creating directory
+      file:
+            path: ~sftpuser/sftp
+            state: directory
+            mode: '1755'
+            owner: sftpuser
+            group: sftpgroup
+    - name: creating directory
+      file:
+            path: ~sftpuser/sftp/shared
+            state: directory
+            mode: '1766'
+            owner: sftpuser
+            group: sftpgroup
+    - name: commenting the Subsystem in sshd config file
+      action: shell sed -i "s/Subsystem/#&/g" /etc/ssh/sshd_config
+    - name: Change ownership, group and permissions of sftpuser to root
+      file:
+            path: ~sftpuser
+            owner: root
+            group: root
+    - name: SFTP-Server | Add sshd_config block
+      blockinfile:
+            path: /etc/ssh/sshd_config
+            block: |
+                    Subsystem sftp internal-sftp
+                    Match Group sftpgroup
+                    #ChrootDirectory ~sftpuser/sftp
+                    ChrootDirectory ~sftpuser/
+                    AllowTCPForwarding no
+                    X11Forwarding no
+                    ForceCommand internal-sftp
+    - name: Restarting sshd  
+      service:
+            name: sshd
+            state: restarted
+    - name: Installing postgresql
+      apt: name=postgresql
+      apt: name=postgresql-contrib
+    - name: Install the gpg key for nodejs LTS
+      apt_key:
+        url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+        state: present
+    - name: Install the nodejs LTS repos
+      apt_repository:
+        repo: "deb https://deb.nodesource.com/node_{{ NODEJS_VERSION }}.x {{ ansible_distribution_release }} main"
+        state: present
+        update_cache: yes
+
+    - name: Install the nodejs
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Node.js - Install express
+      npm: name={{ item }} state=present global=yes
+      with_items:
+        - express
+        - chart.js
+        - cors
+        - aws-sdk
+        - '@angular/cli'
+
+
