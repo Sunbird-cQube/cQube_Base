@@ -1,725 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>1. Get Data from SFTP server
-2. Load into Postgre tmp table and store into s3 input dir
-3. Transform the source data [ which is load in step 2]
-4. Store the transformed data[step-3] into Postgre Transformation table (student_attendance)]
-5. Query the transformed data [step-4] 
-6. Store the aggregated data into postgre Aggregation table(agg_column_chart)
-7. Query the Aggregation table .
-8. Stored into s3 output dir required for final charts[chart js]</description>
+    <description></description>
     <groupId>c2d9cd60-016f-1000-a20e-63cee177ef48</groupId>
     <name>CQube-ver-0.1</name>
     <snippet>
-        <controllerServices>
-            <id>02b0814d-4496-3b5d-0000-000000000000</id>
-            <parentGroupId>b45c4107-d1b6-3c72-0000-000000000000</parentGroupId>
-            <bundle>
-                <artifact>nifi-dbcp-service-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.10.0</version>
-            </bundle>
-            <comments></comments>
-            <descriptors>
-                <entry>
-                    <key>Database Connection URL</key>
-                    <value>
-                        <name>Database Connection URL</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Database Driver Class Name</key>
-                    <value>
-                        <name>Database Driver Class Name</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>database-driver-locations</key>
-                    <value>
-                        <name>database-driver-locations</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>kerberos-credentials-service</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.kerberos.KerberosCredentialsService</identifiesControllerService>
-                        <name>kerberos-credentials-service</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Database User</key>
-                    <value>
-                        <name>Database User</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Password</key>
-                    <value>
-                        <name>Password</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Max Wait Time</key>
-                    <value>
-                        <name>Max Wait Time</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Max Total Connections</key>
-                    <value>
-                        <name>Max Total Connections</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Validation-query</key>
-                    <value>
-                        <name>Validation-query</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>dbcp-min-idle-conns</key>
-                    <value>
-                        <name>dbcp-min-idle-conns</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>dbcp-max-idle-conns</key>
-                    <value>
-                        <name>dbcp-max-idle-conns</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>dbcp-max-conn-lifetime</key>
-                    <value>
-                        <name>dbcp-max-conn-lifetime</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>dbcp-time-between-eviction-runs</key>
-                    <value>
-                        <name>dbcp-time-between-eviction-runs</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>dbcp-min-evictable-idle-time</key>
-                    <value>
-                        <name>dbcp-min-evictable-idle-time</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>dbcp-soft-min-evictable-idle-time</key>
-                    <value>
-                        <name>dbcp-soft-min-evictable-idle-time</name>
-                    </value>
-                </entry>
-            </descriptors>
-            <name>DBCPConnection_postgresql</name>
-            <persistsState>false</persistsState>
-            <properties>
-                <entry>
-                    <key>Database Connection URL</key>
-                    <value>jdbc:postgresql://localhost:5432/test</value>
-                </entry>
-                <entry>
-                    <key>Database Driver Class Name</key>
-                    <value>org.postgresql.Driver</value>
-                </entry>
-                <entry>
-                    <key>database-driver-locations</key>
-                    <value>/home/krishna/Downloads/nifi-1.10.0-bin/nifi-1.10.0/postgresql-42.2.10.jar</value>
-                </entry>
-                <entry>
-                    <key>kerberos-credentials-service</key>
-                </entry>
-                <entry>
-                    <key>Database User</key>
-                    <value>postgres</value>
-                </entry>
-                <entry>
-                    <key>Password</key>
-                </entry>
-                <entry>
-                    <key>Max Wait Time</key>
-                    <value>500 millis</value>
-                </entry>
-                <entry>
-                    <key>Max Total Connections</key>
-                    <value>8</value>
-                </entry>
-                <entry>
-                    <key>Validation-query</key>
-                </entry>
-                <entry>
-                    <key>dbcp-min-idle-conns</key>
-                    <value>0</value>
-                </entry>
-                <entry>
-                    <key>dbcp-max-idle-conns</key>
-                    <value>8</value>
-                </entry>
-                <entry>
-                    <key>dbcp-max-conn-lifetime</key>
-                    <value>-1</value>
-                </entry>
-                <entry>
-                    <key>dbcp-time-between-eviction-runs</key>
-                    <value>-1</value>
-                </entry>
-                <entry>
-                    <key>dbcp-min-evictable-idle-time</key>
-                    <value>30 mins</value>
-                </entry>
-                <entry>
-                    <key>dbcp-soft-min-evictable-idle-time</key>
-                    <value>-1</value>
-                </entry>
-            </properties>
-            <state>ENABLED</state>
-            <type>org.apache.nifi.dbcp.DBCPConnectionPool</type>
-        </controllerServices>
-        <controllerServices>
-            <id>5b5d3b6d-5241-3df4-0000-000000000000</id>
-            <parentGroupId>b45c4107-d1b6-3c72-0000-000000000000</parentGroupId>
-            <bundle>
-                <artifact>nifi-record-serialization-services-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.10.0</version>
-            </bundle>
-            <comments></comments>
-            <descriptors>
-                <entry>
-                    <key>Schema Write Strategy</key>
-                    <value>
-                        <name>Schema Write Strategy</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-cache</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
-                        <name>schema-cache</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-access-strategy</key>
-                    <value>
-                        <name>schema-access-strategy</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-registry</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
-                        <name>schema-registry</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-name</key>
-                    <value>
-                        <name>schema-name</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-version</key>
-                    <value>
-                        <name>schema-version</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-branch</key>
-                    <value>
-                        <name>schema-branch</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-text</key>
-                    <value>
-                        <name>schema-text</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Date Format</key>
-                    <value>
-                        <name>Date Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Time Format</key>
-                    <value>
-                        <name>Time Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Timestamp Format</key>
-                    <value>
-                        <name>Timestamp Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Pretty Print JSON</key>
-                    <value>
-                        <name>Pretty Print JSON</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>suppress-nulls</key>
-                    <value>
-                        <name>suppress-nulls</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>output-grouping</key>
-                    <value>
-                        <name>output-grouping</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>compression-format</key>
-                    <value>
-                        <name>compression-format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>compression-level</key>
-                    <value>
-                        <name>compression-level</name>
-                    </value>
-                </entry>
-            </descriptors>
-            <name>JsonRecordSetWriter</name>
-            <persistsState>false</persistsState>
-            <properties>
-                <entry>
-                    <key>Schema Write Strategy</key>
-                    <value>no-schema</value>
-                </entry>
-                <entry>
-                    <key>schema-cache</key>
-                </entry>
-                <entry>
-                    <key>schema-access-strategy</key>
-                    <value>inherit-record-schema</value>
-                </entry>
-                <entry>
-                    <key>schema-registry</key>
-                </entry>
-                <entry>
-                    <key>schema-name</key>
-                    <value>${schema.name}</value>
-                </entry>
-                <entry>
-                    <key>schema-version</key>
-                </entry>
-                <entry>
-                    <key>schema-branch</key>
-                </entry>
-                <entry>
-                    <key>schema-text</key>
-                    <value>${avro.schema}</value>
-                </entry>
-                <entry>
-                    <key>Date Format</key>
-                </entry>
-                <entry>
-                    <key>Time Format</key>
-                </entry>
-                <entry>
-                    <key>Timestamp Format</key>
-                </entry>
-                <entry>
-                    <key>Pretty Print JSON</key>
-                    <value>false</value>
-                </entry>
-                <entry>
-                    <key>suppress-nulls</key>
-                    <value>never-suppress</value>
-                </entry>
-                <entry>
-                    <key>output-grouping</key>
-                    <value>output-array</value>
-                </entry>
-                <entry>
-                    <key>compression-format</key>
-                    <value>none</value>
-                </entry>
-                <entry>
-                    <key>compression-level</key>
-                    <value>1</value>
-                </entry>
-            </properties>
-            <state>ENABLED</state>
-            <type>org.apache.nifi.json.JsonRecordSetWriter</type>
-        </controllerServices>
-        <controllerServices>
-            <id>82f7c674-f368-3734-0000-000000000000</id>
-            <parentGroupId>b45c4107-d1b6-3c72-0000-000000000000</parentGroupId>
-            <bundle>
-                <artifact>nifi-aws-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.10.0</version>
-            </bundle>
-            <comments></comments>
-            <descriptors>
-                <entry>
-                    <key>default-credentials</key>
-                    <value>
-                        <name>default-credentials</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Access Key</key>
-                    <value>
-                        <name>Access Key</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Secret Key</key>
-                    <value>
-                        <name>Secret Key</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Credentials File</key>
-                    <value>
-                        <name>Credentials File</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>profile-name</key>
-                    <value>
-                        <name>profile-name</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>anonymous-credentials</key>
-                    <value>
-                        <name>anonymous-credentials</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Assume Role ARN</key>
-                    <value>
-                        <name>Assume Role ARN</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Assume Role Session Name</key>
-                    <value>
-                        <name>Assume Role Session Name</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Session Time</key>
-                    <value>
-                        <name>Session Time</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>assume-role-external-id</key>
-                    <value>
-                        <name>assume-role-external-id</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>assume-role-proxy-host</key>
-                    <value>
-                        <name>assume-role-proxy-host</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>assume-role-proxy-port</key>
-                    <value>
-                        <name>assume-role-proxy-port</name>
-                    </value>
-                </entry>
-            </descriptors>
-            <name>AWSCredentialsProviderControllerService</name>
-            <persistsState>false</persistsState>
-            <properties>
-                <entry>
-                    <key>default-credentials</key>
-                    <value>false</value>
-                </entry>
-                <entry>
-                    <key>Access Key</key>
-                </entry>
-                <entry>
-                    <key>Secret Key</key>
-                </entry>
-                <entry>
-                    <key>Credentials File</key>
-                </entry>
-                <entry>
-                    <key>profile-name</key>
-                </entry>
-                <entry>
-                    <key>anonymous-credentials</key>
-                    <value>false</value>
-                </entry>
-                <entry>
-                    <key>Assume Role ARN</key>
-                </entry>
-                <entry>
-                    <key>Assume Role Session Name</key>
-                </entry>
-                <entry>
-                    <key>Session Time</key>
-                    <value>3600</value>
-                </entry>
-                <entry>
-                    <key>assume-role-external-id</key>
-                </entry>
-                <entry>
-                    <key>assume-role-proxy-host</key>
-                </entry>
-                <entry>
-                    <key>assume-role-proxy-port</key>
-                </entry>
-            </properties>
-            <state>ENABLED</state>
-            <type>org.apache.nifi.processors.aws.credentials.provider.service.AWSCredentialsProviderControllerService</type>
-        </controllerServices>
-        <controllerServices>
-            <id>d9de0a36-3def-3958-0000-000000000000</id>
-            <parentGroupId>b45c4107-d1b6-3c72-0000-000000000000</parentGroupId>
-            <bundle>
-                <artifact>nifi-record-serialization-services-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.10.0</version>
-            </bundle>
-            <comments></comments>
-            <descriptors>
-                <entry>
-                    <key>Schema Write Strategy</key>
-                    <value>
-                        <name>Schema Write Strategy</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-cache</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
-                        <name>schema-cache</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-access-strategy</key>
-                    <value>
-                        <name>schema-access-strategy</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-registry</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
-                        <name>schema-registry</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-name</key>
-                    <value>
-                        <name>schema-name</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-version</key>
-                    <value>
-                        <name>schema-version</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-branch</key>
-                    <value>
-                        <name>schema-branch</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-text</key>
-                    <value>
-                        <name>schema-text</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Date Format</key>
-                    <value>
-                        <name>Date Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Time Format</key>
-                    <value>
-                        <name>Time Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Timestamp Format</key>
-                    <value>
-                        <name>Timestamp Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>CSV Format</key>
-                    <value>
-                        <name>CSV Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Value Separator</key>
-                    <value>
-                        <name>Value Separator</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Include Header Line</key>
-                    <value>
-                        <name>Include Header Line</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Quote Character</key>
-                    <value>
-                        <name>Quote Character</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Escape Character</key>
-                    <value>
-                        <name>Escape Character</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Comment Marker</key>
-                    <value>
-                        <name>Comment Marker</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Null String</key>
-                    <value>
-                        <name>Null String</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Trim Fields</key>
-                    <value>
-                        <name>Trim Fields</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Quote Mode</key>
-                    <value>
-                        <name>Quote Mode</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Record Separator</key>
-                    <value>
-                        <name>Record Separator</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Include Trailing Delimiter</key>
-                    <value>
-                        <name>Include Trailing Delimiter</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>csvutils-character-set</key>
-                    <value>
-                        <name>csvutils-character-set</name>
-                    </value>
-                </entry>
-            </descriptors>
-            <name>CSVRecordSetWriter</name>
-            <persistsState>false</persistsState>
-            <properties>
-                <entry>
-                    <key>Schema Write Strategy</key>
-                    <value>no-schema</value>
-                </entry>
-                <entry>
-                    <key>schema-cache</key>
-                </entry>
-                <entry>
-                    <key>schema-access-strategy</key>
-                    <value>inherit-record-schema</value>
-                </entry>
-                <entry>
-                    <key>schema-registry</key>
-                </entry>
-                <entry>
-                    <key>schema-name</key>
-                    <value>${schema.name}</value>
-                </entry>
-                <entry>
-                    <key>schema-version</key>
-                </entry>
-                <entry>
-                    <key>schema-branch</key>
-                </entry>
-                <entry>
-                    <key>schema-text</key>
-                    <value>${avro.schema}</value>
-                </entry>
-                <entry>
-                    <key>Date Format</key>
-                </entry>
-                <entry>
-                    <key>Time Format</key>
-                </entry>
-                <entry>
-                    <key>Timestamp Format</key>
-                </entry>
-                <entry>
-                    <key>CSV Format</key>
-                    <value>custom</value>
-                </entry>
-                <entry>
-                    <key>Value Separator</key>
-                    <value>,</value>
-                </entry>
-                <entry>
-                    <key>Include Header Line</key>
-                    <value>true</value>
-                </entry>
-                <entry>
-                    <key>Quote Character</key>
-                    <value>"</value>
-                </entry>
-                <entry>
-                    <key>Escape Character</key>
-                    <value>\</value>
-                </entry>
-                <entry>
-                    <key>Comment Marker</key>
-                </entry>
-                <entry>
-                    <key>Null String</key>
-                </entry>
-                <entry>
-                    <key>Trim Fields</key>
-                    <value>true</value>
-                </entry>
-                <entry>
-                    <key>Quote Mode</key>
-                    <value>MINIMAL</value>
-                </entry>
-                <entry>
-                    <key>Record Separator</key>
-                    <value>\n</value>
-                </entry>
-                <entry>
-                    <key>Include Trailing Delimiter</key>
-                    <value>false</value>
-                </entry>
-                <entry>
-                    <key>csvutils-character-set</key>
-                    <value>UTF-8</value>
-                </entry>
-            </properties>
-            <state>ENABLED</state>
-            <type>org.apache.nifi.csv.CSVRecordSetWriter</type>
-        </controllerServices>
         <processGroups>
             <id>9417f840-fd5e-3670-0000-000000000000</id>
             <parentGroupId>b45c4107-d1b6-3c72-0000-000000000000</parentGroupId>
@@ -792,6 +76,10 @@
                     <versionedComponentId>124d5f04-1cdf-3270-8476-1e936223dfc1</versionedComponentId>
                     <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>2984.0</x>
+                        <y>-120.0</y>
+                    </bends>
                     <destination>
                         <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
                         <id>89ab15c7-b399-3144-0000-000000000000</id>
@@ -799,7 +87,7 @@
                         <versionedComponentId>89ab15c7-b399-3144-91ef-110480795b44</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
+                    <labelIndex>0</labelIndex>
                     <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                     <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                     <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -812,7 +100,7 @@
                         <type>PROCESSOR</type>
                         <versionedComponentId>9f11ee43-5332-3c99-be13-4430475157ef</versionedComponentId>
                     </source>
-                    <zIndex>0</zIndex>
+                    <zIndex>7</zIndex>
                 </connections>
                 <connections>
                     <id>22410f0a-5c17-37a0-0000-000000000000</id>
@@ -1123,6 +411,10 @@
                     <versionedComponentId>46db380a-2299-39f0-84c2-21a822108eb2</versionedComponentId>
                     <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>2976.0</x>
+                        <y>40.0</y>
+                    </bends>
                     <destination>
                         <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
                         <id>89ab15c7-b399-3144-0000-000000000000</id>
@@ -1130,7 +422,7 @@
                         <versionedComponentId>89ab15c7-b399-3144-91ef-110480795b44</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
+                    <labelIndex>0</labelIndex>
                     <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                     <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                     <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -1143,7 +435,7 @@
                         <type>PROCESSOR</type>
                         <versionedComponentId>72aba0cd-61fd-393f-a161-67a64074b5c7</versionedComponentId>
                     </source>
-                    <zIndex>0</zIndex>
+                    <zIndex>5</zIndex>
                 </connections>
                 <connections>
                     <id>4bee1c89-269c-3e4d-0000-000000000000</id>
@@ -1199,7 +491,7 @@
                         <type>PROCESSOR</type>
                         <versionedComponentId>28e05603-53b9-3cc5-a180-28f28cd866e3</versionedComponentId>
                     </source>
-                    <zIndex>0</zIndex>
+                    <zIndex>9</zIndex>
                 </connections>
                 <connections>
                     <id>5f874497-3330-36e4-0000-000000000000</id>
@@ -1207,6 +499,10 @@
                     <versionedComponentId>5f874497-3330-36e4-ba17-139b35052815</versionedComponentId>
                     <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>2968.0</x>
+                        <y>192.0</y>
+                    </bends>
                     <destination>
                         <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
                         <id>89ab15c7-b399-3144-0000-000000000000</id>
@@ -1214,7 +510,7 @@
                         <versionedComponentId>89ab15c7-b399-3144-91ef-110480795b44</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
+                    <labelIndex>0</labelIndex>
                     <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                     <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                     <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -1478,7 +774,7 @@
                         <type>PROCESSOR</type>
                         <versionedComponentId>72aba0cd-61fd-393f-a161-67a64074b5c7</versionedComponentId>
                     </source>
-                    <zIndex>0</zIndex>
+                    <zIndex>11</zIndex>
                 </connections>
                 <connections>
                     <id>89bbbe12-bc42-3965-0000-000000000000</id>
@@ -1487,11 +783,11 @@
                     <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <bends>
-                        <x>237.8006944656372</x>
+                        <x>228.72237300872803</x>
                         <y>-556.0105438232422</y>
                     </bends>
                     <bends>
-                        <x>237.8006944656372</x>
+                        <x>228.72237300872803</x>
                         <y>-506.0105438232422</y>
                     </bends>
                     <destination>
@@ -1606,6 +902,10 @@
                     <versionedComponentId>91d01e49-742c-3917-8477-a2ffe22e6bb0</versionedComponentId>
                     <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>2984.0</x>
+                        <y>-56.0</y>
+                    </bends>
                     <destination>
                         <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
                         <id>89ab15c7-b399-3144-0000-000000000000</id>
@@ -1613,7 +913,7 @@
                         <versionedComponentId>89ab15c7-b399-3144-91ef-110480795b44</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
+                    <labelIndex>0</labelIndex>
                     <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                     <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                     <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -1626,7 +926,7 @@
                         <type>PROCESSOR</type>
                         <versionedComponentId>28e05603-53b9-3cc5-a180-28f28cd866e3</versionedComponentId>
                     </source>
-                    <zIndex>0</zIndex>
+                    <zIndex>6</zIndex>
                 </connections>
                 <connections>
                     <id>9e28f9b3-72e7-3341-0000-000000000000</id>
@@ -1744,6 +1044,10 @@
                     <versionedComponentId>b0bcf359-2ee9-318d-9713-601f8e76ff13</versionedComponentId>
                     <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>2968.0</x>
+                        <y>136.0</y>
+                    </bends>
                     <destination>
                         <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
                         <id>f790c522-5f02-3977-0000-000000000000</id>
@@ -1751,7 +1055,7 @@
                         <versionedComponentId>f790c522-5f02-3977-bb8d-ee28733b6f23</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
+                    <labelIndex>0</labelIndex>
                     <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                     <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                     <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -1764,7 +1068,7 @@
                         <type>PROCESSOR</type>
                         <versionedComponentId>84282c87-a04a-3c6e-8ba5-39e855dc90a1</versionedComponentId>
                     </source>
-                    <zIndex>0</zIndex>
+                    <zIndex>12</zIndex>
                 </connections>
                 <connections>
                     <id>b2154ab1-d4c9-346b-0000-000000000000</id>
@@ -1910,6 +1214,10 @@
                     <versionedComponentId>d94ba5fd-d99b-3433-807a-6f41c8b1f56d</versionedComponentId>
                     <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>3176.0</x>
+                        <y>-248.0</y>
+                    </bends>
                     <destination>
                         <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
                         <id>89ab15c7-b399-3144-0000-000000000000</id>
@@ -1917,7 +1225,7 @@
                         <versionedComponentId>89ab15c7-b399-3144-91ef-110480795b44</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
+                    <labelIndex>0</labelIndex>
                     <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                     <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                     <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -1930,7 +1238,7 @@
                         <type>PROCESSOR</type>
                         <versionedComponentId>0e072b7f-8ab2-3074-9d43-6ca10ea00b16</versionedComponentId>
                     </source>
-                    <zIndex>0</zIndex>
+                    <zIndex>2</zIndex>
                 </connections>
                 <connections>
                     <id>e24f4002-03a6-3320-0000-000000000000</id>
@@ -1967,8 +1275,8 @@
                     <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <bends>
-                        <x>3192.0</x>
-                        <y>-376.0</y>
+                        <x>3256.0</x>
+                        <y>-392.0</y>
                     </bends>
                     <destination>
                         <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
@@ -2018,7 +1326,7 @@
                         <type>PROCESSOR</type>
                         <versionedComponentId>0e072b7f-8ab2-3074-9d43-6ca10ea00b16</versionedComponentId>
                     </source>
-                    <zIndex>0</zIndex>
+                    <zIndex>10</zIndex>
                 </connections>
                 <connections>
                     <id>ee8155d7-3ec3-3935-0000-000000000000</id>
@@ -2540,6 +1848,378 @@
                     <type>org.apache.nifi.dbcp.DBCPConnectionPool</type>
                 </controllerServices>
                 <controllerServices>
+                    <id>40b977b0-3a3e-3015-0000-000000000000</id>
+                    <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
+                    <versionedComponentId>40b977b0-3a3e-3015-b739-2be86c3137c6</versionedComponentId>
+                    <bundle>
+                        <artifact>nifi-record-serialization-services-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.10.0</version>
+                    </bundle>
+                    <comments></comments>
+                    <descriptors>
+                        <entry>
+                            <key>Schema Write Strategy</key>
+                            <value>
+<name>Schema Write Strategy</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-cache</key>
+                            <value>
+<identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
+<name>schema-cache</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-access-strategy</key>
+                            <value>
+<name>schema-access-strategy</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-registry</key>
+                            <value>
+<identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
+<name>schema-registry</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-name</key>
+                            <value>
+<name>schema-name</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-version</key>
+                            <value>
+<name>schema-version</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-branch</key>
+                            <value>
+<name>schema-branch</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-text</key>
+                            <value>
+<name>schema-text</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Date Format</key>
+                            <value>
+<name>Date Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Time Format</key>
+                            <value>
+<name>Time Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Timestamp Format</key>
+                            <value>
+<name>Timestamp Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>CSV Format</key>
+                            <value>
+<name>CSV Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Value Separator</key>
+                            <value>
+<name>Value Separator</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Include Header Line</key>
+                            <value>
+<name>Include Header Line</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Quote Character</key>
+                            <value>
+<name>Quote Character</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Escape Character</key>
+                            <value>
+<name>Escape Character</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Comment Marker</key>
+                            <value>
+<name>Comment Marker</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Null String</key>
+                            <value>
+<name>Null String</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Trim Fields</key>
+                            <value>
+<name>Trim Fields</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Quote Mode</key>
+                            <value>
+<name>Quote Mode</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Record Separator</key>
+                            <value>
+<name>Record Separator</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Include Trailing Delimiter</key>
+                            <value>
+<name>Include Trailing Delimiter</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>csvutils-character-set</key>
+                            <value>
+<name>csvutils-character-set</name>
+                            </value>
+                        </entry>
+                    </descriptors>
+                    <name>Csv-writer-CQube</name>
+                    <persistsState>false</persistsState>
+                    <properties>
+                        <entry>
+                            <key>Schema Write Strategy</key>
+                            <value>no-schema</value>
+                        </entry>
+                        <entry>
+                            <key>schema-cache</key>
+                        </entry>
+                        <entry>
+                            <key>schema-access-strategy</key>
+                            <value>inherit-record-schema</value>
+                        </entry>
+                        <entry>
+                            <key>schema-registry</key>
+                        </entry>
+                        <entry>
+                            <key>schema-name</key>
+                            <value>${schema.name}</value>
+                        </entry>
+                        <entry>
+                            <key>schema-version</key>
+                        </entry>
+                        <entry>
+                            <key>schema-branch</key>
+                        </entry>
+                        <entry>
+                            <key>schema-text</key>
+                            <value>${avro.schema}</value>
+                        </entry>
+                        <entry>
+                            <key>Date Format</key>
+                        </entry>
+                        <entry>
+                            <key>Time Format</key>
+                        </entry>
+                        <entry>
+                            <key>Timestamp Format</key>
+                        </entry>
+                        <entry>
+                            <key>CSV Format</key>
+                            <value>custom</value>
+                        </entry>
+                        <entry>
+                            <key>Value Separator</key>
+                            <value>,</value>
+                        </entry>
+                        <entry>
+                            <key>Include Header Line</key>
+                            <value>true</value>
+                        </entry>
+                        <entry>
+                            <key>Quote Character</key>
+                            <value>"</value>
+                        </entry>
+                        <entry>
+                            <key>Escape Character</key>
+                            <value>\</value>
+                        </entry>
+                        <entry>
+                            <key>Comment Marker</key>
+                        </entry>
+                        <entry>
+                            <key>Null String</key>
+                        </entry>
+                        <entry>
+                            <key>Trim Fields</key>
+                            <value>true</value>
+                        </entry>
+                        <entry>
+                            <key>Quote Mode</key>
+                            <value>MINIMAL</value>
+                        </entry>
+                        <entry>
+                            <key>Record Separator</key>
+                            <value>\n</value>
+                        </entry>
+                        <entry>
+                            <key>Include Trailing Delimiter</key>
+                            <value>false</value>
+                        </entry>
+                        <entry>
+                            <key>csvutils-character-set</key>
+                            <value>UTF-8</value>
+                        </entry>
+                    </properties>
+                    <state>ENABLED</state>
+                    <type>org.apache.nifi.csv.CSVRecordSetWriter</type>
+                </controllerServices>
+                <controllerServices>
+                    <id>7e809fc7-383f-38e1-0000-000000000000</id>
+                    <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
+                    <versionedComponentId>7e809fc7-383f-38e1-bb9f-cc162017a71d</versionedComponentId>
+                    <bundle>
+                        <artifact>nifi-aws-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.10.0</version>
+                    </bundle>
+                    <comments></comments>
+                    <descriptors>
+                        <entry>
+                            <key>default-credentials</key>
+                            <value>
+<name>default-credentials</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Access Key</key>
+                            <value>
+<name>Access Key</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Secret Key</key>
+                            <value>
+<name>Secret Key</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Credentials File</key>
+                            <value>
+<name>Credentials File</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>profile-name</key>
+                            <value>
+<name>profile-name</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>anonymous-credentials</key>
+                            <value>
+<name>anonymous-credentials</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Assume Role ARN</key>
+                            <value>
+<name>Assume Role ARN</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Assume Role Session Name</key>
+                            <value>
+<name>Assume Role Session Name</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Session Time</key>
+                            <value>
+<name>Session Time</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>assume-role-external-id</key>
+                            <value>
+<name>assume-role-external-id</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>assume-role-proxy-host</key>
+                            <value>
+<name>assume-role-proxy-host</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>assume-role-proxy-port</key>
+                            <value>
+<name>assume-role-proxy-port</name>
+                            </value>
+                        </entry>
+                    </descriptors>
+                    <name>AWS-S3-cred</name>
+                    <persistsState>false</persistsState>
+                    <properties>
+                        <entry>
+                            <key>default-credentials</key>
+                            <value>false</value>
+                        </entry>
+                        <entry>
+                            <key>Access Key</key>
+                        </entry>
+                        <entry>
+                            <key>Secret Key</key>
+                        </entry>
+                        <entry>
+                            <key>Credentials File</key>
+                        </entry>
+                        <entry>
+                            <key>profile-name</key>
+                        </entry>
+                        <entry>
+                            <key>anonymous-credentials</key>
+                            <value>false</value>
+                        </entry>
+                        <entry>
+                            <key>Assume Role ARN</key>
+                        </entry>
+                        <entry>
+                            <key>Assume Role Session Name</key>
+                        </entry>
+                        <entry>
+                            <key>Session Time</key>
+                            <value>3600</value>
+                        </entry>
+                        <entry>
+                            <key>assume-role-external-id</key>
+                        </entry>
+                        <entry>
+                            <key>assume-role-proxy-host</key>
+                        </entry>
+                        <entry>
+                            <key>assume-role-proxy-port</key>
+                        </entry>
+                    </properties>
+                    <state>ENABLED</state>
+                    <type>org.apache.nifi.processors.aws.credentials.provider.service.AWSCredentialsProviderControllerService</type>
+                </controllerServices>
+                <controllerServices>
                     <id>b7e4be21-671b-36a3-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <versionedComponentId>b7e4be21-671b-36a3-8073-5672a0584638</versionedComponentId>
@@ -2751,6 +2431,180 @@
                     </properties>
                     <state>ENABLED</state>
                     <type>org.apache.nifi.csv.CSVReader</type>
+                </controllerServices>
+                <controllerServices>
+                    <id>c96e7d53-d3b7-317f-0000-000000000000</id>
+                    <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
+                    <versionedComponentId>c96e7d53-d3b7-317f-a93e-771409353376</versionedComponentId>
+                    <bundle>
+                        <artifact>nifi-record-serialization-services-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.10.0</version>
+                    </bundle>
+                    <comments></comments>
+                    <descriptors>
+                        <entry>
+                            <key>Schema Write Strategy</key>
+                            <value>
+<name>Schema Write Strategy</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-cache</key>
+                            <value>
+<identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
+<name>schema-cache</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-access-strategy</key>
+                            <value>
+<name>schema-access-strategy</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-registry</key>
+                            <value>
+<identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
+<name>schema-registry</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-name</key>
+                            <value>
+<name>schema-name</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-version</key>
+                            <value>
+<name>schema-version</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-branch</key>
+                            <value>
+<name>schema-branch</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-text</key>
+                            <value>
+<name>schema-text</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Date Format</key>
+                            <value>
+<name>Date Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Time Format</key>
+                            <value>
+<name>Time Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Timestamp Format</key>
+                            <value>
+<name>Timestamp Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Pretty Print JSON</key>
+                            <value>
+<name>Pretty Print JSON</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>suppress-nulls</key>
+                            <value>
+<name>suppress-nulls</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>output-grouping</key>
+                            <value>
+<name>output-grouping</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>compression-format</key>
+                            <value>
+<name>compression-format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>compression-level</key>
+                            <value>
+<name>compression-level</name>
+                            </value>
+                        </entry>
+                    </descriptors>
+                    <name>Json-writer-CQube</name>
+                    <persistsState>false</persistsState>
+                    <properties>
+                        <entry>
+                            <key>Schema Write Strategy</key>
+                            <value>no-schema</value>
+                        </entry>
+                        <entry>
+                            <key>schema-cache</key>
+                        </entry>
+                        <entry>
+                            <key>schema-access-strategy</key>
+                            <value>inherit-record-schema</value>
+                        </entry>
+                        <entry>
+                            <key>schema-registry</key>
+                        </entry>
+                        <entry>
+                            <key>schema-name</key>
+                            <value>${schema.name}</value>
+                        </entry>
+                        <entry>
+                            <key>schema-version</key>
+                        </entry>
+                        <entry>
+                            <key>schema-branch</key>
+                        </entry>
+                        <entry>
+                            <key>schema-text</key>
+                            <value>${avro.schema}</value>
+                        </entry>
+                        <entry>
+                            <key>Date Format</key>
+                        </entry>
+                        <entry>
+                            <key>Time Format</key>
+                        </entry>
+                        <entry>
+                            <key>Timestamp Format</key>
+                        </entry>
+                        <entry>
+                            <key>Pretty Print JSON</key>
+                            <value>false</value>
+                        </entry>
+                        <entry>
+                            <key>suppress-nulls</key>
+                            <value>never-suppress</value>
+                        </entry>
+                        <entry>
+                            <key>output-grouping</key>
+                            <value>output-array</value>
+                        </entry>
+                        <entry>
+                            <key>compression-format</key>
+                            <value>none</value>
+                        </entry>
+                        <entry>
+                            <key>compression-level</key>
+                            <value>1</value>
+                        </entry>
+                    </properties>
+                    <state>ENABLED</state>
+                    <type>org.apache.nifi.json.JsonRecordSetWriter</type>
                 </controllerServices>
                 <controllerServices>
                     <id>cd1c6111-fd44-386b-0000-000000000000</id>
@@ -3057,12 +2911,14 @@
                     <properties>
                         <entry>
                             <key>schema-access-strategy</key>
+                            <value>infer-schema</value>
                         </entry>
                         <entry>
                             <key>schema-registry</key>
                         </entry>
                         <entry>
                             <key>schema-name</key>
+                            <value>${schema.name}</value>
                         </entry>
                         <entry>
                             <key>schema-version</key>
@@ -3072,9 +2928,11 @@
                         </entry>
                         <entry>
                             <key>schema-text</key>
+                            <value>${avro.schema}</value>
                         </entry>
                         <entry>
                             <key>csv-reader-csv-parser</key>
+                            <value>commons-csv</value>
                         </entry>
                         <entry>
                             <key>Date Format</key>
@@ -3087,9 +2945,11 @@
                         </entry>
                         <entry>
                             <key>CSV Format</key>
+                            <value>custom</value>
                         </entry>
                         <entry>
                             <key>Value Separator</key>
+                            <value>,</value>
                         </entry>
                         <entry>
                             <key>Skip Header Line</key>
@@ -3097,12 +2957,15 @@
                         </entry>
                         <entry>
                             <key>ignore-csv-header</key>
+                            <value>false</value>
                         </entry>
                         <entry>
                             <key>Quote Character</key>
+                            <value>"</value>
                         </entry>
                         <entry>
                             <key>Escape Character</key>
+                            <value>\</value>
                         </entry>
                         <entry>
                             <key>Comment Marker</key>
@@ -3112,9 +2975,11 @@
                         </entry>
                         <entry>
                             <key>Trim Fields</key>
+                            <value>true</value>
                         </entry>
                         <entry>
                             <key>csvutils-character-set</key>
+                            <value>UTF-8</value>
                         </entry>
                     </properties>
                     <state>ENABLED</state>
@@ -3133,8 +2998,8 @@
                     <id>89ab15c7-b399-3144-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>3144.0</x>
-                        <y>-288.0</y>
+                        <x>3304.0</x>
+                        <y>-264.0</y>
                     </position>
                     <versionedComponentId>89ab15c7-b399-3144-91ef-110480795b44</versionedComponentId>
                 </funnels>
@@ -3152,7 +3017,7 @@
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
                         <x>-840.0</x>
-                        <y>-368.0</y>
+                        <y>-376.0</y>
                     </position>
                     <versionedComponentId>0d2b71a1-75c7-342e-bc7e-e2a4032cc931</versionedComponentId>
                     <height>552.0</height>
@@ -3195,8 +3060,8 @@
                     <id>75a54ab2-7813-30c8-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>-296.0</x>
-                        <y>-352.0</y>
+                        <x>-288.0</x>
+                        <y>-336.0</y>
                     </position>
                     <versionedComponentId>75a54ab2-7813-30c8-baa2-76d4c7492a47</versionedComponentId>
                     <height>224.0</height>
@@ -3217,8 +3082,8 @@
                     <id>aebb5340-9d8e-3ba7-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>640.0</x>
-                        <y>-800.0</y>
+                        <x>648.0</x>
+                        <y>-776.0</y>
                     </position>
                     <versionedComponentId>aebb5340-9d8e-3ba7-9571-c026abd73788</versionedComponentId>
                     <height>1296.0</height>
@@ -3240,7 +3105,7 @@
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
                         <x>2440.0</x>
-                        <y>-672.0</y>
+                        <y>-664.0</y>
                     </position>
                     <versionedComponentId>b20a3288-75f7-3843-8d7d-54a5be59e77a</versionedComponentId>
                     <height>984.0</height>
@@ -3261,8 +3126,8 @@
                     <id>d6f0fb08-d6d3-38fd-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>-328.0</x>
-                        <y>-872.0</y>
+                        <x>-272.0</x>
+                        <y>-880.0</y>
                     </position>
                     <versionedComponentId>d6f0fb08-d6d3-38fd-8458-a81acb8a8932</versionedComponentId>
                     <height>184.0</height>
@@ -3274,7 +3139,7 @@
                         </entry>
                         <entry>
                             <key>font-size</key>
-                            <value>12px</value>
+                            <value>24px</value>
                         </entry>
                     </style>
                     <width>368.0</width>
@@ -3384,7 +3249,7 @@
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>5b5d3b6d-5241-3df4-0000-000000000000</value>
+<value>c96e7d53-d3b7-317f-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -3404,7 +3269,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 min</schedulingPeriod>
+                        <schedulingPeriod>1 day</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -3528,7 +3393,7 @@
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>d9de0a36-3def-3958-0000-000000000000</value>
+<value>40b977b0-3a3e-3015-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -3548,7 +3413,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -3570,7 +3435,7 @@
                     <id>031751cf-7122-34c7-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>728.0</x>
+                        <x>720.0</x>
                         <y>184.0</y>
                     </position>
                     <versionedComponentId>031751cf-7122-34c7-9c4f-042b007f9be2</versionedComponentId>
@@ -3672,7 +3537,7 @@
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>d9de0a36-3def-3958-0000-000000000000</value>
+<value>40b977b0-3a3e-3015-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -3692,7 +3557,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -3714,7 +3579,7 @@
                     <id>07ee2bbe-39e1-3169-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>728.0</x>
+                        <x>720.0</x>
                         <y>344.0</y>
                     </position>
                     <versionedComponentId>07ee2bbe-39e1-3169-ac46-075988187073</versionedComponentId>
@@ -3816,7 +3681,7 @@
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>d9de0a36-3def-3958-0000-000000000000</value>
+<value>40b977b0-3a3e-3015-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -3836,7 +3701,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -3959,7 +3824,7 @@
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>5b5d3b6d-5241-3df4-0000-000000000000</value>
+<value>c96e7d53-d3b7-317f-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -3979,7 +3844,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 min</schedulingPeriod>
+                        <schedulingPeriod>1 day</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -4230,11 +4095,11 @@
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>Output/month-wise.json</value>
+<value>#{S3-OUTPUT-DIR}month-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>nifi-test-tibil</value>
+<value>#{S3-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -4250,7 +4115,7 @@
                             </entry>
                             <entry>
 <key>AWS Credentials Provider service</key>
-<value>82f7c674-f368-3734-0000-000000000000</value>
+<value>7e809fc7-383f-38e1-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>s3-object-tags-prefix</key>
@@ -4475,7 +4340,7 @@
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>5b5d3b6d-5241-3df4-0000-000000000000</value>
+<value>c96e7d53-d3b7-317f-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -4495,7 +4360,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 min</schedulingPeriod>
+                        <schedulingPeriod>1 day</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -4818,12 +4683,12 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>2 min</schedulingPeriod>
+                        <schedulingPeriod>1 day</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
-                    <name>GetSFTP</name>
+                    <name>Get-From-SFTP</name>
                     <relationships>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
@@ -5290,11 +5155,11 @@
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>Output/school-month-wise.json</value>
+<value>#{S3-OUTPUT-DIR}school-month-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>nifi-test-tibil</value>
+<value>#{S3-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -5310,7 +5175,7 @@
                             </entry>
                             <entry>
 <key>AWS Credentials Provider service</key>
-<value>82f7c674-f368-3734-0000-000000000000</value>
+<value>7e809fc7-383f-38e1-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>s3-object-tags-prefix</key>
@@ -5663,11 +5528,11 @@
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>#{S3-INPUT-DIR}</value>
+<value>#{S3-INPUT-DIR}Tibil_${now():toNumber()}</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>#{S3-Bucket}</value>
+<value>#{S3-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -5683,7 +5548,7 @@
                             </entry>
                             <entry>
 <key>AWS Credentials Provider service</key>
-<value>82f7c674-f368-3734-0000-000000000000</value>
+<value>7e809fc7-383f-38e1-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>s3-object-tags-prefix</key>
@@ -5808,7 +5673,7 @@
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
                         <x>-824.0</x>
-                        <y>-136.0</y>
+                        <y>-152.0</y>
                     </position>
                     <versionedComponentId>2b4ba126-6640-3197-a389-810d980a767e</versionedComponentId>
                     <bundle>
@@ -5946,7 +5811,7 @@
                             </entry>
                             <entry>
 <key>put-db-record-dcbp-service</key>
-<value>02b0814d-4496-3b5d-0000-000000000000</value>
+<value>cd1c6111-fd44-386b-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>put-db-record-catalog-name</key>
@@ -6133,7 +5998,7 @@
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>5b5d3b6d-5241-3df4-0000-000000000000</value>
+<value>c96e7d53-d3b7-317f-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -6153,7 +6018,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 min</schedulingPeriod>
+                        <schedulingPeriod>1 day</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -6175,7 +6040,7 @@
                     <id>5d59d129-48a7-35d5-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>-248.0</x>
+                        <x>-256.0</x>
                         <y>-592.0</y>
                     </position>
                     <versionedComponentId>5d59d129-48a7-35d5-9191-df7e978973a3</versionedComponentId>
@@ -6314,7 +6179,7 @@
                             </entry>
                             <entry>
 <key>put-db-record-dcbp-service</key>
-<value>02b0814d-4496-3b5d-0000-000000000000</value>
+<value>cd1c6111-fd44-386b-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>put-db-record-catalog-name</key>
@@ -6501,7 +6366,7 @@
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>5b5d3b6d-5241-3df4-0000-000000000000</value>
+<value>c96e7d53-d3b7-317f-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -6521,7 +6386,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 min</schedulingPeriod>
+                        <schedulingPeriod>1 day</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -6772,11 +6637,11 @@
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>Output/gender-wise.json</value>
+<value>#{S3-OUTPUT-DIR}gender-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>nifi-test-tibil</value>
+<value>#{S3-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -6792,7 +6657,7 @@
                             </entry>
                             <entry>
 <key>AWS Credentials Provider service</key>
-<value>82f7c674-f368-3734-0000-000000000000</value>
+<value>7e809fc7-383f-38e1-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>s3-object-tags-prefix</key>
@@ -7018,7 +6883,7 @@
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>d9de0a36-3def-3958-0000-000000000000</value>
+<value>40b977b0-3a3e-3015-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -7038,7 +6903,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -7405,11 +7270,11 @@
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>Output/Schools-gender-wise.json</value>
+<value>#{S3-OUTPUT-DIR}Schools-gender-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>nifi-test-tibil</value>
+<value>#{S3-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -7425,7 +7290,7 @@
                             </entry>
                             <entry>
 <key>AWS Credentials Provider service</key>
-<value>82f7c674-f368-3734-0000-000000000000</value>
+<value>7e809fc7-383f-38e1-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>s3-object-tags-prefix</key>
@@ -7549,7 +7414,7 @@
                     <id>946f7e50-dc1e-3d2e-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>712.0</x>
+                        <x>720.0</x>
                         <y>-136.0</y>
                     </position>
                     <versionedComponentId>946f7e50-dc1e-3d2e-9764-1f993cc541fe</versionedComponentId>
@@ -7652,7 +7517,7 @@ UNION
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>d9de0a36-3def-3958-0000-000000000000</value>
+<value>40b977b0-3a3e-3015-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -7672,7 +7537,7 @@ UNION
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -7795,7 +7660,7 @@ UNION
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>5b5d3b6d-5241-3df4-0000-000000000000</value>
+<value>c96e7d53-d3b7-317f-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -7815,7 +7680,7 @@ UNION
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 min</schedulingPeriod>
+                        <schedulingPeriod>1 day</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -7829,7 +7694,7 @@ UNION
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -8066,11 +7931,11 @@ UNION
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>Output/KPI.json</value>
+<value>#{S3-OUTPUT-DIR}KPI.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>nifi-test-tibil</value>
+<value>#{S3-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -8086,7 +7951,7 @@ UNION
                             </entry>
                             <entry>
 <key>AWS Credentials Provider service</key>
-<value>82f7c674-f368-3734-0000-000000000000</value>
+<value>7e809fc7-383f-38e1-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>s3-object-tags-prefix</key>
@@ -8439,11 +8304,11 @@ UNION
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>Output/all-school-wise.json</value>
+<value>#{SFTP-OUTPUT}all-school-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>nifi-test-tibil</value>
+<value>#{S3-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -8459,7 +8324,7 @@ UNION
                             </entry>
                             <entry>
 <key>AWS Credentials Provider service</key>
-<value>82f7c674-f368-3734-0000-000000000000</value>
+<value>7e809fc7-383f-38e1-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>s3-object-tags-prefix</key>
@@ -8583,8 +8448,8 @@ UNION
                     <id>b1ce7545-503d-3fea-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>-320.0</x>
-                        <y>-840.0</y>
+                        <x>-264.0</x>
+                        <y>-848.0</y>
                     </position>
                     <versionedComponentId>b1ce7545-503d-3fea-b124-472eb6c65fb8</versionedComponentId>
                     <bundle>
@@ -8915,7 +8780,7 @@ UNION
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>d9de0a36-3def-3958-0000-000000000000</value>
+<value>40b977b0-3a3e-3015-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -8935,7 +8800,7 @@ UNION
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -8958,7 +8823,7 @@ UNION
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
                         <x>-824.0</x>
-                        <y>40.0</y>
+                        <y>32.0</y>
                     </position>
                     <versionedComponentId>d25d2d39-e547-389c-805a-fe3e0be07b69</versionedComponentId>
                     <bundle>
@@ -9175,7 +9040,7 @@ UNION
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>d9de0a36-3def-3958-0000-000000000000</value>
+<value>40b977b0-3a3e-3015-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -9195,7 +9060,7 @@ UNION
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -9434,7 +9299,7 @@ UNION
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>d9de0a36-3def-3958-0000-000000000000</value>
+<value>40b977b0-3a3e-3015-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -9454,7 +9319,7 @@ UNION
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -9476,7 +9341,7 @@ UNION
                     <id>ff719cc6-488e-3f43-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>712.0</x>
+                        <x>720.0</x>
                         <y>40.0</y>
                     </position>
                     <versionedComponentId>ff719cc6-488e-3f43-8e7f-3d66503d978f</versionedComponentId>
@@ -9577,7 +9442,7 @@ UNION
                             </entry>
                             <entry>
 <key>esqlrecord-record-writer</key>
-<value>d9de0a36-3def-3958-0000-000000000000</value>
+<value>40b977b0-3a3e-3015-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>esqlrecord-normalize</key>
@@ -9597,7 +9462,7 @@ UNION
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -9620,5 +9485,5 @@ UNION
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/04/2020 21:18:32 IST</timestamp>
+    <timestamp>03/09/2020 20:51:47 IST</timestamp>
 </template>
