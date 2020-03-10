@@ -6,15 +6,13 @@ var const_data = require('./aws-config')
 var log4js = require('log4js');
 var logger = log4js.getLogger();
 logger.level = 'debug';
-var temp_key = const_data[1];
-// console.log(const_data);
-// console.log(temp_key);
-app.use(cors())
-app.get('/s3-month-wise', function (req, res) {
+var temp_key = const_data.getParams;
 
+app.use(cors())
+app.get('/s3-month-wise', function (req, res) {    
     logger.debug("Some debug messages");
     temp_key['Key']='Output/month-wise.json'
-    const_data[0].getObject(temp_key, function (err, data) {
+    const_data['s3'].getObject(temp_key, function (err, data) {
 
         if (err) {
             console.log(err);
@@ -42,7 +40,7 @@ app.get('/S3-all-school-wise', function (req, res) {
 
     logger.debug("Some debug messages");
     temp_key['Key']='Output/all-school-wise.json'
-    const_data[0].getObject(temp_key, function (err, data) {
+    const_data['s3'].getObject(temp_key, function (err, data) {
         
         if (err) {
             console.log(err);
@@ -68,7 +66,7 @@ app.get('/S3-all-school-wise', function (req, res) {
 app.get('/S3-kpi', function (req, res) {
     temp_key['Key']='Output/KPI.json'
     logger.debug("Some debug messages");
-    const_data[0].getObject(temp_key, function (err, data) {
+    const_data['s3'].getObject(temp_key, function (err, data) {
 
         if (err) {
             console.log(err);
@@ -88,7 +86,7 @@ app.get('/S3-gender-wise', function (req, res) {
 
     logger.debug("Some debug messages");
     temp_key['Key']='Output/gender-wise.json'
-    const_data[0].getObject(temp_key, function (err, data) {
+    const_data['s3'].getObject(temp_key, function (err, data) {
         
         if (err) {
             console.log(err);
