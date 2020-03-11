@@ -1,8 +1,4 @@
 /*******************************************************************************************************************************************************************************/
-create database cqubedev;
-\c cqubedev;
-create schema edu;
-set search_path to edu;
 
 /*c3_agg_attributes_chart*/
 create table if not exists c3_agg_attributes_chart(batch_id int,
