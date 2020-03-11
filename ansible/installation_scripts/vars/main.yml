@@ -1,0 +1,11 @@
+---
+access_key: 
+secret_key: 
+sftp_user: test
+sftp_group: sftpgroup
+sftp_dir: sftp
+db_user: postgres
+db_name: postgres
+db_password: md5e8a48653851e28c69d0506508fb27fc5
+s3_input_bucket: tibil-input1
+s3_output_bucket: tibil-output1

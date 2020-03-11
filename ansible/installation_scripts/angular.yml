@@ -1,0 +1,59 @@
+---
+- hosts: localhost
+  gather_facts: yes
+  become: yes
+  vars:
+    NODEJS_VERSION: "12"
+    ansible_distribution_release: trusty
+  tasks:
+    - name: Install the gpg key for nodejs LTS
+      apt_key:
+        url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+        state: present
+
+    - name: Install the nodejs LTS repos
+      apt_repository:
+        repo: "deb https://deb.nodesource.com/node_{{ NODEJS_VERSION }}.x {{ ansible_distribution_release }} main"
+        state: present
+        update_cache: yes
+
+    - name: Install the nodejs
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Node.js - Install express
+      npm: name={{ item }} state=present global=yes
+      with_items:    
+        - express
+        - chart.js
+        - cors
+        - aws-sdk
+        - "@angular/cli"
+        - forever
+
+    - name: Install Git
+      apt: name=git 
+
+    - name: Change permission
+      shell: chmod -R 777 cQube/development
+
+    - name: Change to Node directory
+      shell: cd cQube/development/angular/server-side
+
+    - name: Install Nodejs packages based on package.json.
+      npm:
+        path: cQube/development/angular/server-side
+    
+    - name: Run Node JS
+      shell: cd cQube/development/angular/server-side; forever start S3_API.js
+
+    - name: Change to Angular directory
+      shell: cd cQube/development/angular/client-side
+
+    - name: Install Angular packages based on package.json.
+      npm:
+        path: cQube/development/angular/client-side
+    
+    - name: Run Angular
+      shell: cd cQube/development/angular/client-side; forever start node_modules/@angular/cli/bin/ng serve
