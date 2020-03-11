@@ -1783,27 +1783,27 @@
                             </value>
                         </entry>
                     </descriptors>
-                    <name>postgre-agg</name>
+                    <name>Postgre-Agg-Dtn</name>
                     <persistsState>false</persistsState>
                     <properties>
                         <entry>
                             <key>Database Connection URL</key>
-                            <value>jdbc:postgresql://localhost:5432/aggregation</value>
+                            <value>#{POSTGRE-CONNECTION-URL}#{POSTGRE-DTN-DB}</value>
                         </entry>
                         <entry>
                             <key>Database Driver Class Name</key>
-                            <value>org.postgresql.Driver</value>
+                            <value>#{POSTGRE-DRIVER-CLASS-NAME}</value>
                         </entry>
                         <entry>
                             <key>database-driver-locations</key>
-                            <value>/home/krishna/Downloads/nifi-1.10.0-bin/nifi-1.10.0/postgresql-42.2.10.jar</value>
+                            <value>#{POSTGRE-DRIVER-DIR}</value>
                         </entry>
                         <entry>
                             <key>kerberos-credentials-service</key>
                         </entry>
                         <entry>
                             <key>Database User</key>
-                            <value>postgres</value>
+                            <value>#{POSTGRE-DB-USER}</value>
                         </entry>
                         <entry>
                             <key>Password</key>
@@ -2709,27 +2709,27 @@
                             </value>
                         </entry>
                     </descriptors>
-                    <name>postgresql-CQube</name>
+                    <name>postgresql-CQube-Source</name>
                     <persistsState>false</persistsState>
                     <properties>
                         <entry>
                             <key>Database Connection URL</key>
-                            <value>jdbc:postgresql://localhost:5432/test</value>
+                            <value>#{POSTGRE-CONNECTION-URL}#{POSTGRE-SOURCE-DB}</value>
                         </entry>
                         <entry>
                             <key>Database Driver Class Name</key>
-                            <value>org.postgresql.Driver</value>
+                            <value>#{POSTGRE-DRIVER-CLASS-NAME}</value>
                         </entry>
                         <entry>
                             <key>database-driver-locations</key>
-                            <value>/home/krishna/Downloads/nifi-1.10.0-bin/nifi-1.10.0/postgresql-42.2.10.jar</value>
+                            <value>#{POSTGRE-DRIVER-DIR}</value>
                         </entry>
                         <entry>
                             <key>kerberos-credentials-service</key>
                         </entry>
                         <entry>
                             <key>Database User</key>
-                            <value>postgres</value>
+                            <value>#{POSTGRE-DB-USER}</value>
                         </entry>
                         <entry>
                             <key>Password</key>
@@ -3866,8 +3866,8 @@
                     <id>0e072b7f-8ab2-3074-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>2472.0</x>
-                        <y>-336.0</y>
+                        <x>2456.0</x>
+                        <y>-352.0</y>
                     </position>
                     <versionedComponentId>0e072b7f-8ab2-3074-9d43-6ca10ea00b16</versionedComponentId>
                     <bundle>
@@ -4683,7 +4683,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>2 sec</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -7694,7 +7694,7 @@ UNION
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -7702,8 +7702,8 @@ UNION
                     <id>9f11ee43-5332-3c99-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>2472.0</x>
-                        <y>-480.0</y>
+                        <x>2464.0</x>
+                        <y>-496.0</y>
                     </position>
                     <versionedComponentId>9f11ee43-5332-3c99-be13-4430475157ef</versionedComponentId>
                     <bundle>
@@ -8075,8 +8075,8 @@ UNION
                     <id>a53d8842-2657-35fa-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <position>
-                        <x>2472.0</x>
-                        <y>-616.0</y>
+                        <x>2464.0</x>
+                        <y>-632.0</y>
                     </position>
                     <versionedComponentId>a53d8842-2657-35fa-ad17-a821a51a1ac8</versionedComponentId>
                     <bundle>
@@ -8304,7 +8304,7 @@ UNION
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>#{SFTP-OUTPUT}all-school-wise.json</value>
+<value>#{S3-OUTPUT-DIR}all-school-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
@@ -9485,5 +9485,5 @@ UNION
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/09/2020 20:51:47 IST</timestamp>
+    <timestamp>03/11/2020 22:47:41 IST</timestamp>
 </template>
