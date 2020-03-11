@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  become: yes
+  vars_files:
+    - vars/main.yml
+  tasks:
+    - name: creating s3 bucket      
+      s3_bucket: 
+        name: "{{ s3_input_bucket }}"
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        state: present
+        region: ap-south-1
+        versioning: yes
+        tags:
+           name: "{{ s3_input_bucket }}"
+    - name: creating s3 bucket
+      s3_bucket:
+        name: "{{ s3_output_bucket }}"
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        state: present
+        region: ap-south-1
+        versioning: yes
+        tags:
+           name: "{{ s3_output_bucket }}"
+            

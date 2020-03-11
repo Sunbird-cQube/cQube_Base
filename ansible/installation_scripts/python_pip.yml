@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Installing jdk
+      apt: name=openjdk-8-jdk
+    - name: Installing python3 and pip
+      apt: name=python3
+      apt: name=python-pip
+    - pip:
+       name: boto
+
+
