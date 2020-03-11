@@ -8,7 +8,7 @@ board_name  varchar(100),
 created_on  timestamp with  time zone,
 updated_on  timestamp with  time zone);
 
-create index c3_mst_board_id on c3_mst_board(board_id);
+create index if not exists c3_mst_board_id on c3_mst_board(board_id);
 
 /* c3_mst_subjects */
 
@@ -22,7 +22,7 @@ created_on  timestamp with  time zone,
 updated_on  timestamp with  time zone,
 foreign key (board_id) references c3_mst_board(board_id));
 
-create index c3_mst_subjects_id on c3_mst_subjects(subject_id);
+create index if not exists c3_mst_subjects_id on c3_mst_subjects(subject_id);
 
 /* c3_mst_assessment */
 
@@ -34,7 +34,7 @@ created_on  timestamp with  time zone,
 updated_on  timestamp with  time zone,
 foreign key (board_id) references c3_mst_board(board_id));
 
-create index c3_mst_assessment_id on c3_mst_assessment(assessment_id);
+create index if not exists c3_mst_assessment_id on c3_mst_assessment(assessment_id);
 
 /* c3_mst_state */
 
@@ -44,7 +44,7 @@ state_code  int,
 created_on  timestamp with  time zone,
 updated_on  timestamp with  time zone);
 
-create index c3_mst_state_id on c3_mst_state(state_id);
+create index if not exists c3_mst_state_id on c3_mst_state(state_id);
 
 /* c3_mst_region */
 
@@ -56,7 +56,7 @@ created_on  timestamp with  time zone,
 updated_on  timestamp with  time zone,
 foreign key (state_id) references c3_mst_state(state_id));
 
-create index c3_mst_region_id on c3_mst_region(region_id);
+create index if not exists c3_mst_region_id on c3_mst_region(region_id);
 
 /* c3_mst_district */
 
@@ -70,7 +70,7 @@ updated_on  timestamp with  time zone,
 foreign key (state_id) references c3_mst_state(state_id),
 foreign key (region_id) references c3_mst_region(region_id));
 
-create index c3_mst_district_id on c3_mst_district(district_id);
+create index if not exists c3_mst_district_id on c3_mst_district(district_id);
 
 /* c3_mst_block */
 
@@ -85,7 +85,7 @@ foreign key (state_id) references c3_mst_state(state_id),
 foreign key (region_id) references c3_mst_region(region_id),
 foreign key (district_id) references c3_mst_district(district_id));
 
-create index c3_mst_block_id on c3_mst_block(block_id);
+create index if not exists c3_mst_block_id on c3_mst_block(block_id);
 
 /* c3_mst_cluster */
 
@@ -102,7 +102,7 @@ foreign key (region_id) references c3_mst_region(region_id),
 foreign key (block_id) references c3_mst_block(block_id),
 foreign key (district_id) references c3_mst_district(district_id));
 
-create index c3_mst_clusterId on c3_mst_cluster(clusterId);
+create index if not exists c3_mst_clusterId on c3_mst_cluster(clusterId);
 
 /* c3_mst_town */
 
@@ -121,7 +121,7 @@ foreign key (district_id) references c3_mst_district(district_id),
 foreign key (block_id) references c3_mst_block(block_id),
 foreign key (clusterId) references c3_mst_cluster(clusterId));
 
-create index c3_mst_town_id on c3_mst_town(town_id);
+create index if not exists c3_mst_town_id on c3_mst_town(town_id);
 
 /* c3_mst_city */
 
@@ -157,7 +157,7 @@ foreign key (district_id) references c3_mst_district(district_id),
 foreign key (block_id) references c3_mst_block(block_id),
 foreign key (clusterId) references c3_mst_cluster(clusterId));
 
-create index c3_mst_village_id on c3_mst_village(village_id);
+create index if not exists c3_mst_village_id on c3_mst_village(village_id);
 
 /* c3_mst_school_category */
 
@@ -166,7 +166,7 @@ school_category_name varchar(30),
 created_on  timestamp with  time zone,
 updated_on  timestamp with  time zone);
 
-create index c3_mst_school_category_id on c3_mst_school_category(school_category_id);
+create index if not exists c3_mst_school_category_id on c3_mst_school_category(school_category_id);
 
 /* c3_mst_school_details */
 
@@ -197,7 +197,7 @@ foreign key (school_village) references c3_mst_village(village_id),
 foreign key (category_id) references c3_mst_school_category(school_category_id),
 foreign key (board_id) references c3_mst_board(board_id));
 
-create index c3_mst_school_details_id on c3_mst_school_details(school_id);
+create index if not exists c3_mst_school_details_id on c3_mst_school_details(school_id);
 
 /* c3_mst_student_details */
 
@@ -234,7 +234,7 @@ foreign key (student_region) references c3_mst_region(region_id),
 foreign key (student_city) references c3_mst_city(city_id),
 foreign key (student_town) references c3_mst_town(town_id));
 
-create index c3_mst_student_details_id on c3_mst_student_details(student_id, school_student_id);
+create index if not exists c3_mst_student_details_id on c3_mst_student_details(student_id, school_student_id);
 
 /* c3_mst_teacher_details */
 
@@ -277,7 +277,7 @@ category_type  varchar(50),
 created_on  timestamp with  time zone,
 updated_on  timestamp with  time zone);
 
-create index c3_mst_subject_category_id on c3_mst_subject_category(category_id);
+create index if not exists c3_mst_subject_category_id on c3_mst_subject_category(category_id);
 
 /* c3_cr_teacher_school_subject */
 
@@ -300,7 +300,7 @@ created_on  timestamp with  time zone,
 updated_on  timestamp with  time zone,
 foreign key (board_id) references c3_mst_board(board_id));
 
-create index c3_mst_teacher_qualification_id on c3_mst_teacher_qualification(qualification_id);
+create index if not exists c3_mst_teacher_qualification_id on c3_mst_teacher_qualification(qualification_id);
 
 /* c3_mst_teacher_institute */
 
@@ -318,7 +318,7 @@ foreign key (region_id) references c3_mst_region(region_id),
 foreign key (district_id) references c3_mst_district(district_id),
 foreign key (village_id) references c3_mst_village(village_id));
 
-create index c3_mst_teacher_institute_id on c3_mst_teacher_institute(institute_id);
+create index if not exists c3_mst_teacher_institute_id on c3_mst_teacher_institute(institute_id);
 
 /* c3_cr_teacher_qualification */
 
@@ -329,7 +329,7 @@ foreign key (teacher_id) references c3_mst_teacher_details(teacher_id),
 foreign key (qualification_id) references c3_mst_teacher_qualification(qualification_id),
 foreign key (institute_id) references c3_mst_teacher_institute(institute_id));
 
-create index c3_cr_teacher_qualification_id on c3_cr_teacher_qualification(qualification_id);
+create index if not exists c3_cr_teacher_qualification_id on c3_cr_teacher_qualification(qualification_id);
 
 /* c3_student_attendance */
 
@@ -376,7 +376,7 @@ updated_on  timestamp with  time zone,
 foreign key (student_id) references c3_mst_student_details(student_id),
 foreign key (school_id) references c3_mst_school_details(school_id));
 
-create index c3_student_attendance_id on c3_student_attendance(serial_id,student_id,school_id);
+create index if not exists c3_student_attendance_id on c3_student_attendance(serial_id,student_id,school_id);
 
 /* c3_teacher_attendance */
 
@@ -423,7 +423,7 @@ updated_on  timestamp with  time zone,
 foreign key (teacher_id) references c3_mst_teacher_details(teacher_id),
 foreign key (school_id) references c3_mst_school_details(school_id));
 
-create index c3_teacher_attendance_id on c3_teacher_attendance(serial_id,teacher_id,school_id);
+create index if not exists c3_teacher_attendance_id on c3_teacher_attendance(serial_id,teacher_id,school_id);
 
 /* c3_student_assessment */
 
@@ -445,7 +445,7 @@ foreign key (school_id) references c3_mst_school_details(school_id),
 foreign key (student_id) references c3_mst_student_details(student_id),
 foreign key (subject_id) references c3_mst_subjects(subject_id));
 
-create index c3_student_assessment_id on c3_student_assessment(serial_id);
+create index if not exists c3_student_assessment_id on c3_student_assessment(serial_id);
 
 /* partition tables */
 /* c3_student_attendance */
@@ -489,113 +489,113 @@ create table if not exists c3_student_attendance_y03m10(check( academic_year >= 
 create table if not exists c3_student_attendance_y03m11(check( academic_year >= 2021 and academic_year <2022 and month=11)) inherits (c3_student_attendance);
 create table if not exists c3_student_attendance_y03m12(check( academic_year >= 2021 and academic_year <2022 and month=12)) inherits (c3_student_attendance);
 
-CREATE INDEX c3_student_attendance_y01m01_academic_year ON c3_student_attendance_y01m01 (academic_year);
-CREATE INDEX c3_student_attendance_y01m01_month ON c3_student_attendance_y01m01 (month);
+create index if not exists c3_student_attendance_y01m01_academic_year ON c3_student_attendance_y01m01 (academic_year);
+create index if not exists c3_student_attendance_y01m01_month ON c3_student_attendance_y01m01 (month);
 
-CREATE INDEX c3_student_attendance_y01m02_academic_year ON c3_student_attendance_y01m02 (academic_year);
-CREATE INDEX c3_student_attendance_y01m02_month ON c3_student_attendance_y01m02 (month);
+create index if not exists c3_student_attendance_y01m02_academic_year ON c3_student_attendance_y01m02 (academic_year);
+create index if not exists c3_student_attendance_y01m02_month ON c3_student_attendance_y01m02 (month);
 
-CREATE INDEX c3_student_attendance_y01m03_academic_year ON c3_student_attendance_y01m03 (academic_year);
-CREATE INDEX c3_student_attendance_y01m03_month ON c3_student_attendance_y01m03 (month);
+create index if not exists c3_student_attendance_y01m03_academic_year ON c3_student_attendance_y01m03 (academic_year);
+create index if not exists c3_student_attendance_y01m03_month ON c3_student_attendance_y01m03 (month);
 
-CREATE INDEX c3_student_attendance_y01m04_academic_year ON c3_student_attendance_y01m04 (academic_year);
-CREATE INDEX c3_student_attendance_y01m04_month ON c3_student_attendance_y01m04 (month);
+create index if not exists c3_student_attendance_y01m04_academic_year ON c3_student_attendance_y01m04 (academic_year);
+create index if not exists c3_student_attendance_y01m04_month ON c3_student_attendance_y01m04 (month);
 
-CREATE INDEX c3_student_attendance_y01m05_academic_year ON c3_student_attendance_y01m05 (academic_year);
-CREATE INDEX c3_student_attendance_y01m05_month ON c3_student_attendance_y01m05 (month);
+create index if not exists c3_student_attendance_y01m05_academic_year ON c3_student_attendance_y01m05 (academic_year);
+create index if not exists c3_student_attendance_y01m05_month ON c3_student_attendance_y01m05 (month);
 
-CREATE INDEX c3_student_attendance_y01m06_academic_year ON c3_student_attendance_y01m06 (academic_year);
-CREATE INDEX c3_student_attendance_y01m06_month ON c3_student_attendance_y01m06 (month);
+create index if not exists c3_student_attendance_y01m06_academic_year ON c3_student_attendance_y01m06 (academic_year);
+create index if not exists c3_student_attendance_y01m06_month ON c3_student_attendance_y01m06 (month);
 
-CREATE INDEX c3_student_attendance_y01m07_academic_year ON c3_student_attendance_y01m07 (academic_year);
-CREATE INDEX c3_student_attendance_y01m07_month ON c3_student_attendance_y01m07 (month);
+create index if not exists c3_student_attendance_y01m07_academic_year ON c3_student_attendance_y01m07 (academic_year);
+create index if not exists c3_student_attendance_y01m07_month ON c3_student_attendance_y01m07 (month);
 
-CREATE INDEX c3_student_attendance_y01m08_academic_year ON c3_student_attendance_y01m08 (academic_year);
-CREATE INDEX c3_student_attendance_y01m08_month ON c3_student_attendance_y01m08 (month);
+create index if not exists c3_student_attendance_y01m08_academic_year ON c3_student_attendance_y01m08 (academic_year);
+create index if not exists c3_student_attendance_y01m08_month ON c3_student_attendance_y01m08 (month);
 
-CREATE INDEX c3_student_attendance_y01m09_academic_year ON c3_student_attendance_y01m09 (academic_year);
-CREATE INDEX c3_student_attendance_y01m09_month ON c3_student_attendance_y01m09 (month);
+create index if not exists c3_student_attendance_y01m09_academic_year ON c3_student_attendance_y01m09 (academic_year);
+create index if not exists c3_student_attendance_y01m09_month ON c3_student_attendance_y01m09 (month);
 
-CREATE INDEX c3_student_attendance_y01m10_academic_year ON c3_student_attendance_y01m10 (academic_year);
-CREATE INDEX c3_student_attendance_y01m10_month ON c3_student_attendance_y01m10 (month);
+create index if not exists c3_student_attendance_y01m10_academic_year ON c3_student_attendance_y01m10 (academic_year);
+create index if not exists c3_student_attendance_y01m10_month ON c3_student_attendance_y01m10 (month);
 
-CREATE INDEX c3_student_attendance_y01m11_academic_year ON c3_student_attendance_y01m11 (academic_year);
-CREATE INDEX c3_student_attendance_y01m11_month ON c3_student_attendance_y01m11 (month);
+create index if not exists c3_student_attendance_y01m11_academic_year ON c3_student_attendance_y01m11 (academic_year);
+create index if not exists c3_student_attendance_y01m11_month ON c3_student_attendance_y01m11 (month);
 
-CREATE INDEX c3_student_attendance_y01m12_academic_year ON c3_student_attendance_y01m12 (academic_year);
-CREATE INDEX c3_student_attendance_y01m12_month ON c3_student_attendance_y01m12 (month);
+create index if not exists c3_student_attendance_y01m12_academic_year ON c3_student_attendance_y01m12 (academic_year);
+create index if not exists c3_student_attendance_y01m12_month ON c3_student_attendance_y01m12 (month);
 
-CREATE INDEX c3_student_attendance_y02m01_academic_year ON c3_student_attendance_y02m01 (academic_year);
-CREATE INDEX c3_student_attendance_y02m01_month ON c3_student_attendance_y02m01 (month);
+create index if not exists c3_student_attendance_y02m01_academic_year ON c3_student_attendance_y02m01 (academic_year);
+create index if not exists c3_student_attendance_y02m01_month ON c3_student_attendance_y02m01 (month);
 
-CREATE INDEX c3_student_attendance_y02m02_academic_year ON c3_student_attendance_y02m02 (academic_year);
-CREATE INDEX c3_student_attendance_y02m02_month ON c3_student_attendance_y02m02 (month);
+create index if not exists c3_student_attendance_y02m02_academic_year ON c3_student_attendance_y02m02 (academic_year);
+create index if not exists c3_student_attendance_y02m02_month ON c3_student_attendance_y02m02 (month);
 
-CREATE INDEX c3_student_attendance_y02m03_academic_year ON c3_student_attendance_y02m03 (academic_year);
-CREATE INDEX c3_student_attendance_y02m03_month ON c3_student_attendance_y02m03 (month);
+create index if not exists c3_student_attendance_y02m03_academic_year ON c3_student_attendance_y02m03 (academic_year);
+create index if not exists c3_student_attendance_y02m03_month ON c3_student_attendance_y02m03 (month);
 
-CREATE INDEX c3_student_attendance_y02m04_academic_year ON c3_student_attendance_y02m04 (academic_year);
-CREATE INDEX c3_student_attendance_y02m04_month ON c3_student_attendance_y02m04 (month);
+create index if not exists c3_student_attendance_y02m04_academic_year ON c3_student_attendance_y02m04 (academic_year);
+create index if not exists c3_student_attendance_y02m04_month ON c3_student_attendance_y02m04 (month);
 
-CREATE INDEX c3_student_attendance_y02m05_academic_year ON c3_student_attendance_y02m05 (academic_year);
-CREATE INDEX c3_student_attendance_y02m05_month ON c3_student_attendance_y02m05 (month);
+create index if not exists c3_student_attendance_y02m05_academic_year ON c3_student_attendance_y02m05 (academic_year);
+create index if not exists c3_student_attendance_y02m05_month ON c3_student_attendance_y02m05 (month);
 
-CREATE INDEX c3_student_attendance_y02m06_academic_year ON c3_student_attendance_y02m06 (academic_year);
-CREATE INDEX c3_student_attendance_y02m06_month ON c3_student_attendance_y02m06 (month);
+create index if not exists c3_student_attendance_y02m06_academic_year ON c3_student_attendance_y02m06 (academic_year);
+create index if not exists c3_student_attendance_y02m06_month ON c3_student_attendance_y02m06 (month);
 
-CREATE INDEX c3_student_attendance_y02m07_academic_year ON c3_student_attendance_y02m07 (academic_year);
-CREATE INDEX c3_student_attendance_y02m07_month ON c3_student_attendance_y02m07 (month);
+create index if not exists c3_student_attendance_y02m07_academic_year ON c3_student_attendance_y02m07 (academic_year);
+create index if not exists c3_student_attendance_y02m07_month ON c3_student_attendance_y02m07 (month);
 
-CREATE INDEX c3_student_attendance_y02m08_academic_year ON c3_student_attendance_y02m08 (academic_year);
-CREATE INDEX c3_student_attendance_y02m08_month ON c3_student_attendance_y02m08 (month);
+create index if not exists c3_student_attendance_y02m08_academic_year ON c3_student_attendance_y02m08 (academic_year);
+create index if not exists c3_student_attendance_y02m08_month ON c3_student_attendance_y02m08 (month);
 
-CREATE INDEX c3_student_attendance_y02m09_academic_year ON c3_student_attendance_y02m09 (academic_year);
-CREATE INDEX c3_student_attendance_y02m09_month ON c3_student_attendance_y02m09 (month);
+create index if not exists c3_student_attendance_y02m09_academic_year ON c3_student_attendance_y02m09 (academic_year);
+create index if not exists c3_student_attendance_y02m09_month ON c3_student_attendance_y02m09 (month);
 
-CREATE INDEX c3_student_attendance_y02m10_academic_year ON c3_student_attendance_y02m10 (academic_year);
-CREATE INDEX c3_student_attendance_y02m10_month ON c3_student_attendance_y02m10 (month);
+create index if not exists c3_student_attendance_y02m10_academic_year ON c3_student_attendance_y02m10 (academic_year);
+create index if not exists c3_student_attendance_y02m10_month ON c3_student_attendance_y02m10 (month);
 
-CREATE INDEX c3_student_attendance_y02m11_academic_year ON c3_student_attendance_y02m11 (academic_year);
-CREATE INDEX c3_student_attendance_y02m11_month ON c3_student_attendance_y02m11 (month);
+create index if not exists c3_student_attendance_y02m11_academic_year ON c3_student_attendance_y02m11 (academic_year);
+create index if not exists c3_student_attendance_y02m11_month ON c3_student_attendance_y02m11 (month);
 
-CREATE INDEX c3_student_attendance_y02m12_academic_year ON c3_student_attendance_y02m12 (academic_year);
-CREATE INDEX c3_student_attendance_y02m12_month ON c3_student_attendance_y02m12 (month);
+create index if not exists c3_student_attendance_y02m12_academic_year ON c3_student_attendance_y02m12 (academic_year);
+create index if not exists c3_student_attendance_y02m12_month ON c3_student_attendance_y02m12 (month);
 
-CREATE INDEX c3_student_attendance_y03m01_academic_year ON c3_student_attendance_y03m01 (academic_year);
-CREATE INDEX c3_student_attendance_y03m01_month ON c3_student_attendance_y03m01 (month);
+create index if not exists c3_student_attendance_y03m01_academic_year ON c3_student_attendance_y03m01 (academic_year);
+create index if not exists c3_student_attendance_y03m01_month ON c3_student_attendance_y03m01 (month);
 
-CREATE INDEX c3_student_attendance_y03m02_academic_year ON c3_student_attendance_y03m02 (academic_year);
-CREATE INDEX c3_student_attendance_y03m02_month ON c3_student_attendance_y03m02 (month);
+create index if not exists c3_student_attendance_y03m02_academic_year ON c3_student_attendance_y03m02 (academic_year);
+create index if not exists c3_student_attendance_y03m02_month ON c3_student_attendance_y03m02 (month);
 
-CREATE INDEX c3_student_attendance_y03m03_academic_year ON c3_student_attendance_y03m03 (academic_year);
-CREATE INDEX c3_student_attendance_y03m03_month ON c3_student_attendance_y03m03 (month);
+create index if not exists c3_student_attendance_y03m03_academic_year ON c3_student_attendance_y03m03 (academic_year);
+create index if not exists c3_student_attendance_y03m03_month ON c3_student_attendance_y03m03 (month);
 
-CREATE INDEX c3_student_attendance_y03m04_academic_year ON c3_student_attendance_y03m04 (academic_year);
-CREATE INDEX c3_student_attendance_y03m04_month ON c3_student_attendance_y03m04 (month);
+create index if not exists c3_student_attendance_y03m04_academic_year ON c3_student_attendance_y03m04 (academic_year);
+create index if not exists c3_student_attendance_y03m04_month ON c3_student_attendance_y03m04 (month);
 
-CREATE INDEX c3_student_attendance_y03m05_academic_year ON c3_student_attendance_y03m05 (academic_year);
-CREATE INDEX c3_student_attendance_y03m05_month ON c3_student_attendance_y03m05 (month);
+create index if not exists c3_student_attendance_y03m05_academic_year ON c3_student_attendance_y03m05 (academic_year);
+create index if not exists c3_student_attendance_y03m05_month ON c3_student_attendance_y03m05 (month);
 
-CREATE INDEX c3_student_attendance_y03m06_academic_year ON c3_student_attendance_y03m06 (academic_year);
-CREATE INDEX c3_student_attendance_y03m06_month ON c3_student_attendance_y03m06 (month);
+create index if not exists c3_student_attendance_y03m06_academic_year ON c3_student_attendance_y03m06 (academic_year);
+create index if not exists c3_student_attendance_y03m06_month ON c3_student_attendance_y03m06 (month);
 
-CREATE INDEX c3_student_attendance_y03m07_academic_year ON c3_student_attendance_y03m07 (academic_year);
-CREATE INDEX c3_student_attendance_y03m07_month ON c3_student_attendance_y03m07 (month);
+create index if not exists c3_student_attendance_y03m07_academic_year ON c3_student_attendance_y03m07 (academic_year);
+create index if not exists c3_student_attendance_y03m07_month ON c3_student_attendance_y03m07 (month);
 
-CREATE INDEX c3_student_attendance_y03m08_academic_year ON c3_student_attendance_y03m08 (academic_year);
-CREATE INDEX c3_student_attendance_y03m08_month ON c3_student_attendance_y03m08 (month);
+create index if not exists c3_student_attendance_y03m08_academic_year ON c3_student_attendance_y03m08 (academic_year);
+create index if not exists c3_student_attendance_y03m08_month ON c3_student_attendance_y03m08 (month);
 
-CREATE INDEX c3_student_attendance_y03m09_academic_year ON c3_student_attendance_y03m09 (academic_year);
-CREATE INDEX c3_student_attendance_y03m09_month ON c3_student_attendance_y03m09 (month);
+create index if not exists c3_student_attendance_y03m09_academic_year ON c3_student_attendance_y03m09 (academic_year);
+create index if not exists c3_student_attendance_y03m09_month ON c3_student_attendance_y03m09 (month);
 
-CREATE INDEX c3_student_attendance_y03m10_academic_year ON c3_student_attendance_y03m10 (academic_year);
-CREATE INDEX c3_student_attendance_y03m10_month ON c3_student_attendance_y03m10 (month);
+create index if not exists c3_student_attendance_y03m10_academic_year ON c3_student_attendance_y03m10 (academic_year);
+create index if not exists c3_student_attendance_y03m10_month ON c3_student_attendance_y03m10 (month);
 
-CREATE INDEX c3_student_attendance_y03m11_academic_year ON c3_student_attendance_y03m11 (academic_year);
-CREATE INDEX c3_student_attendance_y03m11_month ON c3_student_attendance_y03m11 (month);
+create index if not exists c3_student_attendance_y03m11_academic_year ON c3_student_attendance_y03m11 (academic_year);
+create index if not exists c3_student_attendance_y03m11_month ON c3_student_attendance_y03m11 (month);
 
-CREATE INDEX c3_student_attendance_y03m12_academic_year ON c3_student_attendance_y03m12 (academic_year);
-CREATE INDEX c3_student_attendance_y03m12_month ON c3_student_attendance_y03m12 (month);
+create index if not exists c3_student_attendance_y03m12_academic_year ON c3_student_attendance_y03m12 (academic_year);
+create index if not exists c3_student_attendance_y03m12_month ON c3_student_attendance_y03m12 (month);
 
 /* c3_teacher_attendance */
 
@@ -640,112 +640,112 @@ create table if not exists c3_teacher_attendance_y03m10(check( academic_year >= 
 create table if not exists c3_teacher_attendance_y03m11(check( academic_year >= 2021 and academic_year <2022 and month=11)) inherits (c3_teacher_attendance);
 create table if not exists c3_teacher_attendance_y03m12(check( academic_year >= 2021 and academic_year <2022 and month=12)) inherits (c3_teacher_attendance);
 
-CREATE INDEX c3_teacher_attendance_y01m01_academic_year ON c3_teacher_attendance_y01m01 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m01_month ON c3_teacher_attendance_y01m01 (month);
+create index if not exists c3_teacher_attendance_y01m01_academic_year ON c3_teacher_attendance_y01m01 (academic_year);
+create index if not exists c3_teacher_attendance_y01m01_month ON c3_teacher_attendance_y01m01 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m02_academic_year ON c3_teacher_attendance_y01m02 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m02_month ON c3_teacher_attendance_y01m02 (month);
+create index if not exists c3_teacher_attendance_y01m02_academic_year ON c3_teacher_attendance_y01m02 (academic_year);
+create index if not exists c3_teacher_attendance_y01m02_month ON c3_teacher_attendance_y01m02 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m03_academic_year ON c3_teacher_attendance_y01m03 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m03_month ON c3_teacher_attendance_y01m03 (month);
+create index if not exists c3_teacher_attendance_y01m03_academic_year ON c3_teacher_attendance_y01m03 (academic_year);
+create index if not exists c3_teacher_attendance_y01m03_month ON c3_teacher_attendance_y01m03 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m04_academic_year ON c3_teacher_attendance_y01m04 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m04_month ON c3_teacher_attendance_y01m04 (month);
+create index if not exists c3_teacher_attendance_y01m04_academic_year ON c3_teacher_attendance_y01m04 (academic_year);
+create index if not exists c3_teacher_attendance_y01m04_month ON c3_teacher_attendance_y01m04 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m05_academic_year ON c3_teacher_attendance_y01m05 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m05_month ON c3_teacher_attendance_y01m05 (month);
+create index if not exists c3_teacher_attendance_y01m05_academic_year ON c3_teacher_attendance_y01m05 (academic_year);
+create index if not exists c3_teacher_attendance_y01m05_month ON c3_teacher_attendance_y01m05 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m06_academic_year ON c3_teacher_attendance_y01m06 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m06_month ON c3_teacher_attendance_y01m06 (month);
+create index if not exists c3_teacher_attendance_y01m06_academic_year ON c3_teacher_attendance_y01m06 (academic_year);
+create index if not exists c3_teacher_attendance_y01m06_month ON c3_teacher_attendance_y01m06 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m07_academic_year ON c3_teacher_attendance_y01m07 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m07_month ON c3_teacher_attendance_y01m07 (month);
+create index if not exists c3_teacher_attendance_y01m07_academic_year ON c3_teacher_attendance_y01m07 (academic_year);
+create index if not exists c3_teacher_attendance_y01m07_month ON c3_teacher_attendance_y01m07 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m08_academic_year ON c3_teacher_attendance_y01m08 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m08_month ON c3_teacher_attendance_y01m08 (month);
+create index if not exists c3_teacher_attendance_y01m08_academic_year ON c3_teacher_attendance_y01m08 (academic_year);
+create index if not exists c3_teacher_attendance_y01m08_month ON c3_teacher_attendance_y01m08 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m09_academic_year ON c3_teacher_attendance_y01m09 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m09_month ON c3_teacher_attendance_y01m09 (month);
+create index if not exists c3_teacher_attendance_y01m09_academic_year ON c3_teacher_attendance_y01m09 (academic_year);
+create index if not exists c3_teacher_attendance_y01m09_month ON c3_teacher_attendance_y01m09 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m10_academic_year ON c3_teacher_attendance_y01m10 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m10_month ON c3_teacher_attendance_y01m10 (month);
+create index if not exists c3_teacher_attendance_y01m10_academic_year ON c3_teacher_attendance_y01m10 (academic_year);
+create index if not exists c3_teacher_attendance_y01m10_month ON c3_teacher_attendance_y01m10 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m11_academic_year ON c3_teacher_attendance_y01m11 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m11_month ON c3_teacher_attendance_y01m11 (month);
+create index if not exists c3_teacher_attendance_y01m11_academic_year ON c3_teacher_attendance_y01m11 (academic_year);
+create index if not exists c3_teacher_attendance_y01m11_month ON c3_teacher_attendance_y01m11 (month);
 
-CREATE INDEX c3_teacher_attendance_y01m12_academic_year ON c3_teacher_attendance_y01m12 (academic_year);
-CREATE INDEX c3_teacher_attendance_y01m12_month ON c3_teacher_attendance_y01m12 (month);
+create index if not exists c3_teacher_attendance_y01m12_academic_year ON c3_teacher_attendance_y01m12 (academic_year);
+create index if not exists c3_teacher_attendance_y01m12_month ON c3_teacher_attendance_y01m12 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m01_academic_year ON c3_teacher_attendance_y02m01 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m01_month ON c3_teacher_attendance_y02m01 (month);
+create index if not exists c3_teacher_attendance_y02m01_academic_year ON c3_teacher_attendance_y02m01 (academic_year);
+create index if not exists c3_teacher_attendance_y02m01_month ON c3_teacher_attendance_y02m01 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m02_academic_year ON c3_teacher_attendance_y02m02 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m02_month ON c3_teacher_attendance_y02m02 (month);
+create index if not exists c3_teacher_attendance_y02m02_academic_year ON c3_teacher_attendance_y02m02 (academic_year);
+create index if not exists c3_teacher_attendance_y02m02_month ON c3_teacher_attendance_y02m02 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m03_academic_year ON c3_teacher_attendance_y02m03 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m03_month ON c3_teacher_attendance_y02m03 (month);
+create index if not exists c3_teacher_attendance_y02m03_academic_year ON c3_teacher_attendance_y02m03 (academic_year);
+create index if not exists c3_teacher_attendance_y02m03_month ON c3_teacher_attendance_y02m03 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m04_academic_year ON c3_teacher_attendance_y02m04 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m04_month ON c3_teacher_attendance_y02m04 (month);
+create index if not exists c3_teacher_attendance_y02m04_academic_year ON c3_teacher_attendance_y02m04 (academic_year);
+create index if not exists c3_teacher_attendance_y02m04_month ON c3_teacher_attendance_y02m04 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m05_academic_year ON c3_teacher_attendance_y02m05 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m05_month ON c3_teacher_attendance_y02m05 (month);
+create index if not exists c3_teacher_attendance_y02m05_academic_year ON c3_teacher_attendance_y02m05 (academic_year);
+create index if not exists c3_teacher_attendance_y02m05_month ON c3_teacher_attendance_y02m05 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m06_academic_year ON c3_teacher_attendance_y02m06 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m06_month ON c3_teacher_attendance_y02m06 (month);
+create index if not exists c3_teacher_attendance_y02m06_academic_year ON c3_teacher_attendance_y02m06 (academic_year);
+create index if not exists c3_teacher_attendance_y02m06_month ON c3_teacher_attendance_y02m06 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m07_academic_year ON c3_teacher_attendance_y02m07 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m07_month ON c3_teacher_attendance_y02m07 (month);
+create index if not exists c3_teacher_attendance_y02m07_academic_year ON c3_teacher_attendance_y02m07 (academic_year);
+create index if not exists c3_teacher_attendance_y02m07_month ON c3_teacher_attendance_y02m07 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m08_academic_year ON c3_teacher_attendance_y02m08 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m08_month ON c3_teacher_attendance_y02m08 (month);
+create index if not exists c3_teacher_attendance_y02m08_academic_year ON c3_teacher_attendance_y02m08 (academic_year);
+create index if not exists c3_teacher_attendance_y02m08_month ON c3_teacher_attendance_y02m08 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m09_academic_year ON c3_teacher_attendance_y02m09 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m09_month ON c3_teacher_attendance_y02m09 (month);
+create index if not exists c3_teacher_attendance_y02m09_academic_year ON c3_teacher_attendance_y02m09 (academic_year);
+create index if not exists c3_teacher_attendance_y02m09_month ON c3_teacher_attendance_y02m09 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m10_academic_year ON c3_teacher_attendance_y02m10 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m10_month ON c3_teacher_attendance_y02m10 (month);
+create index if not exists c3_teacher_attendance_y02m10_academic_year ON c3_teacher_attendance_y02m10 (academic_year);
+create index if not exists c3_teacher_attendance_y02m10_month ON c3_teacher_attendance_y02m10 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m11_academic_year ON c3_teacher_attendance_y02m11 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m11_month ON c3_teacher_attendance_y02m11 (month);
+create index if not exists c3_teacher_attendance_y02m11_academic_year ON c3_teacher_attendance_y02m11 (academic_year);
+create index if not exists c3_teacher_attendance_y02m11_month ON c3_teacher_attendance_y02m11 (month);
 
-CREATE INDEX c3_teacher_attendance_y02m12_academic_year ON c3_teacher_attendance_y02m12 (academic_year);
-CREATE INDEX c3_teacher_attendance_y02m12_month ON c3_teacher_attendance_y02m12 (month);
+create index if not exists c3_teacher_attendance_y02m12_academic_year ON c3_teacher_attendance_y02m12 (academic_year);
+create index if not exists c3_teacher_attendance_y02m12_month ON c3_teacher_attendance_y02m12 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m01_academic_year ON c3_teacher_attendance_y03m01 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m01_month ON c3_teacher_attendance_y03m01 (month);
+create index if not exists c3_teacher_attendance_y03m01_academic_year ON c3_teacher_attendance_y03m01 (academic_year);
+create index if not exists c3_teacher_attendance_y03m01_month ON c3_teacher_attendance_y03m01 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m02_academic_year ON c3_teacher_attendance_y03m02 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m02_month ON c3_teacher_attendance_y03m02 (month);
+create index if not exists c3_teacher_attendance_y03m02_academic_year ON c3_teacher_attendance_y03m02 (academic_year);
+create index if not exists c3_teacher_attendance_y03m02_month ON c3_teacher_attendance_y03m02 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m03_academic_year ON c3_teacher_attendance_y03m03 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m03_month ON c3_teacher_attendance_y03m03 (month);
+create index if not exists c3_teacher_attendance_y03m03_academic_year ON c3_teacher_attendance_y03m03 (academic_year);
+create index if not exists c3_teacher_attendance_y03m03_month ON c3_teacher_attendance_y03m03 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m04_academic_year ON c3_teacher_attendance_y03m04 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m04_month ON c3_teacher_attendance_y03m04 (month);
+create index if not exists c3_teacher_attendance_y03m04_academic_year ON c3_teacher_attendance_y03m04 (academic_year);
+create index if not exists c3_teacher_attendance_y03m04_month ON c3_teacher_attendance_y03m04 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m05_academic_year ON c3_teacher_attendance_y03m05 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m05_month ON c3_teacher_attendance_y03m05 (month);
+create index if not exists c3_teacher_attendance_y03m05_academic_year ON c3_teacher_attendance_y03m05 (academic_year);
+create index if not exists c3_teacher_attendance_y03m05_month ON c3_teacher_attendance_y03m05 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m06_academic_year ON c3_teacher_attendance_y03m06 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m06_month ON c3_teacher_attendance_y03m06 (month);
+create index if not exists c3_teacher_attendance_y03m06_academic_year ON c3_teacher_attendance_y03m06 (academic_year);
+create index if not exists c3_teacher_attendance_y03m06_month ON c3_teacher_attendance_y03m06 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m07_academic_year ON c3_teacher_attendance_y03m07 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m07_month ON c3_teacher_attendance_y03m07 (month);
+create index if not exists c3_teacher_attendance_y03m07_academic_year ON c3_teacher_attendance_y03m07 (academic_year);
+create index if not exists c3_teacher_attendance_y03m07_month ON c3_teacher_attendance_y03m07 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m08_academic_year ON c3_teacher_attendance_y03m08 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m08_month ON c3_teacher_attendance_y03m08 (month);
+create index if not exists c3_teacher_attendance_y03m08_academic_year ON c3_teacher_attendance_y03m08 (academic_year);
+create index if not exists c3_teacher_attendance_y03m08_month ON c3_teacher_attendance_y03m08 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m09_academic_year ON c3_teacher_attendance_y03m09 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m09_month ON c3_teacher_attendance_y03m09 (month);
+create index if not exists c3_teacher_attendance_y03m09_academic_year ON c3_teacher_attendance_y03m09 (academic_year);
+create index if not exists c3_teacher_attendance_y03m09_month ON c3_teacher_attendance_y03m09 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m10_academic_year ON c3_teacher_attendance_y03m10 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m10_month ON c3_teacher_attendance_y03m10 (month);
+create index if not exists c3_teacher_attendance_y03m10_academic_year ON c3_teacher_attendance_y03m10 (academic_year);
+create index if not exists c3_teacher_attendance_y03m10_month ON c3_teacher_attendance_y03m10 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m11_academic_year ON c3_teacher_attendance_y03m11 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m11_month ON c3_teacher_attendance_y03m11 (month);
+create index if not exists c3_teacher_attendance_y03m11_academic_year ON c3_teacher_attendance_y03m11 (academic_year);
+create index if not exists c3_teacher_attendance_y03m11_month ON c3_teacher_attendance_y03m11 (month);
 
-CREATE INDEX c3_teacher_attendance_y03m12_academic_year ON c3_teacher_attendance_y03m12 (academic_year);
-CREATE INDEX c3_teacher_attendance_y03m12_month ON c3_teacher_attendance_y03m12 (month);
+create index if not exists c3_teacher_attendance_y03m12_academic_year ON c3_teacher_attendance_y03m12 (academic_year);
+create index if not exists c3_teacher_attendance_y03m12_month ON c3_teacher_attendance_y03m12 (month);
 
 /*******************************************************************************************************************************************************************************/
