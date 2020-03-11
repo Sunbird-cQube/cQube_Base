@@ -1,117 +1,376 @@
-create table if not exists mst_state
-(state_id int primary key not null,
-state_name varchar(50));
+/*******************************************************************************************************************************************************************************/
+create database cqubedev;
+\c cqubedev;
+create schema edu;
+set search_path to edu;
 
-create index if not exists mst_state_id on mst_state(state_id);
+/*c3_agg_attributes_chart*/
+create table if not exists c3_agg_attributes_chart(batch_id int,
+chart_id int,
+chart_name varchar(100),
+attribute_name varchar(50),
+attribute_value varchar(50),
+created_on timestamp with time zone,
+updated_on timestamp with time zone);
 
-create table if not exists mst_district
-(district_id int primary key not null,
-district_name varchar(50),
-state_id int,
-state_name varchar(50),
-foreign key (state_id) references mst_state(state_id));
+create index c3_agg_att_batch_id on c3_agg_attributes_chart(batch_id);
 
-create index if not exists mst_district_id on mst_district(district_id);
+create index c3_agg_att_chart_id on c3_agg_attributes_chart(chart_id);
 
 
-create table if not exists mst_block
-(block_id int primary key not null,
-block_name varchar(50),
-district_id int,
-district_name varchar(50),
-state_id int,
-state_name varchar(50),
-foreign key (district_id) references mst_district(district_id));
+/*c3_agg_column_chart*/
+create table if not exists c3_agg_column_chart(batch_id int,
+chart_id int,
+chart_name varchar(100),
+x_axis varchar(20),
+x_value varchar(20),
+y_axis varchar(20),
+y_value varchar(20),
+z_axis varchar(20),
+z_value varchar(20),
+created_on timestamp with time zone,
+updated_on timestamp with time zone);
 
-create index if not exists mst_block_id on mst_block(block_id);
+create index c3_agg_col_batch_id on c3_agg_column_chart(batch_id);
 
-create table if not exists mst_cluster
-(clusterId int primary key not null,
-cluster_name varchar(50),
-block_id int not null,
-block_name varchar(50),
-district_id int,
-district_name varchar(50),
-state_id int,
-state_name varchar(50),
-foreign key (block_id) references mst_block(block_id));
+create index c3_agg_col_chart_id on c3_agg_column_chart(chart_id);
 
-create index if not exists mst_cluster_id on mst_cluster(clusterId);
 
-create table if not exists mst_village
-(village_id int primary key not null,
-village_name varchar(50),
-clusterId int,
-cluster_name varchar(50),
-block_id int,
-block_name varchar(50),
-district_id int,
-district_name varchar(50),
-state_id int,
-state_name varchar(50),
-foreign key (clusterId) references mst_cluster(clusterId));
+/*c3_trf_teacher_attendance*/
+create table if not exists c3_trf_teacher_attendance(serial_id bigint primary key not null,
+school_id bigint,
+teacher_id bigint,
+gender smallint,
+academic_year int,
+month smallint,
+day_month smallint,
+created_on timestamp with  time zone,
+updated_on timestamp with  time zone);
 
-create index if not exists mst_village_id on mst_village(village_id);
+create index c3_trf_tch_school_id on c3_trf_teacher_attendance(school_id);
 
-create table if not exists mst_school
-(school_id int primary key not null,
-school_name varchar(50),
-village_id int,
-village_name varchar(50),
-clusterId int,
-cluster_name varchar(50),
-block_id int,
-block_name varchar(50),
-district_id int,
-district_name varchar(50),
-state_id int,
-state_name varchar(50),
-foreign key (village_id) references mst_village(village_id));
+create index c3_trf_tch_teacher_id on c3_trf_teacher_attendance(teacher_id);
 
-create index if not exists mst_school_id on mst_school(school_id);
+create index c3_trf_tch_month on c3_trf_teacher_attendance(month);
 
-create table if not exists trf_student_attendance
-(student_id int,
-student_name varchar(50),
-school_id varchar(50),
-year int,
-month int,
-day date,
-attendance int,
-created_on date,
-updated_on date
-);
 
-create table if not exists trf_teacher_attendance
-(teacher_id int,
-teacher_name varchar(50),
-school_id varchar(50),
-year int,
-month int,
-day date,
-attendance int,
-created_on date,
-updated_on date
-);
+/*c3_trf_student_attendance*/
+create table if not exists c3_trf_student_attendance(serial_id bigint primary key not null,
+school_id bigint,
+student_id bigint,
+student_school_id bigint,
+gender smallint,
+academic_year int,
+month smallint,
+day_month smallint,
+created_on timestamp with  time zone,
+updated_on timestamp with  time zone);
 
-create table if not exists trf_semester_assessment
-(semester_id int,
-semester_name varchar(30),
-school_id int,
-student_id int,
-subject_id int,
-subject_name varchar(50),
-marks_scored int,
-total_marks int);
+create index c3_trf_stu_school_id on c3_trf_student_attendance(school_id);
 
-create table if not exists trf_periodic_assessment_test
-(pat_id int,
-pat_name varchar(30),
-school_id int,
-student_id int,
-subject_id int,
-subject_name varchar(50),
-marks_scored int,
-total_marks int);
+create index c3_trf_stu_student_id on c3_trf_student_attendance(student_id);
 
-create table if not exists agg_column_chart(chart_name varchar(100),x_axis varchar(15),x_value varchar(15),y_axis varchar(15),y_value varchar(15),z_axis varchar(15),z_value varchar(15),attribute_1 varchar(15),attribute_2 varchar(15),attribute_3 varchar(15),attribute_4 varchar(15),attribute_5 varchar(15),attribute_6 varchar(15),created_on date,updated_on date);
+create index c3_trf_stu_month on c3_trf_student_attendance(month);
+
+
+/* Partition tables for period of three years*/
+
+/* c3_trf_student_attendance */
+
+create table if not exists c3_part_student_attendance_y01m01(check( academic_year >= 2019 and academic_year <2020 and month=1)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m02(check( academic_year >= 2019 and academic_year <2020 and month=2)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m03(check( academic_year >= 2019 and academic_year <2020 and month=3)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m04(check( academic_year >= 2019 and academic_year <2020 and month=4)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m05(check( academic_year >= 2019 and academic_year <2020 and month=5)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m06(check( academic_year >= 2019 and academic_year <2020 and month=6)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m07(check( academic_year >= 2019 and academic_year <2020 and month=7)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m08(check( academic_year >= 2019 and academic_year <2020 and month=8)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m09(check( academic_year >= 2019 and academic_year <2020 and month=9)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m10(check( academic_year >= 2019 and academic_year <2020 and month=10)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m11(check( academic_year >= 2019 and academic_year <2020 and month=11)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y01m12(check( academic_year >= 2019 and academic_year <2020 and month=12)) inherits (c3_trf_student_attendance);
+
+create table if not exists c3_part_student_attendance_y02m01(check( academic_year >= 2020 and academic_year <2021 and month=1)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m02(check( academic_year >= 2020 and academic_year <2021 and month=2)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m03(check( academic_year >= 2020 and academic_year <2021 and month=3)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m04(check( academic_year >= 2020 and academic_year <2021 and month=4)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m05(check( academic_year >= 2020 and academic_year <2021 and month=5)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m06(check( academic_year >= 2020 and academic_year <2021 and month=6)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m07(check( academic_year >= 2020 and academic_year <2021 and month=7)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m08(check( academic_year >= 2020 and academic_year <2021 and month=8)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m09(check( academic_year >= 2020 and academic_year <2021 and month=9)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m10(check( academic_year >= 2020 and academic_year <2021 and month=10)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m11(check( academic_year >= 2020 and academic_year <2021 and month=11)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y02m12(check( academic_year >= 2020 and academic_year <2021 and month=12)) inherits (c3_trf_student_attendance);
+
+create table if not exists c3_part_student_attendance_y03m01(check( academic_year >= 2021 and academic_year <2022 and month=1)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m02(check( academic_year >= 2021 and academic_year <2022 and month=2)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m03(check( academic_year >= 2021 and academic_year <2022 and month=3)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m04(check( academic_year >= 2021 and academic_year <2022 and month=4)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m05(check( academic_year >= 2021 and academic_year <2022 and month=5)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m06(check( academic_year >= 2021 and academic_year <2022 and month=6)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m07(check( academic_year >= 2021 and academic_year <2022 and month=7)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m08(check( academic_year >= 2021 and academic_year <2022 and month=8)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m09(check( academic_year >= 2021 and academic_year <2022 and month=9)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m10(check( academic_year >= 2021 and academic_year <2022 and month=10)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m11(check( academic_year >= 2021 and academic_year <2022 and month=11)) inherits (c3_trf_student_attendance);
+create table if not exists c3_part_student_attendance_y03m12(check( academic_year >= 2021 and academic_year <2022 and month=12)) inherits (c3_trf_student_attendance);
+
+CREATE INDEX c3_part_student_attendance_y01m01_academic_year ON c3_part_student_attendance_y01m01 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m01_month ON c3_part_student_attendance_y01m01 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m02_academic_year ON c3_part_student_attendance_y01m02 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m02_month ON c3_part_student_attendance_y01m02 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m03_academic_year ON c3_part_student_attendance_y01m03 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m03_month ON c3_part_student_attendance_y01m03 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m04_academic_year ON c3_part_student_attendance_y01m04 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m04_month ON c3_part_student_attendance_y01m04 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m05_academic_year ON c3_part_student_attendance_y01m05 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m05_month ON c3_part_student_attendance_y01m05 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m06_academic_year ON c3_part_student_attendance_y01m06 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m06_month ON c3_part_student_attendance_y01m06 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m07_academic_year ON c3_part_student_attendance_y01m07 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m07_month ON c3_part_student_attendance_y01m07 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m08_academic_year ON c3_part_student_attendance_y01m08 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m08_month ON c3_part_student_attendance_y01m08 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m09_academic_year ON c3_part_student_attendance_y01m09 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m09_month ON c3_part_student_attendance_y01m09 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m10_academic_year ON c3_part_student_attendance_y01m10 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m10_month ON c3_part_student_attendance_y01m10 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m11_academic_year ON c3_part_student_attendance_y01m11 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m11_month ON c3_part_student_attendance_y01m11 (month);
+
+CREATE INDEX c3_part_student_attendance_y01m12_academic_year ON c3_part_student_attendance_y01m12 (academic_year);
+CREATE INDEX c3_part_student_attendance_y01m12_month ON c3_part_student_attendance_y01m12 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m01_academic_year ON c3_part_student_attendance_y02m01 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m01_month ON c3_part_student_attendance_y02m01 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m02_academic_year ON c3_part_student_attendance_y02m02 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m02_month ON c3_part_student_attendance_y02m02 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m03_academic_year ON c3_part_student_attendance_y02m03 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m03_month ON c3_part_student_attendance_y02m03 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m04_academic_year ON c3_part_student_attendance_y02m04 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m04_month ON c3_part_student_attendance_y02m04 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m05_academic_year ON c3_part_student_attendance_y02m05 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m05_month ON c3_part_student_attendance_y02m05 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m06_academic_year ON c3_part_student_attendance_y02m06 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m06_month ON c3_part_student_attendance_y02m06 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m07_academic_year ON c3_part_student_attendance_y02m07 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m07_month ON c3_part_student_attendance_y02m07 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m08_academic_year ON c3_part_student_attendance_y02m08 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m08_month ON c3_part_student_attendance_y02m08 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m09_academic_year ON c3_part_student_attendance_y02m09 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m09_month ON c3_part_student_attendance_y02m09 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m10_academic_year ON c3_part_student_attendance_y02m10 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m10_month ON c3_part_student_attendance_y02m10 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m11_academic_year ON c3_part_student_attendance_y02m11 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m11_month ON c3_part_student_attendance_y02m11 (month);
+
+CREATE INDEX c3_part_student_attendance_y02m12_academic_year ON c3_part_student_attendance_y02m12 (academic_year);
+CREATE INDEX c3_part_student_attendance_y02m12_month ON c3_part_student_attendance_y02m12 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m01_academic_year ON c3_part_student_attendance_y03m01 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m01_month ON c3_part_student_attendance_y03m01 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m02_academic_year ON c3_part_student_attendance_y03m02 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m02_month ON c3_part_student_attendance_y03m02 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m03_academic_year ON c3_part_student_attendance_y03m03 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m03_month ON c3_part_student_attendance_y03m03 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m04_academic_year ON c3_part_student_attendance_y03m04 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m04_month ON c3_part_student_attendance_y03m04 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m05_academic_year ON c3_part_student_attendance_y03m05 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m05_month ON c3_part_student_attendance_y03m05 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m06_academic_year ON c3_part_student_attendance_y03m06 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m06_month ON c3_part_student_attendance_y03m06 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m07_academic_year ON c3_part_student_attendance_y03m07 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m07_month ON c3_part_student_attendance_y03m07 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m08_academic_year ON c3_part_student_attendance_y03m08 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m08_month ON c3_part_student_attendance_y03m08 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m09_academic_year ON c3_part_student_attendance_y03m09 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m09_month ON c3_part_student_attendance_y03m09 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m10_academic_year ON c3_part_student_attendance_y03m10 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m10_month ON c3_part_student_attendance_y03m10 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m11_academic_year ON c3_part_student_attendance_y03m11 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m11_month ON c3_part_student_attendance_y03m11 (month);
+
+CREATE INDEX c3_part_student_attendance_y03m12_academic_year ON c3_part_student_attendance_y03m12 (academic_year);
+CREATE INDEX c3_part_student_attendance_y03m12_month ON c3_part_student_attendance_y03m12 (month);
+
+/* c3_trf_teacher_attendance */
+
+create table if not exists c3_part_teacher_attendance_y01m01(check( academic_year >= 2019 and academic_year <2020 and month=1)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m02(check( academic_year >= 2019 and academic_year <2020 and month=2)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m03(check( academic_year >= 2019 and academic_year <2020 and month=3)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m04(check( academic_year >= 2019 and academic_year <2020 and month=4)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m05(check( academic_year >= 2019 and academic_year <2020 and month=5)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m06(check( academic_year >= 2019 and academic_year <2020 and month=6)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m07(check( academic_year >= 2019 and academic_year <2020 and month=7)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m08(check( academic_year >= 2019 and academic_year <2020 and month=8)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m09(check( academic_year >= 2019 and academic_year <2020 and month=9)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m10(check( academic_year >= 2019 and academic_year <2020 and month=10)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m11(check( academic_year >= 2019 and academic_year <2020 and month=11)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y01m12(check( academic_year >= 2019 and academic_year <2020 and month=12)) inherits (c3_trf_teacher_attendance);
+
+create table if not exists c3_part_teacher_attendance_y02m01(check( academic_year >= 2020 and academic_year <2021 and month=1)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m02(check( academic_year >= 2020 and academic_year <2021 and month=2)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m03(check( academic_year >= 2020 and academic_year <2021 and month=3)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m04(check( academic_year >= 2020 and academic_year <2021 and month=4)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m05(check( academic_year >= 2020 and academic_year <2021 and month=5)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m06(check( academic_year >= 2020 and academic_year <2021 and month=6)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m07(check( academic_year >= 2020 and academic_year <2021 and month=7)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m08(check( academic_year >= 2020 and academic_year <2021 and month=8)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m09(check( academic_year >= 2020 and academic_year <2021 and month=9)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m10(check( academic_year >= 2020 and academic_year <2021 and month=10)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m11(check( academic_year >= 2020 and academic_year <2021 and month=11)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y02m12(check( academic_year >= 2020 and academic_year <2021 and month=12)) inherits (c3_trf_teacher_attendance);
+
+create table if not exists c3_part_teacher_attendance_y03m01(check( academic_year >= 2021 and academic_year <2022 and month=1)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m02(check( academic_year >= 2021 and academic_year <2022 and month=2)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m03(check( academic_year >= 2021 and academic_year <2022 and month=3)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m04(check( academic_year >= 2021 and academic_year <2022 and month=4)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m05(check( academic_year >= 2021 and academic_year <2022 and month=5)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m06(check( academic_year >= 2021 and academic_year <2022 and month=6)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m07(check( academic_year >= 2021 and academic_year <2022 and month=7)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m08(check( academic_year >= 2021 and academic_year <2022 and month=8)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m09(check( academic_year >= 2021 and academic_year <2022 and month=9)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m10(check( academic_year >= 2021 and academic_year <2022 and month=10)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m11(check( academic_year >= 2021 and academic_year <2022 and month=11)) inherits (c3_trf_teacher_attendance);
+create table if not exists c3_part_teacher_attendance_y03m12(check( academic_year >= 2021 and academic_year <2022 and month=12)) inherits (c3_trf_teacher_attendance);
+
+CREATE INDEX c3_part_teacher_attendance_y01m01_academic_year ON c3_part_teacher_attendance_y01m01 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m01_month ON c3_part_teacher_attendance_y01m01 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m02_academic_year ON c3_part_teacher_attendance_y01m02 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m02_month ON c3_part_teacher_attendance_y01m02 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m03_academic_year ON c3_part_teacher_attendance_y01m03 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m03_month ON c3_part_teacher_attendance_y01m03 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m04_academic_year ON c3_part_teacher_attendance_y01m04 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m04_month ON c3_part_teacher_attendance_y01m04 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m05_academic_year ON c3_part_teacher_attendance_y01m05 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m05_month ON c3_part_teacher_attendance_y01m05 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m06_academic_year ON c3_part_teacher_attendance_y01m06 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m06_month ON c3_part_teacher_attendance_y01m06 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m07_academic_year ON c3_part_teacher_attendance_y01m07 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m07_month ON c3_part_teacher_attendance_y01m07 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m08_academic_year ON c3_part_teacher_attendance_y01m08 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m08_month ON c3_part_teacher_attendance_y01m08 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m09_academic_year ON c3_part_teacher_attendance_y01m09 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m09_month ON c3_part_teacher_attendance_y01m09 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m10_academic_year ON c3_part_teacher_attendance_y01m10 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m10_month ON c3_part_teacher_attendance_y01m10 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m11_academic_year ON c3_part_teacher_attendance_y01m11 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m11_month ON c3_part_teacher_attendance_y01m11 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y01m12_academic_year ON c3_part_teacher_attendance_y01m12 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y01m12_month ON c3_part_teacher_attendance_y01m12 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m01_academic_year ON c3_part_teacher_attendance_y02m01 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m01_month ON c3_part_teacher_attendance_y02m01 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m02_academic_year ON c3_part_teacher_attendance_y02m02 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m02_month ON c3_part_teacher_attendance_y02m02 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m03_academic_year ON c3_part_teacher_attendance_y02m03 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m03_month ON c3_part_teacher_attendance_y02m03 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m04_academic_year ON c3_part_teacher_attendance_y02m04 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m04_month ON c3_part_teacher_attendance_y02m04 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m05_academic_year ON c3_part_teacher_attendance_y02m05 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m05_month ON c3_part_teacher_attendance_y02m05 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m06_academic_year ON c3_part_teacher_attendance_y02m06 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m06_month ON c3_part_teacher_attendance_y02m06 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m07_academic_year ON c3_part_teacher_attendance_y02m07 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m07_month ON c3_part_teacher_attendance_y02m07 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m08_academic_year ON c3_part_teacher_attendance_y02m08 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m08_month ON c3_part_teacher_attendance_y02m08 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m09_academic_year ON c3_part_teacher_attendance_y02m09 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m09_month ON c3_part_teacher_attendance_y02m09 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m10_academic_year ON c3_part_teacher_attendance_y02m10 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m10_month ON c3_part_teacher_attendance_y02m10 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m11_academic_year ON c3_part_teacher_attendance_y02m11 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m11_month ON c3_part_teacher_attendance_y02m11 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y02m12_academic_year ON c3_part_teacher_attendance_y02m12 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y02m12_month ON c3_part_teacher_attendance_y02m12 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m01_academic_year ON c3_part_teacher_attendance_y03m01 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m01_month ON c3_part_teacher_attendance_y03m01 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m02_academic_year ON c3_part_teacher_attendance_y03m02 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m02_month ON c3_part_teacher_attendance_y03m02 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m03_academic_year ON c3_part_teacher_attendance_y03m03 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m03_month ON c3_part_teacher_attendance_y03m03 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m04_academic_year ON c3_part_teacher_attendance_y03m04 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m04_month ON c3_part_teacher_attendance_y03m04 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m05_academic_year ON c3_part_teacher_attendance_y03m05 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m05_month ON c3_part_teacher_attendance_y03m05 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m06_academic_year ON c3_part_teacher_attendance_y03m06 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m06_month ON c3_part_teacher_attendance_y03m06 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m07_academic_year ON c3_part_teacher_attendance_y03m07 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m07_month ON c3_part_teacher_attendance_y03m07 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m08_academic_year ON c3_part_teacher_attendance_y03m08 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m08_month ON c3_part_teacher_attendance_y03m08 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m09_academic_year ON c3_part_teacher_attendance_y03m09 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m09_month ON c3_part_teacher_attendance_y03m09 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m10_academic_year ON c3_part_teacher_attendance_y03m10 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m10_month ON c3_part_teacher_attendance_y03m10 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m11_academic_year ON c3_part_teacher_attendance_y03m11 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m11_month ON c3_part_teacher_attendance_y03m11 (month);
+
+CREATE INDEX c3_part_teacher_attendance_y03m12_academic_year ON c3_part_teacher_attendance_y03m12 (academic_year);
+CREATE INDEX c3_part_teacher_attendance_y03m12_month ON c3_part_teacher_attendance_y03m12 (month);
+
+/*******************************************************************************************************************************************************************************/
