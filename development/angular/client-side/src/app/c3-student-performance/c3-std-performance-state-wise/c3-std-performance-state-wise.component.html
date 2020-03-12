@@ -1,0 +1,92 @@
+<div class="container" class="head">
+  <div class="row">
+    <div class="col-sm-12">
+      <nav class="navbar navbar-expand-sm bg-secondary navbar-secondary">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="true" aria-controls="navbar">
+          <span class="sr-only"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-center">
+            <h1 style="text-align:center; color: darkblue; font-style: bold;">STUDENT PERFORMANCE DASHBOARD</h1>
+
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <a class="logo pull-right" href="#"><img src="/assets/rsz_1rsz_cqube_solid_updated.png"></a>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <hr>
+  <h2 style="text-align: center; margin-bottom: 20px; color: blue;">Education System in Gujrat: An Overview</h2>
+  <div class="row" style="margin-bottom: 100px;">
+    <div class="col-sm-1"></div>
+    <div style="float: left; width: 180px;" class="col-sm-2">
+      <h5 style=" margin-bottom: 20px;">Year
+        <select name="" id="">
+          <option value="" selected>-select Year</option>
+          <option value="2015">2015</option>
+          <option value="2016">2016</option>
+          <option value="2017">2017</option>
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+        </select></h5>
+      <div class="outerDiv">
+        <div class="innerDiv1">
+          <span>Total Students</span>
+        </div>
+        <div class="innerDiv2">
+          <b>2002020</b>
+        </div>
+      </div>
+      <div class="outerDiv">
+        <div class="innerDiv1">
+          <span>Total Teachers</span>
+        </div>
+        <div class="innerDiv2">
+          <b>2002020</b>
+        </div>
+      </div>
+      <div class="outerDiv">
+        <div class="innerDiv1">
+          <span>Teachers per School</span>
+        </div>
+        <div class="innerDiv2">
+          <b>2002020</b>
+        </div>
+      </div>
+
+      <div class="outerDiv">
+        <div class="innerDiv1">
+          <span>Students per Teacher</span>
+        </div>
+        <div class="innerDiv2">
+          <b>2002020</b>
+        </div>
+      </div>
+    </div>
+    <div style="float: left;width: auto;" class="col-sm-8">
+      <div style="margin: 0px 0px 30px 0px; float: right;">
+        <button type="button" style="margin-left: 30px;" >District-wise Report</button>
+        <button type="button" style="margin-left: 30px;">Village-wise Report</button>
+        <button type="button" style="margin-left: 30px;">School-wise Report</button>
+      </div>
+      <div>
+        <canvas style="background-color: white" baseChart [datasets]="bubbleChartData" [options]="bubbleChartOptions"
+          [colors]="bubbleChartColors" [legend]="bubbleChartLegend" [chartType]="bubbleChartType"
+          (chartClick)="chartClicked1($event)">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="footer">
+    <p>@Powered By Tibil</p>
+  </div>
+</div>
