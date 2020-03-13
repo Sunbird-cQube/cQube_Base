@@ -51,6 +51,7 @@ create index if not exists c3_trf_tch_month on c3_trf_teacher_attendance(month);
 
 
 /*c3_trf_student_attendance*/
+
 create table if not exists c3_trf_student_attendance(serial_id bigint primary key not null,
 school_id bigint,
 student_id bigint,
@@ -59,6 +60,7 @@ gender smallint,
 academic_year int,
 month smallint,
 day_month smallint,
+attendance_status,
 created_on timestamp with  time zone,
 updated_on timestamp with  time zone);
 
