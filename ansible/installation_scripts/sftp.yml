@@ -66,7 +66,6 @@
             block: |
                     Subsystem sftp internal-sftp
                     Match Group "{{ sftp_group }}"
-                    #ChrootDirectory ~sftpuser/sftp
                     ChrootDirectory ~{{ sftp_user }}/
                     AllowTCPForwarding no
                     X11Forwarding no

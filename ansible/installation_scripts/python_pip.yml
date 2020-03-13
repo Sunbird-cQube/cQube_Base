@@ -4,12 +4,13 @@
   gather_facts: yes
   become: yes
   tasks:
-    - name: Installing jdk
-      apt: name=openjdk-8-jdk
-    - name: Installing python3 and pip
+    - name: Installing python3
       apt: name=python3
+    - name: Installing pip
+      apt: name=python3-pip
+    - name: Installing pip3
       apt: name=python-pip
     - pip:
-       name: boto
-
+        name: boto3
+        # executable: pip3
 
