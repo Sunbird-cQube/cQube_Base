@@ -1,6 +1,6 @@
 ---
-access_key: AKIA4LLG5FNJCHEU3ENY 
-secret_key: 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
+access_key: 
+secret_key: 
 sftp_user: test
 sftp_group: sftpgroup
 sftp_dir: sftp
