@@ -85,14 +85,3 @@ Nifi will be accessible on `http://<your_hostname>:8080/nifi`
   23. Right click on canvas and select `Start` to start the Processor Group <img src="images/Start-all.png">
   24. Once all Processors started, you will see Green Play icon in all processors <img src="images/Success_start.png">
   
-  
-
-
-
-For Windows:
------------
-
-To install in Windows Machine use
-./install.bat
-
---------To Do--------------------
