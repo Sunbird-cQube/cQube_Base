@@ -1,0 +1,46 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+   - name: Creates directory
+     file: path=~/nifi state=directory
+   - name: Download NiFi
+     get_url:
+       url: https://archive.apache.org/dist/nifi/1.10.0/nifi-1.10.0-bin.tar.gz
+       dest: ~/nifi
+     
+
+   - name: Extract NiFi in the same folder
+     unarchive:
+       src: ~/nifi/nifi-1.10.0-bin.tar.gz
+       dest: /opt
+
+   - name: configure the webserver in nifi.properties file
+     replace:
+       dest: /opt/nifi-1.10.0/conf/nifi.properties
+       regexp: 'nifi.web.http.host='
+       replace: 'nifi.web.http.host=0.0.0.0'
+
+   - name: start NiFi
+     shell: /opt/nifi-1.10.0/bin/nifi.sh start
+     register: shell_out 
+   - debug:
+       var: shell_out  
+   - pause:
+       minutes: 3 
+   - name: Fetch nifi processor group id
+     uri:
+       url: http://localhost:8080/nifi-api/process-groups/root
+       method: GET
+     register: processor_id
+   - name: fetch id
+     debug:
+       var: processor_id.json.id
+
+   - name: upload template
+     action: shell curl -POST http://localhost:8080/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/CQube-ver-0.1.xml
+     register: xml_output
+
+   - name: fetch xml output
+     debug:
+       var: xml_output
