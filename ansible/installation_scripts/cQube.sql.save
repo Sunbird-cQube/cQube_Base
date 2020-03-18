@@ -1,12 +1,8 @@
-/*SELECT 'CREATE DATABASE cqubedev'
-WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'cqubedev')\gexec;
+create database cqubedev;
+/*\c cqubedev;*/
+create schema edu;
+set search_path to edu;
 
-SELECT '\c cqubedev'\gexec;
-
-SELECT 'CREATE schema edu'\gexec;
-
-SELECT 'set search_path to edu'\gexec;
-*/
 /*c3_agg_attributes_chart*/
 create table if not exists c3_agg_attributes_chart(batch_id int,
 chart_id int,
