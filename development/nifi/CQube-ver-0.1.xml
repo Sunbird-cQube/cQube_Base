@@ -610,33 +610,6 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
-                    <id>6bfa0774-6d5f-3cb7-0000-000000000000</id>
-                    <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
-                    <versionedComponentId>6bfa0774-6d5f-3cb7-a5f8-81757c95eb72</versionedComponentId>
-                    <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <destination>
-                        <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
-                        <id>7c6e5ba5-bf7d-3355-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                        <versionedComponentId>7c6e5ba5-bf7d-3355-bf43-b5b3a2b06aca</versionedComponentId>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <source>
-                        <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
-                        <id>1ca0fbc2-4ee7-3fba-0000-000000000000</id>
-                        <type>FUNNEL</type>
-                        <versionedComponentId>1ca0fbc2-4ee7-3fba-92d8-5b30f068bf51</versionedComponentId>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <connections>
                     <id>6f8e1d05-f4a5-397f-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
                     <versionedComponentId>6f8e1d05-f4a5-397f-b5dd-7b4b0f14e253</versionedComponentId>
@@ -1356,6 +1329,33 @@
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
+                <connections>
+                    <id>fe52c731-8293-34fc-0000-000000000000</id>
+                    <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
+                    <versionedComponentId>fe52c731-8293-34fc-b245-bbd565152d65</versionedComponentId>
+                    <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
+                        <id>7c6e5ba5-bf7d-3355-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>7c6e5ba5-bf7d-3355-bf43-b5b3a2b06aca</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <source>
+                        <groupId>9417f840-fd5e-3670-0000-000000000000</groupId>
+                        <id>1ca0fbc2-4ee7-3fba-0000-000000000000</id>
+                        <type>FUNNEL</type>
+                        <versionedComponentId>1ca0fbc2-4ee7-3fba-92d8-5b30f068bf51</versionedComponentId>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
                 <controllerServices>
                     <id>095ea485-742a-38aa-0000-000000000000</id>
                     <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
@@ -1494,15 +1494,14 @@
                     <properties>
                         <entry>
                             <key>schema-access-strategy</key>
-                            <value>schema-name</value>
+                            <value>schema-text-property</value>
                         </entry>
                         <entry>
                             <key>schema-registry</key>
-                            <value>28afc134-3d4f-3cc3-0000-000000000000</value>
                         </entry>
                         <entry>
                             <key>schema-name</key>
-                            <value>student</value>
+                            <value>${schema.name}</value>
                         </entry>
                         <entry>
                             <key>schema-version</key>
@@ -1512,7 +1511,21 @@
                         </entry>
                         <entry>
                             <key>schema-text</key>
-                            <value>${avro.schema}</value>
+                            <value>{
+  "namespace": "nifi",
+  "name": "student_attendance",
+  "type": "record",
+  "fields": [
+    { "name": "school_id", "type": ["null","int"] },
+    { "name": "schoolname", "type": ["null","string"] },
+    { "name": "student_id", "type": ["null", "int"] },
+    { "name": "month", "type": ["null","string"] },
+    { "name": "Day", "type": ["null","int"] },
+    { "name": "attendance", "type":["null","float"]},
+    { "name": "gender", "type": ["null","string"]},
+    { "name" : "leave_reason", "type": ["null","string"]}
+      ]
+}</value>
                         </entry>
                         <entry>
                             <key>csv-reader-csv-parser</key>
@@ -1568,117 +1581,6 @@
                     </properties>
                     <state>ENABLED</state>
                     <type>org.apache.nifi.csv.CSVReader</type>
-                </controllerServices>
-                <controllerServices>
-                    <id>0e4074fe-abbb-39d3-0000-000000000000</id>
-                    <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
-                    <versionedComponentId>0e4074fe-abbb-39d3-82a0-57c4f1cfdd5d</versionedComponentId>
-                    <bundle>
-                        <artifact>nifi-registry-nar</artifact>
-                        <group>org.apache.nifi</group>
-                        <version>1.10.0</version>
-                    </bundle>
-                    <comments></comments>
-                    <descriptors>
-                        <entry>
-                            <key>avro-reg-validated-field-names</key>
-                            <value>
-<name>avro-reg-validated-field-names</name>
-                            </value>
-                        </entry>
-                        <entry>
-                            <key>final-agg</key>
-                            <value>
-<name>final-agg</name>
-                            </value>
-                        </entry>
-                    </descriptors>
-                    <name>AvroSchemaRegistry-postgre-agg</name>
-                    <persistsState>false</persistsState>
-                    <properties>
-                        <entry>
-                            <key>avro-reg-validated-field-names</key>
-                            <value>true</value>
-                        </entry>
-                        <entry>
-                            <key>final-agg</key>
-                            <value>{
-  "namespace": "nifi-postgre-agg",
-  "name": "student_attendance_agg",
-  "type": "record",
-  "fields": [
-    
-    { "name": "x_axis", "type": ["null", "string"] },
-    { "name": "x_value", "type": ["null","string"] },
-    { "name": "chart_name", "type": ["null","string"] },
-    { "name": "y_axis", "type": ["null","string"]},
-    { "name" : "y_value", "type": ["null","string"]},
-    { "name": "z_axis", "type": ["null","string"] },
-    { "name": "z_value", "type":["null","string"]},
-    {"name": "attribute_1","type":["null","string"]},
-    {"name": "attribute_2","type":["null","string"]},
-    {"name": "attribute_3","type":["null","string"]}
-
-  ]
-}
-</value>
-                        </entry>
-                    </properties>
-                    <state>ENABLED</state>
-                    <type>org.apache.nifi.schemaregistry.services.AvroSchemaRegistry</type>
-                </controllerServices>
-                <controllerServices>
-                    <id>28afc134-3d4f-3cc3-0000-000000000000</id>
-                    <parentGroupId>9417f840-fd5e-3670-0000-000000000000</parentGroupId>
-                    <versionedComponentId>28afc134-3d4f-3cc3-b8f8-98255260def0</versionedComponentId>
-                    <bundle>
-                        <artifact>nifi-registry-nar</artifact>
-                        <group>org.apache.nifi</group>
-                        <version>1.10.0</version>
-                    </bundle>
-                    <comments></comments>
-                    <descriptors>
-                        <entry>
-                            <key>avro-reg-validated-field-names</key>
-                            <value>
-<name>avro-reg-validated-field-names</name>
-                            </value>
-                        </entry>
-                        <entry>
-                            <key>student</key>
-                            <value>
-<name>student</name>
-                            </value>
-                        </entry>
-                    </descriptors>
-                    <name>AvroSchemaRegistry-tran-schema</name>
-                    <persistsState>false</persistsState>
-                    <properties>
-                        <entry>
-                            <key>avro-reg-validated-field-names</key>
-                            <value>true</value>
-                        </entry>
-                        <entry>
-                            <key>student</key>
-                            <value>{
-  "namespace": "nifi",
-  "name": "student_attendance",
-  "type": "record",
-  "fields": [
-    { "name": "school_id", "type": ["null","int"] },
-    { "name": "schoolname", "type": ["null","string"] },
-    { "name": "student_id", "type": ["null", "int"] },
-    { "name": "month", "type": ["null","string"] },
-    { "name": "Day", "type": ["null","int"] },
-    { "name": "attendance", "type":["null","float"]},
-    { "name": "gender", "type": ["null","string"]},
-    { "name" : "leave_reason", "type": ["null","string"]}
-      ]
-}</value>
-                        </entry>
-                    </properties>
-                    <state>ENABLED</state>
-                    <type>org.apache.nifi.schemaregistry.services.AvroSchemaRegistry</type>
                 </controllerServices>
                 <controllerServices>
                     <id>3c921b6e-6dc5-3c2e-0000-000000000000</id>
@@ -2357,15 +2259,14 @@
                     <properties>
                         <entry>
                             <key>schema-access-strategy</key>
-                            <value>schema-name</value>
+                            <value>schema-text-property</value>
                         </entry>
                         <entry>
                             <key>schema-registry</key>
-                            <value>0e4074fe-abbb-39d3-0000-000000000000</value>
                         </entry>
                         <entry>
                             <key>schema-name</key>
-                            <value>final-agg</value>
+                            <value>${schema.name}</value>
                         </entry>
                         <entry>
                             <key>schema-version</key>
@@ -2375,7 +2276,26 @@
                         </entry>
                         <entry>
                             <key>schema-text</key>
-                            <value>${avro.schema}</value>
+                            <value>{
+  "namespace": "nifi-postgre-agg",
+  "name": "student_attendance_agg",
+  "type": "record",
+  "fields": [
+    
+    { "name": "x_axis", "type": ["null", "string"] },
+    { "name": "x_value", "type": ["null","string"] },
+    { "name": "chart_name", "type": ["null","string"] },
+    { "name": "y_axis", "type": ["null","string"]},
+    { "name" : "y_value", "type": ["null","string"]},
+    { "name": "z_axis", "type": ["null","string"] },
+    { "name": "z_value", "type":["null","string"]},
+    {"name": "attribute_1","type":["null","string"]},
+    {"name": "attribute_2","type":["null","string"]},
+    {"name": "attribute_3","type":["null","string"]}
+
+  ]
+}
+</value>
                         </entry>
                         <entry>
                             <key>csv-reader-csv-parser</key>
@@ -3238,7 +3158,7 @@
                             </entry>
                             <entry>
 <key>SQL select query</key>
-<value>select chart_name,x_axis,x_value from agg_column_chart where chart_name='Attendance all schools'</value>
+<value>select chart_name,x_axis,x_value from agg_column_chart where chart_name='Attendance all schools' order by updated_on desc limit 1</value>
                             </entry>
                             <entry>
 <key>sql-post-query</key>
@@ -3813,7 +3733,8 @@
                             </entry>
                             <entry>
 <key>SQL select query</key>
-<value>select chart_name,x_axis,x_value,attribute_1 from agg_column_chart where chart_name='Gender-wise'</value>
+<value>select chart_name,x_axis,x_value,attribute_1 from agg_column_chart where chart_name='Gender-wise' order by updated_on desc limit 2
+</value>
                             </entry>
                             <entry>
 <key>sql-post-query</key>
@@ -4095,11 +4016,11 @@
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>#{S3-OUTPUT-DIR}month-wise.json</value>
+<value>month-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>#{S3-BUCKET}</value>
+<value>#{S3-OUTPUT-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -4683,7 +4604,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>2 sec</schedulingPeriod>
+                        <schedulingPeriod>1 day</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -4866,6 +4787,7 @@
                             </entry>
                             <entry>
 <key>put-db-record-update-keys</key>
+<value>agg_column_chart.chart_name</value>
                             </entry>
                             <entry>
 <key>put-db-record-field-containing-sql</key>
@@ -5155,11 +5077,11 @@
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>#{S3-OUTPUT-DIR}school-month-wise.json</value>
+<value>school-month-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>#{S3-BUCKET}</value>
+<value>#{S3-OUTPUT-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -5528,11 +5450,11 @@
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>#{S3-INPUT-DIR}Tibil_${now():toNumber()}</value>
+<value>Tibil_${now():toNumber()}</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>#{S3-BUCKET}</value>
+<value>#{S3-INPUT-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -6637,11 +6559,11 @@
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>#{S3-OUTPUT-DIR}gender-wise.json</value>
+<value>gender-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>#{S3-BUCKET}</value>
+<value>#{S3-OUTPUT-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -6793,7 +6715,7 @@
                     <config>
                         <bulletinLevel>WARN</bulletinLevel>
                         <comments></comments>
-                        <concurrentlySchedulableTaskCount>0</concurrentlySchedulableTaskCount>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                         <descriptors>
                             <entry>
 <key>Database Connection Pooling Service</key>
@@ -6903,8 +6825,8 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -7270,11 +7192,11 @@
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>#{S3-OUTPUT-DIR}Schools-gender-wise.json</value>
+<value>Schools-gender-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>#{S3-BUCKET}</value>
+<value>#{S3-OUTPUT-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -7649,7 +7571,10 @@ UNION
                             </entry>
                             <entry>
 <key>SQL select query</key>
-<value>select chart_name,x_axis,x_value,attribute_1 from agg_column_chart where chart_name='reports'</value>
+<value>(select chart_name,x_axis,x_value,attribute_1 from agg_column_chart where chart_name='reports' and attribute_1 ='Best attendance school' order by updated_on desc limit 1) union (select chart_name,x_axis,x_value,attribute_1 from agg_column_chart where chart_name='reports' and attribute_1 ='Least attendance school' order by updated_on desc limit 1)  union
+(select chart_name,x_axis,x_value,attribute_1 from agg_column_chart where chart_name='reports' and attribute_1 ='Total Schools' order by updated_on desc limit 1) union
+(select chart_name,x_axis,x_value,attribute_1 from agg_column_chart where chart_name='reports' and attribute_1 ='Total Students' order by updated_on desc limit 1 );
+</value>
                             </entry>
                             <entry>
 <key>sql-post-query</key>
@@ -7931,11 +7856,11 @@ UNION
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>#{S3-OUTPUT-DIR}KPI.json</value>
+<value>KPI.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>#{S3-BUCKET}</value>
+<value>#{S3-OUTPUT-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -8304,11 +8229,11 @@ UNION
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>#{S3-OUTPUT-DIR}all-school-wise.json</value>
+<value>all-school-wise.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
-<value>#{S3-BUCKET}</value>
+<value>#{S3-OUTPUT-BUCKET}</value>
                             </entry>
                             <entry>
 <key>Content Type</key>
@@ -9485,5 +9410,5 @@ UNION
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/11/2020 22:47:41 IST</timestamp>
+    <timestamp>03/18/2020 19:22:27 IST</timestamp>
 </template>
