@@ -12,7 +12,7 @@
       group:
         name: "{{ sftp_group }}"
         state: present
-    - name: Add the user "{{ sftpuser }}" to a primary group of "{{ sftp_group }}"
+    - name: Add the user "{{ sftp_user }}" to a primary group of "{{ sftp_group }}"
       user:
             name: "{{ sftp_user }}"
             comment: sftp user
@@ -48,11 +48,12 @@
             group: "{{ sftp_group }}"
     - name: creating directory
       file:
-            path: ~{{ sftp_user }}/{{ sftp_dir }}/shared
+            path: ~{{ sftp_user }}/{{ sftp_dir }}/data/emits
             state: directory
             mode: '1766'
             owner: "{{ sftp_user }}"
-            group: "{{ sftp_group }}"        
+            group: "{{ sftp_group }}"
+            recurse: yes        
     - name: commenting the Subsystem in sshd config file
       action: shell sed -i "s/Subsystem/#&/g" /etc/ssh/sshd_config    
     - name: Change ownership, group and permissions of sftpuser to root
