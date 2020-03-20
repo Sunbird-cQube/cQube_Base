@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "c-Cube": {
+    "gujarat-project": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/c-Cube",
+            "outputPath": "dist/gujarat-project",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -63,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "c-Cube:build"
+            "browserTarget": "gujarat-project:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "c-Cube:build:production"
+              "browserTarget": "gujarat-project:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "c-Cube:build"
+            "browserTarget": "gujarat-project:build"
           }
         },
         "test": {
@@ -111,15 +111,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "c-Cube:serve"
+            "devServerTarget": "gujarat-project:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "c-Cube:serve:production"
+              "devServerTarget": "gujarat-project:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "c-Cube"
+  "defaultProject": "gujarat-project"
 }

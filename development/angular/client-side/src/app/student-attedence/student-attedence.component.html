@@ -1,0 +1,60 @@
+<div class="container-fluid">
+    <h2 style="text-align: center; background-color: rgb(116, 221, 235);">{{title}}-wise Attendance Report </h2>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="row" style="display: block; margin: 10px 0px 10px 5px">
+                <button id="districtWise" class="btn btn-primary" (click)="districtWise()">Attendance
+                    District-wise</button>
+            </div>
+            <div class="row" style="display: block; margin: 10px 0px 10px 5px;">
+                <button id="blockWise" class="btn btn-primary" (click)="blockWise()">Attendance Block-wise</button>
+            </div>
+            <div class="row" style="display: block; margin: 10px 0px 10px 5px;">
+                <button id="clusterWise" class="btn btn-primary" (click)="clusterWise()">Attendance
+                    Cluster-wise</button>
+            </div>
+            <div class="row" style="display: block; margin: 10px 0px 10px 5px;">
+                <button id="schoolWise" class="btn btn-primary" (click)="schoolWise()">Attendance School-wise</button>
+            </div>
+            <div class="row" style="display: block;  margin: 10px 0px 10px 5px;" id="spinner">
+                <div class="spinner-border text-secondary"
+                    style="height: 50px; width: 50px; font-size: 30px; margin: 15% 0% 5% 25%" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <h2 style="color: green;">Please Wait...</h2>
+            </div>
+        </div>
+        <div class="col-sm-10">
+
+            <!-- <button  class="btn btn-primary" (click) ="this.viewType= 'terrain'" >Terrain</button>
+  <button  class="btn btn-danger" (click) ="this.viewType= 'satellite'" >Satellite</button> -->
+            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="true"
+                (mapClick)="mapClicked($event)" [fullscreenControl]='true' [styles]="styles">
+
+                <!-- [mapTypeId]="this.viewType" -->
+                <agm-marker *ngFor="let m of markers; let i = index"
+                    (markerClick)="clickedMarker([m.label, m.id, m.lat, m.lng],infowindow )" [latitude]="m.lat"
+                    [longitude]="m.lng" [iconUrl]="m.url" [markerDraggable]="m.draggable"
+                    (dragEnd)="markerDragEnd(m, $event)" [agmFitBounds]="true" (mouseOver)="onMouseOver(m, infowindow)"
+                    (mouseOut)="hideInfo(m)">
+                    <!-- [label]="m.label" -->
+                    <!-- [label]="{text: m.label, color: 'black'}" -->
+
+                    <agm-info-window [disableAutoPan]="false" #infowindow>
+                        Avg. %age: <span>{{m.label}}</span><br>
+                        Id: <span>{{m.id}}</span>
+                    </agm-info-window>
+
+                </agm-marker>
+
+                <!-- <agm-direction [origin]="origin" [destination]="destination">
+                </agm-direction> -->
+
+                <agm-circle [latitude]="lat+0.0016591" [longitude]="lng+0.0066754" [radius]="500" [fillColor]="'blue'"
+                    [circleDraggable]="false" [editable]="false">
+                </agm-circle>
+
+            </agm-map>
+        </div>
+    </div>
+</div>

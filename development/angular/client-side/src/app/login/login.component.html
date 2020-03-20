@@ -1,0 +1,39 @@
+<div class="constiner-fluid">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-2">
+            <button class="btn btn-primary" (click)="goto()">Login as User</button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-primary float-right mt-2 mb-2" data-target="#l" data-toggle="modal">
+                Login as Admin
+            </button>
+        </div>
+
+        <div class="col-sm-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="modal fade" id="l" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+
+                        <div class="modal-body">
+                            <input type="email" name="email" [(ngModel)]='email' id="">
+                            <input type="password" name="password" [(ngModel)]="password" id="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
