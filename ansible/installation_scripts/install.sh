@@ -9,7 +9,7 @@ if [ ! $? = 0 ]; then
 echo "There is a problem installing Ansible"
 exit
 fi
-
+python3 nifi_config.py
 ansible-playbook install.yml
 if [ $? = 0 ]; then
 echo "CQube installed successfully!!"

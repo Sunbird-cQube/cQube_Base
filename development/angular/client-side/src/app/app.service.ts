@@ -9,23 +9,23 @@ export class AppServiceComponent {
     baseUrl = environment.apiEndpoint;
 
     constructor(public http: HttpClient) { };
-
-    c3StdPerformanceStateWise() {
-        return this.http.get(`${this.baseUrl}/getSchoolPerformance`);
-    }
-    c3StdAttendanceSchoolWise() {
-        return this.http.get(`${this.baseUrl}/s3-school-wise`);
+    dist_wise_data() {
+        return this.http.get(`${this.baseUrl}/dist_wise_data`);
     }
 
-    s3StdAttendanceGenderWise() {
-        return this.http.get(`${this.baseUrl}/s3-gender-wise`);
+    block_wise_data() {
+        return this.http.get(`${this.baseUrl}/block_wise_data`);
     }
 
-    s3StdAttendanceMonthWise() {
-        return this.http.get(`${this.baseUrl}/s3-month-wise`);
+    cluster_wise_data() {
+        return this.http.get(`${this.baseUrl}/cluster_wise_data`);
     }
 
-    s3KPI() {
-        return this.http.get(`${this.baseUrl}/s3-kpi`);
+    school_wise_data() {
+        return this.http.get(`${this.baseUrl}/school_wise_data`);
+    }
+
+    getSchoolData() {
+        return this.http.get(`${this.baseUrl}/getSchoolData`);
     }
 }

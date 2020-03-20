@@ -23,11 +23,8 @@
 
    - name: start NiFi
      shell: /opt/nifi-1.10.0/bin/nifi.sh start
-     register: shell_out 
-   - debug:
-       var: shell_out  
    - pause:
-       minutes: 3 
+       minutes: 2 
    - name: Fetch nifi processor group id
      uri:
        url: http://localhost:8080/nifi-api/process-groups/root
@@ -40,7 +37,45 @@
    - name: upload template
      action: shell curl -POST http://localhost:8080/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/CQube-ver-0.1.xml
      register: xml_output
-
    - name: fetch xml output
      debug:
        var: xml_output
+
+   - name: upload parameters
+     action: shell curl -d @nifi.json -H Content-Type:application/json -X POST http://localhost:8080/nifi-api/parameter-contexts
+
+   - name: Get processor group
+     uri:
+       url: http://localhost:8080/nifi-api/flow/process-groups/{{ processor_id.json.id }}
+       method: GET
+     register: processor_group
+
+   - name: fetch id
+     debug:
+       var: processor_group.json
+
+   - name: fetch processGrop.id
+     debug:
+       var: processor_group.json.processGroupFlow.id
+
+   - name: Get template list
+     uri:
+       url: http://localhost:8080/nifi-api/flow/templates
+       method: GET
+     register: template_list
+   - name: fetch id
+     debug:
+       var: template_list.json.templates[0].id
+
+   - name: Instatiate template list
+     action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ template_list.json.templates[0].id }}" }'
+             http://localhost:8080/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
+
+#   - name: Get controllers
+#     uri:
+#       url: http://localhost:8080/nifi-api/flow/process-groups/{{ processor_id.json.id }}
+#       method: GET
+#     register: controllers_list
+#   - name: fetch controllers id
+#     debug:
+#       var: controllers_list

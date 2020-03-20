@@ -1,11 +1,30 @@
 ---
-access_key: 
-secret_key: 
-sftp_user: test
-sftp_group: sftpgroup
-sftp_dir: sftp
+
+# Defaults: 
+
+sftp_group: cqubegroup
+sftp_dir: cqube
 db_user: cqubedev
 db_name: cqubedev
 db_password: md5e8a48653851e28c69d0506508fb27fc5
-s3_input_bucket: tibil-input1
-s3_output_bucket: tibil-output1
+
+s3_input_bucket: cqube-input
+s3_output_bucket: cqube-output
+sftp_hostname: localhost
+sftp_input: cqube/data/emits
+sftp_port: 22
+sftp_user: cqube        # Enter the sftp user needs to be created
+sftp_key_path: /home/cqube/.ssh/id_rsa          # ex: /home/<sftp_user_name>/.ssh/id_rsa
+postgre_driver_class_name: org.postgresql.Driver
+postgre_connection_url: jdbc:postgresql://localhost:5432/
+postgre_source_db: cqubedev
+postgre_dtn_db: cqubedev
+postgre_db_user: postgres
+postgre_pwd: psql
+
+
+# Needs to filled manually:
+
+s3_access_key:      # AWS Access key
+s3_secret_key:      # AWS Secret key
+postgre_driver_dir: /home/ubuntu/cQube/development/nifi/jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar

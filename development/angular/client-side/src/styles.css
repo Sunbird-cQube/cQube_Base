@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+agm-map {
+    height: 540px;
+  }
+  
+  
+  * {
+    font-family: Lato;
+  }
+  
+  a {
+    color: darkblue;
+  }
+
+  .gm-style .gm-style-iw {
+
+    width: 100%;
+    max-width: 150px !important;
+}
+
+@media only screen and (max-width: 767px) {
+    .gm-style .gm-style-iw {
+
+        width: 100%;
+        max-width: 150px !important;
+    }
+}
