@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { C3StudentPerformanceComponent } from './c3-student-performance/c3-student-performance.component';
-import { C3StudentAttendanceComponent } from './c3-student-attendance/c3-student-attendance.component';
+import { StudentAttedenceComponent } from './student-attedence/student-attedence.component';
+import { LoginComponent } from './login/login.component';
+
 
 const routes: Routes = [
-
+  // {
+  //   path: '', component: LoginComponent
+  // },
   {
-    path: '', component: C3StudentAttendanceComponent,
-  },
-  {
-    path: 'stdPerformance', component: C3StudentPerformanceComponent
+    path: '', component: StudentAttedenceComponent
   }
 ];
 

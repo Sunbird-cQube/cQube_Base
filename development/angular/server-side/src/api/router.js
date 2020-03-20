@@ -1,17 +1,15 @@
 const router = require('express').Router();
-const s3_month_wise_data = require('./controller/s3data_month_wise');
-const s3_school_wise_data = require('./controller/s3data_school_wise');
-const s3_gender_wise_data = require('./controller/s3data_gender_wise');
-const s3_key_performance_indicators = require('./controller/s3_key_performance_indicators');
-const getSchoolPerformance = require('./controller/getSchoolPerformance');
+const dist_wise_data = require('./controller/dist_wise_data');
+const block_wise_data = require('./controller/block_wise_data');
+const cluster_wise_data = require('./controller/cluster_wise_data');
+const school_wise_data = require('./controller/school_wise_data');
+const getSchoolData = require('./controller/getSchoolData');
 
 
-router.use('/s3-month-wise', s3_month_wise_data);
-router.use('/s3-school-wise', s3_school_wise_data);
-router.use('/s3-gender-wise', s3_gender_wise_data);
-router.use('/s3-kpi', s3_key_performance_indicators);
-router.use('/getSchoolPerformance', getSchoolPerformance);
-
-
+router.use('/dist_wise_data', dist_wise_data);
+router.use('/block_wise_data', block_wise_data);
+router.use('/cluster_wise_data', cluster_wise_data);
+router.use('/school_wise_data', school_wise_data);
+router.use('/getSchoolData', getSchoolData);
 
 module.exports = router;
