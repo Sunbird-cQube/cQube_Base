@@ -11,7 +11,7 @@ db_password: md5e8a48653851e28c69d0506508fb27fc5
 s3_input_bucket: cqube-input
 s3_output_bucket: cqube-output
 sftp_hostname: localhost
-sftp_input: cqube/data/emits
+sftp_input: /cqube/data/emits
 sftp_port: 22
 sftp_user: cqube        # Enter the sftp user needs to be created
 sftp_key_path: /home/cqube/.ssh/id_rsa          # ex: /home/<sftp_user_name>/.ssh/id_rsa
@@ -25,16 +25,16 @@ postgre_pwd: psql
 
 # Needs to filled manually:
 
-s3_access_key:      # AWS Access key
+s3_access_key:       # AWS Access key
 s3_secret_key:      # AWS Secret key
 postgre_driver_dir: /home/ubuntu/cQube/development/nifi/jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
 
 
 
 #new for gujarat
-sftp_school_master = /cqube/data/school_master
-sftp_lat_long  = /cqube/data/lat_long
-s3_school_master_lat_long = /cqube/data/s3_school_latlong
+sftp_school_master: /cqube/data/school_master
+sftp_lat_long: /cqube/data/lat_long
+s3_school_master_lat_long: /cqube/data/s3_school_latlong
 
 
 
