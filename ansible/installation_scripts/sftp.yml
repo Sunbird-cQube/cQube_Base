@@ -73,7 +73,7 @@
             recurse: yes
     - name: creating directory
       file:
-            path: ~{{ sftp_user }}/{{ sftp_dir }}/data/school_json_data
+            path: ~{{ sftp_user }}/{{ sftp_dir }}/data/s3_school_latlong
             state: directory
             mode: '1766'
             owner: "{{ sftp_user }}"
