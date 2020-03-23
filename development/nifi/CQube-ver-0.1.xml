@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>cQube-GA , initial release</description>
+    <description>cQube-GA</description>
     <groupId>de05d555-0170-1000-5aae-91b8362fbc7e</groupId>
     <name>CQube-ver-0.1</name>
     <snippet>
@@ -10011,7 +10011,7 @@ from c3_student_attendance_tmp_2 where flag='t'</value>
                         <yieldDuration>60 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
-                    <name>S3-raw-input</name>
+                    <name>S3-output-static_school_lat_long</name>
                     <relationships>
                         <autoTerminate>false</autoTerminate>
                         <name>failure</name>
@@ -11802,5 +11802,5 @@ from c3_student_attendance_tmp_2 where flag='t'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/20/2020 22:01:29 IST</timestamp>
+    <timestamp>03/23/2020 16:47:48 IST</timestamp>
 </template>
