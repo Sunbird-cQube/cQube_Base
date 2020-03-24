@@ -4,7 +4,8 @@ const axios = require('axios');
 router.post('/', async (req, res) => {
     var blcoks = [];
     var distId = req.body.distId
-    var allSchoolDetails = await axios.get('http://localhost:3000/getSchoolData');
+    var baseUrl = req.body.baseUrl;
+    var allSchoolDetails = await axios.get(`${baseUrl}/getSchoolData`);
     allSchoolDetails.data.forEach(school => {
         if (distId == school.DistrictId_x) {
             blcoks.push(school.BlockId);
@@ -13,7 +14,7 @@ router.post('/', async (req, res) => {
     uniqueBlocks = blcoks.filter(function (item, pos) {
         return blcoks.indexOf(item) == pos;
     });
-    var allBlocks = await axios.get('http://localhost:3000/block_wise_data');
+    var allBlocks = await axios.get(`${baseUrl}/block_wise_data`);
 
     var blcokDetails = [];
     uniqueBlocks.forEach(ids => {
