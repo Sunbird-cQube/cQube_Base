@@ -42,3 +42,9 @@
   postgresql_query:
     db: "{{ db_user }}"
     path_to_script: cQube.sql
+
+- name: configure postgre file
+  replace:
+    dest: /etc/postgresql/10/main/pg_hba.conf
+    regexp: 'host    replication     all             127.0.0.1/32            md5'
+    replace: 'host    all     postgres             0.0.0.0/30            trust'
