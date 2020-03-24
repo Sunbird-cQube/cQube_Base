@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MouseEvent } from '@agm/core';
 import { AppServiceComponent } from '../app.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-attedence',
@@ -14,13 +15,28 @@ export class StudentAttedenceComponent implements OnInit {
   public blocks: any = [];
   public cluster: any = [];
   public schools: any = [];
+  public districtsIds: any = [];
+  public blocksIds: any = [];
+  public clusterIds: any = [];
+  public schoolsIds: any = [];
   public stylesFile = "../assets/mapStyles.json";
+  public id = '';
+
+  private map: google.maps.Map = null;
+  private heatmap: google.maps.visualization.HeatmapLayer = null;
+
+
+
+  dist: boolean = false;
+  blok: boolean = false;
+  clust: boolean = false;
+  skul: boolean = false;
 
   styles: any = [];
   viewType: any = 'hybrid';
 
   // google maps zoom level
-  zoom: number = 7.5;
+  zoom: number = 7;
 
   labelOptions: any = {};
 
@@ -28,12 +44,10 @@ export class StudentAttedenceComponent implements OnInit {
   lat: any;
   lng: any;
 
-  public markers: marker[] = [];
+  public markers: any = [];
 
   async ngOnInit() {
-    this.lat = 22.3521,
-      this.lng = 71.7178
-    this.schoolWise();
+    this.districtWise();
     this.http.get(this.stylesFile).subscribe(data => {
       this.styles = data;
     });
@@ -41,17 +55,37 @@ export class StudentAttedenceComponent implements OnInit {
 
   public mylatlngData: any = [];
 
-  constructor(public http: HttpClient, public service: AppServiceComponent) { }
+  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router) { }
 
+
+  onMapLoad(mapInstance: google.maps.Map) {
+    this.map = mapInstance;
+
+    // here our in other method after you get the coords; but make sure map is loaded
+    var pointArray = new google.maps.MVCArray(this.markers);
+
+    const coords: google.maps.LatLng[] = pointArray; // can also be a google.maps.MVCArray with LatLng[] inside    
+    this.heatmap = new google.maps.visualization.HeatmapLayer({
+      map: this.map,
+      data: coords
+    });
+  }
 
   districtWise() {
+    this.lat = 22.790988462301428;
+    this.lng = 72.02733294142871;
+    this.zoom = 7;
     document.getElementById('spinner').style.display = 'block';
-    this.title = "District";
+    this.title = "District-wise";
     this.service.dist_wise_data().subscribe(res => {
       this.mylatlngData = res;
+      this.dist = true;
+      this.blok = false;
+      this.clust = false;
+      this.skul = false;
       this.mylatlngData.forEach(item => {
-        this.lat = Number(item['y_value']);
-        this.lng = Number(item['z_value']);
+
+        this.districtsIds.push(item['x_axis']);
         if (item['x_value'] > 75) {
           this.districts.push(
             {
@@ -59,7 +93,13 @@ export class StudentAttedenceComponent implements OnInit {
               label: item['x_value'],
               lat: item['y_value'],
               lng: item['z_value'],
-              url: "../assets/green_Dist.png"
+              icon: {
+                url: "../assets/green_Block.png",
+                scaledSize: {
+                  width: 21,
+                  height: 22
+                }
+              }
             });
         } else if (item['x_value'] < 75 && item['x_value'] > 60) {
           this.districts.push(
@@ -68,7 +108,14 @@ export class StudentAttedenceComponent implements OnInit {
               label: item['x_value'],
               lat: item['y_value'],
               lng: item['z_value'],
-              url: "../assets/blue_Dist.png"
+
+              icon: {
+                url: "../assets/blue_Dist.png",
+                scaledSize: {
+                  width: 21,
+                  height: 22
+                }
+              }
             });
         } else if (item['x_value'] < 60 && item['x_value'] > 40) {
           this.districts.push(
@@ -77,7 +124,14 @@ export class StudentAttedenceComponent implements OnInit {
               label: item['x_value'],
               lat: item['y_value'],
               lng: item['z_value'],
-              url: "../assets/orange_Dist.png"
+              icon: {
+                url: "../assets/orange_Dist.png",
+                scaledSize: {
+                  width: 21,
+                  height: 22
+                }
+              }
+
             });
         } else if (item['x_value'] < 40) {
           this.districts.push(
@@ -86,7 +140,14 @@ export class StudentAttedenceComponent implements OnInit {
               label: item['x_value'],
               lat: item['y_value'],
               lng: item['z_value'],
-              url: "../assets/red1_Dist.png"
+              icon: {
+                url: "../assets/red1_Dist.png",
+                scaledSize: {
+                  width: 21,
+                  height: 22
+                }
+              }
+
             });
         }
       });
@@ -99,217 +160,324 @@ export class StudentAttedenceComponent implements OnInit {
 
     var element1 = <HTMLInputElement>document.getElementById('districtWise');
     element1.disabled = true;
-    var element2 = <HTMLInputElement>document.getElementById('blockWise');
-    element2.disabled = false;
-    var element3 = <HTMLInputElement>document.getElementById('schoolWise');
-    element3.disabled = false;
-    var element4 = <HTMLInputElement>document.getElementById('clusterWise');
-    element4.disabled = false;
-
     this.markers = [];
     this.districts = [];
   }
 
-  blockWise() {
-    document.getElementById('spinner').style.display = 'block';
-    this.title = "Block";
-    this.service.block_wise_data().subscribe(res => {
-      this.mylatlngData = res;
-      this.mylatlngData.forEach(item => {
-        if (item['x_value'] > 75) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/green_Block.png"
-            });
-        } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/blue_Block.png"
-            });
-        } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/orange_Block.png"
-            });
-        } else if (item['x_value'] < 40) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/red1_Block.png"
-            });
-        }
-
-      });
-
-      this.markers = this.blocks;
-      if (this.markers.length !== 0) {
-        document.getElementById('spinner').style.display = 'none';
-      }
-    });
-    var element1 = <HTMLInputElement>document.getElementById('districtWise');
-    element1.disabled = false;
-    var element2 = <HTMLInputElement>document.getElementById('blockWise');
-    element2.disabled = true;
-    var element3 = <HTMLInputElement>document.getElementById('schoolWise');
-    element3.disabled = false;
-    var element4 = <HTMLInputElement>document.getElementById('clusterWise');
-    element4.disabled = false;
-
-    this.blocks = [];
-    this.markers = [];
-  }
-
-  clusterWise() {
-    document.getElementById('spinner').style.display = 'block';
-    this.title = "Cluster";
-    this.service.cluster_wise_data().subscribe(res => {
-      this.mylatlngData = res;
-      this.mylatlngData.forEach(item => {
-        if (item['x_value'] > 75) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/green_Cluster.png"
-            });
-        } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/blue_Cluster.png"
-            });
-        } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/orange_Cluster.png"
-            });
-        } else if (item['x_value'] < 40) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/red1_Cluster.png"
-            });
-        }
-
-      });
-
-      this.markers = this.cluster;
-      if (this.markers.length !== 0) {
-        document.getElementById('spinner').style.display = 'none';
-      }
-    });
-    var element1 = <HTMLInputElement>document.getElementById('districtWise');
-    element1.disabled = false;
-    var element2 = <HTMLInputElement>document.getElementById('blockWise');
-    element2.disabled = false;
-    var element3 = <HTMLInputElement>document.getElementById('schoolWise');
-    element3.disabled = false;
-    var element4 = <HTMLInputElement>document.getElementById('clusterWise');
-    element4.disabled = true;
-
-    this.markers = [];
-    this.cluster = [];
-  }
-
-  schoolWise() {
-    document.getElementById('spinner').style.display = 'block';
-    this.title = "School";
-    this.service.school_wise_data().subscribe(res => {
-      this.mylatlngData = res;
-      this.mylatlngData.forEach(item => {
-        if (item['x_value'] > 75) {
-          this.schools.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/green_3_4.png"
-            });
-        } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-          this.schools.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/blue_2_4_small.png"
-            });
-        } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-          this.schools.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/orange_Small.png"
-            });
-        } else if (item['x_value'] < 40) {
-          this.schools.push(
-            {
-              id: item['x_axis'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              url: "../assets/red1_4_small.png"
-            });
-        }
-
-      });
-
-      this.markers = this.schools;
-      if (this.markers.length !== 0) {
-        document.getElementById('spinner').style.display = 'none';
-      }
-    });
-    var element1 = <HTMLInputElement>document.getElementById('districtWise');
-    element1.disabled = false;
-    var element2 = <HTMLInputElement>document.getElementById('blockWise');
-    element2.disabled = false;
-    var element3 = <HTMLInputElement>document.getElementById('schoolWise');
-    element3.disabled = true;
-    var element4 = <HTMLInputElement>document.getElementById('clusterWise');
-    element4.disabled = false;
-
-
-    this.markers = [];
-    this.schools = [];
-  }
-
-
-  // previous;
-
   clickedMarker(label, infowindow) {
-    // this.zoom = 10;
-    // this.lat = Number(label[2]);
-    // this.lng = Number(label[3]);
+
+    if (this.districtsIds.includes(label[1])) {
+
+      this.zoom = 9;
+      this.lat = Number(label[2]);
+      this.lng = Number(label[3]);
+
+      this.markers = [];
+      this.blocks = [];
+      document.getElementById('spinner').style.display = 'block';
+      this.title = "Blocks per district";
+      this.service.blcokPerDist(label[1]).subscribe(res => {
+        localStorage.setItem('dist', label[1]);
+        this.dist = false;
+        this.blok = true;
+        this.clust = false;
+        this.skul = false;
+        console.log(res);
+        this.mylatlngData = res;
+        this.blocksIds = [];
+        this.mylatlngData.forEach(item => {
+          this.blocksIds.push(item['x_axis']);
+          if (item['x_value'] > 75) {
+            this.blocks.push(
+              {
+                id: item['x_axis'],
+                dist: item['distId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/green_Block.png",
+                  scaledSize: {
+                    width: 15,
+                    height: 16
+                  }
+                }
+              });
+          } else if (item['x_value'] < 75 && item['x_value'] > 60) {
+            this.blocks.push(
+              {
+                id: item['x_axis'],
+                dist: item['distId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/blue_Dist.png",
+                  scaledSize: {
+                    width: 15,
+                    height: 16
+                  }
+                }
+              });
+          } else if (item['x_value'] < 60 && item['x_value'] > 40) {
+            this.blocks.push(
+              {
+                id: item['x_axis'],
+                dist: item['distId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/orange_Dist.png",
+                  scaledSize: {
+                    width: 15,
+                    height: 16
+                  }
+                }
+              });
+          } else if (item['x_value'] < 40) {
+            this.blocks.push(
+              {
+                id: item['x_axis'],
+                dist: item['distId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/red1_Dist.png",
+                  scaledSize: {
+                    width: 15,
+                    height: 16
+                  }
+                }
+              });
+          }
+
+        });
+
+        this.markers = this.blocks;
+        if (this.markers.length !== 0) {
+          document.getElementById('spinner').style.display = 'none';
+        }
+      });
+      var element1 = <HTMLInputElement>document.getElementById('districtWise');
+      element1.disabled = false;
+      this.markers = [];
+      this.blocks = [];
+
+    }
+
+
+    if (this.blocksIds.includes(label[1])) {
+      this.zoom = 11;
+      this.lat = Number(label[2]);
+      this.lng = Number(label[3]);
+
+      this.markers = [];
+      this.cluster = [];
+      document.getElementById('spinner').style.display = 'block';
+      this.title = "Clusters per block";
+      this.service.clusterPerBlock(label[1]).subscribe(res => {
+        var distId = localStorage.getItem('dist');
+        localStorage.setItem('block', label[1]);
+        this.dist = false;
+        this.blok = false;
+        this.clust = true;
+        this.skul = false;
+        console.log(res);
+        this.mylatlngData = res;
+        this.clusterIds = [];
+        this.mylatlngData.forEach(item => {
+          this.clusterIds.push(item['x_axis']);
+          if (item['x_value'] > 75) {
+            this.cluster.push(
+              {
+                id: item['x_axis'],
+                dist: distId,
+                blockId: item['blockId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/green_Block.png",
+                  scaledSize: {
+                    width: 12,
+                    height: 13
+                  }
+                }
+              });
+          } else if (item['x_value'] < 75 && item['x_value'] > 60) {
+            this.cluster.push(
+              {
+                id: item['x_axis'],
+                dist: distId,
+                blockId: item['blockId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/blue_Dist.png",
+                  scaledSize: {
+                    width: 12,
+                    height: 13
+                  }
+                }
+              });
+          } else if (item['x_value'] < 60 && item['x_value'] > 40) {
+            this.cluster.push(
+              {
+                id: item['x_axis'],
+                dist: distId,
+                blockId: item['blockId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/orange_Dist.png",
+                  scaledSize: {
+                    width: 12,
+                    height: 13
+                  }
+                }
+              });
+          } else if (item['x_value'] < 40) {
+            this.cluster.push(
+              {
+                id: item['x_axis'],
+                dist: distId,
+                blockId: item['blockId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/red1_Dist.png",
+                  scaledSize: {
+                    width: 12,
+                    height: 13
+                  }
+                }
+              });
+          }
+
+        });
+
+        this.markers = this.cluster;
+        if (this.markers.length !== 0) {
+          document.getElementById('spinner').style.display = 'none';
+        }
+      });
+      var element1 = <HTMLInputElement>document.getElementById('districtWise');
+      element1.disabled = false;
+      this.markers = [];
+      this.cluster = [];
+    }
+
+    if (this.clusterIds.includes(label[1])) {
+
+      this.zoom = 13;
+      this.lat = Number(label[2]);
+      this.lng = Number(label[3]);
+
+      this.markers = [];
+      this.schools = [];
+      document.getElementById('spinner').style.display = 'block';
+      this.title = "Schools per cluster";
+      this.service.schoolsPerCluster(label[1]).subscribe(res => {
+        var block = localStorage.getItem('block');
+        var distId = localStorage.getItem('dist');
+        this.dist = false;
+        this.blok = false;
+        this.clust = false;
+        this.skul = true;
+        console.log(res);
+        this.mylatlngData = res;
+        this.mylatlngData.forEach(item => {
+          if (item['x_value'] > 75) {
+            this.schools.push(
+              {
+                id: item['x_axis'],
+                blockId: block,
+                dist: distId,
+                clusterId: item['clusterId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/green_Block.png",
+                  scaledSize: {
+                    width: 6,
+                    height: 7
+                  }
+                }
+              });
+          } else if (item['x_value'] < 75 && item['x_value'] > 60) {
+            this.schools.push(
+              {
+                id: item['x_axis'],
+                blockId: block,
+                dist: distId,
+                clusterId: item['clusterId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/blue_Dist.png",
+                  scaledSize: {
+                    width: 6,
+                    height: 7
+                  }
+                }
+              });
+          } else if (item['x_value'] < 60 && item['x_value'] > 40) {
+            this.schools.push(
+              {
+                id: item['x_axis'],
+                blockId: block,
+                dist: distId,
+                clusterId: item['clusterId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/orange_Dist.png",
+                  scaledSize: {
+                    width: 6,
+                    height: 7
+                  }
+                }
+              });
+          } else if (item['x_value'] < 40) {
+            this.schools.push(
+              {
+                id: item['x_axis'],
+                blockId: block,
+                dist: distId,
+                clusterId: item['clusterId'],
+                label: item['x_value'],
+                lat: item['y_value'],
+                lng: item['z_value'],
+                icon: {
+                  url: "../assets/red1_Dist.png",
+                  scaledSize: {
+                    width: 6,
+                    height: 7
+                  }
+                }
+              });
+          }
+
+        });
+
+        this.markers = this.schools;
+        if (this.markers.length !== 0) {
+          document.getElementById('spinner').style.display = 'none';
+        }
+      });
+      var element1 = <HTMLInputElement>document.getElementById('districtWise');
+      element1.disabled = false;
+      this.markers = [];
+      this.schools = [];
+    }
   };
 
 
@@ -339,6 +507,12 @@ export class StudentAttedenceComponent implements OnInit {
     if (m.lastOpen != null) {
       m.lastOpen.close();
     }
+  }
+
+
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
   }
 
 }

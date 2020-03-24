@@ -4,7 +4,7 @@ var log4js = require('log4js');
 var const_data = require('../config/aws-config');
 
 router.get('/', function (req, res) {
-    const_data['getParams']['Key'] = 'cluster-wise-percentage.json'
+    const_data['getParams']['Key'] = 'school-wise-percentage.json'
     const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
         if (err) {
             console.log(err);

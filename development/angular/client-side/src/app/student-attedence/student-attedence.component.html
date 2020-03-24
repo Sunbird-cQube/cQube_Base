@@ -1,59 +1,77 @@
 <div class="container-fluid">
-    <h2 style="text-align: center; background-color: rgb(116, 221, 235);">{{title}}-wise Attendance Report </h2>
     <div class="row">
-        <div class="col-sm-2">
-            <div class="row" style="display: block; margin: 10px 0px 10px 5px">
-                <button id="districtWise" class="btn btn-primary" (click)="districtWise()">Attendance
-                    District-wise</button>
-            </div>
-            <div class="row" style="display: block; margin: 10px 0px 10px 5px;">
-                <button id="blockWise" class="btn btn-primary" (click)="blockWise()">Attendance Block-wise</button>
-            </div>
-            <div class="row" style="display: block; margin: 10px 0px 10px 5px;">
-                <button id="clusterWise" class="btn btn-primary" (click)="clusterWise()">Attendance
-                    Cluster-wise</button>
-            </div>
-            <div class="row" style="display: block; margin: 10px 0px 10px 5px;">
-                <button id="schoolWise" class="btn btn-primary" (click)="schoolWise()">Attendance School-wise</button>
-            </div>
-            <div class="row" style="display: block;  margin: 10px 0px 10px 5px;" id="spinner">
-                <div class="spinner-border text-secondary"
-                    style="height: 50px; width: 50px; font-size: 30px; margin: 15% 0% 5% 25%" role="status">
-                    <span class="sr-only">Loading...</span>
+        <div class="col-sm-6">
+            <p
+                style="text-align: left; color: #284d8a; background-color:#fff; font-size: 24px; line-height: 1em; margin-top: 5px;">
+                {{title}}
+                Attendance Report </p>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="col-sm-12" id="spinner">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="spinner-border text-secondary"
+                                    style="height: 20px; width: 20px; font-size: 20px; margin: 3% 0% 0% 0%; float: left;"
+                                    role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <span style="color: green; float: left; margin-top: 1%;">Please Wait...</span>
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                    </div>
                 </div>
-                <h2 style="color: green;">Please Wait...</h2>
+                <div class="col-sm-6">
+                    <button class="btn btn-danger btn-sm" (click)="logout()" style="float: right; margin-top: 5px;">
+                        <span class="glyphicon glyphicon-log-out"></span><b>Logout</b> </button>
+                    <button id="districtWise" class="btn btn-primary"
+                        style="font-size: 11px; width: 60px; background-color: #0549dd; float: right;margin: 5px 10px 0px 0px;"
+                        (click)="districtWise()">Home</button>
+                </div>
             </div>
         </div>
-        <div class="col-sm-10">
-
-            <!-- <button  class="btn btn-primary" (click) ="this.viewType= 'terrain'" >Terrain</button>
-  <button  class="btn btn-danger" (click) ="this.viewType= 'satellite'" >Satellite</button> -->
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
             <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="true"
-                (mapClick)="mapClicked($event)" [fullscreenControl]='true' [styles]="styles">
+                (mapClick)="mapClicked($event)" [fullscreenControl]='true' [styles]="styles" (mapReady)="onMapLoad($event)">
 
-                <!-- [mapTypeId]="this.viewType" -->
                 <agm-marker *ngFor="let m of markers; let i = index"
                     (markerClick)="clickedMarker([m.label, m.id, m.lat, m.lng],infowindow )" [latitude]="m.lat"
-                    [longitude]="m.lng" [iconUrl]="m.url" [markerDraggable]="m.draggable"
+                    [longitude]="m.lng" [iconUrl]="m.icon" [markerDraggable]="m.draggable"
                     (dragEnd)="markerDragEnd(m, $event)" [agmFitBounds]="true" (mouseOver)="onMouseOver(m, infowindow)"
                     (mouseOut)="hideInfo(m)">
-                    <!-- [label]="m.label" -->
-                    <!-- [label]="{text: m.label, color: 'black'}" -->
 
                     <agm-info-window [disableAutoPan]="false" #infowindow>
-                        Avg. %age: <span>{{m.label}}</span><br>
-                        Id: <span>{{m.id}}</span>
+                        <div *ngIf="dist" style="width: 150px;">
+                            Attend. %age: <span>{{m.label}}</span><br>
+                            dist: <span>{{m.id}}</span>
+                        </div>
+                        <div *ngIf="blok" style="width: 150px;">
+                            Attend. %age: <span>{{m.label}}</span><br>
+                            dist: <span>{{m.dist}}</span><br>
+                            block: <span>{{m.id}}</span>
+                        </div>
+                        <div *ngIf="clust" style="width: 150px;">
+                            Attend. %age: <span>{{m.label}}</span><br>
+                            dist: <span>{{m.dist}}</span><br>
+                            block: <span>{{m.blockId}}</span><br>
+                            cluster: <span>{{m.id}}</span>
+                        </div>
+                        <div *ngIf="skul" style="width: 160px; height: 80px;">
+                            Attend. %age: <span>{{m.label}}</span><br>
+                            dist: <span>{{m.dist}}</span><br>
+                            block: <span>{{m.blockId}}</span><br>
+                            cluster: <span>{{m.clusterId}}</span><br>
+                            school: <span>{{m.id}}</span>
+                        </div>
                     </agm-info-window>
 
                 </agm-marker>
-
-                <!-- <agm-direction [origin]="origin" [destination]="destination">
-                </agm-direction> -->
-
-                <agm-circle [latitude]="lat+0.0016591" [longitude]="lng+0.0066754" [radius]="500" [fillColor]="'blue'"
-                    [circleDraggable]="false" [editable]="false">
-                </agm-circle>
-
             </agm-map>
         </div>
     </div>
