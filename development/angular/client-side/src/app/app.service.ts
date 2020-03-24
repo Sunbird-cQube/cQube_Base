@@ -34,15 +34,15 @@ export class AppServiceComponent {
     }
 
     blcokPerDist(distId) {
-        return this.http.post(`${this.baseUrl}/blcokPerDist`, { distId: distId });
+        return this.http.post(`${this.baseUrl}/blcokPerDist`, { distId: distId, baseUrl: this.baseUrl });
     }
 
     clusterPerBlock(blockId) {
-        return this.http.post(`${this.baseUrl}/clustePerBlock`, { blockId: blockId });
+        return this.http.post(`${this.baseUrl}/clustePerBlock`, { blockId: blockId, baseUrl: this.baseUrl });
     }
 
     schoolsPerCluster(clusterId) {
-        return this.http.post(`${this.baseUrl}/schoolPerCluster`, { clusterId: clusterId });
+        return this.http.post(`${this.baseUrl}/schoolPerCluster`, { clusterId: clusterId, baseUrl: this.baseUrl });
     }
 
 

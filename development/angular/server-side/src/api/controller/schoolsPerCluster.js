@@ -4,8 +4,8 @@ const axios = require('axios');
 router.post('/', async (req, res) => {
     var schools = [];
     var clusterId = req.body.clusterId
-    console.log(clusterId);
-    var allSchoolDetails = await axios.get('http://localhost:3000/getSchoolData');
+    var baseUrl = req.body.baseUrl;
+    var allSchoolDetails = await axios.get(`${baseUrl}/getSchoolData`);
     allSchoolDetails.data.forEach(school => {
         if (clusterId == school.ClusterId) {
             schools.push(school.SchoolId);
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
     uniqueSchools = schools.filter(function (item, pos) {
         return schools.indexOf(item) == pos;
     });
-    var allSchools = await axios.get('http://localhost:3000/school_wise_data');
+    var allSchools = await axios.get(`${baseUrl}/school_wise_data`);
 
     var schoolsDetails = [];
     uniqueSchools.forEach(ids => {
