@@ -3,7 +3,7 @@
 /*c3_student_attendance_tmp_1*/
 
 create table if not exists c3_student_attendance_tmp_1(StudentAttendanceId varchar(20) primary key not null,
-StudentId   varchar(20),SchoolId varchar(20),AadhaarUID   varchar(20),AcademicYear  varchar(20),month   varchar(5),"1" varchar(5),"2" varchar(5),"3" varchar(5),"4" varchar(5),"5" varchar(5),"6" varchar(5),"7" varchar(5),"8" varchar(5),"9" varchar(5),"10" varchar(5),"11" varchar(5),"12" varchar(5),"13" varchar(5),"14" varchar(5),"15" varchar(5),"16" varchar(5),"17" varchar(5),"18" varchar(5),"19" varchar(5),"20" varchar(5),"21" varchar(5),"22" varchar(5),"23" varchar(5),"24" varchar(5),"25" varchar(5),"26" varchar(5),"27" varchar(5),"28" varchar(5),"29" varchar(5),"30" varchar(5),"31" varchar(5));
+StudentId   varchar(20),SchoolId varchar(20),AadhaarUID   varchar(20),AcademicYear  varchar(20),month   varchar(5),"day1" varchar(5),"day2" varchar(5),"day3" varchar(5),"day4" varchar(5),"day5" varchar(5),"day6" varchar(5),"day7" varchar(5),"day8" varchar(5),"day9" varchar(5),"day10" varchar(5),"day11" varchar(5),"day12" varchar(5),"day13" varchar(5),"day14" varchar(5),"day15" varchar(5),"day16" varchar(5),"day17" varchar(5),"day18" varchar(5),"day19" varchar(5),"day20" varchar(5),"day21" varchar(5),"day22" varchar(5),"day23" varchar(5),"day24" varchar(5),"day25" varchar(5),"day26" varchar(5),"day27" varchar(5),"day28" varchar(5),"day29" varchar(5),"day30" varchar(5),"day31" varchar(5));
 
 create index if not exists c3_student_attendance_tmp_month ON c3_student_attendance_tmp_1(month);
 create index if not exists c3_student_attendance_tmp_School ON c3_student_attendance_tmp_1(SchoolId);

@@ -28,4 +28,22 @@ export class AppServiceComponent {
     getSchoolData() {
         return this.http.get(`${this.baseUrl}/getSchoolData`);
     }
+
+    login(data) {
+        return this.http.post(`${this.baseUrl}/login`, data);
+    }
+
+    blcokPerDist(distId) {
+        return this.http.post(`${this.baseUrl}/blcokPerDist`, { distId: distId });
+    }
+
+    clusterPerBlock(blockId) {
+        return this.http.post(`${this.baseUrl}/clustePerBlock`, { blockId: blockId });
+    }
+
+    schoolsPerCluster(clusterId) {
+        return this.http.post(`${this.baseUrl}/schoolPerCluster`, { clusterId: clusterId });
+    }
+
+
 }
