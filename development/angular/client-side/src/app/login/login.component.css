@@ -1,0 +1,6 @@
+.validation-message{
+    color: red;
+}
+input[type=text].invalid-textbox,input[type=password].invalid-textbox{
+    border-bottom: 2px solid #ed5558;
+    }

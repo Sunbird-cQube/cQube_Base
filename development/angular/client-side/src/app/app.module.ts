@@ -8,12 +8,14 @@ import { AppComponent } from './app.component';
 import { StudentAttedenceComponent } from './student-attedence/student-attedence.component';
 import { AgmDirectionModule } from 'agm-direction';
 import { LoginComponent } from './login/login.component';
+import { UserViewComponent } from './user-view/user-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StudentAttedenceComponent,
-    LoginComponent
+    LoginComponent,
+    UserViewComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +23,7 @@ import { LoginComponent } from './login/login.component';
     HttpClientModule,
     FormsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCbRPhVlxgVwBC0bBOgyB-Dn_K8ONrxb_g'
+      apiKey: 'AIzaSyCbRPhVlxgVwBC0bBOgyB-Dn_K8ONrxb_g' + '&libraries=visualization'
     }),
     AgmDirectionModule
   ],
