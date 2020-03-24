@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-danger btn-sm" (click)="logout()" style="float: right; margin-top: 5px;">
+                    <button class="btn btn-danger btn-sm" (click)="logout()" style="float: right; margin-top: 5px; font-family: Arial;">
                         <span class="glyphicon glyphicon-log-out"></span><b>Logout</b> </button>
                     <button id="districtWise" class="btn btn-primary"
                         style="font-size: 11px; width: 60px; background-color: #0549dd; float: right;margin: 5px 10px 0px 0px;"
@@ -38,7 +38,7 @@
     <div class="row">
         <div class="col-sm-12">
             <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="true"
-                (mapClick)="mapClicked($event)" [fullscreenControl]='true' [styles]="styles" (mapReady)="onMapLoad($event)">
+                (mapClick)="mapClicked($event)" [fullscreenControl]='true' [styles]="styles">
 
                 <agm-marker *ngFor="let m of markers; let i = index"
                     (markerClick)="clickedMarker([m.label, m.id, m.lat, m.lng],infowindow )" [latitude]="m.lat"

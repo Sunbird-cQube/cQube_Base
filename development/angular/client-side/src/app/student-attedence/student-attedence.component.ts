@@ -22,10 +22,6 @@ export class StudentAttedenceComponent implements OnInit {
   public stylesFile = "../assets/mapStyles.json";
   public id = '';
 
-  private map: google.maps.Map = null;
-  private heatmap: google.maps.visualization.HeatmapLayer = null;
-
-
 
   dist: boolean = false;
   blok: boolean = false;
@@ -33,7 +29,6 @@ export class StudentAttedenceComponent implements OnInit {
   skul: boolean = false;
 
   styles: any = [];
-  viewType: any = 'hybrid';
 
   // google maps zoom level
   zoom: number = 7;
@@ -56,20 +51,6 @@ export class StudentAttedenceComponent implements OnInit {
   public mylatlngData: any = [];
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router) { }
-
-
-  onMapLoad(mapInstance: google.maps.Map) {
-    this.map = mapInstance;
-
-    // here our in other method after you get the coords; but make sure map is loaded
-    var pointArray = new google.maps.MVCArray(this.markers);
-
-    const coords: google.maps.LatLng[] = pointArray; // can also be a google.maps.MVCArray with LatLng[] inside    
-    this.heatmap = new google.maps.visualization.HeatmapLayer({
-      map: this.map,
-      data: coords
-    });
-  }
 
   districtWise() {
     this.lat = 22.790988462301428;
@@ -182,7 +163,7 @@ export class StudentAttedenceComponent implements OnInit {
         this.blok = true;
         this.clust = false;
         this.skul = false;
-        console.log(res);
+
         this.mylatlngData = res;
         this.blocksIds = [];
         this.mylatlngData.forEach(item => {
@@ -284,7 +265,7 @@ export class StudentAttedenceComponent implements OnInit {
         this.blok = false;
         this.clust = true;
         this.skul = false;
-        console.log(res);
+
         this.mylatlngData = res;
         this.clusterIds = [];
         this.mylatlngData.forEach(item => {
@@ -389,7 +370,7 @@ export class StudentAttedenceComponent implements OnInit {
         this.blok = false;
         this.clust = false;
         this.skul = true;
-        console.log(res);
+
         this.mylatlngData = res;
         this.mylatlngData.forEach(item => {
           if (item['x_value'] > 75) {

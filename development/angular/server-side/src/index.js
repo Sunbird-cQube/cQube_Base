@@ -12,8 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 const router = require('./api/router');
-app.use('', router);
+app.use('/api', router);
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log("Server started at port: ", port);
 })
