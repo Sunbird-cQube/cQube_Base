@@ -57,6 +57,7 @@ export class StudentAttedenceComponent implements OnInit {
     this.lng = 72.02733294142871;
     this.zoom = 7;
     document.getElementById('spinner').style.display = 'block';
+    document.getElementById('spinner').style.marginTop = '3%';
     this.title = "District-wise";
     this.service.dist_wise_data().subscribe(res => {
       this.mylatlngData = res;
@@ -136,6 +137,14 @@ export class StudentAttedenceComponent implements OnInit {
       this.markers = this.districts;
       if (this.markers.length !== 0) {
         document.getElementById('spinner').style.display = 'none';
+
+      } else {
+        setTimeout(() => {
+          document.getElementById('spinner').style.marginTop = '3%';
+          document.getElementById('spinner').style.color = 'red';
+          document.getElementById('spinner').style.display = 'block';
+          document.getElementById('spinner').innerHTML = 'No data found';
+        }, 20000);
       }
     });
 
@@ -156,6 +165,8 @@ export class StudentAttedenceComponent implements OnInit {
       this.markers = [];
       this.blocks = [];
       document.getElementById('spinner').style.display = 'block';
+      document.getElementById('spinner').style.marginTop = '3%';
+
       this.title = "Blocks per district";
       this.service.blcokPerDist(label[1]).subscribe(res => {
         localStorage.setItem('dist', label[1]);
@@ -239,6 +250,13 @@ export class StudentAttedenceComponent implements OnInit {
         this.markers = this.blocks;
         if (this.markers.length !== 0) {
           document.getElementById('spinner').style.display = 'none';
+        } else {
+          setTimeout(() => {
+            document.getElementById('spinner').style.marginTop = '3%';
+            document.getElementById('spinner').style.color = 'red';
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('spinner').innerHTML = 'No data found';
+          }, 20000);
         }
       });
       var element1 = <HTMLInputElement>document.getElementById('districtWise');
@@ -257,6 +275,8 @@ export class StudentAttedenceComponent implements OnInit {
       this.markers = [];
       this.cluster = [];
       document.getElementById('spinner').style.display = 'block';
+      document.getElementById('spinner').style.marginTop = '3%';
+
       this.title = "Clusters per block";
       this.service.clusterPerBlock(label[1]).subscribe(res => {
         var distId = localStorage.getItem('dist');
@@ -345,6 +365,13 @@ export class StudentAttedenceComponent implements OnInit {
         this.markers = this.cluster;
         if (this.markers.length !== 0) {
           document.getElementById('spinner').style.display = 'none';
+        } else {
+          setTimeout(() => {
+            document.getElementById('spinner').style.marginTop = '3%';
+            document.getElementById('spinner').style.color = 'red';
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('spinner').innerHTML = 'No data found';
+          }, 20000);
         }
       });
       var element1 = <HTMLInputElement>document.getElementById('districtWise');
@@ -362,6 +389,8 @@ export class StudentAttedenceComponent implements OnInit {
       this.markers = [];
       this.schools = [];
       document.getElementById('spinner').style.display = 'block';
+      document.getElementById('spinner').style.marginTop = '3%';
+
       this.title = "Schools per cluster";
       this.service.schoolsPerCluster(label[1]).subscribe(res => {
         var block = localStorage.getItem('block');
@@ -452,6 +481,13 @@ export class StudentAttedenceComponent implements OnInit {
         this.markers = this.schools;
         if (this.markers.length !== 0) {
           document.getElementById('spinner').style.display = 'none';
+        } else {
+          setTimeout(() => {
+            document.getElementById('spinner').style.marginTop = '3%';
+            document.getElementById('spinner').style.color = 'red';
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('spinner').innerHTML = 'No data found';
+          }, 20000);
         }
       });
       var element1 = <HTMLInputElement>document.getElementById('districtWise');
