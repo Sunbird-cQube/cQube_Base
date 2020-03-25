@@ -1,12 +1,12 @@
 <h1>Installation of CQube</h1>
-<h3>For Linux</h3>
+<h3>For Ubuntu Linux</h3>
 
 - Open Terminal
 - Navigate to the directory where CQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
 ```
-- Fill the required configuration values in ` vars/main.yml`
+- Fill the configuration details in ` vars/main.yml` ( AWS Secret Key & Access Key )
 - Give the permission to install.sh file
 ```
 chmod u+x install.sh
@@ -31,13 +31,21 @@ Once installation completed without any errors, you will see the following messa
 
 <b>Post Installation </b>
 
-<b>Uploading data file to SFTP</b>
+<b>Uploading data to SFTP location</b>
 
-- Open Terminal
-- ```sudo su```
-- ```cat /home/<username>/.ssh/id_rsa```
-- copy id_rsa to local machine where you have the data files
+- In terminal, login as root by entering ```sudo su```
+- Then ```cat /home/<username>/.ssh/id_rsa```
+- Copy id_rsa to (local) machine where you have the data files to be uploaded
 - Give the 400 permission to id_rsa file using ```chmod 400 id_rsa```
 - Connect to sftp using ```sftp -i id_rsa <username>@<host_name_or_ip>```
-- Put the data files into it
+- Put the data files into respective sftp directories as mentioned below
+```
+school_master_lat_long.json   ->   /cqube/data/s3_school_latlong
+school_master.csv   ->   /cqube/data/school_master
+lat_long.csv   ->   /cqube/data/lat_long
+student_attendance_sample.csv   ->   /cqube/data/emits
+```
+- Allow the ports 3000 and 4200 in firewall
 - See the output in ```http://<host_name_or_ip>:4200```
+
+

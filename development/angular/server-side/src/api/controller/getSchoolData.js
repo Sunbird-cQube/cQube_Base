@@ -7,7 +7,7 @@ router.get('/', function (req, res) {
         if (err) {
             // console.log(err);
             res.send([]);
-        } else if (!data) {
+        } else if (!result) {
             console.log("Something went wrong or s3 file not found");
             res.send([]);
         } else {
