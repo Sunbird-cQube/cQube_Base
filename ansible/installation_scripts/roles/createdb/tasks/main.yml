@@ -12,6 +12,12 @@
     state: present
   tags: packages
 
+- name: configure postgre file
+  replace:
+    dest: /etc/postgresql/10/main/pg_hba.conf
+    regexp: 'host    all             all             127.0.0.1/32            md5'
+    replace: 'host    all             postgres             127.0.0.1/32            trust'
+
 - name: Ensure the PostgreSQL service is running
   service: name=postgresql state=started enabled=yes
 
@@ -43,8 +49,7 @@
     db: "{{ db_user }}"
     path_to_script: cQube.sql
 
-- name: configure postgre file
-  replace:
-    dest: /etc/postgresql/10/main/pg_hba.conf
-    regexp: 'host    replication     all             127.0.0.1/32            md5'
-    replace: 'host    all     postgres             0.0.0.0/30            trust'
+- name: Restarting sshd  
+  service:
+    name: sshd
+    state: restarted

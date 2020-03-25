@@ -41,7 +41,7 @@ DistrictId bigint,
 BlockId bigint,
 ClusterId bigint,
 VillageId bigint,
-StateId int,
+StateId varchar(50),
 DistrictName varchar(50),
 blockName varchar(50)
 );
