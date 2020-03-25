@@ -35,7 +35,7 @@ create index if not exists c3_ind_lat_long_all ON c3_lat_long_all(segment);
 /*c3_school_master*/
 
 create table if not exists c3_school_master(Id int,
-SchoolId bigint primary key not null,
+SchoolId bigint,
 School varchar(100),
 DistrictId bigint,
 BlockId bigint,
