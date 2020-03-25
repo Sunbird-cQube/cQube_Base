@@ -10,8 +10,7 @@ create index if not exists c3_student_attendance_tmp_School ON c3_student_attend
 
 /*c3_student_attendance_tmp_2*/
 
-create table if not exists c3_student_attendance_tmp_2(StudentAttendanceId bigint ,
-StudentId   varchar(20),SchoolId varchar(20),AadhaarUID   varchar(20),AcademicYear  varchar(10),month varchar(5),date_day varchar(5),attendance varchar(5));
+create table if not exists c3_student_attendance_tmp_2(StudentAttendanceId bigint ,StudentId   varchar(20),SchoolId varchar(20),AadhaarUID   varchar(20),AcademicYear  varchar(10),month varchar(10),date_day varchar(10),attendance varchar(10),dates varchar(10),flag varchar(10));
 
 create index if not exists c3_student_attendance_month_tmp ON c3_student_attendance_tmp_2(month);
 create index if not exists c3_student_attendance_School_tmp ON c3_student_attendance_tmp_2(SchoolId);

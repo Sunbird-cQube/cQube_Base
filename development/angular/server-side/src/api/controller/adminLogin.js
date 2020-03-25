@@ -3,7 +3,7 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
 router.post('/', (req, res) => {
-    var log = fs.readFileSync('./src/file/loginData.json');
+    var log = fs.readFileSync('/home/dheeraj/Desktop/NodeCode/gujarat-project/server-side/src/file/loginData.json');
     var auth = JSON.parse(log);
     if (req.body.email !== auth.email) {
         res.send({ notEmail: "User not found" });
