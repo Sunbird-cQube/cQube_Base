@@ -56,6 +56,7 @@ export class StudentAttedenceComponent implements OnInit {
     this.lat = 22.790988462301428;
     this.lng = 72.02733294142871;
     this.zoom = 7;
+    document.getElementById('errMsg').style.display = 'none';
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('spinner').style.marginTop = '3%';
     this.title = "District-wise";
@@ -140,10 +141,10 @@ export class StudentAttedenceComponent implements OnInit {
 
       } else {
         setTimeout(() => {
-          document.getElementById('spinner').style.marginTop = '3%';
-          document.getElementById('spinner').style.color = 'red';
-          document.getElementById('spinner').style.display = 'block';
-          document.getElementById('spinner').innerHTML = 'No data found';
+          document.getElementById('spinner').style.display = 'none';
+          document.getElementById('errMsg').style.color = 'red';
+          document.getElementById('errMsg').style.display = 'block';
+          document.getElementById('errMsg').innerHTML = 'No data found';
         }, 20000);
       }
     });
@@ -164,6 +165,7 @@ export class StudentAttedenceComponent implements OnInit {
 
       this.markers = [];
       this.blocks = [];
+      document.getElementById('errMsg').style.display = 'none';
       document.getElementById('spinner').style.display = 'block';
       document.getElementById('spinner').style.marginTop = '3%';
 
@@ -252,10 +254,10 @@ export class StudentAttedenceComponent implements OnInit {
           document.getElementById('spinner').style.display = 'none';
         } else {
           setTimeout(() => {
-            document.getElementById('spinner').style.marginTop = '3%';
-            document.getElementById('spinner').style.color = 'red';
-            document.getElementById('spinner').style.display = 'block';
-            document.getElementById('spinner').innerHTML = 'No data found';
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('errMsg').style.color = 'red';
+            document.getElementById('errMsg').style.display = 'block';
+            document.getElementById('errMsg').innerHTML = 'No data found';
           }, 20000);
         }
       });
@@ -274,6 +276,7 @@ export class StudentAttedenceComponent implements OnInit {
 
       this.markers = [];
       this.cluster = [];
+      document.getElementById('errMsg').style.display = 'none';
       document.getElementById('spinner').style.display = 'block';
       document.getElementById('spinner').style.marginTop = '3%';
 
@@ -367,10 +370,10 @@ export class StudentAttedenceComponent implements OnInit {
           document.getElementById('spinner').style.display = 'none';
         } else {
           setTimeout(() => {
-            document.getElementById('spinner').style.marginTop = '3%';
-            document.getElementById('spinner').style.color = 'red';
-            document.getElementById('spinner').style.display = 'block';
-            document.getElementById('spinner').innerHTML = 'No data found';
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('errMsg').style.color = 'red';
+            document.getElementById('errMsg').style.display = 'block';
+            document.getElementById('errMsg').innerHTML = 'No data found';
           }, 20000);
         }
       });
@@ -388,6 +391,7 @@ export class StudentAttedenceComponent implements OnInit {
 
       this.markers = [];
       this.schools = [];
+      document.getElementById('errMsg').style.display = 'none';
       document.getElementById('spinner').style.display = 'block';
       document.getElementById('spinner').style.marginTop = '3%';
 
@@ -483,10 +487,10 @@ export class StudentAttedenceComponent implements OnInit {
           document.getElementById('spinner').style.display = 'none';
         } else {
           setTimeout(() => {
-            document.getElementById('spinner').style.marginTop = '3%';
-            document.getElementById('spinner').style.color = 'red';
-            document.getElementById('spinner').style.display = 'block';
-            document.getElementById('spinner').innerHTML = 'No data found';
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('errMsg').style.color = 'red';
+            document.getElementById('errMsg').style.display = 'block';
+            document.getElementById('errMsg').innerHTML = 'No data found';
           }, 20000);
         }
       });
