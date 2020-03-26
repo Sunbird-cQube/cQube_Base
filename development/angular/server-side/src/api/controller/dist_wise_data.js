@@ -5,7 +5,7 @@ router.get('/', function (req, res) {
     const_data['getParams']['Key'] = 'district-wise-percentage.json'
     const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
         if (err) {
-            // console.log(err);
+            //console.log(err);
             res.send([]);
         } else if (!data) {
             console.log("Something went wrong or s3 file not found");

@@ -7,8 +7,8 @@ router.post('/', async (req, res) => {
     var baseUrl = req.body.baseUrl;
     var allSchoolDetails = await axios.get(`${baseUrl}/getSchoolData`);
     allSchoolDetails.data.forEach(school => {
-        if (blockId == school.BlockId) {
-            clusters.push(school.ClusterId);
+        if (blockId == school.block_id) {
+            clusters.push(school.cluster_id);
         }
     });
     uniqueClusters = clusters.filter(function (item, pos) {

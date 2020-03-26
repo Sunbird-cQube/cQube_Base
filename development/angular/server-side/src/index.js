@@ -16,4 +16,4 @@ app.use('/api', router);
 
 app.listen(port, '0.0.0.0', () => {
     console.log("Server started at port: ", port);
-})
+});
