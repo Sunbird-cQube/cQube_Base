@@ -54,7 +54,7 @@
                     PORT = 3000
                     ACCESS_KEY_ID = "{{ s3_access_key }}"
                     SECRET_ACCESS_KEY  = "{{ s3_secret_key }}"
-                    OUTPUT_BUCKET = "{{ s3_output_bucket }}"
+		    OUTPUT_BUCKET = "{{ s3_output_bucket }}"
 
     - name: Start NodeJS
       shell: cd ../../development/angular/server-side; npm start & 
