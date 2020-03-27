@@ -32,22 +32,6 @@
               {"id": "{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}","parameterContext":{"id": "{{ pg.json.parameterContexts[0].id }}"}}
      }
 
-   - name: Create DistributedMapCacheServer
-     uri:
-       url: http://localhost:8080/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}/controller-services
-       method: POST
-       body_format: json
-       status_code: 201
-       body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4557"}}}
-
-   - name: Create DistributedMapCacheServer
-     uri:
-       url: http://localhost:8080/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}/controller-services
-       method: POST
-       body_format: json
-       status_code: 201
-       body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4558"}}}
-
 
    - name: Get controllers
      uri:
@@ -102,3 +86,6 @@
      }
      loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
      when: item.component.name == 'Postgre-Agg-Dtn'
+
+
+   

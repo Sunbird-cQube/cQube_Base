@@ -21,18 +21,6 @@
        regexp: 'nifi.web.http.host='
        replace: 'nifi.web.http.host=0.0.0.0'
 
-   - name: Increase nifi memory
-     replace:
-       dest: /opt/nifi-1.10.0/conf/bootstrap.conf
-       regexp: "java.arg.2=-Xms512m"
-       replace: "java.arg.2=-Xms8g"
-
-   - name: Increase nifi memory
-     replace:
-       dest: /opt/nifi-1.10.0/conf/bootstrap.conf
-       regexp: "java.arg.3=-Xmx512m"
-       replace: "java.arg.3=-Xmx32g"
-
    - name: start NiFi
      shell: /opt/nifi-1.10.0/bin/nifi.sh start
    - pause:
