@@ -15,7 +15,7 @@ import { UserViewComponent } from './user-view/user-view.component';
     AppComponent,
     StudentAttedenceComponent,
     LoginComponent,
-    UserViewComponent
+    UserViewComponent,
   ],
   imports: [
     BrowserModule,

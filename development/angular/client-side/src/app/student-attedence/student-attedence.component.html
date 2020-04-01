@@ -3,8 +3,7 @@
         <div class="col-sm-6">
             <p
                 style="text-align: left; color: #284d8a; background-color:#fff; font-size: 24px; line-height: 1em; margin-top: 5px;">
-                {{title}}
-                Attendance Report </p>
+                Attendance Report for {{title}}: {{titleName}}</p>
         </div>
         <div class="col-sm-6">
             <div class="row">
@@ -27,49 +26,67 @@
                     <p id="errMsg" style="display: none;"></p>
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-danger btn-sm" (click)="logout()" style="float: right; margin-top: 5px; font-family: Arial;">
+                    <button class="btn btn-danger btn-sm" (click)="logout()"
+                        style="float: right; margin-top: 5px; font-family: Arial;">
                         <span class="glyphicon glyphicon-log-out"></span><b>Logout</b> </button>
                     <button id="districtWise" class="btn btn-primary"
                         style="font-size: 11px; width: 60px; background-color: #0549dd; float: right;margin: 5px 10px 0px 0px;"
                         (click)="districtWise()">Home</button>
+                    <button class="btn btn-primary"
+                        style="font-size: 11px; width: 80px; background-color: #0549dd; float: right;margin: 5px 10px 0px 0px;"
+                        (click)="back()"><i class="fa fa-arrow-circle-left"> &nbsp;<b>Back</b> </i></button>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+            
+        </div>
+        <div class="col-sm-3">
+            
+        </div>
+        <div class="col-sm-3">
+            
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-12">
             <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="true"
-                (mapClick)="mapClicked($event)" [fullscreenControl]='true' [styles]="styles">
+                [fullscreenControl]='true' [styles]="styles">
 
                 <agm-marker *ngFor="let m of markers; let i = index"
-                    (markerClick)="clickedMarker([m.label, m.id, m.lat, m.lng],infowindow )" [latitude]="m.lat"
-                    [longitude]="m.lng" [iconUrl]="m.icon" [markerDraggable]="m.draggable"
-                    (dragEnd)="markerDragEnd(m, $event)" [agmFitBounds]="true" (mouseOver)="onMouseOver(m, infowindow)"
-                    (mouseOut)="hideInfo(m)">
+                    (markerClick)="clickedMarker([m.label, m.name, m.id, m.lat, m.lng],infowindow )" [latitude]="m.lat"
+                    [longitude]="m.lng" [iconUrl]="m.icon" [agmFitBounds]="true"
+                    (mouseOver)="onMouseOver(m, infowindow)" (mouseOut)="hideInfo(m)">
 
                     <agm-info-window [disableAutoPan]="false" #infowindow>
-                        <div *ngIf="dist" style="width: 150px;">
-                            Attend. %age: <span>{{m.label}}</span><br>
-                            dist: <span>{{m.id}}</span>
+                        <div *ngIf="dist">
+                            Attendance: <span>{{m.label | slice:0:4}} %</span><br>
+                            District: <span>{{m.name}}</span>
                         </div>
-                        <div *ngIf="blok" style="width: 150px;">
-                            Attend. %age: <span>{{m.label}}</span><br>
-                            dist: <span>{{m.dist}}</span><br>
-                            block: <span>{{m.id}}</span>
+                        <div *ngIf="blok">
+                            Attendance: <span>{{m.label | slice:0:4}} %</span><br>
+                            District: <span>{{m.dist}}</span><br>
+                            Block: <span>{{m.name}}</span>
                         </div>
-                        <div *ngIf="clust" style="width: 150px;">
-                            Attend. %age: <span>{{m.label}}</span><br>
-                            dist: <span>{{m.dist}}</span><br>
-                            block: <span>{{m.blockId}}</span><br>
-                            cluster: <span>{{m.id}}</span>
+                        <div *ngIf="clust">
+                            Attendance: <span>{{m.label | slice:0:4}} %</span><br>
+                            District: <span>{{m.dist}}</span><br>
+                            Block: <span>{{m.blockId}}</span><br>
+                            Cluster: <span>{{m.id}}</span>
                         </div>
-                        <div *ngIf="skul" style="width: 160px; height: 80px;">
-                            Attend. %age: <span>{{m.label}}</span><br>
-                            dist: <span>{{m.dist}}</span><br>
-                            block: <span>{{m.blockId}}</span><br>
-                            cluster: <span>{{m.clusterId}}</span><br>
-                            school: <span>{{m.id}}</span>
+                        <div *ngIf="skul">
+                            Attendance: <span>{{m.label | slice:0:4}} %</span><br>
+                            District: <span>{{m.dist}}</span><br>
+                            Block: <span>{{m.blockId}}</span><br>
+                            Cluster: <span>{{m.clusterId}}</span><br>
+                            School: <span>{{m.name}}</span>
                         </div>
+
                     </agm-info-window>
 
                 </agm-marker>

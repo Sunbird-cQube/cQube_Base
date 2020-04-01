@@ -3,9 +3,14 @@ const axios = require('axios');
 
 router.post('/', async (req, res) => {
     var clusters = [];
-    var blockId = req.body.blockId
+    var blockId = req.body.blockId;
+    var blockName = req.body.blockName;
     var baseUrl = req.body.baseUrl;
-    var allSchoolDetails = await axios.get(`${baseUrl}/getSchoolData`);
+    var token = req.headers.token;
+
+    console.log(blockName);
+    
+    var allSchoolDetails = await axios.get(`${baseUrl}/getSchoolData`, { 'headers': { 'token': "Bearer" + token } });
     allSchoolDetails.data.forEach(school => {
         if (blockId == school.block_id) {
             clusters.push(school.cluster_id);
@@ -14,7 +19,7 @@ router.post('/', async (req, res) => {
     uniqueClusters = clusters.filter(function (item, pos) {
         return clusters.indexOf(item) == pos;
     });
-    var allClusters = await axios.get(`${baseUrl}/cluster_wise_data`);
+    var allClusters = await axios.get(`${baseUrl}/cluster_wise_data`, { 'headers': { 'token': "Bearer" + token } });
 
     var clusterDetails = [];
     uniqueClusters.forEach(ids => {
@@ -23,6 +28,7 @@ router.post('/', async (req, res) => {
                 obj = {
                     x_axis: ids,
                     blockId: blockId,
+                    blockName: blockName,
                     x_value: clusters.x_value,
                     y_value: clusters.y_value,
                     z_value: clusters.z_value
