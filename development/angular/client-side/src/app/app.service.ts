@@ -42,8 +42,8 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/clustePerBlock`, { blockId: blockId, blockName: blockName, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    schoolsPerCluster(clusterId) {
-        return this.http.post(`${this.baseUrl}/schoolPerCluster`, { clusterId: clusterId, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    schoolsPerCluster(clusterId, clusterName) {
+        return this.http.post(`${this.baseUrl}/schoolPerCluster`, { clusterId: clusterId, clusterName: clusterName, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
 

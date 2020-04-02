@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { google } from "google-maps";
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 
@@ -20,8 +21,16 @@ export class StudentAttedenceComponent implements OnInit {
   public blocksIds: any = [];
   public clusterIds: any = [];
   public schoolsIds: any = [];
+  public districtsNames: any = [];
+  public blocksNames: any = [];
+  public clusterNames: any = [];
+  public schoolsNames: any = [];
   public stylesFile = "../assets/mapStyles.json";
   public id = '';
+  public blockHidden: boolean = true;
+  public clusterHidden: boolean = true;
+  myDistrict: any;
+  myBlock: any;
 
 
   dist: boolean = false;
@@ -54,6 +63,8 @@ export class StudentAttedenceComponent implements OnInit {
   }
 
   districtWise() {
+    this.myDistrict = '';
+    this.blockHidden = true;
     this.lat = 22.790988462301428;
     this.lng = 72.02733294142871;
     this.zoom = 7;
@@ -62,14 +73,15 @@ export class StudentAttedenceComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
     this.title = "State";
     this.titleName = "Gujarat"
-    if (localStorage.getItem('distWise') !== null) {
-      this.mylatlngData = JSON.parse(localStorage.getItem('distWise'));
+    this.service.dist_wise_data().subscribe(res => {
+      this.mylatlngData = res;
       this.dist = true;
       this.blok = false;
       this.clust = false;
       this.skul = false;
       this.mylatlngData.forEach(item => {
         this.districtsIds.push(item['x_axis']);
+        this.districtsNames.push(item['district_name']);
         if (item['x_value'] > 75) {
           this.districts.push(
             {
@@ -153,119 +165,627 @@ export class StudentAttedenceComponent implements OnInit {
           document.getElementById('errMsg').innerHTML = 'No data found';
         }, 20000);
       }
-
-      var element1: any = document.getElementsByClassName('btn-primary');
-      element1[0].style.display = 'none';
-      element1[1].style.display = 'none';
-      this.districts = [];
-    } else {
-      this.service.dist_wise_data().subscribe(res => {
-        localStorage.setItem('distWise', JSON.stringify(res));
-        this.mylatlngData = res;
-        this.dist = true;
-        this.blok = false;
-        this.clust = false;
-        this.skul = false;
-        this.mylatlngData.forEach(item => {
-
-          this.districtsIds.push(item['x_axis']);
-          if (item['x_value'] > 75) {
-            this.districts.push(
-              {
-                id: item['x_axis'],
-                name: item['district_name'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/green_Block.png",
-                  scaledSize: {
-                    width: 21,
-                    height: 22,
-                    backgroundColor: "red"
-                  }
-                }
-              });
-          } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-            this.districts.push(
-              {
-                id: item['x_axis'],
-                name: item['district_name'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-
-                icon: {
-                  url: "../assets/blue_Dist.png",
-                  scaledSize: {
-                    width: 21,
-                    height: 22
-                  }
-                }
-              });
-          } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-            this.districts.push(
-              {
-                id: item['x_axis'],
-                name: item['district_name'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/orange_Dist.png",
-                  scaledSize: {
-                    width: 21,
-                    height: 22
-                  }
-                }
-
-              });
-          } else if (item['x_value'] < 40) {
-            this.districts.push(
-              {
-                id: item['x_axis'],
-                name: item['district_name'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/red1_Dist.png",
-                  scaledSize: {
-                    width: 21,
-                    height: 22
-                  }
-                }
-
-              });
-          }
-        });
-
-        this.markers = this.districts;
-        if (this.markers.length !== 0) {
-          document.getElementById('spinner').style.display = 'none';
-
-        } else {
-          setTimeout(() => {
-            document.getElementById('spinner').style.display = 'none';
-            document.getElementById('errMsg').style.color = 'red';
-            document.getElementById('errMsg').style.display = 'block';
-            document.getElementById('errMsg').innerHTML = 'No data found';
-          }, 20000);
-        }
-      });
-      var element1: any = document.getElementsByClassName('btn-primary');
-      element1[0].style.display = 'none';
-      element1[1].style.display = 'none';
-      this.markers = [];
-      this.districts = [];
-    }
+    });
+    var element1: any = document.getElementsByClassName('btn-secondary');
+    element1[0].style.display = 'none';
+    console.log(this.districts);
+    this.districts = [];
 
   }
 
-  clickedMarker(label, infowindow) {
+  schoolWise() {
+    this.myDistrict = '';
+    this.lat = 22.790988462301428;
+    this.lng = 72.02733294142871;
+    this.zoom = 7;
+    document.getElementById('errMsg').style.display = 'none';
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('spinner').style.marginTop = '3%';
+    this.title = "State";
+    this.titleName = "Gujarat"
+    this.service.school_wise_data().subscribe(res => {
+      // localStorage.setItem('schoolWise', JSON.stringify(res));
+      this.mylatlngData = res;
+      this.dist = false;
+      this.blok = false;
+      this.clust = false;
+      this.skul = true;
+      this.mylatlngData.forEach(item => {
+
+        this.districtsIds.push(item['x_axis']);
+        if (item['x_value'] > 75) {
+          this.schools.push(
+            {
+              id: item['x_axis'],
+              dist: item['district_name'],
+              name: item['school_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                url: "../assets/green_Block.png",
+                scaledSize: {
+                  width: 6,
+                  height: 7,
+                }
+              }
+            });
+        } else if (item['x_value'] < 75 && item['x_value'] > 60) {
+          this.schools.push(
+            {
+              id: item['x_axis'],
+              dist: item['district_name'],
+              name: item['school_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+
+              icon: {
+                url: "../assets/blue_Dist.png",
+                scaledSize: {
+                  width: 6,
+                  height: 7
+                }
+              }
+            });
+        } else if (item['x_value'] < 60 && item['x_value'] > 40) {
+          this.schools.push(
+            {
+              id: item['x_axis'],
+              dist: item['district_name'],
+              name: item['school_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                url: "../assets/orange_Dist.png",
+                scaledSize: {
+                  width: 6,
+                  height: 7
+                }
+              }
+
+            });
+        } else if (item['x_value'] < 40) {
+          this.schools.push(
+            {
+              id: item['x_axis'],
+              dist: item['district_name'],
+              name: item['school_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                url: "../assets/red1_Dist.png",
+                scaledSize: {
+                  width: 6,
+                  height: 7
+                }
+              }
+
+            });
+        }
+      });
+
+      this.markers = this.schools;
+      if (this.markers.length !== 0) {
+        document.getElementById('spinner').style.display = 'none';
+
+      } else {
+        setTimeout(() => {
+          document.getElementById('spinner').style.display = 'none';
+          document.getElementById('errMsg').style.color = 'red';
+          document.getElementById('errMsg').style.display = 'block';
+          document.getElementById('errMsg').innerHTML = 'No data found';
+        }, 20000);
+      }
+    });
+    var element1: any = document.getElementsByClassName('btn-secondary');
+    element1[0].style.display = 'block';
+    this.schools = [];
+  }
+
+  clusterWise() {
+
+    this.myDistrict = '';
+    this.lat = 22.790988462301428;
+    this.lng = 72.02733294142871;
+    this.zoom = 7;
+    this.markers = [];
+    document.getElementById('errMsg').style.display = 'none';
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('spinner').style.marginTop = '3%';
+    this.title = "State";
+    this.titleName = "Gujarat"
+    this.service.cluster_wise_data().subscribe(res => {
+      this.mylatlngData = res;
+      this.dist = false;
+      this.blok = false;
+      this.clust = true;
+      this.skul = false;
+      this.mylatlngData.forEach(item => {
+        // console.log(item);
+        this.clusterIds.push(item['x_axis']);
+
+        if (item['x_value'] < 6) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF1100",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+
+            });
+        }
+        else if (item['x_value'] < 11 && item['x_value'] > 5) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF1100",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 16 && item['x_value'] > 10) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF1100",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 21 && item['x_value'] > 15) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF1100",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 26 && item['x_value'] > 20) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF1100",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 31 && item['x_value'] > 25) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF1100",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 36 && item['x_value'] > 30) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF1100",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 41 && item['x_value'] > 35) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF1100",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 46 && item['x_value'] > 40) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF1100",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_values'] > 51 && item['x_values'] < 45) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF6900",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 56 && item['x_value'] > 50) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FF7B00",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 61 && item['x_value'] > 55) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FFC100",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 66 && item['x_value'] > 60) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#FFE400",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 71 && item['x_value'] > 65) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#C2FF00",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 76 && item['x_value'] > 70) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#B0FF00",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 81 && item['x_value'] > 75) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#8DFF00",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 86 && item['x_value'] > 80) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#7CFF00",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 91 && item['x_value'] > 85) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#6AFF00",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_value'] < 96 && item['x_value'] > 90) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#24FF00",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+        else if (item['x_values'] > 95) {
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['cluster_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: "#00FF00",
+                fillOpacity: 1,
+                strokeWeight: 0.1
+              }
+            });
+        }
+
+      });
+      console.log(this.cluster);
+
+      this.markers = this.cluster;
+      if (this.markers.length !== 0) {
+        document.getElementById('spinner').style.display = 'none';
+
+      } else {
+        setTimeout(() => {
+          document.getElementById('spinner').style.display = 'none';
+          document.getElementById('errMsg').style.color = 'red';
+          document.getElementById('errMsg').style.display = 'block';
+          document.getElementById('errMsg').innerHTML = 'No data found';
+        }, 20000);
+      }
+    });
+    var element1: any = document.getElementsByClassName('btn-secondary');
+    element1[0].style.display = 'Block';
+    this.cluster = [];
+  }
+
+  blockWise() {
+    this.myDistrict = '';
+    this.lat = 22.790988462301428;
+    this.lng = 72.02733294142871;
+    this.zoom = 7;
+    this.markers = [];
+    document.getElementById('errMsg').style.display = 'none';
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('spinner').style.marginTop = '3%';
+    this.title = "State";
+    this.titleName = "Gujarat"
+    this.service.block_wise_data().subscribe(res => {
+      // localStorage.setItem('schoolWise', JSON.stringify(res));
+      this.mylatlngData = res;
+      this.dist = false;
+      this.blok = true;
+      this.clust = false;
+      this.skul = false;
+      this.mylatlngData.forEach(item => {
+        this.blocksIds.push(item['x_axis']);
+        if (item['x_value'] > 75) {
+          this.blocks.push(
+            {
+              id: item['x_axis'],
+              dist: item['district_name'],
+              name: item['block_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                url: "../assets/green_Block.png",
+                scaledSize: {
+                  width: 6,
+                  height: 7,
+                }
+              }
+            });
+        } else if (item['x_value'] < 75 && item['x_value'] > 60) {
+          this.blocks.push(
+            {
+              id: item['x_axis'],
+              dist: item['district_name'],
+              name: item['block_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+
+              icon: {
+                url: "../assets/blue_Dist.png",
+                scaledSize: {
+                  width: 6,
+                  height: 7
+                }
+              }
+            });
+        } else if (item['x_value'] < 60 && item['x_value'] > 40) {
+          this.blocks.push(
+            {
+              id: item['x_axis'],
+              dist: item['district_name'],
+              name: item['block_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                url: "../assets/orange_Dist.png",
+                scaledSize: {
+                  width: 6,
+                  height: 7
+                }
+              }
+
+            });
+        } else if (item['x_value'] < 40) {
+          this.blocks.push(
+            {
+              id: item['x_axis'],
+              dist: item['district_name'],
+              name: item['block_name'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                url: "../assets/red1_Dist.png",
+                scaledSize: {
+                  width: 6,
+                  height: 7
+                }
+              }
+
+            });
+        }
+      });
+
+      this.markers = this.blocks;
+      if (this.markers.length !== 0) {
+        document.getElementById('spinner').style.display = 'none';
+
+      } else {
+        setTimeout(() => {
+          document.getElementById('spinner').style.display = 'none';
+          document.getElementById('errMsg').style.color = 'red';
+          document.getElementById('errMsg').style.display = 'block';
+          document.getElementById('errMsg').innerHTML = 'No data found';
+        }, 20000);
+      }
+    });
+    var element1: any = document.getElementsByClassName('btn-secondary');
+    element1[0].style.display = 'Block';
+    this.blocks = [];
+  }
+
+  clickedMarker(label) {
 
     if (this.districtsIds.includes(label[2])) {
-
+      this.myDistrict = '';
       this.zoom = 9;
       this.lat = Number(label[3]);
       this.lng = Number(label[4]);
@@ -289,6 +809,7 @@ export class StudentAttedenceComponent implements OnInit {
         this.blocksIds = [];
         this.mylatlngData.forEach(item => {
           this.blocksIds.push(item['x_axis']);
+          this.blocksNames.push(item['block_name']);
           if (item['x_value'] > 75) {
             this.blocks.push(
               {
@@ -373,16 +894,17 @@ export class StudentAttedenceComponent implements OnInit {
           }, 20000);
         }
       });
-      var element1: any = document.getElementsByClassName('btn-primary');
+      var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
-      element1[1].style.display = 'block';
-      this.markers = [];
+      // element1[1].style.display = 'block';
+      // this.markers = [];
       this.blocks = [];
 
     }
 
 
     if (this.blocksIds.includes(label[2])) {
+      this.myDistrict = '';
       this.zoom = 11;
       this.lat = Number(label[3]);
       this.lng = Number(label[4]);
@@ -407,11 +929,13 @@ export class StudentAttedenceComponent implements OnInit {
         this.clusterIds = [];
         this.mylatlngData.forEach(item => {
           this.clusterIds.push(item['x_axis']);
+          // this.clusterIds.push(item['x_axis']);
           if (item['x_value'] > 75) {
             this.cluster.push(
               {
                 id: item['x_axis'],
-                name: item[''],
+                name: item['crc_name'],
+                // name: item[''],
                 dist: distId,
                 blockId: item['blockName'],
                 label: item['x_value'],
@@ -429,7 +953,8 @@ export class StudentAttedenceComponent implements OnInit {
             this.cluster.push(
               {
                 id: item['x_axis'],
-                name: item[''],
+                name: item['crc_name'],
+                // name: item[''],
                 dist: distId,
                 blockId: item['blockName'],
                 label: item['x_value'],
@@ -447,7 +972,8 @@ export class StudentAttedenceComponent implements OnInit {
             this.cluster.push(
               {
                 id: item['x_axis'],
-                name: item[''],
+                name: item['crc_name'],
+                // name: item[''],
                 dist: distId,
                 blockId: item['blockName'],
                 label: item['x_value'],
@@ -465,7 +991,8 @@ export class StudentAttedenceComponent implements OnInit {
             this.cluster.push(
               {
                 id: item['x_axis'],
-                name: item[''],
+                name: item['crc_name'],
+                // name: item[''],
                 dist: distId,
                 blockId: item['blockName'],
                 label: item['x_value'],
@@ -495,15 +1022,16 @@ export class StudentAttedenceComponent implements OnInit {
           }, 20000);
         }
       });
-      var element1: any = document.getElementsByClassName('btn-primary');
+      var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
-      element1[1].style.display = 'block';
-      this.markers = [];
+      // element1[1].style.display = 'block';
+      // this.markers = [];
       this.cluster = [];
     }
 
     if (this.clusterIds.includes(label[2])) {
-
+      console.log(label[1]);
+      this.myDistrict = '';
       this.zoom = 13;
       this.lat = Number(label[3]);
       this.lng = Number(label[4]);
@@ -515,8 +1043,8 @@ export class StudentAttedenceComponent implements OnInit {
       document.getElementById('spinner').style.marginTop = '3%';
 
       this.title = "Cluster";
-      this.titleName = label[1];
-      this.service.schoolsPerCluster(label[2]).subscribe(res => {
+      this.titleName = label[1]+"(crc)";
+      this.service.schoolsPerCluster("",label[1]).subscribe(res => {
         var block = localStorage.getItem('block');
         var distId = localStorage.getItem('dist');
         this.dist = false;
@@ -618,10 +1146,10 @@ export class StudentAttedenceComponent implements OnInit {
           }, 20000);
         }
       });
-      var element1: any = document.getElementsByClassName('btn-primary');
+      var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
-      element1[1].style.display = 'block';
-      this.markers = [];
+      // element1[1].style.display = 'block';
+      // this.markers = [];
       this.schools = [];
     }
   };
@@ -645,8 +1173,116 @@ export class StudentAttedenceComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  back() {
-    this.districtWise();
+  myDistData(data) {
+    document.getElementById('errMsg').style.display = 'none';
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('spinner').style.marginTop = '3%';
+
+    this.title = "District";
+    this.titleName = data;
+    localStorage.setItem('dist', data);
+    this.service.blockPerDist(2401, data).subscribe(res => {
+      this.blockHidden = false;
+      this.dist = false;
+      this.blok = true;
+      this.clust = false;
+      this.skul = false;
+
+      this.mylatlngData = res;
+      this.blocksIds = [];
+      this.mylatlngData.forEach(item => {
+        this.blocksIds.push(item['x_axis']);
+        this.blocksNames.push(item['block_name']);
+        if (item['x_value'] > 75) {
+          this.blocks.push(
+            {
+              id: item['x_axis'],
+              name: item['block_name'],
+              dist: item['distName'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                url: "../assets/green_Block.png",
+                scaledSize: {
+                  width: 15,
+                  height: 16
+                }
+              }
+            });
+        } else if (item['x_value'] < 75 && item['x_value'] > 60) {
+          this.blocks.push(
+            {
+              id: item['x_axis'],
+              name: item['block_name'],
+              dist: item['distName'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                url: "../assets/blue_Dist.png",
+                scaledSize: {
+                  width: 15,
+                  height: 16
+                }
+              }
+            });
+        } else if (item['x_value'] < 60 && item['x_value'] > 40) {
+          this.blocks.push(
+            {
+              id: item['x_axis'],
+              name: item['block_name'],
+              dist: item['distName'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                url: "../assets/orange_Dist.png",
+                scaledSize: {
+                  width: 15,
+                  height: 16
+                }
+              }
+            });
+        } else if (item['x_value'] < 40) {
+          this.blocks.push(
+            {
+              id: item['x_axis'],
+              name: item['block_name'],
+              dist: item['distName'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                url: "../assets/red1_Dist.png",
+                scaledSize: {
+                  width: 15,
+                  height: 16
+                }
+              }
+            });
+        }
+
+      });
+
+      this.markers = this.blocks;
+      if (this.markers.length !== 0) {
+        document.getElementById('spinner').style.display = 'none';
+      } else {
+        setTimeout(() => {
+          document.getElementById('spinner').style.display = 'none';
+          document.getElementById('errMsg').style.color = 'red';
+          document.getElementById('errMsg').style.display = 'block';
+          document.getElementById('errMsg').innerHTML = 'No data found';
+        }, 20000);
+      }
+    });
+    var element1: any = document.getElementsByClassName('btn-secondary');
+    element1[0].style.display = 'block';
+    // element1[1].style.display = 'block';
+    // this.markers = [];
+    this.blocks = [];
+    console.log("myData clicked", data);
   }
 
 }

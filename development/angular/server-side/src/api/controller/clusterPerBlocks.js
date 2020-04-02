@@ -8,34 +8,21 @@ router.post('/', async (req, res) => {
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
 
-    console.log(blockName);
-    
-    var allSchoolDetails = await axios.get(`${baseUrl}/getSchoolData`, { 'headers': { 'token': "Bearer" + token } });
-    allSchoolDetails.data.forEach(school => {
-        if (blockId == school.block_id) {
-            clusters.push(school.cluster_id);
-        }
-    });
-    uniqueClusters = clusters.filter(function (item, pos) {
-        return clusters.indexOf(item) == pos;
-    });
     var allClusters = await axios.get(`${baseUrl}/cluster_wise_data`, { 'headers': { 'token': "Bearer" + token } });
 
     var clusterDetails = [];
-    uniqueClusters.forEach(ids => {
-        allClusters.data.forEach(clusters => {
-            if (ids == clusters.x_axis) {
-                obj = {
-                    x_axis: ids,
-                    blockId: blockId,
-                    blockName: blockName,
-                    x_value: clusters.x_value,
-                    y_value: clusters.y_value,
-                    z_value: clusters.z_value
-                }
-                clusterDetails.push(obj);
+    allClusters.data.forEach(clusters => {
+        if (blockName === clusters.block_name) {
+            obj = {
+                x_axis: clusters.x_axis,
+                blockName: blockName,
+                crc_name: clusters.crc_name,
+                x_value: clusters.x_value,
+                y_value: clusters.y_value,
+                z_value: clusters.z_value
             }
-        })
+            clusterDetails.push(obj);
+        }
 
     });
     res.send(clusterDetails);

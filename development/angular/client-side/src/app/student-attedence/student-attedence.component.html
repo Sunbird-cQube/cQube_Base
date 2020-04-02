@@ -7,7 +7,7 @@
         </div>
         <div class="col-sm-6">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <div class="col-sm-12" id="spinner">
                         <div class="row">
                             <div class="col-sm-2">
@@ -17,41 +17,66 @@
                                     <span class="sr-only">Loading...</span>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-10">
                                 <span style="color: green; float: left; margin-top: 1%;">Please Wait...</span>
                             </div>
-                            <div class="col-sm-4"></div>
+                            <!-- <div class="col-sm-4"></div> -->
                         </div>
                     </div>
                     <p id="errMsg" style="display: none;"></p>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-8">
                     <button class="btn btn-danger btn-sm" (click)="logout()"
-                        style="float: right; margin-top: 5px; font-family: Arial;">
+                        style="float: right; margin-top: 5px; font-family: Arial; background-color: rgb(221, 127, 127);">
                         <span class="glyphicon glyphicon-log-out"></span><b>Logout</b> </button>
-                    <button id="districtWise" class="btn btn-primary"
-                        style="font-size: 11px; width: 60px; background-color: #0549dd; float: right;margin: 5px 10px 0px 0px;"
+                    <button id="districtWise" class="btn btn-secondary"
+                        style="font-size: 11px; width: 60px;  float: right;margin: 5px 10px 0px 0px;"
                         (click)="districtWise()">Home</button>
-                    <button class="btn btn-primary"
-                        style="font-size: 11px; width: 80px; background-color: #0549dd; float: right;margin: 5px 10px 0px 0px;"
-                        (click)="back()"><i class="fa fa-arrow-circle-left"> &nbsp;<b>Back</b> </i></button>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-3">
+            <button class="btn btn-secondary"
+                style="font-size: 12px; width: 70px; float: left;margin: 0px 10px 5px 0px;"
+                (click)="blockWise()">&nbsp;<b>Blocks</b> </button>
+            <button class="btn btn-secondary"
+                style="font-size: 12px; width: 70px; float: left;margin: 0px 10px 5px 0px;"
+                (click)="clusterWise()">&nbsp;<b>Clusters</b> </button>
+            <button class="btn btn-secondary" style="font-size: 12px; width: 70px; float: left;margin: 0px 0px 5px 0px;"
+                (click)="schoolWise()">&nbsp;<b>Schools</b> </button>
+        </div>
+        <div class="col-sm-6">
+            <!-- <div class="col-sm-4"> -->
+            <select style="margin-right: 10px;" [(ngModel)]="myDistrict" name="myDistrict"
+                (change)="myDistData(myDistrict)">
+                <option [value]="myDistrict" disabled selected="selected">Choose a District</option>
+                <option *ngFor="let dist of districtsNames" [(ngValue)]="dist">
+                    {{dist}}
+                </option>
+            </select>
+            <!-- </div>
+            <div class="col-sm-4"> -->
+            <select [hidden]="blockHidden" style="margin-right: 10px;" [(ngModel)]="myBlock" name="myBlock"
+                (change)="myDistData(myBlock)">
+                <option [value]="block" disabled selected="selected">Choose a Block</option>
+                <option *ngFor="let block of blocksNames" [(ngValue)]="block">
+                    {{block}}
+                </option>
+            </select>
+            <!-- </div>
+            <div class="col-sm-4"> -->
+            <select [hidden]="clusterHidden" style="margin-right: 10px;" [(ngModel)]="myDistrict" name="myDistrict"
+                (change)="myData(myDistrict)">
+                <option [value]="myDistrict" disabled selected="selected">Choose a District</option>
+                <option *ngFor="let dist of districtsNames" [(ngValue)]="dist">
+                    {{dist}}
+                </option>
+            </select>
+            <!-- </div> -->
+        </div>
 
-        </div>
-        <div class="col-sm-3">
-            
-        </div>
-        <div class="col-sm-3">
-            
-        </div>
-        <div class="col-sm-3">
-            
-        </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
@@ -59,7 +84,7 @@
                 [fullscreenControl]='true' [styles]="styles">
 
                 <agm-marker *ngFor="let m of markers; let i = index"
-                    (markerClick)="clickedMarker([m.label, m.name, m.id, m.lat, m.lng],infowindow )" [latitude]="m.lat"
+                    (markerClick)="clickedMarker([m.label, m.name, m.id, m.lat, m.lng] )" [latitude]="m.lat"
                     [longitude]="m.lng" [iconUrl]="m.icon" [agmFitBounds]="true"
                     (mouseOver)="onMouseOver(m, infowindow)" (mouseOut)="hideInfo(m)">
 
@@ -77,13 +102,13 @@
                             Attendance: <span>{{m.label | slice:0:4}} %</span><br>
                             District: <span>{{m.dist}}</span><br>
                             Block: <span>{{m.blockId}}</span><br>
-                            Cluster: <span>{{m.id}}</span>
+                            Cluster(CRC): <span>{{m.name}}</span>
                         </div>
                         <div *ngIf="skul">
                             Attendance: <span>{{m.label | slice:0:4}} %</span><br>
                             District: <span>{{m.dist}}</span><br>
                             Block: <span>{{m.blockId}}</span><br>
-                            Cluster: <span>{{m.clusterId}}</span><br>
+                            Cluster(CRC): <span>{{m.clusterId}}</span><br>
                             School: <span>{{m.name}}</span>
                         </div>
 
