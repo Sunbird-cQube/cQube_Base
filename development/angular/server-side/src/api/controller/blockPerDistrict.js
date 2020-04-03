@@ -3,18 +3,19 @@ const axios = require('axios');
 const auth = require('../middleware/check-auth');
 
 router.post('/', auth.authController, async (req, res) => {
-    var distName = req.body.distName;
+    var distId = req.body.distId;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
+
 
     var allBlocks = await axios.get(`${baseUrl}/block_wise_data`, { 'headers': { 'token': "Bearer" + token } });
 
     var blcokDetails = [];
     allBlocks.data.forEach(blocks => {
-        if (distName === blocks.district_name) {
+        if (distId === blocks.district_id) {
             obj = {
                 x_axis: blocks.x_axis,
-                distName: distName,
+                distName: blocks.district_name,
                 block_name: blocks.block_name,
                 x_value: blocks.x_value,
                 y_value: blocks.y_value,

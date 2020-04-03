@@ -2,17 +2,18 @@ const router = require('express').Router();
 const axios = require('axios');
 
 router.post('/', async (req, res) => {
-    var clusters = [];
-    var blockId = req.body.blockId;
+    var distId = req.body.distId;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
-    console.log(blockId);
 
-    var allClusters = await axios.get(`${baseUrl}/cluster_wise_data`, { 'headers': { 'token': "Bearer" + token } });
+    console.log(distId);
 
-    var clusterDetails = [];
-    allClusters.data.forEach(clusters => {
-        if (blockId === clusters.block_id) {
+    var allcluster = await axios.get(`${baseUrl}/cluster_wise_data`, { 'headers': { 'token': "Bearer" + token } });
+
+    var schoolsDetails = [];
+    allcluster.data.forEach(clusters => {
+        if (distId === clusters.district_id) {
+            console.log(clusters);
             obj = {
                 x_axis: clusters.x_axis,
                 blockName: clusters.block_name,
@@ -22,11 +23,11 @@ router.post('/', async (req, res) => {
                 y_value: clusters.y_value,
                 z_value: clusters.z_value
             }
-            clusterDetails.push(obj);
+            schoolsDetails.push(obj);
+            console.log(obj);
         }
-
     });
-    res.send(clusterDetails);
+    res.send(schoolsDetails);
 });
 
 module.exports = router;

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { google } from "google-maps";
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
+declare var google;
+
 
 @Component({
   selector: 'app-student-attedence',
@@ -31,7 +32,7 @@ export class StudentAttedenceComponent implements OnInit {
   public clusterHidden: boolean = true;
   myDistrict: any;
   myBlock: any;
-
+  public colors: any;
 
   dist: boolean = false;
   blok: boolean = false;
@@ -62,9 +63,23 @@ export class StudentAttedenceComponent implements OnInit {
     });
   }
 
+  loaderAndErr() {
+    if (this.markers.length !== 0) {
+      document.getElementById('spinner').style.display = 'none';
+    } else {
+      setTimeout(() => {
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('errMsg').style.color = 'red';
+        document.getElementById('errMsg').style.display = 'block';
+        document.getElementById('errMsg').innerHTML = 'No data found';
+      }, 20000);
+    }
+  }
+
   districtWise() {
     this.myDistrict = '';
     this.blockHidden = true;
+    this.clusterHidden = true;
     this.lat = 22.790988462301428;
     this.lng = 72.02733294142871;
     this.zoom = 7;
@@ -79,102 +94,40 @@ export class StudentAttedenceComponent implements OnInit {
       this.blok = false;
       this.clust = false;
       this.skul = false;
-      this.mylatlngData.forEach(item => {
+      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+      this.colors = colors;
+      sorted.forEach((item, index) => {
         this.districtsIds.push(item['x_axis']);
-        this.districtsNames.push(item['district_name']);
-        if (item['x_value'] > 75) {
-          this.districts.push(
-            {
-              id: item['x_axis'],
-              name: item['district_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/green_Block.png",
-                scaledSize: {
-                  width: 21,
-                  height: 22,
-                  backgroundColor: "red"
-                }
-              }
-            });
-        } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-          this.districts.push(
-            {
-              id: item['x_axis'],
-              name: item['district_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-
-              icon: {
-                url: "../assets/blue_Dist.png",
-                scaledSize: {
-                  width: 21,
-                  height: 22
-                }
-              }
-            });
-        } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-          this.districts.push(
-            {
-              id: item['x_axis'],
-              name: item['district_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/orange_Dist.png",
-                scaledSize: {
-                  width: 21,
-                  height: 22
-                }
-              }
-
-            });
-        } else if (item['x_value'] < 40) {
-          this.districts.push(
-            {
-              id: item['x_axis'],
-              name: item['district_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/red1_Dist.png",
-                scaledSize: {
-                  width: 21,
-                  height: 22
-                }
-              }
-
-            });
-        }
+        this.districtsNames.push({ id: item['x_axis'], name: item['district_name'] });
+        this.districts.push(
+          {
+            id: item['x_axis'],
+            name: item['district_name'],
+            label: item['x_value'],
+            lat: item['y_value'],
+            lng: item['z_value'],
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 8.5,
+              fillColor: this.colors[index],
+              fillOpacity: 1,
+              strokeWeight: 0.01
+            }
+          });
       });
-
       this.markers = this.districts;
-      if (this.markers.length !== 0) {
-        document.getElementById('spinner').style.display = 'none';
-
-      } else {
-        setTimeout(() => {
-          document.getElementById('spinner').style.display = 'none';
-          document.getElementById('errMsg').style.color = 'red';
-          document.getElementById('errMsg').style.display = 'block';
-          document.getElementById('errMsg').innerHTML = 'No data found';
-        }, 20000);
-      }
+      this.loaderAndErr();
     });
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'none';
-    console.log(this.districts);
     this.districts = [];
-
   }
 
   schoolWise() {
     this.myDistrict = '';
+    this.blockHidden = true;
+    this.clusterHidden = true;
     this.lat = 22.790988462301428;
     this.lng = 72.02733294142871;
     this.zoom = 7;
@@ -184,101 +137,37 @@ export class StudentAttedenceComponent implements OnInit {
     this.title = "State";
     this.titleName = "Gujarat"
     this.service.school_wise_data().subscribe(res => {
-      // localStorage.setItem('schoolWise', JSON.stringify(res));
       this.mylatlngData = res;
       this.dist = false;
       this.blok = false;
       this.clust = false;
       this.skul = true;
-      this.mylatlngData.forEach(item => {
 
+      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+      this.colors = colors;
+      sorted.forEach((item, index) => {
         this.districtsIds.push(item['x_axis']);
-        if (item['x_value'] > 75) {
-          this.schools.push(
-            {
-              id: item['x_axis'],
-              dist: item['district_name'],
-              name: item['school_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/green_Block.png",
-                scaledSize: {
-                  width: 6,
-                  height: 7,
-                }
-              }
-            });
-        } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-          this.schools.push(
-            {
-              id: item['x_axis'],
-              dist: item['district_name'],
-              name: item['school_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-
-              icon: {
-                url: "../assets/blue_Dist.png",
-                scaledSize: {
-                  width: 6,
-                  height: 7
-                }
-              }
-            });
-        } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-          this.schools.push(
-            {
-              id: item['x_axis'],
-              dist: item['district_name'],
-              name: item['school_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/orange_Dist.png",
-                scaledSize: {
-                  width: 6,
-                  height: 7
-                }
-              }
-
-            });
-        } else if (item['x_value'] < 40) {
-          this.schools.push(
-            {
-              id: item['x_axis'],
-              dist: item['district_name'],
-              name: item['school_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/red1_Dist.png",
-                scaledSize: {
-                  width: 6,
-                  height: 7
-                }
-              }
-
-            });
-        }
+        this.schools.push(
+          {
+            id: item['x_axis'],
+            dist: item['district_name'],
+            name: item['school_name'],
+            label: item['x_value'],
+            lat: item['y_value'],
+            lng: item['z_value'],
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 3.5,
+              fillColor: this.colors[index],
+              fillOpacity: 1,
+              strokeWeight: 0.01
+            }
+          });
       });
 
       this.markers = this.schools;
-      if (this.markers.length !== 0) {
-        document.getElementById('spinner').style.display = 'none';
-
-      } else {
-        setTimeout(() => {
-          document.getElementById('spinner').style.display = 'none';
-          document.getElementById('errMsg').style.color = 'red';
-          document.getElementById('errMsg').style.display = 'block';
-          document.getElementById('errMsg').innerHTML = 'No data found';
-        }, 20000);
-      }
+      this.loaderAndErr();
     });
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'block';
@@ -288,6 +177,8 @@ export class StudentAttedenceComponent implements OnInit {
   clusterWise() {
 
     this.myDistrict = '';
+    this.blockHidden = true;
+    this.clusterHidden = true;
     this.lat = 22.790988462301428;
     this.lng = 72.02733294142871;
     this.zoom = 7;
@@ -303,367 +194,34 @@ export class StudentAttedenceComponent implements OnInit {
       this.blok = false;
       this.clust = true;
       this.skul = false;
-      this.mylatlngData.forEach(item => {
-        // console.log(item);
+
+      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+      this.colors = colors;
+      sorted.forEach((item, index) => {
         this.clusterIds.push(item['x_axis']);
-
-        if (item['x_value'] < 6) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF1100",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-
-            });
-        }
-        else if (item['x_value'] < 11 && item['x_value'] > 5) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF1100",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 16 && item['x_value'] > 10) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF1100",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 21 && item['x_value'] > 15) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF1100",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 26 && item['x_value'] > 20) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF1100",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 31 && item['x_value'] > 25) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF1100",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 36 && item['x_value'] > 30) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF1100",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 41 && item['x_value'] > 35) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF1100",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 46 && item['x_value'] > 40) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF1100",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_values'] > 51 && item['x_values'] < 45) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF6900",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 56 && item['x_value'] > 50) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FF7B00",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 61 && item['x_value'] > 55) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FFC100",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 66 && item['x_value'] > 60) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#FFE400",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 71 && item['x_value'] > 65) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#C2FF00",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 76 && item['x_value'] > 70) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#B0FF00",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 81 && item['x_value'] > 75) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#8DFF00",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 86 && item['x_value'] > 80) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#7CFF00",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 91 && item['x_value'] > 85) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#6AFF00",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_value'] < 96 && item['x_value'] > 90) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#24FF00",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-        else if (item['x_values'] > 95) {
-          this.cluster.push(
-            {
-              id: item['x_axis'],
-              name: item['cluster_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3.5,
-                fillColor: "#00FF00",
-                fillOpacity: 1,
-                strokeWeight: 0.1
-              }
-            });
-        }
-
+        this.cluster.push(
+          {
+            id: item['x_axis'],
+            name: item['crc_name'],
+            dist: item['district_name'],
+            blockId: item['block_name'],
+            label: item['x_value'],
+            lat: item['y_value'],
+            lng: item['z_value'],
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 4.5,
+              fillColor: this.colors[index],
+              fillOpacity: 1,
+              strokeWeight: 0.01
+            }
+          });
       });
       console.log(this.cluster);
 
       this.markers = this.cluster;
-      if (this.markers.length !== 0) {
-        document.getElementById('spinner').style.display = 'none';
-
-      } else {
-        setTimeout(() => {
-          document.getElementById('spinner').style.display = 'none';
-          document.getElementById('errMsg').style.color = 'red';
-          document.getElementById('errMsg').style.display = 'block';
-          document.getElementById('errMsg').innerHTML = 'No data found';
-        }, 20000);
-      }
+      this.loaderAndErr();
     });
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'Block';
@@ -672,6 +230,8 @@ export class StudentAttedenceComponent implements OnInit {
 
   blockWise() {
     this.myDistrict = '';
+    this.blockHidden = true;
+    this.clusterHidden = true;
     this.lat = 22.790988462301428;
     this.lng = 72.02733294142871;
     this.zoom = 7;
@@ -688,94 +248,35 @@ export class StudentAttedenceComponent implements OnInit {
       this.blok = true;
       this.clust = false;
       this.skul = false;
-      this.mylatlngData.forEach(item => {
+      this.blocksNames = [];
+
+      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+      this.colors = colors;
+      sorted.forEach((item, index) => {
         this.blocksIds.push(item['x_axis']);
-        if (item['x_value'] > 75) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              dist: item['district_name'],
-              name: item['block_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/green_Block.png",
-                scaledSize: {
-                  width: 6,
-                  height: 7,
-                }
-              }
-            });
-        } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              dist: item['district_name'],
-              name: item['block_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
+        this.blocksNames.push({ id: item['x_axis'], name: item['block_name'] });
 
-              icon: {
-                url: "../assets/blue_Dist.png",
-                scaledSize: {
-                  width: 6,
-                  height: 7
-                }
-              }
-            });
-        } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              dist: item['district_name'],
-              name: item['block_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/orange_Dist.png",
-                scaledSize: {
-                  width: 6,
-                  height: 7
-                }
-              }
-
-            });
-        } else if (item['x_value'] < 40) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              dist: item['district_name'],
-              name: item['block_name'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/red1_Dist.png",
-                scaledSize: {
-                  width: 6,
-                  height: 7
-                }
-              }
-
-            });
-        }
+        this.blocks.push(
+          {
+            id: item['x_axis'],
+            dist: item['district_name'],
+            name: item['block_name'],
+            label: item['x_value'],
+            lat: item['y_value'],
+            lng: item['z_value'],
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 5.5,
+              fillColor: this.colors[index],
+              fillOpacity: 1,
+              strokeWeight: 0.01
+            }
+          });
       });
 
       this.markers = this.blocks;
-      if (this.markers.length !== 0) {
-        document.getElementById('spinner').style.display = 'none';
-
-      } else {
-        setTimeout(() => {
-          document.getElementById('spinner').style.display = 'none';
-          document.getElementById('errMsg').style.color = 'red';
-          document.getElementById('errMsg').style.display = 'block';
-          document.getElementById('errMsg').innerHTML = 'No data found';
-        }, 20000);
-      }
+      this.loaderAndErr();
     });
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'Block';
@@ -786,6 +287,8 @@ export class StudentAttedenceComponent implements OnInit {
 
     if (this.districtsIds.includes(label[2])) {
       this.myDistrict = '';
+      this.blockHidden = true;
+      this.clusterHidden = true;
       this.zoom = 9;
       this.lat = Number(label[3]);
       this.lng = Number(label[4]);
@@ -799,100 +302,41 @@ export class StudentAttedenceComponent implements OnInit {
       this.title = "District";
       this.titleName = label[1];
       localStorage.setItem('dist', label[1]);
-      this.service.blockPerDist(label[2], label[1]).subscribe(res => {
+      this.service.blockPerDist(label[2]).subscribe(res => {
         this.dist = false;
         this.blok = true;
         this.clust = false;
         this.skul = false;
 
         this.mylatlngData = res;
-        this.blocksIds = [];
-        this.mylatlngData.forEach(item => {
+        this.blocksNames = [];
+        var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+        let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+        this.colors = colors;
+        sorted.forEach((item, index) => {
           this.blocksIds.push(item['x_axis']);
-          this.blocksNames.push(item['block_name']);
-          if (item['x_value'] > 75) {
-            this.blocks.push(
-              {
-                id: item['x_axis'],
-                name: item['block_name'],
-                dist: item['distName'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/green_Block.png",
-                  scaledSize: {
-                    width: 15,
-                    height: 16
-                  }
-                }
-              });
-          } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-            this.blocks.push(
-              {
-                id: item['x_axis'],
-                name: item['block_name'],
-                dist: item['distName'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/blue_Dist.png",
-                  scaledSize: {
-                    width: 15,
-                    height: 16
-                  }
-                }
-              });
-          } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-            this.blocks.push(
-              {
-                id: item['x_axis'],
-                name: item['block_name'],
-                dist: item['distName'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/orange_Dist.png",
-                  scaledSize: {
-                    width: 15,
-                    height: 16
-                  }
-                }
-              });
-          } else if (item['x_value'] < 40) {
-            this.blocks.push(
-              {
-                id: item['x_axis'],
-                name: item['block_name'],
-                dist: item['distName'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/red1_Dist.png",
-                  scaledSize: {
-                    width: 15,
-                    height: 16
-                  }
-                }
-              });
-          }
+          this.blocksNames.push({ id: item['x_axis'], name: item['block_name'] });
 
+          this.blocks.push(
+            {
+              id: item['x_axis'],
+              name: item['block_name'],
+              dist: item['distName'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 5.5,
+                fillColor: this.colors[index],
+                fillOpacity: 1,
+                strokeWeight: 0.01
+              }
+            });
         });
 
         this.markers = this.blocks;
-        if (this.markers.length !== 0) {
-          document.getElementById('spinner').style.display = 'none';
-        } else {
-          setTimeout(() => {
-            document.getElementById('spinner').style.display = 'none';
-            document.getElementById('errMsg').style.color = 'red';
-            document.getElementById('errMsg').style.display = 'block';
-            document.getElementById('errMsg').innerHTML = 'No data found';
-          }, 20000);
-        }
+        this.loaderAndErr();
       });
       var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
@@ -905,6 +349,8 @@ export class StudentAttedenceComponent implements OnInit {
 
     if (this.blocksIds.includes(label[2])) {
       this.myDistrict = '';
+      this.blockHidden = true;
+      this.clusterHidden = true;
       this.zoom = 11;
       this.lat = Number(label[3]);
       this.lng = Number(label[4]);
@@ -917,110 +363,44 @@ export class StudentAttedenceComponent implements OnInit {
 
       this.title = "Block";
       this.titleName = label[1];
-      this.service.clusterPerBlock(label[2], label[1]).subscribe(res => {
+      this.service.clusterPerBlock(label[2]).subscribe(res => {
         var distId = localStorage.getItem('dist');
-        localStorage.setItem('block', label[1]);
+        localStorage.setItem('block', label[2]);
         this.dist = false;
         this.blok = false;
         this.clust = true;
         this.skul = false;
-
+        this.blockHidden = false;
         this.mylatlngData = res;
         this.clusterIds = [];
-        this.mylatlngData.forEach(item => {
+        var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+        let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+        this.colors = colors;
+        sorted.forEach((item, index) => {
           this.clusterIds.push(item['x_axis']);
-          // this.clusterIds.push(item['x_axis']);
-          if (item['x_value'] > 75) {
-            this.cluster.push(
-              {
-                id: item['x_axis'],
-                name: item['crc_name'],
-                // name: item[''],
-                dist: distId,
-                blockId: item['blockName'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/green_Block.png",
-                  scaledSize: {
-                    width: 12,
-                    height: 13
-                  }
-                }
-              });
-          } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-            this.cluster.push(
-              {
-                id: item['x_axis'],
-                name: item['crc_name'],
-                // name: item[''],
-                dist: distId,
-                blockId: item['blockName'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/blue_Dist.png",
-                  scaledSize: {
-                    width: 12,
-                    height: 13
-                  }
-                }
-              });
-          } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-            this.cluster.push(
-              {
-                id: item['x_axis'],
-                name: item['crc_name'],
-                // name: item[''],
-                dist: distId,
-                blockId: item['blockName'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/orange_Dist.png",
-                  scaledSize: {
-                    width: 12,
-                    height: 13
-                  }
-                }
-              });
-          } else if (item['x_value'] < 40) {
-            this.cluster.push(
-              {
-                id: item['x_axis'],
-                name: item['crc_name'],
-                // name: item[''],
-                dist: distId,
-                blockId: item['blockName'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/red1_Dist.png",
-                  scaledSize: {
-                    width: 12,
-                    height: 13
-                  }
-                }
-              });
-          }
+          this.clusterNames.push({ id: item['x_axis'], name: item['crc_name'] });
 
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['crc_name'],
+              // name: item[''],
+              dist: distId,
+              blockId: item['blockName'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 4.5,
+                fillColor: this.colors[index],
+                fillOpacity: 1,
+                strokeWeight: 0.01
+              }
+            });
         });
-
         this.markers = this.cluster;
-        if (this.markers.length !== 0) {
-          document.getElementById('spinner').style.display = 'none';
-        } else {
-          setTimeout(() => {
-            document.getElementById('spinner').style.display = 'none';
-            document.getElementById('errMsg').style.color = 'red';
-            document.getElementById('errMsg').style.display = 'block';
-            document.getElementById('errMsg').innerHTML = 'No data found';
-          }, 20000);
-        }
+        this.loaderAndErr();
       });
       var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
@@ -1030,8 +410,9 @@ export class StudentAttedenceComponent implements OnInit {
     }
 
     if (this.clusterIds.includes(label[2])) {
-      console.log(label[1]);
       this.myDistrict = '';
+      this.blockHidden = true;
+      this.clusterHidden = true;
       this.zoom = 13;
       this.lat = Number(label[3]);
       this.lng = Number(label[4]);
@@ -1043,108 +424,42 @@ export class StudentAttedenceComponent implements OnInit {
       document.getElementById('spinner').style.marginTop = '3%';
 
       this.title = "Cluster";
-      this.titleName = label[1]+"(crc)";
-      this.service.schoolsPerCluster("",label[1]).subscribe(res => {
-        var block = localStorage.getItem('block');
+      this.titleName = label[1] + "(crc)";
+      this.service.schoolsPerCluster(label[2]).subscribe(res => {
         var distId = localStorage.getItem('dist');
         this.dist = false;
         this.blok = false;
         this.clust = false;
         this.skul = true;
-
         this.mylatlngData = res;
-        this.mylatlngData.forEach(item => {
-          if (item['x_value'] > 75) {
-            this.schools.push(
-              {
-                id: item['x_axis'],
-                name: item['schoolName'],
-                blockId: block,
-                dist: distId,
-                clusterId: item['clusterId'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/green_Block.png",
-                  scaledSize: {
-                    width: 6,
-                    height: 7
-                  }
-                }
-              });
-          } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-            this.schools.push(
-              {
-                id: item['x_axis'],
-                name: item['schoolName'],
-                blockId: block,
-                dist: distId,
-                clusterId: item['clusterId'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/blue_Dist.png",
-                  scaledSize: {
-                    width: 6,
-                    height: 7
-                  }
-                }
-              });
-          } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-            this.schools.push(
-              {
-                id: item['x_axis'],
-                name: item['schoolName'],
-                blockId: block,
-                dist: distId,
-                clusterId: item['clusterId'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/orange_Dist.png",
-                  scaledSize: {
-                    width: 6,
-                    height: 7
-                  }
-                }
-              });
-          } else if (item['x_value'] < 40) {
-            this.schools.push(
-              {
-                id: item['x_axis'],
-                name: item['schoolName'],
-                blockId: block,
-                dist: distId,
-                clusterId: item['clusterId'],
-                label: item['x_value'],
-                lat: item['y_value'],
-                lng: item['z_value'],
-                icon: {
-                  url: "../assets/red1_Dist.png",
-                  scaledSize: {
-                    width: 6,
-                    height: 7
-                  }
-                }
-              });
-          }
 
+        var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+        let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+        this.colors = colors;
+
+        sorted.forEach((item, index) => {
+          this.schools.push(
+            {
+              id: item['x_axis'],
+              name: item['schoolName'],
+              blockId: item['blockName'],
+              dist: distId,
+              clusterId: item['crc'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: this.colors[index],
+                fillOpacity: 1,
+                strokeWeight: 0.01
+              }
+            });
         });
 
         this.markers = this.schools;
-        if (this.markers.length !== 0) {
-          document.getElementById('spinner').style.display = 'none';
-        } else {
-          setTimeout(() => {
-            document.getElementById('spinner').style.display = 'none';
-            document.getElementById('errMsg').style.color = 'red';
-            document.getElementById('errMsg').style.display = 'block';
-            document.getElementById('errMsg').innerHTML = 'No data found';
-          }, 20000);
-        }
+        this.loaderAndErr();
       });
       var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
@@ -1174,115 +489,381 @@ export class StudentAttedenceComponent implements OnInit {
   }
 
   myDistData(data) {
+    console.log(data.name);
+    if (this.clust === true) {
+      document.getElementById('errMsg').style.display = 'none';
+      document.getElementById('spinner').style.display = 'block';
+      document.getElementById('spinner').style.marginTop = '3%';
+
+      this.title = "Dist"; var block = localStorage.getItem('block');
+
+      this.titleName = data.name;
+      localStorage.setItem('dist', data);
+      this.service.clusterPerDist(data.id).subscribe(res => {
+        // this.clusterHidden = false;
+        this.blockHidden = false;
+        this.dist = false;
+        this.blok = false;
+        this.clust = true;
+        this.skul = false;
+
+        this.mylatlngData = res;
+        this.blocksNames = [];
+        this.zoom = 9;
+        this.lat = Number(this.mylatlngData[5]['y_value']);
+        this.lng = Number(this.mylatlngData[5]['z_value']);
+
+        var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+        let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+        this.colors = colors;
+
+        sorted.forEach((item, index) => {
+          console.log(item['block_name']);
+          this.blocksNames.push({ id: item['x_axis'], name: item['block_name'] });
+          this.cluster.push(
+            {
+              id: item['x_axis'],
+              name: item['crc_name'],
+              // name: item[''],
+              dist: item['distName'],
+              blockId: item['blockName'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 4.5,
+                fillColor: this.colors[index],
+                fillOpacity: 1,
+                strokeWeight: 0.01
+              }
+            });
+
+        });
+        console.log(this.blocksNames);
+        this.markers = this.cluster;
+        this.loaderAndErr();
+      });
+      var element1: any = document.getElementsByClassName('btn-secondary');
+      element1[0].style.display = 'block';
+      // element1[1].style.display = 'block';
+      this.districts = [];
+      this.cluster = [];
+      console.log("myData clicked", data);
+    } else {
+      document.getElementById('errMsg').style.display = 'none';
+      document.getElementById('spinner').style.display = 'block';
+      document.getElementById('spinner').style.marginTop = '3%';
+
+      this.title = "District";
+      this.titleName = data.name;
+      localStorage.setItem('dist', data);
+      this.service.blockPerDist(data.id).subscribe(res => {
+        this.blockHidden = false;
+        this.clusterHidden = true;
+        this.dist = false;
+        this.blok = true;
+        this.clust = false;
+        this.skul = false;
+
+        this.mylatlngData = res;
+        this.blocksNames = [];
+
+        var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+        let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+        this.colors = colors;
+
+        sorted.forEach((item, index) => {
+          this.blocksIds.push(item['x_axis']);
+          this.blocksNames.push({ id: item['x_axis'], name: item['block_name'] });
+          this.blocks.push(
+            {
+              id: item['x_axis'],
+              name: item['block_name'],
+              dist: item['distName'],
+              label: item['x_value'],
+              lat: item['y_value'],
+              lng: item['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 5.5,
+                fillColor: this.colors[index],
+                fillOpacity: 1,
+                strokeWeight: 0.01
+              }
+            });
+
+        });
+
+        this.markers = this.blocks;
+        this.loaderAndErr();
+      });
+      var element1: any = document.getElementsByClassName('btn-secondary');
+      element1[0].style.display = 'block';
+      // element1[1].style.display = 'block';
+      // this.markers = [];
+      this.blocks = [];
+      console.log("myData clicked", data);
+    }
+  }
+
+  myBlockData(data) {
     document.getElementById('errMsg').style.display = 'none';
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('spinner').style.marginTop = '3%';
 
-    this.title = "District";
-    this.titleName = data;
+    this.title = "Block";
+    this.titleName = data.name;
     localStorage.setItem('dist', data);
-    this.service.blockPerDist(2401, data).subscribe(res => {
+    this.service.clusterPerBlock(data.id).subscribe(res => {
+      this.clusterHidden = false;
       this.blockHidden = false;
       this.dist = false;
-      this.blok = true;
-      this.clust = false;
+      this.blok = false;
+      this.clust = true;
       this.skul = false;
 
       this.mylatlngData = res;
-      this.blocksIds = [];
-      this.mylatlngData.forEach(item => {
-        this.blocksIds.push(item['x_axis']);
-        this.blocksNames.push(item['block_name']);
-        if (item['x_value'] > 75) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              name: item['block_name'],
-              dist: item['distName'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/green_Block.png",
-                scaledSize: {
-                  width: 15,
-                  height: 16
-                }
-              }
-            });
-        } else if (item['x_value'] < 75 && item['x_value'] > 60) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              name: item['block_name'],
-              dist: item['distName'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/blue_Dist.png",
-                scaledSize: {
-                  width: 15,
-                  height: 16
-                }
-              }
-            });
-        } else if (item['x_value'] < 60 && item['x_value'] > 40) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              name: item['block_name'],
-              dist: item['distName'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/orange_Dist.png",
-                scaledSize: {
-                  width: 15,
-                  height: 16
-                }
-              }
-            });
-        } else if (item['x_value'] < 40) {
-          this.blocks.push(
-            {
-              id: item['x_axis'],
-              name: item['block_name'],
-              dist: item['distName'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
-              icon: {
-                url: "../assets/red1_Dist.png",
-                scaledSize: {
-                  width: 15,
-                  height: 16
-                }
-              }
-            });
-        }
+      this.clusterNames = [];
+
+      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+      this.colors = colors;
+
+      sorted.forEach((item, index) => {
+        console.log({ name: item['crc_name'] });
+        this.clusterNames.push({ id: item['x_axis'], name: item['crc_name'] });
+        this.cluster.push(
+          {
+            id: item['x_axis'],
+            name: item['crc_name'],
+            // name: item[''],
+            dist: item['distName'],
+            blockId: item['blockName'],
+            label: item['x_value'],
+            lat: item['y_value'],
+            lng: item['z_value'],
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 4.5,
+              fillColor: this.colors[index],
+              fillOpacity: 1,
+              strokeWeight: 0.01
+            }
+          });
 
       });
-
-      this.markers = this.blocks;
-      if (this.markers.length !== 0) {
-        document.getElementById('spinner').style.display = 'none';
-      } else {
-        setTimeout(() => {
-          document.getElementById('spinner').style.display = 'none';
-          document.getElementById('errMsg').style.color = 'red';
-          document.getElementById('errMsg').style.display = 'block';
-          document.getElementById('errMsg').innerHTML = 'No data found';
-        }, 20000);
-      }
+      console.log(this.clusterNames)
+      this.markers = this.cluster;
+      this.loaderAndErr();
     });
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'block';
     // element1[1].style.display = 'block';
     // this.markers = [];
-    this.blocks = [];
+    this.cluster = [];
     console.log("myData clicked", data);
+  }
+
+  myClusterData(data) {
+    document.getElementById('errMsg').style.display = 'none';
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('spinner').style.marginTop = '3%';
+
+    this.title = "Cluster";
+    this.titleName = data.name;
+    localStorage.setItem('dist', data);
+    this.service.schoolsPerCluster(data.id).subscribe(res => {
+      this.dist = false;
+      this.blok = false;
+      this.clust = false;
+      this.skul = true;
+
+      this.mylatlngData = res;
+      this.schools = [];
+
+      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+      this.colors = colors;
+
+      sorted.forEach((item, index) => {
+        this.schoolsIds.push(item['x_axis']);
+        this.schoolsNames.push({ id: item['x_axis'], name: item['block_name'] });
+        this.schools.push(
+          {
+            id: item['x_axis'],
+            name: item['schoolName'],
+            blockId: item['blockName'],
+            dist: item['distName'],
+            clusterId: item['crc'],
+            label: item['x_value'],
+            lat: item['y_value'],
+            lng: item['z_value'],
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 3.5,
+              fillColor: this.colors[index],
+              fillOpacity: 1,
+              strokeWeight: 0.01
+            }
+          });
+      });
+
+      this.markers = this.schools;
+      this.loaderAndErr();
+    });
+    var element1: any = document.getElementsByClassName('btn-secondary');
+    element1[0].style.display = 'block';
+    // element1[1].style.display = 'block';
+    // this.markers = [];
+    this.schools = [];
+    console.log("myData clicked", data);
+  }
+
+  color() {
+    // Converts a #ffffff hex string into an [r,g,b] array
+    function hex2rgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+      ] : null;
+    }
+
+    // Inverse of the above
+    function rgb2hex(rgb) {
+      return '#' + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+    }
+
+    // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
+    // Taken from the awesome ROT.js roguelike dev library at
+    // https://github.com/ondras/rot.js
+    function _interpolateRgb(color1, color2, factor) {
+      if (arguments.length < 3) { factor = 0.5; }
+
+      let result = color1.slice();
+
+      for (let i = 0; i < 3; i++) {
+        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+      }
+
+      return result;
+    }
+
+    // function rgb2hsl(color) {
+    //   const r = color[0] / 255;
+    //   const g = color[1] / 255;
+    //   const b = color[2] / 255;
+
+    //   const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    //   let h, s, l = (max + min) / 2;
+
+    //   if (max == min) {
+    //     h = s = 0; // achromatic
+    //   } else {
+    //     let d = max - min;
+    //     s = (l > 0.5 ? d / (2 - max - min) : d / (max + min));
+    //     switch (max) {
+    //       case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+    //       case g: h = (b - r) / d + 2; break;
+    //       case b: h = (r - g) / d + 4; break;
+    //     }
+    //     h /= 6;
+    //   }
+
+    //   return [h, s, l];
+    // }
+
+    // function hue2rgb(p, q, t) {
+    //   if (t < 0) t += 1;
+    //   if (t > 1) t -= 1;
+    //   if (t < 1 / 6) return p + (q - p) * 6 * t;
+    //   if (t < 1 / 2) return q;
+    //   if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    //   return p;
+    // }
+
+    // function hsl2rgb(color) {
+    //   let l = color[2];
+
+    //   if (color[1] == 0) {
+    //     l = Math.round(l * 255);
+    //     return [l, l, l];
+    //   } else {
+    //     let s = color[1];
+    //     let q = (l < 0.5 ? l * (1 + s) : l + s - l * s);
+    //     let p = 2 * l - q;
+    //     let r = hue2rgb(p, q, color[0] + 1 / 3);
+    //     let g = hue2rgb(p, q, color[0]);
+    //     let b = hue2rgb(p, q, color[0] - 1 / 3);
+    //     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    //   }
+    // }
+
+    // function _interpolateHsl(color1, color2, factor) {
+    //   if (arguments.length < 3) { factor = 0.5; }
+
+    //   let hsl1 = rgb2hsl(color1);
+    //   let hsl2 = rgb2hsl(color2);
+    //   for (let i = 0; i < 3; i++) {
+    //     hsl1[i] += factor * (hsl2[i] - hsl1[i]);
+    //   }
+    //   return hsl2rgb(hsl1);
+    // }
+
+    function generateGradient(color1, color2, total, interpolation) {
+      const colorStart = typeof color1 === 'string' ? hex2rgb(color1) : color1;
+      const colorEnd = typeof color2 === 'string' ? hex2rgb(color2) : color2;
+
+      // will the gradient be via RGB or HSL
+      switch (interpolation) {
+        case 'rgb':
+          return colorsToGradientRgb(colorStart, colorEnd, total);
+        // case 'hsl':
+        //   return colorsToGradientHsl(colorStart, colorEnd, total);
+        default:
+          return false;
+      }
+    }
+
+    function colorsToGradientRgb(startColor, endColor, steps) {
+      // returns array of hex values for color, since rgb would be an array of arrays and not strings, easier to handle hex strings
+      let arrReturnColors = [];
+      let interimColorRGB;
+      let interimColorHex;
+      const totalColors = steps;
+      const factorStep = 1 / (totalColors - 1);
+
+      for (let idx = 0; idx < totalColors; idx++) {
+        interimColorRGB = _interpolateRgb(startColor, endColor, factorStep * idx);
+        interimColorHex = rgb2hex(interimColorRGB);
+        arrReturnColors.push(interimColorHex);
+      }
+
+      return arrReturnColors;
+    }
+
+    // function colorsToGradientHsl(startColor, endColor, steps) {
+    //   // returns array of hex values for color, since rgb would be an array of arrays and not strings, easier to handle hex strings
+    //   let arrReturnColors = [];
+    //   let interimColorRGB;
+    //   let interimColorHex;
+    //   const totalColors = steps;
+    //   const factorStep = 1 / (totalColors - 1);
+
+    //   for (let idx = 0; idx < totalColors; idx++) {
+    //     interimColorRGB = _interpolateHsl(startColor, endColor, factorStep * idx);
+    //     interimColorHex = rgb2hex(interimColorRGB);
+    //     arrReturnColors.push(interimColorHex);
+    //   }
+
+    //   return arrReturnColors;
+    // }
+
+    return {
+      generateGradient
+    };
   }
 
 }

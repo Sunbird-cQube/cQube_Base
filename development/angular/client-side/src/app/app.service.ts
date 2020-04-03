@@ -34,16 +34,20 @@ export class AppServiceComponent {
         return this.http.get(`${this.baseUrl}/getSchoolData`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    blockPerDist(distId, distName) {
-        return this.http.post(`${this.baseUrl}/blcokPerDist`, { distId: distId, distName: distName, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    blockPerDist(distId) {
+        return this.http.post(`${this.baseUrl}/blcokPerDist`, { distId: distId, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    clusterPerBlock(blockId, blockName) {
-        return this.http.post(`${this.baseUrl}/clustePerBlock`, { blockId: blockId, blockName: blockName, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    clusterPerBlock(blockId) {
+        return this.http.post(`${this.baseUrl}/clustePerBlock`, { blockId: blockId, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    schoolsPerCluster(clusterId, clusterName) {
-        return this.http.post(`${this.baseUrl}/schoolPerCluster`, { clusterId: clusterId, clusterName: clusterName, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    schoolsPerCluster(clusterId) {
+        return this.http.post(`${this.baseUrl}/schoolPerCluster`, { clusterId: clusterId, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    clusterPerDist(distId) {
+        return this.http.post(`${this.baseUrl}/clusterPerDist`, { distId: distId, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
 
