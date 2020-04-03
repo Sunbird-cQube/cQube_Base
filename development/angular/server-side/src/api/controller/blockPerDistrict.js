@@ -19,7 +19,8 @@ router.post('/', auth.authController, async (req, res) => {
                 block_name: blocks.block_name,
                 x_value: blocks.x_value,
                 y_value: blocks.y_value,
-                z_value: blocks.z_value
+                z_value: blocks.z_value,
+                students_count: blocks.students_count
             }
             blcokDetails.push(obj);
         }

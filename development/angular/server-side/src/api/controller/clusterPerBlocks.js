@@ -6,7 +6,6 @@ router.post('/', async (req, res) => {
     var blockId = req.body.blockId;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
-    console.log(blockId);
 
     var allClusters = await axios.get(`${baseUrl}/cluster_wise_data`, { 'headers': { 'token': "Bearer" + token } });
 

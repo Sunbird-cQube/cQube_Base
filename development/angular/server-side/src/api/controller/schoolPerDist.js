@@ -2,17 +2,15 @@ const router = require('express').Router();
 const axios = require('axios');
 
 router.post('/', async (req, res) => {
-    var schools = [];
-    var clusterId = req.body.clusterId;
+    var distId = req.body.distId;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
-
 
     var allSchools = await axios.get(`${baseUrl}/school_wise_data`, { 'headers': { 'token': "Bearer" + token } });
 
     var schoolsDetails = [];
     allSchools.data.forEach(schools => {
-        if (clusterId === schools.cluster_id) {
+        if (distId === schools.cluster_id) {
             obj = {
                 x_axis: schools.x_axis,
                 crc: schools.crc_name,

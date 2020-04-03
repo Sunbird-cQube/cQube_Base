@@ -33,6 +33,7 @@ export class StudentAttedenceComponent implements OnInit {
   myDistrict: any;
   myBlock: any;
   public colors: any;
+  public studentCout: any;
 
   dist: boolean = false;
   blok: boolean = false;
@@ -95,33 +96,37 @@ export class StudentAttedenceComponent implements OnInit {
       this.clust = false;
       this.skul = false;
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#FFE400', '#336600', sorted.length, 'rgb');
       this.colors = colors;
-      sorted.forEach((item, index) => {
-        this.districtsIds.push(item['x_axis']);
-        this.districtsNames.push({ id: item['x_axis'], name: item['district_name'] });
+      this.studentCout = 0;
+      for (var i = 0; i < sorted.length; i++) {
+        this.districtsIds.push(sorted[i]['x_axis']);
+        this.districtsNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['district_name'] });
+        this.studentCout = this.studentCout + Number(sorted[i]['students_count']);
         this.districts.push(
           {
-            id: item['x_axis'],
-            name: item['district_name'],
-            label: item['x_value'],
-            lat: item['y_value'],
-            lng: item['z_value'],
+            id: sorted[i]['x_axis'],
+            name: sorted[i]['district_name'],
+            label: sorted[i]['x_value'],
+            lat: sorted[i]['y_value'],
+            lng: sorted[i]['z_value'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 8.5,
-              fillColor: this.colors[index],
+              fillColor: this.colors[i],
               fillOpacity: 1,
               strokeWeight: 0.01
             }
           });
-      });
+      };
       this.markers = this.districts;
       this.loaderAndErr();
+      console.log(this.studentCout);
     });
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'none';
     this.districts = [];
+    this.studentCout = 0;
   }
 
   schoolWise() {
@@ -146,25 +151,25 @@ export class StudentAttedenceComponent implements OnInit {
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
       this.colors = colors;
-      sorted.forEach((item, index) => {
-        this.districtsIds.push(item['x_axis']);
+      for (var i = 0; i < sorted.length; i++) {
+        this.districtsIds.push(sorted[i]['x_axis']);
         this.schools.push(
           {
-            id: item['x_axis'],
-            dist: item['district_name'],
-            name: item['school_name'],
-            label: item['x_value'],
-            lat: item['y_value'],
-            lng: item['z_value'],
+            id: sorted[i]['x_axis'],
+            dist: sorted[i]['district_name'],
+            name: sorted[i]['school_name'],
+            label: sorted[i]['x_value'],
+            lat: sorted[i]['y_value'],
+            lng: sorted[i]['z_value'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 3.5,
-              fillColor: this.colors[index],
+              fillColor: this.colors[i],
               fillOpacity: 1,
               strokeWeight: 0.01
             }
           });
-      });
+      };
 
       this.markers = this.schools;
       this.loaderAndErr();
@@ -198,26 +203,26 @@ export class StudentAttedenceComponent implements OnInit {
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
       this.colors = colors;
-      sorted.forEach((item, index) => {
-        this.clusterIds.push(item['x_axis']);
+      for (var i = 0; i < sorted.length; i++) {
+        this.clusterIds.push(sorted[i]['x_axis']);
         this.cluster.push(
           {
-            id: item['x_axis'],
-            name: item['crc_name'],
-            dist: item['district_name'],
-            blockId: item['block_name'],
-            label: item['x_value'],
-            lat: item['y_value'],
-            lng: item['z_value'],
+            id: sorted[i]['x_axis'],
+            name: sorted[i]['crc_name'],
+            dist: sorted[i]['district_name'],
+            blockId: sorted[i]['block_name'],
+            label: sorted[i]['x_value'],
+            lat: sorted[i]['y_value'],
+            lng: sorted[i]['z_value'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 4.5,
-              fillColor: this.colors[index],
+              fillColor: this.colors[i],
               fillOpacity: 1,
               strokeWeight: 0.01
             }
           });
-      });
+      };
       console.log(this.cluster);
 
       this.markers = this.cluster;
@@ -242,7 +247,7 @@ export class StudentAttedenceComponent implements OnInit {
     this.title = "State";
     this.titleName = "Gujarat"
     this.service.block_wise_data().subscribe(res => {
-      // localStorage.setItem('schoolWise', JSON.stringify(res));
+      // localStorage.setsorted[i]('schoolWise', JSON.stringify(res));
       this.mylatlngData = res;
       this.dist = false;
       this.blok = true;
@@ -251,29 +256,29 @@ export class StudentAttedenceComponent implements OnInit {
       this.blocksNames = [];
 
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#FF7B00', '#517e01', sorted.length, 'rgb');
       this.colors = colors;
-      sorted.forEach((item, index) => {
-        this.blocksIds.push(item['x_axis']);
-        this.blocksNames.push({ id: item['x_axis'], name: item['block_name'] });
+      for (var i = 0; i < sorted.length; i++) {
+        this.blocksIds.push(sorted[i]['x_axis']);
+        this.blocksNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
 
         this.blocks.push(
           {
-            id: item['x_axis'],
-            dist: item['district_name'],
-            name: item['block_name'],
-            label: item['x_value'],
-            lat: item['y_value'],
-            lng: item['z_value'],
+            id: sorted[i]['x_axis'],
+            dist: sorted[i]['district_name'],
+            name: sorted[i]['block_name'],
+            label: sorted[i]['x_value'],
+            lat: sorted[i]['y_value'],
+            lng: sorted[i]['z_value'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 5.5,
-              fillColor: this.colors[index],
+              fillColor: this.colors[i],
               fillOpacity: 1,
               strokeWeight: 0.01
             }
           });
-      });
+      };
 
       this.markers = this.blocks;
       this.loaderAndErr();
@@ -286,13 +291,13 @@ export class StudentAttedenceComponent implements OnInit {
   clickedMarker(label) {
 
     if (this.districtsIds.includes(label[2])) {
-      this.myDistrict = '';
+      //  this.myDistrict['name'] = label[1];
       this.blockHidden = true;
       this.clusterHidden = true;
       this.zoom = 9;
       this.lat = Number(label[3]);
       this.lng = Number(label[4]);
-
+      this.studentCout = 0;
       this.markers = [];
       this.blocks = [];
       document.getElementById('errMsg').style.display = 'none';
@@ -313,27 +318,28 @@ export class StudentAttedenceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
         this.colors = colors;
-        sorted.forEach((item, index) => {
-          this.blocksIds.push(item['x_axis']);
-          this.blocksNames.push({ id: item['x_axis'], name: item['block_name'] });
+        for (var i = 0; i < sorted.length; i++) {
+          this.studentCout = this.studentCout + Number(sorted[i]['students_count']);
+          this.blocksIds.push(sorted[i]['x_axis']);
+          this.blocksNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
 
           this.blocks.push(
             {
-              id: item['x_axis'],
-              name: item['block_name'],
-              dist: item['distName'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
+              id: sorted[i]['x_axis'],
+              name: sorted[i]['block_name'],
+              dist: sorted[i]['distName'],
+              label: sorted[i]['x_value'],
+              lat: sorted[i]['y_value'],
+              lng: sorted[i]['z_value'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 5.5,
-                fillColor: this.colors[index],
+                fillColor: this.colors[i],
                 fillOpacity: 1,
                 strokeWeight: 0.01
               }
             });
-        });
+        };
 
         this.markers = this.blocks;
         this.loaderAndErr();
@@ -348,7 +354,6 @@ export class StudentAttedenceComponent implements OnInit {
 
 
     if (this.blocksIds.includes(label[2])) {
-      this.myDistrict = '';
       this.blockHidden = true;
       this.clusterHidden = true;
       this.zoom = 11;
@@ -364,41 +369,42 @@ export class StudentAttedenceComponent implements OnInit {
       this.title = "Block";
       this.titleName = label[1];
       this.service.clusterPerBlock(label[2]).subscribe(res => {
-        var distId = localStorage.getItem('dist');
-        localStorage.setItem('block', label[2]);
+
         this.dist = false;
         this.blok = false;
         this.clust = true;
         this.skul = false;
-        this.blockHidden = false;
+        this.blockHidden = true;
+        this.myBlock = label[1]
         this.mylatlngData = res;
         this.clusterIds = [];
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
         this.colors = colors;
-        sorted.forEach((item, index) => {
-          this.clusterIds.push(item['x_axis']);
-          this.clusterNames.push({ id: item['x_axis'], name: item['crc_name'] });
+        for (var i = 0; i < sorted.length; i++) {
+          console.log(sorted[i]['crc_name']);
+          this.clusterIds.push(sorted[i]['x_axis']);
+          this.clusterNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['crc_name'] });
 
           this.cluster.push(
             {
-              id: item['x_axis'],
-              name: item['crc_name'],
-              // name: item[''],
-              dist: distId,
-              blockId: item['blockName'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
+              id: sorted[i]['x_axis'],
+              name: sorted[i]['crc_name'],
+              // name: sorted[i][''],
+              dist: sorted[i]['distName'],
+              blockId: sorted[i]['blockName'],
+              label: sorted[i]['x_value'],
+              lat: sorted[i]['y_value'],
+              lng: sorted[i]['z_value'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 4.5,
-                fillColor: this.colors[index],
+                fillColor: this.colors[i],
                 fillOpacity: 1,
                 strokeWeight: 0.01
               }
             });
-        });
+        };
         this.markers = this.cluster;
         this.loaderAndErr();
       });
@@ -408,9 +414,10 @@ export class StudentAttedenceComponent implements OnInit {
       // this.markers = [];
       this.cluster = [];
     }
-
+    console.log(label[2]);
+    console.log(this.clusterIds);
     if (this.clusterIds.includes(label[2])) {
-      this.myDistrict = '';
+      this.myDistrict = label[1];
       this.blockHidden = true;
       this.clusterHidden = true;
       this.zoom = 13;
@@ -426,7 +433,8 @@ export class StudentAttedenceComponent implements OnInit {
       this.title = "Cluster";
       this.titleName = label[1] + "(crc)";
       this.service.schoolsPerCluster(label[2]).subscribe(res => {
-        var distId = localStorage.getItem('dist');
+        var distId = localStorage.getsorted[i]('dist');
+        console.log(distId);
         this.dist = false;
         this.blok = false;
         this.clust = false;
@@ -437,26 +445,26 @@ export class StudentAttedenceComponent implements OnInit {
         let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
         this.colors = colors;
 
-        sorted.forEach((item, index) => {
+        for (var i = 0; i < sorted.length; i++) {
           this.schools.push(
             {
-              id: item['x_axis'],
-              name: item['schoolName'],
-              blockId: item['blockName'],
-              dist: distId,
-              clusterId: item['crc'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
+              id: sorted[i]['x_axis'],
+              name: sorted[i]['schoolName'],
+              blockId: sorted[i]['blockName'],
+              dist: sorted[i]['distName'],
+              clusterId: sorted[i]['crc'],
+              label: sorted[i]['x_value'],
+              lat: sorted[i]['y_value'],
+              lng: sorted[i]['z_value'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 3.5,
-                fillColor: this.colors[index],
+                fillColor: this.colors[i],
                 fillOpacity: 1,
                 strokeWeight: 0.01
               }
             });
-        });
+        };
 
         this.markers = this.schools;
         this.loaderAndErr();
@@ -485,6 +493,7 @@ export class StudentAttedenceComponent implements OnInit {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('dist');
     this.router.navigate(['/']);
   }
 
@@ -495,10 +504,10 @@ export class StudentAttedenceComponent implements OnInit {
       document.getElementById('spinner').style.display = 'block';
       document.getElementById('spinner').style.marginTop = '3%';
 
-      this.title = "Dist"; var block = localStorage.getItem('block');
+      this.title = "Dist";
 
       this.titleName = data.name;
-      localStorage.setItem('dist', data);
+      localStorage.setItem('dist', data.name);
       this.service.clusterPerDist(data.id).subscribe(res => {
         // this.clusterHidden = false;
         this.blockHidden = false;
@@ -517,29 +526,29 @@ export class StudentAttedenceComponent implements OnInit {
         let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
         this.colors = colors;
 
-        sorted.forEach((item, index) => {
-          console.log(item['block_name']);
-          this.blocksNames.push({ id: item['x_axis'], name: item['block_name'] });
+        for (var i = 0; i < sorted.length; i++) {
+          console.log(sorted[i]['blockName']);
+          this.blocksNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['blockName'] });
           this.cluster.push(
             {
-              id: item['x_axis'],
-              name: item['crc_name'],
-              // name: item[''],
-              dist: item['distName'],
-              blockId: item['blockName'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
+              id: sorted[i]['x_axis'],
+              name: sorted[i]['crc_name'],
+              // name: sorted[i][''],
+              dist: sorted[i]['distName'],
+              blockId: sorted[i]['blockName'],
+              label: sorted[i]['x_value'],
+              lat: sorted[i]['y_value'],
+              lng: sorted[i]['z_value'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 4.5,
-                fillColor: this.colors[index],
+                fillColor: this.colors[i],
                 fillOpacity: 1,
                 strokeWeight: 0.01
               }
             });
 
-        });
+        };
         console.log(this.blocksNames);
         this.markers = this.cluster;
         this.loaderAndErr();
@@ -550,14 +559,68 @@ export class StudentAttedenceComponent implements OnInit {
       this.districts = [];
       this.cluster = [];
       console.log("myData clicked", data);
+    } else if (this.skul === true) {
+      this.clust = false;
+      document.getElementById('errMsg').style.display = 'none';
+      document.getElementById('spinner').style.display = 'block';
+      document.getElementById('spinner').style.marginTop = '3%';
+      var distId = localStorage.getItem('dist');
+      this.title = "Cluster";
+      this.titleName = data.name;
+      localStorage.setItem('dist', data.name);
+      this.service.schoolPerDist(data.id).subscribe(res => {
+        this.dist = false;
+        this.blok = false;
+        this.clust = false;
+        this.skul = true;
+
+        this.mylatlngData = res;
+        this.schools = [];
+
+        var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+        let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
+        this.colors = colors;
+
+        for (var i = 0; i < sorted.length; i++) {
+          this.schoolsIds.push(sorted[i]['x_axis']);
+          this.schoolsNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
+          this.schools.push(
+            {
+              id: sorted[i]['x_axis'],
+              name: sorted[i]['schoolName'],
+              blockId: sorted[i]['blockName'],
+              dist: distId,
+              clusterId: sorted[i]['crc'],
+              label: sorted[i]['x_value'],
+              lat: sorted[i]['y_value'],
+              lng: sorted[i]['z_value'],
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 3.5,
+                fillColor: this.colors[i],
+                fillOpacity: 1,
+                strokeWeight: 0.01
+              }
+            });
+        };
+
+        this.markers = this.schools;
+        this.loaderAndErr();
+      });
+      var element1: any = document.getElementsByClassName('btn-secondary');
+      element1[0].style.display = 'block';
+      // element1[1].style.display = 'block';
+      // this.markers = [];
+      this.schools = [];
     } else {
+      // this.skul = false;
       document.getElementById('errMsg').style.display = 'none';
       document.getElementById('spinner').style.display = 'block';
       document.getElementById('spinner').style.marginTop = '3%';
 
       this.title = "District";
       this.titleName = data.name;
-      localStorage.setItem('dist', data);
+      localStorage.setItem('dist', data.name);
       this.service.blockPerDist(data.id).subscribe(res => {
         this.blockHidden = false;
         this.clusterHidden = true;
@@ -573,27 +636,27 @@ export class StudentAttedenceComponent implements OnInit {
         let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
         this.colors = colors;
 
-        sorted.forEach((item, index) => {
-          this.blocksIds.push(item['x_axis']);
-          this.blocksNames.push({ id: item['x_axis'], name: item['block_name'] });
+        for (var i = 0; i < sorted.length; i++) {
+          this.blocksIds.push(sorted[i]['x_axis']);
+          this.blocksNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
           this.blocks.push(
             {
-              id: item['x_axis'],
-              name: item['block_name'],
-              dist: item['distName'],
-              label: item['x_value'],
-              lat: item['y_value'],
-              lng: item['z_value'],
+              id: sorted[i]['x_axis'],
+              name: sorted[i]['block_name'],
+              dist: sorted[i]['distName'],
+              label: sorted[i]['x_value'],
+              lat: sorted[i]['y_value'],
+              lng: sorted[i]['z_value'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 5.5,
-                fillColor: this.colors[index],
+                fillColor: this.colors[i],
                 fillOpacity: 1,
                 strokeWeight: 0.01
               }
             });
 
-        });
+        };
 
         this.markers = this.blocks;
         this.loaderAndErr();
@@ -614,7 +677,7 @@ export class StudentAttedenceComponent implements OnInit {
 
     this.title = "Block";
     this.titleName = data.name;
-    localStorage.setItem('dist', data);
+    localStorage.setItem('dist', data.name);
     this.service.clusterPerBlock(data.id).subscribe(res => {
       this.clusterHidden = false;
       this.blockHidden = false;
@@ -630,29 +693,29 @@ export class StudentAttedenceComponent implements OnInit {
       let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
       this.colors = colors;
 
-      sorted.forEach((item, index) => {
-        console.log({ name: item['crc_name'] });
-        this.clusterNames.push({ id: item['x_axis'], name: item['crc_name'] });
+      for (var i = 0; i < sorted.length; i++) {
+        console.log({ name: sorted[i]['crc_name'] });
+        this.clusterNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['crc_name'] });
         this.cluster.push(
           {
-            id: item['x_axis'],
-            name: item['crc_name'],
-            // name: item[''],
-            dist: item['distName'],
-            blockId: item['blockName'],
-            label: item['x_value'],
-            lat: item['y_value'],
-            lng: item['z_value'],
+            id: sorted[i]['x_axis'],
+            name: sorted[i]['crc_name'],
+            // name: sorted[i][''],
+            dist: sorted[i]['distName'],
+            blockId: sorted[i]['blockName'],
+            label: sorted[i]['x_value'],
+            lat: sorted[i]['y_value'],
+            lng: sorted[i]['z_value'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 4.5,
-              fillColor: this.colors[index],
+              fillColor: this.colors[i],
               fillOpacity: 1,
               strokeWeight: 0.01
             }
           });
 
-      });
+      };
       console.log(this.clusterNames)
       this.markers = this.cluster;
       this.loaderAndErr();
@@ -669,10 +732,10 @@ export class StudentAttedenceComponent implements OnInit {
     document.getElementById('errMsg').style.display = 'none';
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('spinner').style.marginTop = '3%';
-
+    var distId = localStorage.getItem('dist');
     this.title = "Cluster";
     this.titleName = data.name;
-    localStorage.setItem('dist', data);
+    localStorage.setItem('dist', data.name);
     this.service.schoolsPerCluster(data.id).subscribe(res => {
       this.dist = false;
       this.blok = false;
@@ -686,28 +749,28 @@ export class StudentAttedenceComponent implements OnInit {
       let colors = this.color().generateGradient('#FF0000', '#517e01', sorted.length, 'rgb');
       this.colors = colors;
 
-      sorted.forEach((item, index) => {
-        this.schoolsIds.push(item['x_axis']);
-        this.schoolsNames.push({ id: item['x_axis'], name: item['block_name'] });
+      for (var i = 0; i < sorted.length; i++) {
+        this.schoolsIds.push(sorted[i]['x_axis']);
+        this.schoolsNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
         this.schools.push(
           {
-            id: item['x_axis'],
-            name: item['schoolName'],
-            blockId: item['blockName'],
-            dist: item['distName'],
-            clusterId: item['crc'],
-            label: item['x_value'],
-            lat: item['y_value'],
-            lng: item['z_value'],
+            id: sorted[i]['x_axis'],
+            name: sorted[i]['schoolName'],
+            blockId: sorted[i]['blockName'],
+            dist: distId,
+            clusterId: sorted[i]['crc'],
+            label: sorted[i]['x_value'],
+            lat: sorted[i]['y_value'],
+            lng: sorted[i]['z_value'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 3.5,
-              fillColor: this.colors[index],
+              fillColor: this.colors[i],
               fillOpacity: 1,
               strokeWeight: 0.01
             }
           });
-      });
+      };
 
       this.markers = this.schools;
       this.loaderAndErr();
@@ -866,12 +929,4 @@ export class StudentAttedenceComponent implements OnInit {
     };
   }
 
-}
-
-interface marker {
-  lat: any;
-  lng: any;
-  label?: string;
-  url?: string;
-  id?: number
 }

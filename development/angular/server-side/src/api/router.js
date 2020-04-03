@@ -9,6 +9,8 @@ const blcokPerDist = require('./controller/blockPerDistrict');
 const clustePerBlock = require('./controller/clusterPerBlocks');
 const schoolPerCluster = require('./controller/schoolsPerCluster');
 const clusterPerDist = require('./controller/clustersPerDist');
+const schoolPerDist = require('./controller/schoolPerDist');
+const schoolPerBlock = require('./controller/schoolPerBlock');
 
 router.use('/dist_wise_data', dist_wise_data);
 router.use('/block_wise_data', block_wise_data);
@@ -20,5 +22,7 @@ router.use('/blcokPerDist', blcokPerDist);
 router.use('/clustePerBlock', clustePerBlock);
 router.use('/schoolPerCluster', schoolPerCluster);
 router.use('/clusterPerDist', clusterPerDist);
+router.use('/schoolPerDist', schoolPerDist);
+router.use('/schoolPerBlock', schoolPerBlock);
 
 module.exports = router;

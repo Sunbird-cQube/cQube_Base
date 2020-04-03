@@ -2,8 +2,7 @@ const router = require('express').Router();
 const axios = require('axios');
 
 router.post('/', async (req, res) => {
-    var schools = [];
-    var clusterId = req.body.clusterId;
+    var blockId = req.body.blockId;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
 
@@ -12,7 +11,7 @@ router.post('/', async (req, res) => {
 
     var schoolsDetails = [];
     allSchools.data.forEach(schools => {
-        if (clusterId === schools.cluster_id) {
+        if (blockId === schools.block_id) {
             obj = {
                 x_axis: schools.x_axis,
                 crc: schools.crc_name,

@@ -6,14 +6,12 @@ router.post('/', async (req, res) => {
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
 
-    console.log(distId);
 
     var allcluster = await axios.get(`${baseUrl}/cluster_wise_data`, { 'headers': { 'token': "Bearer" + token } });
 
     var schoolsDetails = [];
     allcluster.data.forEach(clusters => {
         if (distId === clusters.district_id) {
-            console.log(clusters);
             obj = {
                 x_axis: clusters.x_axis,
                 blockName: clusters.block_name,
@@ -24,7 +22,6 @@ router.post('/', async (req, res) => {
                 z_value: clusters.z_value
             }
             schoolsDetails.push(obj);
-            console.log(obj);
         }
     });
     res.send(schoolsDetails);
