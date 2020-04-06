@@ -19,7 +19,8 @@ router.post('/', async (req, res) => {
                 crc_name: clusters.crc_name,
                 x_value: clusters.x_value,
                 y_value: clusters.y_value,
-                z_value: clusters.z_value
+                z_value: clusters.z_value,
+                students_count: clusters.students_count
             }
             schoolsDetails.push(obj);
         }

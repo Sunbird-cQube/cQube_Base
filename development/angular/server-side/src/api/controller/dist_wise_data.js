@@ -12,8 +12,7 @@ router.get('/', auth.authController, function (req, res) {
             console.log("Something went wrong or s3 file not found");
             res.send([]);
         } else {
-            const JSONdata = JSON.parse(data.Body.toString());
-            res.send(JSONdata);
+            res.send(data.Body);
         }
     });
 });
