@@ -9,6 +9,8 @@ import { StudentAttedenceComponent } from './student-attedence/student-attedence
 import { AgmDirectionModule } from 'agm-direction';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
+import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
+declare var google;
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { UserViewComponent } from './user-view/user-view.component';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCbRPhVlxgVwBC0bBOgyB-Dn_K8ONrxb_g' + '&libraries=visualization'
     }),
-    AgmDirectionModule
+    AgmDirectionModule,
+    AgmJsMarkerClustererModule
   ],
   providers: [],
   bootstrap: [AppComponent]

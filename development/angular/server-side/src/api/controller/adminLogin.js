@@ -10,7 +10,7 @@ router.post('/', (req, res) => {
     } else if (req.body.cnfpass !== auth.password) {
         res.send({ wrongPasswd: "Wrong password" });
     } else {
-        jwt.sign(auth, 'secret', { expiresIn: '1h' }, (err, data) => {
+        jwt.sign(auth, 'secret', { expiresIn: '24h' }, (err, data) => {
             res.status(200).json({ msg: "Logged In", token: data });
         })
     }

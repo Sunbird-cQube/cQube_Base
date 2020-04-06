@@ -36,6 +36,7 @@ export class StudentAttedenceComponent implements OnInit {
   public myCluster: any;
   public colors: any;
   public studentCount: any;
+  public schoolCount: any;
   public dateRange: any = '';
   public dist: boolean = false;
   public blok: boolean = false;
@@ -83,15 +84,19 @@ export class StudentAttedenceComponent implements OnInit {
     this.districtsNames = [];
     this.blockHidden = true;
     this.clusterHidden = true;
-    this.lat = 22.790988462301428;
-    this.lng = 72.02733294142871;
-    this.zoom = 7;
+
     document.getElementById('errMsg').style.display = 'none';
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('spinner').style.marginTop = '3%';
     this.title = "State";
     this.titleName = "Gujarat"
+
     this.service.dist_wise_data().subscribe(res => {
+
+      this.lat = 22.790988462301428;
+      this.lng = 72.02733294142871;
+      this.zoom = 7;
+
       this.mylatlngData = res;
       this.dist = true;
       this.blok = false;
@@ -124,20 +129,23 @@ export class StudentAttedenceComponent implements OnInit {
       };
       this.markers = this.districts;
       this.loaderAndErr();
-      console.log(this.studentCount);
     });
+
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'none';
     this.districts = [];
     this.studentCount = 0;
+    this.service.schoolCount().subscribe(res => {
+      this.schoolCount = res[0]['total_schools'];
+    });
+
   }
+
 
   schoolWise() {
     this.blockHidden = true;
     this.clusterHidden = true;
-    this.lat = 22.790988462301428;
-    this.lng = 72.02733294142871;
-    this.zoom = 7;
+
     this.markers = [];
     document.getElementById('errMsg').style.display = 'none';
     document.getElementById('spinner').style.display = 'block';
@@ -146,6 +154,10 @@ export class StudentAttedenceComponent implements OnInit {
     this.titleName = "Gujarat"
     this.service.school_wise_data().subscribe(res => {
       this.mylatlngData = res;
+
+      this.lat = 22.790988462301428;
+      this.lng = 72.02733294142871;
+      this.zoom = 7;
 
       this.dist = false;
       this.blok = false;
@@ -186,9 +198,7 @@ export class StudentAttedenceComponent implements OnInit {
   clusterWise() {
     this.blockHidden = true;
     this.clusterHidden = true;
-    this.lat = 22.790988462301428;
-    this.lng = 72.02733294142871;
-    this.zoom = 7;
+
     this.markers = [];
     document.getElementById('errMsg').style.display = 'none';
     document.getElementById('spinner').style.display = 'block';
@@ -197,6 +207,9 @@ export class StudentAttedenceComponent implements OnInit {
     this.titleName = "Gujarat"
     this.service.cluster_wise_data().subscribe(res => {
       this.mylatlngData = res;
+      this.lat = 22.790988462301428;
+      this.lng = 72.02733294142871;
+      this.zoom = 7;
       this.dist = false;
       this.blok = false;
       this.clust = true;
@@ -238,9 +251,7 @@ export class StudentAttedenceComponent implements OnInit {
   blockWise() {
     this.blockHidden = true;
     this.clusterHidden = true;
-    this.lat = 22.790988462301428;
-    this.lng = 72.02733294142871;
-    this.zoom = 7;
+
     this.markers = [];
     document.getElementById('errMsg').style.display = 'none';
     document.getElementById('spinner').style.display = 'block';
@@ -249,6 +260,9 @@ export class StudentAttedenceComponent implements OnInit {
     this.titleName = "Gujarat"
     this.service.block_wise_data().subscribe(res => {
       this.mylatlngData = res;
+      this.lat = 22.790988462301428;
+      this.lng = 72.02733294142871;
+      this.zoom = 7;
       this.dist = false;
       this.blok = true;
       this.clust = false;
@@ -293,9 +307,7 @@ export class StudentAttedenceComponent implements OnInit {
     if (this.districtsIds.includes(label[2])) {
       this.blockHidden = true;
       this.clusterHidden = true;
-      this.zoom = 9;
-      this.lat = Number(label[3]);
-      this.lng = Number(label[4]);
+
       this.studentCount = 0;
       this.markers = [];
       document.getElementById('errMsg').style.display = 'none';
@@ -312,6 +324,9 @@ export class StudentAttedenceComponent implements OnInit {
         this.skul = false;
 
         this.mylatlngData = res;
+        this.zoom = 9;
+        this.lat = Number(label[3]);
+        this.lng = Number(label[4]);
         this.blocksNames = [];
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
@@ -347,15 +362,12 @@ export class StudentAttedenceComponent implements OnInit {
       // element1[1].style.display = 'block';
       // this.markers = [];
       this.blocks = [];
-
+      this.blok = false;
     }
 
     if (this.blocksIds.includes(label[2])) {
       this.blockHidden = true;
       this.clusterHidden = true;
-      this.zoom = 11;
-      this.lat = Number(label[3]);
-      this.lng = Number(label[4]);
 
       this.markers = [];
       this.cluster = [];
@@ -374,6 +386,10 @@ export class StudentAttedenceComponent implements OnInit {
         this.skul = false;
 
         this.mylatlngData = res;
+        this.zoom = 11;
+        this.lat = Number(label[3]);
+        this.lng = Number(label[4]);
+
         this.clusterIds = [];
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
@@ -408,15 +424,14 @@ export class StudentAttedenceComponent implements OnInit {
       var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
       this.cluster = [];
+      this.clust = false;
     }
 
     if (this.clusterIds.includes(label[2])) {
       this.myDistrict = label[1];
       this.blockHidden = true;
       this.clusterHidden = true;
-      this.zoom = 13;
-      this.lat = Number(label[3]);
-      this.lng = Number(label[4]);
+
 
       this.markers = [];
       this.schools = [];
@@ -433,7 +448,9 @@ export class StudentAttedenceComponent implements OnInit {
         this.clust = false;
         this.skul = true;
         this.mylatlngData = res;
-
+        this.zoom = 13;
+        this.lat = Number(label[3]);
+        this.lng = Number(label[4]);
 
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
@@ -467,6 +484,7 @@ export class StudentAttedenceComponent implements OnInit {
       var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
       this.schools = [];
+      this.skul = false;
     }
   };
 
@@ -549,6 +567,7 @@ export class StudentAttedenceComponent implements OnInit {
       var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
       this.cluster = [];
+      this.clust = false;
 
     } else if (this.skul === true) {
       document.getElementById('errMsg').style.display = 'none';
@@ -565,7 +584,12 @@ export class StudentAttedenceComponent implements OnInit {
         this.skul = true;
         this.blocksNames = [];
 
+
+
         this.mylatlngData = res;
+        this.zoom = 9;
+        this.lat = Number(this.mylatlngData[5]['y_value']);
+        this.lng = Number(this.mylatlngData[5]['z_value']);
         this.schools = [];
         this.studentCount = 0;
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
@@ -604,6 +628,7 @@ export class StudentAttedenceComponent implements OnInit {
       // element1[1].style.display = 'block';
       // this.markers = [];
       this.schools = [];
+      this.skul = false;
     } else {
       document.getElementById('errMsg').style.display = 'none';
       document.getElementById('spinner').style.display = 'block';
@@ -622,8 +647,11 @@ export class StudentAttedenceComponent implements OnInit {
         this.skul = false;
 
         this.mylatlngData = res;
+        this.zoom = 9;
+        this.lat = Number(this.mylatlngData[5]['y_value']);
+        this.lng = Number(this.mylatlngData[5]['z_value']);
         this.blocksNames = [];
-        
+
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
         this.colors = colors;
@@ -659,6 +687,7 @@ export class StudentAttedenceComponent implements OnInit {
       // element1[1].style.display = 'block';
       // this.markers = [];
       this.blocks = [];
+      this.blok = false;
       console.log("myData clicked", data);
     }
   }
@@ -681,8 +710,11 @@ export class StudentAttedenceComponent implements OnInit {
       this.skul = false;
 
       this.mylatlngData = res;
+      this.zoom = 10;
+      this.lat = Number(this.mylatlngData[5]['y_value']);
+      this.lng = Number(this.mylatlngData[5]['z_value']);
       this.clusterNames = [];
-      
+
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
       this.colors = colors;
@@ -740,8 +772,12 @@ export class StudentAttedenceComponent implements OnInit {
       this.skul = true;
 
       this.mylatlngData = res;
+      this.zoom = 11;
+      this.lat = Number(this.mylatlngData[0]['y_value']);
+      this.lng = Number(this.mylatlngData[0]['z_value']);
+
       this.schools = [];
-      
+
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
       this.colors = colors;

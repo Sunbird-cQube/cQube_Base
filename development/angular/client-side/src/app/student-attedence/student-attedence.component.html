@@ -20,7 +20,7 @@
 
                     </div>
                     <p id="errMsg" style="display: none; text-align: center; margin-top: 1%"></p>
-                    
+
                 </div>
                 <div class="col-sm-5">
                     <button class="btn btn-danger btn-sm" (click)="logout()"
@@ -83,40 +83,44 @@
             <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="true"
                 [fullscreenControl]='true' [styles]="styles">
 
-                <agm-marker *ngFor="let m of markers; let i = index"
-                    (markerClick)="clickedMarker([m.label, m.name, m.id, m.lat, m.lng] )" [latitude]="m.lat"
-                    [longitude]="m.lng" [iconUrl]="m.icon" [agmFitBounds]="true"
-                    (mouseOver)="onMouseOver(m, infowindow)" (mouseOut)="hideInfo(m)">
+                <agm-marker-cluster
+                    imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
 
-                    <agm-info-window [disableAutoPan]="false" #infowindow>
-                        <div *ngIf="dist">
-                            Attendance: <span>{{m.label | slice:0:4}} %</span><br>
-                            District: <span>{{m.name}}</span>
-                        </div>
-                        <div *ngIf="blok">
-                            Attendance: <span>{{m.label | slice:0:4}} %</span><br>
-                            District: <span>{{m.dist}}</span><br>
-                            Block: <span>{{m.name}}</span>
-                        </div>
-                        <div *ngIf="clust">
-                            Attendance: <span>{{m.label | slice:0:4}} %</span><br>
-                            District: <span>{{m.dist}}</span><br>
-                            Block: <span>{{m.blockId}}</span><br>
-                            Cluster(CRC): <span>{{m.name}}</span>
-                        </div>
-                        <div *ngIf="skul">
-                            Attendance: <span>{{m.label | slice:0:4}} %</span><br>
-                            District: <span>{{m.dist}}</span><br>
-                            Block: <span>{{m.blockId}}</span><br>
-                            Cluster(CRC): <span>{{m.clusterId}}</span><br>
-                            School: <span>{{m.name}}</span>
-                        </div>
+                    <agm-marker *ngFor="let m of markers; let i = index"
+                        (markerClick)="clickedMarker([m.label, m.name, m.id, m.lat, m.lng] )" [latitude]="m.lat"
+                        [longitude]="m.lng" [iconUrl]="m.icon" [agmFitBounds]="true"
+                        (mouseOver)="onMouseOver(m, infowindow)" (mouseOut)="hideInfo(m)">
 
-                    </agm-info-window>
+                        <agm-info-window [disableAutoPan]="false" #infowindow>
+                            <div *ngIf="dist">
+                                Attendance: <span>{{m.label | slice:0:4}} %</span><br>
+                                District: <span>{{m.name}}</span>
+                            </div>
+                            <div *ngIf="blok">
+                                Attendance: <span>{{m.label | slice:0:4}} %</span><br>
+                                District: <span>{{m.dist}}</span><br>
+                                Block: <span>{{m.name}}</span>
+                            </div>
+                            <div *ngIf="clust">
+                                Attendance: <span>{{m.label | slice:0:4}} %</span><br>
+                                District: <span>{{m.dist}}</span><br>
+                                Block: <span>{{m.blockId}}</span><br>
+                                Cluster(CRC): <span>{{m.name}}</span>
+                            </div>
+                            <div *ngIf="skul">
+                                Attendance: <span>{{m.label | slice:0:4}} %</span><br>
+                                District: <span>{{m.dist}}</span><br>
+                                Block: <span>{{m.blockId}}</span><br>
+                                Cluster(CRC): <span>{{m.clusterId}}</span><br>
+                                School: <span>{{m.name}}</span>
+                            </div>
 
-                </agm-marker>
+                        </agm-info-window>
+
+                    </agm-marker>
+                </agm-marker-cluster>
             </agm-map>
-            
+
         </div>
     </div>
     <div class="row">
@@ -126,5 +130,8 @@
         <div class="col-sm-4">
             <span>Date range: {{dateRange}}</span>
         </div>
-    </div>            
+        <div class="col-sm-4">
+            <span>Number of schools: {{schoolCount}}</span>
+        </div>
+    </div>
 </div>

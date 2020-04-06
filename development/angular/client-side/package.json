@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@agm/core": "^1.1.0",
+    "@agm/js-marker-clusterer": "^1.1.0",
     "@angular/animations": "~8.2.14",
     "@angular/common": "~8.2.14",
     "@angular/compiler": "~8.2.14",
@@ -24,6 +25,7 @@
     "agm-direction": "^0.7.9",
     "file-saver": "^2.0.2",
     "jquery": "^3.4.1",
+    "js-marker-clusterer": "^1.0.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
