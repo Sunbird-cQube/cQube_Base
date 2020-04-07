@@ -21,7 +21,8 @@ router.post('/', async (req, res) => {
                 x_value: schools.x_value,
                 y_value: schools.y_value,
                 z_value: schools.z_value,
-                students_count: schools.students_count
+                students_count: schools.students_count,
+                total_schools: schools.total_schools
             }
             schoolsDetails.push(obj);
         }

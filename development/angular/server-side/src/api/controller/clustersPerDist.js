@@ -20,7 +20,8 @@ router.post('/', async (req, res) => {
                 x_value: clusters.x_value,
                 y_value: clusters.y_value,
                 z_value: clusters.z_value,
-                students_count: clusters.students_count
+                students_count: clusters.students_count,
+                total_schools: clusters.total_schools
             }
             schoolsDetails.push(obj);
         }

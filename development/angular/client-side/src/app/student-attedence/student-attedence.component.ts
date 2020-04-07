@@ -3,8 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 
-declare var google;
-
+declare var google: any;
 
 @Component({
   selector: 'app-student-attedence',
@@ -103,14 +102,16 @@ export class StudentAttedenceComponent implements OnInit {
       this.clust = false;
       this.skul = false;
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       this.studentCount = 0;
+      this.schoolCount = 0;
       this.dateRange = sorted[0]['data_from_date'] + " to " + sorted[0]['data_upto_date'];
       for (var i = 0; i < sorted.length; i++) {
         this.districtsIds.push(sorted[i]['x_axis']);
         this.districtsNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['district_name'] });
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+        this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
         this.districts.push(
           {
             id: sorted[i]['x_axis'],
@@ -118,6 +119,8 @@ export class StudentAttedenceComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
+            stdCount: sorted[i]['students_count'],
+            schCount: sorted[i]['total_schools'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 8.5,
@@ -135,6 +138,7 @@ export class StudentAttedenceComponent implements OnInit {
     element1[0].style.display = 'none';
     this.districts = [];
     this.studentCount = 0;
+    this.schoolCount = 0;
     this.service.schoolCount().subscribe(res => {
       this.schoolCount = res[0]['total_schools'];
     });
@@ -165,7 +169,7 @@ export class StudentAttedenceComponent implements OnInit {
       this.skul = true;
 
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       for (var i = 0; i < sorted.length; i++) {
         this.districtsIds.push(sorted[i]['x_axis']);
@@ -177,6 +181,8 @@ export class StudentAttedenceComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
+            stdCount: sorted[i]['students_count'],
+            schCount: sorted[i]['total_schools'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 3.5,
@@ -216,7 +222,7 @@ export class StudentAttedenceComponent implements OnInit {
       this.skul = false;
 
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       for (var i = 0; i < sorted.length; i++) {
         this.clusterIds.push(sorted[i]['x_axis']);
@@ -229,6 +235,8 @@ export class StudentAttedenceComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
+            stdCount: sorted[i]['students_count'],
+            schCount: sorted[i]['total_schools'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 4.5,
@@ -269,13 +277,15 @@ export class StudentAttedenceComponent implements OnInit {
       this.skul = false;
       this.blocksNames = [];
       this.studentCount = 0;
+      this.schoolCount = 0;
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       for (var i = 0; i < sorted.length; i++) {
         this.blocksIds.push(sorted[i]['x_axis']);
         this.blocksNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+        this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
         this.blocks.push(
           {
             id: sorted[i]['x_axis'],
@@ -284,6 +294,8 @@ export class StudentAttedenceComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
+            stdCount: sorted[i]['students_count'],
+            schCount: sorted[i]['total_schools'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 5.5,
@@ -309,6 +321,7 @@ export class StudentAttedenceComponent implements OnInit {
       this.clusterHidden = true;
 
       this.studentCount = 0;
+      this.schoolCount = 0;
       this.markers = [];
       document.getElementById('errMsg').style.display = 'none';
       document.getElementById('spinner').style.display = 'block';
@@ -329,10 +342,11 @@ export class StudentAttedenceComponent implements OnInit {
         this.lng = Number(label[4]);
         this.blocksNames = [];
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
         for (var i = 0; i < sorted.length; i++) {
           this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
           this.blocksIds.push(sorted[i]['x_axis']);
           this.blocksNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
 
@@ -344,6 +358,8 @@ export class StudentAttedenceComponent implements OnInit {
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
+              stdCount: sorted[i]['students_count'],
+              schCount: sorted[i]['total_schools'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 5.5,
@@ -376,6 +392,7 @@ export class StudentAttedenceComponent implements OnInit {
       document.getElementById('spinner').style.marginTop = '3%';
 
       this.studentCount = 0;
+      this.schoolCount = 0;
       this.title = "Block";
       this.titleName = label[1];
       this.service.clusterPerBlock(label[2]).subscribe(res => {
@@ -392,10 +409,11 @@ export class StudentAttedenceComponent implements OnInit {
 
         this.clusterIds = [];
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
         for (var i = 0; i < sorted.length; i++) {
           this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
           this.clusterIds.push(sorted[i]['x_axis']);
           this.clusterNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['crc_name'] });
 
@@ -409,6 +427,8 @@ export class StudentAttedenceComponent implements OnInit {
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
+              stdCount: sorted[i]['students_count'],
+              schCount: sorted[i]['total_schools'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 4.5,
@@ -439,6 +459,7 @@ export class StudentAttedenceComponent implements OnInit {
       document.getElementById('spinner').style.display = 'block';
       document.getElementById('spinner').style.marginTop = '3%';
       this.studentCount = 0;
+      this.schoolCount = 0;
       this.title = "Cluster";
       this.titleName = label[1] + "(crc)";
       this.service.schoolsPerCluster(label[2]).subscribe(res => {
@@ -453,7 +474,7 @@ export class StudentAttedenceComponent implements OnInit {
         this.lng = Number(label[4]);
 
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         for (var i = 0; i < sorted.length; i++) {
@@ -464,10 +485,12 @@ export class StudentAttedenceComponent implements OnInit {
               name: sorted[i]['schoolName'],
               blockId: sorted[i]['blockName'],
               dist: sorted[i]['distName'],
-              clusterId: sorted[i]['crc'],
+              clusterId: sorted[i]['crc'].toUpperCase(),
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
+              stdCount: sorted[i]['students_count'],
+              schCount: sorted[i]['total_schools'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 3.5,
@@ -477,7 +500,7 @@ export class StudentAttedenceComponent implements OnInit {
               }
             });
         };
-
+        this.schoolCount = this.schools.length;
         this.markers = this.schools;
         this.loaderAndErr();
       });
@@ -532,13 +555,15 @@ export class StudentAttedenceComponent implements OnInit {
         this.lat = Number(this.mylatlngData[5]['y_value']);
         this.lng = Number(this.mylatlngData[5]['z_value']);
         this.studentCount = 0;
+        this.schoolCount = 0;
 
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         for (var i = 0; i < sorted.length; i++) {
           this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
           this.blocksNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['blockName'] });
           this.cluster.push(
             {
@@ -550,6 +575,8 @@ export class StudentAttedenceComponent implements OnInit {
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
+              stdCount: sorted[i]['students_count'],
+              schCount: sorted[i]['total_schools'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 4.5,
@@ -592,12 +619,14 @@ export class StudentAttedenceComponent implements OnInit {
         this.lng = Number(this.mylatlngData[5]['z_value']);
         this.schools = [];
         this.studentCount = 0;
+        this.schoolCount = 0;
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         for (var i = 0; i < sorted.length; i++) {
           this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
           this.schoolsIds.push(sorted[i]['x_axis']);
           this.blocksNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
           this.schools.push(
@@ -606,10 +635,12 @@ export class StudentAttedenceComponent implements OnInit {
               name: sorted[i]['schoolName'],
               blockId: sorted[i]['blockName'],
               dist: sorted[i]['distName'],
-              clusterId: sorted[i]['crc'],
+              clusterId: sorted[i]['crc'].toUpperCase(),
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
+              stdCount: sorted[i]['students_count'],
+              schCount: sorted[i]['total_schools'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 3.5,
@@ -635,6 +666,7 @@ export class StudentAttedenceComponent implements OnInit {
       document.getElementById('spinner').style.marginTop = '3%';
 
       this.studentCount = 0;
+      this.schoolCount = 0;
       this.title = "District";
       this.titleName = data.name;
       localStorage.setItem('dist', data.name);
@@ -653,11 +685,12 @@ export class StudentAttedenceComponent implements OnInit {
         this.blocksNames = [];
 
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         for (var i = 0; i < sorted.length; i++) {
           this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
           this.blocksIds.push(sorted[i]['x_axis']);
           this.blocksNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
           this.blocks.push(
@@ -668,6 +701,8 @@ export class StudentAttedenceComponent implements OnInit {
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
+              stdCount: sorted[i]['students_count'],
+              schCount: sorted[i]['total_schools'],
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 5.5,
@@ -698,6 +733,7 @@ export class StudentAttedenceComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
 
     this.studentCount = 0;
+    this.schoolCount = 0;
     this.title = "Block";
     this.titleName = data.name;
     localStorage.setItem('dist', data.name);
@@ -716,11 +752,12 @@ export class StudentAttedenceComponent implements OnInit {
       this.clusterNames = [];
 
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
 
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+        this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
         console.log({ name: sorted[i]['crc_name'] });
         this.clusterNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['crc_name'] });
         this.cluster.push(
@@ -733,6 +770,8 @@ export class StudentAttedenceComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
+            stdCount: sorted[i]['students_count'],
+            schCount: sorted[i]['total_schools'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 4.5,
@@ -762,6 +801,7 @@ export class StudentAttedenceComponent implements OnInit {
     var distId = localStorage.getItem('dist');
 
     this.studentCount = 0;
+    this.schoolCount = 0;
     this.title = "Cluster";
     this.titleName = data.name;
     localStorage.setItem('dist', data.name);
@@ -779,11 +819,12 @@ export class StudentAttedenceComponent implements OnInit {
       this.schools = [];
 
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#336600', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
 
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+        this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
         this.schoolsIds.push(sorted[i]['x_axis']);
         // this.schoolsNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
         this.schools.push(
@@ -792,10 +833,12 @@ export class StudentAttedenceComponent implements OnInit {
             name: sorted[i]['schoolName'],
             blockId: sorted[i]['blockName'],
             dist: distId,
-            clusterId: sorted[i]['crc'],
+            clusterId: sorted[i]['crc'].toUpperCase(),
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
+            stdCount: sorted[i]['students_count'],
+            schCount: sorted[i]['total_schools'],
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 3.5,
@@ -805,7 +848,7 @@ export class StudentAttedenceComponent implements OnInit {
             }
           });
       };
-
+      this.schoolCount = this.schools.length;
       this.markers = this.schools;
       this.loaderAndErr();
     });

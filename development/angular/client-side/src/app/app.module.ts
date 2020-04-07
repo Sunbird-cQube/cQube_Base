@@ -10,7 +10,6 @@ import { AgmDirectionModule } from 'agm-direction';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
-declare var google;
 
 @NgModule({
   declarations: [
