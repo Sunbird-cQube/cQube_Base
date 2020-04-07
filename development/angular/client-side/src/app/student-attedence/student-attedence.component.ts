@@ -220,11 +220,15 @@ export class StudentAttedenceComponent implements OnInit {
       this.blok = false;
       this.clust = true;
       this.skul = false;
+      this.studentCount = 0;
+      this.schoolCount = 0;
 
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       for (var i = 0; i < sorted.length; i++) {
+        this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
+        this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.clusterIds.push(sorted[i]['x_axis']);
         this.cluster.push(
           {
