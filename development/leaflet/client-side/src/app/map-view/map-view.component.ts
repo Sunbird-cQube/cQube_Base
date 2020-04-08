@@ -95,6 +95,9 @@ export class MapViewComponent implements OnInit {
     this.blockHidden = true;
     this.clusterHidden = true;
     
+    globalMap.removeLayer(this.markerList1);
+    globalMap.removeLayer(this.markerList2);
+    globalMap.removeLayer(this.markerList3)
 
     document.getElementById('errMsg').style.display = 'none';
     document.getElementById('spinner').style.display = 'block';
@@ -136,8 +139,11 @@ export class MapViewComponent implements OnInit {
           });
       };
       
-
+      console.log(this.districts);
       this.markers = this.districts;
+      console.log(this.markers);
+
+
       if (this.markers.length !== 0) {
         for (let i = 0; i < this.markers.length; i++) {
 
@@ -153,10 +159,10 @@ export class MapViewComponent implements OnInit {
           })
 
           marker.addTo(globalMap).bindPopup(
-            "<b>Attendance : </b>" + this.markers[i].label + "%"+
-            "<br><b>District: </b>" + this.markers[i].name +
-            "<br><b>Number of schools:</b>"+this.markers[i].schCount +
-            "<br><b>Number of students:</b>" +this.markers[i].stdCount);
+            "<b>Attendance : </b>"+"&nbsp;" + this.markers[i].label + "%"+
+            "<br><b>District: </b>"+"&nbsp;" + this.markers[i].name +
+            "<br><b>Number of schools:</b>"+"&nbsp;"+this.markers[i].schCount +
+            "<br><b>Number of students:</b>"+"&nbsp;" +this.markers[i].stdCount);
           this.markersList.addLayer(marker);
 
         }
@@ -198,6 +204,9 @@ blockWise() {
   globalMap.removeLayer(this.markersList);
   globalMap.removeLayer(this.markerList1);
   globalMap.removeLayer(this.markerList2);
+  globalMap.removeLayer(this.markerList3);
+
+  
   document.getElementById('errMsg').style.display = 'none';
   document.getElementById('spinner').style.display = 'block';
   document.getElementById('spinner').style.marginTop = '3%';
@@ -244,8 +253,10 @@ blockWise() {
             // }
           });
       };
-
+     console.log(this.blocks);
     this.markers = this.blocks;
+    console.log(this.markers);
+    
     if (this.markers.length !== 0) {
       for (let i = 0; i < this.markers.length; i++) {
        // console.log(this.markers[i].markerList.options.color)
@@ -259,12 +270,12 @@ blockWise() {
 
           })
           marker.addTo(globalMap).bindPopup(
-            "<b>Attendance:</b>" + this.markers[i].label+"%" 
-          + "<br><b>District: </b>" +this.markers[i].dist +
-          "<br><b> Block: </b>" +this.markers[i].name+
-          "<br><b>Number of schools:</b>"+this.markers[i].schCount +
-          "<br> <b>Number of Students:</b>" +this.markers[i].stdCount);
-                       this.markerList1.addLayer(marker);       
+            "<b>Attendance:</b>"+"&nbsp;" + this.markers[i].label+"%" 
+          + "<br><b>District: </b>"+"&nbsp;" +this.markers[i].dist +
+          "<br><b> Block: </b>"+"&nbsp;" +this.markers[i].name+
+          "<br><b>Number of schools:</b>"+"&nbsp;"+this.markers[i].schCount +
+          "<br> <b>Number of students:</b>"+"&nbsp;" +this.markers[i].stdCount);
+          this.markerList1.addLayer(marker);       
 
         }
         globalMap.addLayer(this.markerList1);
@@ -344,14 +355,16 @@ clusterWise() {
           // }
         });
     };
+    console.log(this.markers);
     console.log(this.cluster);
 
     this.markers = this.cluster;
+    console.log(this.markers);
     if (this.markers.length !== 0) {
       for (let i = 0; i < this.markers.length; i++) {
        // console.log(this.markers[i].markerList.options.color)
        var marker= L.circleMarker([this.markers[i].lat, this.markers[i].lng],{
-        radius:5,
+        radius:4.0,
         draggable: true,
         color: this.colors[i],
         fillColor: this.colors[i],
@@ -360,12 +373,12 @@ clusterWise() {
 
           })
           marker.addTo(globalMap).bindPopup(
-            "<b>Attendance:</b>" + this.markers[i].label+"%" 
-          + "<br><b>District: </b>" +this.markers[i].dist +
-          "<br><b>Block:</b>"+this.markers[i].blockId+
-          "<br><b>Cluster(CRC) </b>"+this.markers[i].name +
-          "<br><b>Number of schools:</b>"+this.markers[i].schCount +
-          "<br> <b>Number of Students:</b>" +this.markers[i].stdCount);
+            "<b>Attendance:</b>"+"&nbsp;" + this.markers[i].label+"%" 
+          + "<br><b>District: </b>"+"&nbsp;" +this.markers[i].dist +
+          "<br><b>Block:</b>"+"&nbsp;"+this.markers[i].blockId+
+          "<br><b>Cluster (CRC) :</b>"+"&nbsp;"+this.markers[i].name +
+          "<br><b>Number of schools:</b>"+"&nbsp;"+this.markers[i].schCount +
+          "<br> <b>Number of students:</b>"+"&nbsp;" +this.markers[i].stdCount);
           this.markerList2.addLayer(marker);
 
         }
@@ -449,12 +462,11 @@ schoolWise() {
     
     console.log(this.schools);
     this.markers = this.schools;
-    console.log(this.markers);
     if (this.markers.length !== 0) {
       for (let i = 0; i < this.markers.length; i++) {
 
         var marker = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
-          radius:5,
+          radius:2.0,
           draggable: true,
           color: this.colors[i],
           fillColor: this.colors[i],
@@ -464,12 +476,12 @@ schoolWise() {
          })
 
          marker.addTo(globalMap).bindPopup(
-           "<b>Attendance : </b>" + this.markers[i].label + 
-           "<br><b>District: </b>" + this.markers[i].dist+
-           "<br><b>Block:</b>"+''+
-           "<br><b>Cluster (CRC):</b>"+''+
-            "<br><b>School:</b>" +this.markers[i].name +
-           "<br><b>Number of students :</b>" +this.markers[i].stdCount);
+           "<b>Attendance : </b>"+"&nbsp;" + this.markers[i].label + 
+           "<br><b>District: </b>"+"&nbsp;" + this.markers[i].dist+
+           "<br><b>Block:</b>"+"&nbsp;"+''+
+           "<br><b>Cluster (CRC):</b>"+"&nbsp;"+''+
+            "<br><b>School:</b>"+"&nbsp;" +this.markers[i].name +
+           "<br><b>Number of students :</b>"+"&nbsp;" +this.markers[i].stdCount);
         this.markerList3.addLayer(marker)
        }
        globalMap.addLayer(this.markerList3)
