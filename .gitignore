@@ -2,4 +2,8 @@
 
 /development/angular/server-side/node_modules
 
+/development/leaflet/client-side/node_modules
+
+/development/leaflet/server-side/node_modules
+
 /ansible/installation_scripts/nifi.json
