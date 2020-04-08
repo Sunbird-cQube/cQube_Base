@@ -95,14 +95,14 @@
                             Number of schools: <span>{{m.schCount}}</span><br>
                             Number of students: <span>{{m.stdCount}}</span>
                         </div>
-                        <div *ngIf="blok">
+                        <div *ngIf="m.blok">
                             Attendance: <span>{{m.label | slice:0:4}} %</span><br>
                             District: <span>{{m.dist}}</span><br>
                             Block: <span>{{m.name}}</span><br>
                             Number of schools: <span>{{m.schCount}}</span><br>
                             Number of students: <span>{{m.stdCount}}</span>
                         </div>
-                        <div *ngIf="clust">
+                        <div *ngIf="m.clust">
                             Attendance: <span>{{m.label | slice:0:4}} %</span><br>
                             District: <span>{{m.dist}}</span><br>
                             Block: <span>{{m.blockId}}</span><br>
@@ -110,7 +110,7 @@
                             Number of schools: <span>{{m.schCount}}</span><br>
                             Number of students: <span>{{m.stdCount}}</span>
                         </div>
-                        <div *ngIf="skul">
+                        <div *ngIf="m.skul">
                             Attendance: <span>{{m.label | slice:0:4}} %</span><br>
                             District: <span>{{m.dist}}</span><br>
                             Block: <span>{{m.blockId}}</span><br>
