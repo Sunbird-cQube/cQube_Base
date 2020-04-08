@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Regular User</h2>
+        </div>
+        <div class="col-sm-6">
+            <a style="float: right; background-color: blue; margin-top: 5px; text-decoration: none; color: white; font-weight: bold; padding: 2px 5px 2px 5px; border-radius: 5px;"
+                [routerLink]="['/']">
+                Back</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="true"
+                (mapClick)="mapClicked($event)" [fullscreenControl]='true' [styles]="styles">
+                <agm-marker *ngFor="let m of markers; let i = index"
+                    (markerClick)="clickedMarker([m.label, m.id, m.lat, m.lng],infowindow )" [latitude]="m.lat"
+                    [longitude]="m.lng" [iconUrl]="m.url" [markerDraggable]="m.draggable"
+                    (dragEnd)="markerDragEnd(m, $event)" [agmFitBounds]="true" (mouseOver)="onMouseOver(m, infowindow)"
+                    (mouseOut)="hideInfo(m)">
+
+                    <agm-info-window [disableAutoPan]="false" #infowindow>
+                        Avg. %age: <span>{{m.label}}</span><br>
+                        Id: <span>{{m.id}}</span>
+                    </agm-info-window>
+                    <agm-circle [latitude]="lat+0.0016591" [longitude]="lng+0.0066754" [radius]="'50000000'"
+                        [fillColor]="'red'" [circleDraggable]="false" [editable]="false">
+                    </agm-circle>
+                </agm-marker>
+            </agm-map>
+        </div>
+    </div>
+</div>
