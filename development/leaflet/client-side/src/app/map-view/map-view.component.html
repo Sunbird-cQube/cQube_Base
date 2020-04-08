@@ -1,16 +1,4 @@
-<!-- <div class="adrCenter overflow-hidden">
-    <div class="container-fluid">
-        <div id="adrRow" class="row"> -->
-            <!-- <div id="adrColLeft" class="adrCol scrollbar col-2">
-            </div> -->
-            <!-- <div id="adrColCenter" class="adrCol col-12">
-                <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 800px;"></div>
-            </div> -->
-            <!-- <div id="adrColRight" class="adrCol scrollbar container-fluid">
-            </div> -->
-        <!-- </div>
-    </div>
-  </div> -->
+
 
 
   <div class="container-fluid">
@@ -64,35 +52,31 @@
         </div>
         <div class="col-sm-6">
             <!-- <div class="col-sm-4"> -->
-                <select
-                style="margin-right: 10px; padding: 6.5px; color: white; border-radius: 4px; font-size: 12px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
+            <!-- <select style="margin-right: 10px;" [(ngModel)]="myDistrict" name="myDistrict"
+                (change)="myDistData(myDistrict)">
                 <option [value]="myDistrict" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtsNames" [(ngValue)]="dist">
-                    {{dist.name}}
+                    {{dist}}
                 </option>
-            </select>
-        
+            </select> -->
             <!-- </div>
             <div class="col-sm-4"> -->
-                <select [hidden]="blockHidden"
-                style="margin-right: 10px; padding: 6.5px; color: white; border-radius: 4px; font-size: 12px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
-                <option [value]="myBlock" disabled selected="selected">Choose a Block</option>
+            <!-- <select [hidden]="blockHidden" style="margin-right: 10px;" [(ngModel)]="myBlock" name="myBlock"
+                (change)="myDistData(myBlock)">
+                <option [value]="block" disabled selected="selected">Choose a Block</option>
                 <option *ngFor="let block of blocksNames" [(ngValue)]="block">
-                    {{block.name}}
+                    {{block}}
                 </option>
-            </select>
+            </select> -->
             <!-- </div>
             <div class="col-sm-4"> -->
-                <select [hidden]="clusterHidden"
-                style="margin-right: 10px; padding: 6.5px; color: white; border-radius: 4px; font-size: 12px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
-                <option [value]="myCluster" disabled selected="selected">Choose a Cluster</option>
-                <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster">
-                    {{cluster.name}}
+            <!-- <select [hidden]="clusterHidden" style="margin-right: 10px;" [(ngModel)]="myDistrict" name="myDistrict"
+                (change)="myData(myDistrict)">
+                <option [value]="myDistrict" disabled selected="selected">Choose a District</option>
+                <option *ngFor="let dist of districtsNames" [(ngValue)]="dist">
+                    {{dist}}
                 </option>
-            </select>
+            </select> -->
             <!-- </div> -->
         </div>
 
