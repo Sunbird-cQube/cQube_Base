@@ -5,12 +5,11 @@ router.post('/', async (req, res) => {
     var distId = req.body.distId;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
-
     var allSchools = await axios.get(`${baseUrl}/school_wise_data`, { 'headers': { 'token': "Bearer" + token } });
 
     var schoolsDetails = [];
     allSchools.data.forEach(schools => {
-        if (distId === schools.cluster_id) {
+        if (distId === schools.district_id) {
             obj = {
                 x_axis: schools.x_axis,
                 crc: schools.crc_name,
