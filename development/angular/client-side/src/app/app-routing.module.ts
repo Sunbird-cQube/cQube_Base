@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { StudentAttedenceComponent } from './student-attedence/student-attedence.component';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
+import { MapViewComponent } from './map-view/map-view.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,9 @@ const routes: Routes = [
   ,
   {
     path: 'user-view', component: UserViewComponent
+  },
+  {
+    path:'map-view',component:MapViewComponent
   }
 ];
 

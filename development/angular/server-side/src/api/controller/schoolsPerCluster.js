@@ -2,7 +2,6 @@ const router = require('express').Router();
 const axios = require('axios');
 
 router.post('/', async (req, res) => {
-    var schools = [];
     var clusterId = req.body.clusterId;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;

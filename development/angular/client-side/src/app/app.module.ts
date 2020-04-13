@@ -9,7 +9,8 @@ import { StudentAttedenceComponent } from './student-attedence/student-attedence
 import { AgmDirectionModule } from 'agm-direction';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
-import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
+import { MapViewComponent } from './map-view/map-view.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
   declarations: [
@@ -17,17 +18,17 @@ import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
     StudentAttedenceComponent,
     LoginComponent,
     UserViewComponent,
+    MapViewComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
+    HttpClientModule,LeafletModule.forRoot(),
     FormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCbRPhVlxgVwBC0bBOgyB-Dn_K8ONrxb_g' + '&libraries=visualization'
     }),
-    AgmDirectionModule,
-    AgmJsMarkerClustererModule
+    AgmDirectionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -6,7 +6,6 @@
 /out-tsc
 # Only exists if Bazel was run
 /bazel-out
-package-lock.json
 
 # dependencies
 /node_modules
@@ -18,6 +17,7 @@ speed-measure-plugin*.json
 # IDEs and editors
 /.idea
 .project
+.editorconfig
 .classpath
 .c9/
 *.launch

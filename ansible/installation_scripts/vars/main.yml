@@ -4,9 +4,15 @@
 
 sftp_group: cqubegroup
 sftp_dir: cqube
-db_user: cqubedev
-db_name: cqubedev
-db_password: md5e8a48653851e28c69d0506508fb27fc5
+db_user: 
+db_name: 
+db_password:                            # md5 password
+
+nifi_port: 8096
+nodejs_version: "12"
+ansible_distribution_release: trusty
+api_endpoint:                         #https://domain.com/api
+
 
 s3_input_bucket: cqube-input
 s3_output_bucket: cqube-output
@@ -30,7 +36,7 @@ postgre_pwd: psql
 
 s3_access_key:       # AWS Access key
 s3_secret_key:      # AWS Secret key
-postgre_driver_dir: /home/ubuntu/cQube/development/nifi/jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
+postgre_driver_dir: ../jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
 
 
 
