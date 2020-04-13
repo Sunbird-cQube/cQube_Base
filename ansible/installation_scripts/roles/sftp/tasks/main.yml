@@ -1,5 +1,7 @@
 - name: Installing and Configuring sftp
   apt: name=vsftpd
+- name: Installing and Configuring ssh
+  apt: name=ssh
 - name: Ensure group sftpgroup exists
   group:
     name: "{{ sftp_group }}"
