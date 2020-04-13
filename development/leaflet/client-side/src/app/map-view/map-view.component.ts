@@ -1,11 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { latLng, tileLayer, icon, marker, Marker } from 'leaflet';
-import { google } from "google-maps";
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
-// import * as KML from '../../kml-file/L.KML.js';
-
 declare let L;
 
 var globalMap;
@@ -72,15 +68,9 @@ export class MapViewComponent implements OnInit {
 
   //Initialisation of Map  
   initMap() {
-    const lat = 22.790988462301428;
+    const lat = 22.11292266845703;
     const lng = 72.02733294142871;
-    var options = {
-      center: [lat, lng],
-      zoom: 7
-    };
-    // globalMap = new L.Map('mapContainer', options);
-
-    globalMap = L.map('mapContainer').setView([lat, lng], 6);
+    globalMap = L.map('mapContainer').setView([lat, lng], 7);
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -93,14 +83,6 @@ export class MapViewComponent implements OnInit {
   }
 
   public markersList = new L.FeatureGroup();
-  public markersList1 = new L.FeatureGroup();
-  public markersList2 = new L.FeatureGroup();
-  public markersList3 = new L.FeatureGroup();
-  public markersList4 = new L.FeatureGroup();
-  public markersList5 = new L.FeatureGroup();
-  public markersList6 = new L.FeatureGroup();
-  public markersList7 = new L.FeatureGroup();
-  public markersList8 = new L.FeatureGroup();
 
   loaderAndErr() {
     if (this.markers.length !== 0) {
@@ -126,16 +108,15 @@ export class MapViewComponent implements OnInit {
     this.clusterHidden = true;
     this.markers = [];
     this.errMsg();
-    this.title = "State";
+    this.title = "District wise attendance report for State";
     this.titleName = "Gujarat"
     this.districtsNames = [];
 
+    this.lat = 22.11292266845703;
+    this.lng = 72.02733294142871;
+
     this.service.dist_wise_data().subscribe(res => {
       this.mylatlngData = res;
-
-      this.lat = 22.790988462301428;
-      this.lng = 72.02733294142871;
-
       this.dist = true;
       this.blok = false;
       this.clust = false;
@@ -160,11 +141,10 @@ export class MapViewComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
-            stdCount: sorted[i]['students_count'],
-            schCount: sorted[i]['total_schools'],
+            stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+            schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             blok: this.blok,
           });
-        // if (this.dist === true) {
         var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
           radius: 5,
           color: this.colors[i],
@@ -173,7 +153,7 @@ export class MapViewComponent implements OnInit {
           strokeWeight: 0.01
         })
 
-        globalMap.setZoom(7);
+        globalMap.setZoom(7.4);
         markerIcon.addTo(globalMap).bindPopup(
           "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
           "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
@@ -191,7 +171,11 @@ export class MapViewComponent implements OnInit {
         markerIcon.on('click', this.onClick_Marker, this)
         markerIcon.myJsonData = this.markers[i];
       }
-      // }
+      globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
+      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      var stdSch: any = { schCount: this.schoolCount, stdCount: this.studentCount }
+      localStorage.setItem('schStd', JSON.stringify(stdSch));
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     })
@@ -214,23 +198,23 @@ export class MapViewComponent implements OnInit {
     this.clusterHidden = true;
     this.myDistrict = {};
     this.errMsg();
-    this.title = "State";
+    this.title = "Block wise attendance report for State";
     this.titleName = "Gujarat"
     this.service.block_wise_data().subscribe(res => {
       this.mylatlngData = res;
-      this.lat = 22.790988462301428;
-      this.lng = 72.02733294142871;
-
       this.dist = false;
       this.blok = true;
       this.clust = false;
       this.skul = false;
       this.blocksNames = [];
+      this.lat = 22.11292266845703;
+      this.lng = 72.02733294142871;
       this.studentCount = 0;
       this.schoolCount = 0;
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
+
       for (var i = 0; i < sorted.length; i++) {
         this.blocksIds.push(sorted[i]['x_axis']);
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
@@ -243,8 +227,8 @@ export class MapViewComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
-            stdCount: sorted[i]['students_count'],
-            schCount: sorted[i]['total_schools'],
+            stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+            schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             blok: this.blok,
 
           });
@@ -275,8 +259,13 @@ export class MapViewComponent implements OnInit {
         markerIcon.on('click', this.onClick_Marker, this)
         markerIcon.myJsonData = this.markers[i];
       }
+      globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
+      var schStdCount = JSON.parse(localStorage.getItem('schStd'));
+      this.schoolCount = (schStdCount.schCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.studentCount = (schStdCount.stdCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.loaderAndErr();
       this.changeDetection.markForCheck();
+
     })
     globalMap.addLayer(this.layerMarkers);
     var element1: any = document.getElementsByClassName('btn-secondary');
@@ -293,13 +282,14 @@ export class MapViewComponent implements OnInit {
 
     this.errMsg();
 
-    this.title = "State";
+    this.title = "School wise attendance report for State";
     this.titleName = "Gujarat"
     this.service.school_wise_data().subscribe(res => {
-
       this.mylatlngData = res;
       this.studentCount = 0;
       this.schoolCount = 0;
+      this.lat = 22.11292266845703;
+      this.lng = 72.02733294142871;
       this.dist = false;
       this.blok = false;
       this.clust = false;
@@ -322,14 +312,13 @@ export class MapViewComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
-            stdCount: sorted[i]['students_count'],
-            schCount: sorted[i]['total_schools'],
+            stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             skul: this.skul
           });
       };
 
       this.markers = this.schools;
-      this.schoolCount = this.schools.lenght;
+      this.schoolCount = this.markers.length;
       console.log(this.schoolCount);
       if (this.markers.length !== 0) {
         for (let i = 0; i < this.markers.length; i++) {
@@ -358,9 +347,13 @@ export class MapViewComponent implements OnInit {
             this.closePopup();
           });
           this.layerMarkers.addLayer(markerIcon);
-          markerIcon.on('click', this.onClick_Marker, this)
+          // markerIcon.on('click', this.onClick_Marker, this)
           markerIcon.myJsonData = this.markers[i];
         }
+        globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
+        var schStdCount = JSON.parse(localStorage.getItem('schStd'));
+        this.schoolCount = (schStdCount.schCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.studentCount = (schStdCount.stdCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       }
@@ -381,7 +374,7 @@ export class MapViewComponent implements OnInit {
 
     this.errMsg();
 
-    this.title = "State";
+    this.title = "Cluster wise attendance report for State";
     this.titleName = "Gujarat"
     this.service.cluster_wise_data().subscribe(res => {
       this.mylatlngData = res;
@@ -391,10 +384,13 @@ export class MapViewComponent implements OnInit {
       this.skul = false;
       this.studentCount = 0;
       this.schoolCount = 0;
+      this.lat = 22.11292266845703;
+      this.lng = 72.02733294142871;
 
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
+
       for (var i = 0; i < sorted.length; i++) {
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
@@ -408,8 +404,8 @@ export class MapViewComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
-            stdCount: sorted[i]['students_count'],
-            schCount: sorted[i]['total_schools'],
+            stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+            schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             clust: this.clust
           });
       };
@@ -443,6 +439,10 @@ export class MapViewComponent implements OnInit {
           markerIcon.on('click', this.onClick_Marker, this)
           markerIcon.myJsonData = this.markers[i];
         }
+        globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
+        var schStdCount = JSON.parse(localStorage.getItem('schStd'));
+        this.schoolCount = (schStdCount.schCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.studentCount = (schStdCount.stdCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       }
@@ -462,9 +462,8 @@ export class MapViewComponent implements OnInit {
       this.errMsg();
       this.studentCount = 0;
       this.schoolCount = 0;
-      this.title = "District";
+      this.title = "Block wise attendance report for District";
       this.titleName = label.name;
-      localStorage.setItem('dist', label.name);
 
       this.service.blockPerDist(label.id).subscribe(res => {
         this.blockHidden = true;
@@ -496,8 +495,8 @@ export class MapViewComponent implements OnInit {
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
-              stdCount: sorted[i]['students_count'],
-              schCount: sorted[i]['total_schools'],
+              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
               blok: this.blok,
             });
           var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
@@ -508,8 +507,6 @@ export class MapViewComponent implements OnInit {
             strokeWeight: 0.01
           })
 
-          globalMap.setZoom(8.2);
-          globalMap.panTo(new L.LatLng(this.lat, this.lng));
           markerIcon.addTo(globalMap).bindPopup(
             "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
@@ -528,6 +525,9 @@ export class MapViewComponent implements OnInit {
           markerIcon.on('click', this.onClick_Marker, this)
           markerIcon.myJsonData = this.markers[i];
         }
+        globalMap.setView(new L.LatLng(this.lat, this.lng), 8.3);
+        this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       })
@@ -545,9 +545,8 @@ export class MapViewComponent implements OnInit {
 
       this.studentCount = 0;
       this.schoolCount = 0;
-      this.title = "Block";
+      this.title = "Cluster wise attendance report for Block";
       this.titleName = label.name;
-      localStorage.setItem('dist', label.name);
       this.service.clusterPerBlock(label.id).subscribe(res => {
         this.clusterHidden = true;
         this.blockHidden = true;
@@ -581,8 +580,8 @@ export class MapViewComponent implements OnInit {
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
-              stdCount: sorted[i]['students_count'],
-              schCount: sorted[i]['total_schools'],
+              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
               clust: this.clust,
               blok: this.blok,
 
@@ -594,8 +593,7 @@ export class MapViewComponent implements OnInit {
             fillOpacity: 1,
             strokeWeight: 0.01
           })
-          globalMap.setZoom(9.2);
-          globalMap.panTo(new L.LatLng(this.lat, this.lng));
+
           markerIcon.addTo(globalMap).bindPopup(
             "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
@@ -616,6 +614,9 @@ export class MapViewComponent implements OnInit {
           markerIcon.on('click', this.onClick_Marker, this)
           markerIcon.myJsonData = this.markers[i];
         };
+        globalMap.setView(new L.LatLng(this.lat, this.lng), 10);
+        this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       });
@@ -635,9 +636,8 @@ export class MapViewComponent implements OnInit {
       this.clusterHidden = true;
       this.studentCount = 0;
       this.schoolCount = 0;
-      this.title = "Cluster";
+      this.title = "School wise attendance report for Cluster";
       this.titleName = label.name;
-      localStorage.setItem('dist', label.name);
       this.service.schoolsPerCluster(label.id).subscribe(res => {
         this.dist = false;
         this.blok = false;
@@ -668,8 +668,7 @@ export class MapViewComponent implements OnInit {
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
-              stdCount: sorted[i]['students_count'],
-              schCount: sorted[i]['total_schools'],
+              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
               skul: this.skul,
               blok: this.blok,
 
@@ -681,8 +680,7 @@ export class MapViewComponent implements OnInit {
             fillOpacity: 1,
             strokeWeight: 0.01
           })
-          globalMap.setZoom(11);
-          globalMap.panTo(new L.LatLng(this.lat, this.lng));
+
           markerIcon.addTo(globalMap).bindPopup(
             "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
@@ -700,10 +698,12 @@ export class MapViewComponent implements OnInit {
           });
 
           this.layerMarkers.addLayer(markerIcon);
-          markerIcon.on('click', this.onClick_Marker, this)
+          // markerIcon.on('click', this.onClick_Marker, this);
           markerIcon.myJsonData = this.markers[i];
         };
-        this.schoolCount = this.markers.length;
+        globalMap.setView(new L.LatLng(this.lat, this.lng), 12);
+        this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       });
@@ -735,6 +735,13 @@ export class MapViewComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  onClick_Marker(event) {
+    var marker = event.target;
+    console.log(marker.myJsonData);
+    this.clickedMarker(marker.myJsonData);
+  }
+
+
   myDistData(data) {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -742,9 +749,8 @@ export class MapViewComponent implements OnInit {
     this.errMsg();
     this.studentCount = 0;
     this.schoolCount = 0;
-    this.title = "District";
+    this.title = "Block wise attendance report for District";
     this.titleName = data.name;
-    localStorage.setItem('dist', data.name);
 
     this.service.blockPerDist(data.id).subscribe(res => {
       this.blockHidden = false;
@@ -776,8 +782,8 @@ export class MapViewComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
-            stdCount: sorted[i]['students_count'],
-            schCount: sorted[i]['total_schools'],
+            stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+            schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             blok: this.blok,
           });
         var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
@@ -788,8 +794,6 @@ export class MapViewComponent implements OnInit {
           strokeWeight: 0.01
         })
 
-        globalMap.setZoom(8);
-        globalMap.panTo(new L.LatLng(this.lat, this.lng));
         markerIcon.addTo(globalMap).bindPopup(
           "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
           "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
@@ -808,6 +812,9 @@ export class MapViewComponent implements OnInit {
         markerIcon.on('click', this.onClick_Marker, this)
         markerIcon.myJsonData = this.markers[i];
       }
+      globalMap.setView(new L.LatLng(this.lat, this.lng), 8.3);
+      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     })
@@ -815,12 +822,6 @@ export class MapViewComponent implements OnInit {
     element1[0].style.display = 'block';
     this.blok = false;
     globalMap.addLayer(this.layerMarkers);
-  }
-
-  onClick_Marker(event) {
-    var marker = event.target;
-    console.log(marker.myJsonData);
-    this.clickedMarker(marker.myJsonData);
   }
 
   myBlockData(data) {
@@ -831,9 +832,8 @@ export class MapViewComponent implements OnInit {
 
     this.studentCount = 0;
     this.schoolCount = 0;
-    this.title = "Block";
+    this.title = "Cluster wise attendance report for Block";
     this.titleName = data.name;
-    localStorage.setItem('dist', data.name);
     this.service.clusterPerBlock(data.id).subscribe(res => {
       this.clusterHidden = false;
       this.blockHidden = false;
@@ -867,8 +867,8 @@ export class MapViewComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
-            stdCount: sorted[i]['students_count'],
-            schCount: sorted[i]['total_schools'],
+            stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+            schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             clust: this.clust,
             blok: this.blok,
 
@@ -880,8 +880,6 @@ export class MapViewComponent implements OnInit {
           fillOpacity: 1,
           strokeWeight: 0.01
         })
-        globalMap.setZoom(8.8);
-        globalMap.panTo(new L.LatLng(this.lat, this.lng));
         markerIcon.addTo(globalMap).bindPopup(
           "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
           "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
@@ -902,6 +900,9 @@ export class MapViewComponent implements OnInit {
         markerIcon.on('click', this.onClick_Marker, this)
         markerIcon.myJsonData = this.markers[i];
       };
+      globalMap.setView(new L.LatLng(this.lat, this.lng), 10);
+      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     });
@@ -917,13 +918,11 @@ export class MapViewComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.markers = [];
     this.errMsg();
-    var distId = localStorage.getItem('dist');
 
     this.studentCount = 0;
     this.schoolCount = 0;
-    this.title = "Cluster";
+    this.title = "School wise attendance report for Cluster";
     this.titleName = data.name;
-    localStorage.setItem('dist', data.name);
     this.service.schoolsPerCluster(data.id).subscribe(res => {
       this.dist = false;
       this.blok = false;
@@ -932,8 +931,8 @@ export class MapViewComponent implements OnInit {
 
       this.mylatlngData = res;
       ;
-      this.lat = Number(this.mylatlngData[0]['y_value']);
-      this.lng = Number(this.mylatlngData[0]['z_value']);
+      this.lat = Number(this.mylatlngData[5]['y_value']);
+      this.lng = Number(this.mylatlngData[5]['z_value']);
 
       this.clusterIds = [];
 
@@ -954,8 +953,7 @@ export class MapViewComponent implements OnInit {
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
-            stdCount: sorted[i]['students_count'],
-            schCount: sorted[i]['total_schools'],
+            stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             skul: this.skul,
             blok: this.blok,
 
@@ -967,8 +965,6 @@ export class MapViewComponent implements OnInit {
           fillOpacity: 1,
           strokeWeight: 0.01
         })
-        globalMap.setZoom(11);
-        globalMap.panTo(new L.LatLng(this.lat, this.lng));
         markerIcon.addTo(globalMap).bindPopup(
           "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
           "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
@@ -986,10 +982,11 @@ export class MapViewComponent implements OnInit {
         });
 
         this.layerMarkers.addLayer(markerIcon);
-        markerIcon.on('click', this.onClick_Marker, this)
         markerIcon.myJsonData = this.markers[i];
       };
-      this.schoolCount = this.markers.length;
+      globalMap.setView(new L.LatLng(this.lat, this.lng), 12);
+      this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     });
@@ -1027,11 +1024,8 @@ export class MapViewComponent implements OnInit {
       for (let i = 0; i < 3; i++) {
         result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
       }
-
       return result;
     }
-
-
 
     function generateGradient(color1, color2, total, interpolation) {
       const colorStart = typeof color1 === 'string' ? hex2rgb(color1) : color1;
@@ -1061,10 +1055,8 @@ export class MapViewComponent implements OnInit {
         interimColorHex = rgb2hex(interimColorRGB);
         arrReturnColors.push(interimColorHex);
       }
-
       return arrReturnColors;
     }
-
     return {
       generateGradient
     };
