@@ -1,6 +1,9 @@
 - name: Creates directory
   file: path=~/nifi state=directory
 
+- name: Installing curl
+  apt: name=curl
+
 - name: Download NiFi
   get_url:
     url: https://archive.apache.org/dist/nifi/1.10.0/nifi-1.10.0-bin.tar.gz
