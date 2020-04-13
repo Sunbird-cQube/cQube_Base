@@ -3,19 +3,17 @@
         <div class="col-sm-8">
             <p
                 style="text-align: left; color: #284d8a; background-color:#fff; font-size: 24px; line-height: 1em; margin-top: 5px;">
-                Attendance Report for {{title}}: {{titleName}}</p>
+                {{title}}: {{titleName}}</p>
         </div>
         <div class="col-sm-4">
             <div class="row">
                 <div class="col-sm-7">
                     <div class="col-sm-12" id="spinner">
-
                         <div class="spinner-border text-secondary"
                             style="height: 20px; width: 20px; font-size: 20px; margin: 1% 5% 0% 0%; float: left;"
                             role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
-
                         <span style="color: green; float: left; margin-top: 0.5%;">Please Wait...</span>
 
                     </div>
@@ -24,10 +22,10 @@
                 </div>
                 <div class="col-sm-5">
                     <button class="btn btn-danger btn-sm" (click)="logout()"
-                        style="float: right; margin-top: 5px; font-family: Arial; background-color: rgb(221, 127, 127);">
+                        style="float: right; font-size: 12px; margin-top: 5px; font-family: Arial; background-color: rgb(221, 127, 127);">
                         <span class="glyphicon glyphicon-log-out"></span><b>Logout</b> </button>
                     <button id="districtWise" class="btn btn-secondary"
-                        style="font-size: 11px; width: 60px;  float: right;margin: 5px 10px 0px 0px;"
+                        style="font-size: 11px;font-weight: bold; width: 60px; font-family: Arial; float: right;margin: 5px 10px 0px 0px;"
                         (click)="districtWise()">Home</button>
                 </div>
             </div>
