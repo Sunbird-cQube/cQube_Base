@@ -68,6 +68,7 @@ export class MapViewComponent implements OnInit {
 
   //Initialisation of Map  
   initMap() {
+
     const lat = 22.11292266845703;
     const lng = 72.02733294142871;
     globalMap = L.map('mapContainer').setView([lat, lng], 7);
@@ -78,8 +79,7 @@ export class MapViewComponent implements OnInit {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
       minZoom: 4,
       maxZoom: 18,
-
-    }).addTo(globalMap);
+      }).addTo(globalMap);
   }
 
   public markersList = new L.FeatureGroup();
