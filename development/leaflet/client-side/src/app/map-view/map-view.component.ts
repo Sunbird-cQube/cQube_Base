@@ -43,6 +43,7 @@ export class MapViewComponent implements OnInit {
   public clust: boolean = false;
   public skul: boolean = false;
   public layerMarkers = new L.layerGroup();
+  public hierName: any;
 
   public styles: any = [];
 
@@ -116,6 +117,7 @@ export class MapViewComponent implements OnInit {
     this.districtsNames = [];
     this.studentCount = 0;
     this.schoolCount = 0;
+    this.hierName = '';
 
     this.lat = 22.11292266845703;
     this.lng = 72.02733294142871;
@@ -208,6 +210,8 @@ export class MapViewComponent implements OnInit {
     this.titleName = "Gujarat"
     this.studentCount = 0;
     this.schoolCount = 0;
+    this.hierName = '';
+
     this.service.block_wise_data().subscribe(res => {
       this.mylatlngData = res;
       this.dist = false;
@@ -289,6 +293,7 @@ export class MapViewComponent implements OnInit {
     this.errMsg();
     this.studentCount = 0;
     this.schoolCount = 0;
+    this.hierName = '';
     this.title = "School wise attendance report for State";
     this.titleName = "Gujarat"
     this.service.school_wise_data().subscribe(res => {
@@ -380,6 +385,7 @@ export class MapViewComponent implements OnInit {
     this.errMsg();
     this.studentCount = 0;
     this.schoolCount = 0;
+    this.hierName = '';
 
     this.title = "Cluster wise attendance report for State";
     this.titleName = "Gujarat"
@@ -410,7 +416,7 @@ export class MapViewComponent implements OnInit {
         this.cluster.push(
           {
             id: sorted[i]['x_axis'],
-            name: sorted[i]['crc_name'],
+            name: (sorted[i]['crc_name']).toUpperCase(),
             dist: sorted[i]['district_name'],
             block: sorted[i]['block_name'],
             label: sorted[i]['x_value'],
@@ -475,6 +481,7 @@ export class MapViewComponent implements OnInit {
 
       this.title = "Block wise attendance report for District";
       this.titleName = label.name;
+      this.hierName = "/ " + label.name;
       this.studentCount = 0;
       this.schoolCount = 0;
       this.myDistrict = {};
@@ -559,6 +566,7 @@ export class MapViewComponent implements OnInit {
 
       this.title = "Cluster wise attendance report for Block";
       this.titleName = label.name;
+      this.hierName = "/ " + label.dist + "/ " + label.name;
       this.studentCount = 0;
       this.schoolCount = 0;
       this.myDistrict = {};
@@ -586,27 +594,29 @@ export class MapViewComponent implements OnInit {
           this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
           this.clusterIds.push(sorted[i]['x_axis']);
           if (sorted[i]['crc_name'] !== null) {
-            this.clusterNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['crc_name'] });
+            this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['crc_name']).toUpperCase() });
           } else {
             this.clusterNames.push({ id: sorted[i]['x_axis'], name: "No name found" });
           }
 
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: sorted[i]['crc_name'],
-              // name: sorted[i][''],
-              dist: sorted[i]['distName'],
-              block: sorted[i]['blockName'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              clust: this.clust,
-              blok: this.blok,
+          if (sorted[i]['y_value'] !== 0 && sorted[i]['z_value'] !== 0) {
+            this.markers.push(
+              {
+                id: sorted[i]['x_axis'],
+                name: sorted[i]['crc_name'],
+                // name: sorted[i][''],
+                dist: sorted[i]['distName'],
+                block: sorted[i]['blockName'],
+                label: sorted[i]['x_value'],
+                lat: sorted[i]['y_value'],
+                lng: sorted[i]['z_value'],
+                stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                clust: this.clust,
+                blok: this.blok,
 
-            });
+              });
+          }
           var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: 3.5,
             color: this.colors[i],
@@ -659,6 +669,7 @@ export class MapViewComponent implements OnInit {
 
       this.title = "School wise attendance report for Cluster";
       this.titleName = label.name;
+      this.hierName = "/ " + label.dist + "/ " + label.block + "/ " + label.name.toUpperCase();
       this.studentCount = 0;
       this.schoolCount = 0;
 
@@ -769,12 +780,15 @@ export class MapViewComponent implements OnInit {
   myDistData(data) {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
+    this.hierName = '';
     this.markers = [];
     this.errMsg();
     this.studentCount = 0;
     this.schoolCount = 0;
     this.title = "Block wise attendance report for District";
     this.titleName = data.name;
+    this.hierName = "/ " + data.name;
+    localStorage.setItem('dist', data.name);
 
     this.service.blockPerDist(data.id).subscribe(res => {
       this.blockHidden = false;
@@ -859,6 +873,8 @@ export class MapViewComponent implements OnInit {
     this.schoolCount = 0;
     this.title = "Cluster wise attendance report for Block";
     this.titleName = data.name;
+    localStorage.setItem('block', data.name);
+    this.hierName = "/ " + localStorage.getItem('dist') + "/ " + data.name
     this.service.clusterPerBlock(data.id).subscribe(res => {
       this.clusterHidden = false;
       this.blockHidden = false;
@@ -868,9 +884,10 @@ export class MapViewComponent implements OnInit {
       this.skul = false;
 
       this.mylatlngData = res;
-      ;
-      this.lat = Number(this.mylatlngData[0]['y_value']);
-      this.lng = Number(this.mylatlngData[0]['z_value']);
+      if (this.mylatlngData[0]['y_value'] !== 0 && this.mylatlngData[0]['z_value']) {
+        this.lat = Number(this.mylatlngData[0]['y_value']);
+        this.lng = Number(this.mylatlngData[0]['z_value']);
+      }
       this.clusterNames = [];
 
       var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -887,8 +904,9 @@ export class MapViewComponent implements OnInit {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
         this.clusterIds.push(sorted[i]['x_axis']);
-        this.clusterNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['crc_name'] });
+        this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['crc_name']).toUpperCase() });
 
+        // if (sorted[i]['y_value'] != 0 && sorted[i]['z_value'] != 0) {
         this.markers.push(
           {
             id: sorted[i]['x_axis'],
@@ -902,8 +920,9 @@ export class MapViewComponent implements OnInit {
             schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             clust: this.clust,
             blok: this.blok,
-
           });
+        // }
+        // else(console.log(sorted[i]['y_value']))
         var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
           radius: 3,
           color: this.colors[i],
@@ -957,6 +976,7 @@ export class MapViewComponent implements OnInit {
     this.schoolCount = 0;
     this.title = "School wise attendance report for Cluster";
     this.titleName = data.name;
+    this.hierName = "/ " + localStorage.getItem('dist') + "/ " + localStorage.getItem('block') + "/ " + data.name.toUpperCase();
     this.service.schoolsPerCluster(data.id).subscribe(res => {
       this.dist = false;
       this.blok = false;
@@ -966,8 +986,8 @@ export class MapViewComponent implements OnInit {
       this.mylatlngData = res;
       ;
       // if(this.mylatlngData[0]['y_value'] > 0){
-        this.lat = Number(this.mylatlngData[1]['y_value']);
-        this.lng = Number(this.mylatlngData[1]['z_value']);
+      this.lat = Number(this.mylatlngData[1]['y_value']);
+      this.lng = Number(this.mylatlngData[1]['z_value']);
       // }
 
       this.clusterIds = [];

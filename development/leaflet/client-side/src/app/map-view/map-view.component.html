@@ -1,27 +1,28 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-8">
-            <p
+        <div class="col-sm-9">
+            <!-- <p
                 style="text-align: left;font-family: Arial; color: #284d8a; background-color:#fff; font-size: 21px; line-height: 1em; margin-top: 5px;">
-                {{title}}: {{titleName}}</p>
+                {{title}}: {{titleName}}</p> -->
+            <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">Attendance report for: GUJARAT{{hierName}}</p>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div class="row">
-                <div class="col-sm-7">
+                <div class="col-sm-6">
                     <div class="col-sm-12" id="spinner">
                         <div class="spinner-border text-secondary"
                             style="height: 20px; width: 20px; font-size: 21px; margin: 1% 5% 0% 0%; float: left; font-family: Arial;"
                             role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
-                        <span style="color: green; float: left; margin-top: 0.5%;font-family: Arial;">Please
+                        <span style="color: green; float: left; font-size: 12px; margin-top: 0.6%;font-family: Arial;">Please
                             Wait...</span>
 
                     </div>
                     <p id="errMsg" style="display: none; text-align: center; margin-top: 1%; font-family: Arial;"></p>
 
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                     <button class="btn btn-danger"
                         style="font-size: 11px;background-color: rgb(221, 127, 127); font-weight: bold; width: 60px; font-family: Arial; float: right;margin: 5px 0px 0px 0px;"
                         (click)="logout()">Logout</button>
