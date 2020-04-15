@@ -1,4 +1,4 @@
-<div class="container-fluid" style="font-family: Arial;">
+<div class="container-fluid">
     <div class="row">
         <div class="col-sm-8">
             <p
@@ -50,7 +50,8 @@
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                 <option [value]="myDistrict" disabled selected="selected">Choose a District
                 </option>
-                <option *ngFor="let dist of districtsNames" [(ngValue)]="dist">
+                <option *ngFor="let dist of districtsNames" [(ngValue)]="dist"
+                    style="font-family: Arial; font-size: 11px;">
                     {{dist.name}}
                 </option>
             </select>
@@ -60,7 +61,8 @@
                 [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                 <option [value]="myBlock" disabled selected="selected">Choose a Block
                 </option>
-                <option *ngFor="let block of blocksNames" [(ngValue)]="block">
+                <option *ngFor="let block of blocksNames" [(ngValue)]="block"
+                    style="font-family: Arial;font-size: 11px;">
                     {{block.name}}
                 </option>
             </select>
@@ -70,7 +72,9 @@
                 [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
                 <option [value]="myCluster" disabled selected="selected">Choose a Cluster
                 </option>
-                <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster">
+                <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster"
+                    style="font-family: Arial;font-size: 11px; "
+                    [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                     {{cluster.name}}
                 </option>
             </select>
@@ -80,18 +84,19 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 550px"></div>
+            <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 488px;"></div>
         </div>
     </div>
-    <div class="row" style="background-color: gray; color: white; margin: 0px 0px 0px 0px;font-family: Arial;">
+    <div class="row"
+        style="background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; height: 22px;">
         <div class="col-sm-4">
-            <span style="font-family: Arial;">Number of students: {{studentCount}}</span>
+            <span>Number of students: {{studentCount}}</span>
         </div>
         <div class="col-sm-4">
-            <span style="text-align: center;font-family: Arial;">Number of schools: {{schoolCount}}</span>
+            <span style="text-align: center;">Number of schools: {{schoolCount}}</span>
         </div>
         <div class="col-sm-4">
-            <span style="float: right; font-family: Arial;">Date range: {{dateRange}}</span>
+            <span style="float: right;">Date range: {{dateRange}}</span>
         </div>
     </div>
 </div>
