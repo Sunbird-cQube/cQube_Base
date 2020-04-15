@@ -8,7 +8,7 @@ import { MapViewComponent } from './map-view/map-view.component';
 
 const routes: Routes = [
   {
-    path: 'prod', component: LoginComponent
+    path: 'prd', component: LoginComponent
   },
   {
     path: 'admin-view', component: StudentAttedenceComponent
