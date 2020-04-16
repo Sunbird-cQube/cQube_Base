@@ -11,7 +11,7 @@ export class AppServiceComponent {
     constructor(public http: HttpClient) { };
 
     login(data) {
-        return this.http.post(`${this.baseUrl}/login`, data);
+        return this.http.post(`${this.baseUrl}/roleBasedLogin`, data);
     }
 
     dist_wise_data() {
