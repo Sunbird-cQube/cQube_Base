@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 router.post('/', (req, res) => {
     var log = fs.readFileSync('./src/file/loginData.json');
     var auth = JSON.parse(log);
+    console.log(req.body);
     if (req.body.email !== auth.email) {
         res.send({ notEmail: "User not found" });
     } else if (req.body.cnfpass !== auth.password) {
