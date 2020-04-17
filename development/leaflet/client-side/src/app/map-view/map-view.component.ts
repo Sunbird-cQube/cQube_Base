@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
+
 declare let L;
 
 var globalMap;
@@ -44,6 +45,10 @@ export class MapViewComponent implements OnInit {
   public skul: boolean = false;
   public layerMarkers = new L.layerGroup();
   public hierName: any;
+
+  public distName: any;
+  public blockName: any;
+  public clustName: any;
 
   public styles: any = [];
 
@@ -105,6 +110,10 @@ export class MapViewComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
   }
 
+  downloadRoport() {
+    this.service.downloadFile(this.markers);
+  }
+
   districtWise() {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -124,10 +133,10 @@ export class MapViewComponent implements OnInit {
 
     this.service.dist_wise_data().subscribe(res => {
       this.mylatlngData = res;
-      this.dist = true;
+      this.dist = false;
       this.blok = false;
       this.clust = false;
-      this.skul = false;
+      this.skul = true;
 
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
@@ -190,12 +199,6 @@ export class MapViewComponent implements OnInit {
     globalMap.addLayer(this.layerMarkers);
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'none';
-    this.districts = [];
-    this.studentCount = 0;
-    this.schoolCount = 0;
-    this.service.schoolCount().subscribe(res => {
-      this.schoolCount = res[0]['total_schools'];
-    });
   }
 
   blockWise() {
@@ -215,9 +218,9 @@ export class MapViewComponent implements OnInit {
     this.service.block_wise_data().subscribe(res => {
       this.mylatlngData = res;
       this.dist = false;
-      this.blok = true;
+      this.blok = false;
       this.clust = false;
-      this.skul = false;
+      this.skul = true;
       this.lat = 22.11292266845703;
       this.lng = 72.02733294142871;
 
@@ -232,6 +235,7 @@ export class MapViewComponent implements OnInit {
         this.markers.push(
           {
             id: sorted[i]['x_axis'],
+            distId: sorted[i]['district_id'],
             dist: sorted[i]['district_name'],
             name: sorted[i]['block_name'],
             label: sorted[i]['x_value'],
@@ -243,7 +247,7 @@ export class MapViewComponent implements OnInit {
 
           });
         var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
-          radius: 5,
+          radius: 3.5,
           color: this.colors[i],
           fillColor: this.colors[i],
           fillOpacity: 1,
@@ -280,7 +284,6 @@ export class MapViewComponent implements OnInit {
     globalMap.addLayer(this.layerMarkers);
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'Block';
-    this.blocks = [];
   }
 
   schoolWise() {
@@ -334,11 +337,11 @@ export class MapViewComponent implements OnInit {
         for (let i = 0; i < this.markers.length; i++) {
 
           var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
-            radius: 2.0,
+            radius: 0.2,
             color: this.colors[i],
             fillColor: this.colors[i],
             fillOpacity: 1,
-            strokeWeight: 0.01
+            strokeWeight: 0.0000001
 
           });
 
@@ -387,14 +390,14 @@ export class MapViewComponent implements OnInit {
     this.schoolCount = 0;
     this.hierName = '';
 
-    this.title = "Cluster wise attendance report for State";
-    this.titleName = "Gujarat"
+    // this.title = "Cluster wise attendance report for State";
+    // this.titleName = "Gujarat"
     this.service.cluster_wise_data().subscribe(res => {
       this.mylatlngData = res;
       this.dist = false;
       this.blok = false;
-      this.clust = true;
-      this.skul = false;
+      this.clust = false;
+      this.skul = true;
 
       this.lat = 22.11292266845703;
       this.lng = 72.02733294142871;
@@ -416,8 +419,10 @@ export class MapViewComponent implements OnInit {
         this.cluster.push(
           {
             id: sorted[i]['x_axis'],
-            name: (sorted[i]['crc_name']).toUpperCase(),
+            name: (sorted[i]['crc_name']),
+            distId: sorted[i]['district_id'],
             dist: sorted[i]['district_name'],
+            blockId: sorted[i]['block_id'],
             block: sorted[i]['block_name'],
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
@@ -432,7 +437,7 @@ export class MapViewComponent implements OnInit {
       if (this.markers.length !== 0) {
         for (let i = 0; i < this.markers.length; i++) {
           var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
-            radius: 4.0,
+            radius: 1,
             draggable: true,
             color: this.colors[i],
             fillColor: this.colors[i],
@@ -474,14 +479,19 @@ export class MapViewComponent implements OnInit {
 
   clickedMarker(label) {
     if (this.districtsIds.includes(label.id)) {
+      this.dist = true;
+      this.blok = false;
+      this.clust = false;
+      this.skul = false;
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.markers = [];
       this.errMsg();
-
+      console.log(label);
       this.title = "Block wise attendance report for District";
       this.titleName = label.name;
-      this.hierName = "/ " + label.name;
+      this.distName = label;
+      this.hierName = this.distName.name;
       this.studentCount = 0;
       this.schoolCount = 0;
       this.myDistrict = {};
@@ -489,15 +499,12 @@ export class MapViewComponent implements OnInit {
       this.service.blockPerDist(label.id).subscribe(res => {
         this.blockHidden = true;
         this.clusterHidden = true;
-        this.dist = false;
-        this.blok = true;
-        this.clust = false;
-        this.skul = false;
 
         this.mylatlngData = res;
 
-        this.lat = Number(label.lat);
-        this.lng = Number(label.lng);
+        this.lat = Number(this.mylatlngData[0]['y_value']);
+        this.lng = Number(this.mylatlngData[0]['z_value']);
+
         this.blocksNames = [];
 
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
@@ -512,13 +519,13 @@ export class MapViewComponent implements OnInit {
             {
               id: sorted[i]['x_axis'],
               name: sorted[i]['block_name'],
+              distId: sorted[i]['distId'],
               dist: sorted[i]['distName'],
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
               stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
               schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              blok: this.blok,
             });
           var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: 4,
@@ -563,26 +570,29 @@ export class MapViewComponent implements OnInit {
       this.layerMarkers.clearLayers();
       this.markers = [];
       this.errMsg();
+      this.dist = false;
+      this.blok = true;
+      this.clust = false;
+      this.skul = false;
 
       this.title = "Cluster wise attendance report for Block";
-      this.titleName = label.name;
-      this.hierName = "/ " + label.dist + "/ " + label.name;
+      this.titleName = label.dist;
+
+      this.distName = { id: label.distId, name: label.dist };
+      this.blockName = label;
+      this.hierName = label.name;
       this.studentCount = 0;
       this.schoolCount = 0;
       this.myDistrict = {};
-
+      console.log(this.distName);
       this.service.clusterPerBlock(label.id).subscribe(res => {
         this.clusterHidden = true;
         this.blockHidden = true;
-        this.dist = false;
-        this.blok = false;
-        this.clust = true;
-        this.skul = false;
 
         this.mylatlngData = res;
         ;
-        this.lat = Number(label.lat);
-        this.lng = Number(label.lng);
+        this.lat = Number(this.mylatlngData[0]['y_value']);
+        this.lng = Number(this.mylatlngData[0]['z_value']);
         this.clusterNames = [];
 
         var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
@@ -594,7 +604,7 @@ export class MapViewComponent implements OnInit {
           this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
           this.clusterIds.push(sorted[i]['x_axis']);
           if (sorted[i]['crc_name'] !== null) {
-            this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['crc_name']).toUpperCase() });
+            this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['crc_name']) });
           } else {
             this.clusterNames.push({ id: sorted[i]['x_axis'], name: "No name found" });
           }
@@ -604,17 +614,15 @@ export class MapViewComponent implements OnInit {
               {
                 id: sorted[i]['x_axis'],
                 name: sorted[i]['crc_name'],
-                // name: sorted[i][''],
+                distId: sorted[i]['distId'],
                 dist: sorted[i]['distName'],
+                blockId: sorted[i]['blockId'],
                 block: sorted[i]['blockName'],
                 label: sorted[i]['x_value'],
                 lat: sorted[i]['y_value'],
                 lng: sorted[i]['z_value'],
                 stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                 schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                clust: this.clust,
-                blok: this.blok,
-
               });
           }
           var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
@@ -654,8 +662,6 @@ export class MapViewComponent implements OnInit {
       globalMap.addLayer(this.layerMarkers);
       var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
-      this.clust = false;
-      this.blok = true;
     }
 
     if (this.clusterIds.includes(label.id)) {
@@ -663,50 +669,55 @@ export class MapViewComponent implements OnInit {
       this.layerMarkers.clearLayers();
       this.markers = [];
       this.errMsg();
+      this.dist = false;
+      this.blok = false;
+      this.clust = true;
+      this.skul = false;
       this.blockHidden = true;
       this.clusterHidden = true;
       this.myDistrict = {};
 
-      this.title = "School wise attendance report for Cluster";
-      this.titleName = label.name;
-      this.hierName = "/ " + label.dist + "/ " + label.block + "/ " + label.name.toUpperCase();
+      console.log(":::::::::::::::::::::::::::::::", label);
+      this.distName = { id: label.distId, name: label.dist };
+      this.title = label.block;
+      this.titleName = label.dist;
+      this.clustName = label;
+      this.hierName = label.name;
       this.studentCount = 0;
       this.schoolCount = 0;
-
+      console.log(this.distName);
       this.service.schoolsPerCluster(label.id).subscribe(res => {
-        this.dist = false;
-        this.blok = false;
-        this.clust = false;
-        this.skul = true;
 
         this.mylatlngData = res;
-        ;
-        this.lat = Number(label.lat);
-        this.lng = Number(label.lng);
+
+        this.lat = Number(this.mylatlngData[0]['y_value']);
+        this.lng = Number(this.mylatlngData[0]['z_value']);
 
         this.clusterIds = [];
 
-        var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
+          var object = previous.filter(object => object['x_axis'] === current['x_axis']);
+          if (object.length == 0) previous.push(current);
+          return previous;
+        }, []);
+
+        var sorted = uniqueData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         for (var i = 0; i < sorted.length; i++) {
           this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
           this.markers.push(
             {
               id: sorted[i]['x_axis'],
               name: sorted[i]['schoolName'],
               block: sorted[i]['blockName'],
               dist: sorted[i]['distName'],
-              cluster: sorted[i]['crc'].toUpperCase(),
+              cluster: sorted[i]['crc'],
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
               stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              skul: this.skul,
-              blok: this.blok,
-
             });
           var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: 3.5,
@@ -733,11 +744,10 @@ export class MapViewComponent implements OnInit {
           });
 
           this.layerMarkers.addLayer(markerIcon);
-          // markerIcon.on('click', this.onClick_Marker, this);
           markerIcon.myJsonData = this.markers[i];
         };
         globalMap.setView(new L.LatLng(this.lat, this.lng), 12);
-        this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.schoolCount = (label.schCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.loaderAndErr();
         this.changeDetection.markForCheck();
@@ -745,8 +755,6 @@ export class MapViewComponent implements OnInit {
       globalMap.addLayer(this.layerMarkers);
       var element1: any = document.getElementsByClassName('btn-secondary');
       element1[0].style.display = 'block';
-      this.skul = false;
-      this.blok = true;
     }
   };
 
@@ -778,25 +786,27 @@ export class MapViewComponent implements OnInit {
 
 
   myDistData(data) {
+    console.log(data);
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.hierName = '';
     this.markers = [];
     this.errMsg();
+    this.dist = true;
+    this.blok = false;
+    this.clust = false;
+    this.skul = false;
     this.studentCount = 0;
     this.schoolCount = 0;
-    this.title = "Block wise attendance report for District";
-    this.titleName = data.name;
-    this.hierName = "/ " + data.name;
+    // this.title = "Block wise attendance report for District";
+    // this.titleName = data;
+    this.distName = data;
+    this.hierName = data.name;
     localStorage.setItem('dist', data.name);
 
     this.service.blockPerDist(data.id).subscribe(res => {
       this.blockHidden = false;
       this.clusterHidden = true;
-      this.dist = false;
-      this.blok = true;
-      this.clust = false;
-      this.skul = false;
 
       this.mylatlngData = res;
 
@@ -859,29 +869,32 @@ export class MapViewComponent implements OnInit {
     })
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'block';
-    this.blok = false;
+    // this.blok = false;
     globalMap.addLayer(this.layerMarkers);
   }
 
   myBlockData(data) {
+    console.log(data);
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
     this.errMsg();
+    this.dist = false;
+    this.blok = true;
+    this.clust = false;
+    this.skul = false;
 
     this.studentCount = 0;
     this.schoolCount = 0;
-    this.title = "Cluster wise attendance report for Block";
-    this.titleName = data.name;
+    // this.title = "Cluster wise attendance report for Block";
+    // this.titleName = data;
     localStorage.setItem('block', data.name);
-    this.hierName = "/ " + localStorage.getItem('dist') + "/ " + data.name
+    this.titleName = localStorage.getItem('dist');
+    this.blockName = data;
+    this.hierName = data.name;
     this.service.clusterPerBlock(data.id).subscribe(res => {
       this.clusterHidden = false;
       this.blockHidden = false;
-      this.dist = false;
-      this.blok = false;
-      this.clust = true;
-      this.skul = false;
 
       this.mylatlngData = res;
       if (this.mylatlngData[0]['y_value'] !== 0 && this.mylatlngData[0]['z_value']) {
@@ -904,7 +917,7 @@ export class MapViewComponent implements OnInit {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
         this.clusterIds.push(sorted[i]['x_axis']);
-        this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['crc_name']).toUpperCase() });
+        this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['crc_name']) });
 
         // if (sorted[i]['y_value'] != 0 && sorted[i]['z_value'] != 0) {
         this.markers.push(
@@ -962,37 +975,40 @@ export class MapViewComponent implements OnInit {
     globalMap.addLayer(this.layerMarkers);
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'block';
-    this.clust = false;
-    this.blok = true;
   }
 
   myClusterData(data) {
+    console.log(data);
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
     this.errMsg();
+    this.dist = false;
+    this.blok = false;
+    this.clust = true;
+    this.skul = false;
 
     this.studentCount = 0;
     this.schoolCount = 0;
-    this.title = "School wise attendance report for Cluster";
-    this.titleName = data.name;
-    this.hierName = "/ " + localStorage.getItem('dist') + "/ " + localStorage.getItem('block') + "/ " + data.name.toUpperCase();
+    this.title = localStorage.getItem('block');
+    this.titleName = localStorage.getItem('dist');
+    this.clustName = data;
+    this.hierName = data.name;
     this.service.schoolsPerCluster(data.id).subscribe(res => {
-      this.dist = false;
-      this.blok = false;
-      this.clust = false;
-      this.skul = true;
 
       this.mylatlngData = res;
-      ;
-      // if(this.mylatlngData[0]['y_value'] > 0){
       this.lat = Number(this.mylatlngData[1]['y_value']);
       this.lng = Number(this.mylatlngData[1]['z_value']);
       // }
 
       this.clusterIds = [];
+      var uniqueData = this.mylatlngData.reduce(function (previous, current) {
+        var object = previous.filter(object => object['x_axis'] === current['x_axis']);
+        if (object.length == 0) previous.push(current);
+        return previous;
+      }, []);
 
-      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      var sorted = uniqueData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
 
@@ -1005,7 +1021,7 @@ export class MapViewComponent implements OnInit {
             name: sorted[i]['schoolName'],
             block: sorted[i]['blockName'],
             dist: sorted[i]['distName'],
-            cluster: sorted[i]['crc'].toUpperCase(),
+            cluster: sorted[i]['crc'],
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
@@ -1040,6 +1056,7 @@ export class MapViewComponent implements OnInit {
         this.layerMarkers.addLayer(markerIcon);
         markerIcon.myJsonData = this.markers[i];
       };
+      console.log(this.markers);
       globalMap.setView(new L.LatLng(this.lat, this.lng), 13);
       this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -1049,8 +1066,8 @@ export class MapViewComponent implements OnInit {
     globalMap.addLayer(this.layerMarkers);
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'block';
-    this.skul = false;
-    this.blok = true;
+    // this.skul = false;
+    // this.blok = true;
   }
 
   color() {

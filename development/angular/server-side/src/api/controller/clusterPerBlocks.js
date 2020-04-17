@@ -14,7 +14,9 @@ router.post('/', async (req, res) => {
         if (blockId === clusters.block_id) {
             obj = {
                 x_axis: clusters.x_axis,
+                blockId: clusters.block_id,
                 blockName: clusters.block_name,
+                distId: clusters.district_id,
                 distName: clusters.district_name,
                 crc_name: clusters.crc_name,
                 x_value: clusters.x_value,

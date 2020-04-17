@@ -1,12 +1,37 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-8">
-            <!-- <p
-                style="text-align: left;font-family: Arial; color: #284d8a; background-color:#fff; font-size: 21px; line-height: 1em; margin-top: 5px;">
-                {{title}}: {{titleName}}</p> -->
-            <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">Attendance report for: GUJARAT{{hierName}}</p>
+        <div class="col-sm-9">
+            <div *ngIf='skul'>
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: GUJARAT</p>
+            </div>
+            <div *ngIf='dist'>
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: GUJARAT<span (click)="clickedMarker(distName)"
+                        style="cursor: pointer;text-decoration: underline;">/
+                        {{hierName}}</span> </p>
+            </div>
+            <div *ngIf="blok">
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: GUJARAT<span (click)="clickedMarker(distName)"
+                        style="cursor: pointer;text-decoration: underline;">/
+                        {{titleName}}</span><span (click)="clickedMarker(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">/
+                        {{hierName}}</span></p>
+            </div>
+
+            <div *ngIf="clust">
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: GUJARAT<span (click)="clickedMarker(distName)"
+                        style="cursor: pointer;text-decoration: underline;">/
+                        {{titleName}}</span><span (click)="clickedMarker(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">/
+                        {{title}}</span><span (click)="clickedMarker(clustName)"
+                        style="cursor: pointer;text-decoration: underline;">/
+                        {{hierName}}</span></p>
+            </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="col-sm-12" id="spinner">
@@ -15,7 +40,8 @@
                             role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
-                        <span style="color: green; float: left; font-size: 12px; margin-top: 0.6%;font-family: Arial;">Please
+                        <span
+                            style="color: green; float: left; font-size: 12px; margin-top: 0.6%;font-family: Arial;">Please
                             Wait...</span>
 
                     </div>
@@ -44,7 +70,7 @@
             <button class="btn btn-secondary" style="font-size: 11px; width: 70px; float: left;margin: 0px 0px 5px 0px;"
                 (click)="schoolWise()">&nbsp;<b style="font-family: Arial;">Schools</b> </button>
         </div>
-        <div class="col-sm-8" style="font-family: Arial;">
+        <div class="col-sm-7" style="font-family: Arial;">
 
             <select
                 style="margin-right: 10px; padding: 6.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
@@ -81,11 +107,15 @@
             </select>
 
         </div>
+        <!-- <div class="col-sm-2">
+            <button class="btn btn-primary" style="width: 130px; float: right; font-size: 11.5px; font-weight: bold; font-family: Arial;"
+                (click)="downloadRoport()">Download Report</button>
+        </div> -->
 
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 488px;"></div>
+            <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 83vh"></div>
         </div>
     </div>
     <div class="row"
