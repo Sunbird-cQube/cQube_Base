@@ -15,6 +15,7 @@ router.post('/', auth.authController, async (req, res) => {
         if (distId === blocks.district_id) {
             obj = {
                 x_axis: blocks.x_axis,
+                distId: blocks.district_id,
                 distName: blocks.district_name,
                 block_name: blocks.block_name,
                 x_value: blocks.x_value,

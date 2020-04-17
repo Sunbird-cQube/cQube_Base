@@ -23,10 +23,12 @@
     "@asymmetrik/ngx-leaflet": "^5.0.2",
     "@types/google-maps": "^3.2.2",
     "agm-direction": "^0.7.9",
+    "file-saver": "^2.0.2",
     "jquery": "^3.4.1",
     "leaflet": "^1.6.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
+    "xlsx": "^0.15.6",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
