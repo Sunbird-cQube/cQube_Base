@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const axios = require('axios');
+const auth = require('../middleware/check-auth');
 
-router.post('/', async (req, res) => {
+router.post('/', auth.authController, async (req, res) => {
     var distId = req.body.distId;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;

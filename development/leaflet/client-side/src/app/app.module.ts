@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { MapViewComponent } from './map-view/map-view.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { ChartViewComponent } from './chart-view/chart-view.component';
 
 @NgModule({
   declarations: [
@@ -19,11 +20,13 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     LoginComponent,
     UserViewComponent,
     MapViewComponent,
+    ChartViewComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,LeafletModule.forRoot(),
+    HttpClientModule,
+    LeafletModule.forRoot(),
     FormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCbRPhVlxgVwBC0bBOgyB-Dn_K8ONrxb_g' + '&libraries=visualization'
