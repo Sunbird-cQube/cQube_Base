@@ -25,11 +25,10 @@ export class LoginComponent implements OnInit {
     this.service.login(this.logData).subscribe(res => {
       if (res['msg']) {
         localStorage.setItem('token', res['token']);
-        this.router.navigate(['/admin-view']);
-      } else if (res['notEmail']) {
-        this.err = res['notEmail'];
-      } else if (res['wrongPasswd']) {
-        this.err = res['wrongPasswd'];
+        // this.router.navigate(['/admin-view']);
+        this.router.navigate(['/map-view'])
+      } else if (res['errMsg']) {
+        this.err = res['errMsg'];
       }
     });
   }

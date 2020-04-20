@@ -11,7 +11,7 @@ export class AppServiceComponent {
     constructor(public http: HttpClient) { };
 
     login(data) {
-        return this.http.post(`${this.baseUrl}/login`, data);
+        return this.http.post(`${this.baseUrl}/roleBasedLogin`, data);
     }
 
     dist_wise_data() {
@@ -60,4 +60,21 @@ export class AppServiceComponent {
     schoolCount() {
         return this.http.get(`${this.baseUrl}/schoolCount`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
+
+    districtWiseCRC() {
+        return this.http.get(`${this.baseUrl}/crcData/crcDistrictWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    blockWiseCRC() {
+        return this.http.get(`${this.baseUrl}/crcData/crcBlockWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    clusterWiseCRC() {
+        return this.http.get(`${this.baseUrl}/crcData/crcClusterWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    schoolWiseCRC() {
+        return this.http.get(`${this.baseUrl}/crcData/crcSchoolWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
 }

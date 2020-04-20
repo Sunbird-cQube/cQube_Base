@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: "http://localhost:3000/api"
+  apiEndpoint: "https://cqube.tibilprojects.com/api"
 };
 
-// http://3.7.39.17:3000/api
+// https://cqube.tibilprojects.com
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
