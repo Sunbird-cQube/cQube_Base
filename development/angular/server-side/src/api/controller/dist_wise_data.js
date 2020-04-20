@@ -3,7 +3,7 @@ var const_data = require('../config/aws-config');
 const auth = require('../middleware/check-auth');
 
 router.get('/', auth.authController, function (req, res) {
-    const_data['getParams']['Key'] = 'district-wise-percentage.json'
+    const_data['getParams']['Key'] = '3m_data/district-wise-percentage.json'
     const_data['s3'].getObject(const_data['getParams'], function (err, data) {
         if (err) {
             console.log(err);
