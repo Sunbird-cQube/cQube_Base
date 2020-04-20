@@ -2,6 +2,9 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
+import { ExportToCsv } from 'export-to-csv';
+
+
 
 declare let L;
 
@@ -79,7 +82,6 @@ export class MapViewComponent implements OnInit {
     const lng = 72.02733294142871;
     globalMap = L.map('mapContainer').setView([lat, lng], 7);
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}', {
-      // attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
       id: 'mapbox.streets',
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -109,9 +111,25 @@ export class MapViewComponent implements OnInit {
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('spinner').style.marginTop = '3%';
   }
+  public fileName: any;
+  public reportData: any = [];
 
   downloadRoport() {
-    this.service.downloadFile(this.markers);
+    const options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true,
+      showTitle: false,
+      title: 'My Awesome CSV',
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true,
+      filename: this.fileName
+    };
+
+    const csvExporter = new ExportToCsv(options);
+    csvExporter.generateCsv(this.reportData);
   }
 
   districtWise() {
@@ -121,22 +139,26 @@ export class MapViewComponent implements OnInit {
     this.clusterHidden = true;
     this.markers = [];
     this.errMsg();
-    this.title = "District wise attendance report for State";
-    this.titleName = "Gujarat"
+    this.dist = false;
+    this.blok = false;
+    this.clust = false;
+    this.skul = true;
+    this.fileName = "District_wise_report";
+
     this.districtsNames = [];
     this.studentCount = 0;
     this.schoolCount = 0;
     this.hierName = '';
-
+    this.distName = '';
+    this.blockName = '';
+    this.title = '';
+    this.titleName = '';
+    this.clustName = '';
     this.lat = 22.11292266845703;
     this.lng = 72.02733294142871;
 
     this.service.dist_wise_data().subscribe(res => {
       this.mylatlngData = res;
-      this.dist = false;
-      this.blok = false;
-      this.clust = false;
-      this.skul = true;
 
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
@@ -193,6 +215,16 @@ export class MapViewComponent implements OnInit {
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       var stdSch: any = { schCount: this.schoolCount, stdCount: this.studentCount }
       localStorage.setItem('schStd', JSON.stringify(stdSch));
+      this.markers.forEach(dist => {
+        var obj = {
+          DistrictId: dist.id,
+          DistrictName: dist.name,
+          Attendance: dist.label + " %",
+          TotalSchools: dist.schCount,
+          TotalStudents: dist.stdCount
+        }
+        this.reportData.push(obj);
+      });
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     })
@@ -209,18 +241,23 @@ export class MapViewComponent implements OnInit {
     this.clusterHidden = true;
     this.myDistrict = {};
     this.errMsg();
-    this.title = "Block wise attendance report for State";
-    this.titleName = "Gujarat"
+    this.dist = false;
+    this.blok = false;
+    this.clust = false;
+    this.skul = true;
+    this.reportData = [];
+    this.fileName = "Block_wise_report"
+    this.hierName = '';
+    this.distName = '';
+    this.blockName = '';
+    this.title = '';
+    this.titleName = '';
+    this.clustName = '';
     this.studentCount = 0;
     this.schoolCount = 0;
-    this.hierName = '';
 
     this.service.block_wise_data().subscribe(res => {
       this.mylatlngData = res;
-      this.dist = false;
-      this.blok = false;
-      this.clust = false;
-      this.skul = true;
       this.lat = 22.11292266845703;
       this.lng = 72.02733294142871;
 
@@ -273,10 +310,22 @@ export class MapViewComponent implements OnInit {
         markerIcon.on('click', this.onClick_Marker, this)
         markerIcon.myJsonData = this.markers[i];
       }
+      console.log(this.reportData);
       globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
       var schStdCount = JSON.parse(localStorage.getItem('schStd'));
       this.schoolCount = (schStdCount.schCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.studentCount = (schStdCount.stdCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.markers.forEach(block => {
+        var obj = {
+          BlockId: block.id,
+          BlockName: block.name,
+          DistrictName: block.dist,
+          Attendance: block.label + " %",
+          TotalSchools: block.schCount,
+          TotalStudents: block.stdCount
+        }
+        this.reportData.push(obj);
+      });
       this.loaderAndErr();
       this.changeDetection.markForCheck();
 
@@ -292,21 +341,27 @@ export class MapViewComponent implements OnInit {
     this.blockHidden = true;
     this.clusterHidden = true;
     this.markers = [];
+    this.dist = false;
+    this.blok = false;
+    this.clust = false;
+    this.skul = true;
+    this.reportData = [];
+    this.fileName = "School_wise_report"
 
     this.errMsg();
     this.studentCount = 0;
     this.schoolCount = 0;
     this.hierName = '';
-    this.title = "School wise attendance report for State";
-    this.titleName = "Gujarat"
+    this.distName = '';
+    this.blockName = '';
+    this.title = '';
+    this.titleName = '';
+    this.clustName = '';
+
     this.service.school_wise_data().subscribe(res => {
       this.mylatlngData = res;
       this.lat = 22.11292266845703;
       this.lng = 72.02733294142871;
-      this.dist = false;
-      this.blok = false;
-      this.clust = false;
-      this.skul = true;
 
       var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
@@ -315,10 +370,10 @@ export class MapViewComponent implements OnInit {
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.districtsIds.push(sorted[i]['x_axis']);
-        this.schools.push(
+        this.markers.push(
           {
             id: sorted[i]['x_axis'],
-            cluster: sorted[i]['cluster_name'],
+            cluster: sorted[i]['crc_name'],
             dist: sorted[i]['district_name'],
             block: sorted[i]['block_name'],
             name: sorted[i]['school_name'],
@@ -329,19 +384,17 @@ export class MapViewComponent implements OnInit {
             skul: this.skul
           });
       };
+      console.log(this.markers.length);
 
-      this.markers = this.schools;
-      this.schoolCount = this.markers.length;
-      console.log(this.schoolCount);
       if (this.markers.length !== 0) {
         for (let i = 0; i < this.markers.length; i++) {
 
           var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
-            radius: 0.2,
+            radius: 0.0,
             color: this.colors[i],
             fillColor: this.colors[i],
             fillOpacity: 1,
-            strokeWeight: 0.0000001
+            strokeWeight: 0.0
 
           });
 
@@ -360,22 +413,31 @@ export class MapViewComponent implements OnInit {
             this.closePopup();
           });
           this.layerMarkers.addLayer(markerIcon);
-          // markerIcon.on('click', this.onClick_Marker, this)
           markerIcon.myJsonData = this.markers[i];
         }
         globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
         var schStdCount = JSON.parse(localStorage.getItem('schStd'));
         this.schoolCount = (schStdCount.schCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (schStdCount.stdCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.markers.forEach(school => {
+          var obj = {
+            SchoolId: school.id,
+            SchoolName: school.name,
+            CRC_Name: school.cluster,
+            BlockName: school.block,
+            DistrictName: school.dist,
+            Attendance: school.label + " %",
+            TotalStudents: school.stdCount
+          }
+          this.reportData.push(obj);
+        });
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       }
     });
-
     globalMap.addLayer(this.layerMarkers);
     var element1: any = document.getElementsByClassName('btn-secondary');
     element1[0].style.display = 'block';
-    this.schools = [];
   }
 
   clusterWise() {
@@ -384,21 +446,25 @@ export class MapViewComponent implements OnInit {
     this.blockHidden = true;
     this.clusterHidden = true;
     this.markers = [];
+    this.dist = false;
+    this.blok = false;
+    this.clust = false;
+    this.skul = true;
+    this.reportData = [];
+    this.fileName = "Cluster_wise_report"
 
     this.errMsg();
     this.studentCount = 0;
     this.schoolCount = 0;
     this.hierName = '';
+    this.distName = '';
+    this.blockName = '';
+    this.title = '';
+    this.titleName = '';
+    this.clustName = '';
 
-    // this.title = "Cluster wise attendance report for State";
-    // this.titleName = "Gujarat"
     this.service.cluster_wise_data().subscribe(res => {
       this.mylatlngData = res;
-      this.dist = false;
-      this.blok = false;
-      this.clust = false;
-      this.skul = true;
-
       this.lat = 22.11292266845703;
       this.lng = 72.02733294142871;
 
@@ -466,6 +532,18 @@ export class MapViewComponent implements OnInit {
         var schStdCount = JSON.parse(localStorage.getItem('schStd'));
         this.schoolCount = (schStdCount.schCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (schStdCount.stdCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.markers.forEach(cluster => {
+          var obj = {
+            ClusterId: cluster.id,
+            CRC_Name: cluster.name,
+            BlockName: cluster.block,
+            DistrictName: cluster.dist,
+            Attendance: cluster.label + " %",
+            TotalSchools: cluster.schCount,
+            TotalStudents: cluster.stdCount
+          }
+          this.reportData.push(obj);
+        });
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       }
@@ -483,11 +561,13 @@ export class MapViewComponent implements OnInit {
       this.blok = false;
       this.clust = false;
       this.skul = false;
+      this.reportData = [];
+      this.fileName = "Block_Per_District_report"
+
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.markers = [];
       this.errMsg();
-      console.log(label);
       this.title = "Block wise attendance report for District";
       this.titleName = label.name;
       this.distName = label;
@@ -556,6 +636,17 @@ export class MapViewComponent implements OnInit {
         globalMap.setView(new L.LatLng(this.lat, this.lng), 8.3);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.markers.forEach(block => {
+          var obj = {
+            BlockId: block.id,
+            BlockName: block.name,
+            DistrictName: block.dist,
+            Attendance: block.label + " %",
+            TotalSchools: block.schCount,
+            TotalStudents: block.stdCount
+          }
+          this.reportData.push(obj);
+        });
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       })
@@ -574,17 +665,17 @@ export class MapViewComponent implements OnInit {
       this.blok = true;
       this.clust = false;
       this.skul = false;
+      this.reportData = [];
+      this.fileName = "Cluster_per_block_report"
 
       this.title = "Cluster wise attendance report for Block";
       this.titleName = label.dist;
-
       this.distName = { id: label.distId, name: label.dist };
       this.blockName = label;
       this.hierName = label.name;
       this.studentCount = 0;
       this.schoolCount = 0;
       this.myDistrict = {};
-      console.log(this.distName);
       this.service.clusterPerBlock(label.id).subscribe(res => {
         this.clusterHidden = true;
         this.blockHidden = true;
@@ -603,6 +694,7 @@ export class MapViewComponent implements OnInit {
           this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
           this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
           this.clusterIds.push(sorted[i]['x_axis']);
+          this.blocksIds.push(sorted[i]['blockId']);
           if (sorted[i]['crc_name'] !== null) {
             this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['crc_name']) });
           } else {
@@ -656,6 +748,18 @@ export class MapViewComponent implements OnInit {
         globalMap.setView(new L.LatLng(this.lat, this.lng), 10);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.markers.forEach(cluster => {
+          var obj = {
+            ClusterId: cluster.id,
+            CRC_Name: cluster.name,
+            BlockName: cluster.block,
+            DistrictName: cluster.dist,
+            Attendance: cluster.label + " %",
+            TotalSchools: cluster.schCount,
+            TotalStudents: cluster.stdCount
+          }
+          this.reportData.push(obj);
+        });
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       });
@@ -673,19 +777,23 @@ export class MapViewComponent implements OnInit {
       this.blok = false;
       this.clust = true;
       this.skul = false;
+      this.reportData = [];
+      this.fileName = "Schools_per_cluster_report"
+
       this.blockHidden = true;
       this.clusterHidden = true;
       this.myDistrict = {};
 
-      console.log(":::::::::::::::::::::::::::::::", label);
+
       this.distName = { id: label.distId, name: label.dist };
+      this.blockName = { id: label.blockId, name: label.block, distId: label.distId, dist: label.dist };
       this.title = label.block;
       this.titleName = label.dist;
       this.clustName = label;
       this.hierName = label.name;
       this.studentCount = 0;
       this.schoolCount = 0;
-      console.log(this.distName);
+
       this.service.schoolsPerCluster(label.id).subscribe(res => {
 
         this.mylatlngData = res;
@@ -704,7 +812,7 @@ export class MapViewComponent implements OnInit {
         var sorted = uniqueData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
-
+        console.log(sorted);
         for (var i = 0; i < sorted.length; i++) {
           this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
           this.markers.push(
@@ -749,6 +857,18 @@ export class MapViewComponent implements OnInit {
         globalMap.setView(new L.LatLng(this.lat, this.lng), 12);
         this.schoolCount = (label.schCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.markers.forEach(school => {
+          var obj = {
+            SchoolId: school.id,
+            SchoolName: school.name,
+            CRC_Name: school.cluster,
+            BlockName: school.block,
+            DistrictName: school.dist,
+            Attendance: school.label + " %",
+            TotalStudents: school.stdCount
+          }
+          this.reportData.push(obj);
+        });
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       });
@@ -775,6 +895,10 @@ export class MapViewComponent implements OnInit {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('dist');
+    localStorage.removeItem('distId');
+    localStorage.removeItem('block');
+    localStorage.removeItem('blockId');
+    localStorage.removeItem('schStd');
     this.router.navigate(['/']);
   }
 
@@ -786,7 +910,6 @@ export class MapViewComponent implements OnInit {
 
 
   myDistData(data) {
-    console.log(data);
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.hierName = '';
@@ -796,13 +919,16 @@ export class MapViewComponent implements OnInit {
     this.blok = false;
     this.clust = false;
     this.skul = false;
+    this.reportData = [];
+    this.fileName = "Block_per_district_report";
+
     this.studentCount = 0;
     this.schoolCount = 0;
-    // this.title = "Block wise attendance report for District";
-    // this.titleName = data;
+
     this.distName = data;
     this.hierName = data.name;
     localStorage.setItem('dist', data.name);
+    localStorage.setItem('distId', data.id);
 
     this.service.blockPerDist(data.id).subscribe(res => {
       this.blockHidden = false;
@@ -864,6 +990,17 @@ export class MapViewComponent implements OnInit {
       globalMap.setView(new L.LatLng(this.lat, this.lng), 8.3);
       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.markers.forEach(block => {
+        var obj = {
+          BlockId: block.id,
+          BlockName: block.name,
+          DistrictName: block.dist,
+          Attendance: block.label + " %",
+          TotalSchools: block.schCount,
+          TotalStudents: block.stdCount
+        }
+        this.reportData.push(obj);
+      });
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     })
@@ -874,7 +1011,6 @@ export class MapViewComponent implements OnInit {
   }
 
   myBlockData(data) {
-    console.log(data);
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -883,13 +1019,17 @@ export class MapViewComponent implements OnInit {
     this.blok = true;
     this.clust = false;
     this.skul = false;
+    this.reportData = [];
+    this.fileName = "Cluster_per_block_report";
 
     this.studentCount = 0;
     this.schoolCount = 0;
     // this.title = "Cluster wise attendance report for Block";
     // this.titleName = data;
     localStorage.setItem('block', data.name);
+    localStorage.setItem('blockId', data.id);
     this.titleName = localStorage.getItem('dist');
+    this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
     this.blockName = data;
     this.hierName = data.name;
     this.service.clusterPerBlock(data.id).subscribe(res => {
@@ -919,12 +1059,13 @@ export class MapViewComponent implements OnInit {
         this.clusterIds.push(sorted[i]['x_axis']);
         this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['crc_name']) });
 
-        // if (sorted[i]['y_value'] != 0 && sorted[i]['z_value'] != 0) {
         this.markers.push(
           {
             id: sorted[i]['x_axis'],
             name: sorted[i]['crc_name'],
+            distId: sorted[i]['distId'],
             dist: sorted[i]['distName'],
+            blockId: sorted[i]['blockId'],
             block: sorted[i]['blockName'],
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
@@ -934,8 +1075,6 @@ export class MapViewComponent implements OnInit {
             clust: this.clust,
             blok: this.blok,
           });
-        // }
-        // else(console.log(sorted[i]['y_value']))
         var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
           radius: 3,
           color: this.colors[i],
@@ -969,6 +1108,18 @@ export class MapViewComponent implements OnInit {
       globalMap.setView(new L.LatLng(this.lat, this.lng), 10);
       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.markers.forEach(cluster => {
+        var obj = {
+          ClusterId: cluster.id,
+          CRC_Name: cluster.name,
+          BlockName: cluster.block,
+          DistrictName: cluster.dist,
+          Attendance: cluster.label + " %",
+          TotalSchools: cluster.schCount,
+          TotalStudents: cluster.stdCount
+        }
+        this.reportData.push(obj);
+      });
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     });
@@ -978,7 +1129,6 @@ export class MapViewComponent implements OnInit {
   }
 
   myClusterData(data) {
-    console.log(data);
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -987,11 +1137,16 @@ export class MapViewComponent implements OnInit {
     this.blok = false;
     this.clust = true;
     this.skul = false;
+    this.reportData = [];
+    this.fileName = "Schools_Per_Cluster_report";
 
     this.studentCount = 0;
     this.schoolCount = 0;
     this.title = localStorage.getItem('block');
     this.titleName = localStorage.getItem('dist');
+    var blockId = JSON.parse(localStorage.getItem('blockId'))
+    this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
+    this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
     this.clustName = data;
     this.hierName = data.name;
     this.service.schoolsPerCluster(data.id).subscribe(res => {
@@ -1011,7 +1166,7 @@ export class MapViewComponent implements OnInit {
       var sorted = uniqueData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
-
+      console.log(sorted);
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
@@ -1056,10 +1211,21 @@ export class MapViewComponent implements OnInit {
         this.layerMarkers.addLayer(markerIcon);
         markerIcon.myJsonData = this.markers[i];
       };
-      console.log(this.markers);
       globalMap.setView(new L.LatLng(this.lat, this.lng), 13);
       this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.markers.forEach(school => {
+        var obj = {
+          SchoolId: school.id,
+          SchoolName: school.name,
+          CRC_Name: school.cluster,
+          BlockName: school.block,
+          DistrictName: school.dist,
+          Attendance: school.label + " %",
+          TotalStudents: school.stdCount
+        }
+        this.reportData.push(obj);
+      });
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     });

@@ -3,31 +3,34 @@
         <div class="col-sm-9">
             <div *ngIf='skul'>
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
-                    Attendance report for: GUJARAT</p>
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span></p>
             </div>
             <div *ngIf='dist'>
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
-                    Attendance report for: GUJARAT<span (click)="clickedMarker(distName)"
-                        style="cursor: pointer;text-decoration: underline;">/
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span> <span>/ </span><span
+                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div>
             <div *ngIf="blok">
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
-                    Attendance report for: GUJARAT<span (click)="clickedMarker(distName)"
-                        style="cursor: pointer;text-decoration: underline;">/
-                        {{titleName}}</span><span (click)="clickedMarker(blockName)"
-                        style="cursor: pointer;text-decoration: underline;">/
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span><span>/ </span><span
+                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{titleName}}</span><span>/ </span><span (click)="clickedMarker(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span></p>
             </div>
 
             <div *ngIf="clust">
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
-                    Attendance report for: GUJARAT<span (click)="clickedMarker(distName)"
-                        style="cursor: pointer;text-decoration: underline;">/
-                        {{titleName}}</span><span (click)="clickedMarker(blockName)"
-                        style="cursor: pointer;text-decoration: underline;">/
-                        {{title}}</span><span (click)="clickedMarker(clustName)"
-                        style="cursor: pointer;text-decoration: underline;">/
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span><span>/ </span><span
+                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{titleName}}</span><span>/ </span><span (click)="clickedMarker(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{title}}</span><span>/ </span><span style="">
                         {{hierName}}</span></p>
             </div>
         </div>
@@ -107,10 +110,16 @@
             </select>
 
         </div>
-        <!-- <div class="col-sm-2">
-            <button class="btn btn-primary" style="width: 130px; float: right; font-size: 11.5px; font-weight: bold; font-family: Arial;"
+        <div class="col-sm-2">
+            <!-- <button class="btn btn-primary"
+                style="width: 60px; float: left; font-size: 11.5px; font-weight: bold; font-family: Arial;"
+                [routerLink]="['/chart-view']">Charts</button> -->
+            <button class="btn btn-primary"
+                style="width: 130px; float: right; font-size: 11.5px; font-weight: bold; font-family: Arial;"
                 (click)="downloadRoport()">Download Report</button>
-        </div> -->
+        </div>
+
+
 
     </div>
     <div class="row">

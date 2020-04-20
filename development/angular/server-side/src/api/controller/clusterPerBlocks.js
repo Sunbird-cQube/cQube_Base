@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const axios = require('axios');
+const auth = require('../middleware/check-auth');
 
-router.post('/', async (req, res) => {
-    var clusters = [];
+router.post('/', auth.authController, async (req, res) => {
     var blockId = req.body.blockId;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
