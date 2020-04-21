@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { StudentAttedenceComponent } from './student-attedence/student-attedence.component';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { MapViewComponent } from './map-view/map-view.component';
-import { ChartViewComponent } from './chart-view/chart-view.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
 
 
 const routes: Routes = [
@@ -12,7 +11,7 @@ const routes: Routes = [
     path: '', component: LoginComponent
   },
   {
-    path: 'chart-view', component: ChartViewComponent
+    path: 'chart-view', component: BarChartComponent
   }
   ,
   {

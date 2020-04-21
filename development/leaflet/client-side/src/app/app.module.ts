@@ -5,22 +5,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StudentAttedenceComponent } from './student-attedence/student-attedence.component';
 import { AgmDirectionModule } from 'agm-direction';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { MapViewComponent } from './map-view/map-view.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { ChartViewComponent } from './chart-view/chart-view.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StudentAttedenceComponent,
     LoginComponent,
     UserViewComponent,
     MapViewComponent,
-    ChartViewComponent,
+    BarChartComponent,
   ],
   imports: [
     BrowserModule,
