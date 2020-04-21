@@ -1,67 +1,57 @@
 <div class="container-fluid" style="font-family: Arial;">
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <p
                 style="text-align: left;font-family: Arial; color: #284d8a; background-color:#fff; font-size: 21px; line-height: 1em; margin-top: 5px;">
                 {{title}}: {{titleName}}</p>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div class="row">
-                <div class="col-sm-7">
+                <div class="col-sm-6">
                     <div class="col-sm-12" id="spinner">
                         <div class="spinner-border text-secondary"
                             style="height: 20px; width: 20px; font-size: 21px; margin: 1% 5% 0% 0%; float: left; font-family: Arial;"
                             role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
-                        <span style="color: green; float: left; margin-top: 0.5%;font-family: Arial;">Please
+                        <span
+                            style="color: green; float: left; font-size: 12px; margin-top: 0.6%;font-family: Arial;">Please
                             Wait...</span>
 
                     </div>
                     <p id="errMsg" style="display: none; text-align: center; margin-top: 1%; font-family: Arial;"></p>
 
                 </div>
-                <div class="col-sm-5">
-                    <button class="btn btn-danger"
-                        style="font-size: 11px;background-color: rgb(221, 127, 127); font-weight: bold; width: 60px; font-family: Arial; float: right;margin: 5px 0px 0px 0px;"
-                        (click)="logout()">Logout</button>
-                    <button id="districtWise" class="btn btn-secondary"
-                        style="font-size: 11px; font-weight: bold; width: 60px; font-family: Arial; float: right;margin: 5px 10px 0px 0px;"
-                        (click)="districtWise()">Home</button>
+                <div class="col-sm-6">
+                    <img src="../../assets/logout.png" title="Logout"
+                        style="cursor: pointer;height: 20px;width: 23px;float: right;margin: 5px 0px 0px 10px;"
+                        alt="logout" (click)="logout()">
+                    <img src="../../assets/home.png" title="Home" id="home"
+                        style="cursor: pointer;height: 25px;width: 25px;float: right;margin: 2px 0px 0px 0px;"
+                        alt="Home" (click)="ngOnInit()">
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <!-- <div class="col-sm-3"> -->
-            <!-- <button  id ="districtWise" class="btn btn-secondary"
-                style="font-size: 11px; width: 70px; float: left;margin: 0px 10px 5px 0px;"
-                (click)="districtWise()">Home</button> -->
-            <!-- <button class="btn btn-secondary"
-                style="font-size: 11px; width: 70px; float: left;margin: 0px 10px 5px 0px;"
-                (click)="clusterWise()">&nbsp;<b style="font-family: Arial;">Clusters</b> </button>
-            <button class="btn btn-secondary" style="font-size: 11px; width: 70px; float: left;margin: 0px 0px 5px 0px;"
-                (click)="schoolWise()">&nbsp;<b style="font-family: Arial;">Schools</b> </button> -->
-        <!-- </div> -->
-        <div class="col-sm-8" style="font-family: Arial;">
-
+        <div class="col-sm-9" style="font-family: Arial;">
             <select
                 style="margin-right: 10px; padding: 6.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                 <option [value]="myDistrict" disabled selected="selected">Choose a District
                 </option>
-                <option *ngFor="let dist of districtsNames"  [(ngValue)]="dist"
+                <option *ngFor="let dist of districtsNames" [(ngValue)]="dist"
                     style="font-family: Arial; font-size: 11px;">
                     {{dist.name}}
                 </option>
             </select>
-             
+
             <select [hidden]="blockHidden"
                 style="margin-right: 10px; padding: 6.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
                 [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                 <option [value]="myBlock" disabled selected="selected">Choose a Block
                 </option>
-                <option *ngFor="let block of blocksNames" [(ngValue)]="block" >
+                <option *ngFor="let block of blocksNames" [(ngValue)]="block">
                     {{block.name}}
                 </option>
             </select>
@@ -71,28 +61,53 @@
                 [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
                 <option [value]="myCluster" disabled selected="selected">Choose a Cluster
                 </option>
-                <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster">
+                <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster"
+                    style="font-family: Arial;font-size: 11px; "
+                    [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                     {{cluster.name}}
                 </option>
             </select>
-
         </div>
-
+        <div class="col-sm-3">
+            <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
+                style="cursor: pointer;height: 20px;width: 23px;float: right;margin: 5px 0px 0px 10px;"
+                (click)="downloadRoport()">
+            <span
+                style="color: #284d8a;text-decoration: underline; float: right; font-size: 12px;margin-top: 7px; font-weight: bold; font-family: Arial; cursor: pointer;"
+                [routerLink]="['/map-view']">Student Attendance Report</span>
+        </div>
+    </div>
+    <div class="row" *ngIf="dist" style="margin-top: 40px;">
+        <div class="col-sm-6">
+            <div style="width: 100%;">
+                <canvas id="bar1"></canvas>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div style="width: 100%; margin-top: 0px">
+                <canvas id="bar2"></canvas>
+            </div>
+        </div>
     </div>
     <div class="row">
-        <div style="width: 50%; height: 500px; margin-top: 20px; margin-left: 50px;" >
-            <canvas id="bar1"></canvas>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div style="width: 100%; margin-top: 0px;">
+                <canvas id="bar1"></canvas>
+            </div>
+        </div>
+
+    </div>
+    <div class="row"
+        style="background-color: gray;width: 100%; color: white; margin: 0px 0px 10px 0px;font-family: Arial;position: fixed; left: 0; bottom: 0;">
+        <div class="col-sm-4">
+            <span>Number of visits(total): {{visitCount}}</span>
+        </div>
+        <div class="col-sm-4">
+            <span style="text-align: center;">Number of schools: {{schoolCount}}</span>
+        </div>
+        <div class="col-sm-4">
+            <span style="float: right;">Date range: {{dateRange}}</span>
         </div>
     </div>
-    <!-- <div class="row" style="background-color: gray; color: white; margin: 0px 0px 0px 0px;font-family: Arial;">
-        <div class="col-sm-4">
-            <span style="font-family: Arial;">Number of students: {{studentCount}}</span>
-        </div>
-        <div class="col-sm-4">
-            <span style="text-align: center;font-family: Arial;">Number of schools: {{schoolCount}}</span>
-        </div>
-        <div class="col-sm-4">
-            <span style="float: right; font-family: Arial;">Date range: {{dateRange}}</span>
-        </div>
-    </div> -->
 </div>

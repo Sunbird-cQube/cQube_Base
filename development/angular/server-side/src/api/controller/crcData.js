@@ -152,7 +152,7 @@ router.get('/getClusters/:distId/:blockId', async function(req, res) {
                 let mapData = filterData.map(function(item) {
                     let obj = {
                         clusterId: item['cluster_id'],
-                        clusterName: item['cluster_name']
+                        clusterName: item['crc_name']
                     }
                     return obj
                 });

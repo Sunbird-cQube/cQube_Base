@@ -30,7 +30,7 @@
                         (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span (click)="clickedMarker(blockName)"
                         style="cursor: pointer;text-decoration: underline;">
-                        {{title}}</span><span>/ </span><span style="">
+                        {{title}}</span><span>/ </span><span>
                         {{hierName}}</span></p>
             </div>
         </div>
@@ -52,12 +52,12 @@
 
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-danger"
-                        style="font-size: 11px;background-color: rgb(221, 127, 127); font-weight: bold; width: 60px; font-family: Arial; float: right;margin: 5px 0px 0px 0px;"
-                        (click)="logout()">Logout</button>
-                    <button id="districtWise" class="btn btn-secondary"
-                        style="font-size: 11px; font-weight: bold; width: 60px; font-family: Arial; float: right;margin: 5px 10px 0px 0px;"
-                        (click)="districtWise()">Home</button>
+                    <img src="../../assets/logout.png" title="Logout"
+                        style="cursor: pointer;height: 20px;width: 23px;float: right;margin: 5px 0px 0px 10px;"
+                        alt="logout" (click)="logout()">
+                    <img src="../../assets/home.png" title="Home" id="home"
+                        style="cursor: pointer;height: 25px;width: 25px;float: right;margin: 2px 0px 0px 0px;"
+                        alt="Home" (click)="districtWise()">
                 </div>
             </div>
         </div>
@@ -111,12 +111,12 @@
 
         </div>
         <div class="col-sm-2">
-            <button class="btn btn-primary"
-                style="width: 60px; float: left; font-size: 11.5px; font-weight: bold; font-family: Arial;"
-                [routerLink]="['/chart-view']">Charts</button>
-            <button class="btn btn-primary"
-                style="width: 130px; float: right; font-size: 11.5px; font-weight: bold; font-family: Arial;"
-                (click)="downloadRoport()">Download Report</button>
+            <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
+                style="cursor: pointer;height: 20px;width: 23px;float: right;margin: 5px 0px 0px 5px;"
+                (click)="downloadRoport()">
+            <span
+                style="width: 90px;color: #284d8a;text-decoration: underline; float: right; font-size: 12px;margin-top: 5px; font-weight: bold; font-family: Arial; cursor: pointer;"
+                [routerLink]="['/chart-view']">CRC Charts</span>
         </div>
 
 
@@ -124,11 +124,11 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 83vh"></div>
+            <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 84vh"></div>
         </div>
     </div>
     <div class="row"
-        style="background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; height: 22px;">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; height: 22px;">
         <div class="col-sm-4">
             <span>Number of students: {{studentCount}}</span>
         </div>
