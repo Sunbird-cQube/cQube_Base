@@ -40,7 +40,7 @@
 			"value":""
 		            }
 	    },
-     	{
+            {
 		"parameter":{"name":"sftp_port",
 			"value":""
 		            }
@@ -104,6 +104,11 @@
             },
 	    {
                 "parameter":{"name":"s3_school_master_lat_long",
+                        "value":""
+                            }
+            },
+            {
+                "parameter":{"name":"sftp_school_hierarchy",
                         "value":""
                             }
             }

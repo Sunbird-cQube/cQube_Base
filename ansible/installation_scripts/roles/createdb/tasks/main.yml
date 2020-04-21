@@ -28,7 +28,7 @@
   replace:
     dest: /etc/postgresql/10/main/postgresql.conf
     regexp: "#work_mem = 4MB"
-    replace: "work_mem = 1GB"
+    replace: "work_mem = 1GB"    
 
 - name: Ensure the PostgreSQL service is running
   service: name=postgresql state=started enabled=yes
@@ -60,8 +60,5 @@
   postgresql_query:
     db: "{{ db_user }}"
     path_to_script: cQube.sql
-
-- name: Restarting postgresql 
-  service:
-    name: postgresql
-    state: restarted
+  notify:
+   - restart postgresql
