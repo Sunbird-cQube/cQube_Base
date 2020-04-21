@@ -18,6 +18,12 @@
     regexp: 'host    all             all             127.0.0.1/32            md5'
     replace: 'host    all             postgres             127.0.0.1/32            trust'
 
+- name: Increase buffer memory postgre file
+  replace:
+    dest: /etc/postgresql/10/main/postgresql.conf
+    regexp: "shared_buffers = 128MB"
+    replace: "shared_buffers = 6GB"
+
 - name: Increase work memory postgre file
   replace:
     dest: /etc/postgresql/10/main/postgresql.conf

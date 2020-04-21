@@ -30,7 +30,7 @@ postgre_source_db: cqubedev
 postgre_dtn_db: cqubedev
 postgre_db_user: postgres
 postgre_pwd: psql
-
+sftp_school_hierarchy: /cqube/data/school_hierarchy
 
 # Needs to filled manually:
 
