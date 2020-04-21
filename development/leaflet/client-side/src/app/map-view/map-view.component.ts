@@ -376,7 +376,15 @@ export class MapViewComponent implements OnInit {
       if (this.markers.length !== 0) {
         for (let i = 0; i < this.markers.length; i++) {
 
-          var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], { radius: 0, color: this.colors[i] });
+          var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
+            radius: 0,
+            draggable: true,
+            color: this.colors[i],
+            fillColor: this.colors[i],
+            fillOpacity: 1,
+            strokeWeight: 0,
+            weight: 0
+          });
 
           markerIcon.addTo(globalMap).bindPopup(
             "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
@@ -462,6 +470,7 @@ export class MapViewComponent implements OnInit {
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.clusterIds.push(sorted[i]['x_axis']);
+        this.blocksIds.push(sorted[i]['block_id']);
         this.cluster.push(
           {
             id: sorted[i]['x_axis'],
