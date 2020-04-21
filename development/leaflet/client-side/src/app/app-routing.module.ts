@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { MapViewComponent } from './map-view/map-view.component';
-import { ChartViewComponent } from './chart-view/chart-view.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
 
 
 const routes: Routes = [
@@ -11,7 +11,7 @@ const routes: Routes = [
     path: '', component: LoginComponent
   },
   {
-    path: 'chart-view', component: ChartViewComponent
+    path: 'chart-view', component: BarChartComponent
   }
   ,
   {
