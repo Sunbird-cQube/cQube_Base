@@ -153,6 +153,7 @@ export class MapViewComponent implements OnInit {
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       this.dateRange = sorted[0]['data_from_date'] + " to " + sorted[0]['data_upto_date'];
+      localStorage.setItem('dateRange', this.dateRange);
 
       for (var i = 0; i < sorted.length; i++) {
         this.districtsIds.push(sorted[i]['x_axis']);
@@ -218,8 +219,8 @@ export class MapViewComponent implements OnInit {
       this.changeDetection.markForCheck();
     })
     globalMap.addLayer(this.layerMarkers);
-    var element1: any = document.getElementsByClassName('btn-secondary');
-    element1[0].style.display = 'none';
+    document.getElementById('home').style.display = 'none';
+    
   }
 
   blockWise() {
@@ -319,8 +320,8 @@ export class MapViewComponent implements OnInit {
 
     })
     globalMap.addLayer(this.layerMarkers);
-    var element1: any = document.getElementsByClassName('btn-secondary');
-    element1[0].style.display = 'Block';
+    document.getElementById('home').style.display = 'block';
+    ;
   }
 
   schoolWise() {
@@ -424,8 +425,8 @@ export class MapViewComponent implements OnInit {
       }
     });
     globalMap.addLayer(this.layerMarkers);
-    var element1: any = document.getElementsByClassName('btn-secondary');
-    element1[0].style.display = 'block';
+    document.getElementById('home').style.display = 'block';
+    ;
   }
 
   clusterWise() {
@@ -537,8 +538,8 @@ export class MapViewComponent implements OnInit {
       }
     });
     globalMap.addLayer(this.markersList);
-    var element1: any = document.getElementsByClassName('btn-secondary');
-    element1[0].style.display = 'Block';
+    document.getElementById('home').style.display = 'block';
+    ;
     this.cluster = [];
   }
 
@@ -636,8 +637,8 @@ export class MapViewComponent implements OnInit {
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       })
-      var element1: any = document.getElementsByClassName('btn-secondary');
-      element1[0].style.display = 'block';
+      document.getElementById('home').style.display = 'block';
+      ;
       this.blok = false;
       globalMap.addLayer(this.layerMarkers);
     }
@@ -748,8 +749,8 @@ export class MapViewComponent implements OnInit {
         this.changeDetection.markForCheck();
       });
       globalMap.addLayer(this.layerMarkers);
-      var element1: any = document.getElementsByClassName('btn-secondary');
-      element1[0].style.display = 'block';
+      document.getElementById('home').style.display = 'block';
+      ;
     }
 
     if (this.clusterIds.includes(label.id)) {
@@ -854,8 +855,8 @@ export class MapViewComponent implements OnInit {
         this.changeDetection.markForCheck();
       });
       globalMap.addLayer(this.layerMarkers);
-      var element1: any = document.getElementsByClassName('btn-secondary');
-      element1[0].style.display = 'block';
+      document.getElementById('home').style.display = 'block';
+      ;
     }
   };
 
@@ -982,8 +983,8 @@ export class MapViewComponent implements OnInit {
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     })
-    var element1: any = document.getElementsByClassName('btn-secondary');
-    element1[0].style.display = 'block';
+    document.getElementById('home').style.display = 'block';
+    ;
     globalMap.addLayer(this.layerMarkers);
   }
 
@@ -1096,8 +1097,8 @@ export class MapViewComponent implements OnInit {
       this.changeDetection.markForCheck();
     });
     globalMap.addLayer(this.layerMarkers);
-    var element1: any = document.getElementsByClassName('btn-secondary');
-    element1[0].style.display = 'block';
+    document.getElementById('home').style.display = 'block';
+    ;
   }
 
   myClusterData(data) {
@@ -1198,8 +1199,8 @@ export class MapViewComponent implements OnInit {
       this.changeDetection.markForCheck();
     });
     globalMap.addLayer(this.layerMarkers);
-    var element1: any = document.getElementsByClassName('btn-secondary');
-    element1[0].style.display = 'block';
+    document.getElementById('home').style.display = 'block';
+    ;
   }
 
   color() {
