@@ -58,7 +58,7 @@ export class BarChartComponent implements OnInit {
 
   async ngOnInit() {
     this.districtWise();
-    this.districtWise1();
+    // this.districtWise1();
   }
 
 
@@ -79,8 +79,69 @@ export class BarChartComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
   }
 
-  // polarAreaLegend = true;
-  // polarAreaChartType: ChartType = “bar”;
+  public obj = [{
+    distName: "KACHCHH",
+    schCount: 10644,
+    visitedSchools: 8000,
+    notVisitedSchools: 2644,
+    visitesCount: 15000
+  },
+  {
+    distName: "BOTAD",
+    schCount: 1644,
+    visitedSchools: 1000,
+    notVisitedSchools: 644,
+    visitesCount: 1500
+  },
+  {
+    distName: "BOTAD",
+    schCount: 1644,
+    visitedSchools: 1000,
+    notVisitedSchools: 644,
+    visitesCount: 1500
+  },
+  {
+    distName: "BOTAD",
+    schCount: 1644,
+    visitedSchools: 1000,
+    notVisitedSchools: 644,
+    visitesCount: 1500
+  },
+  {
+    distName: "BOTAD",
+    schCount: 1644,
+    visitedSchools: 1000,
+    notVisitedSchools: 644,
+    visitesCount: 1500
+  },
+  {
+    distName: "BOTAD",
+    schCount: 1644,
+    visitedSchools: 1000,
+    notVisitedSchools: 644,
+    visitesCount: 1500
+  },
+  {
+    distName: "BOTAD",
+    schCount: 1644,
+    visitedSchools: 1000,
+    notVisitedSchools: 644,
+    visitesCount: 1500
+  },
+  {
+    distName: "BOTAD",
+    schCount: 1644,
+    visitedSchools: 1000,
+    notVisitedSchools: 644,
+    visitesCount: 1500
+  },
+  {
+    distName: "BOTAD",
+    schCount: 1644,
+    visitedSchools: 1000,
+    notVisitedSchools: 644,
+    visitesCount: 1500
+  }]
   districtWise() {
     if (this.barchart != null) {
       this.barchart.destroy();
@@ -90,6 +151,7 @@ export class BarChartComponent implements OnInit {
     this.errMsg();
     this.title = "District wise CRC report for State";
     this.titleName = "Gujarat"
+    document.getElementById('home').style.display = 'none';
     this.districtsNames = [];
     this.dist = true;
     this.schoolCount = 0;
@@ -113,7 +175,7 @@ export class BarChartComponent implements OnInit {
         this.label = [];
         this.value = [];
 
-        for (var i = 0; i < result.length / 2; i++) {
+        for (var i = 0; i < result.length; i++) {
           this.label.push(result[i]["visits"]);
           this.value.push(result[i]["schoolsCount"]);
         }
@@ -206,130 +268,129 @@ export class BarChartComponent implements OnInit {
         this.changeDetection.markForCheck();
       })
 
-      document.getElementById('home').style.display = 'none';
     })
   }
 
-  districtWise1() {
-    if (this.barchart != null) {
-      this.barchart.destroy();
-    }
-    this.blockHidden = true;
-    this.clusterHidden = true;
-    this.errMsg();
-    this.title = "District wise CRC report for State";
-    this.titleName = "Gujarat"
-    this.districtsNames = [];
-    this.dist = true;
+  // districtWise1() {
+  //   if (this.barchart != null) {
+  //     this.barchart.destroy();
+  //   }
+  //   this.blockHidden = true;
+  //   this.clusterHidden = true;
+  //   this.errMsg();
+  //   this.title = "District wise CRC report for State";
+  //   this.titleName = "Gujarat"
+  //   this.districtsNames = [];
+  //   this.dist = true;
 
-    this.service.crc_all_districts().subscribe(res => {
-      this.mylatlngData = res;
-      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-      this.colors = colors;
+  //   this.service.crc_all_districts().subscribe(res => {
+  //     this.mylatlngData = res;
+  //     var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+  //     let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+  //     this.colors = colors;
 
-      // for (var i = 0; i < this.mylatlngData.length; i++) {
-      //   this.districtsIds.push(this.mylatlngData['districtId']);
-      //   this.districtsNames.push({ id: this.mylatlngData[i]['districtId'], name: this.mylatlngData[i]['districtName'] });
-      // }
+  //     // for (var i = 0; i < this.mylatlngData.length; i++) {
+  //     //   this.districtsIds.push(this.mylatlngData['districtId']);
+  //     //   this.districtsNames.push({ id: this.mylatlngData[i]['districtId'], name: this.mylatlngData[i]['districtName'] });
+  //     // }
 
-      this.districtsNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-      this.service.crcData().subscribe((result: any) => {
-        this.label = [];
-        this.value = [];
+  //     this.districtsNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+  //     this.service.crcData().subscribe((result: any) => {
+  //       this.label = [];
+  //       this.value = [];
 
-        for (var i = result.length / 2; i < result.length; i++) {
-          this.label.push(result[i]["visits"]);
-          this.value.push(result[i]["schoolsCount"]);
-        }
+  //       for (var i = result.length / 2; i < result.length; i++) {
+  //         this.label.push(result[i]["visits"]);
+  //         this.value.push(result[i]["schoolsCount"]);
+  //       }
 
-        this.barchart = (new Chart('bar2', {
-          type: 'bar',
-          data: {
-            labels: this.label,
-            datasets: [
-              {
-                label: 'No. of schools',
-                data: this.value,
-                backgroundColor: '#2b8cbe',
-                borderColor: '#2b8cbe',
-                hoverBackgroundColor: 'rgba(230, 236, 235, 0.75)',
-                hoverBorderColor: 'rgba(230, 236, 235, 0.75)',
-                fill: true
-              }
-            ]
-          },
-          options: {
-            tooltips: {
-              displayColors: false,
-              callbacks: {
-                title: () => null,
-                label: function (tooltipItem) {
-                  return ["Number of visits : " + tooltipItem.xLabel, "Number of Schools : " + tooltipItem.yLabel];
-                }
-              }
-            },
-            responsive: true,
-            scales: {
-              xAxes: [{
-                ticks: {
-                  fontColor: "black",
-                  beginAtZero: true
-                },
-                gridLines: {
-                  zeroLineColor: "transparent"
-                },
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: 'NUMBER OF VISITS',
-                  fontStyle: 'bold',
-                  fontFamily: 'Ariel',
-                  fontColor: "black"
-                }
-              }],
-              yAxes: [{
-                ticks: {
+  //       this.barchart = (new Chart('bar2', {
+  //         type: 'bar',
+  //         data: {
+  //           labels: this.label,
+  //           datasets: [
+  //             {
+  //               label: 'No. of schools',
+  //               data: this.value,
+  //               backgroundColor: '#2b8cbe',
+  //               borderColor: '#2b8cbe',
+  //               hoverBackgroundColor: 'rgba(230, 236, 235, 0.75)',
+  //               hoverBorderColor: 'rgba(230, 236, 235, 0.75)',
+  //               fill: true
+  //             }
+  //           ]
+  //         },
+  //         options: {
+  //           tooltips: {
+  //             displayColors: false,
+  //             callbacks: {
+  //               title: () => null,
+  //               label: function (tooltipItem) {
+  //                 return ["Number of visits : " + tooltipItem.xLabel, "Number of Schools : " + tooltipItem.yLabel];
+  //               }
+  //             }
+  //           },
+  //           responsive: true,
+  //           scales: {
+  //             xAxes: [{
+  //               ticks: {
+  //                 fontColor: "black",
+  //                 beginAtZero: true
+  //               },
+  //               gridLines: {
+  //                 zeroLineColor: "transparent"
+  //               },
+  //               display: true,
+  //               scaleLabel: {
+  //                 display: true,
+  //                 labelString: 'NUMBER OF VISITS',
+  //                 fontStyle: 'bold',
+  //                 fontFamily: 'Ariel',
+  //                 fontColor: "black"
+  //               }
+  //             }],
+  //             yAxes: [{
+  //               ticks: {
 
-                  fontColor: 'black',
-                  beginAtZero: true
-                },
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: 'NUMBER OF SCHOOLS',
-                  fontStyle: 'bold',
-                  fontFamily: 'Ariel',
-                  fontColor: "black"
-                }
-              },
-              ],
-            },
-            title: {
-              display: true,
-              text: "DISTRICT WISE CRC REPORT",
-              fontFamily: 'Ariel',
-              fontSize: 20
-            },
-            legend: {
-              display: false,
-              position: 'top',
-            },
-            animation: {
-              animateScale: true,
-              animateRotate: true
+  //                 fontColor: 'black',
+  //                 beginAtZero: true
+  //               },
+  //               display: true,
+  //               scaleLabel: {
+  //                 display: true,
+  //                 labelString: 'NUMBER OF SCHOOLS',
+  //                 fontStyle: 'bold',
+  //                 fontFamily: 'Ariel',
+  //                 fontColor: "black"
+  //               }
+  //             },
+  //             ],
+  //           },
+  //           title: {
+  //             display: true,
+  //             text: "DISTRICT WISE CRC REPORT",
+  //             fontFamily: 'Ariel',
+  //             fontSize: 20
+  //           },
+  //           legend: {
+  //             display: false,
+  //             position: 'top',
+  //           },
+  //           animation: {
+  //             animateScale: true,
+  //             animateRotate: true
 
-            }
-          },
-        })
-        );
-        this.loaderAndErr();
-        this.changeDetection.markForCheck();
-      })
+  //           }
+  //         },
+  //       })
+  //       );
+  //       this.loaderAndErr();
+  //       this.changeDetection.markForCheck();
+  //     })
 
-      document.getElementById('home').style.display = 'none';
-    })
-  }
+  //     document.getElementById('home').style.display = 'none';
+  //   })
+  // }
 
   myDistData(data) {
     this.barchart.destroy();
