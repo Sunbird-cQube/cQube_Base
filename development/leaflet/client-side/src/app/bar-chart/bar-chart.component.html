@@ -24,11 +24,14 @@
                 </div>
                 <div class="col-sm-6">
                     <img src="../../assets/logout.png" title="Logout"
-                        style="cursor: pointer;height: 20px;width: 23px;float: right;margin: 5px 0px 0px 10px;"
+                        style="cursor: pointer;height: 24px;width: 23px;float: right;margin: 5px 0px 0px 10px;"
                         alt="logout" (click)="logout()">
+                    <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
+                        style="cursor: pointer;height: 23px;width: 25px;float: right;margin: 5px 0px 0px 8px;"
+                        (click)="downloadRoport()">
                     <img src="../../assets/home.png" title="Home" id="home"
-                        style="cursor: pointer;height: 25px;width: 25px;float: right;margin: 2px 0px 0px 0px;"
-                        alt="Home" (click)="ngOnInit()">
+                        style="cursor: pointer;height: 30px;width: 30px;float: right;margin: 2px 0px 0px 0px;"
+                        alt="Home" (click)="districtWise()">
                 </div>
             </div>
         </div>
@@ -69,27 +72,54 @@
             </select>
         </div>
         <div class="col-sm-3">
-            <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
-                style="cursor: pointer;height: 20px;width: 23px;float: right;margin: 5px 0px 0px 10px;"
-                (click)="downloadRoport()">
             <span
-                style="color: #284d8a;text-decoration: underline; float: right; font-size: 12px;margin-top: 7px; font-weight: bold; font-family: Arial; cursor: pointer;"
+                style="color: #284d8a;text-decoration: underline; float: right; font-size: 12px;margin-top: 5px; font-weight: bold; font-family: Arial; cursor: pointer;"
                 [routerLink]="['/map-view']">Student Attendance Report</span>
         </div>
     </div>
-    <div class="row" *ngIf="dist" style="margin-top: 40px;">
+    <div class="row" style="margin-top: 40px;">
         <div class="col-sm-6">
-            <div style="width: 100%;">
-                <canvas id="bar1"></canvas>
+            <div style="height: 320px;">
+                <div style="width: 100%;">
+                    <canvas id="bar1"></canvas>
+                </div>
+            </div>
+
+            <div style="line-height: .6em; margin-top: 50px;">
+                <p>total schools visited :</p>
+                <p> Total schools not visited:</p>
+                <p> Total visited records :</p>
+                <p> Total not visited records:</p>
+
             </div>
         </div>
         <div class="col-sm-6">
-            <div style="width: 100%; margin-top: 0px">
-                <canvas id="bar2"></canvas>
+            <h3>Table Data</h3>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-condensed" style="border: 1px solid black;">
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid black;">District Name</th>
+                            <th style="border: 1px solid black;">Total Schools</th>
+                            <th style="border: 1px solid black;">Total Schools Visited</th>
+                            <th style="border: 1px solid black;">Total Schools not Visited</th>
+                            <th style="border: 1px solid black;">Number of Visits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of obj">
+                            <td style="border: 1px solid black;">{{row.distName}}</td>
+                            <td style="border: 1px solid black;">{{row.schCount}}</td>
+                            <td style="border: 1px solid black;">{{row.visitedSchools}}</td>
+                            <td style="border: 1px solid black;">{{row.notVisitedSchools}}</td>
+                            <td style="border: 1px solid black;">{{row.visitesCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
             <div style="width: 100%; margin-top: 0px;">
@@ -97,7 +127,7 @@
             </div>
         </div>
 
-    </div>
+    </div> -->
     <div class="row"
         style="background-color: gray;width: 100%; color: white; margin: 0px 0px 10px 0px;font-family: Arial;position: fixed; left: 0; bottom: 0;">
         <div class="col-sm-4">
