@@ -43,11 +43,11 @@ export class MapViewComponent implements OnInit {
   public blok: boolean = false;
   public clust: boolean = false;
   public skul: boolean = false;
-  public layerMarkers = new L.layerGroup();
   public hierName: any;
   public distName: any;
   public blockName: any;
   public clustName: any;
+  public layerMarkers = new L.layerGroup();
 
   // google maps zoom level
   public zoom: number = 7;
@@ -149,7 +149,8 @@ export class MapViewComponent implements OnInit {
     this.service.dist_wise_data().subscribe(res => {
       this.mylatlngData = res;
 
-      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1);
+      console.log(sorted);
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       this.dateRange = sorted[0]['data_from_date'] + " to " + sorted[0]['data_upto_date'];
@@ -220,7 +221,7 @@ export class MapViewComponent implements OnInit {
     })
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'none';
-    
+
   }
 
   blockWise() {
@@ -251,7 +252,7 @@ export class MapViewComponent implements OnInit {
       this.lat = 22.11292266845703;
       this.lng = 72.02733294142871;
 
-      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
 
@@ -352,7 +353,7 @@ export class MapViewComponent implements OnInit {
       this.lat = 22.11292266845703;
       this.lng = 72.02733294142871;
 
-      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
 
@@ -463,7 +464,7 @@ export class MapViewComponent implements OnInit {
         return previous;
       }, []);
 
-      var sorted = uniqueData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
 
@@ -574,7 +575,7 @@ export class MapViewComponent implements OnInit {
 
         this.blocksNames = [];
 
-        var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
         for (var i = 0; i < sorted.length; i++) {
@@ -671,7 +672,7 @@ export class MapViewComponent implements OnInit {
         this.lng = Number(this.mylatlngData[0]['z_value']);
         this.clusterNames = [];
 
-        var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
@@ -791,10 +792,10 @@ export class MapViewComponent implements OnInit {
           return previous;
         }, []);
 
-        var sorted = uniqueData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+        var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1);
+        console.log(sorted);
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
-        console.log(sorted);
         for (var i = 0; i < sorted.length; i++) {
           this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
           this.markers.push(
@@ -919,7 +920,7 @@ export class MapViewComponent implements OnInit {
       this.lng = Number(this.mylatlngData[0]['z_value']);
       this.blocksNames = [];
 
-      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       for (var i = 0; i < sorted.length; i++) {
@@ -1024,7 +1025,7 @@ export class MapViewComponent implements OnInit {
         return previous;
       }, []);
 
-      var sorted = uniqueData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
 
@@ -1135,7 +1136,7 @@ export class MapViewComponent implements OnInit {
         return previous;
       }, []);
 
-      var sorted = uniqueData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       console.log(sorted);
