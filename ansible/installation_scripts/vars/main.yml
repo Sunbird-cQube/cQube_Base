@@ -33,7 +33,10 @@ postgre_pwd: psql
 sftp_school_hierarchy: /cqube/data/school_hierarchy
 
 # Needs to filled manually:
-
+shared_buffers:       #512MB or 1GB based on requirement
+work_mem:             #16MB or 1GB based on requirement
+java.arg.2:           #-Xms512m or -Xms1g based on requirement
+java.arg.3:           #-Xmx512m or -Xmx1g based on requirement
 s3_access_key:       # AWS Access key
 s3_secret_key:      # AWS Secret key
 postgre_driver_dir: jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
