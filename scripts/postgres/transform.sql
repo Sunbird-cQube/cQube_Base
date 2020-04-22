@@ -1,2 +1,0 @@
-select * from (SELECT school_id,student_id,month, unnest(array['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']) AS Day, unnest(array[day1,day2,day3,day4,day5,day6,day7,day8,day9,day10,day11,day12,day13,day14,day15,day16,day17,day18,day19,day20,day21,day22,day23,day24,day25,day26,day27,day28,day29,day30,day31]) AS attendance FROM student_attendance_tmp) t where t.attendance is not null;
-
