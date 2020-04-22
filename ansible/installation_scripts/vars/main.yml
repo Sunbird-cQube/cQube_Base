@@ -37,10 +37,3 @@ sftp_school_hierarchy: /cqube/data/school_hierarchy
 s3_access_key:       # AWS Access key
 s3_secret_key:      # AWS Secret key
 postgre_driver_dir: jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
-
-
-
-
-
-
-
