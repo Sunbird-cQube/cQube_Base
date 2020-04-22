@@ -41,13 +41,13 @@
   replace:
     dest: /opt/nifi/conf/bootstrap.conf
     regexp: "java.arg.2=-Xms512m"
-    replace: "java.arg.2=-Xms8g"
+    replace: "java.arg.2={{ java.arg.2 }}"
 
 - name: Increase nifi memory
   replace:
     dest: /opt/nifi/conf/bootstrap.conf
     regexp: "java.arg.3=-Xmx512m"
-    replace: "java.arg.3=-Xmx32g"
+    replace: "java.arg.3={{ java.arg.3 }}"
 
 - name: start NiFi
   shell: /opt/nifi/bin/nifi.sh start
