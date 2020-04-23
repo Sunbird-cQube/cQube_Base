@@ -70,8 +70,8 @@ export class MapViewComponent implements OnInit {
 
   //Initialisation of Map  
   initMap() {
-    const lat = 22.11292266845703;
-    const lng = 72.02733294142871;
+    const lat = 22.3660414123535;
+    const lng = 71.48396301269531;
     globalMap = L.map('mapContainer').setView([lat, lng], 7);
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
       {
@@ -143,8 +143,8 @@ export class MapViewComponent implements OnInit {
     this.title = '';
     this.titleName = '';
     this.clustName = '';
-    this.lat = 22.11292266845703;
-    this.lng = 72.02733294142871;
+    this.lat = 22.3660414123535;
+    this.lng = 71.48396301269531;
 
     this.service.dist_wise_data().subscribe(res => {
       this.mylatlngData = res;
@@ -249,8 +249,8 @@ export class MapViewComponent implements OnInit {
 
     this.service.block_wise_data().subscribe(res => {
       this.mylatlngData = res;
-      this.lat = 22.11292266845703;
-      this.lng = 72.02733294142871;
+      this.lat = 22.3660414123535;
+      this.lng = 71.48396301269531;
 
       var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
@@ -350,8 +350,8 @@ export class MapViewComponent implements OnInit {
 
     this.service.school_wise_data().subscribe(res => {
       this.mylatlngData = res;
-      this.lat = 22.11292266845703;
-      this.lng = 72.02733294142871;
+      this.lat = 22.3660414123535;
+      this.lng = 71.48396301269531;
 
       var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
@@ -455,8 +455,8 @@ export class MapViewComponent implements OnInit {
 
     this.service.cluster_wise_data().subscribe(res => {
       this.mylatlngData = res;
-      this.lat = 22.11292266845703;
-      this.lng = 72.02733294142871;
+      this.lat = 22.3660414123535;
+      this.lng = 71.48396301269531;
 
       var uniqueData = this.mylatlngData.reduce(function (previous, current) {
         var object = previous.filter(object => object['x_axis'] === current['x_axis']);

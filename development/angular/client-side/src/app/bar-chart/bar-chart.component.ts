@@ -227,7 +227,7 @@ export class BarChartComponent implements OnInit {
                   fontStyle: 'bold',
                   fontFamily: 'Ariel',
                   fontColor: "black"
-                }
+                },
               }],
               yAxes: [{
                 ticks: {
