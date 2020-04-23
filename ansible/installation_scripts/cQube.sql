@@ -89,7 +89,7 @@ cluster_latitude  double precision,
 cluster_longitude  double precision,
 created_on  TIMESTAMPTZ ,
 updated_on  TIMESTAMPTZ ,
-foreign key (school_id) references school_master(school_id)
+-- foreign key (school_id) references school_master(school_id)
 );	
 
 /* school_hierarchy_details */
@@ -103,6 +103,7 @@ create table if not exists school_hierarchy_details
 		board_name varchar(200),
 		block_id bigint,
 		block_name varchar(100),
+		brc_name varchar(100),
 		district_id bigint,
 		district_name varchar(100),
 		cluster_id bigint,
@@ -191,7 +192,7 @@ day_31  smallint,
 created_on  TIMESTAMPTZ ,
 updated_on  TIMESTAMPTZ,
 foreign key (school_id) references school_hierarchy_details(school_id),
-foreign key (student_id) references student_hierarchy_details(student_id)
+-- foreign key (student_id) references student_hierarchy_details(student_id)
 );
 
 create index if not exists student_attendance_trans_id on student_attendance_trans(school_id,month,student_id);
@@ -239,7 +240,7 @@ day_31  smallint,
 created_on  TIMESTAMPTZ ,
 updated_on  TIMESTAMPTZ,
 foreign key (school_id) references school_hierarchy_details(school_id),
-foreign key (teacher_id) references teacher_hierarchy_details(teacher_id)
+-- foreign key (teacher_id) references teacher_hierarchy_details(teacher_id)
 );
 
 create index if not exists teacher_attendance_trans_id on teacher_attendance_trans(school_id,month,teacher_id);
@@ -266,7 +267,7 @@ reason_desc varchar(100),
 total_score smallint,
 score smallint,
 is_offline boolean,
-created_on  TIMESTAMPTZ, 
+created_on  TIMESTAMPTZ, /* created_on field will come from source data*/
 updated_on  TIMESTAMPTZ,
 foreign key (school_id) references school_hierarchy_details(school_id)
 );
@@ -286,6 +287,8 @@ school_id  bigint ,
 latitude  bigint,
 longitude  bigint,
 in_school_location  varchar(5),
+year int,
+month int,
 created_on  TIMESTAMPTZ, 
 updated_on  TIMESTAMPTZ,
 foreign key (school_id) references school_hierarchy_details(school_id),
@@ -361,7 +364,7 @@ total_training int,
 total_halfday int,
 total_working_days  int,
 teachers_count bigint,
-created_on  TIMESTAMPTZ ,
+created_on  TIMESTAMPTZ ,   
 updated_on  TIMESTAMPTZ
 );
 
@@ -385,7 +388,7 @@ missed_visit_count int,
 month int,
 year int,
 created_on  TIMESTAMPTZ,
-visited_on  TIMESTAMPTZ
+updated_on  TIMESTAMPTZ
 );
 
 create index if not exists crc_visits_frequency_id on crc_visits_frequency(school_id,block_id,cluster_id,district_id);
