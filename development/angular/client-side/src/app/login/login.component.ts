@@ -24,9 +24,10 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.service.login(this.logData).subscribe(res => {
       if (res['msg']) {
+
+        localStorage.setItem('email',this.logData.email);
         localStorage.setItem('token', res['token']);
-        // this.router.navigate(['/admin-view']);
-        this.router.navigate(['/map-view'])
+        this.router.navigate(['home/map-view'])
       } else if (res['errMsg']) {
         this.err = res['errMsg'];
       }

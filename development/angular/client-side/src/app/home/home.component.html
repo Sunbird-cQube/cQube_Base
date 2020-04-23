@@ -1,0 +1,30 @@
+<mat-toolbar color="primary" style="height: 45px;">
+  <button mat-icon-button>
+    <mat-icon (click)="sidenav.toggle() ">menu</mat-icon>
+  </button>
+  <h4>cQube - Dashboard </h4>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list style="font-family: Arial;">
+      <a mat-list-item (click)="sidenav.toggle()" style="color: blue; font-family: Arial;">Login :{{email}}</a>
+      <a mat-list-item (click)="sidenav.toggle()" style="color: blue;font-family: Arial;"
+        [routerLink]="['map-view']">Student Attendance Reports</a>
+      <a mat-list-item (click)="sidenav.toggle()" style="color: blue;font-family: Arial;"
+        [routerLink]="['teacher-attendance']">Teacher Attendance Reports</a>
+      <a mat-list-item (click)="sidenav.toggle()" style="color: blue;font-family: Arial;"
+        [routerLink]="['semester-report']"> Semester Reports </a>
+      <a mat-list-item (click)="sidenav.toggle()" style="color: blue;font-family: Arial;" [routerLink]="['crc-report']">
+        CRC Reports </a>
+      <span class="toolbar-filler"></span>
+      <button mat-button style="color: white;background-color: red; width: 100%;font-weight: bold; font-size: 14px;"
+        (click)="logout()">Log Out</button>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="height: 88vh;">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
