@@ -11,7 +11,7 @@ export class AppServiceComponent {
     constructor(public http: HttpClient) { };
 
     login(data) {
-        return this.http.post(`${this.baseUrl}/login`, data);
+        return this.http.post(`${this.baseUrl}/roleBasedLogin`, data);
     }
 
     dist_wise_data() {
@@ -60,4 +60,28 @@ export class AppServiceComponent {
     schoolCount() {
         return this.http.get(`${this.baseUrl}/schoolCount`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
+
+    crc_all_districts() {
+        return this.http.get(`${this.baseUrl}/crcData/getDistricts`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    crc_all_blocks(distId) {
+        return this.http.get(`${this.baseUrl}/crcData/getBlocks/${distId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    crc_all_clusters(distId,blockId) {
+        return this.http.get(`${this.baseUrl}/crcData/getClusters/${distId}/${blockId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    crcData() {
+        return this.http.get(`${this.baseUrl}/crcData`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    crcData_block(distId) {
+        return this.http.get(`${this.baseUrl}/crcData/district/${distId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    crcData_cluster(distId,blockId) {
+        return this.http.get(`${this.baseUrl}/crcData/district/${distId}/block/${blockId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    crcData_school(distId,blockId,clusterId) {
+        return this.http.get(`${this.baseUrl}/crcData/district/${distId}/block/${blockId}/cluster/${clusterId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
 }

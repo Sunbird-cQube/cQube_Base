@@ -1,9 +1,38 @@
-<div class="container-fluid" style="font-family: Arial;">
+<div class="container-fluid">
     <div class="row">
         <div class="col-sm-9">
-            <p
-                style="text-align: left;font-family: Arial; color: #284d8a; background-color:#fff; font-size: 21px; line-height: 1em; margin-top: 5px;">
-                {{title}}: {{titleName}}</p>
+            <div *ngIf='skul'>
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span></p>
+            </div>
+            <div *ngIf='dist'>
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span> <span>/ </span><span
+                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{hierName}}</span> </p>
+            </div>
+            <div *ngIf="blok">
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span><span>/ </span><span
+                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{titleName}}</span><span>/ </span><span (click)="clickedMarker(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{hierName}}</span></p>
+            </div>
+
+            <div *ngIf="clust">
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span><span>/ </span><span
+                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{titleName}}</span><span>/ </span><span (click)="clickedMarker(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{title}}</span><span>/ </span><span>
+                        {{hierName}}</span></p>
+            </div>
         </div>
         <div class="col-sm-3">
             <div class="row">
@@ -37,7 +66,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-9" style="font-family: Arial;">
+        <div class="col-sm-3">
+            <button class="btn btn-secondary"
+                style="font-size: 11px; width: 70px; float: left;margin: 0px 10px 5px 0px;"
+                (click)="blockWise()">&nbsp;<b style="font-family: Arial;">Blocks</b> </button>
+            <button class="btn btn-secondary"
+                style="font-size: 11px; width: 70px; float: left;margin: 0px 10px 5px 0px;"
+                (click)="clusterWise()">&nbsp;<b style="font-family: Arial;">Clusters</b> </button>
+            <button class="btn btn-secondary" style="font-size: 11px; width: 70px; float: left;margin: 0px 0px 5px 0px;"
+                (click)="schoolWise()">&nbsp;<b style="font-family: Arial;">Schools</b> </button>
+        </div>
+        <div class="col-sm-7" style="font-family: Arial;">
+
             <select
                 style="margin-right: 10px; padding: 6.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
@@ -54,7 +94,8 @@
                 [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                 <option [value]="myBlock" disabled selected="selected">Choose a Block
                 </option>
-                <option *ngFor="let block of blocksNames" [(ngValue)]="block">
+                <option *ngFor="let block of blocksNames" [(ngValue)]="block"
+                    style="font-family: Arial;font-size: 11px;">
                     {{block.name}}
                 </option>
             </select>
@@ -70,68 +111,26 @@
                     {{cluster.name}}
                 </option>
             </select>
+
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <span
                 style="color: #284d8a;text-decoration: underline; float: right; font-size: 12px;margin-top: 5px; font-weight: bold; font-family: Arial; cursor: pointer;"
-                [routerLink]="['/map-view']">Student Attendance Report</span>
+                [routerLink]="['/chart-view']">CRC Charts</span>
+        </div>
+
+
+
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 82vh"></div>
         </div>
     </div>
-    <div class="row" style="margin-top: 40px;">
-        <div class="col-sm-6">
-            <div style="height: 320px;">
-                <div style="width: 100%;">
-                    <canvas id="bar1"></canvas>
-                </div>
-            </div>
-
-            <div style="line-height: .6em; margin-top: 50px;">
-                <p>total schools visited :</p>
-                <p> Total schools not visited:</p>
-                <p> Total visited records :</p>
-                <p> Total not visited records:</p>
-
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <h3>Table Data</h3>
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                <table class="table table-condensed" style="border: 1px solid black;">
-                    <thead>
-                        <tr>
-                            <th style="border: 1px solid black;">District Name</th>
-                            <th style="border: 1px solid black;">Total Schools</th>
-                            <th style="border: 1px solid black;">Total Schools Visited</th>
-                            <th style="border: 1px solid black;">Total Schools not Visited</th>
-                            <th style="border: 1px solid black;">Number of Visits</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let row of obj">
-                            <td style="border: 1px solid black;">{{row.distName}}</td>
-                            <td style="border: 1px solid black;">{{row.schCount}}</td>
-                            <td style="border: 1px solid black;">{{row.visitedSchools}}</td>
-                            <td style="border: 1px solid black;">{{row.notVisitedSchools}}</td>
-                            <td style="border: 1px solid black;">{{row.visitesCount}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <!-- <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-8">
-            <div style="width: 100%; margin-top: 0px;">
-                <canvas id="bar1"></canvas>
-            </div>
-        </div>
-
-    </div> -->
     <div class="row"
-        style="background-color: gray;width: 100%; color: white; margin: 0px 0px 10px 0px;font-family: Arial;position: fixed; left: 0; bottom: 0;">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; height: 22px;">
         <div class="col-sm-4">
-            <span>Number of visits(total): {{visitCount}}</span>
+            <span>Number of students: {{studentCount}}</span>
         </div>
         <div class="col-sm-4">
             <span style="text-align: center;">Number of schools: {{schoolCount}}</span>
