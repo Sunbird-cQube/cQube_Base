@@ -1,0 +1,74 @@
+- name: Install the gpg key for nodejs LTS
+  apt_key:
+    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    state: present
+
+- name: Install the nodejs LTS repos
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_{{ nodejs_version }}.x {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+
+- name: Install the nodejs
+  apt:
+    name: nodejs
+    state: present
+
+- name: Node.js - Install express
+  npm: name={{ item }} state=present global=yes
+  with_items:    
+    - "@angular/cli"
+    - nodemon
+    - forever
+
+- name: Change permission
+  shell: chmod -R 755 ../../development/angular
+
+- name: Change to Node directory
+  shell: cd ../../development/angular/server-side 
+
+- name: NodeJS dependencies install  
+  npm:
+    path: ../../development/angular/server-side
+
+- name: Creating environmental variables
+  file:
+    path: ../../development/angular/server-side/.env
+    state: touch
+    mode: u+rwx,g+rw,o+rw 
+
+- name: Loading required data inside .env file
+  blockinfile:
+        path: ../../development/angular/server-side/.env
+        block: |
+                PORT = 3000
+                ACCESS_KEY_ID = "{{ s3_access_key }}"
+                SECRET_ACCESS_KEY  = "{{ s3_secret_key }}"
+                OUTPUT_BUCKET = "{{ s3_output_bucket }}"
+
+- name: Start NodeJS
+  shell: cd ../../development/angular/server-side; npm start & 
+
+#- name: output
+#  ipify_facts:
+#  register: public_ip
+#  ignore_errors: True
+#- name: getting ip
+#  debug:
+#    var: public_ip.ansible_facts.ipify_public_ip
+ 
+- name: Replace a localhost entry with our own
+  lineinfile:
+    path: ../../development/angular/client-side/src/environments/environment.ts
+    regexp: "apiEndpoint"
+    line: "apiEndpoint: '{{ api_endpoint }}'"
+
+- name: Change to Angular directory
+  shell: cd ../../development/angular/client-side
+
+- name: Install Angular packages based on package.json.
+  npm:
+    path: ../../development/angular/client-side
+
+- name: Run Angular
+  shell: cd ../../development/angular/client-side ; forever start node_modules/@angular/cli/bin/ng serve --host 0.0.0.0
