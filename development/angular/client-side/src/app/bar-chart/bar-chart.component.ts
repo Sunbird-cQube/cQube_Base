@@ -40,6 +40,10 @@ export class BarChartComponent implements OnInit {
   public blok: boolean = false;
   public clust: boolean = false;
   public skul: boolean = false;
+  public hierName: any;
+  public distName: any;
+  public blockName: any;
+  public clustName: any;
   public visitCount: any;
 
   public styles: any = [];
@@ -47,8 +51,6 @@ export class BarChartComponent implements OnInit {
 
   public mylatlngData: any = [];
 
-  // data: Data[];    
-  // url = 'http://localhost:3000/api/crc';  
   label = [];
   value = [];
   barchart: Chart;
@@ -58,7 +60,6 @@ export class BarChartComponent implements OnInit {
 
   async ngOnInit() {
     this.districtWise();
-    // this.districtWise1();
   }
 
 
@@ -78,96 +79,43 @@ export class BarChartComponent implements OnInit {
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('spinner').style.marginTop = '3%';
   }
-
-  public obj = [{
-    distName: "KACHCHH",
-    schCount: 10644,
-    visitedSchools: 8000,
-    notVisitedSchools: 2644,
-    visitesCount: 15000
-  },
-  {
-    distName: "BOTAD",
-    schCount: 1644,
-    visitedSchools: 1000,
-    notVisitedSchools: 644,
-    visitesCount: 1500
-  },
-  {
-    distName: "BOTAD",
-    schCount: 1644,
-    visitedSchools: 1000,
-    notVisitedSchools: 644,
-    visitesCount: 1500
-  },
-  {
-    distName: "BOTAD",
-    schCount: 1644,
-    visitedSchools: 1000,
-    notVisitedSchools: 644,
-    visitesCount: 1500
-  },
-  {
-    distName: "BOTAD",
-    schCount: 1644,
-    visitedSchools: 1000,
-    notVisitedSchools: 644,
-    visitesCount: 1500
-  },
-  {
-    distName: "BOTAD",
-    schCount: 1644,
-    visitedSchools: 1000,
-    notVisitedSchools: 644,
-    visitesCount: 1500
-  },
-  {
-    distName: "BOTAD",
-    schCount: 1644,
-    visitedSchools: 1000,
-    notVisitedSchools: 644,
-    visitesCount: 1500
-  },
-  {
-    distName: "BOTAD",
-    schCount: 1644,
-    visitedSchools: 1000,
-    notVisitedSchools: 644,
-    visitesCount: 1500
-  },
-  {
-    distName: "BOTAD",
-    schCount: 1644,
-    visitedSchools: 1000,
-    notVisitedSchools: 644,
-    visitesCount: 1500
-  }]
+  public tableHead: any;
+  public tableData: any = [];
   districtWise() {
     if (this.barchart != null) {
       this.barchart.destroy();
     }
+    this.tableHead = "District Name";
     this.blockHidden = true;
     this.clusterHidden = true;
     this.errMsg();
-    this.title = "District wise CRC report for State";
-    this.titleName = "Gujarat"
+    this.dist = false;
+    this.blok = false;
+    this.clust = false;
+    this.skul = true;
     document.getElementById('home').style.display = 'none';
     this.districtsNames = [];
-    this.dist = true;
     this.schoolCount = 0;
     this.visitCount = 0;
+    this.tableData = [];
 
     this.dateRange = localStorage.getItem('dateRange');
 
     this.service.crc_all_districts().subscribe(res => {
       this.mylatlngData = res;
-      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-      this.colors = colors;
-
-      for (var i = 0; i < this.mylatlngData.length; i++) {
-        this.districtsIds.push(this.mylatlngData['districtId']);
-        this.districtsNames.push({ id: this.mylatlngData[i]['districtId'], name: this.mylatlngData[i]['districtName'] });
+      for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
+        this.districtsIds.push(this.mylatlngData['barChartData'][i]['districtId']);
+        this.districtsNames.push({ id: this.mylatlngData['barChartData'][i]['districtId'], name: this.mylatlngData['barChartData'][i]['districtName'] });
+      }
+      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
+        var obj: any = {
+          distName: this.mylatlngData['tableData'][i]['district'],
+          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
+          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
+          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
+          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
+        }
+        this.tableData.push(obj);
       }
 
       this.districtsNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -183,6 +131,8 @@ export class BarChartComponent implements OnInit {
           this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
           this.visitCount = this.visitCount + result[i]["visits"];
         }
+
+
 
         this.barchart = (new Chart('bar1', {
           type: 'bar',
@@ -274,30 +224,46 @@ export class BarChartComponent implements OnInit {
 
   myDistData(data) {
     this.barchart.destroy();
-    this.title = "Block wise CRC report for District";
-    this.titleName = data.name;
+    // this.title = "Block wise CRC report for District";
+    // this.titleName = data.name;
     this.blockHidden = false;
     this.clusterHidden = true;
     this.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
+    this.tableData = [];
+    this.tableHead = "Block Name";
+    this.dist = true;
+    this.blok = false;
+    this.clust = false;
+    this.skul = false;
+    this.distName = data;
+    this.hierName = data.name;
+    localStorage.setItem('dist', data.name);
+    localStorage.setItem('distId', data.id);
 
     this.service.crc_all_blocks(data.id).subscribe(res => {
-      this.dist = false;
-      this.blok = true;
-      this.clust = false;
-      this.skul = false;
+
       this.mylatlngData = res;
       this.blocksNames = [];
 
-      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      var sorted = this.mylatlngData['barChartData'].sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
-      for (var i = 0; i < this.mylatlngData.length; i++) {
-        this.blocksIds.push(this.mylatlngData[i]['blockId']);
-        this.blocksNames.push({ id: this.mylatlngData[i]['blockId'], name: this.mylatlngData[i]['blockName'], distid: data.id });
+      for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
+        this.blocksIds.push(this.mylatlngData['barChartData'][i]['blockId']);
+        this.blocksNames.push({ id: this.mylatlngData['barChartData'][i]['blockId'], name: this.mylatlngData['barChartData'][i]['blockName'], distid: data.id });
       }
-
+      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
+        var obj: any = {
+          distName: this.mylatlngData['tableData'][i]['district'],
+          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
+          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
+          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
+          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
+        }
+        this.tableData.push(obj);
+      }
       this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
       this.changeDetection.markForCheck();
 
@@ -403,32 +369,52 @@ export class BarChartComponent implements OnInit {
 
   myBlockData(data) {
     this.barchart.destroy();
-    this.title = "Cluster wise CRC report for Block";
-    this.titleName = data.name;
     this.clusterHidden = false;
     this.blockHidden = false;
     this.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
+    this.tableData = [];
+    this.tableHead = "CRC Name";
+    this.dist = false;
+    this.blok = true;
+    this.clust = false;
+    this.skul = false;
+    localStorage.setItem('block', data.name);
+    localStorage.setItem('blockId', data.id);
+    this.titleName = localStorage.getItem('dist');
+    this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
+    this.blockName = data;
+    this.hierName = data.name;
     this.service.crc_all_clusters(data.distid, data.id).subscribe(res => {
-      this.dist = false;
-      this.blok = false;
-      this.clust = true;
-      this.skul = false;
+
 
       this.mylatlngData = res;
       this.clusterNames = [];
 
-      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      console.log(this.mylatlngData['tableData']);
+
+      var sorted = this.mylatlngData['barChartData'].sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
-      for (var i = 0; i < this.mylatlngData.length; i++) {
-        this.clusterIds.push(this.mylatlngData[i]['clusterId']);
-        if (this.mylatlngData[i]['clusterName'] !== null) {
-          this.clusterNames.push({ id: this.mylatlngData[i]['clusterId'], name: this.mylatlngData[i]['clusterName'], blockid: data.id, distid: data.distid });
+      for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
+        this.clusterIds.push(this.mylatlngData['barChartData'][i]['clusterId']);
+        if (this.mylatlngData['barChartData'][i]['clusterName'] !== null) {
+          this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: this.mylatlngData['barChartData'][i]['clusterName'], blockid: data.id, distid: data.distid });
         } else {
-          this.clusterNames.push({ id: this.mylatlngData[i]['clusterId'], name: "NO NAME FOUND", blockid: data.id, distid: data.distid });
+          this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: "NO NAME FOUND", blockid: data.id, distid: data.distid });
         }
+      }
+
+      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
+        var obj: any = {
+          distName: this.mylatlngData['tableData'][i]['district'],
+          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
+          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
+          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
+          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
+        }
+        this.tableData.push(obj);
       }
 
       this.service.crcData_cluster(data.distid, data.id).subscribe((result: any) => {
@@ -537,22 +523,41 @@ export class BarChartComponent implements OnInit {
 
   myClusterData(data) {
     this.barchart.destroy();
-    this.title = "School wise CRC report for Cluster";
-    this.titleName = data.name;
+    // this.title = "School wise CRC report for Cluster";
+    // this.titleName = data.name;
+    this.tableHead = "School Name";
     this.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
-    this.service.schoolsPerCluster(data.id).subscribe(res => {
-      this.dist = false;
-      this.blok = false;
-      this.clust = false;
-      this.skul = true;
+    this.dist = false;
+    this.blok = false;
+    this.clust = true;
+    this.skul = false;
+    this.tableData = [];
+    this.title = localStorage.getItem('block');
+    this.titleName = localStorage.getItem('dist');
+    var distId = JSON.parse(localStorage.getItem('distId'));
+    var blockId = JSON.parse(localStorage.getItem('blockId'))
+    this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
+    this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
+    this.clustName = data;
+    console.log(data);
+    this.hierName = data.name;
+    this.service.crc_all_Schools(distId, blockId, data.id).subscribe(res => {
+
       this.mylatlngData = res;
       this.clusterIds = [];
 
-      var sorted = this.mylatlngData.sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-      this.colors = colors;
+      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
+        var obj: any = {
+          distName: this.mylatlngData['tableData'][i]['district'],
+          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
+          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
+          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
+          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
+        }
+        this.tableData.push(obj);
+      }
 
       this.service.crcData_school(data.distid, data.blockid, data.id).subscribe((result: any) => {
         for (var i = 0; i < result.length; i++) {
@@ -653,7 +658,7 @@ export class BarChartComponent implements OnInit {
       this.changeDetection.markForCheck();
     })
 
-    document.getElementById('home').style.display = 'block';;
+    document.getElementById('home').style.display = 'block';
   }
 
   createChart(res) {
