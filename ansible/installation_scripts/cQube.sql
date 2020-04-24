@@ -1,3 +1,59 @@
+/* nifi metadata table */
+
+CREATE TABLE IF NOT EXISTS zip_files_processing ( 
+ zip_file_name varchar(255), 
+ ff_uuid varchar(255), 
+ ingestion_date timestamp DEFAULT current_timestamp, 
+ storage_date timestamp, 
+ number_files integer, 
+ number_files_OK integer, 
+ number_files_KO integer, 
+ status varchar(15) 
+);CREATE TABLE IF NOT EXISTS files_ingestion ( 
+ zip_file_name varchar(255), 
+ file_name varchar(255), 
+ ff_uuid varchar(255), 
+ storage_date timestamp, 
+ storage_name varchar(255), 
+ status varchar(15) 
+);
+
+/* role and user based auth tables */
+
+create table role_master
+(
+role_id  smallint primary key,
+role_name  varchar(100),
+role_validity_start_date  date, /* now() */
+role_validity_end_date  date,  /* date_trunc('day', NOW() + interval '2 year') for 2 years validity */
+role_status smallint,
+created_on  date,       /* now()*/
+created_by  int,
+updated_on  date,       /* now()*/ 
+updated_by  int
+);
+
+create table users_authentication
+(
+user_id  int primary key,
+first_name    varchar(30),
+middle_name  varchar(30),
+last_name  varchar(30),
+user_email  varchar(100),
+gender  text,
+user_designation  varchar(100),
+user_status  smallint,
+role_id  int,
+password  varchar(256),
+user_validity_start_date  date,   /* now()*/
+user_validity_end_date  date,     /* date_trunc('day', NOW() + interval '6 month') for 6 months validity */
+created_on  date,                 /* now()*/
+created_by  int,
+updated_on  date,                 /* now()*/
+updated_by  int,
+foreign key (role_id) references role_master(role_id)
+);
+
 /* Data from date  function*/
 
 create function data_upto_date(year integer,month integer) returns varchar(10) as $$
@@ -45,8 +101,8 @@ create table if not exists school_management_master
 school_management_type_id int primary key not null,
 school_management_type varchar(100),
 created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL,
-foreign key (school_management_type_id) references school_master(school_management_type_id)
+updated_on  TIMESTAMPTZ NOT NULL
+-- ,foreign key (school_management_type_id) references school_master(school_management_type_id)
 );
 
 /*school_category_master*/
@@ -56,8 +112,8 @@ create table if not exists school_category_master
 school_category_id int primary key not null,
 school_category varchar(100),
 created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL,
-foreign key (school_category_id) references school_master(school_category_id)
+updated_on  TIMESTAMPTZ NOT NULL
+-- ,foreign key (school_category_id) references school_master(school_category_id)
 );
 
 /*school_medium_master*/
@@ -67,8 +123,8 @@ create table if not exists school_medium_master
 school_medium_id int primary key not null,
 medium_of_school varchar(100),
 created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL,
-foreign key (school_medium_id) references school_master(school_medium_id)
+updated_on  TIMESTAMPTZ NOT NULL
+-- ,foreign key (school_medium_id) references school_master(school_medium_id)
 );
 
 /*school_geo_master*/
@@ -88,8 +144,8 @@ cluster_id  bigint,
 cluster_latitude  double precision,
 cluster_longitude  double precision,
 created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ ,
--- foreign key (school_id) references school_master(school_id)
+updated_on  TIMESTAMPTZ 
+-- ,foreign key (school_id) references school_master(school_id)
 );	
 
 /* school_hierarchy_details */
@@ -110,8 +166,8 @@ create table if not exists school_hierarchy_details
 		cluster_name varchar(100),
 		crc_name varchar(100),
 		created_on TIMESTAMPTZ,
-		updated_on TIMESTAMPTZ,
-		foreign key (school_id) references school_geo_master(school_id)
+		updated_on TIMESTAMPTZ
+		-- ,foreign key (school_id) references school_geo_master(school_id)
 		);
 
 create index if not exists school_hierarchy_details_id on school_hierarchy_details(block_id,district_id,cluster_id);
@@ -126,8 +182,8 @@ create table if not exists student_hierarchy_details
 		student_class int,
 		stream_of_student varchar(50),
 		created_on TIMESTAMPTZ,
-		updated_on TIMESTAMPTZ,
-		foreign key (school_id) references school_hierarchy_details(school_id)
+		updated_on TIMESTAMPTZ
+		-- ,foreign key (school_id) references school_hierarchy_details(school_id)
 		);
 
 create index if not exists student_hierarchy_details_id on student_hierarchy_details(school_id,student_class,stream_of_student);
@@ -143,8 +199,8 @@ create table if not exists teacher_hierarchy_details
 		nature_of_employment varchar(50),
 		date_of_joining date,
 		created_on TIMESTAMPTZ,
-		updated_on TIMESTAMPTZ,
-		foreign key (school_id) references school_hierarchy_details(school_id)
+		updated_on TIMESTAMPTZ
+		-- ,foreign key (school_id) references school_hierarchy_details(school_id)
 		);
 
 create index if not exists teacher_hierarchy_details_id on teacher_hierarchy_details(school_id,nature_of_employment);
@@ -190,8 +246,8 @@ day_29  smallint,
 day_30  smallint,
 day_31  smallint,
 created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ,
-foreign key (school_id) references school_hierarchy_details(school_id),
+updated_on  TIMESTAMPTZ
+--foreign key (school_id) references school_hierarchy_details(school_id),
 -- foreign key (student_id) references student_hierarchy_details(student_id)
 );
 
@@ -238,8 +294,8 @@ day_29  smallint,
 day_30  smallint,
 day_31  smallint,
 created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ,
-foreign key (school_id) references school_hierarchy_details(school_id),
+updated_on  TIMESTAMPTZ
+-- ,foreign key (school_id) references school_hierarchy_details(school_id),
 -- foreign key (teacher_id) references teacher_hierarchy_details(teacher_id)
 );
 
@@ -268,8 +324,8 @@ total_score smallint,
 score smallint,
 is_offline boolean,
 created_on  TIMESTAMPTZ, /* created_on field will come from source data*/
-updated_on  TIMESTAMPTZ,
-foreign key (school_id) references school_hierarchy_details(school_id)
+updated_on  TIMESTAMPTZ
+-- ,foreign key (school_id) references school_hierarchy_details(school_id)
 );
 
 create index if not exists crc_inspection_trans_id on crc_inspection_trans(school_id,crc_id);
@@ -290,9 +346,9 @@ in_school_location  varchar(5),
 year int,
 month int,
 created_on  TIMESTAMPTZ, 
-updated_on  TIMESTAMPTZ,
-foreign key (school_id) references school_hierarchy_details(school_id),
-foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
+updated_on  TIMESTAMPTZ
+-- ,foreign key (school_id) references school_hierarchy_details(school_id),
+-- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
 );
 
 create index if not exists crc_location_trans_id on crc_location_trans(school_id,crc_id);
