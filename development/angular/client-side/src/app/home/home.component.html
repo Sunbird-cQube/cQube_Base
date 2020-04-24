@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" style="height: 45px;">
+<!-- <mat-toolbar color="primary" style="height: 45px;">
   <button mat-icon-button>
     <mat-icon (click)="sidenav.toggle() ">menu</mat-icon>
   </button>
@@ -23,7 +23,78 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div style="height: 88vh;">
+    <div style="height: 91.5vh;">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container> -->
+
+<mat-toolbar color="primary" style="height: 45px;">
+  <button mat-icon-button>
+    <mat-icon (click)="sidenav.toggle() ">menu</mat-icon>
+  </button>
+  <h4>cQube - Dashboard </h4>
+  <span style="flex: 1 1 auto;"></span>
+  <button mat-raised-button color="primary" (click)="logout()">Log Out</button>
+
+
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list style="font-family: Arial;" class=sidenav>
+      <mat-toolbar style="height: 218px; background-image: url('../../assets/menu-bg.png')">
+
+        <img mat-card-image src="../../assets/person_Icon.png" alt="Photo" class="img-circle profile"
+          style="height: 50%;">
+
+        <mat-toolbar-row style="color: rgb(84, 116, 223);">
+          <span class="span"><b style="text-align: center; margin-left: 94px;">Hello</b><br>{{email}}</span>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <hr>
+      <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
+        [routerLink]="['map-view']">
+        <td>
+          <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+        </td>
+        <td>
+          &nbsp;&nbsp; Student Attendance Reports </td>
+      </a>
+      <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
+        [routerLink]="['crc-report']">
+        <td>
+          <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+        </td>
+        <td>
+          &nbsp;&nbsp; CRC Reports </td>
+
+      </a>
+      <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
+        [routerLink]="['teacher-attendance']">
+        <td>
+          <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+        </td>
+        <td>
+          &nbsp;&nbsp;Teacher Attendance Reports</td>
+
+
+      </a>
+      <a mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
+        [routerLink]="['semester-report']">
+        <td>
+          <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+        </td>
+        <td>
+          &nbsp;&nbsp;Semester Reports</td>
+      </a>
+
+      <span class="toolbar-filler"></span>
+
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="height: 91.5vh;">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>

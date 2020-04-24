@@ -1,9 +1,38 @@
 <div class="container-fluid" style="font-family: Arial;">
     <div class="row">
         <div class="col-sm-9">
-            <p
-                style="text-align: left;font-family: Arial; color: #284d8a; background-color:#fff; font-size: 21px; line-height: 1em; margin-top: 5px;">
-                {{title}}: {{titleName}}</p>
+            <div *ngIf='skul'>
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span></p>
+            </div>
+            <div *ngIf='dist'>
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span> <span>/ </span><span
+                        (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{hierName}}</span> </p>
+            </div>
+            <div *ngIf="blok">
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span><span>/ </span><span
+                        (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{hierName}}</span></p>
+            </div>
+
+            <div *ngIf="clust">
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
+                    Attendance report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span><span>/ </span><span
+                        (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{title}}</span><span>/ </span><span>
+                        {{hierName}}</span></p>
+            </div>
         </div>
         <div class="col-sm-3">
             <div class="row">
@@ -78,7 +107,7 @@
                 </div>
             </div>
 
-            <div style="line-height: .6em; margin-top: 30px;">
+            <div style="line-height: .6em; margin-top: 37px;">
                 <p> Total schools visited:</p>
                 <p> Total schools not visited:</p>
                 <p> Total visited records:</p>
@@ -92,7 +121,7 @@
                 <table class="table table-condensed" style="border: 1px solid black;">
                     <thead>
                         <tr>
-                            <th style="border: 1px solid black;">District Name</th>
+                            <th style="border: 1px solid black;">{{tableHead}}</th>
                             <th style="border: 1px solid black;">Total Schools</th>
                             <th style="border: 1px solid black;">Total Schools Visited</th>
                             <th style="border: 1px solid black;">Total Schools not Visited</th>
@@ -100,7 +129,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of obj">
+                        <tr *ngFor="let row of tableData">
                             <td style="border: 1px solid black;">{{row.distName}}</td>
                             <td style="border: 1px solid black;">{{row.schCount}}</td>
                             <td style="border: 1px solid black;">{{row.visitedSchools}}</td>
@@ -114,7 +143,7 @@
     </div>
 
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 10px 0px 0px 0px;font-family: Arial; height: 22px;">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 20px 0px 0px 0px;font-family: Arial; height: 22px;">
         <div class="col-sm-4">
             <span>Number of visits(total): {{visitCount}}</span>
         </div>

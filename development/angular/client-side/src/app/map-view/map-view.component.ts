@@ -150,7 +150,6 @@ export class MapViewComponent implements OnInit {
       this.mylatlngData = res;
 
       var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1);
-      console.log(sorted);
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       this.dateRange = sorted[0]['data_from_date'] + " to " + sorted[0]['data_upto_date'];
@@ -387,7 +386,6 @@ export class MapViewComponent implements OnInit {
             strokeWeight: 0,
             weight: 0
           });
-
           markerIcon.addTo(globalMap).bindPopup(
             "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
@@ -396,6 +394,7 @@ export class MapViewComponent implements OnInit {
             "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
             "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
           );
+
           markerIcon.on('mouseover', function (e) {
             this.openPopup();
           });
