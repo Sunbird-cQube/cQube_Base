@@ -1,95 +1,452 @@
-/*CCC 2.0 Gujarat*/
+/* nifi metadata table */
 
-/*c3_student_attendance_tmp_1*/
-
-create table if not exists c3_student_attendance_tmp_1(StudentAttendanceId varchar(20) primary key not null,
-StudentId   varchar(20),SchoolId varchar(20),AadhaarUID   varchar(20),AcademicYear  varchar(20),month   varchar(5),"day1" varchar(5),"day2" varchar(5),"day3" varchar(5),"day4" varchar(5),"day5" varchar(5),"day6" varchar(5),"day7" varchar(5),"day8" varchar(5),"day9" varchar(5),"day10" varchar(5),"day11" varchar(5),"day12" varchar(5),"day13" varchar(5),"day14" varchar(5),"day15" varchar(5),"day16" varchar(5),"day17" varchar(5),"day18" varchar(5),"day19" varchar(5),"day20" varchar(5),"day21" varchar(5),"day22" varchar(5),"day23" varchar(5),"day24" varchar(5),"day25" varchar(5),"day26" varchar(5),"day27" varchar(5),"day28" varchar(5),"day29" varchar(5),"day30" varchar(5),"day31" varchar(5));
-
-create index if not exists c3_student_attendance_tmp_month ON c3_student_attendance_tmp_1(month);
-create index if not exists c3_student_attendance_tmp_School ON c3_student_attendance_tmp_1(SchoolId);
-
-/*c3_student_attendance_tmp_2*/
-
-create table if not exists c3_student_attendance_tmp_2(StudentAttendanceId bigint ,StudentId   varchar(20),SchoolId varchar(20),AadhaarUID   varchar(20),AcademicYear  varchar(10),month varchar(10),date_day varchar(10),attendance varchar(10),dates varchar(10),flag varchar(10));
-
-create index if not exists c3_student_attendance_month_tmp ON c3_student_attendance_tmp_2(month);
-create index if not exists c3_student_attendance_School_tmp ON c3_student_attendance_tmp_2(SchoolId);
-
-/*c3_student_attendance*/
-
-create table if not exists c3_student_attendance(StudentAttendanceId bigint ,
-StudentId   bigint,SchoolId bigint,AadhaarUID   bigint,AcademicYear  varchar(10),month smallint,date_day smallint,attendance smallint, dates date);
-
-create index if not exists c3_student_attendance_month ON c3_student_attendance(month);
-create index if not exists c3_student_attendance_School ON c3_student_attendance(SchoolId);
-
-/*c3_lat_long_all*/
-
-create table if not exists c3_lat_long_all(Id bigint primary key not null,
-Latitude   float,
-Longitude float,segment varchar(10));
-
-create index if not exists c3_ind_lat_long_all ON c3_lat_long_all(segment);
-
-/*c3_school_master*/
-
-create table if not exists c3_school_master(Id int,
-SchoolId bigint,
-School varchar(100),
-DistrictId bigint,
-BlockId bigint,
-ClusterId bigint,
-VillageId bigint,
-StateId varchar(50),
-DistrictName varchar(50),
-blockName varchar(50)
+CREATE TABLE IF NOT EXISTS zip_files_processing ( 
+ zip_file_name varchar(255), 
+ ff_uuid varchar(255), 
+ ingestion_date timestamp DEFAULT current_timestamp, 
+ storage_date timestamp, 
+ number_files integer, 
+ number_files_OK integer, 
+ number_files_KO integer, 
+ status varchar(15) 
+);CREATE TABLE IF NOT EXISTS files_ingestion ( 
+ zip_file_name varchar(255), 
+ file_name varchar(255), 
+ ff_uuid varchar(255), 
+ storage_date timestamp, 
+ storage_name varchar(255), 
+ status varchar(15) 
 );
 
-create index if not exists c3_school_master_district ON c3_school_master(DistrictId);
-create index if not exists c3_school_master_block ON c3_school_master(BlockId);
-create index if not exists c3_school_master_cluster ON c3_school_master(ClusterId);
-create index if not exists c3_school_master_village ON c3_school_master(VillageId);
+/* role and user based auth tables */
 
-/*c3_agg_column_chart*/
+create table role_master
+(
+role_id  smallint primary key,
+role_name  varchar(100),
+role_validity_start_date  date, /* now() */
+role_validity_end_date  date,  /* date_trunc('day', NOW() + interval '2 year') for 2 years validity */
+role_status smallint,
+created_on  date,       /* now()*/
+created_by  int,
+updated_on  date,       /* now()*/ 
+updated_by  int
+);
 
-create table if not exists c3_agg_column_chart(batch_id int,
-chart_id int,
-chart_name varchar(100),
-x_axis varchar(20),
-x_value varchar(20),
-y_axis varchar(20),
-y_value varchar(20),
-z_axis varchar(20),
-z_value varchar(20),
-created_on timestamp with time zone,
-updated_on timestamp with time zone);
+create table users_authentication
+(
+user_id  int primary key,
+first_name    varchar(30),
+middle_name  varchar(30),
+last_name  varchar(30),
+user_email  varchar(100),
+gender  text,
+user_designation  varchar(100),
+user_status  smallint,
+role_id  int,
+password  varchar(256),
+user_validity_start_date  date,   /* now()*/
+user_validity_end_date  date,     /* date_trunc('day', NOW() + interval '6 month') for 6 months validity */
+created_on  date,                 /* now()*/
+created_by  int,
+updated_on  date,                 /* now()*/
+updated_by  int,
+foreign key (role_id) references role_master(role_id)
+);
 
-create index if not exists c3_agg_col_batch_id on c3_agg_column_chart(batch_id);
+/* Data from date  function*/
 
-create index if not exists c3_agg_col_chart_id on c3_agg_column_chart(chart_id);
-
-/*c3_agg_attributes_chart*/
-
-create table if not exists c3_agg_attributes_chart(batch_id int,
-chart_id int,
-chart_name varchar(100),
-attribute_name varchar(50),
-attribute_value varchar(50),
-created_on timestamp with time zone,
-updated_on timestamp with time zone);
-
-create index if not exists c3_agg_att_batch_id on c3_agg_attributes_chart(batch_id);
-
-create index if not exists c3_agg_att_chart_id on c3_agg_attributes_chart(chart_id);
-
-/*is_date function*/
-
-create or replace function is_date(s varchar) returns int as $$
+create function data_upto_date(year integer,month integer) returns varchar(10) as $$
+declare data varchar;
 begin
-  perform s::date;
-  return 1;
-exception when others then
-  return 0;
-end;
-$$ language plpgsql;
+SELECT left(to_char((date_trunc('MONTH', ( concat(year,0,month) ||'01')::date) + INTERVAL '1 MONTH - 1 day')::DATE,'DD-MM-YYYY'),10) into data;
+return data;
+END; $$
+LANGUAGE PLPGSQL;
+
+/* Data upto date  function*/
+
+create function data_from_date(year integer,month integer) returns varchar(10) as $$
+declare data varchar;
+begin
+SELECT left(to_char((date_trunc('MONTH', ( concat(year,0,month) ||'01')::date))::DATE,'DD-MM-YYYY'),10) into data;
+return data;
+END; $$
+LANGUAGE PLPGSQL;
+
+/*school_master*/
+
+create table if not exists school_master
+	(
+school_id  bigint primary key not null,
+school_name varchar(250),
+school_address  varchar(250),
+school_zipcode  int,
+school_contact_number  bigint,
+school_email_contact  varchar(50),
+school_website  varchar(50),
+school_lowest_class  int,
+school_highest_class  int,
+school_management_type_id int unique,
+school_category_id  int unique,
+school_medium_id  int unique,
+created_on  TIMESTAMPTZ NOT NULL,
+updated_on  TIMESTAMPTZ NOT NULL
+);
+
+/*school_management_master*/
+
+create table if not exists school_management_master
+	(
+school_management_type_id int primary key not null,
+school_management_type varchar(100),
+created_on  TIMESTAMPTZ NOT NULL,
+updated_on  TIMESTAMPTZ NOT NULL
+-- ,foreign key (school_management_type_id) references school_master(school_management_type_id)
+);
+
+/*school_category_master*/
+
+create table if not exists school_category_master
+	(
+school_category_id int primary key not null,
+school_category varchar(100),
+created_on  TIMESTAMPTZ NOT NULL,
+updated_on  TIMESTAMPTZ NOT NULL
+-- ,foreign key (school_category_id) references school_master(school_category_id)
+);
+
+/*school_medium_master*/
+
+create table if not exists school_medium_master
+	(
+school_medium_id int primary key not null,
+medium_of_school varchar(100),
+created_on  TIMESTAMPTZ NOT NULL,
+updated_on  TIMESTAMPTZ NOT NULL
+-- ,foreign key (school_medium_id) references school_master(school_medium_id)
+);
+
+/*school_geo_master*/
+
+create table if not exists school_geo_master
+(
+school_id  bigint primary key not null,
+school_latitude  double precision,
+school_longitude  double precision,
+district_id  bigint,
+district_latitude  double precision,
+district_longitude  double precision,
+block_id  bigint,
+block_latitude  double precision,
+block_longitude  double precision,
+cluster_id  bigint,
+cluster_latitude  double precision,
+cluster_longitude  double precision,
+created_on  TIMESTAMPTZ ,
+updated_on  TIMESTAMPTZ 
+-- ,foreign key (school_id) references school_master(school_id)
+);	
+
+/* school_hierarchy_details */
+
+create table if not exists school_hierarchy_details
+	(
+		school_id bigint primary key not null,
+		year int,
+		school_name varchar(300),
+		board_id bigint,
+		board_name varchar(200),
+		block_id bigint,
+		block_name varchar(100),
+		brc_name varchar(100),
+		district_id bigint,
+		district_name varchar(100),
+		cluster_id bigint,
+		cluster_name varchar(100),
+		crc_name varchar(100),
+		created_on TIMESTAMPTZ,
+		updated_on TIMESTAMPTZ
+		-- ,foreign key (school_id) references school_geo_master(school_id)
+		);
+
+create index if not exists school_hierarchy_details_id on school_hierarchy_details(block_id,district_id,cluster_id);
+
+/* student_hierarchy_details */
+
+create table if not exists student_hierarchy_details
+	(
+		student_id bigint primary key not null,
+		school_id bigint,
+		year int,
+		student_class int,
+		stream_of_student varchar(50),
+		created_on TIMESTAMPTZ,
+		updated_on TIMESTAMPTZ
+		-- ,foreign key (school_id) references school_hierarchy_details(school_id)
+		);
+
+create index if not exists student_hierarchy_details_id on student_hierarchy_details(school_id,student_class,stream_of_student);
+
+/* teacher_hierarchy_details */
+
+create table if not exists teacher_hierarchy_details
+	(
+		teacher_id bigint primary key not null,
+		school_id bigint,
+		year int,
+		teacher_designation varchar(100),
+		nature_of_employment varchar(50),
+		date_of_joining date,
+		created_on TIMESTAMPTZ,
+		updated_on TIMESTAMPTZ
+		-- ,foreign key (school_id) references school_hierarchy_details(school_id)
+		);
+
+create index if not exists teacher_hierarchy_details_id on teacher_hierarchy_details(school_id,nature_of_employment);
+
+/*student_attendance_trans*/
+
+create table if not exists student_attendance_trans
+(
+attendance_id  bigint primary key not null,
+student_id  bigint,
+school_id  bigint,
+year  int,
+month  int,
+day_1  smallint,
+day_2  smallint,
+day_3  smallint,
+day_4  smallint,
+day_5  smallint,
+day_6  smallint,
+day_7  smallint,
+day_8  smallint,
+day_9  smallint,
+day_10  smallint,
+day_11  smallint,
+day_12  smallint,
+day_13  smallint,
+day_14  smallint,
+day_15  smallint,
+day_16  smallint,
+day_17  smallint,
+day_18  smallint,
+day_19  smallint,
+day_20  smallint,
+day_21  smallint,
+day_22  smallint,
+day_23  smallint,
+day_24  smallint,
+day_25  smallint,
+day_26  smallint,
+day_27  smallint,
+day_28  smallint,
+day_29  smallint,
+day_30  smallint,
+day_31  smallint,
+created_on  TIMESTAMPTZ ,
+updated_on  TIMESTAMPTZ
+--foreign key (school_id) references school_hierarchy_details(school_id),
+-- foreign key (student_id) references student_hierarchy_details(student_id)
+);
+
+create index if not exists student_attendance_trans_id on student_attendance_trans(school_id,month,student_id);
+
+/*teacher_attendance_trans*/
+
+create table if not exists teacher_attendance_trans
+(
+attendance_id  bigint primary key not null,
+teacher_id  bigint,
+school_id  bigint,
+year  int,
+month  int,
+day_1  smallint,
+day_2  smallint,
+day_3  smallint,
+day_4  smallint,
+day_5  smallint,
+day_6  smallint,
+day_7  smallint,
+day_8  smallint,
+day_9  smallint,
+day_10  smallint,
+day_11  smallint,
+day_12  smallint,
+day_13  smallint,
+day_14  smallint,
+day_15  smallint,
+day_16  smallint,
+day_17  smallint,
+day_18  smallint,
+day_19  smallint,
+day_20  smallint,
+day_21  smallint,
+day_22  smallint,
+day_23  smallint,
+day_24  smallint,
+day_25  smallint,
+day_26  smallint,
+day_27  smallint,
+day_28  smallint,
+day_29  smallint,
+day_30  smallint,
+day_31  smallint,
+created_on  TIMESTAMPTZ ,
+updated_on  TIMESTAMPTZ
+-- ,foreign key (school_id) references school_hierarchy_details(school_id),
+-- foreign key (teacher_id) references teacher_hierarchy_details(teacher_id)
+);
+
+create index if not exists teacher_attendance_trans_id on teacher_attendance_trans(school_id,month,teacher_id);
+
+/* crc_inspection_trans */
+
+create table if not exists crc_inspection_trans
+(
+crc_inspection_id bigint primary key not null,
+crc_id bigint,
+crc_name varchar(100),
+school_id  bigint,
+lowest_class smallint,
+highest_class smallint,
+visit_start_time TIMESTAMPTZ,
+visit_end_time TIMESTAMPTZ,
+total_class_rooms smallint,
+actual_class_rooms smallint,
+total_suggestion_last_month smallint,
+resolved_from_that smallint,
+is_inspection smallint,
+reason_type smallint,
+reason_desc varchar(100),
+total_score smallint,
+score smallint,
+is_offline boolean,
+created_on  TIMESTAMPTZ, /* created_on field will come from source data*/
+updated_on  TIMESTAMPTZ
+-- ,foreign key (school_id) references school_hierarchy_details(school_id)
+);
+
+create index if not exists crc_inspection_trans_id on crc_inspection_trans(school_id,crc_id);
+
+
+
+/* crc_location_trans */
+
+create table if not exists crc_location_trans
+(
+crc_location_id bigint primary key not null,
+crc_id bigint,
+inspection_id  bigint,
+school_id  bigint ,
+latitude  bigint,
+longitude  bigint,
+in_school_location  varchar(5),
+year int,
+month int,
+created_on  TIMESTAMPTZ, 
+updated_on  TIMESTAMPTZ
+-- ,foreign key (school_id) references school_hierarchy_details(school_id),
+-- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
+);
+
+create index if not exists crc_location_trans_id on crc_location_trans(school_id,crc_id);
+
+
+/*Aggregated*/
+
+/*school_student_total_attendance*/
+
+create table if not exists school_student_total_attendance
+(
+id  serial,
+year  int,
+month  smallint,
+school_id  bigint,
+school_name varchar(200),
+school_latitude  double precision,
+school_longitude  double precision,
+district_id  bigint,
+district_name varchar(100),
+district_latitude  double precision,
+district_longitude  double precision,
+block_id  bigint,
+block_name varchar(100),
+brc_name varchar(100),
+block_latitude  double precision,
+block_longitude  double precision,
+cluster_id  bigint,
+cluster_name varchar(100),
+crc_name varchar(100),
+cluster_latitude  double precision,
+cluster_longitude  double precision,
+total_present  int,
+total_working_days  int,
+students_count bigint,
+created_on  TIMESTAMPTZ ,
+updated_on  TIMESTAMPTZ
+);
+
+create index if not exists school_student_total_attendance_id on school_student_total_attendance(month,school_id,block_id,cluster_id);
+
+/*school_teacher_total_attendance*/
+
+create table if not exists school_teacher_total_attendance
+(
+id  serial,
+year  int,
+month  smallint,
+school_id  bigint,
+school_name varchar(200),
+school_latitude  double precision,
+school_longitude  double precision,
+district_id  bigint,
+district_name varchar(100),
+district_latitude  double precision,
+district_longitude  double precision,
+block_id  bigint,
+block_name varchar(100),
+brc_name varchar(100),
+block_latitude  double precision,
+block_longitude  double precision,
+cluster_id  bigint,
+cluster_name varchar(100),
+crc_name varchar(100),
+cluster_latitude  double precision,
+cluster_longitude  double precision,
+total_present  int,
+total_training int,
+total_halfday int,
+total_working_days  int,
+teachers_count bigint,
+created_on  TIMESTAMPTZ ,   
+updated_on  TIMESTAMPTZ
+);
+
+create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
+
+/* crc_visits_frequency */
+
+create table if not exists crc_visits_frequency
+(
+school_id  bigint ,
+school_name varchar(100),
+district_id  bigint,
+district_name varchar(100),
+block_id  bigint,
+block_name varchar(100),
+cluster_id  bigint,
+cluster_name varchar(100),
+crc_name varchar(100),
+visit_count int,
+missed_visit_count int,
+month int,
+year int,
+created_on  TIMESTAMPTZ,
+updated_on  TIMESTAMPTZ
+);
+
+create index if not exists crc_visits_frequency_id on crc_visits_frequency(school_id,block_id,cluster_id,district_id);
+
 
