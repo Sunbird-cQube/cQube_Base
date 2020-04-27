@@ -6,7 +6,7 @@ import { environment } from '../../src/environments/environment';
     providedIn: 'root'
 })
 export class AppServiceComponent {
-    baseUrl = environment.apiEndpoint;
+   public baseUrl: any = environment.apiEndpoint;
 
     constructor(public http: HttpClient) { };
 
