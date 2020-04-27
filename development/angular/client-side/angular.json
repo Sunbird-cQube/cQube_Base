@@ -42,7 +42,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -94,6 +94,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "/node_modules/bootstrap/dist/css/bootstrap.min.css.map",
               "src/styles.css"
             ],
             "scripts": []
@@ -127,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "gujarat-project"
+  "defaultProject": "gujarat-project",
+  "cli": {
+    "analytics": "ba1a22eb-5816-43e5-b88d-9836f8523d87"
+  }
 }

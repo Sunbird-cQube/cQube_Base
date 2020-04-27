@@ -43,7 +43,7 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
     <mat-nav-list style="font-family: Arial;" class=sidenav>
-      <mat-toolbar style="height: 218px; background-image: url('../../assets/menu-bg.png')">
+      <mat-toolbar style="height: 218px; background-color: white; border-bottom: 1px solid lightgray;">
 
         <img mat-card-image src="../../assets/person_Icon.png" alt="Photo" class="img-circle profile"
           style="height: 50%;">
@@ -52,7 +52,6 @@
           <span class="span"><b style="text-align: center; margin-left: 94px;">Hello</b><br>{{email}}</span>
         </mat-toolbar-row>
       </mat-toolbar>
-      <hr>
       <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
         [routerLink]="['map-view']">
         <td>

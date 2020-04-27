@@ -7,25 +7,28 @@ import { HomeComponent } from './home/home.component';
 import { TeacherAttendanceComponent } from './teacher-attendance/teacher-attendance.component';
 import { SemesterReportComponent } from './semester-report/semester-report.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
-
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
-    path: '', component: LoginComponent
+    path: '', redirectTo: '/login', pathMatch: 'full'
   },
   {
-    path: 'home', component: HomeComponent, children: [
+    path: 'login', component: LoginComponent
+  },
+  {
+    path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
       {
-        path: 'map-view', component: MapViewComponent
+        path: 'map-view', component: MapViewComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'teacher-attendance', component: TeacherAttendanceComponent
+        path: 'teacher-attendance', component: TeacherAttendanceComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'semester-report', component: SemesterReportComponent
+        path: 'semester-report', component: SemesterReportComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'crc-report', component: BarChartComponent
+        path: 'crc-report', component: BarChartComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
@@ -36,7 +39,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
