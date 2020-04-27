@@ -9,7 +9,9 @@ CREATE TABLE IF NOT EXISTS zip_files_processing (
  number_files_OK integer, 
  number_files_KO integer, 
  status varchar(15) 
-);CREATE TABLE IF NOT EXISTS files_ingestion ( 
+);
+
+CREATE TABLE IF NOT EXISTS files_ingestion ( 
  zip_file_name varchar(255), 
  file_name varchar(255), 
  ff_uuid varchar(255), 
@@ -20,7 +22,7 @@ CREATE TABLE IF NOT EXISTS zip_files_processing (
 
 /* role and user based auth tables */
 
-create table role_master
+CREATE TABLE IF NOT EXISTS role_master
 (
 role_id  smallint primary key,
 role_name  varchar(100),
@@ -33,7 +35,7 @@ updated_on  date,       /* now()*/
 updated_by  int
 );
 
-create table users_authentication
+CREATE TABLE IF NOT EXISTS users_authentication
 (
 user_id  int primary key,
 first_name    varchar(30),
@@ -56,7 +58,7 @@ foreign key (role_id) references role_master(role_id)
 
 /* Data from date  function*/
 
-create function data_upto_date(year integer,month integer) returns varchar(10) as $$
+CREATE OR REPLACE FUNCTION data_upto_date(year integer,month integer) returns varchar(10) as $$
 declare data varchar;
 begin
 SELECT left(to_char((date_trunc('MONTH', ( concat(year,0,month) ||'01')::date) + INTERVAL '1 MONTH - 1 day')::DATE,'DD-MM-YYYY'),10) into data;
@@ -66,7 +68,7 @@ LANGUAGE PLPGSQL;
 
 /* Data upto date  function*/
 
-create function data_from_date(year integer,month integer) returns varchar(10) as $$
+CREATE OR REPLACE FUNCTION data_from_date(year integer,month integer) returns varchar(10) as $$
 declare data varchar;
 begin
 SELECT left(to_char((date_trunc('MONTH', ( concat(year,0,month) ||'01')::date))::DATE,'DD-MM-YYYY'),10) into data;
