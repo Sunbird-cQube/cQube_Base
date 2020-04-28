@@ -1,0 +1,15 @@
+---
+- name: Installing cQube
+  hosts: localhost
+  remote_user: root
+  vars_files:
+    - vars/main.yml
+
+  roles:
+  - java
+  - python
+  - s3_buckets
+  - sftp
+  - createdb
+  - angular
+  - nifi
