@@ -892,6 +892,7 @@ export class MapViewComponent implements OnInit {
 
 
   myDistData(data) {
+    console.log(data);
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.hierName = '';
