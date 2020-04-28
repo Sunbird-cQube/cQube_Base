@@ -54,6 +54,7 @@ export class BarChartComponent implements OnInit {
   label = [];
   value = [];
   barchart: Chart;
+  scatterChart: Chart;
 
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
@@ -124,96 +125,70 @@ export class BarChartComponent implements OnInit {
         this.value = [];
 
         for (var i = 0; i < result.length; i++) {
-          this.label.push(result[i]["visits"]);
-          this.value.push(result[i]["schoolsCount"]);
-        }
-        for (var i = 0; i < result.length; i++) {
           this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
           this.visitCount = this.visitCount + result[i]["visits"];
         }
 
 
+        for (var i = 0; i < result.length; i++) {
+          this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
+          this.visitCount = this.visitCount + result[i]["visits"];
+        }
 
-        this.barchart = (new Chart('bar1', {
-          type: 'bar',
+        var chartData = [];
+        for (var i = 0; i < result.length; i++) {
+          chartData.push({ x: result[i].schoolsCount, y: result[i].visits, r: 30 });
+        };
+        this.scatterChart = new Chart('myChart', {
+          type: 'scatter',
           data: {
-            labels: this.label,
-            datasets: [
-              {
-                label: 'No. of schools',
-                data: this.value,
-                backgroundColor: '#2b8cbe',
-                borderColor: '#2b8cbe',
-                hoverBackgroundColor: 'rgba(230, 236, 235, 0.75)',
-                hoverBorderColor: 'rgba(230, 236, 235, 0.75)',
-                fill: true
-              }
-            ]
+            datasets: [{
+              data: chartData,
+              backgroundColor: "blue",
+              pointRadius: 5
+            }]
           },
           options: {
+            legend: {
+              display: false
+            },
             tooltips: {
-              displayColors: false,
+
               callbacks: {
-                title: () => null,
                 label: function (tooltipItem) {
-                  return ["Number of visits : " + tooltipItem.xLabel, "Number of Schools : " + tooltipItem.yLabel];
+                  var multistringText = ["Number of schools: " + tooltipItem.xLabel];
+                  multistringText.push("Number of visits: " + tooltipItem.yLabel);
+                  return multistringText;
                 }
               }
             },
-            responsive: true,
+
             scales: {
               xAxes: [{
-                ticks: {
-                  fontColor: "black",
-                  beginAtZero: true
-                },
                 gridLines: {
-                  zeroLineColor: "transparent"
+                  color: "rgba(0, 0, 0, 0)",
                 },
-                display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: 'NUMBER OF VISITS',
-                  fontStyle: 'bold',
-                  fontFamily: 'Ariel',
-                  fontColor: "black"
-                },
+                  labelString: 'Number of schools',
+                  fontSize: 16,
+                  fontColor: "blue"
+                }
               }],
               yAxes: [{
-                ticks: {
-
-                  fontColor: 'black',
-                  beginAtZero: true
+                gridLines: {
+                  color: "rgba(0, 0, 0, 0)",
                 },
-                display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: 'NUMBER OF SCHOOLS',
-                  fontStyle: 'bold',
-                  fontFamily: 'Ariel',
-                  fontColor: "black"
+                  labelString: 'Number of Visits',
+                  fontSize: 16,
+                  fontColor: "blue",
                 }
-              },
-              ],
-            },
-            title: {
-              display: true,
-              text: "DISTRICT WISE CRC REPORT",
-              fontFamily: 'Ariel',
-              fontSize: 20
-            },
-            legend: {
-              display: false,
-              position: 'top',
-            },
-            animation: {
-              animateScale: true,
-              animateRotate: true
-
+              }]
             }
-          },
-        })
-        );
+          }
+        });
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       })
@@ -223,7 +198,7 @@ export class BarChartComponent implements OnInit {
 
 
   myDistData(data) {
-    this.barchart.destroy();
+    this.scatterChart.destroy();
     // this.title = "Block wise CRC report for District";
     // this.titleName = data.name;
     this.blockHidden = false;
@@ -269,95 +244,70 @@ export class BarChartComponent implements OnInit {
 
       this.service.crcData_block(data.id).subscribe((result: any) => {
 
-        this.label = [];
-        this.value = [];
-        result.forEach(x => {
-          this.label.push(x["visits"]);
-          this.value.push(x["schoolsCount"]);
-        });
         for (var i = 0; i < result.length; i++) {
           this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
           this.visitCount = this.visitCount + result[i]["visits"];
         }
 
-        this.barchart = (new Chart('bar1', {
-          type: 'bar',
+        for (var i = 0; i < result.length; i++) {
+          this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
+          this.visitCount = this.visitCount + result[i]["visits"];
+        }
+
+        var chartData = [];
+        for (var i = 0; i < result.length; i++) {
+          chartData.push({ x: result[i].schoolsCount, y: result[i].visits, r: 30 });
+        };
+        this.scatterChart = new Chart('myChart', {
+          type: 'scatter',
           data: {
-            labels: this.label,
-            datasets: [
-              {
-                label: 'No. of schools',
-                data: this.value,
-                backgroundColor: '#2b8cbe',
-                borderColor: '#2b8cbe',
-                hoverBackgroundColor: 'rgba(230, 236, 235, 0.75)',
-                hoverBorderColor: 'rgba(230, 236, 235, 0.75)',
-                fill: true
-              }
-            ]
+            datasets: [{
+              data: chartData,
+              backgroundColor: "blue",
+              pointRadius: 5
+            }]
           },
           options: {
+            legend: {
+              display: false
+            },
             tooltips: {
-              displayColors: false,
+
               callbacks: {
-                title: () => null,
                 label: function (tooltipItem) {
-                  return ["Number of visits : " + tooltipItem.xLabel, "Number of Schools : " + tooltipItem.yLabel];
+                  var multistringText = ["Number of schools: " + tooltipItem.xLabel];
+                  multistringText.push("Number of visits: " + tooltipItem.yLabel);
+                  return multistringText;
                 }
               }
             },
-            responsive: true,
+
             scales: {
               xAxes: [{
-                ticks: {
-                  fontColor: "black",
-                  beginAtZero: true
-                },
                 gridLines: {
-                  zeroLineColor: "transparent"
+                  color: "rgba(0, 0, 0, 0)",
                 },
-                display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: 'NUMBER OF VISITS',
-                  fontStyle: 'bold',
-                  fontFamily: 'Ariel'
+                  labelString: 'Number of schools',
+                  fontSize: 16,
+                  fontColor: "blue"
                 }
               }],
               yAxes: [{
-                ticks: {
-                  fontColor: 'black',
-                  beginAtZero: true
+                gridLines: {
+                  color: "rgba(0, 0, 0, 0)",
                 },
-                display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: 'NUMBER OF SCHOOLS',
-                  fontStyle: 'bold',
-                  fontFamily: 'Ariel'
+                  labelString: 'Number of Visits',
+                  fontSize: 16,
+                  fontColor: "blue",
                 }
-              },
-              ],
-            },
-            title: {
-              display: true,
-              text: "BLOCK WISE CRC REPORT",
-              fontFamily: 'Ariel',
-              fontSize: 20
-            },
-            legend: {
-              display: false,
-              position: 'top',
-            },
-            animation: {
-              animateScale: true,
-              animateRotate: true
-
+              }]
             }
-
-          },
-        })
-        );
+          }
+        });
       })
 
       this.loaderAndErr();
@@ -368,7 +318,7 @@ export class BarChartComponent implements OnInit {
   }
 
   myBlockData(data) {
-    this.barchart.destroy();
+    this.scatterChart.destroy();
     this.clusterHidden = false;
     this.blockHidden = false;
     this.errMsg();
@@ -422,96 +372,65 @@ export class BarChartComponent implements OnInit {
           this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
           this.visitCount = this.visitCount + result[i]["visits"];
         }
-        this.label = [];
-        this.value = [];
-        result.forEach(x => {
-          this.label.push(x["visits"]);
-          this.value.push(x["schoolsCount"]);
-        });
+        for (var i = 0; i < result.length; i++) {
+          this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
+          this.visitCount = this.visitCount + result[i]["visits"];
+        }
 
-        this.barchart = (new Chart('bar1', {
-          type: 'bar',
+        var chartData = [];
+        for (var i = 0; i < result.length; i++) {
+          chartData.push({ x: result[i].schoolsCount, y: result[i].visits, r: 30 });
+        };
+        this.scatterChart = new Chart('myChart', {
+          type: 'scatter',
           data: {
-            labels: this.label,
-            datasets: [
-              {
-                label: 'No. of schools',
-                data: this.value,
-                backgroundColor: '#2b8cbe',
-                borderColor: '#2b8cbe',
-                hoverBackgroundColor: 'rgba(230, 236, 235, 0.75)',
-                hoverBorderColor: 'rgba(230, 236, 235, 0.75)',
-
-                fill: true
-              }
-            ]
+            datasets: [{
+              data: chartData,
+              backgroundColor: "blue",
+              pointRadius: 5
+            }]
           },
           options: {
+            legend: {
+              display: false
+            },
             tooltips: {
-              displayColors: false,
+
               callbacks: {
-                title: () => null,
                 label: function (tooltipItem) {
-                  return ["Number of visits : " + tooltipItem.xLabel, "Number of Schools : " + tooltipItem.yLabel];
+                  var multistringText = ["Number of schools: " + tooltipItem.xLabel];
+                  multistringText.push("Number of visits: " + tooltipItem.yLabel);
+                  return multistringText;
                 }
               }
             },
-            responsive: true,
+
             scales: {
               xAxes: [{
-                ticks: {
-                  fontColor: "black",
-                  beginAtZero: true
-                },
                 gridLines: {
-                  zeroLineColor: "transparent"
+                  color: "rgba(0, 0, 0, 0)",
                 },
-                display: true,
-
                 scaleLabel: {
                   display: true,
-                  labelString: 'NUMBER OF VISITS',
-                  fontStyle: 'bold',
-                  fontFamily: 'Ariel'
+                  labelString: 'Number of schools',
+                  fontSize: 16,
+                  fontColor: "blue"
                 }
-
               }],
               yAxes: [{
-                ticks: {
-
-                  fontColor: 'black',
-                  beginAtZero: true
+                gridLines: {
+                  color: "rgba(0, 0, 0, 0)",
                 },
-                display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: 'NUMBER OF SCHOOLS',
-                  fontStyle: 'bold',
-                  fontFamily: 'Ariel'
+                  labelString: 'Number of Visits',
+                  fontSize: 16,
+                  fontColor: "blue",
                 }
-              },
-              ],
-            },
-            title: {
-              display: true,
-              text: "CLUSTER WISE CRC REPORT",
-              fontFamily: 'Ariel',
-              fontSize: 20
-            },
-            legend: {
-              display: false,
-              position: 'top',
-            },
-            animation: {
-              animateScale: true,
-              animateRotate: true
-
+              }]
             }
-
-          },
-
-        })
-        );
+          }
+        });
       })
       this.clusterNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
       this.loaderAndErr();
@@ -522,7 +441,7 @@ export class BarChartComponent implements OnInit {
   }
 
   myClusterData(data) {
-    this.barchart.destroy();
+    this.scatterChart.destroy();
     // this.title = "School wise CRC report for Cluster";
     // this.titleName = data.name;
     this.tableHead = "School Name";
@@ -564,95 +483,65 @@ export class BarChartComponent implements OnInit {
           this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
           this.visitCount = this.visitCount + result[i]["visits"];
         }
-        this.label = [];
-        this.value = [];
-        result.forEach(x => {
-          this.label.push(x["visits"]);
-          this.value.push(x["schoolsCount"]);
-        });
+        for (var i = 0; i < result.length; i++) {
+          this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
+          this.visitCount = this.visitCount + result[i]["visits"];
+        }
 
-        this.barchart = (new Chart('bar1', {
-          type: 'bar',
+        var chartData = [];
+        for (var i = 0; i < result.length; i++) {
+          chartData.push({ x: result[i].schoolsCount, y: result[i].visits, r: 30 });
+        };
+        this.scatterChart = new Chart('myChart', {
+          type: 'scatter',
           data: {
-            labels: this.label,
-            datasets: [
-              {
-                label: 'No. of schools',
-                data: this.value,
-                backgroundColor: '#2b8cbe',
-                borderColor: '#2b8cbe',
-                hoverBackgroundColor: 'rgba(230, 236, 235, 0.75)',
-                hoverBorderColor: 'rgba(230, 236, 235, 0.75)',
-
-                fill: true
-              }
-            ]
+            datasets: [{
+              data: chartData,
+              backgroundColor: "blue",
+              pointRadius: 5
+            }]
           },
           options: {
+            legend: {
+              display: false
+            },
             tooltips: {
-              displayColors: false,
+
               callbacks: {
-                title: () => null,
                 label: function (tooltipItem) {
-                  return ["Number of visits : " + tooltipItem.xLabel, "Number of Schools : " + tooltipItem.yLabel];
+                  var multistringText = ["Number of schools: " + tooltipItem.xLabel];
+                  multistringText.push("Number of visits: " + tooltipItem.yLabel);
+                  return multistringText;
                 }
               }
             },
-            responsive: true,
+
             scales: {
               xAxes: [{
-                ticks: {
-                  fontColor: "black",
-                  beginAtZero: true
-                },
                 gridLines: {
-                  zeroLineColor: "transparent"
+                  color: "rgba(0, 0, 0, 0)",
                 },
-                display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: 'NUMBER OF VISITS',
-                  fontStyle: 'bold',
-                  fontFamily: 'Ariel'
+                  labelString: 'Number of schools',
+                  fontSize: 16,
+                  fontColor: "blue"
                 }
               }],
               yAxes: [{
-                ticks: {
-                  stepSize: 1,
-                  fontColor: 'black',
-                  beginAtZero: true
+                gridLines: {
+                  color: "rgba(0, 0, 0, 0)",
                 },
-                display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: 'NUMBER OF SCHOOLS',
-                  fontStyle: 'bold',
-                  fontFamily: 'Ariel'
+                  labelString: 'Number of Visits',
+                  fontSize: 16,
+                  fontColor: "blue",
                 }
-              },
-              ],
-            },
-            title: {
-              display: true,
-              text: "SCHOOLS WISE CRC REPORT",
-              fontFamily: 'Ariel',
-              fontSize: 20
-
-            },
-            legend: {
-              display: false,
-              position: 'top',
-            },
-            animation: {
-              animateScale: true,
-              animateRotate: true
-
+              }]
             }
-
-          },
-
-        })
-        );
+          }
+        });
       })
       this.loaderAndErr();
       this.changeDetection.markForCheck();
