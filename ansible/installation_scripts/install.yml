@@ -1,9 +1,0 @@
-- import_playbook: java.yml
-- import_playbook: python_pip.yml
-- import_playbook: s3.yml
-- import_playbook: sftp.yml
-- import_playbook: postgres.yml
-- import_playbook: angular.yml
-- import_playbook: nifi.yml
-- import_playbook: nifi_con.yml 
-- import_playbook: nifi_start.yml  
