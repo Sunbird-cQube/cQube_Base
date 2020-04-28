@@ -1,6 +1,6 @@
 <div class="container-fluid" style="font-family: Arial;">
     <div class="row">
-        <div class="col-sm-9" >
+        <div class="col-sm-9">
             <div *ngIf='skul'>
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
@@ -62,64 +62,84 @@
             </div>
         </div>
     </div>
-    <div class="row" style="line-height: 0.8em;">
+    <!-- <div class="row">
         <div class="col-sm-9" style="font-family: Arial;">
-            <select
-                style="margin-right: 10px; padding: 4.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
-                <option [value]="myDistrict" disabled selected="selected">Choose a District
-                </option>
-                <option *ngFor="let dist of districtsNames" [(ngValue)]="dist"
-                    style="font-family: Arial; font-size: 11px;">
-                    {{dist.name}}
-                </option>
-            </select>
-
-            <select [hidden]="blockHidden"
-                style="margin-right: 10px; padding: 4.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
-                <option [value]="myBlock" disabled selected="selected">Choose a Block
-                </option>
-                <option *ngFor="let block of blocksNames" [(ngValue)]="block">
-                    {{block.name}}
-                </option>
-            </select>
-
-            <select [hidden]="clusterHidden"
-                style="margin-right: 10px; padding: 4.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
-                <option [value]="myCluster" disabled selected="selected">Choose a CRC Name
-                </option>
-                <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster"
-                    style="font-family: Arial;font-size: 11px; "
-                    [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
-                    {{cluster.name}}
-                </option>
-            </select>
+            
         </div>
 
-    </div>
+    </div> -->
     <div class="row" style="margin-top: 2px;">
-        <div class="col-sm-8">
+        <div class="col-sm-7">
             <div class="row">
                 <div class="col-sm-12">
                     <select
-                        style="margin-right: 10px; padding: 1.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                        style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
                         [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
-                        <option [value]="myDistrict" disabled selected="selected" style="width: 300px;">Choose
-                            percentage Visits
+                        <option [value]="myDistrict" disabled selected="selected">Choose a District
                         </option>
-                        <option *ngFor="let dist of visitsPercentages" [(ngValue)]="dist"
+                        <option *ngFor="let dist of districtsNames" [(ngValue)]="dist"
                             style="font-family: Arial; font-size: 11px;">
                             {{dist.name}}
                         </option>
                     </select>
+
+                    <select [hidden]="blockHidden"
+                        style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                        [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
+                        <option [value]="myBlock" disabled selected="selected">Choose a Block
+                        </option>
+                        <option *ngFor="let block of blocksNames" [(ngValue)]="block">
+                            {{block.name}}
+                        </option>
+                    </select>
+
+                    <select [hidden]="clusterHidden"
+                        style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                        [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
+                        <option [value]="myCluster" disabled selected="selected">Choose a CRC Name
+                        </option>
+                        <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster"
+                            style="font-family: Arial;font-size: 11px; "
+                            [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
+                            {{cluster.name}}
+                        </option>
+                    </select>
                 </div>
+            </div>
+            <div class="row">
+                <!-- <div class="col-sm-12"> -->
+                <div class="col-sm-6">
+                    <select
+                        style="margin-right: 10px; padding: 1.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                        [(ngModel)]="xaxis" name="xaxis">
+                        <option [value]="xaxis" disabled selected="selected">choose
+                            x-axis
+                        </option>
+                        <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis"
+                            style="font-family: Arial; font-size: 11px;">
+                            {{xaxis}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <select
+                        style="margin-right: 10px; padding: 1.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                        [(ngModel)]="yaxis" name="yaxis">
+                        <option [value]="yaxis" disabled selected="selected">choose
+                            y-axis
+                        </option>
+                        <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis"
+                            style="font-family: Arial; font-size: 11px;">
+                            {{yaxis}}
+                        </option>
+                    </select>
+                </div>
+                <!-- </div> -->
             </div>
             <div class="row" style="margin-top: 8px;">
                 <div class="col-sm-12">
-                    <div style="height: 450px;">
-                        <div style="width: 90%;">
+                    <div style="height: 430px;">
+                        <div style="width: 100%;">
                             <canvas id="myChart"></canvas>
                         </div>
                     </div>
@@ -128,27 +148,23 @@
             </div>
 
         </div>
-        <div class="col-sm-4">
-            <h4>Table Data</h4>
+        <div class="col-sm-5">
+            <!-- <h4>Table Data</h4> -->
             <div class="table-wrapper-scroll-y my-custom-scrollbar">
                 <table class="table table-condensed" style="border: 1px solid black;font-size: 12px;">
-                    <thead >
+                    <thead>
                         <tr>
-                            <th style="border: 1px solid black;">{{tableHead}}</th>
-                            <th style="border: 1px solid black;">Total Schools</th>
-                            <th style="border: 1px solid black;">Total Schools Visited</th>
-                            <th style="border: 1px solid black;">Total Schools not Visited</th>
-                            <th style="border: 1px solid black;">Number of Visits</th>
+                            <th style="border: 1px solid black;" *ngFor="let yaxis of yAxisFilter">{{yaxis}}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of tableData">
+                        <!-- <tr *ngFor="let row of tableData">
                             <td style="border: 1px solid black;">{{row.distName}}</td>
                             <td style="border: 1px solid black;">{{row.schCount}}</td>
                             <td style="border: 1px solid black;">{{row.visitedSchools}}</td>
                             <td style="border: 1px solid black;">{{row.notVisitedSchools}}</td>
                             <td style="border: 1px solid black;">{{row.visitesCount}}</td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
@@ -162,7 +178,7 @@
     </div>
 
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 20px 0px 0px 0px;font-family: Arial; height: 22px;">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; height: 22px;">
         <div class="col-sm-4">
             <span>Number of visits(total): {{visitCount}}</span>
         </div>

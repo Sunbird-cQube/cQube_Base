@@ -15,7 +15,7 @@ router.post('/', auth.authController, async (req, res) => {
         if (clusterId === schools.cluster_id) {
             obj = {
                 x_axis: schools.x_axis,
-                crc: schools.crc_name,
+                cluster: schools.cluster_name,
                 distName: schools.district_name,
                 blockName: schools.block_name,
                 schoolName: schools.school_name,

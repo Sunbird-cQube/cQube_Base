@@ -51,10 +51,13 @@ export class BarChartComponent implements OnInit {
 
   public mylatlngData: any = [];
 
-  label = [];
-  value = [];
   barchart: Chart;
   scatterChart: Chart;
+
+  public xAxisFilter = ["Visit-0 times (%)", "Visit-1 to 2 times (%)", "Visit-3 to 5 times (%)", "Visit-6 to 10 times (%)", "Visits more than 10 times (%)",
+    "Number of schools per CRC", "Visits per schools", "Total schools"];
+  public yAxisFilter = ["Visit-0 times (%)", "Visit-1 to 2 times (%)", "Visit-3 to 5 times (%)", "Visit-6 to 10 times (%)", "Visits more than 10 times (%)",
+    "Number of schools per CRC", "Visits per schools", "Total schools"];
 
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
@@ -343,7 +346,7 @@ export class BarChartComponent implements OnInit {
         datasets: [{
           data: chartData,
           backgroundColor: "blue",
-          pointRadius: 5
+          pointRadius: 3
         }]
       },
       options: {
@@ -368,6 +371,9 @@ export class BarChartComponent implements OnInit {
             gridLines: {
               color: "rgba(0, 0, 0, 0)",
             },
+            ticks: {
+              min: 0
+            },
             scaleLabel: {
               display: true,
               labelString: 'Number of schools',
@@ -378,6 +384,9 @@ export class BarChartComponent implements OnInit {
           yAxes: [{
             gridLines: {
               color: "rgba(0, 0, 0, 0)",
+            },
+            ticks: {
+              min: 0
             },
             scaleLabel: {
               display: true,
