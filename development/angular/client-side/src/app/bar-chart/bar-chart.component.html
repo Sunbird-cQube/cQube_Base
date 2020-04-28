@@ -1,22 +1,22 @@
 <div class="container-fluid" style="font-family: Arial;">
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-9" >
             <div *ngIf='skul'>
-                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
-                    Attendance report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span></p>
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    CRC report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
-                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
-                    Attendance report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span> <span>/ </span><span
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    CRC report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div>
             <div *ngIf="blok">
-                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
-                    Attendance report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span><span>/ </span><span
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    CRC report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -24,9 +24,9 @@
             </div>
 
             <div *ngIf="clust">
-                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1em; margin-top: 5px;">
-                    Attendance report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span><span>/ </span><span
+                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    CRC report for: <span (click)="districtWise()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -62,10 +62,10 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="line-height: 0.8em;">
         <div class="col-sm-9" style="font-family: Arial;">
             <select
-                style="margin-right: 10px; padding: 6.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                style="margin-right: 10px; padding: 4.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                 <option [value]="myDistrict" disabled selected="selected">Choose a District
                 </option>
@@ -76,7 +76,7 @@
             </select>
 
             <select [hidden]="blockHidden"
-                style="margin-right: 10px; padding: 6.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                style="margin-right: 10px; padding: 4.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
                 [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                 <option [value]="myBlock" disabled selected="selected">Choose a Block
                 </option>
@@ -86,7 +86,7 @@
             </select>
 
             <select [hidden]="clusterHidden"
-                style="margin-right: 10px; padding: 6.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                style="margin-right: 10px; padding: 4.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
                 [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
                 <option [value]="myCluster" disabled selected="selected">Choose a CRC Name
                 </option>
@@ -99,27 +99,40 @@
         </div>
 
     </div>
-    <div class="row" style="margin-top: 20px;">
-        <div class="col-sm-6">
-            <div style="height: 340px;">
-                <div style="width: 100%;">
-                    <canvas id="myChart"></canvas>
+    <div class="row" style="margin-top: 2px;">
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-12">
+                    <select
+                        style="margin-right: 10px; padding: 1.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                        [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
+                        <option [value]="myDistrict" disabled selected="selected" style="width: 300px;">Choose
+                            percentage Visits
+                        </option>
+                        <option *ngFor="let dist of visitsPercentages" [(ngValue)]="dist"
+                            style="font-family: Arial; font-size: 11px;">
+                            {{dist.name}}
+                        </option>
+                    </select>
                 </div>
             </div>
-
-            <div style="line-height: .6em; margin-top: 30px;">
-                <p> Total schools visited:</p>
-                <p> Total schools not visited:</p>
-                <p> Total visited records:</p>
-                <p> Total not visited records:</p>
+            <div class="row" style="margin-top: 8px;">
+                <div class="col-sm-12">
+                    <div style="height: 450px;">
+                        <div style="width: 90%;">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
 
             </div>
+
         </div>
-        <div class="col-sm-6">
-            <h3>Table Data</h3>
+        <div class="col-sm-4">
+            <h4>Table Data</h4>
             <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                <table class="table table-condensed" style="border: 1px solid black;">
-                    <thead>
+                <table class="table table-condensed" style="border: 1px solid black;font-size: 12px;">
+                    <thead >
                         <tr>
                             <th style="border: 1px solid black;">{{tableHead}}</th>
                             <th style="border: 1px solid black;">Total Schools</th>
@@ -138,6 +151,12 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div style="line-height: .6em; margin-top: 30px; font-size: 12px;">
+                <p> Total schools visited:</p>
+                <p> Total schools not visited:</p>
+                <p> Total visited records:</p>
+                <p> Total not visited records:</p>
             </div>
         </div>
     </div>
