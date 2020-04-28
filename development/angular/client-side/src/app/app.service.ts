@@ -71,7 +71,6 @@ export class AppServiceComponent {
         return this.http.get(`${this.baseUrl}/crcData/getClusters/${distId}/${blockId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
     crc_all_Schools(distId, blockId, clusterId) {
-        console.log(":::::::::;", clusterId);
         return this.http.get(`${this.baseUrl}/crcData/getSchools/${distId}/${blockId}/${clusterId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
