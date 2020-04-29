@@ -87,8 +87,4 @@ export class AppServiceComponent {
         return this.http.get(`${this.baseUrl}/crcData/district/${distId}/block/${blockId}/cluster/${clusterId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    distWiseData(){
-        return this.http.post(`${this.baseUrl}/districtWiseCRC/districtWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-
 }
