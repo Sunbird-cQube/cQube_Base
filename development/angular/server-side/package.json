@@ -21,6 +21,8 @@
     "group-array": "^1.0.0",
     "json2csv": "^5.0.0",
     "jsonwebtoken": "^8.5.1",
-    "log4js": "^6.1.2"
+    "log4js": "^6.1.2",
+    "moment": "^2.24.0",
+    "winston": "^3.2.1"
   }
 }

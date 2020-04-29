@@ -11,9 +11,10 @@ import { Chart } from 'chart.js';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BarChartComponent implements OnInit {
+
   public title: string = '';
   public titleName: string = '';
-  public districts: any = [];
+  public districts: any;
   public blocks: any = [];
   public cluster: any = [];
   public schools: any = [];
@@ -60,7 +61,11 @@ export class BarChartComponent implements OnInit {
     "Number of schools per CRC", "Visits per schools", "Total schools"];
 
 
-  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
+
+
+  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
+
+  }
 
   async ngOnInit() {
     this.districtWise();
@@ -102,46 +107,27 @@ export class BarChartComponent implements OnInit {
     this.schoolCount = 0;
     this.visitCount = 0;
     this.tableData = [];
-
+    console.log(this.districts);
     this.dateRange = localStorage.getItem('dateRange');
+    this.service.distWiseData().subscribe((result: any) => {
+      
+      var chartData = [];
+      var labels = [];
+      for (var i = 0; i < result.length; i++) {
+        this.xAxisFilter.forEach(xAxis => {
+          if (xAxis === "Visit-0 times (%)") {
+            labels.push(result[i].districtName);
+            chartData.push({ x: result[i].totalSchools, y: result[i].visit_0 });
+          } else {
+            labels.push(result[i].districtName);
+            chartData.push({ x: result[i].totalSchools, y: result[i].totalVisits });
+          }
+        })
 
-    this.service.crc_all_districts().subscribe(res => {
-      this.mylatlngData = res;
-      for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
-        this.districtsIds.push(this.mylatlngData['barChartData'][i]['districtId']);
-        this.districtsNames.push({ id: this.mylatlngData['barChartData'][i]['districtId'], name: this.mylatlngData['barChartData'][i]['districtName'] });
-      }
-      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
-        var obj: any = {
-          distName: this.mylatlngData['tableData'][i]['district'],
-          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
-          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
-          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
-          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
-        }
-        this.tableData.push(obj);
-      }
-
-      this.districtsNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-      this.service.crc_all_districts().subscribe((result: any) => {
-
-
-        for (var i = 0; i < result['tableData'].length; i++) {
-          this.schoolCount = this.schoolCount + result['tableData'][i]["visitedSchoolCount"];
-          this.visitCount = this.visitCount + result['tableData'][i]["visitsperDist"];
-        }
-
-        var chartData = [];
-        var labels = [];
-        for (var i = 0; i < result['tableData'].length; i++) {
-          labels.push(result['tableData'][i].district);
-          chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
-        };
-        this.createChart(labels, chartData, this.tableHead);
-        this.loaderAndErr();
-        this.changeDetection.markForCheck();
-      });
-
+      };
+      this.createChart(labels, chartData, this.tableHead);
+      this.loaderAndErr();
+      this.changeDetection.markForCheck();
     });
   }
 
