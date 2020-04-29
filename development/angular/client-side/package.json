@@ -25,7 +25,6 @@
     "@asymmetrik/ngx-leaflet": "^5.0.2",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "@types/google-maps": "^3.2.2",
-    "@types/jquery": "^3.3.36",
     "agm-direction": "^0.7.9",
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
