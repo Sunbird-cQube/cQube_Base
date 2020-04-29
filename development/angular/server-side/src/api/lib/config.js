@@ -12,16 +12,16 @@ const Config = {
     LogDirectory: process.env.LOG_DIRECTORY,
     fileLogLevel: process.env.FILE_LOG_LEVEL || DEFAULT_LOG_LEVEL,
     consoleLogLevel: process.env.CONSOLE_LOG_LEVEL || DEFAULT_LOG_LEVEL,
-    envName: (() => {
-        switch (process.env.NODE_ENV.toUpperCase()) {
-            case 'DEVELOPMENT':
-                return 'DEV';
-            case 'PRODUCTION':
-                return 'PROD';
-            default:
-                return 'DEV';
-        }
-    })()
+    // envName: (() => {
+    //     switch (process.env.NODE_ENV.toUpperCase()) {
+    //         case 'DEVELOPMENT':
+    //             return 'DEV';
+    //         case 'PRODUCTION':
+    //             return 'PROD';
+    //         default:
+    //             return 'DEV';
+    //     }
+    // })()
 };
 
 const accessKeyId = process.env.ACCESS_KEY_ID;
