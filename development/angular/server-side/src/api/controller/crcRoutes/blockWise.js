@@ -3,7 +3,7 @@ var const_data = require('../../lib/config'); // Log Variables
 const { logger } = require('../../lib/logger');
 var groupArray = require('group-array');
 
-router.post('/blockWise/:distId', async (req, res) => {
+router.post('/blockWise/:distId', async(req, res) => {
     try {
         logger.info('--- crc block per district api ---');
 
@@ -43,8 +43,8 @@ router.post('/blockWise/:distId', async (req, res) => {
             })
             let visit_0_Total = '';
             if (visit_0.length > 0) {
-                visit_0_Total = visit_0.map(function (a) { return a.visit_count; })
-                    .reduce(function (a, b) { return a + b; });
+                visit_0_Total = visit_0.map(function(a) { return a.visit_count; })
+                    .reduce(function(a, b) { return a + b; });
             }
 
             // finding visit_0 percentage
@@ -53,8 +53,8 @@ router.post('/blockWise/:distId', async (req, res) => {
             })
             let visit_1_2_Total = '';
             if (visit_1_2.length > 0) {
-                visit_1_2_Total = visit_1_2.map(function (a) { return a.visit_count; })
-                    .reduce(function (a, b) { return a + b; });
+                visit_1_2_Total = visit_1_2.map(function(a) { return a.visit_count; })
+                    .reduce(function(a, b) { return a + b; });
             }
 
             // finding visit_3_5 percentage
@@ -63,8 +63,8 @@ router.post('/blockWise/:distId', async (req, res) => {
             })
             let visit_3_5_Total = '';
             if (visit_3_5.length > 0) {
-                visit_3_5_Total = visit_3_5.map(function (a) { return a.visit_count; })
-                    .reduce(function (a, b) { return a + b; });
+                visit_3_5_Total = visit_3_5.map(function(a) { return a.visit_count; })
+                    .reduce(function(a, b) { return a + b; });
             }
 
             // finding visit_6_10 percentage
@@ -73,8 +73,8 @@ router.post('/blockWise/:distId', async (req, res) => {
             })
             let visit_6_10_Total = ''
             if (visit_6_10.length > 0) {
-                visit_6_10_Total = visit_6_10.map(function (a) { return a.visit_count; })
-                    .reduce(function (a, b) { return a + b; });
+                visit_6_10_Total = visit_6_10.map(function(a) { return a.visit_count; })
+                    .reduce(function(a, b) { return a + b; });
             }
 
             // finding visit_10_more percentage
@@ -83,8 +83,8 @@ router.post('/blockWise/:distId', async (req, res) => {
             })
             let visit_10_more_Total = ''
             if (visit_10_more.length > 0) {
-                visit_10_more_Total = visit_10_more.map(function (a) { return a.visit_count; })
-                    .reduce(function (a, b) { return a + b; });
+                visit_10_more_Total = visit_10_more.map(function(a) { return a.visit_count; })
+                    .reduce(function(a, b) { return a + b; });
             }
 
             // let totalVisits = visit_0.length + visit_1_2.length + visit_3_5.length + visit_6_10.length + visit_10_more.length
@@ -159,7 +159,7 @@ router.post('/blockWise/:distId', async (req, res) => {
 frequencyData = () => {
     return new Promise((resolve, reject) => {
         const_data['getParams']['Key'] = 'CRC/crc_frequency_scatter.json'
-        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
+        const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
             if (err) {
                 console.log(err);
                 res.send([]);
@@ -178,7 +178,7 @@ frequencyData = () => {
 crcMetaData = () => {
     return new Promise((resolve, reject) => {
         const_data['getParams']['Key'] = 'CRC/crc_metadata.json'
-        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
+        const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
             if (err) {
                 console.log(err);
                 res.send([]);

@@ -11,10 +11,9 @@ import { Chart } from 'chart.js';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BarChartComponent implements OnInit {
-
   public title: string = '';
   public titleName: string = '';
-  public districts: any;
+  public districts: any = [];
   public blocks: any = [];
   public cluster: any = [];
   public schools: any = [];
@@ -61,14 +60,10 @@ export class BarChartComponent implements OnInit {
     "Number of schools per CRC", "Visits per schools", "Total schools"];
 
 
-
-
-  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
-
-  }
+  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
 
   async ngOnInit() {
-    
+
     this.districtWise();
   }
 
@@ -94,9 +89,9 @@ export class BarChartComponent implements OnInit {
   districtWise() {
     if (this.barchart != null) {
       this.barchart.destroy();
-      
+
     }
-    this.createChart(['clg1'],[], 'dist');
+    this.createChart(['clg1'], [], 'dist');
     this.tableHead = "District Name";
     this.blockHidden = true;
     this.clusterHidden = true;
@@ -110,7 +105,7 @@ export class BarChartComponent implements OnInit {
     this.schoolCount = 0;
     this.visitCount = 0;
     this.tableData = [];
-    console.log(this.districts);
+
     this.dateRange = localStorage.getItem('dateRange');
     this.service.distWiseData().subscribe((result: any) => {
 
@@ -127,11 +122,19 @@ export class BarChartComponent implements OnInit {
           }
         })
 
+
+        var chartData = [];
+        var labels = [];
+        for (var i = 0; i < result['tableData'].length; i++) {
+          labels.push(result['tableData'][i].district);
+          chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
+        };
+        this.createChart(labels, chartData, this.tableHead);
+        this.loaderAndErr();
+        this.changeDetection.markForCheck();
       };
-      this.createChart(labels, chartData, this.tableHead);
-      this.loaderAndErr();
-      this.changeDetection.markForCheck();
     });
+
   }
 
 
