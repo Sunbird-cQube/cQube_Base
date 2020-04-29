@@ -68,6 +68,7 @@ export class BarChartComponent implements OnInit {
   }
 
   async ngOnInit() {
+    
     this.districtWise();
   }
 
@@ -93,7 +94,9 @@ export class BarChartComponent implements OnInit {
   districtWise() {
     if (this.barchart != null) {
       this.barchart.destroy();
+      
     }
+    this.createChart(['clg1'],[], 'dist');
     this.tableHead = "District Name";
     this.blockHidden = true;
     this.clusterHidden = true;
