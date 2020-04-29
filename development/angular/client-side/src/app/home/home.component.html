@@ -1,10 +1,10 @@
-<mat-toolbar color="primary" style="height: 40px;">
+<mat-toolbar color="primary" style="height: 35px;">
   <button mat-icon-button>
     <mat-icon (click)="sidenav.toggle() ">menu</mat-icon>
   </button>
   <h4>cQube - Dashboard </h4>
   <span style="flex: 1 1 auto;"></span>
-  <button mat-raised-button color="primary" (click)="logout()">Log Out</button>
+  <button mat-raised-button color="primary" style="padding: 1.5px;" (click)="logout()">Log Out</button>
 
 
 </mat-toolbar>
@@ -62,7 +62,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div style="height: 91.5vh;">
+    <div style="height: 93vh;">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>

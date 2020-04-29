@@ -362,7 +362,7 @@ export class MapViewComponent implements OnInit {
         this.markers.push(
           {
             id: sorted[i]['x_axis'],
-            cluster: sorted[i]['crc_name'],
+            cluster: sorted[i]['cluster_name'],
             dist: sorted[i]['district_name'],
             block: sorted[i]['block_name'],
             name: sorted[i]['school_name'],
@@ -390,7 +390,7 @@ export class MapViewComponent implements OnInit {
             "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-            "<br><b>Cluster (CRC): </b>" + "&nbsp;" + this.markers[i].cluster +
+            "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].cluster +
             "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
             "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
           );
@@ -412,7 +412,7 @@ export class MapViewComponent implements OnInit {
           var obj = {
             SchoolId: school.id,
             SchoolName: school.name,
-            CRC_Name: school.cluster,
+            ClusterName: school.cluster,
             BlockName: school.block,
             DistrictName: school.dist,
             Attendance: school.label + " %",
@@ -475,7 +475,7 @@ export class MapViewComponent implements OnInit {
         this.cluster.push(
           {
             id: sorted[i]['x_axis'],
-            name: (sorted[i]['crc_name']),
+            name: (sorted[i]['cluster_name']),
             distId: sorted[i]['district_id'],
             dist: sorted[i]['district_name'],
             blockId: sorted[i]['block_id'],
@@ -504,7 +504,7 @@ export class MapViewComponent implements OnInit {
             "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-            "<br><b>Cluster (CRC): </b>" + "&nbsp;" + this.markers[i].name +
+            "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].name +
             "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
             "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount);
           markerIcon.on('mouseover', function (e) {
@@ -524,7 +524,7 @@ export class MapViewComponent implements OnInit {
         this.markers.forEach(cluster => {
           var obj = {
             ClusterId: cluster.id,
-            CRC_Name: cluster.name,
+            ClusterName: cluster.name,
             BlockName: cluster.block,
             DistrictName: cluster.dist,
             Attendance: cluster.label + " %",
@@ -680,8 +680,8 @@ export class MapViewComponent implements OnInit {
           this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
           this.clusterIds.push(sorted[i]['x_axis']);
           this.blocksIds.push(sorted[i]['blockId']);
-          if (sorted[i]['crc_name'] !== null) {
-            this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['crc_name']) });
+          if (sorted[i]['cluster_name'] !== null) {
+            this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['cluster_name']) });
           } else {
             this.clusterNames.push({ id: sorted[i]['x_axis'], name: "No name found" });
           }
@@ -690,7 +690,7 @@ export class MapViewComponent implements OnInit {
             this.markers.push(
               {
                 id: sorted[i]['x_axis'],
-                name: sorted[i]['crc_name'],
+                name: sorted[i]['cluster_name'],
                 distId: sorted[i]['distId'],
                 dist: sorted[i]['distName'],
                 blockId: sorted[i]['blockId'],
@@ -714,7 +714,7 @@ export class MapViewComponent implements OnInit {
             "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-            "<br><b>Cluster (CRC): </b>" + "&nbsp;" + this.markers[i].name +
+            "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].name +
             "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
             "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
           );
@@ -736,7 +736,7 @@ export class MapViewComponent implements OnInit {
         this.markers.forEach(cluster => {
           var obj = {
             ClusterId: cluster.id,
-            CRC_Name: cluster.name,
+            ClusterName: cluster.name,
             BlockName: cluster.block,
             DistrictName: cluster.dist,
             Attendance: cluster.label + " %",
@@ -803,7 +803,7 @@ export class MapViewComponent implements OnInit {
               name: sorted[i]['schoolName'],
               block: sorted[i]['blockName'],
               dist: sorted[i]['distName'],
-              cluster: sorted[i]['crc'],
+              cluster: sorted[i]['cluster'],
               label: sorted[i]['x_value'],
               lat: sorted[i]['y_value'],
               lng: sorted[i]['z_value'],
@@ -821,7 +821,7 @@ export class MapViewComponent implements OnInit {
             "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-            "<br><b>Cluster (CRC): </b>" + "&nbsp;" + this.markers[i].cluster +
+            "<br><b>Cluster : </b>" + "&nbsp;" + this.markers[i].cluster +
             "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
             "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
           );
@@ -843,7 +843,7 @@ export class MapViewComponent implements OnInit {
           var obj = {
             SchoolId: school.id,
             SchoolName: school.name,
-            CRC_Name: school.cluster,
+            ClusterName: school.cluster,
             BlockName: school.block,
             DistrictName: school.dist,
             Attendance: school.label + " %",
@@ -1032,12 +1032,12 @@ export class MapViewComponent implements OnInit {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
         this.clusterIds.push(sorted[i]['x_axis']);
-        this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['crc_name']) });
+        this.clusterNames.push({ id: sorted[i]['x_axis'], name: (sorted[i]['cluster_name']) });
 
         this.markers.push(
           {
             id: sorted[i]['x_axis'],
-            name: sorted[i]['crc_name'],
+            name: sorted[i]['cluster_name'],
             distId: sorted[i]['distId'],
             dist: sorted[i]['distName'],
             blockId: sorted[i]['blockId'],
@@ -1059,7 +1059,7 @@ export class MapViewComponent implements OnInit {
           "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
           "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
           "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-          "<br><b>Cluster (CRC): </b>" + "&nbsp;" + this.markers[i].name +
+          "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].name +
           "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
           "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
         );
@@ -1084,7 +1084,7 @@ export class MapViewComponent implements OnInit {
       this.markers.forEach(cluster => {
         var obj = {
           ClusterId: cluster.id,
-          CRC_Name: cluster.name,
+          ClusterName: cluster.name,
           BlockName: cluster.block,
           DistrictName: cluster.dist,
           Attendance: cluster.label + " %",
@@ -1148,7 +1148,7 @@ export class MapViewComponent implements OnInit {
             name: sorted[i]['schoolName'],
             block: sorted[i]['blockName'],
             dist: sorted[i]['distName'],
-            cluster: sorted[i]['crc'],
+            cluster: sorted[i]['cluster'],
             label: sorted[i]['x_value'],
             lat: sorted[i]['y_value'],
             lng: sorted[i]['z_value'],
@@ -1165,7 +1165,7 @@ export class MapViewComponent implements OnInit {
           "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
           "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
           "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-          "<br><b>Cluster (CRC): </b>" + "&nbsp;" + this.markers[i].cluster +
+          "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].cluster +
           "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
           "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
         );
@@ -1187,7 +1187,7 @@ export class MapViewComponent implements OnInit {
         var obj = {
           SchoolId: school.id,
           SchoolName: school.name,
-          CRC_Name: school.cluster,
+          ClusterName: school.cluster,
           BlockName: school.block,
           DistrictName: school.dist,
           Attendance: school.label + " %",

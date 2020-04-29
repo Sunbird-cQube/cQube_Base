@@ -18,7 +18,7 @@ router.post('/', auth.authController, async (req, res) => {
                 blockName: clusters.block_name,
                 distId: clusters.district_id,
                 distName: clusters.district_name,
-                crc_name: clusters.crc_name,
+                cluster_name: clusters.cluster_name,
                 x_value: clusters.x_value,
                 y_value: clusters.y_value,
                 z_value: clusters.z_value,
