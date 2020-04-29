@@ -12,12 +12,9 @@ const schoolPerDist = require('./controller/schoolPerDist');
 const schoolPerBlock = require('./controller/schoolPerBlock');
 const schoolCount = require('./controller/schoolCount');
 const roleLogin = require('./controller/roleBasedLogin');
-const blockWiseCRC = require('./controller/crcRoutes/blockWise');
-const districtWiseCRC = require('./controller/crcRoutes/districtWise');
+const crcData = require('./controller/crcData');
 
-
-router.use('/blockWiseCRC', blockWiseCRC);
-router.use('/districtWiseCRC', districtWiseCRC);
+router.use('/crcData', crcData);
 router.use('/dist_wise_data', dist_wise_data);
 router.use('/block_wise_data', block_wise_data);
 router.use('/cluster_wise_data', cluster_wise_data);
