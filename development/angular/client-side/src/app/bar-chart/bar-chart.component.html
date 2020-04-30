@@ -77,9 +77,9 @@
                         [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                         <option [value]="myDistrict" disabled selected="selected">Choose a District
                         </option>
-                        <option *ngFor="let dist of districtsNames" [(ngValue)]="dist"
+                        <option *ngFor="let dist of crcDistrictsNames" [(ngValue)]="dist.districtId"
                             style="font-family: Arial; font-size: 11px;">
-                            {{dist.name}}
+                            {{dist.districtName}}
                         </option>
                     </select>
 
@@ -88,20 +88,20 @@
                         [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                         <option [value]="myBlock" disabled selected="selected">Choose a Block
                         </option>
-                        <option *ngFor="let block of blocksNames" [(ngValue)]="block">
-                            {{block.name}}
+                        <option *ngFor="let block of crcBlocksNames" [(ngValue)]="block.blockId">
+                            {{block.blockName}}
                         </option>
                     </select>
 
                     <select [hidden]="clusterHidden"
                         style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                        [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
+                        [(ngModel)]="myCluster" name="myCluster" >
                         <option [value]="myCluster" disabled selected="selected">Choose a CRC Name
                         </option>
-                        <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster"
+                        <option *ngFor="let cluster of crcClusterNames" [(ngValue)]="cluster.clusterId"
                             style="font-family: Arial;font-size: 11px; "
                             [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
-                            {{cluster.name}}
+                            {{cluster.clusterName}}
                         </option>
                     </select>
                 </div>
@@ -111,26 +111,26 @@
                 <div class="col-sm-6">
                     <select
                         style="margin-right: 10px; padding: 1.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                        [(ngModel)]="xaxis" name="xaxis">
-                        <option [value]="xaxis" disabled selected="selected">choose
+                        [(ngModel)]="xAxis" name="xAxis" (change)="districtWise()">
+                        <option [value]="xAxis" disabled selected="selected">choose
                             x-axis
                         </option>
-                        <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis"
+                        <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis.key"
                             style="font-family: Arial; font-size: 11px;">
-                            {{xaxis}}
+                            {{xaxis.value}}
                         </option>
                     </select>
                 </div>
                 <div class="col-sm-6">
                     <select
                         style="margin-right: 10px; padding: 1.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                        [(ngModel)]="yaxis" name="yaxis">
-                        <option [value]="yaxis" disabled selected="selected">choose
+                        [(ngModel)]="yAxis" name="yAxis" (change)="districtWise()">
+                        <option [value]="yAxis" disabled selected="selected">choose
                             y-axis
                         </option>
-                        <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis"
+                        <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key"
                             style="font-family: Arial; font-size: 11px;">
-                            {{yaxis}}
+                            {{yaxis.value}}
                         </option>
                     </select>
                 </div>
@@ -141,6 +141,10 @@
                     <div style="height: 430px;">
                         <div style="width: 100%;">
                             <canvas id="myChart"></canvas>
+                            <!-- <canvas baseChart [datasets]="scatterChartData" [options]="scatterChartOptions"
+                                [chartType]="scatterChartType">
+                            </canvas>
+                            <button (click)="changeData()">Change</button> -->
                         </div>
                     </div>
                 </div>
@@ -151,23 +155,59 @@
         <div class="col-sm-5">
             <!-- <h4>Table Data</h4> -->
             <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                <table class="table table-condensed" style="border: 1px solid black;font-size: 12px;">
+                <table class="table table-condensed" style="border: 1px solid black;font-size: 11px;">
                     <thead>
                         <tr>
-                            <th style="border: 1px solid black;" *ngFor="let yaxis of yAxisFilter">{{yaxis}}</th>
+                            <th style="border: 1px solid black;">District Name</th>
+                            <th style="border: 1px solid rgb(226, 215, 215);" *ngFor="let yaxis of yAxisFilter">{{yaxis.value}}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <tr *ngFor="let row of tableData">
-                            <td style="border: 1px solid black;">{{row.distName}}</td>
-                            <td style="border: 1px solid black;">{{row.schCount}}</td>
-                            <td style="border: 1px solid black;">{{row.visitedSchools}}</td>
-                            <td style="border: 1px solid black;">{{row.notVisitedSchools}}</td>
-                            <td style="border: 1px solid black;">{{row.visitesCount}}</td>
-                        </tr> -->
+                        <tr *ngFor="let row of result">
+                            <td style="border: 1px solid black;">{{row.districtName}}</td>
+                            <td style="border: 1px solid black;">{{row.visit_0}}</td>
+                            <td style="border: 1px solid black;">{{row.visit_1_2}}</td>
+                            <td style="border: 1px solid black;">{{row.visit_3_5}}</td>
+                            <td style="border: 1px solid black;">{{row.visit_6_10}}</td>
+                            <td style="border: 1px solid black;">{{row.visit_10_more}}</td>
+                            <td style="border: 1px solid black;">{{row.no_of_schools_per_crc}}</td>
+                            <td style="border: 1px solid black;">{{row.visits_per_school}}</td>
+                            <td style="border: 1px solid black;">{{row.totalSchools}}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
+            <!-- <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <div class="wrapper"> -->
+                    <!-- <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                        <ng-container matColumnDef="District_Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.District_Name}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_0_times">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_0_times}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_1to2_times">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_1to2_times}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_3to5_times">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_3to5_times}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table> -->
+
+                    <!-- Angular 8 pagination -->
+                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                <!-- </div>
+            </div> -->
             <div style="line-height: .6em; margin-top: 30px; font-size: 12px;">
                 <p> Total schools visited:</p>
                 <p> Total schools not visited:</p>

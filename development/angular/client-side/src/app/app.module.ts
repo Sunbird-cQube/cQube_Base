@@ -1,12 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-
-import { NgModule } from '@angular/core';
-import { AgmCoreModule } from '@agm/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AgmDirectionModule } from 'agm-direction';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { MapViewComponent } from './map-view/map-view.component';
@@ -21,6 +18,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TeacherAttendanceComponent } from './teacher-attendance/teacher-attendance.component';
 import { SemesterReportComponent } from './semester-report/semester-report.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule, MatSortModule } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
@@ -43,15 +42,20 @@ import { ChartsModule } from 'ng2-charts';
     ChartsModule,
     MatButtonModule,
     MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
     HttpClientModule, LeafletModule.forRoot(),
     FormsModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCbRPhVlxgVwBC0bBOgyB-Dn_K8ONrxb_g' + '&libraries=visualization'
-    }),
-    AgmDirectionModule,
     BrowserAnimationsModule
   ],
+  exports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
+  ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
