@@ -176,7 +176,7 @@ export class BarChartComponent implements OnInit {
             this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i].totalVisits) });
           } else {
             labels.push(result[i].districtName);
-            this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i][this.yAxis].split(" ")[0]) });
+            this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i][this.yAxis]) });
           }
         }
         this.createChart(labels, this.chartData, this.tableHead);
@@ -199,7 +199,7 @@ export class BarChartComponent implements OnInit {
               this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i].totalVisits) });
             } else {
               labels.push(result[i].districtName);
-              this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i][this.yAxis].split(" ")[0]) });
+              this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i][this.yAxis]) });
             }
           }
           this.createChart(labels, this.chartData, this.tableHead);
