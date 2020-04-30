@@ -197,6 +197,7 @@ export class BarChartComponent implements OnInit {
     this.schoolCount = 0;
     this.visitCount = 0;
     this.tableData = [];
+    this.chartData = [];
     this.tableHead = "Block Name";
     this.dist = true;
     this.blok = false;
@@ -217,10 +218,10 @@ export class BarChartComponent implements OnInit {
         this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
       }
       this.createChart(labels, this.chartData, this.tableHead);
+      this.changeDetection.markForCheck();
+      this.loaderAndErr();
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-    this.changeDetection.markForCheck();
-    this.loaderAndErr();
     document.getElementById('home').style.display = 'block';;
   }
 
@@ -232,6 +233,7 @@ export class BarChartComponent implements OnInit {
     this.schoolCount = 0;
     this.visitCount = 0;
     this.tableData = [];
+    this.chartData = [];
     this.tableHead = "CRC Name";
     this.dist = false;
     this.blok = true;
@@ -282,10 +284,11 @@ export class BarChartComponent implements OnInit {
         this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
       }
       this.createChart(labels, this.chartData, this.tableHead);
+      this.changeDetection.markForCheck();
+      this.loaderAndErr();
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-    this.changeDetection.markForCheck();
-    this.loaderAndErr();
+
     // })
 
     document.getElementById('home').style.display = 'block';;
