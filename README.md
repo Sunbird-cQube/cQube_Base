@@ -5,7 +5,6 @@
 - Navigate to the directory where CQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout cQube-release-0.11
 ```
 - Fill the configuration details in ` vars/main.yml` ( AWS Secret Key & Access Key )
 - Give the permission to install.sh file
