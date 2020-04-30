@@ -6,7 +6,7 @@ import { environment } from '../../src/environments/environment';
     providedIn: 'root'
 })
 export class AppServiceComponent {
-   public baseUrl: any = environment.apiEndpoint;
+    public baseUrl: any = environment.apiEndpoint;
 
     constructor(public http: HttpClient) { };
 
@@ -61,34 +61,16 @@ export class AppServiceComponent {
         return this.http.get(`${this.baseUrl}/schoolCount`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    crc_all_districts() {
-        return this.http.get(`${this.baseUrl}/crcData/getDistricts`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-    crc_all_blocks(distId) {
-        return this.http.get(`${this.baseUrl}/crcData/getBlocks/${distId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-    crc_all_clusters(distId, blockId) {
-        return this.http.get(`${this.baseUrl}/crcData/getClusters/${distId}/${blockId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-    crc_all_Schools(distId, blockId, clusterId) {
-        return this.http.get(`${this.baseUrl}/crcData/getSchools/${distId}/${blockId}/${clusterId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-
-    crcData() {
-        return this.http.get(`${this.baseUrl}/crcData`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-    crcData_block(distId) {
-        return this.http.get(`${this.baseUrl}/crcData/district/${distId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-    crcData_cluster(distId, blockId) {
-        return this.http.get(`${this.baseUrl}/crcData/district/${distId}/block/${blockId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-    crcData_school(distId, blockId, clusterId) {
-        return this.http.get(`${this.baseUrl}/crcData/district/${distId}/block/${blockId}/cluster/${clusterId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-
-    distWiseData(){
+    // crc new apis
+    crcDistWiseData() {
         return this.http.post(`${this.baseUrl}/crc/districtWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    crcBlockWiseData(distId) {
+        console.log(distId);
+        return this.http.post(`${this.baseUrl}/crc/blockWise/${distId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    crcClusterWiseData(distId, blockId) {
+        return this.http.post(`${this.baseUrl}/crc/clusterWise/${distId}/${blockId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
 }

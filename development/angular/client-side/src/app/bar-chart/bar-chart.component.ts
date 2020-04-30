@@ -81,8 +81,12 @@ export class BarChartComponent implements OnInit {
   public result: any = [];
 
   public scatterChart: Chart;
-  public xAxis: any = "";
-  public yAxis: any = "";
+  public xAxis: any = "visit_0";
+  public yAxis: any = "visit_1_2";
+
+  public crcDistrictsNames: any;
+  public crcBlocksNames: any;
+  public crcClusterNames: any;
 
   public xAxisFilter = [
     { key: 'visit_0', value: "Visit-0 times (%)" },
@@ -145,74 +149,47 @@ export class BarChartComponent implements OnInit {
     this.clust = false;
     this.skul = true;
     document.getElementById('home').style.display = 'none';
-    this.districtsNames = [];
     this.schoolCount = 0;
     this.visitCount = 0;
     this.tableData = [];
-    this.chartData = [];
 
     this.dateRange = localStorage.getItem('dateRange');
-    this.service.crc_all_districts().subscribe(res => {
-      this.mylatlngData = res;
-      for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
-        this.districtsIds.push(this.mylatlngData['barChartData'][i]['districtId']);
-        this.districtsNames.push({ id: this.mylatlngData['barChartData'][i]['districtId'], name: this.mylatlngData['barChartData'][i]['districtName'] });
+    if (this.result.length > 0) {
+      console.log('-----if------');
+      this.chartData = [];
+      var labels = [];
+      this.crcDistrictsNames = this.result;
+      for (var i = 0; i < this.result.length; i++) {
+        labels.push(this.result[i].districtName);
+        this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
       }
-
-      this.districtsNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-      if (localStorage.getItem('result') !== null) {
-        var result = JSON.parse(localStorage.getItem('result'));
-        var labels = [];
-        for (var i = 0; i < result.length; i++) {
-          if (this.xAxis === "" && this.yAxis === "") {
-            labels.push(result[i].districtName);
-            this.chartData.push({ x: Number(result[i].totalSchools), y: Number(result[i].totalVisits) });
-          } else if (this.xAxis === "") {
-            labels.push(result[i].districtName);
-            this.chartData.push({ x: Number(result[i].totalSchools), y: Number(result[i][this.yAxis].split(" ")[0]) });
-          }
-          else if (this.yAxis === "") {
-            labels.push(result[i].districtName);
-            this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i].totalVisits) });
-          } else {
-            labels.push(result[i].districtName);
-            this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i][this.yAxis]) });
-          }
-        }
-        this.createChart(labels, this.chartData, this.tableHead);
-        this.loaderAndErr();
-        this.changeDetection.markForCheck();
-      } else {
-        this.service.distWiseData().subscribe((result: any) => {
-          localStorage.setItem('result', JSON.stringify(result));
+      this.createChart(labels, this.chartData, this.tableHead);
+      this.loaderAndErr();
+      this.changeDetection.markForCheck();
+    } else {
+      console.log('-----else------');
+      this.chartData = []
+      this.service.crcDistWiseData().subscribe(res => {
+        this.result = res;
+        if (this.result.length > 0) {
           var labels = [];
-          for (var i = 0; i < result.length; i++) {
-            if (this.xAxis === "" && this.yAxis === "") {
-              labels.push(result[i].districtName);
-              this.chartData.push({ x: Number(result[i].totalSchools), y: Number(result[i].totalVisits) });
-            } else if (this.xAxis === "") {
-              labels.push(result[i].districtName);
-              this.chartData.push({ x: Number(result[i].totalSchools), y: Number(result[i][this.yAxis].split(" ")[0]) });
-            }
-            else if (this.yAxis === "") {
-              labels.push(result[i].districtName);
-              this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i].totalVisits) });
-            } else {
-              labels.push(result[i].districtName);
-              this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i][this.yAxis]) });
-            }
+          this.crcDistrictsNames = this.result;
+          for (var i = 0; i < this.result.length; i++) {
+            labels.push(this.result[i].districtName);
+            this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
           }
+
           this.createChart(labels, this.chartData, this.tableHead);
           this.loaderAndErr();
           this.changeDetection.markForCheck();
-        });
-      }
-    });
-
+        }
+      });
+    }
   }
 
 
   myDistData(data) {
+    console.log(data);
     this.scatterChart.destroy();
     this.blockHidden = false;
     this.clusterHidden = true;
@@ -228,53 +205,22 @@ export class BarChartComponent implements OnInit {
     this.distName = data;
     this.hierName = data.name;
     localStorage.setItem('dist', data.name);
-    localStorage.setItem('distId', data.id);
+    localStorage.setItem('distId', data);
 
-    this.service.crc_all_blocks(data.id).subscribe(res => {
+    this.service.crcBlockWiseData(data).subscribe((result: any) => {
+      console.log(result);
+      this.crcBlocksNames = result;
 
-      this.mylatlngData = res;
-      this.blocksNames = [];
-
-      var sorted = this.mylatlngData['barChartData'].sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-      this.colors = colors;
-      for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
-        this.blocksIds.push(this.mylatlngData['barChartData'][i]['blockId']);
-        this.blocksNames.push({ id: this.mylatlngData['barChartData'][i]['blockId'], name: this.mylatlngData['barChartData'][i]['blockName'], distId: data.id });
+      var labels = [];
+      for (var i = 0; i < this.crcBlocksNames.length; i++) {
+        labels.push(this.crcBlocksNames[i].blockName);
+        this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
       }
-      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
-        var obj: any = {
-          distName: this.mylatlngData['tableData'][i]['district'],
-          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
-          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
-          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
-          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
-        }
-        this.tableData.push(obj);
-      }
-      this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-      this.changeDetection.markForCheck();
-
-      this.service.crc_all_blocks(data.id).subscribe((result: any) => {
-
-        for (var i = 0; i < result.length; i++) {
-          this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
-          this.visitCount = this.visitCount + result[i]["visits"];
-        }
-
-        var chartData = [];
-        var labels = [];
-        for (var i = 0; i < result['tableData'].length; i++) {
-          labels.push(result['tableData'][i].district);
-          chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
-        };
-        var obj: any = {};
-        this.createChart(labels, chartData, this.tableHead);
-      });
-      this.loaderAndErr();
-
-    })
-
+      this.createChart(labels, this.chartData, this.tableHead);
+    });
+    this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+    this.changeDetection.markForCheck();
+    this.loaderAndErr();
     document.getElementById('home').style.display = 'block';;
   }
 
@@ -297,115 +243,111 @@ export class BarChartComponent implements OnInit {
     this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
     this.blockName = data;
     this.hierName = data.name;
-    this.service.crc_all_clusters(data.distId, data.id).subscribe(res => {
+    // this.service.crcClusterWiseData(data.distId, data.id).subscribe(res => {
 
 
-      this.mylatlngData = res;
-      this.clusterNames = [];
-      var sorted = this.mylatlngData['barChartData'].sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-      this.colors = colors;
-      for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
-        this.clusterIds.push(this.mylatlngData['barChartData'][i]['clusterId']);
-        this.blocksIds.push(this.mylatlngData['barChartData'][i]['blockId']);
-        if (this.mylatlngData['barChartData'][i]['clusterName'] !== null) {
-          this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: this.mylatlngData['barChartData'][i]['clusterName'], blockid: data.id, distId: data.distId });
-        } else {
-          this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: "NO NAME FOUND", blockid: data.id, distId: data.distId });
-        }
+    //   this.mylatlngData = res;
+    //   this.clusterNames = [];
+    //   var sorted = this.mylatlngData['barChartData'].sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+    //   let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+    //   this.colors = colors;
+    //   for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
+    //     this.clusterIds.push(this.mylatlngData['barChartData'][i]['clusterId']);
+    //     this.blocksIds.push(this.mylatlngData['barChartData'][i]['blockId']);
+    //     if (this.mylatlngData['barChartData'][i]['clusterName'] !== null) {
+    //       this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: this.mylatlngData['barChartData'][i]['clusterName'], blockid: data.id, distId: data.distId });
+    //     } else {
+    //       this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: "NO NAME FOUND", blockid: data.id, distId: data.distId });
+    //     }
+    //   }
+
+    // for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
+    //   var obj: any = {
+    //     distName: this.mylatlngData['tableData'][i]['district'],
+    //     schCount: this.mylatlngData['tableData'][i]['totalSchools'],
+    //     visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
+    //     notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
+    //     visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
+    //   }
+    //   this.tableData.push(obj);
+    // }
+
+    this.service.crcClusterWiseData(JSON.parse(localStorage.getItem('distId')), data).subscribe((result: any) => {
+      console.log(result);
+      this.crcClusterNames = result;
+
+      var labels = [];
+      for (var i = 0; i < this.crcClusterNames.length; i++) {
+        labels.push(this.crcClusterNames[i].clusterName);
+        this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
       }
-
-      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
-        var obj: any = {
-          distName: this.mylatlngData['tableData'][i]['district'],
-          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
-          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
-          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
-          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
-        }
-        this.tableData.push(obj);
-      }
-
-      this.service.crc_all_clusters(data.distId, data.id).subscribe((result: any) => {
-        for (var i = 0; i < result.length; i++) {
-          this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
-          this.visitCount = this.visitCount + result[i]["visits"];
-        }
-
-        var chartData = [];
-        var labels = [];
-        for (var i = 0; i < result['tableData'].length; i++) {
-          labels.push(result['tableData'][i].district);
-          chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
-        };
-        var obj: any = {};
-        this.createChart(labels, chartData, this.tableHead);
-      })
-      this.clusterNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-      this.loaderAndErr();
-      this.changeDetection.markForCheck();
-    })
+      this.createChart(labels, this.chartData, this.tableHead);
+    });
+    this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+    this.changeDetection.markForCheck();
+    this.loaderAndErr();
+    // })
 
     document.getElementById('home').style.display = 'block';;
   }
 
-  myClusterData(data) {
-    this.scatterChart.destroy();
-    this.tableHead = "School Name";
-    this.errMsg();
-    this.schoolCount = 0;
-    this.visitCount = 0;
-    this.dist = false;
-    this.blok = false;
-    this.clust = true;
-    this.skul = false;
-    this.tableData = [];
-    this.title = localStorage.getItem('block');
-    this.titleName = localStorage.getItem('dist');
-    var distId = JSON.parse(localStorage.getItem('distId'));
-    var blockId = JSON.parse(localStorage.getItem('blockId'))
-    this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
-    this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
-    this.clustName = data;
-    this.hierName = data.name;
-    this.service.crc_all_Schools(distId, blockId, data.id).subscribe(res => {
+  // myClusterData(data) {
+  //   this.scatterChart.destroy();
+  //   this.tableHead = "School Name";
+  //   this.errMsg();
+  //   this.schoolCount = 0;
+  //   this.visitCount = 0;
+  //   this.dist = false;
+  //   this.blok = false;
+  //   this.clust = true;
+  //   this.skul = false;
+  //   this.tableData = [];
+  //   this.title = localStorage.getItem('block');
+  //   this.titleName = localStorage.getItem('dist');
+  //   var distId = JSON.parse(localStorage.getItem('distId'));
+  //   var blockId = JSON.parse(localStorage.getItem('blockId'))
+  //   this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
+  //   this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
+  //   this.clustName = data;
+  //   this.hierName = data.name;
+  //   this.service.crc_all_Schools(distId, blockId, data.id).subscribe(res => {
 
-      this.mylatlngData = res;
-      this.clusterIds = [];
+  //     this.mylatlngData = res;
+  //     this.clusterIds = [];
 
-      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
-        var obj: any = {
-          distName: this.mylatlngData['tableData'][i]['district'],
-          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
-          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
-          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
-          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
-        }
-        this.tableData.push(obj);
-      }
+  //     for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
+  //       var obj: any = {
+  //         distName: this.mylatlngData['tableData'][i]['district'],
+  //         schCount: this.mylatlngData['tableData'][i]['totalSchools'],
+  //         visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
+  //         notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
+  //         visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
+  //       }
+  //       this.tableData.push(obj);
+  //     }
 
-      this.service.crc_all_Schools(data.distId, data.blockid, data.id).subscribe((result: any) => {
+  //     this.service.crc_all_Schools(data.distId, data.blockid, data.id).subscribe((result: any) => {
 
-        for (var i = 0; i < result.length; i++) {
-          this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
-          this.visitCount = this.visitCount + result[i]["visits"];
-        }
+  //       for (var i = 0; i < result.length; i++) {
+  //         this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
+  //         this.visitCount = this.visitCount + result[i]["visits"];
+  //       }
 
-        var chartData = [];
-        var labels = [];
-        for (var i = 0; i < result['tableData'].length; i++) {
-          labels.push(result['tableData'][i].district);
-          chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
-        };
-        var obj: any = {};
-        this.createChart(labels, chartData, this.tableHead);
-      })
-      this.loaderAndErr();
-      this.changeDetection.markForCheck();
-    })
+  //       var chartData = [];
+  //       var labels = [];
+  //       for (var i = 0; i < result['tableData'].length; i++) {
+  //         labels.push(result['tableData'][i].district);
+  //         chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
+  //       };
+  //       var obj: any = {};
+  //       this.createChart(labels, chartData, this.tableHead);
+  //     })
+  //     this.loaderAndErr();
+  //     this.changeDetection.markForCheck();
+  //   })
 
-    document.getElementById('home').style.display = 'block';
-  }
+  //   document.getElementById('home').style.display = 'block';
+  // }
 
   createChart(labels, chartData, name) {
 

@@ -77,9 +77,9 @@
                         [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                         <option [value]="myDistrict" disabled selected="selected">Choose a District
                         </option>
-                        <option *ngFor="let dist of districtsNames" [(ngValue)]="dist"
+                        <option *ngFor="let dist of crcDistrictsNames" [(ngValue)]="dist.districtId"
                             style="font-family: Arial; font-size: 11px;">
-                            {{dist.name}}
+                            {{dist.districtName}}
                         </option>
                     </select>
 
@@ -88,20 +88,20 @@
                         [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                         <option [value]="myBlock" disabled selected="selected">Choose a Block
                         </option>
-                        <option *ngFor="let block of blocksNames" [(ngValue)]="block">
-                            {{block.name}}
+                        <option *ngFor="let block of crcBlocksNames" [(ngValue)]="block.blockId">
+                            {{block.blockName}}
                         </option>
                     </select>
 
                     <select [hidden]="clusterHidden"
                         style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                        [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
+                        [(ngModel)]="myCluster" name="myCluster" >
                         <option [value]="myCluster" disabled selected="selected">Choose a CRC Name
                         </option>
-                        <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster"
+                        <option *ngFor="let cluster of crcClusterNames" [(ngValue)]="cluster.clusterId"
                             style="font-family: Arial;font-size: 11px; "
                             [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
-                            {{cluster.name}}
+                            {{cluster.clusterName}}
                         </option>
                     </select>
                 </div>
@@ -154,12 +154,12 @@
         </div>
         <div class="col-sm-5">
             <!-- <h4>Table Data</h4> -->
-            <!-- <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
                 <table class="table table-condensed" style="border: 1px solid black;font-size: 11px;">
                     <thead>
                         <tr>
                             <th style="border: 1px solid black;">District Name</th>
-                            <th style="border: 1px solid black;" *ngFor="let yaxis of yAxisFilter">{{yaxis.value}}</th>
+                            <th style="border: 1px solid rgb(226, 215, 215);" *ngFor="let yaxis of yAxisFilter">{{yaxis.value}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -176,10 +176,10 @@
                         </tr>
                     </tbody>
                 </table>
-            </div> -->
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                <div class="wrapper">
-                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+            </div>
+            <!-- <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <div class="wrapper"> -->
+                    <!-- <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
                         <ng-container matColumnDef="District_Name">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
                             <td mat-cell *matCellDef="let element"> {{element.District_Name}} </td>
@@ -202,12 +202,12 @@
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
+                    </table> -->
 
                     <!-- Angular 8 pagination -->
                     <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
-                </div>
-            </div>
+                <!-- </div>
+            </div> -->
             <div style="line-height: .6em; margin-top: 30px; font-size: 12px;">
                 <p> Total schools visited:</p>
                 <p> Total schools not visited:</p>
