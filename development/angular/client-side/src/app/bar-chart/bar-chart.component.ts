@@ -470,50 +470,6 @@ export class BarChartComponent implements OnInit {
     });
   }
 
-  public scatterChartOptions: ChartOptions = {
-    responsive: true,
-  };
-
-  public scatterChartData: ChartDataSets[] = [
-    {
-      data: [
-        { x: 2, y: 3 },
-
-      ],
-      label: 'Series A',
-      // pointRadius: 10,
-    },
-    {
-      data: [
-        { x: 4, y: 3 },
-
-      ],
-      label: 'Series B',
-      // pointRadius: 10,
-    }
-  ];
-  public scatterChartType: ChartType = 'scatter';
-
-  changeData() {
-    this.scatterChartData = [
-      {
-        data: [
-          { x: 4, y: 1 },
-
-        ],
-        label: 'Series A',
-        // pointRadius: 10,
-      },
-      {
-        data: [
-          { x: 5, y: 3 },
-
-        ],
-        label: 'Series B',
-        // pointRadius: 10,
-      }
-    ]
-  }
   color() {
     // Converts a #ffffff hex string into an [r,g,b] array
     function hex2rgb(hex) {

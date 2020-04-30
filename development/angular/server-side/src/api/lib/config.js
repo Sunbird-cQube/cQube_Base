@@ -21,7 +21,7 @@ const Config = {
     //         default:
     //             return 'DEV';
     //     }
-    // })()
+    // })(),
 };
 
 const accessKeyId = process.env.ACCESS_KEY_ID;
