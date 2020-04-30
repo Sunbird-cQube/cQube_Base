@@ -1,8 +1,30 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
-import { Chart } from 'chart.js';
+import { Chart, ChartOptions, ChartDataSets, ChartType } from 'chart.js';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+
+export interface PeriodicElement {
+  District_Name: string;
+  visit_0_times: number;
+  visit_1to2_times: number;
+  visit_3to5_times: number;
+
+}
+const ELEMENT_DATA: PeriodicElement[] =
+  [
+    { District_Name: 'AHMEDABAD', visit_0_times: 11.0, visit_1to2_times: 51.8, visit_3to5_times: 16.4 },
+    { District_Name: 'AMRELI', visit_0_times: 27.0, visit_1to2_times: 67.8, visit_3to5_times: 15.8 },
+    { District_Name: 'ANAND', visit_0_times: 12.0, visit_1to2_times: 57.9, visit_3to5_times: 26.4 },
+    { District_Name: 'ARAVALLI', visit_0_times: 33.0, visit_1to2_times: 39.0, visit_3to5_times: 21.5 },
+    { District_Name: 'BANASKANTHA', visit_0_times: 45.0, visit_1to2_times: 46.8, visit_3to5_times: 9.3 },
+    { District_Name: 'BHARUCH', visit_0_times: 23.0, visit_1to2_times: 43.6, visit_3to5_times: 15.7 },
+    { District_Name: 'BHAVNAGAR', visit_0_times: 12.0, visit_1to2_times: 52.2, visit_3to5_times: 30.2 },
+    { District_Name: 'BOTAD', visit_0_times: 15.0, visit_1to2_times: 42.6, visit_3to5_times: 25.2 },
+    { District_Name: 'DOHAD', visit_0_times: 34.0, visit_1to2_times: 46.5, visit_3to5_times: 28.9 },
+    { District_Name: 'KACHCHH', visit_0_times: 50.0, visit_1to2_times: 49.7, visit_3to5_times: 13.4 },
+  ];
 
 @Component({
   selector: 'app-bar-chart',
@@ -11,9 +33,15 @@ import { Chart } from 'chart.js';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BarChartComponent implements OnInit {
+  displayedColumns: string[] = ['District_Name', 'visit_0_times', 'visit_1to2_times', 'visit_3to5_times'];
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
   public title: string = '';
   public titleName: string = '';
-  public districts: any = [];
+  public districts: any;
   public blocks: any = [];
   public cluster: any = [];
   public schools: any = [];
@@ -50,26 +78,45 @@ export class BarChartComponent implements OnInit {
   public labelOptions: any = {};
 
   public mylatlngData: any = [];
+  public result: any = [];
 
-  barchart: Chart;
-  scatterChart: Chart;
+  public scatterChart: Chart;
+  public xAxis: any = "";
+  public yAxis: any = "";
 
-  public xAxisFilter = ["Visit-0 times (%)", "Visit-1 to 2 times (%)", "Visit-3 to 5 times (%)", "Visit-6 to 10 times (%)", "Visits more than 10 times (%)",
-    "Number of schools per CRC", "Visits per schools", "Total schools"];
-  public yAxisFilter = ["Visit-0 times (%)", "Visit-1 to 2 times (%)", "Visit-3 to 5 times (%)", "Visit-6 to 10 times (%)", "Visits more than 10 times (%)",
-    "Number of schools per CRC", "Visits per schools", "Total schools"];
+  public xAxisFilter = [
+    { key: 'visit_0', value: "Visit-0 times (%)" },
+    { key: 'visit_1_2', value: "Visit-1 to 2 times (%)" },
+    { key: 'visit_3_5', value: "Visit-3 to 5 times (%)" },
+    { key: 'visit_6_10', value: "Visit-6 to 10 times (%)" },
+    { key: 'visit_10_more', value: "Visits more than 10 times (%)" },
+    { key: "no_of_schools_per_crc", value: "Number of schools per CRC" },
+    { key: "visits_per_school", value: "Visits per schools" },
+    { key: "totalSchools", value: "Total schools" }
+  ]
+
+  public yAxisFilter = [
+    { key: 'visit_0', value: "Visit-0 times (%)" },
+    { key: 'visit_1_2', value: "Visit-1 to 2 times (%)" },
+    { key: 'visit_3_5', value: "Visit-3 to 5 times (%)" },
+    { key: 'visit_6_10', value: "Visit-6 to 10 times (%)" },
+    { key: 'visit_10_more', value: "Visits more than 10 times (%)" },
+    { key: "no_of_schools_per_crc", value: "Number of schools per CRC" },
+    { key: "visits_per_school", value: "Visits per schools" },
+    { key: "totalSchools", value: "Total schools" }
+  ]
 
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
 
   async ngOnInit() {
-
+    this.createChart(["clg"], [], '');
     this.districtWise();
   }
 
 
   loaderAndErr() {
-    if (this.barchart !== null) {
+    if (this.scatterChart !== null) {
       document.getElementById('spinner').style.display = 'none';
     } else {
       document.getElementById('spinner').style.display = 'none';
@@ -86,12 +133,9 @@ export class BarChartComponent implements OnInit {
   }
   public tableHead: any;
   public tableData: any = [];
+  public chartData: any = [];
   districtWise() {
-    if (this.barchart != null) {
-      this.barchart.destroy();
-
-    }
-    this.createChart(['clg1'], [], 'dist');
+    this.scatterChart.destroy();
     this.tableHead = "District Name";
     this.blockHidden = true;
     this.clusterHidden = true;
@@ -105,23 +149,118 @@ export class BarChartComponent implements OnInit {
     this.schoolCount = 0;
     this.visitCount = 0;
     this.tableData = [];
+    this.chartData = [];
 
     this.dateRange = localStorage.getItem('dateRange');
-    this.service.distWiseData().subscribe((result: any) => {
+    this.service.crc_all_districts().subscribe(res => {
+      this.mylatlngData = res;
+      for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
+        this.districtsIds.push(this.mylatlngData['barChartData'][i]['districtId']);
+        this.districtsNames.push({ id: this.mylatlngData['barChartData'][i]['districtId'], name: this.mylatlngData['barChartData'][i]['districtName'] });
+      }
 
-      var chartData = [];
-      var labels = [];
-      for (var i = 0; i < result.length; i++) {
-        this.xAxisFilter.forEach(xAxis => {
-          if (xAxis === "Visit-0 times (%)") {
+      this.districtsNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+      if (localStorage.getItem('result') !== null) {
+        var result = JSON.parse(localStorage.getItem('result'));
+        var labels = [];
+        for (var i = 0; i < result.length; i++) {
+          if (this.xAxis === "" && this.yAxis === "") {
             labels.push(result[i].districtName);
-            chartData.push({ x: result[i].totalSchools, y: result[i].visit_0 });
+            this.chartData.push({ x: Number(result[i].totalSchools), y: Number(result[i].totalVisits) });
+          } else if (this.xAxis === "") {
+            labels.push(result[i].districtName);
+            this.chartData.push({ x: Number(result[i].totalSchools), y: Number(result[i][this.yAxis].split(" ")[0]) });
+          }
+          else if (this.yAxis === "") {
+            labels.push(result[i].districtName);
+            this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i].totalVisits) });
           } else {
             labels.push(result[i].districtName);
-            chartData.push({ x: result[i].totalSchools, y: result[i].totalVisits });
+            this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i][this.yAxis].split(" ")[0]) });
           }
-        })
+        }
+        this.createChart(labels, this.chartData, this.tableHead);
+        this.loaderAndErr();
+        this.changeDetection.markForCheck();
+      } else {
+        this.service.distWiseData().subscribe((result: any) => {
+          localStorage.setItem('result', JSON.stringify(result));
+          var labels = [];
+          for (var i = 0; i < result.length; i++) {
+            if (this.xAxis === "" && this.yAxis === "") {
+              labels.push(result[i].districtName);
+              this.chartData.push({ x: Number(result[i].totalSchools), y: Number(result[i].totalVisits) });
+            } else if (this.xAxis === "") {
+              labels.push(result[i].districtName);
+              this.chartData.push({ x: Number(result[i].totalSchools), y: Number(result[i][this.yAxis].split(" ")[0]) });
+            }
+            else if (this.yAxis === "") {
+              labels.push(result[i].districtName);
+              this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i].totalVisits) });
+            } else {
+              labels.push(result[i].districtName);
+              this.chartData.push({ x: Number(result[i][this.xAxis].split(" ")[0]), y: Number(result[i][this.yAxis].split(" ")[0]) });
+            }
+          }
+          this.createChart(labels, this.chartData, this.tableHead);
+          this.loaderAndErr();
+          this.changeDetection.markForCheck();
+        });
+      }
+    });
 
+  }
+
+
+  myDistData(data) {
+    this.scatterChart.destroy();
+    this.blockHidden = false;
+    this.clusterHidden = true;
+    this.errMsg();
+    this.schoolCount = 0;
+    this.visitCount = 0;
+    this.tableData = [];
+    this.tableHead = "Block Name";
+    this.dist = true;
+    this.blok = false;
+    this.clust = false;
+    this.skul = false;
+    this.distName = data;
+    this.hierName = data.name;
+    localStorage.setItem('dist', data.name);
+    localStorage.setItem('distId', data.id);
+
+    this.service.crc_all_blocks(data.id).subscribe(res => {
+
+      this.mylatlngData = res;
+      this.blocksNames = [];
+
+      var sorted = this.mylatlngData['barChartData'].sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+      this.colors = colors;
+      for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
+        this.blocksIds.push(this.mylatlngData['barChartData'][i]['blockId']);
+        this.blocksNames.push({ id: this.mylatlngData['barChartData'][i]['blockId'], name: this.mylatlngData['barChartData'][i]['blockName'], distId: data.id });
+      }
+      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
+        var obj: any = {
+          distName: this.mylatlngData['tableData'][i]['district'],
+          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
+          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
+          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
+          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
+        }
+        this.tableData.push(obj);
+      }
+      this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+      this.changeDetection.markForCheck();
+
+      this.service.crc_all_blocks(data.id).subscribe((result: any) => {
+
+        for (var i = 0; i < result.length; i++) {
+          this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
+          this.visitCount = this.visitCount + result[i]["visits"];
+        }
 
         var chartData = [];
         var labels = [];
@@ -129,216 +268,155 @@ export class BarChartComponent implements OnInit {
           labels.push(result['tableData'][i].district);
           chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
         };
+        var obj: any = {};
         this.createChart(labels, chartData, this.tableHead);
-        this.loaderAndErr();
-        this.changeDetection.markForCheck();
-      };
-    });
+      });
+      this.loaderAndErr();
 
+    })
+
+    document.getElementById('home').style.display = 'block';;
   }
 
-
-  // myDistData(data) {
-  //   this.scatterChart.destroy();
-  //   this.blockHidden = false;
-  //   this.clusterHidden = true;
-  //   this.errMsg();
-  //   this.schoolCount = 0;
-  //   this.visitCount = 0;
-  //   this.tableData = [];
-  //   this.tableHead = "Block Name";
-  //   this.dist = true;
-  //   this.blok = false;
-  //   this.clust = false;
-  //   this.skul = false;
-  //   this.distName = data;
-  //   this.hierName = data.name;
-  //   localStorage.setItem('dist', data.name);
-  //   localStorage.setItem('distId', data.id);
-
-  //   this.service.crc_all_blocks(data.id).subscribe(res => {
-
-  //     this.mylatlngData = res;
-  //     this.blocksNames = [];
-
-  //     var sorted = this.mylatlngData['barChartData'].sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-  //     let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-  //     this.colors = colors;
-  //     for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
-  //       this.blocksIds.push(this.mylatlngData['barChartData'][i]['blockId']);
-  //       this.blocksNames.push({ id: this.mylatlngData['barChartData'][i]['blockId'], name: this.mylatlngData['barChartData'][i]['blockName'], distId: data.id });
-  //     }
-  //     for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
-  //       var obj: any = {
-  //         distName: this.mylatlngData['tableData'][i]['district'],
-  //         schCount: this.mylatlngData['tableData'][i]['totalSchools'],
-  //         visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
-  //         notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
-  //         visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
-  //       }
-  //       this.tableData.push(obj);
-  //     }
-  //     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-  //     this.changeDetection.markForCheck();
-
-  //     this.service.crc_all_blocks(data.id).subscribe((result: any) => {
-
-  //       for (var i = 0; i < result.length; i++) {
-  //         this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
-  //         this.visitCount = this.visitCount + result[i]["visits"];
-  //       }
-
-  //       var chartData = [];
-  //       var labels = [];
-  //       for (var i = 0; i < result['tableData'].length; i++) {
-  //         labels.push(result['tableData'][i].district);
-  //         chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
-  //       };
-  //       this.createChart(labels, chartData, this.tableHead);
-  //     });
-  //     this.loaderAndErr();
-
-  //   })
-
-  //   document.getElementById('home').style.display = 'block';;
-  // }
-
-  // myBlockData(data) {
-  //   this.scatterChart.destroy();
-  //   this.clusterHidden = false;
-  //   this.blockHidden = false;
-  //   this.errMsg();
-  //   this.schoolCount = 0;
-  //   this.visitCount = 0;
-  //   this.tableData = [];
-  //   this.tableHead = "CRC Name";
-  //   this.dist = false;
-  //   this.blok = true;
-  //   this.clust = false;
-  //   this.skul = false;
-  //   localStorage.setItem('block', data.name);
-  //   localStorage.setItem('blockId', data.id);
-  //   this.titleName = localStorage.getItem('dist');
-  //   this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
-  //   this.blockName = data;
-  //   this.hierName = data.name;
-  //   this.service.crc_all_clusters(data.distId, data.id).subscribe(res => {
+  myBlockData(data) {
+    this.scatterChart.destroy();
+    this.clusterHidden = false;
+    this.blockHidden = false;
+    this.errMsg();
+    this.schoolCount = 0;
+    this.visitCount = 0;
+    this.tableData = [];
+    this.tableHead = "CRC Name";
+    this.dist = false;
+    this.blok = true;
+    this.clust = false;
+    this.skul = false;
+    localStorage.setItem('block', data.name);
+    localStorage.setItem('blockId', data.id);
+    this.titleName = localStorage.getItem('dist');
+    this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
+    this.blockName = data;
+    this.hierName = data.name;
+    this.service.crc_all_clusters(data.distId, data.id).subscribe(res => {
 
 
-  //     this.mylatlngData = res;
-  //     this.clusterNames = [];
-  //     var sorted = this.mylatlngData['barChartData'].sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-  //     let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-  //     this.colors = colors;
-  //     for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
-  //       this.clusterIds.push(this.mylatlngData['barChartData'][i]['clusterId']);
-  //       this.blocksIds.push(this.mylatlngData['barChartData'][i]['blockId']);
-  //       if (this.mylatlngData['barChartData'][i]['clusterName'] !== null) {
-  //         this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: this.mylatlngData['barChartData'][i]['clusterName'], blockid: data.id, distId: data.distId });
-  //       } else {
-  //         this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: "NO NAME FOUND", blockid: data.id, distId: data.distId });
-  //       }
-  //     }
+      this.mylatlngData = res;
+      this.clusterNames = [];
+      var sorted = this.mylatlngData['barChartData'].sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+      this.colors = colors;
+      for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
+        this.clusterIds.push(this.mylatlngData['barChartData'][i]['clusterId']);
+        this.blocksIds.push(this.mylatlngData['barChartData'][i]['blockId']);
+        if (this.mylatlngData['barChartData'][i]['clusterName'] !== null) {
+          this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: this.mylatlngData['barChartData'][i]['clusterName'], blockid: data.id, distId: data.distId });
+        } else {
+          this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: "NO NAME FOUND", blockid: data.id, distId: data.distId });
+        }
+      }
 
-  //     for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
-  //       var obj: any = {
-  //         distName: this.mylatlngData['tableData'][i]['district'],
-  //         schCount: this.mylatlngData['tableData'][i]['totalSchools'],
-  //         visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
-  //         notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
-  //         visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
-  //       }
-  //       this.tableData.push(obj);
-  //     }
+      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
+        var obj: any = {
+          distName: this.mylatlngData['tableData'][i]['district'],
+          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
+          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
+          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
+          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
+        }
+        this.tableData.push(obj);
+      }
 
-  //     this.service.crc_all_clusters(data.distId, data.id).subscribe((result: any) => {
-  //       for (var i = 0; i < result.length; i++) {
-  //         this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
-  //         this.visitCount = this.visitCount + result[i]["visits"];
-  //       }
+      this.service.crc_all_clusters(data.distId, data.id).subscribe((result: any) => {
+        for (var i = 0; i < result.length; i++) {
+          this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
+          this.visitCount = this.visitCount + result[i]["visits"];
+        }
 
-  //       var chartData = [];
-  //       var labels = [];
-  //       for (var i = 0; i < result['tableData'].length; i++) {
-  //         labels.push(result['tableData'][i].district);
-  //         chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
-  //       };
-  //       this.createChart(labels, chartData, this.tableHead);
-  //     })
-  //     this.clusterNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-  //     this.loaderAndErr();
-  //     this.changeDetection.markForCheck();
-  //   })
+        var chartData = [];
+        var labels = [];
+        for (var i = 0; i < result['tableData'].length; i++) {
+          labels.push(result['tableData'][i].district);
+          chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
+        };
+        var obj: any = {};
+        this.createChart(labels, chartData, this.tableHead);
+      })
+      this.clusterNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+      this.loaderAndErr();
+      this.changeDetection.markForCheck();
+    })
 
-  //   document.getElementById('home').style.display = 'block';;
-  // }
+    document.getElementById('home').style.display = 'block';;
+  }
 
-  // myClusterData(data) {
-  //   this.scatterChart.destroy();
-  //   this.tableHead = "School Name";
-  //   this.errMsg();
-  //   this.schoolCount = 0;
-  //   this.visitCount = 0;
-  //   this.dist = false;
-  //   this.blok = false;
-  //   this.clust = true;
-  //   this.skul = false;
-  //   this.tableData = [];
-  //   this.title = localStorage.getItem('block');
-  //   this.titleName = localStorage.getItem('dist');
-  //   var distId = JSON.parse(localStorage.getItem('distId'));
-  //   var blockId = JSON.parse(localStorage.getItem('blockId'))
-  //   this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
-  //   this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
-  //   this.clustName = data;
-  //   this.hierName = data.name;
-  //   this.service.crc_all_Schools(distId, blockId, data.id).subscribe(res => {
+  myClusterData(data) {
+    this.scatterChart.destroy();
+    this.tableHead = "School Name";
+    this.errMsg();
+    this.schoolCount = 0;
+    this.visitCount = 0;
+    this.dist = false;
+    this.blok = false;
+    this.clust = true;
+    this.skul = false;
+    this.tableData = [];
+    this.title = localStorage.getItem('block');
+    this.titleName = localStorage.getItem('dist');
+    var distId = JSON.parse(localStorage.getItem('distId'));
+    var blockId = JSON.parse(localStorage.getItem('blockId'))
+    this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
+    this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
+    this.clustName = data;
+    this.hierName = data.name;
+    this.service.crc_all_Schools(distId, blockId, data.id).subscribe(res => {
 
-  //     this.mylatlngData = res;
-  //     this.clusterIds = [];
+      this.mylatlngData = res;
+      this.clusterIds = [];
 
-  //     for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
-  //       var obj: any = {
-  //         distName: this.mylatlngData['tableData'][i]['district'],
-  //         schCount: this.mylatlngData['tableData'][i]['totalSchools'],
-  //         visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
-  //         notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
-  //         visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
-  //       }
-  //       this.tableData.push(obj);
-  //     }
+      for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
+        var obj: any = {
+          distName: this.mylatlngData['tableData'][i]['district'],
+          schCount: this.mylatlngData['tableData'][i]['totalSchools'],
+          visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
+          notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
+          visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
+        }
+        this.tableData.push(obj);
+      }
 
-  //     this.service.crc_all_Schools(data.distId, data.blockid, data.id).subscribe((result: any) => {
+      this.service.crc_all_Schools(data.distId, data.blockid, data.id).subscribe((result: any) => {
 
-  //       for (var i = 0; i < result.length; i++) {
-  //         this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
-  //         this.visitCount = this.visitCount + result[i]["visits"];
-  //       }
+        for (var i = 0; i < result.length; i++) {
+          this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
+          this.visitCount = this.visitCount + result[i]["visits"];
+        }
 
-  //       var chartData = [];
-  //       var labels = [];
-  //       for (var i = 0; i < result['tableData'].length; i++) {
-  //         labels.push(result['tableData'][i].district);
-  //         chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
-  //       };
-  //       this.createChart(labels, chartData, this.tableHead);
-  //     })
-  //     this.loaderAndErr();
-  //     this.changeDetection.markForCheck();
-  //   })
+        var chartData = [];
+        var labels = [];
+        for (var i = 0; i < result['tableData'].length; i++) {
+          labels.push(result['tableData'][i].district);
+          chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
+        };
+        var obj: any = {};
+        this.createChart(labels, chartData, this.tableHead);
+      })
+      this.loaderAndErr();
+      this.changeDetection.markForCheck();
+    })
 
-  //   document.getElementById('home').style.display = 'block';
-  // }
+    document.getElementById('home').style.display = 'block';
+  }
 
   createChart(labels, chartData, name) {
+
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
       data: {
         labels: labels,
         datasets: [{
           data: chartData,
-          backgroundColor: "blue",
-          pointRadius: 3
+          backgroundColor: "#24a0ed",
+          pointRadius: 6
         }]
       },
       options: {
@@ -351,8 +429,8 @@ export class BarChartComponent implements OnInit {
             label: function (tooltipItem, data) {
               var label = data.labels[tooltipItem.index];
               var multistringText = [name + ": " + label];
-              multistringText.push("Number of schools: " + tooltipItem.xLabel);
-              multistringText.push("Number of visits: " + tooltipItem.yLabel);
+              multistringText.push("x-Axis: " + tooltipItem.xLabel);
+              multistringText.push("y-Axis: " + tooltipItem.yLabel);
               return multistringText;
             }
           }
@@ -368,9 +446,9 @@ export class BarChartComponent implements OnInit {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Number of schools',
-              fontSize: 16,
-              fontColor: "dark gray"
+              labelString: "x_Axis",
+              fontSize: 12,
+              // fontColor: "dark gray"
             }
           }],
           yAxes: [{
@@ -382,9 +460,9 @@ export class BarChartComponent implements OnInit {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Number of Visits',
-              fontSize: 16,
-              fontColor: "dark gray",
+              labelString: "y_Axis",
+              fontSize: 12,
+              // fontColor: "dark gray",
             }
           }]
         }
@@ -392,6 +470,50 @@ export class BarChartComponent implements OnInit {
     });
   }
 
+  public scatterChartOptions: ChartOptions = {
+    responsive: true,
+  };
+
+  public scatterChartData: ChartDataSets[] = [
+    {
+      data: [
+        { x: 2, y: 3 },
+
+      ],
+      label: 'Series A',
+      // pointRadius: 10,
+    },
+    {
+      data: [
+        { x: 4, y: 3 },
+
+      ],
+      label: 'Series B',
+      // pointRadius: 10,
+    }
+  ];
+  public scatterChartType: ChartType = 'scatter';
+
+  changeData() {
+    this.scatterChartData = [
+      {
+        data: [
+          { x: 4, y: 1 },
+
+        ],
+        label: 'Series A',
+        // pointRadius: 10,
+      },
+      {
+        data: [
+          { x: 5, y: 3 },
+
+        ],
+        label: 'Series B',
+        // pointRadius: 10,
+      }
+    ]
+  }
   color() {
     // Converts a #ffffff hex string into an [r,g,b] array
     function hex2rgb(hex) {
