@@ -1,5 +1,5 @@
 const router = require('express').Router();
-var const_data = require('../config/aws-config');
+var const_data = require('../../api/lib/config');
 const auth = require('../middleware/check-auth');
 
 router.get('/', auth.authController, async (req, res) => {

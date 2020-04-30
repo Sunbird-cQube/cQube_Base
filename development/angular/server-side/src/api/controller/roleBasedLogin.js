@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
-var const_data = require('../config/aws-config');
+var const_data = require('../../api/lib/config');
 
 router.post('/', function(req, res) {
     const_data['getParams']['Key'] = 'static/users.json'

@@ -17,14 +17,15 @@ const crcData = require('./controller/crcData');
 const crcDistrictWise = require('../api/controller/crcRoutes/districtWise');
 const crcBlockWise = require('../api/controller/crcRoutes/blockWise');
 const crcClusterWise = require('../api/controller/crcRoutes/clusterWise');
+const crcSchoolWise = require('../api/controller/crcRoutes/schoolWise');
 
 // crc routes
 router.use('/crc', crcDistrictWise);
 router.use('/crc', crcBlockWise);
 router.use('/crc', crcClusterWise);
+router.use('/crc', crcSchoolWise);
 
 router.use('/crcData', crcData);
-
 router.use('/dist_wise_data', dist_wise_data);
 router.use('/block_wise_data', block_wise_data);
 router.use('/cluster_wise_data', cluster_wise_data);

@@ -73,4 +73,9 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/crc/clusterWise/${distId}/${blockId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
+    crcSchoolWiseData(distId, blockId, clusterId) {
+        console.log(distId, blockId, clusterId);
+        return this.http.post(`${this.baseUrl}/crc/schoolWise/${distId}/${blockId}/${clusterId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
 }
