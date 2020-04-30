@@ -12,19 +12,7 @@ export interface PeriodicElement {
   visit_3to5_times: number;
 
 }
-const ELEMENT_DATA: PeriodicElement[] =
-  [
-    { District_Name: 'AHMEDABAD', visit_0_times: 11.0, visit_1to2_times: 51.8, visit_3to5_times: 16.4 },
-    { District_Name: 'AMRELI', visit_0_times: 27.0, visit_1to2_times: 67.8, visit_3to5_times: 15.8 },
-    { District_Name: 'ANAND', visit_0_times: 12.0, visit_1to2_times: 57.9, visit_3to5_times: 26.4 },
-    { District_Name: 'ARAVALLI', visit_0_times: 33.0, visit_1to2_times: 39.0, visit_3to5_times: 21.5 },
-    { District_Name: 'BANASKANTHA', visit_0_times: 45.0, visit_1to2_times: 46.8, visit_3to5_times: 9.3 },
-    { District_Name: 'BHARUCH', visit_0_times: 23.0, visit_1to2_times: 43.6, visit_3to5_times: 15.7 },
-    { District_Name: 'BHAVNAGAR', visit_0_times: 12.0, visit_1to2_times: 52.2, visit_3to5_times: 30.2 },
-    { District_Name: 'BOTAD', visit_0_times: 15.0, visit_1to2_times: 42.6, visit_3to5_times: 25.2 },
-    { District_Name: 'DOHAD', visit_0_times: 34.0, visit_1to2_times: 46.5, visit_3to5_times: 28.9 },
-    { District_Name: 'KACHCHH', visit_0_times: 50.0, visit_1to2_times: 49.7, visit_3to5_times: 13.4 },
-  ];
+
 
 @Component({
   selector: 'app-bar-chart',
@@ -33,8 +21,21 @@ const ELEMENT_DATA: PeriodicElement[] =
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BarChartComponent implements OnInit {
-  displayedColumns: string[] = ['District_Name', 'visit_0_times', 'visit_1to2_times', 'visit_3to5_times'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  public ELEMENT_DATA: PeriodicElement[] =
+    [
+      // { District_Name: 'AHMEDABAD', visit_0_times: 11.0, visit_1to2_times: 51.8, visit_3to5_times: 16.4 },
+      // { District_Name: 'AMRELI', visit_0_times: 27.0, visit_1to2_times: 67.8, visit_3to5_times: 15.8 },
+      // { District_Name: 'ANAND', visit_0_times: 12.0, visit_1to2_times: 57.9, visit_3to5_times: 26.4 },
+      // { District_Name: 'ARAVALLI', visit_0_times: 33.0, visit_1to2_times: 39.0, visit_3to5_times: 21.5 },
+      // { District_Name: 'BANASKANTHA', visit_0_times: 45.0, visit_1to2_times: 46.8, visit_3to5_times: 9.3 },
+      // { District_Name: 'BHARUCH', visit_0_times: 23.0, visit_1to2_times: 43.6, visit_3to5_times: 15.7 },
+      // { District_Name: 'BHAVNAGAR', visit_0_times: 12.0, visit_1to2_times: 52.2, visit_3to5_times: 30.2 },
+      // { District_Name: 'BOTAD', visit_0_times: 15.0, visit_1to2_times: 42.6, visit_3to5_times: 25.2 },
+      // { District_Name: 'DOHAD', visit_0_times: 34.0, visit_1to2_times: 46.5, visit_3to5_times: 28.9 },
+      // { District_Name: 'KACHCHH', visit_0_times: 50.0, visit_1to2_times: 49.7, visit_3to5_times: 13.4 },
+    ];
+  displayedColumns: string[] = ['districtName', 'visit_0_times', 'visit_1to2_times', 'visit_3to5_times'];
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -87,6 +88,7 @@ export class BarChartComponent implements OnInit {
   public crcDistrictsNames: any;
   public crcBlocksNames: any;
   public crcClusterNames: any;
+  public crcSchoolNames: any;
 
   public xAxisFilter = [
     { key: 'visit_0', value: "Visit-0 times (%)" },
@@ -114,7 +116,8 @@ export class BarChartComponent implements OnInit {
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
 
   async ngOnInit() {
-    this.createChart(["clg"], [], '');
+    this.dataSource.sort = this.sort;
+    this.createChart(["clg"], [], '', {});
     this.districtWise();
   }
 
@@ -155,6 +158,7 @@ export class BarChartComponent implements OnInit {
 
     this.dateRange = localStorage.getItem('dateRange');
     if (this.result.length > 0) {
+      this.ELEMENT_DATA = this.result;
       console.log('-----if------');
       this.chartData = [];
       var labels = [];
@@ -163,7 +167,11 @@ export class BarChartComponent implements OnInit {
         labels.push(this.result[i].districtName);
         this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
       }
-      this.createChart(labels, this.chartData, this.tableHead);
+      var obj = {
+        xAxis: this.xAxis,
+        yAxis: this.yAxis
+      }
+      this.createChart(labels, this.chartData, this.tableHead, obj);
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     } else {
@@ -171,6 +179,8 @@ export class BarChartComponent implements OnInit {
       this.chartData = []
       this.service.crcDistWiseData().subscribe(res => {
         this.result = res;
+        this.ELEMENT_DATA = this.result;
+        console.log(this.ELEMENT_DATA);
         if (this.result.length > 0) {
           var labels = [];
           this.crcDistrictsNames = this.result;
@@ -179,7 +189,12 @@ export class BarChartComponent implements OnInit {
             this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
           }
 
-          this.createChart(labels, this.chartData, this.tableHead);
+          var obj = {
+            xAxis: this.xAxis,
+            yAxis: this.yAxis
+          }
+
+          this.createChart(labels, this.chartData, this.tableHead, obj);
           this.loaderAndErr();
           this.changeDetection.markForCheck();
         }
@@ -188,8 +203,9 @@ export class BarChartComponent implements OnInit {
   }
 
 
-  myDistData(data) {
-    console.log(data);
+  myDistData(data, name) {
+
+    console.log(data, name);
     this.scatterChart.destroy();
     this.blockHidden = false;
     this.clusterHidden = true;
@@ -217,7 +233,11 @@ export class BarChartComponent implements OnInit {
         labels.push(this.crcBlocksNames[i].blockName);
         this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
       }
-      this.createChart(labels, this.chartData, this.tableHead);
+      var obj = {
+        xAxis: this.xAxis,
+        yAxis: this.yAxis
+      }
+      this.createChart(labels, this.chartData, this.tableHead, obj);
       this.changeDetection.markForCheck();
       this.loaderAndErr();
     });
@@ -239,9 +259,10 @@ export class BarChartComponent implements OnInit {
     this.blok = true;
     this.clust = false;
     this.skul = false;
-    localStorage.setItem('block', data.name);
-    localStorage.setItem('blockId', data.id);
+    localStorage.setItem('blockId', data);
+    // localStorage.setItem('blockId', data.id);
     this.titleName = localStorage.getItem('dist');
+
     this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
     this.blockName = data;
     this.hierName = data.name;
@@ -283,7 +304,11 @@ export class BarChartComponent implements OnInit {
         labels.push(this.crcClusterNames[i].clusterName);
         this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
       }
-      this.createChart(labels, this.chartData, this.tableHead);
+      var obj = {
+        xAxis: this.xAxis,
+        yAxis: this.yAxis
+      }
+      this.createChart(labels, this.chartData, this.tableHead, obj);
       this.changeDetection.markForCheck();
       this.loaderAndErr();
     });
@@ -294,65 +319,64 @@ export class BarChartComponent implements OnInit {
     document.getElementById('home').style.display = 'block';;
   }
 
-  // myClusterData(data) {
-  //   this.scatterChart.destroy();
-  //   this.tableHead = "School Name";
-  //   this.errMsg();
-  //   this.schoolCount = 0;
-  //   this.visitCount = 0;
-  //   this.dist = false;
-  //   this.blok = false;
-  //   this.clust = true;
-  //   this.skul = false;
-  //   this.tableData = [];
-  //   this.title = localStorage.getItem('block');
-  //   this.titleName = localStorage.getItem('dist');
-  //   var distId = JSON.parse(localStorage.getItem('distId'));
-  //   var blockId = JSON.parse(localStorage.getItem('blockId'))
-  //   this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
-  //   this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
-  //   this.clustName = data;
-  //   this.hierName = data.name;
-  //   this.service.crc_all_Schools(distId, blockId, data.id).subscribe(res => {
+  myClusterData(data) {
+    console.log(data);
+    this.scatterChart.destroy();
+    this.tableHead = "School Name";
+    this.errMsg();
+    this.schoolCount = 0;
+    this.visitCount = 0;
+    this.dist = false;
+    this.blok = false;
+    this.clust = true;
+    this.skul = false;
+    this.tableData = [];
+    this.chartData = [];
+    this.title = localStorage.getItem('block');
+    this.titleName = localStorage.getItem('dist');
+    var distId = JSON.parse(localStorage.getItem('distId'));
+    var blockId = JSON.parse(localStorage.getItem('blockId'));
+    this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
+    this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
+    this.clustName = data;
+    this.hierName = data.name;
+    // this.service.crc_all_Schools(distId, blockId, data.id).subscribe(res => {
 
-  //     this.mylatlngData = res;
-  //     this.clusterIds = [];
+    //   this.mylatlngData = res;
+    //   this.clusterIds = [];
 
-  //     for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
-  //       var obj: any = {
-  //         distName: this.mylatlngData['tableData'][i]['district'],
-  //         schCount: this.mylatlngData['tableData'][i]['totalSchools'],
-  //         visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
-  //         notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
-  //         visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
-  //       }
-  //       this.tableData.push(obj);
-  //     }
+    //   for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
+    //     var obj: any = {
+    //       distName: this.mylatlngData['tableData'][i]['district'],
+    //       schCount: this.mylatlngData['tableData'][i]['totalSchools'],
+    //       visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
+    //       notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
+    //       visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
+    //     }
+    //     this.tableData.push(obj);
+    //   }
 
-  //     this.service.crc_all_Schools(data.distId, data.blockid, data.id).subscribe((result: any) => {
+    this.service.crcSchoolWiseData(distId, blockId, data).subscribe((result: any) => {
+      this.crcSchoolNames = result;
+      console.log(result);
 
-  //       for (var i = 0; i < result.length; i++) {
-  //         this.schoolCount = this.schoolCount + result[i]["schoolsCount"];
-  //         this.visitCount = this.visitCount + result[i]["visits"];
-  //       }
+      var labels = [];
+      for (var i = 0; i < this.crcSchoolNames.length; i++) {
+        labels.push(this.crcSchoolNames[i].schoolName);
+        this.chartData.push({ x: Number(this.crcSchoolNames[i][this.xAxis]), y: Number(this.crcSchoolNames[i][this.yAxis]) });
+      }
+      var obj = {
+        xAxis: this.xAxis,
+        yAxis: this.yAxis
+      }
+      this.loaderAndErr();
+      this.createChart(labels, this.chartData, this.tableHead, obj);
+      this.changeDetection.markForCheck();
+    });
+    document.getElementById('home').style.display = 'block';
+  }
 
-  //       var chartData = [];
-  //       var labels = [];
-  //       for (var i = 0; i < result['tableData'].length; i++) {
-  //         labels.push(result['tableData'][i].district);
-  //         chartData.push({ x: result['tableData'][i].visitedSchoolCount, y: result['tableData'][i].visitsperDist });
-  //       };
-  //       var obj: any = {};
-  //       this.createChart(labels, chartData, this.tableHead);
-  //     })
-  //     this.loaderAndErr();
-  //     this.changeDetection.markForCheck();
-  //   })
-
-  //   document.getElementById('home').style.display = 'block';
-  // }
-
-  createChart(labels, chartData, name) {
+  createChart(labels, chartData, name, obj) {
 
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
@@ -384,28 +408,28 @@ export class BarChartComponent implements OnInit {
         scales: {
           xAxes: [{
             gridLines: {
-              color: "rgba(0, 0, 0, 0)",
+              color: "rgba(252, 239, 252)",
             },
             ticks: {
               min: 0
             },
             scaleLabel: {
               display: true,
-              labelString: "x_Axis",
+              labelString: obj.xAxis,
               fontSize: 12,
               // fontColor: "dark gray"
             }
           }],
           yAxes: [{
             gridLines: {
-              color: "rgba(0, 0, 0, 0)",
+              color: "rgba(252, 239, 252)",
             },
             ticks: {
               min: 0
             },
             scaleLabel: {
               display: true,
-              labelString: "y_Axis",
+              labelString: obj.yAxis,
               fontSize: 12,
               // fontColor: "dark gray",
             }
