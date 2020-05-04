@@ -2,10 +2,9 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChil
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
-import { Chart, ChartOptions, ChartDataSets, ChartType } from 'chart.js';
+import { Chart } from 'chart.js';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ExportToCsv } from 'export-to-csv';
-import { DH_NOT_SUITABLE_GENERATOR } from 'constants';
 
 
 // export interface PeriodicElement {
