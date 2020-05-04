@@ -4,14 +4,15 @@ import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { Chart, ChartOptions, ChartDataSets, ChartType } from 'chart.js';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { ExportToCsv } from 'export-to-csv';
 
-export interface PeriodicElement {
-  District_Name: string;
-  visit_0_times: number;
-  visit_1to2_times: number;
-  visit_3to5_times: number;
 
-}
+// export interface PeriodicElement {
+//   districtName: string;
+//   visit_0: number;
+//   visit_3_5: number;
+//   visit_6_10: number;l;k
+// }
 
 
 @Component({
@@ -21,21 +22,12 @@ export interface PeriodicElement {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BarChartComponent implements OnInit {
-  public ELEMENT_DATA: PeriodicElement[] =
-    [
-      // { District_Name: 'AHMEDABAD', visit_0_times: 11.0, visit_1to2_times: 51.8, visit_3to5_times: 16.4 },
-      // { District_Name: 'AMRELI', visit_0_times: 27.0, visit_1to2_times: 67.8, visit_3to5_times: 15.8 },
-      // { District_Name: 'ANAND', visit_0_times: 12.0, visit_1to2_times: 57.9, visit_3to5_times: 26.4 },
-      // { District_Name: 'ARAVALLI', visit_0_times: 33.0, visit_1to2_times: 39.0, visit_3to5_times: 21.5 },
-      // { District_Name: 'BANASKANTHA', visit_0_times: 45.0, visit_1to2_times: 46.8, visit_3to5_times: 9.3 },
-      // { District_Name: 'BHARUCH', visit_0_times: 23.0, visit_1to2_times: 43.6, visit_3to5_times: 15.7 },
-      // { District_Name: 'BHAVNAGAR', visit_0_times: 12.0, visit_1to2_times: 52.2, visit_3to5_times: 30.2 },
-      // { District_Name: 'BOTAD', visit_0_times: 15.0, visit_1to2_times: 42.6, visit_3to5_times: 25.2 },
-      // { District_Name: 'DOHAD', visit_0_times: 34.0, visit_1to2_times: 46.5, visit_3to5_times: 28.9 },
-      // { District_Name: 'KACHCHH', visit_0_times: 50.0, visit_1to2_times: 49.7, visit_3to5_times: 13.4 },
-    ];
-  displayedColumns: string[] = ['districtName', 'visit_0_times', 'visit_1to2_times', 'visit_3to5_times'];
-  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  public ELEMENT_DATA: any = [];
+  displayedColumns: any = [
+    'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
+    'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
+  ];;
+  dataSource;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -90,6 +82,9 @@ export class BarChartComponent implements OnInit {
   public crcClusterNames: any;
   public crcSchoolNames: any;
 
+  public fileName: any;
+  public reportData: any = [];
+
   public xAxisFilter = [
     { key: 'visit_0', value: "Visit-0 times (%)" },
     { key: 'visit_1_2', value: "Visit-1 to 2 times (%)" },
@@ -116,7 +111,6 @@ export class BarChartComponent implements OnInit {
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
 
   async ngOnInit() {
-    this.dataSource.sort = this.sort;
     this.createChart(["clg"], [], '', {});
     this.districtWise();
   }
@@ -144,6 +138,7 @@ export class BarChartComponent implements OnInit {
   districtWise() {
     this.scatterChart.destroy();
     this.tableHead = "District Name";
+    this.fileName = "Dist_level_CRC_Report"
     this.blockHidden = true;
     this.clusterHidden = true;
     this.errMsg();
@@ -158,8 +153,6 @@ export class BarChartComponent implements OnInit {
 
     this.dateRange = localStorage.getItem('dateRange');
     if (this.result.length > 0) {
-      this.ELEMENT_DATA = this.result;
-      console.log('-----if------');
       this.chartData = [];
       var labels = [];
       this.crcDistrictsNames = this.result;
@@ -175,16 +168,15 @@ export class BarChartComponent implements OnInit {
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     } else {
-      console.log('-----else------');
       this.chartData = []
       this.service.crcDistWiseData().subscribe(res => {
         this.result = res;
         this.ELEMENT_DATA = this.result;
-        console.log(this.ELEMENT_DATA);
         if (this.result.length > 0) {
           var labels = [];
-          this.crcDistrictsNames = this.result;
+         this.reportData = this.crcDistrictsNames = this.result;
           for (var i = 0; i < this.result.length; i++) {
+
             labels.push(this.result[i].districtName);
             this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
           }
@@ -194,8 +186,16 @@ export class BarChartComponent implements OnInit {
             yAxis: this.yAxis
           }
 
+          this.displayedColumns = [
+            'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
+            'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
+          ];
+          this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+          this.dataSource.sort = this.sort;
+
           this.createChart(labels, this.chartData, this.tableHead, obj);
           this.loaderAndErr();
+          document.getElementById('data_table').style.display = 'block';
           this.changeDetection.markForCheck();
         }
       });
@@ -266,34 +266,6 @@ export class BarChartComponent implements OnInit {
     this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
     this.blockName = data;
     this.hierName = data.name;
-    // this.service.crcClusterWiseData(data.distId, data.id).subscribe(res => {
-
-
-    //   this.mylatlngData = res;
-    //   this.clusterNames = [];
-    //   var sorted = this.mylatlngData['barChartData'].sort((a, b) => (a.x_value > b.x_value) ? 1 : -1)
-    //   let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-    //   this.colors = colors;
-    //   for (var i = 0; i < this.mylatlngData['barChartData'].length; i++) {
-    //     this.clusterIds.push(this.mylatlngData['barChartData'][i]['clusterId']);
-    //     this.blocksIds.push(this.mylatlngData['barChartData'][i]['blockId']);
-    //     if (this.mylatlngData['barChartData'][i]['clusterName'] !== null) {
-    //       this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: this.mylatlngData['barChartData'][i]['clusterName'], blockid: data.id, distId: data.distId });
-    //     } else {
-    //       this.clusterNames.push({ id: this.mylatlngData['barChartData'][i]['clusterId'], name: "NO NAME FOUND", blockid: data.id, distId: data.distId });
-    //     }
-    //   }
-
-    // for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
-    //   var obj: any = {
-    //     distName: this.mylatlngData['tableData'][i]['district'],
-    //     schCount: this.mylatlngData['tableData'][i]['totalSchools'],
-    //     visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
-    //     notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
-    //     visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
-    //   }
-    //   this.tableData.push(obj);
-    // }
 
     this.service.crcClusterWiseData(JSON.parse(localStorage.getItem('distId')), data).subscribe((result: any) => {
       console.log(result);
@@ -314,7 +286,6 @@ export class BarChartComponent implements OnInit {
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
 
-    // })
 
     document.getElementById('home').style.display = 'block';;
   }
@@ -340,22 +311,7 @@ export class BarChartComponent implements OnInit {
     this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
     this.clustName = data;
     this.hierName = data.name;
-    // this.service.crc_all_Schools(distId, blockId, data.id).subscribe(res => {
-
-    //   this.mylatlngData = res;
-    //   this.clusterIds = [];
-
-    //   for (var i = 0; i < this.mylatlngData['tableData'].length; i++) {
-    //     var obj: any = {
-    //       distName: this.mylatlngData['tableData'][i]['district'],
-    //       schCount: this.mylatlngData['tableData'][i]['totalSchools'],
-    //       visitedSchools: this.mylatlngData['tableData'][i]['visitedSchoolCount'],
-    //       notVisitedSchools: this.mylatlngData['tableData'][i]['notVisitedSchoolCount'],
-    //       visitesCount: this.mylatlngData['tableData'][i]['visitsperDist']
-    //     }
-    //     this.tableData.push(obj);
-    //   }
-
+    
     this.service.crcSchoolWiseData(distId, blockId, data).subscribe((result: any) => {
       this.crcSchoolNames = result;
       console.log(result);
@@ -437,6 +393,23 @@ export class BarChartComponent implements OnInit {
         }
       }
     });
+  };
+
+  downloadRoport() {
+    const options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true,
+      showTitle: false,
+      title: 'My Awesome CSV',
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true,
+      filename: this.fileName
+    };
+    const csvExporter = new ExportToCsv(options);
+    csvExporter.generateCsv(this.reportData);
   }
 
   color() {

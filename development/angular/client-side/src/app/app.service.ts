@@ -66,7 +66,6 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/crc/districtWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
     crcBlockWiseData(distId) {
-        console.log(distId);
         return this.http.post(`${this.baseUrl}/crc/blockWise/${distId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
     crcClusterWiseData(distId, blockId) {
@@ -74,7 +73,6 @@ export class AppServiceComponent {
     }
 
     crcSchoolWiseData(distId, blockId, clusterId) {
-        console.log(distId, blockId, clusterId);
         return this.http.post(`${this.baseUrl}/crc/schoolWise/${distId}/${blockId}/${clusterId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
