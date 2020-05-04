@@ -17,12 +17,7 @@ export class HomeComponent implements OnInit {
 
   }
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('dist');
-    localStorage.removeItem('distId');
-    localStorage.removeItem('block');
-    localStorage.removeItem('blockId');
-    localStorage.removeItem('schStd');
+    localStorage.clear();
     this.router.navigate(['/']);
   }
 

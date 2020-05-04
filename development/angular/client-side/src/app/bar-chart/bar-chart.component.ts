@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Chart, ChartOptions, ChartDataSets, ChartType } from 'chart.js';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ExportToCsv } from 'export-to-csv';
+import { DH_NOT_SUITABLE_GENERATOR } from 'constants';
 
 
 // export interface PeriodicElement {
@@ -24,8 +25,8 @@ import { ExportToCsv } from 'export-to-csv';
 export class BarChartComponent implements OnInit {
   public ELEMENT_DATA: any = [];
   displayedColumns: any = [
-    'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
-    'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
+    // 'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
+    // 'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
   ];;
   dataSource;
 
@@ -136,11 +137,13 @@ export class BarChartComponent implements OnInit {
   public tableData: any = [];
   public chartData: any = [];
   districtWise() {
+    document.getElementById('dist_table').style.display = 'Block';
     this.scatterChart.destroy();
     this.tableHead = "District Name";
     this.fileName = "Dist_level_CRC_Report"
     this.blockHidden = true;
     this.clusterHidden = true;
+    this.myDistrict = '';
     this.errMsg();
     this.dist = false;
     this.blok = false;
@@ -150,7 +153,10 @@ export class BarChartComponent implements OnInit {
     this.schoolCount = 0;
     this.visitCount = 0;
     this.tableData = [];
-
+    this.displayedColumns = [
+      'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
+      'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
+    ];
     this.dateRange = localStorage.getItem('dateRange');
     if (this.result.length > 0) {
       this.chartData = [];
@@ -174,9 +180,9 @@ export class BarChartComponent implements OnInit {
         this.ELEMENT_DATA = this.result;
         if (this.result.length > 0) {
           var labels = [];
-         this.reportData = this.crcDistrictsNames = this.result;
+          this.reportData = this.crcDistrictsNames = this.result;
           for (var i = 0; i < this.result.length; i++) {
-
+            this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
             labels.push(this.result[i].districtName);
             this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
           }
@@ -186,16 +192,11 @@ export class BarChartComponent implements OnInit {
             yAxis: this.yAxis
           }
 
-          this.displayedColumns = [
-            'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
-            'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
-          ];
           this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
           this.dataSource.sort = this.sort;
 
           this.createChart(labels, this.chartData, this.tableHead, obj);
           this.loaderAndErr();
-          document.getElementById('data_table').style.display = 'block';
           this.changeDetection.markForCheck();
         }
       });
@@ -203,12 +204,11 @@ export class BarChartComponent implements OnInit {
   }
 
 
-  myDistData(data, name) {
-
-    console.log(data, name);
+  myDistData(data) {
     this.scatterChart.destroy();
     this.blockHidden = false;
     this.clusterHidden = true;
+    this.myBlock = '';
     this.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
@@ -219,9 +219,10 @@ export class BarChartComponent implements OnInit {
     this.blok = false;
     this.clust = false;
     this.skul = false;
+    let obj = this.districtsNames.find(o => o.id == data);
     this.distName = data;
-    this.hierName = data.name;
-    localStorage.setItem('dist', data.name);
+    this.hierName = obj.name;
+    localStorage.setItem('dist', obj.name);
     localStorage.setItem('distId', data);
 
     this.service.crcBlockWiseData(data).subscribe((result: any) => {
@@ -230,6 +231,7 @@ export class BarChartComponent implements OnInit {
 
       var labels = [];
       for (var i = 0; i < this.crcBlocksNames.length; i++) {
+        this.blocksNames.push({ id: this.crcBlocksNames[i].blockId, name: this.crcBlocksNames[i].blockName });
         labels.push(this.crcBlocksNames[i].blockName);
         this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
       }
@@ -249,6 +251,7 @@ export class BarChartComponent implements OnInit {
     this.scatterChart.destroy();
     this.clusterHidden = false;
     this.blockHidden = false;
+    this.myCluster = '';
     this.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
@@ -259,20 +262,20 @@ export class BarChartComponent implements OnInit {
     this.blok = true;
     this.clust = false;
     this.skul = false;
-    localStorage.setItem('blockId', data);
-    // localStorage.setItem('blockId', data.id);
-    this.titleName = localStorage.getItem('dist');
 
-    this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
+    localStorage.setItem('blockId', data);
+    this.titleName = localStorage.getItem('dist');
+    this.distName = JSON.parse(localStorage.getItem('distId'));
     this.blockName = data;
-    this.hierName = data.name;
+    let obj = this.blocksNames.find(o => o.id == data);
+    localStorage.setItem('block', JSON.stringify(obj.name));
+    this.hierName = obj.name;
 
     this.service.crcClusterWiseData(JSON.parse(localStorage.getItem('distId')), data).subscribe((result: any) => {
-      console.log(result);
       this.crcClusterNames = result;
-
       var labels = [];
       for (var i = 0; i < this.crcClusterNames.length; i++) {
+        this.clusterNames.push({ id: this.crcClusterNames[i].clusterId, name: this.crcClusterNames[i].clusterName });
         labels.push(this.crcClusterNames[i].clusterName);
         this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
       }
@@ -297,27 +300,30 @@ export class BarChartComponent implements OnInit {
     this.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
+    this.crcSchoolNames = [];
     this.dist = false;
     this.blok = false;
     this.clust = true;
     this.skul = false;
     this.tableData = [];
     this.chartData = [];
-    this.title = localStorage.getItem('block');
+    this.title = JSON.parse(localStorage.getItem('block'));
     this.titleName = localStorage.getItem('dist');
     var distId = JSON.parse(localStorage.getItem('distId'));
     var blockId = JSON.parse(localStorage.getItem('blockId'));
-    this.distName = { id: JSON.parse(localStorage.getItem('distId')), name: this.titleName };
-    this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
+    this.distName = JSON.parse(localStorage.getItem('distId'));
+    this.blockName = blockId;
     this.clustName = data;
-    this.hierName = data.name;
-    
+    let obj = this.clusterNames.find(o => o.id == data);
+    this.hierName = obj.name;
+    localStorage.setItem('clusterId', data);
     this.service.crcSchoolWiseData(distId, blockId, data).subscribe((result: any) => {
       this.crcSchoolNames = result;
       console.log(result);
 
       var labels = [];
       for (var i = 0; i < this.crcSchoolNames.length; i++) {
+
         labels.push(this.crcSchoolNames[i].schoolName);
         this.chartData.push({ x: Number(this.crcSchoolNames[i][this.xAxis]), y: Number(this.crcSchoolNames[i][this.yAxis]) });
       }
@@ -410,6 +416,22 @@ export class BarChartComponent implements OnInit {
     };
     const csvExporter = new ExportToCsv(options);
     csvExporter.generateCsv(this.reportData);
+  }
+
+  selectAxis() {
+    if (this.skul) {
+      this.districtWise();
+    }
+    if (this.dist) {
+      console.log(this.dist);
+      this.myDistData(JSON.parse(localStorage.getItem('distId')));
+    }
+    if (this.blok) {
+      this.myBlockData(JSON.parse(localStorage.getItem('blockId')));
+    }
+    if (this.clust) {
+      this.myClusterData(JSON.parse(localStorage.getItem('clusterId')));
+    }
   }
 
   color() {

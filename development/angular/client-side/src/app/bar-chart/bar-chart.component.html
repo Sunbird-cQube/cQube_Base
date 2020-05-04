@@ -74,7 +74,7 @@
                 <div class="col-sm-12">
                     <select
                         style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                        [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict, distName)">
+                        [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                         <option [value]="myDistrict" disabled selected="selected">Choose a District
                         </option>
                         <option *ngFor="let dist of crcDistrictsNames" [(ngValue)]="dist.districtId"
@@ -85,7 +85,7 @@
 
                     <select [hidden]="blockHidden"
                         style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                        [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock, blockName)">
+                        [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                         <option [value]="myBlock" disabled selected="selected">Choose a Block
                         </option>
                         <option *ngFor="let block of crcBlocksNames" [(ngValue)]="block.blockId">
@@ -95,8 +95,8 @@
 
                     <select [hidden]="clusterHidden"
                         style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                        [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster, clusterName)">
-                        <option [value]="myCluster" disabled selected="selected">Choose a CRC Name
+                        [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
+                        <option [value]="myCluster" disabled selected="selected">Choose a Cluster
                         </option>
                         <option *ngFor="let cluster of crcClusterNames" [(ngValue)]="cluster.clusterId"
                             style="font-family: Arial;font-size: 11px; "
@@ -111,7 +111,7 @@
                 <div class="col-sm-6">
                     <select
                         style="margin-right: 10px; padding: 1.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                        [(ngModel)]="xAxis" name="xAxis" (change)="districtWise()">
+                        [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
                             x-axis
                         </option>
@@ -124,7 +124,7 @@
                 <div class="col-sm-6">
                     <select
                         style="margin-right: 10px; padding: 1.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                        [(ngModel)]="yAxis" name="yAxis" (change)="districtWise()">
+                        [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
                         <option [value]="yAxis" disabled selected="selected">choose
                             y-axis
                         </option>
@@ -153,33 +153,8 @@
 
         </div>
         <div class="col-sm-5">
-            <!-- <h4>Table Data</h4> -->
-            <!-- <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                <table class="table table-condensed" style="border: 1px solid black;font-size: 11px;">
-                    <thead>
-                        <tr>
-                            <th style="border: 1px solid black;">District Name</th>
-                            <th style="border: 1px solid rgb(226, 215, 215);" *ngFor="let yaxis of yAxisFilter">
-                                {{yaxis.value}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let row of result">
-                            <td style="border: 1px solid black;">{{row.districtName}}</td>
-                            <td style="border: 1px solid black;">{{row.visit_0}}</td>
-                            <td style="border: 1px solid black;">{{row.visit_1_2}}</td>
-                            <td style="border: 1px solid black;">{{row.visit_3_5}}</td>
-                            <td style="border: 1px solid black;">{{row.visit_6_10}}</td>
-                            <td style="border: 1px solid black;">{{row.visit_10_more}}</td>
-                            <td style="border: 1px solid black;">{{row.no_of_schools_per_crc}}</td>
-                            <td style="border: 1px solid black;">{{row.visits_per_school}}</td>
-                            <td style="border: 1px solid black;">{{row.totalSchools}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> -->
-            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="data_table" >
-                <div class="wrapper" >
+            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="dist_table" style="display: none;">
+                <div class="wrapper">
                     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
                         <ng-container matColumnDef="districtName">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
@@ -241,6 +216,196 @@
                     <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
                 </div>
             </div>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="block_table" style="display: none;">
+                <div class="wrapper">
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                        <ng-container matColumnDef="districtName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_0">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_1_2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_3_5">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_6_10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_10_more">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visits_per_school">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="no_of_schools_per_crc">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
+                            <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="percentage_crc_visited_school">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="totalSchools">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="totalVisits">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
+                        </ng-container>
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <!-- Angular 8 pagination -->
+                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                </div>
+            </div>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="cluster_table" style="display: none;">
+                <div class="wrapper">
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                        <ng-container matColumnDef="districtName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_0">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_1_2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_3_5">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_6_10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_10_more">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visits_per_school">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="no_of_schools_per_crc">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
+                            <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="percentage_crc_visited_school">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="totalSchools">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="totalVisits">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
+                        </ng-container>
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <!-- Angular 8 pagination -->
+                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                </div>
+            </div>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="school_table" style="display: none;">
+                <div class="wrapper">
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                        <ng-container matColumnDef="districtName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_0">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_1_2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_3_5">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_6_10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_10_more">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visits_per_school">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="no_of_schools_per_crc">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
+                            <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="percentage_crc_visited_school">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="totalSchools">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="totalVisits">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
+                        </ng-container>
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <!-- Angular 8 pagination -->
+                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                </div>
+            </div>
+
             <div style="line-height: .6em; margin-top: 30px; font-size: 12px;">
                 <p> Total schools visited:</p>
                 <p> Total schools not visited:</p>
