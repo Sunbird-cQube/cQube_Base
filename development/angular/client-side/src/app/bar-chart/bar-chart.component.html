@@ -74,8 +74,7 @@
                 <div class="col-sm-12">
                     <select
                         style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                        [(ngModel)]="myDistrict" name="myDistrict" #distName
-                        (change)="myDistData(myDistrict, distName)">
+                        [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict, distName)">
                         <option [value]="myDistrict" disabled selected="selected">Choose a District
                         </option>
                         <option *ngFor="let dist of crcDistrictsNames" [(ngValue)]="dist.districtId"
@@ -86,7 +85,7 @@
 
                     <select [hidden]="blockHidden"
                         style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                        [(ngModel)]="myBlock" name="myBlock" #blockName (change)="myBlockData(myBlock, blockName)">
+                        [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock, blockName)">
                         <option [value]="myBlock" disabled selected="selected">Choose a Block
                         </option>
                         <option *ngFor="let block of crcBlocksNames" [(ngValue)]="block.blockId">
@@ -96,8 +95,7 @@
 
                     <select [hidden]="clusterHidden"
                         style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
-                        [(ngModel)]="myCluster" name="myCluster" #clusterName
-                        (change)="myClusterData(myCluster, clusterName)">
+                        [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster, clusterName)">
                         <option [value]="myCluster" disabled selected="selected">Choose a CRC Name
                         </option>
                         <option *ngFor="let cluster of crcClusterNames" [(ngValue)]="cluster.clusterId"
@@ -156,7 +154,7 @@
         </div>
         <div class="col-sm-5">
             <!-- <h4>Table Data</h4> -->
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <!-- <div class="table-wrapper-scroll-y my-custom-scrollbar">
                 <table class="table table-condensed" style="border: 1px solid black;font-size: 11px;">
                     <thead>
                         <tr>
@@ -179,38 +177,70 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <!-- <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                <div class="wrapper"> -->
-            <!-- <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-                        <ng-container matColumnDef="District_Name">
+            </div> -->
+            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="data_table" >
+                <div class="wrapper" >
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                        <ng-container matColumnDef="districtName">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.District_Name}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="visit_0_times">
+                        <ng-container matColumnDef="visit_0">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_0_times}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="visit_1to2_times">
+                        <ng-container matColumnDef="visit_1_2">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_1to2_times}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="visit_3to5_times">
+                        <ng-container matColumnDef="visit_3_5">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_3to5_times}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
                         </ng-container>
+
+                        <ng-container matColumnDef="visit_6_10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visit_10_more">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="visits_per_school">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
+                            <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="no_of_schools_per_crc">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
+                            <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="percentage_crc_visited_school">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
+                            <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="totalSchools">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="totalVisits">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
+                        </ng-container>
+
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table> -->
+                    </table>
 
-            <!-- Angular 8 pagination -->
-            <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
-            <!-- </div>
-            </div> -->
+                    <!-- Angular 8 pagination -->
+                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                </div>
+            </div>
             <div style="line-height: .6em; margin-top: 30px; font-size: 12px;">
                 <p> Total schools visited:</p>
                 <p> Total schools not visited:</p>
