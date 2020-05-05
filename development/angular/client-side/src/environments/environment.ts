@@ -4,7 +4,7 @@
 
 export const environment = {
   production: true,
-  apiEndpoint: "http://localhost:3000/api"
+  apiEndpoint: "http://cqube.tibilprojects.com/api"
 };
 
 // https://cqube.tibilprojects.com
