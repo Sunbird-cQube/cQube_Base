@@ -1,5 +1,12 @@
 .my-custom-scrollbar {
     position: relative;
-    height: 350px;
+    height: 450px;
     overflow: auto;
+    }
+
+    .mat-cell, .mat-header-cell {
+        font-size: 14px;
+        min-height: 48px;
+        text-align: center;
+        border-right: 1px solid rgb(211, 207, 207);
     }

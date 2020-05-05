@@ -22,14 +22,11 @@ import { ExportToCsv } from 'export-to-csv';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BarChartComponent implements OnInit {
-  public ELEMENT_DATA: any = [];
-  displayedColumns: any = [
-    // 'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
-    // 'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
-  ];;
-  dataSource;
+  public ELEMENT_DATA: any;
+  public displayedColumns: any;
+  public dataSource: any;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   public title: string = '';
@@ -55,7 +52,7 @@ export class BarChartComponent implements OnInit {
   public myCluster: any;
   public colors: any;
   public studentCount: any;
-  public schoolCount: any;
+  public schoolCount: Number;
   public dateRange: any = '';
   public dist: boolean = false;
   public blok: boolean = false;
@@ -111,6 +108,9 @@ export class BarChartComponent implements OnInit {
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
 
   async ngOnInit() {
+    // if (this.dataSource.length > 0) {
+    // this.dataSource.sort = this.sort;
+    // }
     this.createChart(["clg"], [], '', {});
     this.districtWise();
   }
@@ -136,10 +136,13 @@ export class BarChartComponent implements OnInit {
   public tableData: any = [];
   public chartData: any = [];
   districtWise() {
-    document.getElementById('dist_table').style.display = 'Block';
+    document.getElementById('dist_table').style.display = 'block';
+    document.getElementById('block_table').style.display = 'none';
+    document.getElementById('cluster_table').style.display = 'none';
+    document.getElementById('school_table').style.display = 'none';
     this.scatterChart.destroy();
     this.tableHead = "District Name";
-    this.fileName = "Dist_level_CRC_Report"
+    this.fileName = "Dist_level_CRC_Report";
     this.blockHidden = true;
     this.clusterHidden = true;
     this.myDistrict = '';
@@ -148,51 +151,73 @@ export class BarChartComponent implements OnInit {
     this.blok = false;
     this.clust = false;
     this.skul = true;
-    document.getElementById('home').style.display = 'none';
+
     this.schoolCount = 0;
     this.visitCount = 0;
+    document.getElementById('home').style.display = 'none';
+
     this.tableData = [];
+
     this.displayedColumns = [
       'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
       'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
     ];
+
     this.dateRange = localStorage.getItem('dateRange');
-    if (this.result.length > 0) {
+    // if (this.result.length > 0) {
+    if (JSON.parse(localStorage.getItem('resData')) !== null) {
       this.chartData = [];
       var labels = [];
-      this.crcDistrictsNames = this.result;
+      this.result = JSON.parse(localStorage.getItem('resData'));
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.result.length, 'rgb');
+      this.ELEMENT_DATA = this.crcDistrictsNames = this.result;
       for (var i = 0; i < this.result.length; i++) {
+        this.schoolCount = this.schoolCount + this.result[i].totalSchools;
+        this.visitCount = this.visitCount + Number(this.result[i].totalVisits);
+        this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
         labels.push(this.result[i].districtName);
         this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
       }
-      var obj = {
+      let obj = {
         xAxis: this.xAxis,
-        yAxis: this.yAxis
+        yAxis: this.yAxis,
+        pointBackgroundColor: colors
       }
+
+      this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+      this.dataSource.sort = this.sort;
+
       this.createChart(labels, this.chartData, this.tableHead, obj);
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     } else {
+      this.schoolCount = 0;
+      this.visitCount = 0;
       this.chartData = []
       this.service.crcDistWiseData().subscribe(res => {
+        localStorage.setItem('resData', JSON.stringify(res));
         this.result = res;
+        let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.result.length, 'rgb');
+
         this.ELEMENT_DATA = this.result;
         if (this.result.length > 0) {
           var labels = [];
           this.reportData = this.crcDistrictsNames = this.result;
           for (var i = 0; i < this.result.length; i++) {
+            this.schoolCount = this.schoolCount + this.result[i].totalSchools;
+            this.visitCount = this.visitCount + Number(this.result[i].totalVisits);
             this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
             labels.push(this.result[i].districtName);
             this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
           }
-
-          var obj = {
+          let obj = {
             xAxis: this.xAxis,
-            yAxis: this.yAxis
+            yAxis: this.yAxis,
+            pointBackgroundColor: colors
           }
 
           this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-          this.dataSource.sort = this.sort;
+          // this.dataSource.sort = this.sort;
 
           this.createChart(labels, this.chartData, this.tableHead, obj);
           this.loaderAndErr();
@@ -204,9 +229,14 @@ export class BarChartComponent implements OnInit {
 
 
   myDistData(data) {
+    document.getElementById('dist_table').style.display = 'none';
+    document.getElementById('block_table').style.display = 'block';
+    document.getElementById('cluster_table').style.display = 'none';
+    document.getElementById('school_table').style.display = 'none';
     this.scatterChart.destroy();
     this.blockHidden = false;
     this.clusterHidden = true;
+    this.fileName = "Block_level_CRC_Report"
     this.myBlock = '';
     this.errMsg();
     this.schoolCount = 0;
@@ -224,32 +254,52 @@ export class BarChartComponent implements OnInit {
     localStorage.setItem('dist', obj.name);
     localStorage.setItem('distId', data);
 
+    // this.dataSource = {};
+    this.displayedColumns = [
+      'blockName', 'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
+      'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
+    ];
     this.service.crcBlockWiseData(data).subscribe((result: any) => {
-      console.log(result);
-      this.crcBlocksNames = result;
+      this.reportData = this.crcBlocksNames = result;
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.crcBlocksNames.length, 'rgb');
 
-      var labels = [];
-      for (var i = 0; i < this.crcBlocksNames.length; i++) {
-        this.blocksNames.push({ id: this.crcBlocksNames[i].blockId, name: this.crcBlocksNames[i].blockName });
-        labels.push(this.crcBlocksNames[i].blockName);
-        this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
+      this.ELEMENT_DATA = this.crcBlocksNames;
+      if (this.result.length > 0) {
+        var labels = [];
+        for (var i = 0; i < this.crcBlocksNames.length; i++) {
+          this.schoolCount = this.schoolCount + this.crcBlocksNames[i].totalSchools;
+          this.visitCount = this.visitCount + Number(this.crcBlocksNames[i].totalVisits);
+          this.blocksNames.push({ id: this.crcBlocksNames[i].blockId, name: this.crcBlocksNames[i].blockName });
+          labels.push(this.crcBlocksNames[i].blockName);
+          this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
+        }
+        let obj = {
+          xAxis: this.xAxis,
+          yAxis: this.yAxis,
+          pointBackgroundColor: colors
+        }
+
+        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+        this.dataSource.sort = this.sort;
+
+        this.createChart(labels, this.chartData, this.tableHead, obj);
+        this.changeDetection.markForCheck();
+        this.loaderAndErr();
       }
-      var obj = {
-        xAxis: this.xAxis,
-        yAxis: this.yAxis
-      }
-      this.createChart(labels, this.chartData, this.tableHead, obj);
-      this.changeDetection.markForCheck();
-      this.loaderAndErr();
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
     document.getElementById('home').style.display = 'block';;
   }
 
   myBlockData(data) {
+    document.getElementById('dist_table').style.display = 'none';
+    document.getElementById('block_table').style.display = 'none';
+    document.getElementById('cluster_table').style.display = 'block';
+    document.getElementById('school_table').style.display = 'none';
     this.scatterChart.destroy();
     this.clusterHidden = false;
     this.blockHidden = false;
+    this.fileName = "Cluster_level_CRC_Report"
     this.myCluster = '';
     this.errMsg();
     this.schoolCount = 0;
@@ -270,18 +320,31 @@ export class BarChartComponent implements OnInit {
     localStorage.setItem('block', JSON.stringify(obj.name));
     this.hierName = obj.name;
 
+    this.displayedColumns = [
+      'clusterName', 'blockName', 'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
+      'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
+    ];
     this.service.crcClusterWiseData(JSON.parse(localStorage.getItem('distId')), data).subscribe((result: any) => {
-      this.crcClusterNames = result;
+      this.reportData = this.crcClusterNames = result;
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.crcClusterNames.length, 'rgb');
+      this.ELEMENT_DATA = this.crcClusterNames;
       var labels = [];
       for (var i = 0; i < this.crcClusterNames.length; i++) {
+        this.schoolCount = this.schoolCount + this.crcClusterNames[i].totalSchools;
+        this.visitCount = this.visitCount + Number(this.crcClusterNames[i].totalVisits);
         this.clusterNames.push({ id: this.crcClusterNames[i].clusterId, name: this.crcClusterNames[i].clusterName });
         labels.push(this.crcClusterNames[i].clusterName);
         this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
       }
-      var obj = {
+      let obj = {
         xAxis: this.xAxis,
-        yAxis: this.yAxis
+        yAxis: this.yAxis,
+        pointBackgroundColor: colors
       }
+
+      this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+      // this.dataSource.sort = this.sort;
+
       this.createChart(labels, this.chartData, this.tableHead, obj);
       this.changeDetection.markForCheck();
       this.loaderAndErr();
@@ -293,12 +356,16 @@ export class BarChartComponent implements OnInit {
   }
 
   myClusterData(data) {
-    console.log(data);
+    document.getElementById('dist_table').style.display = 'none';
+    document.getElementById('block_table').style.display = 'none';
+    document.getElementById('cluster_table').style.display = 'none';
+    document.getElementById('school_table').style.display = 'block';
     this.scatterChart.destroy();
     this.tableHead = "School Name";
     this.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
+    this.fileName = "School_level_CRC_Report"
     this.crcSchoolNames = [];
     this.dist = false;
     this.blok = false;
@@ -316,20 +383,31 @@ export class BarChartComponent implements OnInit {
     let obj = this.clusterNames.find(o => o.id == data);
     this.hierName = obj.name;
     localStorage.setItem('clusterId', data);
-    this.service.crcSchoolWiseData(distId, blockId, data).subscribe((result: any) => {
-      this.crcSchoolNames = result;
-      console.log(result);
+
+    this.displayedColumns = [
+      'schoolName', 'clusterName', 'blockName', 'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
+      'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
+    ];
+    this.service.crcSchoolWiseData(distId, blockId, data).subscribe(async (result: any) => {
+      this.reportData = this.crcSchoolNames = result;
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.crcSchoolNames.length, 'rgb');
+      this.ELEMENT_DATA = this.crcSchoolNames;
 
       var labels = [];
       for (var i = 0; i < this.crcSchoolNames.length; i++) {
-
+        this.schoolCount = this.schoolCount + this.crcSchoolNames[i].totalSchools;
+        this.visitCount = this.visitCount + Number(this.crcSchoolNames[i].totalVisits);
         labels.push(this.crcSchoolNames[i].schoolName);
         this.chartData.push({ x: Number(this.crcSchoolNames[i][this.xAxis]), y: Number(this.crcSchoolNames[i][this.yAxis]) });
       }
-      var obj = {
+      let obj = {
         xAxis: this.xAxis,
-        yAxis: this.yAxis
+        yAxis: this.yAxis,
+        pointBackgroundColor: colors
       }
+      this.dataSource = await new MatTableDataSource(this.ELEMENT_DATA);
+      // this.dataSource.sort = await this.sort;
+
       this.loaderAndErr();
       this.createChart(labels, this.chartData, this.tableHead, obj);
       this.changeDetection.markForCheck();
@@ -338,14 +416,13 @@ export class BarChartComponent implements OnInit {
   }
 
   createChart(labels, chartData, name, obj) {
-
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
       data: {
         labels: labels,
         datasets: [{
           data: chartData,
-          backgroundColor: "#24a0ed",
+          pointBackgroundColor: obj.pointBackgroundColor,
           pointRadius: 6
         }]
       },
@@ -354,7 +431,6 @@ export class BarChartComponent implements OnInit {
           display: false
         },
         tooltips: {
-
           callbacks: {
             label: function (tooltipItem, data) {
               var label = data.labels[tooltipItem.index];
@@ -422,7 +498,6 @@ export class BarChartComponent implements OnInit {
       this.districtWise();
     }
     if (this.dist) {
-      console.log(this.dist);
       this.myDistData(JSON.parse(localStorage.getItem('distId')));
     }
     if (this.blok) {

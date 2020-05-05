@@ -138,9 +138,9 @@
             </div>
             <div class="row" style="margin-top: 8px;">
                 <div class="col-sm-12">
-                    <div style="height: 430px;">
-                        <div style="width: 100%;">
-                            <canvas id="myChart"></canvas>
+                    <div>
+                        <div>
+                            <canvas id="myChart" height="45vh" width="80vw"></canvas>
                             <!-- <canvas baseChart [datasets]="scatterChartData" [options]="scatterChartOptions"
                                 [chartType]="scatterChartType">
                             </canvas>
@@ -153,270 +153,311 @@
 
         </div>
         <div class="col-sm-5">
-            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="dist_table" style="display: none;">
-                <div class="wrapper">
-                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-                        <ng-container matColumnDef="districtName">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
-                        </ng-container>
+            <div class="row">
+                <div class="table-wrapper-scroll-y my-custom-scrollbar" id="dist_table" style="display: none;">
+                    <div class="wrapper">
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8"
+                            matSortActive="created" matSortDisableClear matSortDirection="asc">
+                            <ng-container matColumnDef="districtName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
+                            </ng-container>
 
-                        <ng-container matColumnDef="visit_0">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
-                        </ng-container>
+                            <ng-container matColumnDef="visit_0">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
+                            </ng-container>
 
-                        <ng-container matColumnDef="visit_1_2">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
-                        </ng-container>
+                            <ng-container matColumnDef="visit_1_2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
+                            </ng-container>
 
-                        <ng-container matColumnDef="visit_3_5">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
-                        </ng-container>
+                            <ng-container matColumnDef="visit_3_5">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
+                            </ng-container>
 
-                        <ng-container matColumnDef="visit_6_10">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
-                        </ng-container>
+                            <ng-container matColumnDef="visit_6_10">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
+                            </ng-container>
 
-                        <ng-container matColumnDef="visit_10_more">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
-                        </ng-container>
+                            <ng-container matColumnDef="visit_10_more">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
+                            </ng-container>
 
-                        <ng-container matColumnDef="visits_per_school">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="no_of_schools_per_crc">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
-                            <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="percentage_crc_visited_school">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="totalSchools">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
-                            <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="totalVisits">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
-                            <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
-                        </ng-container>
+                            <ng-container matColumnDef="visits_per_school">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="no_of_schools_per_crc">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
+                                <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="percentage_crc_visited_school">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="totalSchools">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
+                                <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="totalVisits">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
+                                <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
+                            </ng-container>
 
 
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
 
-                    <!-- Angular 8 pagination -->
-                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                        <!-- Angular 8 pagination -->
+                        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                    </div>
+                </div>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar" id="block_table" style="display: none;">
+                    <div class="wrapper">
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8"
+                            matSortActive="created" matSortDisableClear matSortDirection="asc">
+                            <ng-container matColumnDef="blockName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Block Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element['blockName']}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="districtName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element['districtName']}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_0">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_1_2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_3_5">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_6_10">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_10_more">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visits_per_school">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="no_of_schools_per_crc">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
+                                <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="percentage_crc_visited_school">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totalSchools">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
+                                <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totalVisits">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
+                                <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                        <!-- Angular 8 pagination -->
+                        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                    </div>
+                </div>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar" id="cluster_table" style="display: none;">
+                    <div class="wrapper">
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8"
+                            matSortActive="created" matSortDisableClear matSortDirection="asc">
+                            <ng-container matColumnDef="clusterName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cluster Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.clusterName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="blockName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Block Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.blockName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="districtName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_0">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_1_2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_3_5">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_6_10">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_10_more">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visits_per_school">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="no_of_schools_per_crc">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
+                                <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="percentage_crc_visited_school">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="totalSchools">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
+                                <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="totalVisits">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
+                                <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                        <!-- Angular 8 pagination -->
+                        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                    </div>
+                </div>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar" id="school_table" style="display: none;">
+                    <div class="wrapper">
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8"
+                            matSortActive="created" matSortDisableClear matSortDirection="asc">
+                            <ng-container matColumnDef="schoolName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> School Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.schoolName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="clusterName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cluster Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.clusterName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="blockName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Block Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.blockName}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="districtName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_0">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_1_2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_3_5">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_6_10">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visit_10_more">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="visits_per_school">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
+                                <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="no_of_schools_per_crc">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
+                                <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="percentage_crc_visited_school">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="totalSchools">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
+                                <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="totalVisits">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
+                                <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                        <!-- Angular 8 pagination -->
+                        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                    </div>
                 </div>
             </div>
-            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="block_table" style="display: none;">
-                <div class="wrapper">
-                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-                        <ng-container matColumnDef="districtName">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_0">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_1_2">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_3_5">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_6_10">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_10_more">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visits_per_school">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="no_of_schools_per_crc">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
-                            <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="percentage_crc_visited_school">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="totalSchools">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
-                            <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="totalVisits">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
-                            <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
-                        </ng-container>
-
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
-
-                    <!-- Angular 8 pagination -->
-                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+            <div class="row" style="line-height: .6em; margin-top: 30px; font-size: 12px;">
+                <div class="col-sm-6">
+                    <p> Total schools visited:</p>
+                    <p> Total schools not visited:</p>
                 </div>
-            </div>
-            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="cluster_table" style="display: none;">
-                <div class="wrapper">
-                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-                        <ng-container matColumnDef="districtName">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
-                        </ng-container>
+                <!-- <div class="col-sm-6">
+                    <p> Total visited records:</p>
+                    <p> Total not visited records:</p>
 
-                        <ng-container matColumnDef="visit_0">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_1_2">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_3_5">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_6_10">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_10_more">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visits_per_school">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="no_of_schools_per_crc">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
-                            <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="percentage_crc_visited_school">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="totalSchools">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
-                            <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="totalVisits">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
-                            <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
-                        </ng-container>
-
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
-
-                    <!-- Angular 8 pagination -->
-                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
-                </div>
-            </div>
-            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="school_table" style="display: none;">
-                <div class="wrapper">
-                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-                        <ng-container matColumnDef="districtName">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> District Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_0">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-0 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_0}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_1_2">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-1 to 2 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_1_2}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_3_5">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-3 to 5 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_3_5}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_6_10">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit-6 to 10 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_6_10}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visit_10_more">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit more than-10 times(%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visit_10_more}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="visits_per_school">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit per Schools </th>
-                            <td mat-cell *matCellDef="let element"> {{element.visits_per_school}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="no_of_schools_per_crc">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> No of schools per CRC </th>
-                            <td mat-cell *matCellDef="let element"> {{element.no_of_schools_per_crc}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="percentage_crc_visited_school">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visited schools per CRC (%) </th>
-                            <td mat-cell *matCellDef="let element"> {{element.percentage_crc_visited_school}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="totalSchools">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Schools </th>
-                            <td mat-cell *matCellDef="let element"> {{element.totalSchools}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="totalVisits">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Visits </th>
-                            <td mat-cell *matCellDef="let element"> {{element.totalVisits}} </td>
-                        </ng-container>
-
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
-
-                    <!-- Angular 8 pagination -->
-                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
-                </div>
-            </div>
-
-            <div style="line-height: .6em; margin-top: 30px; font-size: 12px;">
-                <p> Total schools visited:</p>
-                <p> Total schools not visited:</p>
-                <p> Total visited records:</p>
-                <p> Total not visited records:</p>
+                </div> -->
             </div>
         </div>
     </div>
 
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; height: 22px;">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; height: 22px;position: fixed; bottom: 0; left: 0;">
         <div class="col-sm-4">
             <span>Number of visits(total): {{visitCount}}</span>
         </div>
@@ -427,4 +468,5 @@
             <span style="float: right;">Date range: {{dateRange}}</span>
         </div>
     </div>
+
 </div>
