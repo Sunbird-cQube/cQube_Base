@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
+import * as data from './../../assets/india.json';
 
 declare let L;
 
@@ -73,6 +74,16 @@ export class MapViewComponent implements OnInit {
     const lat = 22.3660414123535;
     const lng = 71.48396301269531;
     globalMap = L.map('mapContainer').setView([lat, lng], 7);
+    applyCountryBorder(globalMap);
+
+    function applyCountryBorder(map) {
+      L.geoJSON(data['features'][0], {
+        color: "#a9a9a9",
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.0
+      }).addTo(map);
+    }
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
       {
         token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -135,6 +146,7 @@ export class MapViewComponent implements OnInit {
     this.skul = true;
     this.fileName = "District_wise_report";
     this.districtsNames = [];
+    this.reportData = [];
     this.studentCount = 0;
     this.schoolCount = 0;
     this.hierName = '';
