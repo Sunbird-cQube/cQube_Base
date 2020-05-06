@@ -2,9 +2,9 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 var const_data = require('../../api/lib/config');
 
-router.post('/', function(req, res) {
+router.post('/', function (req, res) {
     const_data['getParams']['Key'] = 'static/users.json'
-    const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
+    const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
         if (err) {
             console.log(err);
             res.send([]);
@@ -16,7 +16,7 @@ router.post('/', function(req, res) {
             const user = users.find(u => u.user_email === req.body.email && u.password === req.body.cnfpass);
             if (user) {
                 jwt.sign(user, 'secret', { expiresIn: '24h' }, (err, data) => {
-                    res.status(200).json({ msg: "Logged In", token: data });
+                    res.status(200).json({ msg: "Logged In", token: data, role: 'admin' });
                 })
             } else {
                 res.send({ errMsg: "Username/ Password is wrong" });

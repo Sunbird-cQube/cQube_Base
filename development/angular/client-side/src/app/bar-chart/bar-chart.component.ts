@@ -3,17 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ExportToCsv } from 'export-to-csv';
-
-
-// export interface PeriodicElement {
-//   districtName: string;
-//   visit_0: number;
-//   visit_3_5: number;
-//   visit_6_10: number;l;k
-// }
-
+declare const $;
 
 @Component({
   selector: 'app-bar-chart',
@@ -22,12 +13,11 @@ import { ExportToCsv } from 'export-to-csv';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BarChartComponent implements OnInit {
-  public ELEMENT_DATA: any;
-  public displayedColumns: any;
-  public dataSource: any;
+  dataTable: any;
+  dtOptions: any;
+  tableData: any = [];
 
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('dataTable', { static: true }) table;
 
   public title: string = '';
   public titleName: string = '';
@@ -52,7 +42,7 @@ export class BarChartComponent implements OnInit {
   public myCluster: any;
   public colors: any;
   public studentCount: any;
-  public schoolCount: Number;
+  public schoolCount: any;
   public dateRange: any = '';
   public dist: boolean = false;
   public blok: boolean = false;
@@ -63,6 +53,9 @@ export class BarChartComponent implements OnInit {
   public blockName: any;
   public clustName: any;
   public visitCount: any;
+
+  public visitedSchools: any;
+  public notVisitedSchools: any;
 
   public styles: any = [];
   public labelOptions: any = {};
@@ -107,14 +100,10 @@ export class BarChartComponent implements OnInit {
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
 
-  async ngOnInit() {
-    // if (this.dataSource.length > 0) {
-    // this.dataSource.sort = this.sort;
-    // }
+  ngOnInit() {
     this.createChart(["clg"], [], '', {});
     this.districtWise();
   }
-
 
   loaderAndErr() {
     if (this.scatterChart !== null) {
@@ -133,13 +122,13 @@ export class BarChartComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
   }
   public tableHead: any;
-  public tableData: any = [];
   public chartData: any = [];
   districtWise() {
-    document.getElementById('dist_table').style.display = 'block';
-    document.getElementById('block_table').style.display = 'none';
-    document.getElementById('cluster_table').style.display = 'none';
-    document.getElementById('school_table').style.display = 'none';
+    if (this.result.length! > 0) {
+      $('#table').DataTable().destroy();
+      $('#table').empty();
+    }
+
     this.scatterChart.destroy();
     this.tableHead = "District Name";
     this.fileName = "Dist_level_CRC_Report";
@@ -158,11 +147,6 @@ export class BarChartComponent implements OnInit {
 
     this.tableData = [];
 
-    this.displayedColumns = [
-      'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
-      'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
-    ];
-
     this.dateRange = localStorage.getItem('dateRange');
     // if (this.result.length > 0) {
     if (JSON.parse(localStorage.getItem('resData')) !== null) {
@@ -170,25 +154,50 @@ export class BarChartComponent implements OnInit {
       var labels = [];
       this.result = JSON.parse(localStorage.getItem('resData'));
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.result.length, 'rgb');
-      this.ELEMENT_DATA = this.crcDistrictsNames = this.result;
+      this.crcDistrictsNames = this.result;
       for (var i = 0; i < this.result.length; i++) {
-        this.schoolCount = this.schoolCount + this.result[i].totalSchools;
-        this.visitCount = this.visitCount + Number(this.result[i].totalVisits);
+        console.log(parseInt(this.result[i].totalVisits));
+        if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
+          this.schoolCount = this.schoolCount + this.result[i].totalSchools;
+          this.visitCount = this.visitCount + parseInt(this.result[i].totalVisits);
+        }
         this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
         labels.push(this.result[i].districtName);
         this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
       }
+      this.countVisitedAndNotVisited(this.result);
+
       let obj = {
         xAxis: this.xAxis,
         yAxis: this.yAxis,
         pointBackgroundColor: colors
       }
 
-      this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-      this.dataSource.sort = this.sort;
-
       this.createChart(labels, this.chartData, this.tableHead, obj);
       this.loaderAndErr();
+
+      this.tableData = this.result;
+      this.dtOptions = {
+        data: this.tableData,
+        iDisplayLength: this.result.length,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bPaginate": false,
+        columns: [
+          { title: 'District Name', data: 'districtName' },
+          { title: 'Visit 0', data: 'visit_0' },
+          { title: 'Visit 1-2', data: 'visit_1_2' },
+          { title: 'Visit 3-5', data: 'visit_3_5' },
+          { title: 'Visit 6-10', data: 'visit_6_10' },
+          { title: 'Visit > 10', data: 'visit_10_more' },
+          { title: 'No of schools per crc', data: 'no_of_schools_per_crc' },
+          { title: "Visits per schools", data: "visits_per_school" },
+          { title: "Total schools", data: "totalSchools" },
+          { title: "Total visits", data: "totalVisits" }
+        ]
+      };
+      this.dataTable = $(this.table.nativeElement);
+      this.dataTable.DataTable(this.dtOptions);
       this.changeDetection.markForCheck();
     } else {
       this.schoolCount = 0;
@@ -198,8 +207,6 @@ export class BarChartComponent implements OnInit {
         localStorage.setItem('resData', JSON.stringify(res));
         this.result = res;
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.result.length, 'rgb');
-
-        this.ELEMENT_DATA = this.result;
         if (this.result.length > 0) {
           var labels = [];
           this.reportData = this.crcDistrictsNames = this.result;
@@ -210,16 +217,40 @@ export class BarChartComponent implements OnInit {
             labels.push(this.result[i].districtName);
             this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
           }
+
+          this.countVisitedAndNotVisited(this.result);
+
           let obj = {
             xAxis: this.xAxis,
             yAxis: this.yAxis,
             pointBackgroundColor: colors
           }
 
-          this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-          // this.dataSource.sort = this.sort;
-
           this.createChart(labels, this.chartData, this.tableHead, obj);
+
+          this.tableData = this.result;
+          this.dtOptions = {
+            data: this.tableData,
+            iDisplayLength: this.result.length,
+            "bLengthChange": false,
+            "bInfo": false,
+            "bPaginate": false,
+            columns: [
+              { title: 'District Name', data: 'districtName' },
+              { title: 'Visit 0', data: 'visit_0' },
+              { title: 'Visit 1-2', data: 'visit_1_2' },
+              { title: 'Visit 3-5', data: 'visit_3_5' },
+              { title: 'Visit 6-10', data: 'visit_6_10' },
+              { title: 'Visit > 10', data: 'visit_10_more' },
+              { title: 'No of schools per crc', data: 'no_of_schools_per_crc' },
+              { title: "Visits per schools", data: "visits_per_school" },
+              { title: "Total schools", data: "totalSchools" },
+              { title: "Total visits", data: "totalVisits" },
+            ]
+          };
+          this.dataTable = $(this.table.nativeElement);
+          this.dataTable.DataTable(this.dtOptions);
+
           this.loaderAndErr();
           this.changeDetection.markForCheck();
         }
@@ -229,10 +260,7 @@ export class BarChartComponent implements OnInit {
 
 
   myDistData(data) {
-    document.getElementById('dist_table').style.display = 'none';
-    document.getElementById('block_table').style.display = 'block';
-    document.getElementById('cluster_table').style.display = 'none';
-    document.getElementById('school_table').style.display = 'none';
+
     this.scatterChart.destroy();
     this.blockHidden = false;
     this.clusterHidden = true;
@@ -254,16 +282,13 @@ export class BarChartComponent implements OnInit {
     localStorage.setItem('dist', obj.name);
     localStorage.setItem('distId', data);
 
-    // this.dataSource = {};
-    this.displayedColumns = [
-      'blockName', 'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
-      'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
-    ];
     this.service.crcBlockWiseData(data).subscribe((result: any) => {
+      console.log(result);
+      $('#table').DataTable().destroy();
+      $('#table').empty();
       this.reportData = this.crcBlocksNames = result;
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.crcBlocksNames.length, 'rgb');
 
-      this.ELEMENT_DATA = this.crcBlocksNames;
       if (this.result.length > 0) {
         var labels = [];
         for (var i = 0; i < this.crcBlocksNames.length; i++) {
@@ -273,16 +298,41 @@ export class BarChartComponent implements OnInit {
           labels.push(this.crcBlocksNames[i].blockName);
           this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
         }
+
+        this.countVisitedAndNotVisited(this.crcBlocksNames);
+
         let obj = {
           xAxis: this.xAxis,
           yAxis: this.yAxis,
           pointBackgroundColor: colors
         }
-
-        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-        this.dataSource.sort = this.sort;
-
         this.createChart(labels, this.chartData, this.tableHead, obj);
+
+        this.tableData = this.crcBlocksNames;
+        this.dtOptions = {
+          data: this.tableData,
+          iDisplayLength: this.crcBlocksNames.length,
+          "bLengthChange": false,
+          "bInfo": false,
+          "bPaginate": false,
+          columns: [
+            { title: 'Block Name', data: 'blockName' },
+            { title: 'District Name', data: 'districtName' },
+            { title: 'Visit 0', data: 'visit_0' },
+            { title: 'Visit 1-2', data: 'visit_1_2' },
+            { title: 'Visit 3-5', data: 'visit_3_5' },
+            { title: 'Visit 6-10', data: 'visit_6_10' },
+            { title: 'Visit > 10', data: 'visit_10_more' },
+            { title: 'No of schools per crc', data: 'no_of_schools_per_crc' },
+            { title: "Visits per schools", data: "visits_per_school" },
+            { title: "Total schools", data: "totalSchools" },
+            { title: "Total visits", data: "totalVisits" }
+          ]
+        };
+        this.dataTable = $(this.table.nativeElement);
+        this.dataTable.DataTable(this.dtOptions);
+
+
         this.changeDetection.markForCheck();
         this.loaderAndErr();
       }
@@ -292,10 +342,7 @@ export class BarChartComponent implements OnInit {
   }
 
   myBlockData(data) {
-    document.getElementById('dist_table').style.display = 'none';
-    document.getElementById('block_table').style.display = 'none';
-    document.getElementById('cluster_table').style.display = 'block';
-    document.getElementById('school_table').style.display = 'none';
+
     this.scatterChart.destroy();
     this.clusterHidden = false;
     this.blockHidden = false;
@@ -320,14 +367,13 @@ export class BarChartComponent implements OnInit {
     localStorage.setItem('block', JSON.stringify(obj.name));
     this.hierName = obj.name;
 
-    this.displayedColumns = [
-      'clusterName', 'blockName', 'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
-      'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
-    ];
     this.service.crcClusterWiseData(JSON.parse(localStorage.getItem('distId')), data).subscribe((result: any) => {
+
+      $('#table').DataTable().destroy();
+      $('#table').empty();
+
       this.reportData = this.crcClusterNames = result;
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.crcClusterNames.length, 'rgb');
-      this.ELEMENT_DATA = this.crcClusterNames;
       var labels = [];
       for (var i = 0; i < this.crcClusterNames.length; i++) {
         this.schoolCount = this.schoolCount + this.crcClusterNames[i].totalSchools;
@@ -336,16 +382,42 @@ export class BarChartComponent implements OnInit {
         labels.push(this.crcClusterNames[i].clusterName);
         this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
       }
+
+      this.countVisitedAndNotVisited(this.crcClusterNames);
+
       let obj = {
         xAxis: this.xAxis,
         yAxis: this.yAxis,
         pointBackgroundColor: colors
       }
 
-      this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-      // this.dataSource.sort = this.sort;
-
       this.createChart(labels, this.chartData, this.tableHead, obj);
+
+      this.tableData = this.reportData;
+      this.dtOptions = {
+        data: this.tableData,
+        iDisplayLength: this.reportData.length,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bPaginate": false,
+        columns: [
+          { title: 'Cluster Name', data: 'clusterName' },
+          { title: 'Block Name', data: 'blockName' },
+          { title: 'District Name', data: 'districtName' },
+          { title: 'Visit 0', data: 'visit_0' },
+          { title: 'Visit 1-2', data: 'visit_1_2' },
+          { title: 'Visit 3-5', data: 'visit_3_5' },
+          { title: 'Visit 6-10', data: 'visit_6_10' },
+          { title: 'Visit > 10', data: 'visit_10_more' },
+          { title: 'No of schools per crc', data: 'no_of_schools_per_crc' },
+          { title: "Visits per schools", data: "visits_per_school" },
+          { title: "Total schools", data: "totalSchools" },
+          { title: "Total visits", data: "totalVisits" }
+        ]
+      };
+      this.dataTable = $(this.table.nativeElement);
+      this.dataTable.DataTable(this.dtOptions);
+
       this.changeDetection.markForCheck();
       this.loaderAndErr();
     });
@@ -356,10 +428,7 @@ export class BarChartComponent implements OnInit {
   }
 
   myClusterData(data) {
-    document.getElementById('dist_table').style.display = 'none';
-    document.getElementById('block_table').style.display = 'none';
-    document.getElementById('cluster_table').style.display = 'none';
-    document.getElementById('school_table').style.display = 'block';
+
     this.scatterChart.destroy();
     this.tableHead = "School Name";
     this.errMsg();
@@ -384,14 +453,11 @@ export class BarChartComponent implements OnInit {
     this.hierName = obj.name;
     localStorage.setItem('clusterId', data);
 
-    this.displayedColumns = [
-      'schoolName', 'clusterName', 'blockName', 'districtName', 'visit_0', 'visit_1_2', 'visit_3_5', 'visit_6_10', 'visit_10_more', 'visits_per_school',
-      'no_of_schools_per_crc', 'percentage_crc_visited_school', 'totalSchools', 'totalVisits'
-    ];
     this.service.crcSchoolWiseData(distId, blockId, data).subscribe(async (result: any) => {
+      $('#table').DataTable().destroy();
+      $('#table').empty();
       this.reportData = this.crcSchoolNames = result;
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.crcSchoolNames.length, 'rgb');
-      this.ELEMENT_DATA = this.crcSchoolNames;
 
       var labels = [];
       for (var i = 0; i < this.crcSchoolNames.length; i++) {
@@ -400,19 +466,52 @@ export class BarChartComponent implements OnInit {
         labels.push(this.crcSchoolNames[i].schoolName);
         this.chartData.push({ x: Number(this.crcSchoolNames[i][this.xAxis]), y: Number(this.crcSchoolNames[i][this.yAxis]) });
       }
+
+      this.countVisitedAndNotVisited(this.crcSchoolNames);
+
       let obj = {
         xAxis: this.xAxis,
         yAxis: this.yAxis,
         pointBackgroundColor: colors
       }
-      this.dataSource = await new MatTableDataSource(this.ELEMENT_DATA);
-      // this.dataSource.sort = await this.sort;
+
+      this.createChart(labels, this.chartData, this.tableHead, obj);
+
+      this.tableData = this.crcSchoolNames;
+      this.dtOptions = {
+        data: this.tableData,
+        iDisplayLength: this.crcSchoolNames.length,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bPaginate": false,
+        columns: [
+          { title: 'School Name', data: 'schoolName' },
+          { title: 'Cluster Name', data: 'clusterName' },
+          { title: 'Block Name', data: 'blockName' },
+          { title: 'District Name', data: 'districtName' },
+          { title: 'Visit 0', data: 'visit_0' },
+          { title: 'Visit 1-2', data: 'visit_1_2' },
+          { title: 'Visit 3-5', data: 'visit_3_5' },
+          { title: 'Visit 6-10', data: 'visit_6_10' },
+          { title: 'Visit > 10', data: 'visit_10_more' },
+          { title: 'No of schools per crc', data: 'no_of_schools_per_crc' },
+          { title: "Visits per schools", data: "visits_per_school" },
+          { title: "Total schools", data: "totalSchools" },
+          { title: "Total visits", data: "totalVisits" }
+        ]
+      };
+      this.dataTable = $(this.table.nativeElement);
+      this.dataTable.DataTable(this.dtOptions);
 
       this.loaderAndErr();
-      this.createChart(labels, this.chartData, this.tableHead, obj);
       this.changeDetection.markForCheck();
     });
     document.getElementById('home').style.display = 'block';
+  }
+
+  countVisitedAndNotVisited(data) {
+    this.visitedSchools = data[data.length - 1].totalSchoolsVisited;
+    this.notVisitedSchools = data[data.length - 1].totalSchoolsNotVisited;
   }
 
   createChart(labels, chartData, name, obj) {
