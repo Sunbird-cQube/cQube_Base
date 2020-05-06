@@ -19,6 +19,16 @@ const crcBlockWise = require('../api/controller/crcRoutes/blockWise');
 const crcClusterWise = require('../api/controller/crcRoutes/clusterWise');
 const crcSchoolWise = require('../api/controller/crcRoutes/schoolWise');
 
+const semDistrictWise = require('../api/controller/semRoutes/districtWise');
+const semBlockWise = require('../api/controller/semRoutes/blockWise');
+const semClusterWise = require('../api/controller/semRoutes/clusterWise');
+const semSchoolWise = require('../api/controller/semRoutes/schoolWise');
+// sem routes
+router.use('/sem', semDistrictWise);
+router.use('/sem', semBlockWise);
+router.use('/sem', semClusterWise);
+router.use('/sem', semSchoolWise);
+
 // crc routes
 router.use('/crc', crcDistrictWise);
 router.use('/crc', crcBlockWise);

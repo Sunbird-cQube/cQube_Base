@@ -5,7 +5,7 @@ import { UserViewComponent } from './user-view/user-view.component';
 import { MapViewComponent } from './map-view/map-view.component';
 import { HomeComponent } from './home/home.component';
 import { TeacherAttendanceComponent } from './teacher-attendance/teacher-attendance.component';
-import { SemesterReportComponent } from './semester-report/semester-report.component';
+import { SemViewComponent } from './sem-view/sem-view.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { AuthGuard } from './auth.guard';
 
@@ -25,7 +25,7 @@ const routes: Routes = [
         path: 'teacher-attendance', component: TeacherAttendanceComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'semester-report', component: SemesterReportComponent, canActivateChild: [AuthGuard]
+        path: 'semester-report', component: SemViewComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'crc-report', component: BarChartComponent, canActivateChild: [AuthGuard]

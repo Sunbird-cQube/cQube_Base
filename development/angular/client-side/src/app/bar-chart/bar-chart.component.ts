@@ -153,10 +153,12 @@ export class BarChartComponent implements OnInit {
       this.chartData = [];
       var labels = [];
       this.result = JSON.parse(localStorage.getItem('resData'));
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.result.length, 'rgb');
+
+      let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+
       this.crcDistrictsNames = this.result;
       for (var i = 0; i < this.result.length; i++) {
-        console.log(parseInt(this.result[i].totalVisits));
         if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
           this.schoolCount = this.schoolCount + this.result[i].totalSchools;
           this.visitCount = this.visitCount + parseInt(this.result[i].totalVisits);
@@ -167,9 +169,11 @@ export class BarChartComponent implements OnInit {
       }
       this.countVisitedAndNotVisited(this.result);
 
+      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
       let obj = {
-        xAxis: this.xAxis,
-        yAxis: this.yAxis,
+        xAxis: x_axis.value,
+        yAxis: y_axis.value,
         pointBackgroundColor: colors
       }
 
@@ -183,14 +187,22 @@ export class BarChartComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+        paging: false,
+        fixedColumns: {
+          leftColumns: 1,
+          rightColumns: 1
+        },
         columns: [
           { title: 'District Name', data: 'districtName' },
-          { title: 'Visit 0', data: 'visit_0' },
-          { title: 'Visit 1-2', data: 'visit_1_2' },
-          { title: 'Visit 3-5', data: 'visit_3_5' },
-          { title: 'Visit 6-10', data: 'visit_6_10' },
-          { title: 'Visit > 10', data: 'visit_10_more' },
-          { title: 'No of schools per crc', data: 'no_of_schools_per_crc' },
+          { title: 'Visit-0 times (%)', data: 'visit_0' },
+          { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
+          { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
+          { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
+          { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+          { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
           { title: "Visits per schools", data: "visits_per_school" },
           { title: "Total schools", data: "totalSchools" },
           { title: "Total visits", data: "totalVisits" }
@@ -206,13 +218,18 @@ export class BarChartComponent implements OnInit {
       this.service.crcDistWiseData().subscribe(res => {
         localStorage.setItem('resData', JSON.stringify(res));
         this.result = res;
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.result.length, 'rgb');
+
+        let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
+        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+
         if (this.result.length > 0) {
           var labels = [];
           this.reportData = this.crcDistrictsNames = this.result;
           for (var i = 0; i < this.result.length; i++) {
-            this.schoolCount = this.schoolCount + this.result[i].totalSchools;
-            this.visitCount = this.visitCount + Number(this.result[i].totalVisits);
+            if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
+              this.schoolCount = this.schoolCount + this.result[i].totalSchools;
+              this.visitCount = this.visitCount + Number(this.result[i].totalVisits);
+            }
             this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
             labels.push(this.result[i].districtName);
             this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
@@ -220,9 +237,11 @@ export class BarChartComponent implements OnInit {
 
           this.countVisitedAndNotVisited(this.result);
 
+          let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+          let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
           let obj = {
-            xAxis: this.xAxis,
-            yAxis: this.yAxis,
+            xAxis: x_axis.value,
+            yAxis: y_axis.value,
             pointBackgroundColor: colors
           }
 
@@ -235,17 +254,24 @@ export class BarChartComponent implements OnInit {
             "bLengthChange": false,
             "bInfo": false,
             "bPaginate": false,
+            scrollY: 300,
+            scrollX: true,
+            scrollCollapse: true,
+            paging: false,
+            fixedColumns: {
+              leftColumns: 1
+            },
             columns: [
               { title: 'District Name', data: 'districtName' },
-              { title: 'Visit 0', data: 'visit_0' },
-              { title: 'Visit 1-2', data: 'visit_1_2' },
-              { title: 'Visit 3-5', data: 'visit_3_5' },
-              { title: 'Visit 6-10', data: 'visit_6_10' },
-              { title: 'Visit > 10', data: 'visit_10_more' },
-              { title: 'No of schools per crc', data: 'no_of_schools_per_crc' },
+              { title: 'Visit-0 times (%)', data: 'visit_0' },
+              { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
+              { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
+              { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
+              { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+              { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
               { title: "Visits per schools", data: "visits_per_school" },
               { title: "Total schools", data: "totalSchools" },
-              { title: "Total visits", data: "totalVisits" },
+              { title: "Total visits", data: "totalVisits" }
             ]
           };
           this.dataTable = $(this.table.nativeElement);
@@ -287,13 +313,17 @@ export class BarChartComponent implements OnInit {
       $('#table').DataTable().destroy();
       $('#table').empty();
       this.reportData = this.crcBlocksNames = result;
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.crcBlocksNames.length, 'rgb');
+
+      let sorted = this.crcBlocksNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
 
       if (this.result.length > 0) {
         var labels = [];
         for (var i = 0; i < this.crcBlocksNames.length; i++) {
-          this.schoolCount = this.schoolCount + this.crcBlocksNames[i].totalSchools;
-          this.visitCount = this.visitCount + Number(this.crcBlocksNames[i].totalVisits);
+          if (typeof (this.crcBlocksNames[i].totalSchools) === "number" && typeof (parseInt(this.crcBlocksNames[i].totalVisits)) === "number") {
+            this.schoolCount = this.schoolCount + this.crcBlocksNames[i].totalSchools;
+            this.visitCount = this.visitCount + Number(this.crcBlocksNames[i].totalVisits);
+          }
           this.blocksNames.push({ id: this.crcBlocksNames[i].blockId, name: this.crcBlocksNames[i].blockName });
           labels.push(this.crcBlocksNames[i].blockName);
           this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
@@ -301,11 +331,14 @@ export class BarChartComponent implements OnInit {
 
         this.countVisitedAndNotVisited(this.crcBlocksNames);
 
+        let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+        let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
         let obj = {
-          xAxis: this.xAxis,
-          yAxis: this.yAxis,
+          xAxis: x_axis.value,
+          yAxis: y_axis.value,
           pointBackgroundColor: colors
         }
+
         this.createChart(labels, this.chartData, this.tableHead, obj);
 
         this.tableData = this.crcBlocksNames;
@@ -315,15 +348,22 @@ export class BarChartComponent implements OnInit {
           "bLengthChange": false,
           "bInfo": false,
           "bPaginate": false,
+          scrollY: 300,
+          scrollX: true,
+          scrollCollapse: true,
+          paging: false,
+          fixedColumns: {
+            leftColumns: 1
+          },
           columns: [
             { title: 'Block Name', data: 'blockName' },
             { title: 'District Name', data: 'districtName' },
-            { title: 'Visit 0', data: 'visit_0' },
-            { title: 'Visit 1-2', data: 'visit_1_2' },
-            { title: 'Visit 3-5', data: 'visit_3_5' },
-            { title: 'Visit 6-10', data: 'visit_6_10' },
-            { title: 'Visit > 10', data: 'visit_10_more' },
-            { title: 'No of schools per crc', data: 'no_of_schools_per_crc' },
+            { title: 'Visit-0 times (%)', data: 'visit_0' },
+            { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
+            { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
+            { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
+            { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+            { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
             { title: "Visits per schools", data: "visits_per_school" },
             { title: "Total schools", data: "totalSchools" },
             { title: "Total visits", data: "totalVisits" }
@@ -373,11 +413,16 @@ export class BarChartComponent implements OnInit {
       $('#table').empty();
 
       this.reportData = this.crcClusterNames = result;
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.crcClusterNames.length, 'rgb');
+
+      let sorted = this.crcClusterNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+
       var labels = [];
       for (var i = 0; i < this.crcClusterNames.length; i++) {
-        this.schoolCount = this.schoolCount + this.crcClusterNames[i].totalSchools;
-        this.visitCount = this.visitCount + Number(this.crcClusterNames[i].totalVisits);
+        if (typeof (this.crcClusterNames[i].totalSchools) === "number" && typeof (parseInt(this.crcClusterNames[i].totalVisits)) === "number") {
+          this.schoolCount = this.schoolCount + this.crcClusterNames[i].totalSchools;
+          this.visitCount = this.visitCount + Number(this.crcClusterNames[i].totalVisits);
+        }
         this.clusterNames.push({ id: this.crcClusterNames[i].clusterId, name: this.crcClusterNames[i].clusterName });
         labels.push(this.crcClusterNames[i].clusterName);
         this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
@@ -385,9 +430,11 @@ export class BarChartComponent implements OnInit {
 
       this.countVisitedAndNotVisited(this.crcClusterNames);
 
+      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
       let obj = {
-        xAxis: this.xAxis,
-        yAxis: this.yAxis,
+        xAxis: x_axis.value,
+        yAxis: y_axis.value,
         pointBackgroundColor: colors
       }
 
@@ -400,16 +447,23 @@ export class BarChartComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
+        scrollY: 300,
+        scrollX: true,
+        scrollCollapse: true,
+        paging: false,
+        fixedColumns: {
+          leftColumns: 1
+        },
         columns: [
           { title: 'Cluster Name', data: 'clusterName' },
           { title: 'Block Name', data: 'blockName' },
           { title: 'District Name', data: 'districtName' },
-          { title: 'Visit 0', data: 'visit_0' },
-          { title: 'Visit 1-2', data: 'visit_1_2' },
-          { title: 'Visit 3-5', data: 'visit_3_5' },
-          { title: 'Visit 6-10', data: 'visit_6_10' },
-          { title: 'Visit > 10', data: 'visit_10_more' },
-          { title: 'No of schools per crc', data: 'no_of_schools_per_crc' },
+          { title: 'Visit-0 times (%)', data: 'visit_0' },
+          { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
+          { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
+          { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
+          { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+          { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
           { title: "Visits per schools", data: "visits_per_school" },
           { title: "Total schools", data: "totalSchools" },
           { title: "Total visits", data: "totalVisits" }
@@ -457,21 +511,27 @@ export class BarChartComponent implements OnInit {
       $('#table').DataTable().destroy();
       $('#table').empty();
       this.reportData = this.crcSchoolNames = result;
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.crcSchoolNames.length, 'rgb');
+
+      let sorted = this.crcSchoolNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
 
       var labels = [];
       for (var i = 0; i < this.crcSchoolNames.length; i++) {
-        this.schoolCount = this.schoolCount + this.crcSchoolNames[i].totalSchools;
-        this.visitCount = this.visitCount + Number(this.crcSchoolNames[i].totalVisits);
+        if (typeof (this.crcSchoolNames[i].totalSchools) === "number" && typeof (parseInt(this.crcSchoolNames[i].totalVisits)) === "number") {
+          this.schoolCount = this.schoolCount + this.crcSchoolNames[i].totalSchools;
+          this.visitCount = this.visitCount + Number(this.crcSchoolNames[i].totalVisits);
+        }
         labels.push(this.crcSchoolNames[i].schoolName);
         this.chartData.push({ x: Number(this.crcSchoolNames[i][this.xAxis]), y: Number(this.crcSchoolNames[i][this.yAxis]) });
       }
 
       this.countVisitedAndNotVisited(this.crcSchoolNames);
 
+      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
       let obj = {
-        xAxis: this.xAxis,
-        yAxis: this.yAxis,
+        xAxis: x_axis.value,
+        yAxis: y_axis.value,
         pointBackgroundColor: colors
       }
 
@@ -484,17 +544,25 @@ export class BarChartComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
+        scrollY: 300,
+        scrollX: true,
+        scrollCollapse: true,
+        paging: false,
+
+        fixedColumns: {
+          leftColumns: 1
+        },
         columns: [
           { title: 'School Name', data: 'schoolName' },
           { title: 'Cluster Name', data: 'clusterName' },
           { title: 'Block Name', data: 'blockName' },
           { title: 'District Name', data: 'districtName' },
-          { title: 'Visit 0', data: 'visit_0' },
-          { title: 'Visit 1-2', data: 'visit_1_2' },
-          { title: 'Visit 3-5', data: 'visit_3_5' },
-          { title: 'Visit 6-10', data: 'visit_6_10' },
-          { title: 'Visit > 10', data: 'visit_10_more' },
-          { title: 'No of schools per crc', data: 'no_of_schools_per_crc' },
+          { title: 'Visit-0 times (%)', data: 'visit_0' },
+          { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
+          { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
+          { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
+          { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+          { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
           { title: "Visits per schools", data: "visits_per_school" },
           { title: "Total schools", data: "totalSchools" },
           { title: "Total visits", data: "totalVisits" }
