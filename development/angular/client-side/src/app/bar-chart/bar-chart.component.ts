@@ -156,16 +156,16 @@ export class BarChartComponent implements OnInit {
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.result.length, 'rgb');
       this.crcDistrictsNames = this.result;
       for (var i = 0; i < this.result.length; i++) {
-        this.schoolCount = this.schoolCount + this.result[i].totalSchools;
-        this.visitCount = this.visitCount + Number(this.result[i].totalVisits);
+        console.log(parseInt(this.result[i].totalVisits));
+        if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
+          this.schoolCount = this.schoolCount + this.result[i].totalSchools;
+          this.visitCount = this.visitCount + parseInt(this.result[i].totalVisits);
+        }
         this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
         labels.push(this.result[i].districtName);
         this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
       }
-      this.visitedSchools = this.result[this.result.length - 1].totalSchoolsVisited;
-      this.notVisitedSchools = this.result[this.result.length - 1].totalSchoolsNotVisited;
-
-
+      this.countVisitedAndNotVisited(this.result);
 
       let obj = {
         xAxis: this.xAxis,
@@ -218,8 +218,7 @@ export class BarChartComponent implements OnInit {
             this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
           }
 
-          this.visitedSchools = this.result[this.result.length - 1].totalSchoolsVisited;
-          this.notVisitedSchools = this.result[this.result.length - 1].totalSchoolsNotVisited;
+          this.countVisitedAndNotVisited(this.result);
 
           let obj = {
             xAxis: this.xAxis,
@@ -300,8 +299,7 @@ export class BarChartComponent implements OnInit {
           this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
         }
 
-        this.visitedSchools = this.crcBlocksNames[this.crcBlocksNames.length - 1].totalSchoolsVisited;
-        this.notVisitedSchools = this.crcBlocksNames[this.crcBlocksNames.length - 1].totalSchoolsNotVisited;
+        this.countVisitedAndNotVisited(this.crcBlocksNames);
 
         let obj = {
           xAxis: this.xAxis,
@@ -385,8 +383,7 @@ export class BarChartComponent implements OnInit {
         this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
       }
 
-      this.visitedSchools = this.crcClusterNames[this.crcClusterNames.length - 1].totalSchoolsVisited;
-      this.notVisitedSchools = this.crcClusterNames[this.crcClusterNames.length - 1].totalSchoolsNotVisited;
+      this.countVisitedAndNotVisited(this.crcClusterNames);
 
       let obj = {
         xAxis: this.xAxis,
@@ -470,8 +467,7 @@ export class BarChartComponent implements OnInit {
         this.chartData.push({ x: Number(this.crcSchoolNames[i][this.xAxis]), y: Number(this.crcSchoolNames[i][this.yAxis]) });
       }
 
-      this.visitedSchools = this.crcSchoolNames[this.crcSchoolNames.length - 1].totalSchoolsVisited;
-      this.notVisitedSchools = this.crcSchoolNames[this.crcSchoolNames.length - 1].totalSchoolsNotVisited;
+      this.countVisitedAndNotVisited(this.crcSchoolNames);
 
       let obj = {
         xAxis: this.xAxis,
@@ -511,6 +507,11 @@ export class BarChartComponent implements OnInit {
       this.changeDetection.markForCheck();
     });
     document.getElementById('home').style.display = 'block';
+  }
+
+  countVisitedAndNotVisited(data) {
+    this.visitedSchools = data[data.length - 1].totalSchoolsVisited;
+    this.notVisitedSchools = data[data.length - 1].totalSchoolsNotVisited;
   }
 
   createChart(labels, chartData, name, obj) {
