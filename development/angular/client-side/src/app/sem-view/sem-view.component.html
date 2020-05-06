@@ -4,34 +4,39 @@
             <div *ngIf='skul'>
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Semester report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span></p>
             </div>
             <div *ngIf='dist'>
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Semester report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
-                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
-                        {{hierName}}</span> </p>
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span> <span>/ </span><span
+                        (click)="onDistrictSelect(districtHierarchy.distId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{districtHierarchy.districtName}}</span> </p>
             </div>
             <div *ngIf="blok">
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Semester report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
-                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
-                        {{titleName}}</span><span>/ </span><span (click)="clickedMarker(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span><span>/ </span><span
+                        (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
-                        {{hierName}}</span></p>
+                        {{blockHierarchy.districtName}}</span><span>/ </span><span
+                        (click)="onBlockSelect(blockHierarchy.blockId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{blockHierarchy.blockName}}</span></p>
             </div>
 
             <div *ngIf="clust">
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Semester report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
-                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
-                        {{titleName}}</span><span>/ </span><span (click)="clickedMarker(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">GUJARAT</span><span>/ </span><span
+                        (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
-                        {{title}}</span><span>/ </span><span>
-                        {{hierName}}</span></p>
+                        {{clusterHierarchy.districtName}}</span><span>/ </span><span
+                        (click)="onBlockSelect(clusterHierarchy.blockId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.blockName}}</span><span>/ </span><span>
+                        {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
         <div class="col-sm-3">
@@ -54,7 +59,7 @@
                 <div class="col-sm-6">
                     <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
                         style="cursor: pointer;height: 23px;width: 25px;float: right;margin: 5px 0px 0px 8px;"
-                        (click)="downloadRoport()">
+                        (click)="downloadReport()">
                     <img src="../../assets/home.png" title="Home" id="home"
                         style="cursor: pointer;height: 30px;width: 30px;float: right;margin: 2px 0px 0px 0px;"
                         alt="Home" (click)="districtWise()">
@@ -77,41 +82,38 @@
         <div class="col-sm-7" style="font-family: Arial;">
 
             <select
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
-                <option [value]="myDistrict" disabled selected="selected">Choose a District
-                </option>
-                <option *ngFor="let dist of districtsNames" [(ngValue)]="dist"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
+                <option [value]="districtId" disabled selected="selected">Choose a District</option>
+                <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.districtId"
                     style="font-family: Arial; font-size: 11px;">
-                    {{dist.name}}
+                    {{dist.districtName}}
                 </option>
             </select>
 
             <select [hidden]="blockHidden"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
-                <option [value]="myBlock" disabled selected="selected">Choose a Block
-                </option>
-                <option *ngFor="let block of blocksNames" [(ngValue)]="block"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                [(ngModel)]="blockId" (change)="onBlockSelect(blockId)">
+                <option [value]="blockId" disabled selected="selected">Choose a Block</option>
+                <option *ngFor="let block of blockMarkers" [(ngValue)]="block.blockId"
                     style="font-family: Arial;font-size: 11px;">
-                    {{block.name}}
+                    {{block.blockName}}
                 </option>
             </select>
 
             <select [hidden]="clusterHidden"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
-                <option [value]="myCluster" disabled selected="selected">Choose a cluster
-                </option>
-                <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                [(ngModel)]="clusterId" (change)="onClusterSelect(clusterId)">
+                <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
+                <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.clusterId"
                     style="font-family: Arial;font-size: 11px; "
                     [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
-                    {{cluster.name}}
+                    {{cluster.clusterName}}
                 </option>
             </select>
 
         </div>
-
+       
     </div>
     <div class="row">
         <div class="col-sm-12">
@@ -119,15 +121,12 @@
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; height: 22px;">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; height: 22px;position: fixed; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-4">
             <span>Number of students: {{studentCount}}</span>
         </div>
         <div class="col-sm-4">
             <span style="text-align: center;">Number of schools: {{schoolCount}}</span>
-        </div>
-        <div class="col-sm-4">
-            <span style="float: right;">Date range: {{dateRange}}</span>
         </div>
     </div>
 </div>

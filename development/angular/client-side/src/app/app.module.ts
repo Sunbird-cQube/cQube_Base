@@ -16,7 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TeacherAttendanceComponent } from './teacher-attendance/teacher-attendance.component';
-import { SemesterReportComponent } from './semester-report/semester-report.component';
+import { SemViewComponent } from './sem-view/sem-view.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, MatSortModule } from '@angular/material';
@@ -30,7 +30,7 @@ import { ChartsModule } from 'ng2-charts';
     MapViewComponent,
     HomeComponent,
     TeacherAttendanceComponent,
-    SemesterReportComponent,
+    SemViewComponent,
     BarChartComponent,
   ],
   imports: [
