@@ -1,12 +1,11 @@
-.my-custom-scrollbar {
+/* .my-custom-scrollbar {
     position: relative;
-    height: 480px;
+    height: 350px;
     overflow: auto;
     }
 
-    .mat-cell, .mat-header-cell {
-        font-size: 14px;
-        min-height: 48px;
-        text-align: center;
-        border-right: 1px solid rgb(211, 207, 207);
-    }
+    .myDiv {
+        position: relative;
+        height: 350px;
+        overflow: auto;
+        } */
