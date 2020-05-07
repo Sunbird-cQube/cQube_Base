@@ -153,7 +153,8 @@ export class BarChartComponent implements OnInit {
       this.chartData = [];
       var labels = [];
       this.result = JSON.parse(localStorage.getItem('resData'));
-
+      let a = this.result.schoolsVisitedCount
+      this.result = this.result.visits;
       let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
 
@@ -167,7 +168,7 @@ export class BarChartComponent implements OnInit {
         labels.push(this.result[i].districtName);
         this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
       }
-      this.countVisitedAndNotVisited(this.result);
+      this.countVisitedAndNotVisited(a);
 
       let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
       let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
@@ -218,7 +219,8 @@ export class BarChartComponent implements OnInit {
       this.service.crcDistWiseData().subscribe(res => {
         localStorage.setItem('resData', JSON.stringify(res));
         this.result = res;
-
+        let a = this.result.schoolsVisitedCount
+        this.result = this.result.visits;
         let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
 
@@ -235,7 +237,7 @@ export class BarChartComponent implements OnInit {
             this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
           }
 
-          this.countVisitedAndNotVisited(this.result);
+          this.countVisitedAndNotVisited(a);
 
           let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
           let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
@@ -313,6 +315,8 @@ export class BarChartComponent implements OnInit {
       $('#table').DataTable().destroy();
       $('#table').empty();
       this.reportData = this.crcBlocksNames = result;
+      let a = this.crcBlocksNames.schoolsVisitedCount
+      this.crcBlocksNames = this.crcBlocksNames.visits;
 
       let sorted = this.crcBlocksNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
@@ -329,7 +333,7 @@ export class BarChartComponent implements OnInit {
           this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
         }
 
-        this.countVisitedAndNotVisited(this.crcBlocksNames);
+        this.countVisitedAndNotVisited(a);
 
         let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
         let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
@@ -340,7 +344,7 @@ export class BarChartComponent implements OnInit {
         }
 
         this.createChart(labels, this.chartData, this.tableHead, obj);
-
+        console.log(this.crcBlocksNames);
         this.tableData = this.crcBlocksNames;
         this.dtOptions = {
           data: this.tableData,
@@ -356,8 +360,8 @@ export class BarChartComponent implements OnInit {
             leftColumns: 1
           },
           columns: [
-            { title: 'Block Name', data: 'blockName' },
             { title: 'District Name', data: 'districtName' },
+            { title: 'Block Name', data: 'blockName' },
             { title: 'Visit-0 times (%)', data: 'visit_0' },
             { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
             { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
@@ -412,7 +416,10 @@ export class BarChartComponent implements OnInit {
       $('#table').DataTable().destroy();
       $('#table').empty();
 
-      this.reportData = this.crcClusterNames = result;
+      this.crcClusterNames = result;
+      let a = this.crcClusterNames.schoolsVisitedCount
+      this.crcClusterNames = this.crcClusterNames.visits;
+      this.reportData = this.crcClusterNames;
 
       let sorted = this.crcClusterNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
@@ -428,7 +435,7 @@ export class BarChartComponent implements OnInit {
         this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
       }
 
-      this.countVisitedAndNotVisited(this.crcClusterNames);
+      this.countVisitedAndNotVisited(a);
 
       let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
       let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
@@ -439,11 +446,11 @@ export class BarChartComponent implements OnInit {
       }
 
       this.createChart(labels, this.chartData, this.tableHead, obj);
-
-      this.tableData = this.reportData;
+      console.log(this.crcClusterNames);
+      this.tableData = this.crcClusterNames;
       this.dtOptions = {
         data: this.tableData,
-        iDisplayLength: this.reportData.length,
+        iDisplayLength: this.crcClusterNames.length,
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
@@ -455,9 +462,9 @@ export class BarChartComponent implements OnInit {
           leftColumns: 1
         },
         columns: [
-          { title: 'Cluster Name', data: 'clusterName' },
-          { title: 'Block Name', data: 'blockName' },
           { title: 'District Name', data: 'districtName' },
+          { title: 'Block Name', data: 'blockName' },
+          { title: 'Cluster Name', data: 'clusterName' },
           { title: 'Visit-0 times (%)', data: 'visit_0' },
           { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
           { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
@@ -510,7 +517,10 @@ export class BarChartComponent implements OnInit {
     this.service.crcSchoolWiseData(distId, blockId, data).subscribe(async (result: any) => {
       $('#table').DataTable().destroy();
       $('#table').empty();
+
       this.reportData = this.crcSchoolNames = result;
+      let a = this.crcSchoolNames.schoolsVisitedCount
+      this.crcSchoolNames = this.crcSchoolNames.visits;
 
       let sorted = this.crcSchoolNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
@@ -525,7 +535,7 @@ export class BarChartComponent implements OnInit {
         this.chartData.push({ x: Number(this.crcSchoolNames[i][this.xAxis]), y: Number(this.crcSchoolNames[i][this.yAxis]) });
       }
 
-      this.countVisitedAndNotVisited(this.crcSchoolNames);
+      this.countVisitedAndNotVisited(a);
 
       let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
       let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
@@ -553,10 +563,10 @@ export class BarChartComponent implements OnInit {
           leftColumns: 1
         },
         columns: [
-          { title: 'School Name', data: 'schoolName' },
-          { title: 'Cluster Name', data: 'clusterName' },
-          { title: 'Block Name', data: 'blockName' },
           { title: 'District Name', data: 'districtName' },
+          { title: 'Block Name', data: 'blockName' },
+          { title: 'Cluster Name', data: 'clusterName' },
+          { title: 'School Name', data: 'schoolName' },
           { title: 'Visit-0 times (%)', data: 'visit_0' },
           { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
           { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
@@ -578,8 +588,8 @@ export class BarChartComponent implements OnInit {
   }
 
   countVisitedAndNotVisited(data) {
-    this.visitedSchools = data[data.length - 1].totalSchoolsVisited;
-    this.notVisitedSchools = data[data.length - 1].totalSchoolsNotVisited;
+    this.visitedSchools = data.totalSchoolsVisited;
+    this.notVisitedSchools = data.totalSchoolsNotVisited;
   }
 
   createChart(labels, chartData, name, obj) {

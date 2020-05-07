@@ -2,10 +2,13 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
     return new Promise((resolve, reject) => {
         // find total keys of crc frequency group data
         let keys = Object.keys(crcFrequencyGroupData)
-        let crcData = [];
         let frequencySchoolDistinct = 0;
         let metadataSchoolDistinct = 0;
-        let resultObj = '';
+        let finalObj = {
+            visits: [],
+            schoolsVisitedCount: ''
+        }
+
         // find visits percentage for particular district based on crc frequency data, 
         // and no_of_schools_per_crc, visits_per_school, percentage_crc_visited_school based on crc meta data
         for (i = 0; i < keys.length; i++) {
@@ -16,8 +19,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
 
             let visit_0_Total = '';
             if (visit_0.length > 0) {
-                visit_0_Total = visit_0.map(function (a) { return a.visit_count; })
-                    .reduce(function (a, b) { return a + b; });
+                visit_0_Total = visit_0.map(function(a) { return a.visit_count; })
+                    .reduce(function(a, b) { return a + b; });
             }
 
             // finding visit_0 percentage
@@ -26,8 +29,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             })
             let visit_1_2_Total = '';
             if (visit_1_2.length > 0) {
-                visit_1_2_Total = visit_1_2.map(function (a) { return a.visit_count; })
-                    .reduce(function (a, b) { return a + b; });
+                visit_1_2_Total = visit_1_2.map(function(a) { return a.visit_count; })
+                    .reduce(function(a, b) { return a + b; });
             }
 
             // finding visit_3_5 percentage
@@ -36,8 +39,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             })
             let visit_3_5_Total = '';
             if (visit_3_5.length > 0) {
-                visit_3_5_Total = visit_3_5.map(function (a) { return a.visit_count; })
-                    .reduce(function (a, b) { return a + b; });
+                visit_3_5_Total = visit_3_5.map(function(a) { return a.visit_count; })
+                    .reduce(function(a, b) { return a + b; });
             }
 
             // finding visit_6_10 percentage
@@ -46,8 +49,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             })
             let visit_6_10_Total = ''
             if (visit_6_10.length > 0) {
-                visit_6_10_Total = visit_6_10.map(function (a) { return a.visit_count; })
-                    .reduce(function (a, b) { return a + b; });
+                visit_6_10_Total = visit_6_10.map(function(a) { return a.visit_count; })
+                    .reduce(function(a, b) { return a + b; });
             }
 
             // finding visit_10_more percentage
@@ -56,8 +59,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             })
             let visit_10_more_Total = ''
             if (visit_10_more.length > 0) {
-                visit_10_more_Total = visit_10_more.map(function (a) { return a.visit_count; })
-                    .reduce(function (a, b) { return a + b; });
+                visit_10_more_Total = visit_10_more.map(function(a) { return a.visit_count; })
+                    .reduce(function(a, b) { return a + b; });
             }
 
             // to find the distinct cluster_id of crc frequency data for each district
@@ -76,7 +79,7 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             let totalVisits = visit_0_Total + visit_1_2_Total + visit_3_5_Total + visit_6_10_Total + visit_10_more_Total
             let totalCRCVisits = visit_0.length + visit_1_2.length + visit_3_5.length + visit_6_10.length + visit_10_more.length
 
-            resultObj = {
+            let resultObj = {
                 districtId: crcFrequencyGroupData[keys[i]][0].district_id,
                 districtName: crcFrequencyGroupData[keys[i]][0].district_name,
                 visit_0: ((visit_0.length / totalCRCVisits) * 100).toFixed(2),
@@ -141,14 +144,14 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             resultObj['visits_per_school'] = visits_per_school
             resultObj['percentage_crc_visited_school'] = percentage_crc_visited_school + ' %'
             resultObj['totalSchools'] = crcMetadataFilteredSchool
-            crcData.push(resultObj)
+            finalObj.visits.push(resultObj)
         }
-        let schoolsVisitedCount = {
+        let schoolsVisitedCount1 = {
             totalSchoolsVisited: frequencySchoolDistinct,
             totalSchoolsNotVisited: metadataSchoolDistinct - frequencySchoolDistinct
         }
-        crcData.push(schoolsVisitedCount)
-        resolve(crcData)
+        finalObj['schoolsVisitedCount'] = schoolsVisitedCount1
+        resolve(finalObj)
     })
 }
 
