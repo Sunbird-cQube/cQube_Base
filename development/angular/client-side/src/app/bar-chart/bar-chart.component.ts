@@ -192,6 +192,7 @@ export class BarChartComponent implements OnInit {
         scrollX: true,
         scrollCollapse: true,
         paging: false,
+        "searching": false,
         fixedColumns: {
           leftColumns: 1,
           rightColumns: 1
@@ -260,6 +261,7 @@ export class BarChartComponent implements OnInit {
             scrollX: true,
             scrollCollapse: true,
             paging: false,
+            "searching": false,
             fixedColumns: {
               leftColumns: 1
             },
@@ -356,6 +358,7 @@ export class BarChartComponent implements OnInit {
           scrollX: true,
           scrollCollapse: true,
           paging: false,
+          "searching": false,
           fixedColumns: {
             leftColumns: 1
           },
@@ -458,6 +461,7 @@ export class BarChartComponent implements OnInit {
         scrollX: true,
         scrollCollapse: true,
         paging: false,
+        "searching": false,
         fixedColumns: {
           leftColumns: 1
         },
@@ -558,7 +562,7 @@ export class BarChartComponent implements OnInit {
         scrollX: true,
         scrollCollapse: true,
         paging: false,
-
+        "searching": false,
         fixedColumns: {
           leftColumns: 1
         },
