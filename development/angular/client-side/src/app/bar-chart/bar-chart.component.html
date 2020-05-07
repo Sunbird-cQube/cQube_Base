@@ -1,6 +1,6 @@
 <div class="container-fluid" style="font-family: Arial;">
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
@@ -34,7 +34,7 @@
                         {{hierName}}</span></p>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="col-sm-12" id="spinner">
@@ -52,9 +52,22 @@
 
                 </div>
                 <div class="col-sm-6">
-                    <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
-                        style="cursor: pointer;height: 23px;width: 25px;float: right;margin: 5px 0px 0px 8px;"
-                        (click)="downloadRoport()">
+                    <div *ngIf="skul; else ng_else" style="float: right; " id="select">
+                        <select
+                            style="padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                            [(ngModel)]="downloadType" name="downloadType"
+                            (change)="downloadReportofState(downloadType)">
+                            <option [value]="downloadType" disabled selected="selected"> select for Download</option>
+                            <option *ngFor="let a of mode" [(ngValue)]="a">
+                                {{a}} Report
+                            </option>
+                        </select>
+                    </div>
+                    <ng-template #ng_else>
+                        <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
+                            style="cursor: pointer;height: 23px;width: 25px;float: right;margin: 5px 0px 0px 8px;"
+                            (click)="downloadRoport()">
+                    </ng-template>
                     <img src="../../assets/home.png" title="Home" id="home"
                         style="cursor: pointer;height: 30px;width: 30px;float: right;margin: 2px 0px 0px 0px;"
                         alt="Home" (click)="districtWise()">
@@ -207,5 +220,6 @@
             <span style="float: right;">Date range: {{dateRange}}</span>
         </div>
     </div>
+    <!-- <div class="loader" id="loader"></div> -->
 
 </div>
