@@ -188,7 +188,7 @@ export class BarChartComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
-        scrollY: "300px",
+        scrollY: "39vh",
         scrollX: true,
         scrollCollapse: true,
         paging: false,
@@ -219,6 +219,7 @@ export class BarChartComponent implements OnInit {
       this.chartData = []
       this.service.crcDistWiseData().subscribe(res => {
         localStorage.setItem('resData', JSON.stringify(res));
+        console.log(res);
         this.result = res;
         let a = this.result.schoolsVisitedCount
         this.result = this.result.visits;
@@ -257,7 +258,7 @@ export class BarChartComponent implements OnInit {
             "bLengthChange": false,
             "bInfo": false,
             "bPaginate": false,
-            scrollY: 300,
+            scrollY: "39vh",
             scrollX: true,
             scrollCollapse: true,
             paging: false,
@@ -354,7 +355,7 @@ export class BarChartComponent implements OnInit {
           "bLengthChange": false,
           "bInfo": false,
           "bPaginate": false,
-          scrollY: 300,
+          scrollY: "39vh",
           scrollX: true,
           scrollCollapse: true,
           paging: false,
@@ -457,7 +458,7 @@ export class BarChartComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
-        scrollY: 300,
+        scrollY: "39vh",
         scrollX: true,
         scrollCollapse: true,
         paging: false,
@@ -558,7 +559,7 @@ export class BarChartComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
-        scrollY: 300,
+        scrollY: "39vh",
         scrollX: true,
         scrollCollapse: true,
         paging: false,
