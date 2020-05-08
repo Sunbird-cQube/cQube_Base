@@ -1,3 +1,7 @@
+/* tablefunc */
+
+CREATE EXTENSION IF NOT EXISTS tablefunc;
+
 /* nifi metadata table */
 
 CREATE TABLE IF NOT EXISTS zip_files_processing ( 
@@ -149,6 +153,17 @@ created_on  TIMESTAMP without time zone ,
 updated_on  TIMESTAMP without time zone 
 -- ,foreign key (school_id) references school_master(school_id)
 );	
+
+/* subject_master */
+
+create table if not exists subject_master
+(
+subject_id  bigint primary key not null,
+subject_name  double precision,
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
+-- ,foreign key (school_id) references school_master(school_id)
+);
 
 /* school_hierarchy_details */
 
@@ -332,8 +347,6 @@ updated_on  TIMESTAMP without time zone
 
 create index if not exists crc_inspection_trans_id on crc_inspection_trans(school_id,crc_id);
 
-
-
 /* crc_location_trans */
 
 create table if not exists crc_location_trans
@@ -354,6 +367,32 @@ updated_on  TIMESTAMP without time zone
 );
 
 create index if not exists crc_location_trans_id on crc_location_trans(school_id,crc_id);
+
+/* student_semester_trans */
+
+create table if not exists student_semester_trans
+(
+assessment_id serial,
+year int,
+student_uid bigint,
+school_id  bigint,
+semester  int ,
+grade  int,
+subject_1  int,
+subject_2  int,
+subject_3 int,
+subject_4 int,
+subject_5 int,
+subject_6 int,
+subject_7 int,
+subject_8 int,
+created_on  TIMESTAMP without time zone, 
+updated_on  TIMESTAMP without time zone
+-- ,foreign key (school_id) references school_hierarchy_details(school_id),
+-- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
+);
+
+create index if not exists student_semester_trans_id on student_semester_trans(school_id,grade);
 
 
 /*Aggregated*/
@@ -451,4 +490,51 @@ updated_on  TIMESTAMP without time zone
 
 create index if not exists crc_visits_frequency_id on crc_visits_frequency(school_id,block_id,cluster_id,district_id);
 
+/*school_student_subject_total_marks*/
 
+create table if not exists school_student_subject_total_marks
+(
+id  serial,
+year  int,
+semester  smallint,
+school_id  bigint,
+grade int,
+school_name varchar(200),
+school_latitude  double precision,
+school_longitude  double precision,
+district_id  bigint,
+district_name varchar(100),
+district_latitude  double precision,
+district_longitude  double precision,
+block_id  bigint,
+block_name varchar(100),
+brc_name varchar(100),
+block_latitude  double precision,
+block_longitude  double precision,
+cluster_id  bigint,
+cluster_name varchar(100),
+crc_name varchar(100),
+cluster_latitude  double precision,
+cluster_longitude  double precision,
+subject_3_marks_scored  int,
+subject_3_total_marks  int,
+subject_1_marks_scored int,  
+subject_1_total_marks  int,
+subject_2_marks_scored  int,
+subject_2_total_marks  int,
+subject_7_marks_scored  int,
+subject_7_total_marks  int,
+subject_6_marks_scored  int,
+subject_6_total_marks  int,
+subject_4_marks_scored  int,
+subject_4_total_marks  int,
+subject_5_marks_scored  int,
+subject_5_total_marks  int,
+subject_8_marks_scored  int,
+subject_8_total_marks  int,
+students_count bigint,
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone
+);
+
+create index if not exists school_student_total_marks_id on school_student_subject_total_marks(semester,school_id,block_id,cluster_id);
