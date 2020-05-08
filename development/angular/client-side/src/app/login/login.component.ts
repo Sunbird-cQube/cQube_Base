@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   err: string = '';
   logData: any = {};
   modal = true;
+  role: any;
 
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -24,9 +25,19 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.service.login(this.logData).subscribe(res => {
       if (res['msg']) {
+        localStorage.setItem('email', this.logData.email);
         localStorage.setItem('token', res['token']);
         localStorage.setItem('role', res['role']);
-        this.router.navigate(['home/map-view'])
+        this.role = res['role'];
+
+        if (this.role == 1) {
+          this.router.navigate(['home/map-view']);
+        }
+        else if (this.role == 3) {
+          this.router.navigate(['home/teacher-attendance'])
+        } else {
+          this.router.navigate(['home/map-view']);
+        }
       } else if (res['errMsg']) {
         this.err = res['errMsg'];
       }

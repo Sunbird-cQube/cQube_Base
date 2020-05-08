@@ -4,7 +4,35 @@ const { logger } = require('../../lib/logger');
 var groupArray = require('group-array');
 const crcHelper = require('./crcHelper');
 
-router.post('/blockWise/:distId', async(req, res) => {
+router.post('/allBlockWise', async(req, res) => {
+    try {
+        logger.info('--- crc all block wise api ---');
+
+        // to store the s3 file data to variables
+        let fullData = {}
+        fullData = {
+            frequencyData: await frequencyData(),
+            crcMetaData: await crcMetaData()
+        }
+
+        // crc meta data group by block id
+        let crcMetaDataGroupData = groupArray(fullData.crcMetaData, 'block_id');
+
+        // crc frequency data group by block
+        let crcFrequencyGroupData = groupArray(fullData.frequencyData, 'block_id');
+
+        let level = 'block';
+
+        let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
+
+        res.send(crcResult)
+    } catch (e) {
+        console.log(e);
+        logger.error(e)
+    }
+})
+
+router.post('/blockWise/:distId', async (req, res) => {
     try {
         logger.info('--- crc block per district api ---');
 
@@ -45,7 +73,7 @@ router.post('/blockWise/:distId', async(req, res) => {
 frequencyData = () => {
     return new Promise((resolve, reject) => {
         const_data['getParams']['Key'] = 'CRC/crc_frequency_scatter.json'
-        const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
+        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 console.log(err);
                 res.send([]);
@@ -64,7 +92,7 @@ frequencyData = () => {
 crcMetaData = () => {
     return new Promise((resolve, reject) => {
         const_data['getParams']['Key'] = 'CRC/crc_metadata.json'
-        const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
+        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 console.log(err);
                 res.send([]);

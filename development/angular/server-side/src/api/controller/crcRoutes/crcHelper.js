@@ -19,8 +19,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
 
             let visit_0_Total = '';
             if (visit_0.length > 0) {
-                visit_0_Total = visit_0.map(function(a) { return a.visit_count; })
-                    .reduce(function(a, b) { return a + b; });
+                visit_0_Total = visit_0.map(function (a) { return a.visit_count; })
+                    .reduce(function (a, b) { return a + b; });
             }
 
             // finding visit_0 percentage
@@ -29,8 +29,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             })
             let visit_1_2_Total = '';
             if (visit_1_2.length > 0) {
-                visit_1_2_Total = visit_1_2.map(function(a) { return a.visit_count; })
-                    .reduce(function(a, b) { return a + b; });
+                visit_1_2_Total = visit_1_2.map(function (a) { return a.visit_count; })
+                    .reduce(function (a, b) { return a + b; });
             }
 
             // finding visit_3_5 percentage
@@ -39,8 +39,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             })
             let visit_3_5_Total = '';
             if (visit_3_5.length > 0) {
-                visit_3_5_Total = visit_3_5.map(function(a) { return a.visit_count; })
-                    .reduce(function(a, b) { return a + b; });
+                visit_3_5_Total = visit_3_5.map(function (a) { return a.visit_count; })
+                    .reduce(function (a, b) { return a + b; });
             }
 
             // finding visit_6_10 percentage
@@ -49,8 +49,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             })
             let visit_6_10_Total = ''
             if (visit_6_10.length > 0) {
-                visit_6_10_Total = visit_6_10.map(function(a) { return a.visit_count; })
-                    .reduce(function(a, b) { return a + b; });
+                visit_6_10_Total = visit_6_10.map(function (a) { return a.visit_count; })
+                    .reduce(function (a, b) { return a + b; });
             }
 
             // finding visit_10_more percentage
@@ -59,8 +59,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             })
             let visit_10_more_Total = ''
             if (visit_10_more.length > 0) {
-                visit_10_more_Total = visit_10_more.map(function(a) { return a.visit_count; })
-                    .reduce(function(a, b) { return a + b; });
+                visit_10_more_Total = visit_10_more.map(function (a) { return a.visit_count; })
+                    .reduce(function (a, b) { return a + b; });
             }
 
             // to find the distinct cluster_id of crc frequency data for each district
@@ -70,10 +70,10 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             const frequencyClusterDistinct = Array.from(frequencyDataFilteredCluster.reduce((m, t) => m.set(t.cluster_id, t), new Map()).values());
 
             // to find the distinct school_id of crc frequency data for each district
-            var frequencyDataFilteredCluster = crcFrequencyGroupData[keys[i]].filter(obj => {
+            var frequencyDataFilteredSchool = crcFrequencyGroupData[keys[i]].filter(obj => {
                 return (obj.school_id)
             })
-            let x = Array.from(frequencyDataFilteredCluster.reduce((m, t) => m.set(t.cluster_id, t), new Map()).values());
+            let x = Array.from(frequencyDataFilteredSchool.reduce((m, t) => m.set(t.school_id, t), new Map()).values());
             frequencySchoolDistinct += x.length
 
             let totalVisits = visit_0_Total + visit_1_2_Total + visit_3_5_Total + visit_6_10_Total + visit_10_more_Total
@@ -122,16 +122,16 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
             }
 
             // to find the distinct cluster_id of crc meta data for each district
-            crcMetadataFilteredCluster = schoolData.filter(obj => {
+            var crcMetadataFilteredCluster = schoolData.filter(obj => {
                 return (obj.cluster_id)
             })
             const clusterDupMetadata = Array.from(crcMetadataFilteredCluster.reduce((m, t) => m.set(t.cluster_id, t), new Map()).values());
 
             // to find the distinct school_id of crc meta data for each district
-            crcMetadataFilteredCluster = schoolData.filter(obj => {
+            var crcMetadataFiltereSchool = schoolData.filter(obj => {
                 return (obj.school_id)
             })
-            let y = Array.from(crcMetadataFilteredCluster.reduce((m, t) => m.set(t.school_id, t), new Map()).values());
+            let y = Array.from(crcMetadataFiltereSchool.reduce((m, t) => m.set(t.school_id, t), new Map()).values());
             metadataSchoolDistinct += y.length
 
             // finding all the other values

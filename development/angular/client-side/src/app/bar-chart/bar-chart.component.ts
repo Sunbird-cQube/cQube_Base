@@ -123,12 +123,12 @@ export class BarChartComponent implements OnInit {
   }
   public tableHead: any;
   public chartData: any = [];
+  public mode: String[]
   districtWise() {
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
       $('#table').empty();
     }
-
     this.scatterChart.destroy();
     this.tableHead = "District Name";
     this.fileName = "Dist_level_CRC_Report";
@@ -155,10 +155,14 @@ export class BarChartComponent implements OnInit {
       this.result = JSON.parse(localStorage.getItem('resData'));
       let a = this.result.schoolsVisitedCount
       this.result = this.result.visits;
+      this.mode = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
+
       let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
 
-      this.crcDistrictsNames = this.result;
+      // document.getElementById('select').style.display = 'block';
+
+      this.reportData = this.crcDistrictsNames = this.result;
       for (var i = 0; i < this.result.length; i++) {
         if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
           this.schoolCount = this.schoolCount + this.result[i].totalSchools;
@@ -218,6 +222,7 @@ export class BarChartComponent implements OnInit {
       this.visitCount = 0;
       this.chartData = []
       this.service.crcDistWiseData().subscribe(res => {
+
         localStorage.setItem('resData', JSON.stringify(res));
         console.log(res);
         this.result = res;
@@ -225,6 +230,8 @@ export class BarChartComponent implements OnInit {
         this.result = this.result.visits;
         let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+
+        this.mode = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
 
         if (this.result.length > 0) {
           var labels = [];
@@ -287,6 +294,57 @@ export class BarChartComponent implements OnInit {
         }
       });
     }
+  }
+
+  blockWise() {
+    this.reportData = [];
+    this.errMsg();
+    var element1: any = document.getElementsByClassName('dwnld');
+    element1[0].disabled = true;
+    this.fileName = "Block_level_CRC_Report";
+    this.service.crcAllBlockWiseData().subscribe(res => {
+      this.reportData = res['visits'];
+      if (res !== null) {
+        document.getElementById('spinner').style.display = 'none';
+        element1[0].disabled = false;
+      }
+      this.downloadRoport();
+      this.changeDetection.markForCheck();
+    });
+  }
+
+  clusterWise() {
+    this.reportData = [];
+    this.errMsg();
+    var element1: any = document.getElementsByClassName('dwnld');
+    element1[0].disabled = true;
+    this.fileName = "Cluster_level_CRC_Report";
+    this.service.crcAllClusterWiseData().subscribe(res => {
+      this.reportData = res['visits'];
+      if (res !== null) {
+        document.getElementById('spinner').style.display = 'none';
+        element1[0].disabled = false;
+      }
+      this.downloadRoport();
+      this.changeDetection.markForCheck();
+    });
+  }
+
+  schoolWise() {
+    this.reportData = [];
+    this.errMsg();
+    var element1: any = document.getElementsByClassName('dwnld');
+    element1[0].disabled = true;
+    this.fileName = "School_level_CRC_Report";
+    this.service.crcAllSchoolWiseData().subscribe(res => {
+      this.reportData = res['visits'];
+      if (res !== null) {
+        document.getElementById('spinner').style.display = 'none';
+        element1[0].disabled = false;
+      }
+      this.downloadRoport();
+      this.changeDetection.markForCheck();
+    });
   }
 
 
@@ -657,6 +715,23 @@ export class BarChartComponent implements OnInit {
       }
     });
   };
+
+  public downloadType: String;
+  downloadReportofState(downloadType) {
+    console.log(this.downloadType);
+    if (downloadType === 'Dist_Wise') {
+      this.downloadRoport();
+    }
+    if (downloadType === 'Block_Wise') {
+      this.blockWise();
+    }
+    if (downloadType === 'Cluster_Wise') {
+      this.clusterWise();
+    }
+    if (downloadType === 'School_Wise') {
+      this.schoolWise();
+    }
+  }
 
   downloadRoport() {
     const options = {

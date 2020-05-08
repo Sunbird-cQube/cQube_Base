@@ -76,6 +76,20 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/crc/schoolWise/${distId}/${blockId}/${clusterId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
+    crcAllBlockWiseData() {
+        return this.http.post(`${this.baseUrl}/crc/allBlockWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    crcAllClusterWiseData() {
+        return this.http.post(`${this.baseUrl}/crc/allClusterWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    crcAllSchoolWiseData() {
+        return this.http.post(`${this.baseUrl}/crc/allSchoolWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+
+
     // sem wise services
     all_dist_sem_data() {
         return this.http.post(`${this.baseUrl}/sem/districtWise`, {
