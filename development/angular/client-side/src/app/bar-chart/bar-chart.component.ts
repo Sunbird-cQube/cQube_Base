@@ -298,12 +298,15 @@ export class BarChartComponent implements OnInit {
 
   blockWise() {
     this.reportData = [];
-    document.getElementById('spinner').style.display = 'none';
+    this.errMsg();
+    var element1: any = document.getElementsByClassName('dwnld');
+    element1[0].disabled = true;
     this.fileName = "Block_level_CRC_Report";
     this.service.crcAllBlockWiseData().subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
+        element1[0].disabled = false;
       }
       this.downloadRoport();
       this.changeDetection.markForCheck();
@@ -312,12 +315,15 @@ export class BarChartComponent implements OnInit {
 
   clusterWise() {
     this.reportData = [];
-    document.getElementById('spinner').style.display = 'block';
+    this.errMsg();
+    var element1: any = document.getElementsByClassName('dwnld');
+    element1[0].disabled = true;
     this.fileName = "Cluster_level_CRC_Report";
     this.service.crcAllClusterWiseData().subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
+        element1[0].disabled = false;
       }
       this.downloadRoport();
       this.changeDetection.markForCheck();
@@ -326,12 +332,15 @@ export class BarChartComponent implements OnInit {
 
   schoolWise() {
     this.reportData = [];
-    document.getElementById('spinner').style.display = 'block';
+    this.errMsg();
+    var element1: any = document.getElementsByClassName('dwnld');
+    element1[0].disabled = true;
     this.fileName = "School_level_CRC_Report";
     this.service.crcAllSchoolWiseData().subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
+        element1[0].disabled = false;
       }
       this.downloadRoport();
       this.changeDetection.markForCheck();
@@ -707,8 +716,9 @@ export class BarChartComponent implements OnInit {
     });
   };
 
-
+  public downloadType: String;
   downloadReportofState(downloadType) {
+    console.log(this.downloadType);
     if (downloadType === 'Dist_Wise') {
       this.downloadRoport();
     }
