@@ -111,6 +111,31 @@
                 "parameter":{"name":"sftp_school_hierarchy",
                         "value":""
                             }
+            },
+	    {
+                "parameter":{"name":"sftp_roles_master",
+                        "value":""
+                            }
+            },
+	    {
+                "parameter":{"name":"sftp_users_master",
+                        "value":""
+                            }
+            },
+	    {
+                "parameter":{"name":"sftp_error_dir",
+                        "value":""
+                            }
+            },
+	    {
+                "parameter":{"name":"sftp_student_sem",
+                        "value":""
+                            }
+            },
+	    {
+                "parameter":{"name":"sftp_crc_input",
+                        "value":""
+                            }
             }
 
 
