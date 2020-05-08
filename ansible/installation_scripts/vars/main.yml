@@ -31,6 +31,11 @@ postgre_dtn_db: cqubedev
 postgre_db_user: postgres
 postgre_pwd: psql
 sftp_school_hierarchy: /cqube/data/school_hierarchy
+sftp_roles_master: /cqube/data/roles_master
+sftp_users_master: /cqube/data/users_master
+sftp_error_dir: /cqube/data/errors
+sftp_student_sem: /cqube/data/student_sem
+sftp_crc_input: /cqube/data/crc_input
 
 # Needs to filled manually:
 

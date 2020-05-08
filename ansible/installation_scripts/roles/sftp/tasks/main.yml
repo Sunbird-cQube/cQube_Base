@@ -81,6 +81,46 @@
         owner: "{{ sftp_user }}"
         group: "{{ sftp_group }}"
         recurse: yes
+- name: creating directory
+  file:
+        path: ~{{ sftp_user }}/{{ sftp_dir }}/data/roles_master
+        state: directory
+        mode: '1766'
+        owner: "{{ sftp_user }}"
+        group: "{{ sftp_group }}"
+        recurse: yes
+- name: creating directory
+  file:
+        path: ~{{ sftp_user }}/{{ sftp_dir }}/data/users_master
+        state: directory
+        mode: '1766'
+        owner: "{{ sftp_user }}"
+        group: "{{ sftp_group }}"
+        recurse: yes
+- name: creating directory
+  file:
+        path: ~{{ sftp_user }}/{{ sftp_dir }}/data/errors
+        state: directory
+        mode: '1766'
+        owner: "{{ sftp_user }}"
+        group: "{{ sftp_group }}"
+        recurse: yes
+- name: creating directory
+  file:
+        path: ~{{ sftp_user }}/{{ sftp_dir }}/data/student_sem
+        state: directory
+        mode: '1766'
+        owner: "{{ sftp_user }}"
+        group: "{{ sftp_group }}"
+        recurse: yes
+- name: creating directory
+  file:
+        path: ~{{ sftp_user }}/{{ sftp_dir }}/data/crc_input
+        state: directory
+        mode: '1766'
+        owner: "{{ sftp_user }}"
+        group: "{{ sftp_group }}"
+        recurse: yes
 - name: commenting the Subsystem in sshd config file
   action: shell sed -i "s/Subsystem/#&/g" /etc/ssh/sshd_config    
 - name: Change ownership, group and permissions of sftpuser to root

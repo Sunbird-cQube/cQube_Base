@@ -4,6 +4,35 @@ const { logger } = require('../../lib/logger');
 var groupArray = require('group-array');
 const crcHelper = require('./crcHelper');
 
+
+router.post('/allClusterWise', async(req, res) => {
+    try {
+        logger.info('--- crc all cluster wise api ---');
+
+        // to store the s3 file data to variables
+        let fullData = {}
+        fullData = {
+            frequencyData: await frequencyData(),
+            crcMetaData: await crcMetaData()
+        }
+
+        // crc meta data group by cluster id
+        let crcMetaDataGroupData = groupArray(fullData.crcMetaData, 'cluster_id');
+
+        // crc frequency data group by cluster
+        let crcFrequencyGroupData = groupArray(fullData.frequencyData, 'cluster_id');
+
+        let level = 'cluster';
+
+        let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
+
+        res.send(crcResult)
+    } catch (e) {
+        console.log(e);
+        logger.error(e)
+    }
+})
+
 router.post('/clusterWise/:distId/:blockId', async(req, res) => {
     try {
         logger.info('--- crc cluster per block and per district api ---');
