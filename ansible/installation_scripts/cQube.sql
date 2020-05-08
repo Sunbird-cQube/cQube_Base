@@ -302,8 +302,8 @@ school_highest_class  int,
 school_management_type_id int unique,
 school_category_id  int unique,
 school_medium_id  int unique,
-created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL
+created_on  TIMESTAMP without time zone NOT NULL,
+updated_on  TIMESTAMP without time zone NOT NULL
 );
 
 /*school_management_master*/
@@ -312,8 +312,8 @@ create table if not exists school_management_master
 	(
 school_management_type_id int primary key not null,
 school_management_type varchar(100),
-created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL
+created_on  TIMESTAMP without time zone NOT NULL,
+updated_on  TIMESTAMP without time zone NOT NULL
 -- ,foreign key (school_management_type_id) references school_master(school_management_type_id)
 );
 
@@ -323,8 +323,8 @@ create table if not exists school_category_master
 	(
 school_category_id int primary key not null,
 school_category varchar(100),
-created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL
+created_on  TIMESTAMP without time zone NOT NULL,
+updated_on  TIMESTAMP without time zone NOT NULL
 -- ,foreign key (school_category_id) references school_master(school_category_id)
 );
 
@@ -334,8 +334,8 @@ create table if not exists school_medium_master
 	(
 school_medium_id int primary key not null,
 medium_of_school varchar(100),
-created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL
+created_on  TIMESTAMP without time zone NOT NULL,
+updated_on  TIMESTAMP without time zone NOT NULL
 -- ,foreign key (school_medium_id) references school_master(school_medium_id)
 );
 
@@ -355,8 +355,8 @@ block_longitude  double precision,
 cluster_id  bigint,
 cluster_latitude  double precision,
 cluster_longitude  double precision,
-created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ 
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
 -- ,foreign key (school_id) references school_master(school_id)
 );	
 
@@ -370,6 +370,10 @@ created_on  TIMESTAMP without time zone ,
 updated_on  TIMESTAMP without time zone 
 -- ,foreign key (school_id) references school_master(school_id)
 );
+
+-- create table if not exists holiday_master(holiday_id bigint primary key not null,school_id bigint not null,holiday_date date,created_on timestamp,updated_on timestamp);
+
+-- create index if not exists holiday_master_id on holiday_master(school_id,holiday_date);
 
 /* school_hierarchy_details */
 
@@ -388,8 +392,8 @@ create table if not exists school_hierarchy_details
 		cluster_id bigint,
 		cluster_name varchar(100),
 		crc_name varchar(100),
-		created_on TIMESTAMPTZ,
-		updated_on TIMESTAMPTZ
+		created_on TIMESTAMP without time zone,
+		updated_on TIMESTAMP without time zone
 		-- ,foreign key (school_id) references school_geo_master(school_id)
 		);
 
@@ -404,8 +408,8 @@ create table if not exists student_hierarchy_details
 		year int,
 		student_class int,
 		stream_of_student varchar(50),
-		created_on TIMESTAMPTZ,
-		updated_on TIMESTAMPTZ
+		created_on TIMESTAMP without time zone,
+		updated_on TIMESTAMP without time zone
 		-- ,foreign key (school_id) references school_hierarchy_details(school_id)
 		);
 
@@ -421,8 +425,8 @@ create table if not exists teacher_hierarchy_details
 		teacher_designation varchar(100),
 		nature_of_employment varchar(50),
 		date_of_joining date,
-		created_on TIMESTAMPTZ,
-		updated_on TIMESTAMPTZ
+		created_on TIMESTAMP without time zone,
+		updated_on TIMESTAMP without time zone
 		-- ,foreign key (school_id) references school_hierarchy_details(school_id)
 		);
 
@@ -476,6 +480,8 @@ updated_on  TIMESTAMP without time zone
 
 create index if not exists student_attendance_temp_id on student_attendance_temp(school_id,month,student_id);
 
+
+
 /*student_attendance_trans*/
 
 create table if not exists student_attendance_trans
@@ -516,8 +522,8 @@ day_28  smallint,
 day_29  smallint,
 day_30  smallint,
 day_31  smallint,
-created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone
 --foreign key (school_id) references school_hierarchy_details(school_id),
 -- foreign key (student_id) references student_hierarchy_details(student_id)
 );
@@ -564,8 +570,8 @@ day_28  smallint,
 day_29  smallint,
 day_30  smallint,
 day_31  smallint,
-created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_hierarchy_details(school_id),
 -- foreign key (teacher_id) references teacher_hierarchy_details(teacher_id)
 );
@@ -582,24 +588,26 @@ crc_name varchar(100),
 school_id  bigint,
 lowest_class smallint,
 highest_class smallint,
-visit_start_time TIMESTAMPTZ,
-visit_end_time TIMESTAMPTZ,
+visit_start_time TIME without time zone,
+visit_end_time TIME without time zone,
 total_class_rooms smallint,
 actual_class_rooms smallint,
 total_suggestion_last_month smallint,
 resolved_from_that smallint,
 is_inspection smallint,
-reason_type smallint,
-reason_desc varchar(100),
-total_score smallint,
-score smallint,
+reason_type varchar(100),
+reason_desc text,
+total_score integer,
+score double precision,
 is_offline boolean,
-created_on  TIMESTAMPTZ, /* created_on field will come from source data*/
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone, /* created_on field will come from source data*/
+updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_hierarchy_details(school_id)
 );
 
 create index if not exists crc_inspection_trans_id on crc_inspection_trans(school_id,crc_id);
+
+
 
 /* crc_location_trans */
 
@@ -609,18 +617,19 @@ crc_location_id bigint primary key not null,
 crc_id bigint,
 inspection_id  bigint,
 school_id  bigint ,
-latitude  bigint,
-longitude  bigint,
-in_school_location  varchar(5),
+latitude  double precision,
+longitude  double precision,
+in_school_location  boolean,
 year int,
 month int,
-created_on  TIMESTAMPTZ, 
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone, 
+updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_hierarchy_details(school_id),
 -- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
 );
 
 create index if not exists crc_location_trans_id on crc_location_trans(school_id,crc_id);
+
 
 /* student_semester_trans */
 
@@ -647,7 +656,6 @@ updated_on  TIMESTAMP without time zone
 );
 
 create index if not exists student_semester_trans_id on student_semester_trans(school_id,grade);
-
 
 /*Aggregated*/
 
@@ -679,8 +687,8 @@ cluster_longitude  double precision,
 total_present  int,
 total_working_days  int,
 students_count bigint,
-created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone
 );
 
 create index if not exists school_student_total_attendance_id on school_student_total_attendance(month,school_id,block_id,cluster_id);
@@ -715,8 +723,8 @@ total_training int,
 total_halfday int,
 total_working_days  int,
 teachers_count bigint,
-created_on  TIMESTAMPTZ ,   
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone ,   
+updated_on  TIMESTAMP without time zone
 );
 
 create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
@@ -725,7 +733,7 @@ create index if not exists school_teacher_total_attendance_id on school_teacher_
 
 create table if not exists crc_visits_frequency
 (
-school_id  bigint ,
+school_id  bigint,
 school_name varchar(100),
 district_id  bigint,
 district_name varchar(100),
@@ -738,8 +746,8 @@ visit_count int,
 missed_visit_count int,
 month int,
 year int,
-created_on  TIMESTAMPTZ,
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone,
+updated_on  TIMESTAMP without time zone
 );
 
 create index if not exists crc_visits_frequency_id on crc_visits_frequency(school_id,block_id,cluster_id,district_id);
@@ -792,3 +800,4 @@ updated_on  TIMESTAMP without time zone
 );
 
 create index if not exists school_student_total_marks_id on school_student_subject_total_marks(semester,school_id,block_id,cluster_id);
+
