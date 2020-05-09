@@ -92,16 +92,6 @@ day_31 boolean,month int,year int
 
 create table student_attendance_meta_hist as select * from student_attendance_meta;
 
--- Need to handled in pre-sql
-insert into student_attendance_meta_hist (select * from student_attendance_meta except select * from student_attendance_meta_hist);
-
--- Need to handled in pre-sql
-truncate table student_attendance_meta; -- only one record need to be maitained at any point of time which controls the insertion process
-
-/*Values in student_attendance_meta specifies which day_s of the month's & which month of the year to be inserted or updated */
--- Need to handled in pre-sql
-insert into student_attendance_meta values (True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,9,2019);
-
 CREATE OR REPLACE FUNCTION day_wise_attendance(table_catalog text,table_schema text,month int,year int)
 RETURNS text AS
 $$
@@ -147,133 +137,133 @@ EXECUTE _col_sql into _column using $1, $2;
 _sql :=
       'WITH s AS (select * from student_attendance_temp where student_attendance_temp.month=$3 and student_attendance_temp.year=$4),
 upd AS (
-UPDATE scl_data
+UPDATE student_attendance_trans
      set day_2 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_2 = True and month=$3 and year=$4) THEN
    s.day_2
-   ELSE scl_data.day_2
+   ELSE student_attendance_trans.day_2
   END
   ,day_3 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_3 = True and month=$3 and year=$4) THEN
    s.day_3
-   ELSE scl_data.day_3
+   ELSE student_attendance_trans.day_3
   END
   ,day_4 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_4 = True and month=$3 and year=$4) THEN
    s.day_4
-   ELSE scl_data.day_4
+   ELSE student_attendance_trans.day_4
   END
   ,day_5 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_5 = True and month=$3 and year=$4) THEN
    s.day_5
-   ELSE scl_data.day_5
+   ELSE student_attendance_trans.day_5
   END
   ,day_6 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_6 = True and month=$3 and year=$4) THEN
    s.day_6
-   ELSE scl_data.day_6
+   ELSE student_attendance_trans.day_6
   END
   ,day_7 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_7 = True and month=$3 and year=$4) THEN
    s.day_7
-   ELSE scl_data.day_7
+   ELSE student_attendance_trans.day_7
   END
   ,day_8 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_8 = True and month=$3 and year=$4) THEN
    s.day_8
-   ELSE scl_data.day_8
+   ELSE student_attendance_trans.day_8
   END
   ,day_9 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_9 = True and month=$3 and year=$4) THEN
    s.day_9
-   ELSE scl_data.day_9
+   ELSE student_attendance_trans.day_9
   END
   ,day_10 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_10 = True and month=$3 and year=$4) THEN
    s.day_10
-   ELSE scl_data.day_10
+   ELSE student_attendance_trans.day_10
   END
   ,day_11 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_11 = True and month=$3 and year=$4) THEN
    s.day_11
-   ELSE scl_data.day_11
+   ELSE student_attendance_trans.day_11
   END
   ,day_12 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_12 = True and month=$3 and year=$4) THEN
    s.day_12
-   ELSE scl_data.day_12
+   ELSE student_attendance_trans.day_12
   END
   ,day_13 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_13 = True and month=$3 and year=$4) THEN
    s.day_13
-   ELSE scl_data.day_13
+   ELSE student_attendance_trans.day_13
   END
   ,day_14 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_14 = True and month=$3 and year=$4) THEN
    s.day_4
-   ELSE scl_data.day_14
+   ELSE student_attendance_trans.day_14
   END
   ,day_15 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_15 = True and month=$3 and year=$4) THEN
    s.day_15
-   ELSE scl_data.day_15
+   ELSE student_attendance_trans.day_15
   END
   ,day_16 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_16 = True and month=$3 and year=$4) THEN
    s.day_16
-   ELSE scl_data.day_16
+   ELSE student_attendance_trans.day_16
   END
   ,day_17 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_17 = True and month=$3 and year=$4) THEN
    s.day_17
-   ELSE scl_data.day_17
+   ELSE student_attendance_trans.day_17
   END
   ,day_18 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_18 = True and month=$3 and year=$4) THEN
    s.day_18
-   ELSE scl_data.day_18
+   ELSE student_attendance_trans.day_18
   END
   ,day_19 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_19 = True and month=$3 and year=$4) THEN
    s.day_19
-   ELSE scl_data.day_19
+   ELSE student_attendance_trans.day_19
   END
   ,day_20 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_20 = True and month=$3 and year=$4) THEN
    s.day_20
-   ELSE scl_data.day_20
+   ELSE student_attendance_trans.day_20
   END
   ,day_21 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_21 = True and month=$3 and year=$4) THEN
    s.day_21
-   ELSE scl_data.day_21
+   ELSE student_attendance_trans.day_21
   END
   ,day_22 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_22 = True and month=$3 and year=$4) THEN
    s.day_22
-   ELSE scl_data.day_22
+   ELSE student_attendance_trans.day_22
   END
   ,day_23 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_23 = True and month=$3 and year=$4) THEN
    s.day_23
-   ELSE scl_data.day_23
+   ELSE student_attendance_trans.day_23
   END
   ,day_24 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_24 = True and month=$3 and year=$4) THEN
    s.day_24
-   ELSE scl_data.day_24
+   ELSE student_attendance_trans.day_24
   END
   ,day_25 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_25 = True and month=$3 and year=$4) THEN
    s.day_25
-   ELSE scl_data.day_25
+   ELSE student_attendance_trans.day_25
   END
   ,day_26 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_26 = True and month=$3 and year=$4) THEN
    s.day_26
-   ELSE scl_data.day_26
+   ELSE student_attendance_trans.day_26
   END
   ,day_27 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_27 = True and month=$3 and year=$4) THEN
    s.day_27
-   ELSE scl_data.day_27
+   ELSE student_attendance_trans.day_27
   END
   ,day_28 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_28 = True and month=$3 and year=$4) THEN
    s.day_28
-   ELSE scl_data.day_28
+   ELSE student_attendance_trans.day_28
   END
   ,day_29 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_29 = True and month=$3 and year=$4) THEN
    s.day_29
-   ELSE scl_data.day_29
+   ELSE student_attendance_trans.day_29
   END
   ,day_30 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_30 = True and month=$3 and year=$4) THEN
    s.day_30
-   ELSE scl_data.day_30
+   ELSE student_attendance_trans.day_30
   END
   ,day_31 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_31 = True and month=$3 and year=$4) THEN
    s.day_31
-   ELSE scl_data.day_31
+   ELSE student_attendance_trans.day_31
   END
      FROM   s
-     WHERE  scl_data.attendance_id = s.attendance_id
-        and scl_data.month=$3
-	and scl_data.year=$4
-     RETURNING scl_data.attendance_id
-) INSERT INTO scl_data(attendance_id,student_id,year,month,'||_column||')
+     WHERE  student_attendance_trans.attendance_id = s.attendance_id
+        and student_attendance_trans.month=$3
+	and student_attendance_trans.year=$4
+     RETURNING student_attendance_trans.attendance_id
+) INSERT INTO student_attendance_trans(attendance_id,student_id,year,month,'||_column||')
        select s.attendance_id,s.student_id,s.school_id,s.year,s.month,'||_column ||'
        from s
        where s.attendance_id not in (select attendance_id from upd)';
