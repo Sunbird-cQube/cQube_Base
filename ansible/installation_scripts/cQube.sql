@@ -1,3 +1,7 @@
+/* tablefunc */
+
+CREATE EXTENSION IF NOT EXISTS tablefunc;
+
 /* nifi metadata table */
 
 CREATE TABLE IF NOT EXISTS zip_files_processing ( 
@@ -76,6 +80,201 @@ return data;
 END; $$
 LANGUAGE PLPGSQL;
 
+/* Day wise logic*/
+
+create table student_attendance_meta
+(
+day_1 boolean,day_2 boolean,day_3 boolean,day_4 boolean,day_5 boolean,day_6 boolean,day_7 boolean,day_8 boolean,day_9 boolean,day_10 boolean,
+day_11 boolean,day_12 boolean,day_13 boolean,day_14 boolean,day_15 boolean,day_16 boolean,day_17 boolean,day_18 boolean,day_19 boolean,day_20 boolean,
+day_21 boolean,day_22 boolean,day_23 boolean,day_24 boolean,day_25 boolean,day_26 boolean,day_27 boolean,day_28 boolean,day_29 boolean,day_30 boolean,
+day_31 boolean,month int,year int
+);
+
+create table student_attendance_meta_hist as select * from student_attendance_meta;
+
+CREATE OR REPLACE FUNCTION day_wise_attendance(table_catalog text,table_schema text,month int,year int)
+RETURNS text AS
+$$
+DECLARE
+_col_sql text :='SELECT string_agg(column_name,'','') FROM information_schema.columns WHERE table_catalog = $1
+AND table_schema= $2 AND table_name = ''student_attendance_meta'' 
+AND (ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_1 = True) THEN 1 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_2 = True) THEN 2 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_3 = True) THEN 3 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_4 = True) THEN 4 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_5 = True) THEN 5 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_6 = True) THEN 6 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_7 = True) THEN 7 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_8 = True) THEN 8 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_9 = True) THEN 9 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_10 = True) THEN 10 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_11 = True) THEN 11 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_12 = True) THEN 12 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_13 = True) THEN 13 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_14 = True) THEN 14 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_15 = True) THEN 15 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_16 = True) THEN 16 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_17 = True) THEN 17 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_18 = True) THEN 18 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_19 = True) THEN 19 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_20 = True) THEN 20 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_21 = True) THEN 21 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_22 = True) THEN 22 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_23 = True) THEN 23 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_24 = True) THEN 24 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_25 = True) THEN 25 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_26 = True) THEN 26 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_27 = True) THEN 27 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_28 = True) THEN 28 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_29 = True) THEN 29 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_30 = True) THEN 30 END
+OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_31 = True) THEN 31 END)';
+
+_column text :='';
+_sql text:='';
+BEGIN
+EXECUTE _col_sql into _column using $1, $2;
+_sql :=
+      'WITH s AS (select * from student_attendance_temp where student_attendance_temp.month=$3 and student_attendance_temp.year=$4),
+upd AS (
+UPDATE student_attendance_trans
+     set day_2 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_2 = True and month=$3 and year=$4) THEN
+   s.day_2
+   ELSE student_attendance_trans.day_2
+  END
+  ,day_3 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_3 = True and month=$3 and year=$4) THEN
+   s.day_3
+   ELSE student_attendance_trans.day_3
+  END
+  ,day_4 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_4 = True and month=$3 and year=$4) THEN
+   s.day_4
+   ELSE student_attendance_trans.day_4
+  END
+  ,day_5 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_5 = True and month=$3 and year=$4) THEN
+   s.day_5
+   ELSE student_attendance_trans.day_5
+  END
+  ,day_6 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_6 = True and month=$3 and year=$4) THEN
+   s.day_6
+   ELSE student_attendance_trans.day_6
+  END
+  ,day_7 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_7 = True and month=$3 and year=$4) THEN
+   s.day_7
+   ELSE student_attendance_trans.day_7
+  END
+  ,day_8 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_8 = True and month=$3 and year=$4) THEN
+   s.day_8
+   ELSE student_attendance_trans.day_8
+  END
+  ,day_9 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_9 = True and month=$3 and year=$4) THEN
+   s.day_9
+   ELSE student_attendance_trans.day_9
+  END
+  ,day_10 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_10 = True and month=$3 and year=$4) THEN
+   s.day_10
+   ELSE student_attendance_trans.day_10
+  END
+  ,day_11 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_11 = True and month=$3 and year=$4) THEN
+   s.day_11
+   ELSE student_attendance_trans.day_11
+  END
+  ,day_12 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_12 = True and month=$3 and year=$4) THEN
+   s.day_12
+   ELSE student_attendance_trans.day_12
+  END
+  ,day_13 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_13 = True and month=$3 and year=$4) THEN
+   s.day_13
+   ELSE student_attendance_trans.day_13
+  END
+  ,day_14 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_14 = True and month=$3 and year=$4) THEN
+   s.day_4
+   ELSE student_attendance_trans.day_14
+  END
+  ,day_15 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_15 = True and month=$3 and year=$4) THEN
+   s.day_15
+   ELSE student_attendance_trans.day_15
+  END
+  ,day_16 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_16 = True and month=$3 and year=$4) THEN
+   s.day_16
+   ELSE student_attendance_trans.day_16
+  END
+  ,day_17 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_17 = True and month=$3 and year=$4) THEN
+   s.day_17
+   ELSE student_attendance_trans.day_17
+  END
+  ,day_18 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_18 = True and month=$3 and year=$4) THEN
+   s.day_18
+   ELSE student_attendance_trans.day_18
+  END
+  ,day_19 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_19 = True and month=$3 and year=$4) THEN
+   s.day_19
+   ELSE student_attendance_trans.day_19
+  END
+  ,day_20 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_20 = True and month=$3 and year=$4) THEN
+   s.day_20
+   ELSE student_attendance_trans.day_20
+  END
+  ,day_21 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_21 = True and month=$3 and year=$4) THEN
+   s.day_21
+   ELSE student_attendance_trans.day_21
+  END
+  ,day_22 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_22 = True and month=$3 and year=$4) THEN
+   s.day_22
+   ELSE student_attendance_trans.day_22
+  END
+  ,day_23 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_23 = True and month=$3 and year=$4) THEN
+   s.day_23
+   ELSE student_attendance_trans.day_23
+  END
+  ,day_24 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_24 = True and month=$3 and year=$4) THEN
+   s.day_24
+   ELSE student_attendance_trans.day_24
+  END
+  ,day_25 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_25 = True and month=$3 and year=$4) THEN
+   s.day_25
+   ELSE student_attendance_trans.day_25
+  END
+  ,day_26 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_26 = True and month=$3 and year=$4) THEN
+   s.day_26
+   ELSE student_attendance_trans.day_26
+  END
+  ,day_27 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_27 = True and month=$3 and year=$4) THEN
+   s.day_27
+   ELSE student_attendance_trans.day_27
+  END
+  ,day_28 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_28 = True and month=$3 and year=$4) THEN
+   s.day_28
+   ELSE student_attendance_trans.day_28
+  END
+  ,day_29 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_29 = True and month=$3 and year=$4) THEN
+   s.day_29
+   ELSE student_attendance_trans.day_29
+  END
+  ,day_30 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_30 = True and month=$3 and year=$4) THEN
+   s.day_30
+   ELSE student_attendance_trans.day_30
+  END
+  ,day_31 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_31 = True and month=$3 and year=$4) THEN
+   s.day_31
+   ELSE student_attendance_trans.day_31
+  END
+     FROM   s
+     WHERE  student_attendance_trans.attendance_id = s.attendance_id
+        and student_attendance_trans.month=$3
+	and student_attendance_trans.year=$4
+     RETURNING student_attendance_trans.attendance_id
+) INSERT INTO student_attendance_trans(attendance_id,student_id,year,month,'||_column||')
+       select s.attendance_id,s.student_id,s.school_id,s.year,s.month,'||_column ||'
+       from s
+       where s.attendance_id not in (select attendance_id from upd)';
+
+   IF _column <> '' THEN  
+	EXECUTE _sql using $3, $4;
+   END IF;
+	RETURN 0;
+END;
+$$  LANGUAGE plpgsql;
+
 /*school_master*/
 
 create table if not exists school_master
@@ -92,8 +291,8 @@ school_highest_class  int,
 school_management_type_id int unique,
 school_category_id  int unique,
 school_medium_id  int unique,
-created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL
+created_on  TIMESTAMP without time zone NOT NULL,
+updated_on  TIMESTAMP without time zone NOT NULL
 );
 
 /*school_management_master*/
@@ -102,8 +301,8 @@ create table if not exists school_management_master
 	(
 school_management_type_id int primary key not null,
 school_management_type varchar(100),
-created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL
+created_on  TIMESTAMP without time zone NOT NULL,
+updated_on  TIMESTAMP without time zone NOT NULL
 -- ,foreign key (school_management_type_id) references school_master(school_management_type_id)
 );
 
@@ -113,8 +312,8 @@ create table if not exists school_category_master
 	(
 school_category_id int primary key not null,
 school_category varchar(100),
-created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL
+created_on  TIMESTAMP without time zone NOT NULL,
+updated_on  TIMESTAMP without time zone NOT NULL
 -- ,foreign key (school_category_id) references school_master(school_category_id)
 );
 
@@ -124,8 +323,8 @@ create table if not exists school_medium_master
 	(
 school_medium_id int primary key not null,
 medium_of_school varchar(100),
-created_on  TIMESTAMPTZ NOT NULL,
-updated_on  TIMESTAMPTZ NOT NULL
+created_on  TIMESTAMP without time zone NOT NULL,
+updated_on  TIMESTAMP without time zone NOT NULL
 -- ,foreign key (school_medium_id) references school_master(school_medium_id)
 );
 
@@ -145,10 +344,25 @@ block_longitude  double precision,
 cluster_id  bigint,
 cluster_latitude  double precision,
 cluster_longitude  double precision,
-created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ 
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
 -- ,foreign key (school_id) references school_master(school_id)
 );	
+
+/* subject_master */
+
+create table if not exists subject_master
+(
+subject_id  bigint primary key not null,
+subject_name  double precision,
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
+-- ,foreign key (school_id) references school_master(school_id)
+);
+
+-- create table if not exists holiday_master(holiday_id bigint primary key not null,school_id bigint not null,holiday_date date,created_on timestamp,updated_on timestamp);
+
+-- create index if not exists holiday_master_id on holiday_master(school_id,holiday_date);
 
 /* school_hierarchy_details */
 
@@ -167,8 +381,8 @@ create table if not exists school_hierarchy_details
 		cluster_id bigint,
 		cluster_name varchar(100),
 		crc_name varchar(100),
-		created_on TIMESTAMPTZ,
-		updated_on TIMESTAMPTZ
+		created_on TIMESTAMP without time zone,
+		updated_on TIMESTAMP without time zone
 		-- ,foreign key (school_id) references school_geo_master(school_id)
 		);
 
@@ -183,8 +397,8 @@ create table if not exists student_hierarchy_details
 		year int,
 		student_class int,
 		stream_of_student varchar(50),
-		created_on TIMESTAMPTZ,
-		updated_on TIMESTAMPTZ
+		created_on TIMESTAMP without time zone,
+		updated_on TIMESTAMP without time zone
 		-- ,foreign key (school_id) references school_hierarchy_details(school_id)
 		);
 
@@ -200,12 +414,62 @@ create table if not exists teacher_hierarchy_details
 		teacher_designation varchar(100),
 		nature_of_employment varchar(50),
 		date_of_joining date,
-		created_on TIMESTAMPTZ,
-		updated_on TIMESTAMPTZ
+		created_on TIMESTAMP without time zone,
+		updated_on TIMESTAMP without time zone
 		-- ,foreign key (school_id) references school_hierarchy_details(school_id)
 		);
 
 create index if not exists teacher_hierarchy_details_id on teacher_hierarchy_details(school_id,nature_of_employment);
+
+/*student_attendance_temp*/
+
+create table if not exists student_attendance_temp
+(
+attendance_id  bigint primary key not null,
+student_id  bigint,
+school_id  bigint,
+year  int,
+month  int,
+day_1  smallint,
+day_2  smallint,
+day_3  smallint,
+day_4  smallint,
+day_5  smallint,
+day_6  smallint,
+day_7  smallint,
+day_8  smallint,
+day_9  smallint,
+day_10  smallint,
+day_11  smallint,
+day_12  smallint,
+day_13  smallint,
+day_14  smallint,
+day_15  smallint,
+day_16  smallint,
+day_17  smallint,
+day_18  smallint,
+day_19  smallint,
+day_20  smallint,
+day_21  smallint,
+day_22  smallint,
+day_23  smallint,
+day_24  smallint,
+day_25  smallint,
+day_26  smallint,
+day_27  smallint,
+day_28  smallint,
+day_29  smallint,
+day_30  smallint,
+day_31  smallint,
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone
+--foreign key (school_id) references school_hierarchy_details(school_id),
+-- foreign key (student_id) references student_hierarchy_details(student_id)
+);
+
+create index if not exists student_attendance_temp_id on student_attendance_temp(school_id,month,student_id);
+
+
 
 /*student_attendance_trans*/
 
@@ -247,8 +511,8 @@ day_28  smallint,
 day_29  smallint,
 day_30  smallint,
 day_31  smallint,
-created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone
 --foreign key (school_id) references school_hierarchy_details(school_id),
 -- foreign key (student_id) references student_hierarchy_details(student_id)
 );
@@ -295,8 +559,8 @@ day_28  smallint,
 day_29  smallint,
 day_30  smallint,
 day_31  smallint,
-created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_hierarchy_details(school_id),
 -- foreign key (teacher_id) references teacher_hierarchy_details(teacher_id)
 );
@@ -313,20 +577,20 @@ crc_name varchar(100),
 school_id  bigint,
 lowest_class smallint,
 highest_class smallint,
-visit_start_time TIMESTAMPTZ,
-visit_end_time TIMESTAMPTZ,
+visit_start_time TIME without time zone,
+visit_end_time TIME without time zone,
 total_class_rooms smallint,
 actual_class_rooms smallint,
 total_suggestion_last_month smallint,
 resolved_from_that smallint,
 is_inspection smallint,
-reason_type smallint,
-reason_desc varchar(100),
-total_score smallint,
-score smallint,
+reason_type varchar(100),
+reason_desc text,
+total_score integer,
+score double precision,
 is_offline boolean,
-created_on  TIMESTAMPTZ, /* created_on field will come from source data*/
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone, /* created_on field will come from source data*/
+updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_hierarchy_details(school_id)
 );
 
@@ -342,19 +606,45 @@ crc_location_id bigint primary key not null,
 crc_id bigint,
 inspection_id  bigint,
 school_id  bigint ,
-latitude  bigint,
-longitude  bigint,
-in_school_location  varchar(5),
+latitude  double precision,
+longitude  double precision,
+in_school_location  boolean,
 year int,
 month int,
-created_on  TIMESTAMPTZ, 
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone, 
+updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_hierarchy_details(school_id),
 -- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
 );
 
 create index if not exists crc_location_trans_id on crc_location_trans(school_id,crc_id);
 
+
+/* student_semester_trans */
+
+create table if not exists student_semester_trans
+(
+assessment_id serial,
+year int,
+student_uid bigint,
+school_id  bigint,
+semester  int ,
+grade  int,
+subject_1  int,
+subject_2  int,
+subject_3 int,
+subject_4 int,
+subject_5 int,
+subject_6 int,
+subject_7 int,
+subject_8 int,
+created_on  TIMESTAMP without time zone, 
+updated_on  TIMESTAMP without time zone
+-- ,foreign key (school_id) references school_hierarchy_details(school_id),
+-- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
+);
+
+create index if not exists student_semester_trans_id on student_semester_trans(school_id,grade);
 
 /*Aggregated*/
 
@@ -386,8 +676,8 @@ cluster_longitude  double precision,
 total_present  int,
 total_working_days  int,
 students_count bigint,
-created_on  TIMESTAMPTZ ,
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone
 );
 
 create index if not exists school_student_total_attendance_id on school_student_total_attendance(month,school_id,block_id,cluster_id);
@@ -422,8 +712,8 @@ total_training int,
 total_halfday int,
 total_working_days  int,
 teachers_count bigint,
-created_on  TIMESTAMPTZ ,   
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone ,   
+updated_on  TIMESTAMP without time zone
 );
 
 create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
@@ -432,7 +722,7 @@ create index if not exists school_teacher_total_attendance_id on school_teacher_
 
 create table if not exists crc_visits_frequency
 (
-school_id  bigint ,
+school_id  bigint,
 school_name varchar(100),
 district_id  bigint,
 district_name varchar(100),
@@ -445,10 +735,58 @@ visit_count int,
 missed_visit_count int,
 month int,
 year int,
-created_on  TIMESTAMPTZ,
-updated_on  TIMESTAMPTZ
+created_on  TIMESTAMP without time zone,
+updated_on  TIMESTAMP without time zone
 );
 
 create index if not exists crc_visits_frequency_id on crc_visits_frequency(school_id,block_id,cluster_id,district_id);
 
+/*school_student_subject_total_marks*/
+
+create table if not exists school_student_subject_total_marks
+(
+id  serial,
+year  int,
+semester  smallint,
+school_id  bigint,
+grade int,
+school_name varchar(200),
+school_latitude  double precision,
+school_longitude  double precision,
+district_id  bigint,
+district_name varchar(100),
+district_latitude  double precision,
+district_longitude  double precision,
+block_id  bigint,
+block_name varchar(100),
+brc_name varchar(100),
+block_latitude  double precision,
+block_longitude  double precision,
+cluster_id  bigint,
+cluster_name varchar(100),
+crc_name varchar(100),
+cluster_latitude  double precision,
+cluster_longitude  double precision,
+subject_3_marks_scored  int,
+subject_3_total_marks  int,
+subject_1_marks_scored int,  
+subject_1_total_marks  int,
+subject_2_marks_scored  int,
+subject_2_total_marks  int,
+subject_7_marks_scored  int,
+subject_7_total_marks  int,
+subject_6_marks_scored  int,
+subject_6_total_marks  int,
+subject_4_marks_scored  int,
+subject_4_total_marks  int,
+subject_5_marks_scored  int,
+subject_5_total_marks  int,
+subject_8_marks_scored  int,
+subject_8_total_marks  int,
+students_count bigint,
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone
+);
+
+create index if not exists school_student_total_marks_id on school_student_subject_total_marks(semester,school_id,block_id,cluster_id);
 
