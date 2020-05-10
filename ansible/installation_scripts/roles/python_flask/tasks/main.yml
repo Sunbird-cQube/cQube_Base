@@ -5,7 +5,7 @@
 
 - name: Manually create the initial virtualenv
   command:
-    cmd: virtualenv /home/laxmikanthvattamwar/cQube/development/python/flaskenv -p Python 3.6.9
+    cmd: virtualenv ../../development/python/flaskenv -p Python 3.6.9
     creates: "../../development/python/flaskenv"
 
 - pip:
