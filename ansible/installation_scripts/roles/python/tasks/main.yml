@@ -7,3 +7,11 @@
 - pip:
     name: boto3
 
+- name: Install required packages 
+  apt: pkg={{ item }} state=present
+  with_items:
+  - python3-dev
+  - build-essential
+  - libssl-dev
+  - libffi-dev
+

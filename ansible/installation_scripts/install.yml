@@ -9,7 +9,7 @@
   - java
   - python
   - s3_buckets
-  - sftp
   - createdb
+  - python_flask
   - angular
   - nifi

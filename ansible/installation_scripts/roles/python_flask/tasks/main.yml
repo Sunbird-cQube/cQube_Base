@@ -1,0 +1,39 @@
+- name: create a virtual environment directory
+  file:
+    path: ../../development/python/flaskenv
+    state: directory
+
+- name: Manually create the initial virtualenv
+  command:
+    cmd: virtualenv /home/laxmikanthvattamwar/cQube/development/python/flaskenv -p Python 3.6.9
+    creates: "../../development/python/flaskenv"
+
+- pip:
+    name: virtualenv
+
+- name: Install requirements
+  pip:
+    requirements=../../ansible/installation_scripts/requirements.txt
+    virtualenv=../../development/python/flaskenv
+    virtualenv_python=/usr/bin/python3
+
+- name: Creating environmental variables
+  file:
+    path: ../../development/python/env.py
+    state: touch
+    mode: u+rwx,g+rw,o+rw
+
+- name: Loading required data inside env.py file
+  blockinfile:
+        path: ../../development/python/env.py
+        block: |
+               DATABASE_URI = "postgresql://{{ emission_db_user }}:{{ emission_db_password }}@localhost:5432/{{ emission_db_name }}"
+               AWS_SECRET_KEY = "{{ s3_secret_key }}"
+               AWS_ACCESS_KEY = "{{ s3_access_key }}"
+               BUCKET_NAME = "{{ s3_emission_bucket }}"
+- name: starting flask app
+  shell: ../../development/python/flaskenv/bin/python3 server.py &
+  #  command: ../../development/python/flaskenv/bin/python3 server.py &
+  # args:
+  #  chdir: ../../development/python
+

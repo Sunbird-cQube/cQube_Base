@@ -20,3 +20,13 @@
     tags:
        name: "{{ s3_output_bucket }}"
 
+- name: creating s3 bucket
+  s3_bucket:
+    name: "{{ s3_emission_bucket }}"
+    aws_access_key: "{{ s3_access_key }}"
+    aws_secret_key: "{{ s3_secret_key }}"
+    state: present
+    region: ap-south-1
+    versioning: yes
+    tags:
+       name: "{{ s3_emission_bucket }}"
