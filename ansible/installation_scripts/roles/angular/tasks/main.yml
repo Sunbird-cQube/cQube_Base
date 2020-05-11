@@ -16,7 +16,7 @@
 
 - name: Node.js - Install express
   npm: name={{ item }} state=present global=yes
-  with_items:    
+  with_items:
     - "@angular/cli"
     - nodemon
     - http-server
@@ -25,9 +25,9 @@
   shell: chmod -R 755 ../../development/angular
 
 - name: Change to Node directory
-  shell: cd ../../development/angular/server-side 
+  shell: cd ../../development/angular/server-side
 
-- name: NodeJS dependencies install  
+- name: NodeJS dependencies install
   npm:
     path: ../../development/angular/server-side
 
@@ -35,7 +35,7 @@
   file:
     path: ../../development/angular/server-side/.env
     state: touch
-    mode: u+rwx,g+rw,o+rw 
+    mode: u+rwx,g+rw,o+rw
 
 - name: Loading required data inside .env file
   blockinfile:
@@ -47,7 +47,7 @@
                 OUTPUT_BUCKET = "{{ s3_output_bucket }}"
 
 - name: Start NodeJS
-  shell: cd ../../development/angular/server-side; npm start & 
+  shell: cd ../../development/angular/server-side; npm start &
 
 #- name: output
 #  ipify_facts:
@@ -56,7 +56,7 @@
 #- name: getting ip
 #  debug:
 #    var: public_ip.ansible_facts.ipify_public_ip
- 
+
 - name: Replace a localhost entry with our own
   lineinfile:
     path: ../../development/angular/client-side/src/environments/environment.ts
@@ -75,11 +75,12 @@
   args:
     chdir: ../../development/angular/client-side
 
-- name: 
-  shell: ../../development/angular/client-side/dist/gujarat-project ; nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
+- name:
+  shell: ../../development/angular/client-side/dist/gujarat-project ;sudo nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
   #command: nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
-  # args:
-  #  chdir: ../../development/angular/client-side/dist/gujarat-project
+  args:
+    chdir: ../../development/angular/client-side/dist/gujarat-project
 
     #- name: Run Angular
     # shell: cd ../../development/angular/client-side ; forever start node_modules/@angular/cli/bin/ng serve --host 0.0.0.0
+

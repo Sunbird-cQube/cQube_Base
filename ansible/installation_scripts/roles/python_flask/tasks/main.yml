@@ -1,21 +1,24 @@
 - name: create a virtual environment directory
   file:
-    path: ../../development/python/flaskenv
+    path: /opt/emission_server/flaskenv
     state: directory
+
+- name: Copy requirements.txt
+  copy:
+    src: requirements.txt
+    dest: /opt/emission_server/requirements.txt
 
 - name: Manually create the initial virtualenv
   command:
-    cmd: virtualenv ../../development/python/flaskenv -p Python 3.6.9
-    creates: "../../development/python/flaskenv"
-
-- pip:
-    name: virtualenv
+    cmd: virtualenv /opt/emission_server/flaskenv -p python3
+    creates: "/opt/emission_server/flaskenv"
 
 - name: Install requirements
+  become: yes
   pip:
-    requirements=../../ansible/installation_scripts/requirements.txt
-    virtualenv=../../development/python/flaskenv
-    virtualenv_python=/usr/bin/python3
+    requirements: /opt/emission_server/requirements.txt
+    virtualenv: /opt/emission_server/flaskenv
+    virtualenv_python: /usr/bin/python3
 
 - name: Creating environmental variables
   file:
@@ -32,8 +35,8 @@
                AWS_ACCESS_KEY = "{{ s3_access_key }}"
                BUCKET_NAME = "{{ s3_emission_bucket }}"
 - name: starting flask app
-  shell: ../../development/python/flaskenv/bin/python3 server.py &
-  #  command: ../../development/python/flaskenv/bin/python3 server.py &
-  # args:
-  #  chdir: ../../development/python
+  shell: /opt/emission_server/flaskenv/bin/python server.py &
+#  command: ../../development/python/flaskenv/bin/python3 server.py &
+  args:
+    chdir: ../../development/python
 
