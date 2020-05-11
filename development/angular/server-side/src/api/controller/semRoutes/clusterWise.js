@@ -6,7 +6,7 @@ router.post('/allClusterWise', (req, res) => {
     try {
         var filterData = ''
         logger.info('--- all cluster wise attendance api ---');
-        const_data['getParams']['Key'] = 'sem_data/cluster-wise-assesment.json'
+        const_data['getParams']['Key'] = 'semester/cluster_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
             if (err) {
                 console.log(err);
@@ -52,7 +52,15 @@ router.post('/allClusterWise', (req, res) => {
                         studentsCount: item['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                         schoolsCount: item['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                         data_from_date: item['data_from_date'],
-                        data_upto_date: item['data_upto_date']
+                        data_upto_date: item['data_upto_date'],
+                        value_below_33: item['value_below_33'],
+                        value_between_33_60: item['value_between_33_60'],
+                        value_between_60_75: item['value_between_60_75'],
+                        value_above_75: item['value_above_75'],
+                        percent_below_33: item['percent_below_33'],
+                        percent_between_33_60: item['percent_between_33_60'],
+                        percent_between_60_75: item['percent_between_60_75'],
+                        percent_above_75: item['percent_above_75']
                     }
                     return obj
                 });
@@ -81,7 +89,7 @@ router.post('/clusterWise/:distId/:blockId', (req, res) => {
     try {
         var filterData = ''
         logger.info('--- cluster wise attendance api ---');
-        const_data['getParams']['Key'] = 'sem_data/cluster-wise-assesment.json'
+        const_data['getParams']['Key'] = 'semester/cluster_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
             if (err) {
                 console.log(err);
@@ -135,6 +143,14 @@ router.post('/clusterWise/:distId/:blockId', (req, res) => {
                         schoolsCount: item['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                         // data_from_date: item['data_from_date'],
                         // data_upto_date: item['data_upto_date']
+                        value_below_33: item['value_below_33'],
+                        value_between_33_60: item['value_between_33_60'],
+                        value_between_60_75: item['value_between_60_75'],
+                        value_above_75: item['value_above_75'],
+                        percent_below_33: item['percent_below_33'],
+                        percent_between_33_60: item['percent_between_33_60'],
+                        percent_between_60_75: item['percent_between_60_75'],
+                        percent_above_75: item['percent_above_75']
                     }
                     return obj
                 });
