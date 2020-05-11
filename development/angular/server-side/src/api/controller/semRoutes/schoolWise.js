@@ -6,7 +6,7 @@ router.post('/allSchoolWise', (req, res) => {
     try {
         var filterData = '';
         logger.info('--- school wise attendance api ---');
-        const_data['getParams']['Key'] = 'sem_data/school-wise-assesment.json'
+        const_data['getParams']['Key'] = 'semester/school_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
             if (err) {
                 console.log(err);
@@ -82,7 +82,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', (req, res) => {
     try {
         var filterData = '';
         logger.info('--- school wise attendance api ---');
-        const_data['getParams']['Key'] = 'sem_data/school-wise-assesment.json'
+        const_data['getParams']['Key'] = 'semester/school_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
             if (err) {
                 console.log(err);
