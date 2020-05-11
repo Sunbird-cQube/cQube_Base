@@ -7,3 +7,5 @@
 /development/python/env.py
 
 /ansible/installation_scripts/nifi.json
+
+/ansible/installation_scripts/vars/main.yml
