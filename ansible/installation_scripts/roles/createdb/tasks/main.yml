@@ -22,13 +22,13 @@
   replace:
     dest: /etc/postgresql/10/main/postgresql.conf
     regexp: "shared_buffers = 128MB"
-    replace: "shared_buffers = 6GB"
+    replace: "shared_buffers = {{ shared_buffers }}"
 
 - name: Increase work memory postgre file
   replace:
     dest: /etc/postgresql/10/main/postgresql.conf
     regexp: "#work_mem = 4MB"
-    replace: "work_mem = 1GB"    
+    replace: "work_mem = {{ work_mem }}"    
 
 - name: Ensure the PostgreSQL service is running
   service: name=postgresql state=started enabled=yes
@@ -40,6 +40,14 @@
     name: "{{ db_name }}"
     encoding: 'UTF-8'
     template: 'template0'
+    state: present
+
+- name: Ensure database is created
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ emission_db_name }}"
+    encoding: 'UTF-8'
     state: present
 
 - name: Ensure user has access to the database
@@ -60,5 +68,12 @@
   postgresql_query:
     db: "{{ db_user }}"
     path_to_script: cQube.sql
+
+- name: Run queries from SQL script
+  become: true
+  become_user: postgres
+  postgresql_query:
+    db: "{{ emission_db_name }}"
+    path_to_script: emission.sql
   notify:
    - restart postgresql

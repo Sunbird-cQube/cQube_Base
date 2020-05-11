@@ -490,7 +490,11 @@ export class SemViewComponent implements OnInit {
             "<br><b>Grade 7:</b>" + "&nbsp;" + this.markers[i].grade_7 + " %" +
             "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
             "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schoolsCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount
+            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount +
+            "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.markers[i].percent_below_33 + " %" + ` (${this.markers[i].value_below_33} out of ${this.markers[i].schoolsCount})` +
+            "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.markers[i].percent_between_33_60 + " %" + ` (${this.markers[i].value_between_33_60} out of ${this.markers[i].schoolsCount})` +
+            "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
+            "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
 
           // to download the report
@@ -522,7 +526,11 @@ export class SemViewComponent implements OnInit {
             "<br><b>Grade 7:</b>" + "&nbsp;" + this.markers[i].grade_7 + " %" +
             "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
             "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schoolsCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount
+            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount +
+            "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.markers[i].percent_below_33 + " %" + ` (${this.markers[i].value_below_33} out of ${this.markers[i].schoolsCount})` +
+            "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.markers[i].percent_between_33_60 + " %" + ` (${this.markers[i].value_between_33_60} out of ${this.markers[i].schoolsCount})` +
+            "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
+            "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
           this.fileName = "Block_wise_report"
           let obj = {
@@ -555,7 +563,11 @@ export class SemViewComponent implements OnInit {
             "<br><b>Grade 7:</b>" + "&nbsp;" + this.markers[i].grade_7 + " %" +
             "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
             "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schoolsCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount
+            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount +
+            "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.markers[i].percent_below_33 + " %" + ` (${this.markers[i].value_below_33} out of ${this.markers[i].schoolsCount})` +
+            "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.markers[i].percent_between_33_60 + " %" + ` (${this.markers[i].value_between_33_60} out of ${this.markers[i].schoolsCount})` +
+            "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
+            "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
           this.fileName = "Cluster_wise_report"
           let obj = {
@@ -615,18 +627,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
         }
 
-        markerIcon.on('mouseover', function (e) {
-          this.openPopup();
-        });
-        markerIcon.on('mouseout', function (e) {
-          this.closePopup();
-        });
-
-        this.layerMarkers.addLayer(markerIcon);
-        if (options.level != 'school') {
-          markerIcon.on('click', this.onClick_Marker, this)
-        }
-        markerIcon.myJsonData = this.markers[i];
+        this.popups(markerIcon, this.markers, options);
       }
 
       this.loaderAndErr();
@@ -635,6 +636,23 @@ export class SemViewComponent implements OnInit {
     this.schoolCount = this.data['totalValues'].totalSchools;
     this.studentCount = this.data['totalValues'].totalStudents;
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+  }
+
+  popups(markerIcon, markers, options) {
+    for (var i = 0; i < this.markers.length; i++) {
+      markerIcon.on('mouseover', function (e) {
+        this.openPopup();
+      });
+      markerIcon.on('mouseout', function (e) {
+        this.closePopup();
+      });
+
+      this.layerMarkers.addLayer(markerIcon);
+      if (options.level != 'school') {
+        markerIcon.on('click', this.onClick_Marker, this)
+      }
+      markerIcon.myJsonData = markers[i];
+    }
   }
 
   //Showing tooltips on markers on mouse hover...

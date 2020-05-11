@@ -19,7 +19,7 @@
   with_items:    
     - "@angular/cli"
     - nodemon
-    - forever
+    - http-server
 
 - name: Change permission
   shell: chmod -R 755 ../../development/angular
@@ -71,4 +71,15 @@
     path: ../../development/angular/client-side
 
 - name: Run Angular
-  shell: cd ../../development/angular/client-side ; forever start node_modules/@angular/cli/bin/ng serve --host 0.0.0.0
+  command: ng build
+  args:
+    chdir: ../../development/angular/client-side
+
+- name: 
+  shell: ../../development/angular/client-side/dist/gujarat-project ; nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
+  #command: nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
+  # args:
+  #  chdir: ../../development/angular/client-side/dist/gujarat-project
+
+    #- name: Run Angular
+    # shell: cd ../../development/angular/client-side ; forever start node_modules/@angular/cli/bin/ng serve --host 0.0.0.0

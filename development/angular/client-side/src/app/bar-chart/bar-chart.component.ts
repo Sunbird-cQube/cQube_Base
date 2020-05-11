@@ -351,6 +351,8 @@ export class BarChartComponent implements OnInit {
   myDistData(data) {
 
     this.scatterChart.destroy();
+    this.mode = [];
+    this.downloadType = '';
     this.blockHidden = false;
     this.clusterHidden = true;
     this.fileName = "Block_level_CRC_Report"
@@ -450,6 +452,8 @@ export class BarChartComponent implements OnInit {
   myBlockData(data) {
 
     this.scatterChart.destroy();
+    this.mode = [];
+    this.downloadType = '';
     this.clusterHidden = false;
     this.blockHidden = false;
     this.fileName = "Cluster_level_CRC_Report"
@@ -554,6 +558,8 @@ export class BarChartComponent implements OnInit {
   myClusterData(data) {
 
     this.scatterChart.destroy();
+    this.mode = [];
+    this.downloadType = '';
     this.tableHead = "School Name";
     this.errMsg();
     this.schoolCount = 0;
@@ -718,7 +724,6 @@ export class BarChartComponent implements OnInit {
 
   public downloadType: String;
   downloadReportofState(downloadType) {
-    console.log(this.downloadType);
     if (downloadType === 'Dist_Wise') {
       this.downloadRoport();
     }
