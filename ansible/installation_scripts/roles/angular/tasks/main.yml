@@ -68,6 +68,7 @@
     chdir: ../../development/angular/client-side
 
 - name:
-  command: sudo nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
+  become: yes
+  shell: nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
   args:
     chdir: ../../development/angular/client-side/dist/gujarat-project
