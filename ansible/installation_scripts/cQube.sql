@@ -82,7 +82,7 @@ LANGUAGE PLPGSQL;
 
 /* Day wise logic*/
 
-create table student_attendance_meta
+create table IF NOT EXISTS student_attendance_meta
 (
 day_1 boolean,day_2 boolean,day_3 boolean,day_4 boolean,day_5 boolean,day_6 boolean,day_7 boolean,day_8 boolean,day_9 boolean,day_10 boolean,
 day_11 boolean,day_12 boolean,day_13 boolean,day_14 boolean,day_15 boolean,day_16 boolean,day_17 boolean,day_18 boolean,day_19 boolean,day_20 boolean,
@@ -90,7 +90,7 @@ day_21 boolean,day_22 boolean,day_23 boolean,day_24 boolean,day_25 boolean,day_2
 day_31 boolean,month int,year int
 );
 
-create table student_attendance_meta_hist as select * from student_attendance_meta;
+create table IF NOT EXISTS student_attendance_meta_hist as select * from student_attendance_meta;
 
 CREATE OR REPLACE FUNCTION day_wise_attendance(table_catalog text,table_schema text,month int,year int)
 RETURNS text AS
