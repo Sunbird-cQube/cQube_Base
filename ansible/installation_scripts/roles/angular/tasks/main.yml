@@ -49,14 +49,6 @@
 - name: Start NodeJS
   shell: cd ../../development/angular/server-side; npm start &
 
-#- name: output
-#  ipify_facts:
-#  register: public_ip
-#  ignore_errors: True
-#- name: getting ip
-#  debug:
-#    var: public_ip.ansible_facts.ipify_public_ip
-
 - name: Replace a localhost entry with our own
   lineinfile:
     path: ../../development/angular/client-side/src/environments/environment.ts
@@ -76,11 +68,6 @@
     chdir: ../../development/angular/client-side
 
 - name:
-  shell: ../../development/angular/client-side/dist/gujarat-project ;sudo nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
-  #command: nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
+  command: sudo nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
   args:
     chdir: ../../development/angular/client-side/dist/gujarat-project
-
-    #- name: Run Angular
-    # shell: cd ../../development/angular/client-side ; forever start node_modules/@angular/cli/bin/ng serve --host 0.0.0.0
-
