@@ -23,8 +23,8 @@ AWS_DEFAULT_REGION =  AWS_DEFAULT_REGION
 
 def create_presigned_url(bucket_name, bucket_key, expiration=3600, signature_version=s3_signature['v4']):
     s3_client = boto3.client('s3',
-                             aws_access_key=AWS_ACCESS_KEY,
-                             aws_secret_key=AWS_SECRET_KEY,
+                             aws_access_key_id=AWS_ACCESS_KEY,
+                             aws_secret_access_key=AWS_SECRET_KEY,
                              config=Config(signature_version=signature_version),
                              region_name=AWS_DEFAULT_REGION
                              )
