@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>renamed s3 raw parameter name to s3_emission_bucket,
-flow contains s3 raw as datasource</description>
+    <description>Added unzip processor for static files </description>
     <groupId>17027687-0171-1000-87b7-d3b165adefac</groupId>
     <name>CQube-ver-0.1</name>
     <snippet>
@@ -399,12 +398,12 @@ flow contains s3 raw as datasource</description>
                         <y>-1832.0</y>
                     </bends>
                     <bends>
-                        <x>-2720.0</x>
-                        <y>-968.0</y>
+                        <x>-2792.0</x>
+                        <y>-1304.0</y>
                     </bends>
                     <destination>
                         <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
-                        <id>d99afd16-65ec-38a6-0000-000000000000</id>
+                        <id>037a09c0-a919-3070-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
@@ -785,7 +784,7 @@ flow contains s3 raw as datasource</description>
                     </bends>
                     <destination>
                         <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
-                        <id>11857115-fdc4-35b6-0000-000000000000</id>
+                        <id>12c6709e-216a-32f0-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
@@ -992,6 +991,35 @@ flow contains s3 raw as datasource</description>
                     <source>
                         <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
                         <id>006f8e9d-3590-3ed6-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>2c6192e2-442c-31d7-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>-4032.0</x>
+                        <y>-1272.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>f7b966d5-e8a2-38da-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>0</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>original</selectedRelationships>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>037a09c0-a919-3070-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </source>
                     <zIndex>0</zIndex>
@@ -1560,6 +1588,60 @@ flow contains s3 raw as datasource</description>
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
+                    <id>3fe12420-c9af-31d8-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>8509e211-da90-3c2a-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>success</selectedRelationships>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>037a09c0-a919-3070-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>41488776-57fc-3678-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>-3752.0</x>
+                        <y>-736.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>ab24ff13-14b2-3fd0-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>0</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>static_users</selectedRelationships>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>8509e211-da90-3c2a-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>42144a50-37fa-319b-0000-000000000000</id>
                     <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -1693,6 +1775,35 @@ flow contains s3 raw as datasource</description>
                     <source>
                         <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
                         <id>d15c9e70-5513-32dc-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>4479ad39-e0ca-3336-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>-3992.0</x>
+                        <y>-1504.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>f7b966d5-e8a2-38da-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>0</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>failure</selectedRelationships>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>037a09c0-a919-3070-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </source>
                     <zIndex>0</zIndex>
@@ -2381,6 +2492,59 @@ flow contains s3 raw as datasource</description>
                     <zIndex>38</zIndex>
                 </connections>
                 <connections>
+                    <id>612f7b27-8e86-3e85-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>8cf4d93a-25ee-36b2-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>34e7e68d-0839-3ebb-0000-000000000000</id>
+                        <type>FUNNEL</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>620434de-00bf-34ac-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>-4112.0</x>
+                        <y>-1144.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>f7b966d5-e8a2-38da-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>0</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>unmatched</selectedRelationships>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>8509e211-da90-3c2a-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>63baeda3-f34d-333c-0000-000000000000</id>
                     <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -2715,6 +2879,31 @@ flow contains s3 raw as datasource</description>
                     <zIndex>56</zIndex>
                 </connections>
                 <connections>
+                    <id>7bf25952-80a8-3262-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>cf6d9631-34de-3478-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>success</selectedRelationships>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>70b5457d-a7e9-3971-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>80d94b47-5431-3dec-0000-000000000000</id>
                     <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -2834,6 +3023,39 @@ flow contains s3 raw as datasource</description>
                         <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
                         <id>8a3d3949-4688-322d-0000-000000000000</id>
                         <type>FUNNEL</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>8338d555-b4ed-3987-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>-3520.0</x>
+                        <y>-1008.0</y>
+                    </bends>
+                    <bends>
+                        <x>-3304.0</x>
+                        <y>-992.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>30938fbc-0eb4-347d-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>static_roles</selectedRelationships>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>8509e211-da90-3c2a-0000-000000000000</id>
+                        <type>PROCESSOR</type>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -4207,11 +4429,11 @@ flow contains s3 raw as datasource</description>
                     </bends>
                     <bends>
                         <x>-3288.0</x>
-                        <y>-1144.0</y>
+                        <y>-1160.0</y>
                     </bends>
                     <destination>
                         <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
-                        <id>30938fbc-0eb4-347d-0000-000000000000</id>
+                        <id>037a09c0-a919-3070-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
@@ -4337,20 +4559,16 @@ flow contains s3 raw as datasource</description>
                         <y>-2144.0</y>
                     </bends>
                     <bends>
-                        <x>-3968.0</x>
-                        <y>-1416.0</y>
-                    </bends>
-                    <bends>
-                        <x>-3952.0</x>
-                        <y>-680.0</y>
+                        <x>-3624.0</x>
+                        <y>-1480.0</y>
                     </bends>
                     <destination>
                         <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
-                        <id>ab24ff13-14b2-3fd0-0000-000000000000</id>
+                        <id>037a09c0-a919-3070-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>3</labelIndex>
+                    <labelIndex>2</labelIndex>
                     <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                     <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                     <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -4451,12 +4669,12 @@ flow contains s3 raw as datasource</description>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <bends>
-                        <x>-3637.0</x>
-                        <y>-912.0</y>
+                        <x>-3634.0</x>
+                        <y>-913.0</y>
                     </bends>
                     <bends>
-                        <x>-3645.0</x>
-                        <y>-952.0</y>
+                        <x>-3642.0</x>
+                        <y>-953.0</y>
                     </bends>
                     <destination>
                         <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
@@ -5029,6 +5247,39 @@ flow contains s3 raw as datasource</description>
                     <zIndex>32</zIndex>
                 </connections>
                 <connections>
+                    <id>db4f608f-4071-39b0-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>-2968.0</x>
+                        <y>-1112.0</y>
+                    </bends>
+                    <bends>
+                        <x>-2968.0</x>
+                        <y>-736.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>07f1f1b3-60d5-30f4-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>0</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>static_school_hierarchy</selectedRelationships>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>8509e211-da90-3c2a-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>db7609ae-9212-3e77-0000-000000000000</id>
                     <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -5080,6 +5331,35 @@ flow contains s3 raw as datasource</description>
                         <type>PROCESSOR</type>
                     </source>
                     <zIndex>50</zIndex>
+                </connections>
+                <connections>
+                    <id>e12a4625-f123-32a6-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>-3184.0</x>
+                        <y>-1080.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>d99afd16-65ec-38a6-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>0</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>static_school_geo</selectedRelationships>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>8509e211-da90-3c2a-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
                 </connections>
                 <connections>
                     <id>e4140e76-b5cb-3cec-0000-000000000000</id>
@@ -5577,16 +5857,16 @@ flow contains s3 raw as datasource</description>
                         <y>-2048.0</y>
                     </bends>
                     <bends>
-                        <x>-3016.0</x>
-                        <y>-1256.0</y>
+                        <x>-3024.0</x>
+                        <y>-1496.0</y>
                     </bends>
                     <bends>
-                        <x>-2992.0</x>
-                        <y>-792.0</y>
+                        <x>-3080.0</x>
+                        <y>-1304.0</y>
                     </bends>
                     <destination>
                         <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
-                        <id>07f1f1b3-60d5-30f4-0000-000000000000</id>
+                        <id>037a09c0-a919-3070-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
@@ -5602,7 +5882,7 @@ flow contains s3 raw as datasource</description>
                         <id>11857115-fdc4-35b6-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </source>
-                    <zIndex>0</zIndex>
+                    <zIndex>58</zIndex>
                 </connections>
                 <connections>
                     <id>fd1e325a-abca-36ed-0000-000000000000</id>
@@ -9949,7 +10229,7 @@ Data Loading</label>
                         <autoTerminate>false</autoTerminate>
                         <name>valid_columns</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -10169,6 +10449,72 @@ english AS "subject_4",sanskrit AS "subject_8" FROM flowfile </value>
                     <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PutFile</type>
+                </processors>
+                <processors>
+                    <id>037a09c0-a919-3070-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>-3816.0</x>
+                        <y>-1376.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.10.0</version>
+                    </bundle>
+                    <config>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>Packaging Format</key>
+<value>
+    <name>Packaging Format</name>
+</value>
+                            </entry>
+                            <entry>
+<key>File Filter</key>
+<value>
+    <name>File Filter</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>Packaging Format</key>
+<value>zip</value>
+                            </entry>
+                            <entry>
+<key>File Filter</key>
+<value>.*</value>
+                            </entry>
+                        </properties>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>Unzip</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>failure</name>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>original</name>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>success</name>
+                    </relationships>
+                    <state>STOPPED</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.UnpackContent</type>
                 </processors>
                 <processors>
                     <id>057fa051-a7c0-3bf4-0000-000000000000</id>
@@ -11589,7 +11935,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogAttribute</type>
                 </processors>
@@ -12153,7 +12499,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExtractText</type>
                 </processors>
@@ -12465,7 +12811,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -15753,7 +16099,7 @@ FROM   crc_visits_frequency </value>
                         <autoTerminate>true</autoTerminate>
                         <name>original</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.QueryRecord</type>
                 </processors>
@@ -16287,7 +16633,7 @@ FROM   crc_visits_frequency </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                 </processors>
@@ -16426,7 +16772,7 @@ VALUES
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PutSQL</type>
                 </processors>
@@ -17564,7 +17910,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -18042,7 +18388,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.Notify</type>
                 </processors>
@@ -18251,7 +18597,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         <autoTerminate>false</autoTerminate>
                         <name>splits</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.SplitText</type>
                 </processors>
@@ -18428,7 +18774,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PutDistributedMapCache</type>
                 </processors>
@@ -18743,6 +19089,161 @@ ON b.x_axis=c.x_axis </value>
                     <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
+                </processors>
+                <processors>
+                    <id>70b5457d-a7e9-3971-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>-1752.0</x>
+                        <y>-1144.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.10.0</version>
+                    </bundle>
+                    <config>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>Input Directory</key>
+<value>
+    <name>Input Directory</name>
+</value>
+                            </entry>
+                            <entry>
+<key>File Filter</key>
+<value>
+    <name>File Filter</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Path Filter</key>
+<value>
+    <name>Path Filter</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Batch Size</key>
+<value>
+    <name>Batch Size</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Keep Source File</key>
+<value>
+    <name>Keep Source File</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Recurse Subdirectories</key>
+<value>
+    <name>Recurse Subdirectories</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Polling Interval</key>
+<value>
+    <name>Polling Interval</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Ignore Hidden Files</key>
+<value>
+    <name>Ignore Hidden Files</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Minimum File Age</key>
+<value>
+    <name>Minimum File Age</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Maximum File Age</key>
+<value>
+    <name>Maximum File Age</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Minimum File Size</key>
+<value>
+    <name>Minimum File Size</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Maximum File Size</key>
+<value>
+    <name>Maximum File Size</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>Input Directory</key>
+<value>/home/ubuntu/nifi/test_dir</value>
+                            </entry>
+                            <entry>
+<key>File Filter</key>
+<value>[^\.].*</value>
+                            </entry>
+                            <entry>
+<key>Path Filter</key>
+                            </entry>
+                            <entry>
+<key>Batch Size</key>
+<value>10</value>
+                            </entry>
+                            <entry>
+<key>Keep Source File</key>
+<value>false</value>
+                            </entry>
+                            <entry>
+<key>Recurse Subdirectories</key>
+<value>true</value>
+                            </entry>
+                            <entry>
+<key>Polling Interval</key>
+<value>0 sec</value>
+                            </entry>
+                            <entry>
+<key>Ignore Hidden Files</key>
+<value>true</value>
+                            </entry>
+                            <entry>
+<key>Minimum File Age</key>
+<value>0 sec</value>
+                            </entry>
+                            <entry>
+<key>Maximum File Age</key>
+                            </entry>
+                            <entry>
+<key>Minimum File Size</key>
+<value>0 B</value>
+                            </entry>
+                            <entry>
+<key>Maximum File Size</key>
+                            </entry>
+                        </properties>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>GetFile</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>success</name>
+                    </relationships>
+                    <state>RUNNING</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.GetFile</type>
                 </processors>
                 <processors>
                     <id>757f7bed-316f-3d5f-0000-000000000000</id>
@@ -19531,6 +20032,110 @@ ON b.x_axis=c.x_axis </value>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
                 <processors>
+                    <id>8509e211-da90-3c2a-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>-3816.0</x>
+                        <y>-1208.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.10.0</version>
+                    </bundle>
+                    <config>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>Routing Strategy</key>
+<value>
+    <name>Routing Strategy</name>
+</value>
+                            </entry>
+                            <entry>
+<key>static_roles</key>
+<value>
+    <name>static_roles</name>
+</value>
+                            </entry>
+                            <entry>
+<key>static_school_geo</key>
+<value>
+    <name>static_school_geo</name>
+</value>
+                            </entry>
+                            <entry>
+<key>static_school_hierarchy</key>
+<value>
+    <name>static_school_hierarchy</name>
+</value>
+                            </entry>
+                            <entry>
+<key>static_users</key>
+<value>
+    <name>static_users</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>Routing Strategy</key>
+<value>Route to Property name</value>
+                            </entry>
+                            <entry>
+<key>static_roles</key>
+<value>${filename:find('roles*')}</value>
+                            </entry>
+                            <entry>
+<key>static_school_geo</key>
+<value>${filename:find('school_geo_master*')}</value>
+                            </entry>
+                            <entry>
+<key>static_school_hierarchy</key>
+<value>${filename:find('school_hierarchy_details_all*')}</value>
+                            </entry>
+                            <entry>
+<key>static_users</key>
+<value>${filename:find('users*')}</value>
+                            </entry>
+                        </properties>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>route_based_on_content</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>static_roles</name>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>static_school_geo</name>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>static_school_hierarchy</name>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>static_users</name>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>unmatched</name>
+                    </relationships>
+                    <state>STOPPED</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
+                </processors>
+                <processors>
                     <id>85bde2d2-6655-38b5-0000-000000000000</id>
                     <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
                     <position>
@@ -19854,7 +20459,7 @@ ON b.x_axis=c.x_axis </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.Notify</type>
                 </processors>
@@ -20141,7 +20746,7 @@ ON b.x_axis=c.x_axis </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -20227,7 +20832,7 @@ ON b.x_axis=c.x_axis </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -20722,7 +21327,7 @@ LEFT JOIN (SELECT x_axis,sum(CASE WHEN x_value BETWEEN 0 AND 33 THEN 1 ELSE 0 EN
                         <autoTerminate>false</autoTerminate>
                         <name>wait</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.Wait</type>
                 </processors>
@@ -24279,7 +24884,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -24867,7 +25472,7 @@ from flowfile</value>
                         <autoTerminate>false</autoTerminate>
                         <name>original</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.QueryRecord</type>
                 </processors>
@@ -25928,6 +26533,120 @@ from flowfile</value>
                     <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                 </processors>
                 <processors>
+                    <id>f7b966d5-e8a2-38da-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>-4504.0</x>
+                        <y>-1456.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.10.0</version>
+                    </bundle>
+                    <config>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>Log Level</key>
+<value>
+    <name>Log Level</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Log Payload</key>
+<value>
+    <name>Log Payload</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Attributes to Log</key>
+<value>
+    <name>Attributes to Log</name>
+</value>
+                            </entry>
+                            <entry>
+<key>attributes-to-log-regex</key>
+<value>
+    <name>attributes-to-log-regex</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Attributes to Ignore</key>
+<value>
+    <name>Attributes to Ignore</name>
+</value>
+                            </entry>
+                            <entry>
+<key>attributes-to-ignore-regex</key>
+<value>
+    <name>attributes-to-ignore-regex</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Log prefix</key>
+<value>
+    <name>Log prefix</name>
+</value>
+                            </entry>
+                            <entry>
+<key>character-set</key>
+<value>
+    <name>character-set</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>Log Level</key>
+<value>info</value>
+                            </entry>
+                            <entry>
+<key>Log Payload</key>
+<value>false</value>
+                            </entry>
+                            <entry>
+<key>Attributes to Log</key>
+                            </entry>
+                            <entry>
+<key>attributes-to-log-regex</key>
+<value>.*</value>
+                            </entry>
+                            <entry>
+<key>Attributes to Ignore</key>
+                            </entry>
+                            <entry>
+<key>attributes-to-ignore-regex</key>
+                            </entry>
+                            <entry>
+<key>Log prefix</key>
+                            </entry>
+                            <entry>
+<key>character-set</key>
+<value>UTF-8</value>
+                            </entry>
+                        </properties>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>LogAttribute</name>
+                    <relationships>
+                        <autoTerminate>true</autoTerminate>
+                        <name>success</name>
+                    </relationships>
+                    <state>STOPPED</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.LogAttribute</type>
+                </processors>
+                <processors>
                     <id>fb14f93f-27da-3133-0000-000000000000</id>
                     <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
                     <position>
@@ -26046,5 +26765,5 @@ from flowfile</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/10/2020 13:00:04 IST</timestamp>
+    <timestamp>05/13/2020 01:54:13 IST</timestamp>
 </template>
