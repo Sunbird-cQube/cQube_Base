@@ -1,19 +1,15 @@
 ---
 
-# Defaults: 
-
-db_user:  
-db_name: 
-db_password: 
-emission_db_user: 
-emission_db_name: 
-emission_db_password:                            # md5 password
+system_user_name: 					       #Non-root user with sudo permission ubuntu
+db_user: 						       #postgres database user
+db_name: 						       #postgres database name
+db_password: 						       #postgres database password
+emission_db_name: 					       #postgres emission database name
 
 nifi_port: 8096
 nodejs_version: "12"
 ansible_distribution_release: trusty
-api_endpoint: http://:4200/api                         #https://domain.com/api (use http for ip address)
-
+api_endpoint: http://:4200/api               		#https://domain.com/api (use http for ip address)
 
 s3_input_bucket: 
 s3_output_bucket: 
@@ -22,15 +18,16 @@ postgre_driver_class_name: org.postgresql.Driver
 postgre_connection_url: jdbc:postgresql://localhost:5432/
 postgre_source_db: 
 postgre_dtn_db: 
-postgre_db_user:
-postgre_pwd:
+postgre_db_user:						#postgres database user for apache nifi
+postgre_pwd:							#postgres database password for apache nifi
+db_passwd:							#postgres database password for emission api
 
-# Needs to filled manually:
 local_ipv4_address: 
-shared_buffers:                       #512MB or 1GB based on requirement
-work_mem:                            #16MB or 1GB based on requirement
-java_arg_2:                           #-Xms512m or -Xms1g based on requirement
-java_arg_3:                          #-Xmx512m or -Xmx1g based on requirement
-s3_access_key:       # AWS Access key
-s3_secret_key:      # AWS Secret key
-postgre_driver_dir: jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
+shared_buffers: 	                      			#512MB or 1GB based on requirement
+work_mem:		 	  	        		#16MB or 1GB based on requirement
+java_arg_2:					                #-Xms512m or -Xms1g based on requirement
+java_arg_3:    							#-Xmx512m or -Xmx1g based on requirement
+s3_access_key:       						# AWS Access key
+s3_secret_key:      						# AWS Secret key
+postgre_driver_dir: jars/postgresql-42.2.10.jar       		# ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
+aws_default_region: 'ap-south-1'				#AWS default region	

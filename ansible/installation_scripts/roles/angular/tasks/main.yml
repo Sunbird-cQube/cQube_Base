@@ -22,7 +22,9 @@
     - http-server
 
 - name: Change permission
-  shell: chmod -R 755 ../../development/angular
+  file:
+    path: ../../development/angular
+    mode: '1755'
 
 - name: Change to Node directory
   shell: cd ../../development/angular/server-side
@@ -35,7 +37,7 @@
   file:
     path: ../../development/angular/server-side/.env
     state: touch
-    mode: u+rwx,g+rw,o+rw
+    mode: u+rw,g+rw,o+rw
 
 - name: Loading required data inside .env file
   blockinfile:

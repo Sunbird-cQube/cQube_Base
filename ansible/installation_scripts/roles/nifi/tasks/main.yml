@@ -250,3 +250,11 @@
     method: PUT
     body_format: json
     body: {"id":"{{ processor_group.json.processGroupFlow.id }}","state":"RUNNING"}
+
+- name: Get controllers to check status
+  debug:
+     msg: "{{ item.component.state }} and {{ item.component.name }}"
+  loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
+  register: contr_list
+  when: item.component.state == 'DISABLED'
+  no_log: True

@@ -24,19 +24,20 @@
   file:
     path: ../../development/python/env.py
     state: touch
-    mode: u+rwx,g+rw,o+rw
+    mode: u+rw,g+rw,o+rw
 
 - name: Loading required data inside env.py file
   blockinfile:
         path: ../../development/python/env.py
         block: |
-               DATABASE_URI = "postgresql://{{ emission_db_user }}:{{ emission_db_password }}@localhost:5432/{{ emission_db_name }}"
+               DATABASE_URI = "postgresql://postgres:{{ db_password }}@localhost:5432/{{ emission_db_name }}"
                AWS_SECRET_KEY = "{{ s3_secret_key }}"
                AWS_ACCESS_KEY = "{{ s3_access_key }}"
                BUCKET_NAME = "{{ s3_emission_bucket }}"
+               AWS_DEFAULT_REGION = "{{ aws_default_region }}"
+
 - name: starting flask app
   shell: /opt/emission_server/flaskenv/bin/python server.py &
-#  command: ../../development/python/flaskenv/bin/python3 server.py &
   args:
     chdir: ../../development/python
 
