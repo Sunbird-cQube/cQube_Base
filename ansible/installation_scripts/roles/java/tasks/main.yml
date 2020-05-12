@@ -1,7 +1,7 @@
 - name: Installing jdk
   apt: name=openjdk-8-jdk
 
- name: Java | Define variable environment
+- name: Java | Define variable environment
   blockinfile:
         path: ~/.bashrc
         block: |
