@@ -59,16 +59,15 @@ def active_user(username):
         return None
 
 def authenticate(username, password):
-    if user:
-        user = active_user(username)[0]
-        users = [User(user.user_id,user.email,user.password)]
-        lusers = {u.username: u for u in users}
-        user = lusers.get(username, None)
-        if user and \
-                bcrypt.check_password_hash(user.password, password):
-            return user
-        else:
-            abort(409, f'User not available')
+    user = active_user(username)[0]
+    users = [User(user.user_id,user.email,user.password)]
+    lusers = {u.username: u for u in users}
+    user = lusers.get(username, None)
+    if user and \
+            bcrypt.check_password_hash(user.password, password):
+        return user
+    else:
+        abort(409, f'User not available')
 
 def identity(payload):
     user_id = payload['identity']
