@@ -19,12 +19,14 @@ s3_signature ={
 
 AWS_ACCESS_KEY = AWS_ACCESS_KEY
 AWS_SECRET_KEY = AWS_SECRET_KEY
+AWS_DEFAULT_REGION =  AWS_DEFAULT_REGION
 
 def create_presigned_url(bucket_name, bucket_key, expiration=3600, signature_version=s3_signature['v4']):
     s3_client = boto3.client('s3',
                              aws_access_key=AWS_ACCESS_KEY,
                              aws_secret_key=AWS_SECRET_KEY,
-                             config=Config(signature_version=signature_version)
+                             config=Config(signature_version=signature_version),
+                             region_name=AWS_DEFAULT_REGION
                              )
     try:
         response = s3_client.generate_presigned_url('put_object',
@@ -57,13 +59,16 @@ def active_user(username):
         return None
 
 def authenticate(username, password):
-    user = active_user(username)[0]
-    users = [User(user.user_id,user.email,user.password)]
-    lusers = {u.username: u for u in users}
-    user = lusers.get(username, None)
-    if user and \
-            bcrypt.check_password_hash(user.password, password):
-        return user
+    if user:
+        user = active_user(username)[0]
+        users = [User(user.user_id,user.email,user.password)]
+        lusers = {u.username: u for u in users}
+        user = lusers.get(username, None)
+        if user and \
+                bcrypt.check_password_hash(user.password, password):
+            return user
+        else:
+            abort(409, f'User not available')
 
 def identity(payload):
     user_id = payload['identity']
@@ -111,6 +116,6 @@ def aws_upload_url():
     filename = parser.add_argument("filename")
     args = parser.parse_args()
     if args["filename"]:
-        return create_presigned_url(os.getenv('BUCKET_NAME'),str(args["filename"]))
+        return create_presigned_url(BUCKET_NAME,str(args["filename"]))
     else:
         return "Filename is required"
