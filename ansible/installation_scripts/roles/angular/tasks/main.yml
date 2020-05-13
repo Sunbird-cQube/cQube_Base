@@ -19,7 +19,6 @@
   with_items:
     - "@angular/cli"
     - nodemon
-    - pm2
     - http-server
 
 - name: Change permission
@@ -48,23 +47,9 @@
                 ACCESS_KEY_ID = "{{ s3_access_key }}"
                 SECRET_ACCESS_KEY  = "{{ s3_secret_key }}"
                 OUTPUT_BUCKET = "{{ s3_output_bucket }}"
-#- name: Start NodeJS
-#  shell: cd ../../development/angular/server-side; npm start &
 
-- name: Creating / Making sure www directory is present
-  file:
-    path: /var/www
-    state: directory
-
-- name: Copying built angular app into www directory
-  copy:
-    src: ../../development/angular/server-side
-    dest: /var/www
-
-- name: Starting NodeJS application
-  shell: pm2 start npm -- start
-  args:
-    chdir: /var/www/server-side
+- name: Start NodeJS
+  shell: cd ../../development/angular/server-side; npm start &
 
 - name: Replace a localhost entry with our own
   lineinfile:
@@ -84,13 +69,8 @@
   args:
     chdir: ../../development/angular/client-side
 
-- name: Copying built angular app into www directory
-  copy:
-    src: ../../development/angular/client-side/dist
-    dest: /var/www
-
-- name: Starting / restarting the http-server
+- name:
   become: yes
-  shell: pm2 start /usr/bin/http-server -- -a {{ local_ipv4_address }} -p 4200
+  shell: nohup http-server -a {{ local_ipv4_address }} -p 4200 . &
   args:
-    chdir: /var/www/dist/gujarat-project
+    chdir: ../../development/angular/client-side/dist/gujarat-project
