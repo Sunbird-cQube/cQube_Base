@@ -14,6 +14,7 @@ if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 
 sudo apt update -y
 sudo apt install python -y
+chmod u+x $INS_DIR/validation_scripts/*.sh
 sudo apt install unzip -y
 
 . "$INS_DIR/validation_scripts/check_vars_file.sh"
