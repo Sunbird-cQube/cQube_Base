@@ -13,6 +13,7 @@ INS_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 
 sudo apt update -y
+sudo apt install python -y
 sudo apt install unzip -y
 
 . "$INS_DIR/validation_scripts/check_vars_file.sh"
