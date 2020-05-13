@@ -1,33 +1,34 @@
 ---
+```Provide all the below cQube parameters```
 
-system_user_name:                               #Non-root user with sudo permission
-db_user:                                   #postgres database user  
-db_name:                                   #postgres database name
-db_password:                               #postgres database password
-emission_db_name:                          #postgres emission database name
+system_user_name:                          #Creation of Non-root user with sudo permission
 
-nifi_port: 8096
+#Database Parameters
+db_user:                                   #Creation of postgres database user  
+db_name:                                   #Creation of postgres database
+db_password:                               #Provide md5 postgres database password, command to generate md5 hash password ```echo -n "md5"; echo -n "your_password" | md5sum | awk '{print $1}'```
+emission_db_name:                          #Creation of postgres emission database
+db_passwd:                                 #Provide the above postgres database password for emission api, in plain text
+db_driver_class_name: org.postgresql.Driver
+db_connection_url: jdbc:postgresql://localhost:5432/
+db_driver_dir: jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
+
+#S3 Parameters
+s3_input_bucket:                            #Enter the s3 input bucket name, to store cQube  raw input data
+s3_output_bucket:                           #Enter the s3 output bucket name, to store the cQube processed output data
+s3_emission_bucket:                         #Enter the s3 emission bucket name, to store emitted data files(temporary storage location till data files process completes)
+s3_access_key:                              #Provide the AWS Access key for creation of s3 bucket
+s3_secret_key:                              #Provide the AWS Secret key for creation of s3 bucket
+aws_default_region: 'ap-south-1'            #Provide the aws default region for creation of s3 bucket
+
+#Node JS Parameters
 nodejs_version: "12"
 ansible_distribution_release: trusty
-api_endpoint: http://:4200/api                         #https://domain.com/api (use http for ip address)
+api_endpoint: http://<public_ip>:3000/api   #https://domain.com/api (use http for ip address example:```http://10.24.32.120:3000/api``` )
+local_ipv4_address:                         #provide the local ip 
 
-s3_input_bucket: 
-s3_output_bucket: 
-s3_emission_bucket: 
-postgre_driver_class_name: org.postgresql.Driver
-postgre_connection_url: jdbc:postgresql://localhost:5432/
-postgre_source_db: 
-postgre_dtn_db: 
-postgre_db_user:                    #postgres database user for apache nifi
-postgre_pwd:                        #postgres database password for apache nifi
-db_passwd:                          #postgres database password for emission api
-
-local_ipv4_address: 
-shared_buffers:                       #512MB or 1GB based on requirement
-work_mem:                            #16MB or 1GB based on requirement
-java_arg_2:                           #-Xms512m or -Xms1g based on requirement
-java_arg_3:                          #-Xmx512m or -Xmx1g based on requirement
-s3_access_key:       # AWS Access key
-s3_secret_key:      # AWS Secret key
-aws_default_region: 'ap-south-1'
-postgre_driver_dir: jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
+nifi_port: 8096
+shared_buffers:                              #Postgres buffer memory ```512MB``` or ```1GB``` based on system memory & requirement
+work_mem:                                    #Postgres working memory ```16MB``` or ```1GB``` based on system memory & requirement
+java_arg_2:                                  #Minimum RAM size for Apache NIFI ```-Xms512m``` or ```-Xms1g``` based on system memory & requirement
+java_arg_3:                                  #Maximum RAM size for Apache NIFI ```-Xmx512m``` or ```-Xmx1g`` based on system memory & requirement

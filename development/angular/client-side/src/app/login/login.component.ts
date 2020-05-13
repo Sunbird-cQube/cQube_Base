@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   logData: any = {};
   modal = true;
   role: any;
+  email: any;
 
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('email', this.logData.email);
         localStorage.setItem('token', res['token']);
         localStorage.setItem('role', res['role']);
+        localStorage.setItem('user_id', res['user_id']);
         this.role = res['role'];
 
         if (this.role == 1) {
@@ -39,9 +41,14 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['home/map-view']);
         }
       } else if (res['errMsg']) {
+        this.email = this.logData.email;
         this.err = res['errMsg'];
       }
     });
+  }
+
+  forgotPass(email) {
+    console.log(email.model);
   }
 
   ngOnInit() {

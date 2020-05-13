@@ -8,6 +8,8 @@ import { TeacherAttendanceComponent } from './teacher-attendance/teacher-attenda
 import { SemViewComponent } from './sem-view/sem-view.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { AuthGuard } from './auth.guard';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { CreateUserComponent } from './create-user/create-user.component';
 
 const routes: Routes = [
   {
@@ -29,6 +31,12 @@ const routes: Routes = [
       },
       {
         path: 'crc-report', component: BarChartComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'changePassword', component: ChangePasswordComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'addUser', component: CreateUserComponent, canActivateChild: [AuthGuard]
       }
     ]
   }

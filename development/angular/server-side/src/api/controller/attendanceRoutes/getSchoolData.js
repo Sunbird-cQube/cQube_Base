@@ -1,6 +1,6 @@
 const router = require('express').Router();
-var const_data = require('../../api/lib/config');
-const auth = require('../middleware/check-auth');
+var const_data = require('../../lib/config');
+const auth = require('../../middleware/check-auth');
 
 router.get('/', auth.authController, function (req, res) {
     const_data['getParams']['Key'] = '3m_data/school_master_lat_long.json'

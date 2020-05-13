@@ -147,4 +147,17 @@ export class AppServiceComponent {
         });
     }
 
+    changePassword(data) {
+        return this.http.post(`${this.baseUrl}/changePassword`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    addUser(data){
+        console.log(data);
+        return this.http.post(`${this.baseUrl}/addUser`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
 }
