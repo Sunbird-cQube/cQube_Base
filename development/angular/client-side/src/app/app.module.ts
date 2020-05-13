@@ -21,6 +21,8 @@ import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, MatSortModule } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { CreateUserComponent } from './create-user/create-user.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { ChartsModule } from 'ng2-charts';
     TeacherAttendanceComponent,
     SemViewComponent,
     BarChartComponent,
+    ChangePasswordComponent,
+    CreateUserComponent,
   ],
   imports: [
     BrowserModule,
