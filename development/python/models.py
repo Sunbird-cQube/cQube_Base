@@ -10,7 +10,8 @@ class Users(db.Model):
     email = db.Column(db.String(100))
     password = db.Column(db.String(80))
     status = db.Column(db.String(1), default='A')
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_on = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    expiration_date = db.Column(db.DateTime)
 
 class UserSchema(ma.ModelSchema):
     class Meta:

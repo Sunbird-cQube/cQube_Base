@@ -43,6 +43,12 @@
     regexp: "java.arg.2=-Xms512m"
     replace: "java.arg.2={{ java_arg_2 }}"
 
+- name: Add time zone to nifi
+  blockinfile:
+        path: /opt/nifi/conf/bootstrap.conf
+        block: |
+               java.arg.8=-Duser.timezone=Asia/Kolkata
+
 - name: Increase nifi memory
   replace:
     dest: /opt/nifi/conf/bootstrap.conf
@@ -250,3 +256,11 @@
     method: PUT
     body_format: json
     body: {"id":"{{ processor_group.json.processGroupFlow.id }}","state":"RUNNING"}
+
+- name: Get controllers to check status
+  debug:
+     msg: "{{ item.component.state }} and {{ item.component.name }}"
+  loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
+  register: contr_list
+  when: item.component.state == 'DISABLED'
+  no_log: True
