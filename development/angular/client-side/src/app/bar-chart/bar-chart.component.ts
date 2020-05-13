@@ -158,7 +158,7 @@ export class BarChartComponent implements OnInit {
       this.mode = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
 
       let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
       // document.getElementById('select').style.display = 'block';
 
@@ -229,7 +229,7 @@ export class BarChartComponent implements OnInit {
         let a = this.result.schoolsVisitedCount
         this.result = this.result.visits;
         let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
         this.mode = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
 
@@ -382,7 +382,7 @@ export class BarChartComponent implements OnInit {
       this.crcBlocksNames = this.crcBlocksNames.visits;
 
       let sorted = this.crcBlocksNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
       if (this.result.length > 0) {
         var labels = [];
@@ -488,7 +488,7 @@ export class BarChartComponent implements OnInit {
       this.reportData = this.crcClusterNames;
 
       let sorted = this.crcClusterNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
       var labels = [];
       for (var i = 0; i < this.crcClusterNames.length; i++) {
@@ -592,7 +592,7 @@ export class BarChartComponent implements OnInit {
       this.crcSchoolNames = this.crcSchoolNames.visits;
 
       let sorted = this.crcSchoolNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+      let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
       var labels = [];
       for (var i = 0; i < this.crcSchoolNames.length; i++) {
@@ -668,7 +668,7 @@ export class BarChartComponent implements OnInit {
         labels: labels,
         datasets: [{
           data: chartData,
-          pointBackgroundColor: obj.pointBackgroundColor,
+          pointBackgroundColor: "#4890b5",
           pointRadius: 6
         }]
       },
@@ -677,12 +677,17 @@ export class BarChartComponent implements OnInit {
           display: false
         },
         tooltips: {
+          custom: function (tooltip) {
+            if (!tooltip) return;
+            // disable displaying the color box;
+            tooltip.displayColors = false;
+          },
           callbacks: {
             label: function (tooltipItem, data) {
               var label = data.labels[tooltipItem.index];
               var multistringText = [name + ": " + label];
-              multistringText.push("x-Axis: " + tooltipItem.xLabel);
-              multistringText.push("y-Axis: " + tooltipItem.yLabel);
+              multistringText.push(obj.xAxis + ": " + tooltipItem.xLabel);
+              multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
               return multistringText;
             }
           }

@@ -32,7 +32,8 @@ var s3 = new aws.S3({ 'accessKeyId': accessKeyId, 'secretAccessKey': secretAcces
 
 var getParams = {
     Bucket: bucketName, //replace example bucket with your s3 bucket name
-    Key: '' // replace file location with your s3 file location
+    Key: '', // replace file location with your s3 file location
+    // Body: ''
 };
 
 module.exports = {
