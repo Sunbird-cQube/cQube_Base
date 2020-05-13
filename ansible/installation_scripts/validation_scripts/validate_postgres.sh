@@ -1,0 +1,26 @@
+#!/bin/bash
+
+VAL_DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$VAL_DIR" ]]; then VAL_DIR="$PWD"; fi
+
+temp=$(psql -V > /dev/null 2>&1; echo $?)
+
+if [ $temp == 0 ]; then
+    version=`psql -V | head -n1 | cut -d" " -f3`
+        #echo $version
+        if [ $version>=10.12 ]
+        then
+                echo -n "Postgres is already present in this machine. Do you want to re-install it (yes/no)? "
+                read answer
+                if [[ $answer =~ ^(yes|YES)$ ]] ;then
+                sudo apt-get --purge remove postgresql -y
+                dpkg -l | grep postgres
+                sudo apt-get --purge remove postgresql postgresql-doc postgresql-common -y
+                sudo apt autoremove -y
+                elif [[ $answer =~ ^(no|NO)$ ]] ;then
+                echo "Aborting cQube installation, kindly uninstall postgres and start the installation" 
+                else
+                echo "please enter yes or no"
+                fi
+        fi
+fi

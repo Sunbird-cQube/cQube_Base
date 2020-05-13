@@ -77,3 +77,22 @@
     path_to_script: emission.sql
   notify:
    - restart postgresql
+
+- name: Check if database exists
+  become_user: yes
+  shell: sudo -u postgres psql \{{ db_name }}
+  ignore_errors: yes
+  register: database_output
+
+- debug:
+    msg: database exists
+  when: database_output is success
+
+- shell: |
+    sudo -u postgres psql \{{ db_name }}<<EOF
+    \d
+    EOF
+  register: output
+
+- debug:
+    var: output.stdout_lines

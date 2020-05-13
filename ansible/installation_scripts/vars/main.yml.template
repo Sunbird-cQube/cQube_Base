@@ -1,13 +1,13 @@
 ---
-```Provide all the below cQube parameters```
+Provide all the below parameters
 
-system_user_name:                          #Creation of Non-root user with sudo permission
+system_user_name:                          #Non-root user with sudo privileges run `$ whoami` to know the username
 
 #Database Parameters
-db_user:                                   #Creation of postgres database user  
-db_name:                                   #Creation of postgres database
-db_password:                               #Provide md5 postgres database password, command to generate md5 hash password ```echo -n "md5"; echo -n "your_password" | md5sum | awk '{print $1}'```
-emission_db_name:                          #Creation of postgres emission database
+db_user:                                   # username will be used to create postgres database user for Cqube system
+db_name:                                   # database name will be used to create database
+db_password:                               # md5 postgres database password #command to generate md5 hash password `echo -n "md5"; echo -n "your_password" | md5sum | awk '{print $1}'`
+emission_db_name:                          #emission database name
 db_passwd:                                 #Provide the above postgres database password for emission api, in plain text
 db_driver_class_name: org.postgresql.Driver
 db_connection_url: jdbc:postgresql://localhost:5432/
@@ -24,11 +24,12 @@ aws_default_region: 'ap-south-1'            #Provide the aws default region for 
 #Node JS Parameters
 nodejs_version: "12"
 ansible_distribution_release: trusty
-api_endpoint: http://<public_ip>:3000/api   #https://domain.com/api (use http for ip address example:```http://10.24.32.120:3000/api``` )
+api_endpoint: http://<public_ip>:3000/api   #https://domain.com/api (use http for ip address example `http://10.24.32.120:3000/api` )
 local_ipv4_address:                         #provide the local ip 
 
 nifi_port: 8096
-shared_buffers:                              #Postgres buffer memory ```512MB``` or ```1GB``` based on system memory & requirement
-work_mem:                                    #Postgres working memory ```16MB``` or ```1GB``` based on system memory & requirement
-java_arg_2:                                  #Minimum RAM size for Apache NIFI ```-Xms512m``` or ```-Xms1g``` based on system memory & requirement
-java_arg_3:                                  #Maximum RAM size for Apache NIFI ```-Xmx512m``` or ```-Xmx1g`` based on system memory & requirement
+nifi_error_dir:                              #Nifi directory to store errors ( nifi error files )
+shared_buffers:                              #Postgres buffer memory `512MB` or `1GB` based on system memory & requirement
+work_mem:                                    #Postgres working memory `16MB` or `1GB` based on system memory & requirement
+java_arg_2:                                  #Minimum RAM size for Apache NIFI `-Xms512m` or `-Xms1g` based on system memory & requirement
+java_arg_3:                                  #Maximum RAM size for Apache NIFI `-Xmx512m` or `-Xmx1g` based on system memory & requirement
