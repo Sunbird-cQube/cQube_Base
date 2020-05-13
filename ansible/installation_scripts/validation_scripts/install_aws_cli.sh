@@ -21,10 +21,11 @@ then
     echo """[default]
 aws_access_key_id = $ACCESS_KEY
 aws_secret_access_key = $SECRET_KEY""" >> $AWS_DIR/credentials
-    echo """[default]
-region = $DEFAULT_REGION""" >> $AWS_DIR/config
+#    echo """[default]
+#region = $DEFAULT_REGION""" >> $AWS_DIR/config
     chown $SYS_USERNAME:$SYS_USERNAME -R $AWS_DIR/
-    chmod 600 $AWS_DIR/config $AWS_DIR/credentials
+#    chmod 600 $AWS_DIR/config $AWS_DIR/credentials
+    chmod 600 $AWS_DIR/credentials
 #else
 #    echo "Aws already configured in your system. Kindly remove the .aws directory from your home directory"
 fi
