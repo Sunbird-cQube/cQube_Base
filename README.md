@@ -39,24 +39,21 @@ Once installation completed without any errors, you will be prompted the followi
 
 <b>Uploading data to S3 Emission bucket</b>
 
-cqube_emission_folder
-lat_long/lat_long.zip
-school_hierarchy/school_hierarchy.zip
-roles_master/roles.zip
-users_master/users.zip
-student_attendance/student_attendance.zip
+create cqube_emission directory and place below file structure in the cqube_emission folder.
+  lat_long/lat_long.zip
+  school_hierarchy/school_hierarchy.zip
+  roles_master/roles.zip
+  users_master/users.zip
+  student_attendance/student_attendance.zip
 
+Connect to emission database in postgres and manually add the emission user.
 
-- In terminal, login as root by entering ```sudo su```
-- Then ```cat /home/<username>/.ssh/id_rsa```
-- Copy id_rsa to (local) machine where you have the data files to be uploaded
-- Give the 400 permission to id_rsa file using ```chmod 400 id_rsa```
-- Connect to sftp using ```sftp -i id_rsa <username>@<host_name_or_ip>```
-- Put the data files into respective sftp directories as mentioned below
-```
-school_master_lat_long.json   ->   /cqube/data/s3_school_latlong
-school_geo_master.csv   ->   /cqube/data/lat_long
-student_attendance_sample.csv   ->   /cqube/data/emits
-```
+After adding the user, we need to configure the `cQube/development/python/client/config.py`
+Update the emission username, password, and the directory where the files are placed.
+
+example to set the directory path:`/home/ubuntu/cqube_emission/`
+
+After completing the configuration upload the files using command `python3 client.py`
+
 - Allow the ports 3000 and 4200 in firewall
 - See the output in ```http://<host_name_or_ip>:4200```
