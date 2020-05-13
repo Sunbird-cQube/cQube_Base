@@ -41,11 +41,12 @@ Once installation completed without any errors, you will be prompted the followi
 <b>Uploading data to S3 Emission bucket</b>
 
 create cqube_emission directory and place below file structure in the cqube_emission folder.
+```cqube_emission/
   lat_long/lat_long.zip
   school_hierarchy/school_hierarchy.zip
   roles_master/roles.zip
   users_master/users.zip
-  student_attendance/student_attendance.zip
+  student_attendance/student_attendance.zip```
 
 Connect to emission database in postgres and manually add the emission user.
 
