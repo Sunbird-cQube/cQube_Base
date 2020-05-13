@@ -15,6 +15,7 @@ git checkout cQube-release-new
 chmod u+x install.sh
 ```
 - Install cQube using the non-root user with sudo privilege
+- After filling all the variables in `vars/main.yml` proceed with below step
 - Run the install.sh shell script file as mentioned below
 ```
 sudo ./install.sh
