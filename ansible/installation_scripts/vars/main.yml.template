@@ -28,7 +28,7 @@ api_endpoint: http://<public_ip>:3000/api   #https://domain.com/api (use http fo
 local_ipv4_address:                         #provide the local ip 
 
 nifi_port: 8096
-shared_buffers:                       #Postgres buffer memory ```512MB``` or ```1GB``` based on system memory & requirement
-work_mem:                             #Postgres working memory ```16MB``` or ```1GB``` based on system memory & requirement
-java_arg_2:                           #Minimum RAM size for Apache NIFI ```-Xms512m``` or ```-Xms1g``` based on system memory & requirement
-java_arg_3:                           #Maximum RAM size for Apache NIFI ```-Xmx512m``` or ```-Xmx1g`` based on system memory & requirement
+shared_buffers:                              #Postgres buffer memory ```512MB``` or ```1GB``` based on system memory & requirement
+work_mem:                                    #Postgres working memory ```16MB``` or ```1GB``` based on system memory & requirement
+java_arg_2:                                  #Minimum RAM size for Apache NIFI ```-Xms512m``` or ```-Xms1g``` based on system memory & requirement
+java_arg_3:                                  #Maximum RAM size for Apache NIFI ```-Xmx512m``` or ```-Xmx1g`` based on system memory & requirement
