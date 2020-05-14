@@ -3,12 +3,13 @@ const axios = require('axios');
 const auth = require('../../middleware/check-auth');
 
 router.post('/', auth.authController, async (req, res) => {
-    var clusterId = req.body.clusterId;
+    var clusterId = req.body.data.id;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
+    var month = req.body.data.month;
+    var year = req.body.data.year;
 
-
-    var allSchools = await axios.get(`${baseUrl}/school_wise_data`, { 'headers': { 'token': "Bearer" + token } });
+    var allSchools = await axios.post(`${baseUrl}/school_wise_data`, { month: month, year: year }, { 'headers': { 'token': "Bearer" + token } });
 
     var schoolsDetails = [];
     allSchools.data.forEach(schools => {

@@ -82,7 +82,7 @@ export class SemViewComponent implements OnInit {
   initMap() {
     const lat = 22.3660414123535;
     const lng = 71.48396301269531;
-    globalMap = L.map('mapContainer').setView([lat, lng], 7);
+    globalMap = L.map('map').setView([lat, lng], 7);
     applyCountryBorder(globalMap);
 
     function applyCountryBorder(map) {

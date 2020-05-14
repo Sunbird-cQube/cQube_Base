@@ -9,7 +9,7 @@
         <div class="col-sm-4">
             <h2 style="text-align: center; margin: 20px 0px 30px 0px; color: #284d8a;">cQube</h2>
             <p class="validation-message">{{err}}</p>
-            <form class="user" #formData="ngForm" (ngSubmit)="formData.valid && onSubmit(formData.value)"
+            <form class="user" #formData="ngForm" (ngSubmit)="formData.valid && onSubmit()"
                 style="padding: 0px 25px 0px 25px;">
                 <div class="form-group">
                     <label for="email" style="color: blue; font-family: Arial;">Enter your email address</label>
@@ -27,8 +27,9 @@
 
 
                 <div class="form-group">
-                    <label for="password" style="color: blue; font-family: Arial;">Password</label> 
-                    <span style="float: right; cursor: pointer; color: blue; text-decoration: underline;" (click)="forgotPass(email)">forgot?</span>
+                    <label for="password" style="color: blue; font-family: Arial;">Password</label>
+                    <span style="float: right; cursor: pointer; color: blue; text-decoration: underline;"
+                        (click)="forgotPass(email)">forgot?</span>
                     <input type="password" #cnfpass="ngModel" [(ngModel)]="logData.cnfpass" name="cnfpass"
                         class="form-control form-control-user" id="exampleInputPassword" minlength="4" required
                         [ngClass]="{'invalid-textbox':formData.submitted && !cnfpass.valid}">

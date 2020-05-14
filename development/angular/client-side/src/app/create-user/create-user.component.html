@@ -6,7 +6,7 @@
             <p id="success"
                 style="background-color: green;color: white; padding: 5px 0px 5px 0px;border-radius: 5px; display: none; text-align: center;">
                 {{msg}}</p>
-            <form class="user" #formData="ngForm" (ngSubmit)="formData.valid && onSubmit(formData.value)"
+            <form class="user" #formData="ngForm" (ngSubmit)="formData.valid && onSubmit()"
                 style="padding: 0px 25px 0px 25px;">
                 <div class="row">
                     <div class="col-sm-4">
@@ -48,10 +48,10 @@
                                     <select class="dwnld" required
                                         style="padding: 9px;width: 100%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 5px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
                                         #role="ngModel" [(ngModel)]="logData.roleid" name="roleid">
-                                        <option [value]="roleid" disabled selected="selected"> select role id
+                                        <option [value]="" disabled selected="selected"> select role id
                                         </option>
-                                        <option *ngFor="let a of roleIds" [(ngValue)]="a">
-                                            {{a}}
+                                        <option *ngFor="let rl of roleIds, let i = index" [(ngValue)]="roleIds[i]">
+                                            {{rl}}
                                         </option>
                                     </select>
                                     <div *ngIf="formData.submitted && role?.errors">
