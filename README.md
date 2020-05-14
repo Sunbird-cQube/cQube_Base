@@ -5,6 +5,7 @@
 - Navigate to the directory where CQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
+git checkout cQube-release-0.11
 ```
 - Fill the configuration details in ` vars/main.yml` ( AWS Secret Key & Access Key )
 - Give the permission to install.sh file
@@ -41,8 +42,7 @@ Once installation completed without any errors, you will see the following messa
 - Put the data files into respective sftp directories as mentioned below
 ```
 school_master_lat_long.json   ->   /cqube/data/s3_school_latlong
-school_master.csv   ->   /cqube/data/school_master
-lat_long.csv   ->   /cqube/data/lat_long
+school_geo_master.csv   ->   /cqube/data/lat_long
 student_attendance_sample.csv   ->   /cqube/data/emits
 ```
 - Allow the ports 3000 and 4200 in firewall

@@ -1,28 +1,21 @@
+@import "~leaflet/dist/leaflet.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~bootstrap/dist/css/bootstrap.css";
+
+/* @import "./assets/styles.json"; */
+
 /* You can add global styles to this file, and also import other style files */
-agm-map {
-    height: 540px;
-  }
-  
-  
-  * {
-    font-family: Lato;
-  }
-  
-  a {
-    color: darkblue;
-  }
 
-  .gm-style .gm-style-iw {
 
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial; }
+
+table {
     width: 100%;
-    max-width: 150px !important;
-}
-
-@media only screen and (max-width: 767px) {
-    .gm-style .gm-style-iw {
-
-        width: 100%;
-        max-width: 150px !important;
-    }
-}
-
+  }
+  
+  th.mat-sort-header-sorted {
+    color: black;
+  }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

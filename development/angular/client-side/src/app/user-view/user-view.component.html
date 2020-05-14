@@ -11,23 +11,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="true"
-                (mapClick)="mapClicked($event)" [fullscreenControl]='true' [styles]="styles">
-                <agm-marker *ngFor="let m of markers; let i = index"
-                    (markerClick)="clickedMarker([m.label, m.id, m.lat, m.lng],infowindow )" [latitude]="m.lat"
-                    [longitude]="m.lng" [iconUrl]="m.url" [markerDraggable]="m.draggable"
-                    (dragEnd)="markerDragEnd(m, $event)" [agmFitBounds]="true" (mouseOver)="onMouseOver(m, infowindow)"
-                    (mouseOut)="hideInfo(m)">
-
-                    <agm-info-window [disableAutoPan]="false" #infowindow>
-                        Avg. %age: <span>{{m.label}}</span><br>
-                        Id: <span>{{m.id}}</span>
-                    </agm-info-window>
-                    <agm-circle [latitude]="lat+0.0016591" [longitude]="lng+0.0066754" [radius]="'50000000'"
-                        [fillColor]="'red'" [circleDraggable]="false" [editable]="false">
-                    </agm-circle>
-                </agm-marker>
-            </agm-map>
+            <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 90vh"></div>
         </div>
     </div>
 </div>
