@@ -30,7 +30,7 @@
   blockinfile:
         path: ../../development/python/env.py
         block: |
-               DATABASE_URI = "postgresql://postgres:{{ db_passwd }}@localhost:5432/{{ emission_db_name }}"
+               DATABASE_URI = "postgresql://{{ db_user }}:{{ db_passwd }}@localhost:5432/{{ emission_db_name }}"
                AWS_SECRET_KEY = "{{ s3_secret_key }}"
                AWS_ACCESS_KEY = "{{ s3_access_key }}"
                BUCKET_NAME = "{{ s3_emission_bucket }}"
@@ -40,4 +40,3 @@
   shell: /opt/emission_server/flaskenv/bin/python server.py &
   args:
     chdir: ../../development/python
-
