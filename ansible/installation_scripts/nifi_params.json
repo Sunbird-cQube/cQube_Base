@@ -37,42 +37,43 @@
 		            }
 	    },
 	    {
-		"parameter":{"name":"postgre_driver_dir",
+		"parameter":{"name":"db_driver_dir",
 			"value":""
 		            }
 	    },
 	    {
-		"parameter":{"name":"postgre_driver_class_name",
+		"parameter":{"name":"db_driver_class_name",
 			"value":""
 		            }
 	    },
 	    {
-		"parameter":{"name":"postgre_connection_url",
+		"parameter":{"name":"db_connection_url",
 			"value":""
 		            }
 	    },
 	    {
-		"parameter":{"name":"postgre_source_db",
+		"parameter":{"name":"db_user",
 			"value":""
 		            }
 	    },
 	    {
-		"parameter":{"name":"postgre_dtn_db",
-			"value":""
-		            }
-	    },
+                "parameter":{"name":"db_name",
+                        "value":""
+                            }
+            },
 	    {
-		"parameter":{"name":"postgre_db_user",
-			"value":""
-		            }
-	    },
-	    {
-		"parameter":{"name":"postgre_pwd",
+		"parameter":{"name":"db_passwd",
 		"sensitive": true,
 			"value":""
 			
 		            }
-	    }
+	    },
+	    {
+                "parameter":{"name":"nifi_error_dir",
+                        "value":""
+                            }
+            }
+
 
 
 

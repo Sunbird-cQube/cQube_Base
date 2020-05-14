@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>s3 as raw data emission</description>
+    <description>renamed parameters and change multiple processors as event driven </description>
     <groupId>17027687-0171-1000-87b7-d3b165adefac</groupId>
     <name>CQube-ver-0.1</name>
     <snippet>
@@ -2496,13 +2496,17 @@
                     <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>4224.0</x>
+                        <y>416.0</y>
+                    </bends>
                     <destination>
                         <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
                         <id>8cf4d93a-25ee-36b2-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
+                    <labelIndex>0</labelIndex>
                     <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                     <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                     <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -3804,6 +3808,30 @@
                         <type>PROCESSOR</type>
                     </source>
                     <zIndex>41</zIndex>
+                </connections>
+                <connections>
+                    <id>a95606b5-200a-3194-0000-000000000000</id>
+                    <parentGroupId>562c850a-17fd-305a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>4110c4c2-ac15-32f7-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <source>
+                        <groupId>562c850a-17fd-305a-0000-000000000000</groupId>
+                        <id>f910f1dd-014f-3f3d-0000-000000000000</id>
+                        <type>FUNNEL</type>
+                    </source>
+                    <zIndex>0</zIndex>
                 </connections>
                 <connections>
                     <id>a9cf4ffe-04e5-3842-0000-000000000000</id>
@@ -6967,22 +6995,22 @@
                     <properties>
                         <entry>
                             <key>Database Connection URL</key>
-                            <value>#{postgre_connection_url}#{postgre_source_db}?stringtype=unspecified</value>
+                            <value>#{db_connection_url}#{db_name}?stringtype=unspecified</value>
                         </entry>
                         <entry>
                             <key>Database Driver Class Name</key>
-                            <value>#{postgre_driver_class_name}</value>
+                            <value>#{db_driver_class_name}</value>
                         </entry>
                         <entry>
                             <key>database-driver-locations</key>
-                            <value>#{postgre_driver_dir}</value>
+                            <value>#{db_driver_dir}</value>
                         </entry>
                         <entry>
                             <key>kerberos-credentials-service</key>
                         </entry>
                         <entry>
                             <key>Database User</key>
-                            <value>#{postgre_db_user}</value>
+                            <value>#{db_user}</value>
                         </entry>
                         <entry>
                             <key>Password</key>
@@ -10204,7 +10232,7 @@ Data Loading</label>
                         <autoTerminate>false</autoTerminate>
                         <name>valid_columns</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -10380,7 +10408,7 @@ english AS "subject_4",sanskrit AS "subject_8" FROM flowfile </value>
                         <properties>
                             <entry>
 <key>Directory</key>
-<value>/opt/nifi/errors</value>
+<value>#{nifi_error_dir}</value>
                             </entry>
                             <entry>
 <key>Conflict Resolution Strategy</key>
@@ -10408,7 +10436,7 @@ english AS "subject_4",sanskrit AS "subject_8" FROM flowfile </value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -10594,7 +10622,7 @@ english AS "subject_4",sanskrit AS "subject_8" FROM flowfile </value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -11412,7 +11440,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingPeriod>3 sec</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -11637,7 +11665,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -11784,7 +11812,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -11910,7 +11938,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogAttribute</type>
                 </processors>
@@ -12474,7 +12502,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExtractText</type>
                 </processors>
@@ -12596,7 +12624,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingPeriod>3 sec</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -12691,7 +12719,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -12777,7 +12805,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -12786,7 +12814,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -12847,7 +12875,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -13164,7 +13192,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                         <properties>
                             <entry>
 <key>Directory</key>
-<value>/opt/nifi/errors</value>
+<value>#{nifi_error_dir}</value>
                             </entry>
                             <entry>
 <key>Conflict Resolution Strategy</key>
@@ -13191,8 +13219,8 @@ WHERE ff_uuid = '${files_uuid}';</value>
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingPeriod>3 sec</schedulingPeriod>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -14310,7 +14338,7 @@ GROUP BY district_id,district_latitude,district_longitude,district_name ,year,mo
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>10 sec</schedulingPeriod>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>60 sec</yieldDuration>
                     </config>
@@ -14773,7 +14801,7 @@ block_id,INITCAP(block_name) as block_name,district_id,INITCAP(district_name)as 
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -14888,7 +14916,7 @@ block_id,INITCAP(block_name) as block_name,district_id,INITCAP(district_name)as 
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -15813,7 +15841,7 @@ GROUP BY cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,blo
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -16057,7 +16085,7 @@ FROM   crc_visits_frequency </value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -16074,7 +16102,7 @@ FROM   crc_visits_frequency </value>
                         <autoTerminate>true</autoTerminate>
                         <name>original</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.QueryRecord</type>
                 </processors>
@@ -16375,7 +16403,7 @@ FROM   crc_visits_frequency </value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -16608,7 +16636,7 @@ FROM   crc_visits_frequency </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                 </processors>
@@ -16747,7 +16775,7 @@ VALUES
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PutSQL</type>
                 </processors>
@@ -17183,7 +17211,7 @@ school_hierarchy_details AS hr ON ll.school_id=hr.school_id
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -17421,7 +17449,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -17449,7 +17477,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                     <config>
                         <bulletinLevel>WARN</bulletinLevel>
                         <comments></comments>
-                        <concurrentlySchedulableTaskCount>0</concurrentlySchedulableTaskCount>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                         <descriptors>
                             <entry>
 <key>Log Level</key>
@@ -17885,7 +17913,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -18350,7 +18378,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -18363,7 +18391,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.Notify</type>
                 </processors>
@@ -18382,7 +18410,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                     <config>
                         <bulletinLevel>WARN</bulletinLevel>
                         <comments></comments>
-                        <concurrentlySchedulableTaskCount>0</concurrentlySchedulableTaskCount>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                         <descriptors>
                             <entry>
 <key>Log Level</key>
@@ -18572,7 +18600,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         <autoTerminate>false</autoTerminate>
                         <name>splits</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.SplitText</type>
                 </processors>
@@ -18749,7 +18777,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PutDistributedMapCache</type>
                 </processors>
@@ -18848,7 +18876,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -19140,7 +19168,7 @@ ON b.x_axis=c.x_axis </value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -20279,7 +20307,7 @@ ON b.x_axis=c.x_axis </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.Notify</type>
                 </processors>
@@ -20557,7 +20585,7 @@ ON b.x_axis=c.x_axis </value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -20566,7 +20594,7 @@ ON b.x_axis=c.x_axis </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -20643,7 +20671,7 @@ ON b.x_axis=c.x_axis </value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -20652,7 +20680,7 @@ ON b.x_axis=c.x_axis </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -21147,7 +21175,7 @@ LEFT JOIN (SELECT x_axis,sum(CASE WHEN x_value BETWEEN 0 AND 33 THEN 1 ELSE 0 EN
                         <autoTerminate>false</autoTerminate>
                         <name>wait</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.Wait</type>
                 </processors>
@@ -21208,7 +21236,7 @@ LEFT JOIN (SELECT x_axis,sum(CASE WHEN x_value BETWEEN 0 AND 33 THEN 1 ELSE 0 EN
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -21390,7 +21418,7 @@ LEFT JOIN (SELECT x_axis,sum(CASE WHEN x_value BETWEEN 0 AND 33 THEN 1 ELSE 0 EN
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -21986,7 +22014,7 @@ LEFT JOIN (SELECT x_axis,sum(CASE WHEN x_value BETWEEN 0 AND 33 THEN 1 ELSE 0 EN
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -22056,7 +22084,7 @@ LEFT JOIN (SELECT x_axis,sum(CASE WHEN x_value BETWEEN 0 AND 33 THEN 1 ELSE 0 EN
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -23155,7 +23183,7 @@ VALUES
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingPeriod>3 sec</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -23969,7 +23997,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -24419,7 +24447,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -24513,7 +24541,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -24695,7 +24723,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -24704,7 +24732,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -25091,7 +25119,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -25292,7 +25320,7 @@ from flowfile</value>
                         <autoTerminate>false</autoTerminate>
                         <name>original</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.QueryRecord</type>
                 </processors>
@@ -25369,7 +25397,7 @@ from flowfile</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -25397,7 +25425,7 @@ from flowfile</value>
                     <config>
                         <bulletinLevel>WARN</bulletinLevel>
                         <comments></comments>
-                        <concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                         <descriptors>
                             <entry>
 <key>Database Connection Pooling Service</key>
@@ -25754,7 +25782,7 @@ from flowfile</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -25870,7 +25898,7 @@ from flowfile</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -26453,7 +26481,7 @@ from flowfile</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -26567,7 +26595,7 @@ from flowfile</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -26585,5 +26613,5 @@ from flowfile</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/13/2020 09:11:02 IST</timestamp>
+    <timestamp>05/13/2020 16:38:50 IST</timestamp>
 </template>

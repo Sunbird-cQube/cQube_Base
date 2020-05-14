@@ -75,9 +75,9 @@
   action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/CQube-ver-0.1.xml
   register: xml_output
 
-- name: fetch xml output
-  debug:
-    var: xml_output
+  #- name: fetch xml output
+  # debug:
+  #  var: xml_output
 
 - name: upload parameters
   action: shell curl -d @nifi.json -H Content-Type:application/json -X POST http://localhost:{{ nifi_port }}/nifi-api/parameter-contexts
@@ -88,13 +88,13 @@
     method: GET
   register: processor_group
 
-- name: fetch id
-  debug:
-    var: processor_group.json
+  #- name: fetch id
+  # debug:
+  #  var: processor_group.json
 
-- name: fetch processGrop.id
-  debug:
-    var: processor_group.json.processGroupFlow.id
+  #- name: fetch processGrop.id
+  #debug:
+  #  var: processor_group.json.processGroupFlow.id
 
 - name: Get template list
   uri:
@@ -102,9 +102,9 @@
     method: GET
   register: template_list
 
-- name: fetch id
-  debug:
-    var: template_list.json.templates[0].id
+  #- name: fetch id
+  #debug:
+  #  var: template_list.json.templates[0].id
 
 - name: Instatiate template list
   action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ template_list.json.templates[0].id }}" }'   http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
@@ -161,6 +161,7 @@
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}/controller-services
     method: GET
   register: controllers_list
+  no_log: True
 
 - name: Add s3 credentials parameters
   uri:
@@ -188,29 +189,12 @@
             "lastModifier": "Ansible"
         },
         "component": {"id": "{{ item.id }}", "name": "postgresql-CQube-Source",
-        "properties" : { "Password" : "#{postgre_pwd}"}}
+        "properties" : { "Password" : "#{db_passwd}"}}
 
      }
   loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
   when: item.component.name == 'postgresql-CQube-Source'
  
-- name: Add postgre-dtn-pwd
-  uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
-    method: PUT
-    body_format: json
-    body: {"revision": {
-             "version": "{{ item.revision.version }}",
-            "lastModifier": "Ansible"
-        },
-        "component": {"id": "{{ item.id }}", "name": "Postgre-Agg-Dtn",
-        "properties" : { "Password" : "#{postgre_pwd}"}}
-
-     }
-  loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'Postgre-Agg-Dtn'
-
-
 - name: Fetch nifi processor group id
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
@@ -234,7 +218,7 @@
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}/controller-services
     method: GET
   register: controllers_list 
-
+  no_log: True
 - name: Start controllers
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
@@ -249,6 +233,7 @@
         }
   loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
+  no_log: True
 
 - name: Start Processor group
   uri:
@@ -256,6 +241,7 @@
     method: PUT
     body_format: json
     body: {"id":"{{ processor_group.json.processGroupFlow.id }}","state":"RUNNING"}
+  no_log: True
 
 - name: Get controllers to check status
   debug:
