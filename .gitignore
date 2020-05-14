@@ -2,9 +2,6 @@
 
 /development/angular/server-side/node_modules
 
-<<<<<<< HEAD
-/ansible/installation_scripts/nifi.json
-=======
 /development/angular/server-side/.env
 
 /development/python/env.py
@@ -12,4 +9,3 @@
 /ansible/installation_scripts/nifi.json
 
 /ansible/installation_scripts/vars/main.yml
->>>>>>> da2f49dcac0281edc0e4394dfcb7f4083ad33d39
