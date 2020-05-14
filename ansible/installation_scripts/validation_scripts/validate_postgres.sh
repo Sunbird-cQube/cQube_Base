@@ -17,7 +17,7 @@ if [ $temp == 0 ]; then
              sudo apt-get --purge remove postgresql postgresql-doc postgresql-common -y
              sudo apt autoremove -y
          elif [[ $answer =~ ^(no|NO)$ ]] ;then
-             echo "Aborting cQube installation, kindly uninstall postgres and start the installation"
+             tput setaf 1; echo "Aborting cQube installation, kindly uninstall postgres and start the installation"
 	     exit; 
          else
              echo "Please enter yes or no"

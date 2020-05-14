@@ -12,7 +12,7 @@ do_validation()
 bucketstatus=`aws s3api head-bucket --bucket "${1}" 2>&1`
 if [ $? == 0 ]
 then
-    echo "Error: [ $2 ] Bucket Owned or exists. Please change the bucket name"
+    tput setaf 1; echo "Error: [ $2 ] Bucket Owned or exists. Please change the bucket name"
     count=1
 elif [[ $bucketstatus == *"Not Found"* ]]
 then
@@ -20,14 +20,14 @@ then
     count=0
 elif [[ "$bucketstatus" == *"Forbidden"* ]]
 then
-    echo "Error: [ $2 ] Bucket exists but not owned. Please change the bucket name"
+    tput setaf 1; echo "Error: [ $2 ] Bucket exists but not owned. Please change the bucket name"
     count=1
 elif [[ "$bucketstatus" == *"Bad Request"* ]]
 then
-  echo "Error: [ $2 ] Bucket name should be between 3 and 63 characters. Please change the bucket name"
+  tput setaf 1; echo "Error: [ $2 ] Bucket name should be between 3 and 63 characters. Please change the bucket name"
   count=1
 else
-  echo "Error: [ $2 ] $bucketstatus";
+  tput setaf 1; echo "Error: [ $2 ] $bucketstatus";
   count=1
 fi
 return "$count"
@@ -41,10 +41,13 @@ do_validation $s3_emission_bucket s3_emission_bucket
 e_count=$count
 
 if [ $i_count == 1 ]; then
+    tput setaf 1; echo "If bucket name are properly provided as per the naming convention, then aws_access_key and aws_secret_key are invalid or keys doesn't have the permission to create buckets"
     exit;
 elif [ $o_count == 1 ]; then
+    tput setaf 1; echo "If bucket name are properly provided as per the naming convention, then aws_access_key and aws_secret_key are invalid or keys doesn't have the permission to create buckets"
     exit;
 elif [ $e_count == 1 ]; then
+    tput setaf 1; echo "If bucket name are properly provided as per the naming convention, then aws_access_key and aws_secret_key are invalid or keys doesn't have the permission to create buckets"
     exit;
 else
     echo ""
