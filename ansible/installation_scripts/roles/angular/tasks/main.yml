@@ -55,9 +55,15 @@
   args:
     chdir: ../../development/angular/server-side
 
-- name: Replace a localhost entry with our own
+- name: Replacing endpoint value in environment.ts
   lineinfile:
     path: ../../development/angular/client-side/src/environments/environment.ts
+    regexp: "apiEndpoint"
+    line: "apiEndpoint: '{{ api_endpoint }}'"
+
+- name: Replacing endpoint value in environment.prod.ts
+  lineinfile:
+    path: ../../development/angular/client-side/src/environments/environment.prod.ts
     regexp: "apiEndpoint"
     line: "apiEndpoint: '{{ api_endpoint }}'"
 
@@ -68,8 +74,8 @@
   npm:
     path: ../../development/angular/client-side
 
-- name: Run Angular
-  command: ng build
+- name: Building Angular client-side code
+  command: ng build --prod
   args:
     chdir: ../../development/angular/client-side
 
@@ -87,8 +93,6 @@
   become: yes
   shell: pm2 id http-server
   register: pm2_output
-- debug:
-     var: pm2_output
 
 - name: checking the existing pm2 processes if running
   shell: pm2 delete http-server
@@ -98,6 +102,6 @@
 
 - name: Starting / restarting the http-server
   become: yes
-  shell: pm2 start /usr/bin/http-server -- -a {{ local_ipv4_address }} -p 4200
+  shell: pm2 start /usr/bin/http-server -- -a {{ local_ipv4_address }} -p 4200 
   args:
     chdir: /var/www/dist/gujarat-project
