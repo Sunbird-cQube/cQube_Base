@@ -1,11 +1,11 @@
 #!/bin/bash
 
 if [ `whoami` != root ]; then
-    tput setaf 1; echo Please run this script using sudo
+    tput setaf 1; echo "Please run this script using sudo"; tput sgr0
     exit
 else
     if [[ "$HOME" == "/root" ]]; then
-        tput setaf 1; echo "Please run this script using normal user with 'sudo' privilege,  not as 'root'"
+        tput setaf 1; echo "Please run this script using normal user with 'sudo' privilege,  not as 'root'"; tput sgr0
     fi
 fi
 
@@ -18,7 +18,7 @@ chmod u+x $INS_DIR/validation_scripts/*.sh
 sudo apt install unzip -y
 
 if [[ ! -f vars/main.yml ]]; then
-    tput setaf 1; echo "ERROR: vars/main.yml is not available. Please copy vars/main.yml.template as vars/main.yml and fill all the details."
+    tput setaf 1; echo "ERROR: vars/main.yml is not available. Please copy vars/main.yml.template as vars/main.yml and fill all the details."; tput sgr0
     exit;
 fi
 
@@ -33,7 +33,7 @@ sudo apt-get update -y
 sudo apt install ansible -y
 
 if [ ! $? = 0 ]; then
-tput setaf 1; echo "Error there is a problem installing Ansible"
+tput setaf 1; echo "Error there is a problem installing Ansible"; tput sgr0
 exit
 fi
 python3 nifi_config.py

@@ -18,6 +18,12 @@
     regexp: 'host    all             all             127.0.0.1/32            md5'
     replace: 'host    all             postgres             127.0.0.1/32            trust'
 
+- name: Inserting configuration in pg_hba.conf file
+  lineinfile:
+    path: /etc/postgresql/10/main/pg_hba.conf
+    line: "host    all             {{ db_user }}            127.0.0.1/32            trust"
+    insertafter: "host    all             postgres             127.0.0.1/32            trust"
+
 - name: Increase buffer memory postgre file
   replace:
     dest: /etc/postgresql/10/main/postgresql.conf
@@ -37,16 +43,15 @@
   become: true
   become_user: postgres
   postgresql_db:
-    name: "{{ db_name }}"
+    name: "{{ emission_db_name }}"
     encoding: 'UTF-8'
-    template: 'template0'
     state: present
 
 - name: Ensure database is created
   become: true
   become_user: postgres
   postgresql_db:
-    name: "{{ emission_db_name }}"
+    name: "{{ db_name }}"
     encoding: 'UTF-8'
     state: present
 
@@ -58,15 +63,16 @@
     name: "{{ db_user }}"
     password: "{{ db_password }}"
     encrypted: yes
-    priv: ALL
-    role_attr_flags: SUPERUSER,CREATEDB,CREATEROLE,REPLICATION
+    priv: "ALL"
+    role_attr_flags: SUPERUSER,CREATEDB,CREATEROLE,REPLICATION,LOGIN
     state: present
+  no_log: true
 
 - name: Run queries from SQL script
   become: true
   become_user: postgres
   postgresql_query:
-    db: "{{ db_user }}"
+    db: "{{ db_name }}"
     path_to_script: cQube.sql
 
 - name: Run queries from SQL script
@@ -79,8 +85,9 @@
    - restart postgresql
 
 - name: Check if database exists
-  become_user: yes
-  shell: sudo -u postgres psql \{{ db_name }}
+  become: yes
+  become_user: postgres
+  command: psql \{{ db_name }}
   ignore_errors: yes
   register: database_output
 
