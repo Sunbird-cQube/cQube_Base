@@ -11,7 +11,9 @@ export class CreateUserComponent implements OnInit {
   logData: any = {};
   err;
   msg;
-  roleIds = [1,2,3,4,5];
+  roleIds: any = ["Admin", "Report Viewer", 3, 4, 5];
+  emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 
   today = new Date();
 

@@ -123,7 +123,7 @@ export class BarChartComponent implements OnInit {
   }
   public tableHead: any;
   public chartData: any = [];
-  public mode: String[]
+  public modes: any
   districtWise() {
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
@@ -155,7 +155,7 @@ export class BarChartComponent implements OnInit {
       this.result = JSON.parse(localStorage.getItem('resData'));
       let a = this.result.schoolsVisitedCount
       this.result = this.result.visits;
-      this.mode = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
+      this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
 
       let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
       let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
@@ -231,7 +231,7 @@ export class BarChartComponent implements OnInit {
         let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
         let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
-        this.mode = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
+        this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
 
         if (this.result.length > 0) {
           var labels = [];
@@ -351,7 +351,7 @@ export class BarChartComponent implements OnInit {
   myDistData(data) {
 
     this.scatterChart.destroy();
-    this.mode = [];
+    this.modes = [];
     this.downloadType = '';
     this.blockHidden = false;
     this.clusterHidden = true;
@@ -452,7 +452,7 @@ export class BarChartComponent implements OnInit {
   myBlockData(data) {
 
     this.scatterChart.destroy();
-    this.mode = [];
+    this.modes = [];
     this.downloadType = '';
     this.clusterHidden = false;
     this.blockHidden = false;
@@ -558,7 +558,7 @@ export class BarChartComponent implements OnInit {
   myClusterData(data) {
 
     this.scatterChart.destroy();
-    this.mode = [];
+    this.modes = [];
     this.downloadType = '';
     this.tableHead = "School Name";
     this.errMsg();

@@ -11,6 +11,8 @@ export class ChangePasswordComponent implements OnInit {
   public err;
   public successMsg;
   public isDisabled;
+  emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
   constructor(public service: AppServiceComponent, public router: Router) {
     this.changePasswdData['email'] = localStorage.getItem('email');
   }

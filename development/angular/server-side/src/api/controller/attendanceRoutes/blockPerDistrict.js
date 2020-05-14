@@ -3,12 +3,12 @@ const axios = require('axios');
 const auth = require('../../middleware/check-auth');
 
 router.post('/', auth.authController, async (req, res) => {
-    var distId = req.body.distId;
+    var distId = req.body.data.id;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
-
-
-    var allBlocks = await axios.get(`${baseUrl}/block_wise_data`, { 'headers': { 'token': "Bearer" + token } });
+    var month = req.body.data.month;
+    var year = req.body.data.year;
+    var allBlocks = await axios.post(`${baseUrl}/block_wise_data`, { month: month, year: year }, { 'headers': { 'token': "Bearer" + token } });
 
     var blcokDetails = [];
     allBlocks.data.forEach(blocks => {

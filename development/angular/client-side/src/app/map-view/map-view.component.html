@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Attendance report for: <span (click)="districtWise()"
@@ -34,9 +34,9 @@
                         {{hierName}}</span></p>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-7">
                     <div class="col-sm-12" id="spinner">
                         <div class="spinner-border text-secondary"
                             style="height: 20px; width: 20px; font-size: 21px; margin: 1% 5% 0% 0%; float: left; font-family: Arial;"
@@ -51,7 +51,7 @@
                     <p id="errMsg" style="display: none; text-align: center; margin-top: 1%; font-family: Arial;"></p>
 
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
                         style="cursor: pointer;height: 23px;width: 25px;float: right;margin: 5px 0px 0px 8px;"
                         (click)="downloadRoport()">
@@ -74,14 +74,14 @@
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px;"
                 (click)="schoolWise()">&nbsp;<b style="font-family: Arial;">Schools</b> </button>
         </div>
-        <div class="col-sm-7" style="font-family: Arial;">
+        <div class="col-sm-6" style="font-family: Arial;">
 
             <select
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                 <option [value]="myDistrict" disabled selected="selected">Choose a District
                 </option>
-                <option *ngFor="let dist of districtsNames" [(ngValue)]="dist"
+                <option *ngFor="let dist of districtsNames" [(ngValue)]="dist.id"
                     style="font-family: Arial; font-size: 11px;">
                     {{dist.name}}
                 </option>
@@ -92,24 +92,46 @@
                 [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                 <option [value]="myBlock" disabled selected="selected">Choose a Block
                 </option>
-                <option *ngFor="let block of blocksNames" [(ngValue)]="block"
+                <option *ngFor="let block of blocksNames" [(ngValue)]="block.id"
                     style="font-family: Arial;font-size: 11px;">
                     {{block.name}}
                 </option>
             </select>
 
             <select [hidden]="clusterHidden"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                style="padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
                 <option [value]="myCluster" disabled selected="selected">Choose a cluster
                 </option>
-                <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster"
+                <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster.id"
                     style="font-family: Arial;font-size: 11px; "
                     [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                     {{cluster.name}}
                 </option>
             </select>
 
+        </div>
+        <div class="col-sm-3">
+            <select id="year"
+                style="margin-left: 10%; width: 43%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="year" name="year" (click)="getYear()">
+                <option [value]="year" disabled selected="selected">Choose Year
+                </option>
+                <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]"
+                    style="font-family: Arial;font-size: 11px; ">
+                    {{years[i]}}
+                </option>
+            </select>
+            <select id="month"
+                style="float: right;margin-left: 2%; margin-top: 0.5%;width: 43%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="month" name="month" (click)="getMonth()">
+                <option [value]="month" disabled selected="selected">Choose Month
+                </option>
+                <option *ngFor="let month of months, let i = index" [(ngValue)]="months[i].id"
+                    style="font-family: Arial;font-size: 11px; ">
+                    {{months[i].name}}
+                </option>
+            </select>
         </div>
 
     </div>
@@ -119,7 +141,7 @@
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial;padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial;padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-4">
             <span>Number of students: {{studentCount}}</span>
         </div>

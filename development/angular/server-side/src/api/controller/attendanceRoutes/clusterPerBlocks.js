@@ -3,11 +3,14 @@ const axios = require('axios');
 const auth = require('../../middleware/check-auth');
 
 router.post('/', auth.authController, async (req, res) => {
-    var blockId = req.body.blockId;
+    var blockId = req.body.data.id;
     var baseUrl = req.body.baseUrl;
     var token = req.headers.token;
+    var month = req.body.data.month;
+    var year = req.body.data.year;
 
-    var allClusters = await axios.get(`${baseUrl}/cluster_wise_data`, { 'headers': { 'token': "Bearer" + token } });
+    var allClusters = await axios.post(`${baseUrl}/cluster_wise_data`, { month: month, year: year }, { 'headers': { 'token': "Bearer" + token } });
+    
 
     var clusterDetails = [];
     allClusters.data.forEach(clusters => {
