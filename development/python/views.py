@@ -21,22 +21,29 @@ AWS_ACCESS_KEY = AWS_ACCESS_KEY
 AWS_SECRET_KEY = AWS_SECRET_KEY
 AWS_DEFAULT_REGION =  AWS_DEFAULT_REGION
 
-def create_presigned_url(bucket_name, bucket_key, expiration=3600, signature_version=s3_signature['v4']):
+def create_presigned_post(bucket_name, object_name,
+                          fields=None, conditions=None, expiration=3600):
+    s3_signature ={
+    'v4':'s3v4',
+    'v2':'s3'
+}
     s3_client = boto3.client('s3',
                              aws_access_key_id=AWS_ACCESS_KEY,
                              aws_secret_access_key=AWS_SECRET_KEY,
-                             config=Config(signature_version=signature_version),
+                             config=Config(signature_version=s3_signature['v4']),
                              region_name=AWS_DEFAULT_REGION
                              )
+
     try:
-        response = s3_client.generate_presigned_url('put_object',
-                                                    Params={'Bucket': bucket_name,
-                                                            'Key': bucket_key},
-                                                    ExpiresIn=expiration)
+        response = s3_client.generate_presigned_post(bucket_name,
+                                                     object_name,
+                                                     ExpiresIn=expiration)
     except ClientError as e:
         logging.error(e)
         return None
+
     return response
+
 
 def get_user_id(user_id):
     existing_person = Users.query.filter(Users.user_id == user_id).all()
@@ -108,6 +115,13 @@ def create():
         logging.info(f'User {fname} {mname} {lname} exists already')
         abort(409, f'User {fname} {mname} {lname} exists already')
 
+
+#with open(object_name, 'rb') as f:
+#    files = {'file': (object_name, f)}
+#    http_response = requests.post(response['url'], data=response['fields'], files=files)
+
+
+
 @app.route('/upload-url',methods=['POST'])
 @jwt_required()
 def aws_upload_url():
@@ -115,6 +129,6 @@ def aws_upload_url():
     filename = parser.add_argument("filename")
     args = parser.parse_args()
     if args["filename"]:
-        return create_presigned_url(BUCKET_NAME,str(args["filename"]))
+        return create_presigned_post(BUCKET_NAME,str(args["filename"]))
     else:
         return "Filename is required"

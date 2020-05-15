@@ -166,6 +166,7 @@
      }
   loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
   when: item.component.name == 'cQube-GA-S3-cred'
+  no_log: True
     
 - name: Add postgre-source-pwd
   uri:
