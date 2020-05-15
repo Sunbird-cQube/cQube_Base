@@ -275,6 +275,37 @@ UPDATE student_attendance_trans
 END;
 $$  LANGUAGE plpgsql;
 
+/* temperory table */
+----------------------------------------------
+create table if not exists cluster_tmp
+	(
+cluster_id  bigint primary key not null,
+cluster_name varchar(250),
+block_id  bigint,
+district_id  bigint,
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
+);
+
+create table if not exists block_tmp
+	(
+block_id  bigint primary key not null,
+block_name varchar(250),
+district_id  bigint,
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
+);
+
+create table if not exists district_tmp
+	(
+district_id  bigint primary key not null,
+district_name varchar(250),
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
+);
+
+----------------------------------------------------
+
 /*school_master*/
 
 create table if not exists school_master
