@@ -42,8 +42,10 @@ Once installation completed without any errors, you will be prompted the followi
 
 create cqube_emission directory and place below file structure in the cqube_emission folder.
 ```cqube_emission/
-  lat_long/lat_long.zip
-  school_hierarchy/school_hierarchy.zip
+  school_master/school_mst.zip
+  cluster_master/cluster_mst.zip
+  block_master/block_mst.zip
+  district_master/district_mst.zip
   roles_master/roles.zip
   users_master/users.zip
   student_attendance/student_attendance.zip```
