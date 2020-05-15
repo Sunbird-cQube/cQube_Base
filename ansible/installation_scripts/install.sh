@@ -32,6 +32,8 @@ sudo apt-add-repository ppa:ansible/ansible -y
 sudo apt-get update -y
 sudo apt install ansible -y
 
+echo '127.0.0.0' >> /etc/ansible/hosts
+
 if [ ! $? = 0 ]; then
 tput setaf 1; echo "Error there is a problem installing Ansible"; tput sgr0
 exit
