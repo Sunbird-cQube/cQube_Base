@@ -95,11 +95,3 @@
     msg: database exists
   when: database_output is success
 
-- shell: |
-    sudo -u postgres psql \{{ db_name }}<<EOF
-    \d
-    EOF
-  register: output
-
-- debug:
-    var: output.stdout_lines

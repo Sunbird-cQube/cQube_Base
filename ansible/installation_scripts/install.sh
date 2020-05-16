@@ -14,6 +14,7 @@ if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 
 sudo apt update -y
 sudo apt install python -y
+sudo apt-get install python-apt -y
 chmod u+x $INS_DIR/validation_scripts/*.sh
 sudo apt install unzip -y
 
@@ -31,6 +32,8 @@ sudo apt-get install software-properties-common -y
 sudo apt-add-repository ppa:ansible/ansible -y
 sudo apt-get update -y
 sudo apt install ansible -y
+
+echo '127.0.0.0' >> /etc/ansible/hosts
 
 if [ ! $? = 0 ]; then
 tput setaf 1; echo "Error there is a problem installing Ansible"; tput sgr0

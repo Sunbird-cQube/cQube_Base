@@ -25,11 +25,11 @@ aws_default_region: 'ap-south-1'            # Provide the aws default region for
 nodejs_version: "12"
 ansible_distribution_release: trusty
 api_endpoint: http://<public_ip>:3000/api   # https://domain.com/api (use http for ip address example `http://10.24.32.120:3000/api` )
-local_ipv4_address:                         # Provide the local ip 
+local_ipv4_address:                         # Provide the local ipv4 
 
 nifi_port: 8096
-nifi_error_dir:                              # Nifi directory to store errors ( nifi error files ), example /home/cqube/nifi_logs
-shared_buffers:                              # Postgres buffer memory `512MB` or `1GB` based on system memory & requirement
-work_mem:                                    # Postgres working memory `16MB` or `1GB` based on system memory & requirement
-java_arg_2:                                  # Minimum RAM size for Apache NIFI `-Xms512m` or `-Xms1g` based on system memory & requirement
-java_arg_3:                                  # Maximum RAM size for Apache NIFI `-Xmx512m` or `-Xmx1g` based on system memory & requirement
+nifi_error_dir:                              # Nifi directory to store errors ( nifi error files ), example `/home/cqube/nifi_logs`
+shared_buffers:                              # Postgres buffer memory ex:`512MB` or `1GB`, and based on system memory & requirement
+work_mem:                                    # Postgres working memory ex:`16MB` or `1GB`, and based on system memory & requirement
+java_arg_2:                                  # Minimum RAM size for Apache NIFI ex:`-Xms512m` or `-Xms1g` based on system memory & requirement
+java_arg_3:                                  # Maximum RAM size for Apache NIFI ex:`-Xmx512m` or `-Xmx1g` based on system memory & requirement
