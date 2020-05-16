@@ -114,7 +114,7 @@
         <div class="col-sm-3">
             <select id="year"
                 style="margin-left: 10%; width: 43%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                [(ngModel)]="year" name="year" (click)="getYear()">
+                [(ngModel)]="year" name="year" (change)="getYear()">
                 <option [value]="year" disabled selected="selected">Choose Year
                 </option>
                 <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]"
@@ -124,7 +124,7 @@
             </select>
             <select id="month"
                 style="float: right;margin-left: 2%; margin-top: 0.5%;width: 43%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                [(ngModel)]="month" name="month" (click)="getMonth()">
+                [(ngModel)]="month" name="month" (change)="getMonth()">
                 <option [value]="month" disabled selected="selected">Choose Month
                 </option>
                 <option *ngFor="let month of months, let i = index" [(ngValue)]="months[i].id"
