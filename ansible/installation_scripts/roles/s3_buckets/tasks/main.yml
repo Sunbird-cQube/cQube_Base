@@ -1,32 +1,32 @@
-- name: creating s3 bucket
+- name: creating s3 input bucket
   s3_bucket:
     name: "{{ s3_input_bucket }}"
     aws_access_key: "{{ s3_access_key }}"
     aws_secret_key: "{{ s3_secret_key }}"
     state: present
-    region: ap-south-1
+    region: "{{ aws_default_region }}"
     versioning: yes
     tags:
        name: "{{ s3_input_bucket }}"
 
-- name: creating s3 bucket
+- name: creating s3 output bucket
   s3_bucket:
     name: "{{ s3_output_bucket }}"
     aws_access_key: "{{ s3_access_key }}"
     aws_secret_key: "{{ s3_secret_key }}"
     state: present
-    region: ap-south-1
+    region: "{{ aws_default_region }}"
     versioning: yes
     tags:
        name: "{{ s3_output_bucket }}"
 
-- name: creating s3 bucket
+- name: creating s3 emission bucket
   s3_bucket:
     name: "{{ s3_emission_bucket }}"
     aws_access_key: "{{ s3_access_key }}"
     aws_secret_key: "{{ s3_secret_key }}"
     state: present
-    region: ap-south-1
+    region: "{{ aws_default_region }}"
     versioning: yes
     tags:
        name: "{{ s3_emission_bucket }}"

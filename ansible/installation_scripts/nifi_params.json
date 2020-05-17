@@ -62,7 +62,7 @@
                             }
             },
 	    {
-		"parameter":{"name":"db_passwd",
+		"parameter":{"name":"db_password",
 		"sensitive": true,
 			"value":""
 			

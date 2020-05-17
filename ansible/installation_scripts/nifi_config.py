@@ -1,5 +1,5 @@
 import json, yaml
-with open('vars/main.yml','r') as yaml_property:
+with open('config.yml','r') as yaml_property:
     yaml_config=yaml.safe_load(yaml_property)
 
 with open('nifi_params.json','r') as json_payload:
