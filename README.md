@@ -8,14 +8,14 @@ cd cQube/ansible/installation_scripts/
 git checkout cQube-release-new
 ```
 - Copy the main.yml.template to main.yml inside vars directory
-`cp vars/main.yml.template vars/main.yml`
-- Fill the configuration details in ` vars/main.yml`
+`cp config.yml.template config.yml`
+- Fill the configuration details in ` config.yml`
 - Give the permission to install.sh file
 ```
 chmod u+x install.sh
 ```
 - Install cQube using the non-root user with sudo privilege
-- After filling all the variables in `vars/main.yml` proceed with below step
+- After filling all the variables in `config.yml` proceed with below step
 - Run the install.sh shell script file as mentioned below
 ```
 sudo ./install.sh
@@ -30,7 +30,7 @@ This script sets up the infra in a sequence as mentioned below:
   - Installs NodeJS
   - Installs Angular and Chart JS
 
-Configuration filled in `vars/main.yml` will be validated first. If there is any error while validation, the installation will be aborted. In such case, solve the errors and restart the installation `sudo  ./insatll.sh`
+Configuration filled in `config.yml` will be validated first. If there is any error while validation, the installation will be aborted. In such case, solve the errors and restart the installation `sudo  ./insatll.sh`
 
 Once installation completed without any errors, you will be prompted the following message. 
 ```CQube installed successfully!!``` 

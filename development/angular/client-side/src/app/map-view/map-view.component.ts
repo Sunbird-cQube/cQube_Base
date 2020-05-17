@@ -196,13 +196,11 @@ export class MapViewComponent implements OnInit {
     this.element.disabled = false;
   }
 
-
   districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
     var month = this.months.find(a => a.id === this.month);
     this.fileName = `District_wise_report_${month.name}_${this.year}`;
-    // this.districtsNames = [];
 
     this.service.dist_wise_data(this.month_year).subscribe(res => {
       this.mylatlngData = res;
@@ -210,8 +208,12 @@ export class MapViewComponent implements OnInit {
       var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1);
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
-      this.dateRange = sorted[0]['data_from_date'] + " to " + sorted[0]['data_upto_date'];
-      localStorage.setItem('dateRange', this.dateRange);
+      var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
+      this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
+
+      var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
+      this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
+
       var distNames = [];
       for (var i = 0; i < sorted.length; i++) {
 
@@ -281,6 +283,8 @@ export class MapViewComponent implements OnInit {
       var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
+      var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
+      this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
       var blockNames = [];
       for (var i = 0; i < sorted.length; i++) {
         this.blocksIds.push(sorted[i]['x_axis']);
@@ -356,6 +360,8 @@ export class MapViewComponent implements OnInit {
       var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
+      var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
+      this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
 
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
@@ -444,6 +450,8 @@ export class MapViewComponent implements OnInit {
       var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
+      var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
+      this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
       var clustNames = [];
       var blockNames = [];
       for (var i = 0; i < sorted.length; i++) {
@@ -648,6 +656,8 @@ export class MapViewComponent implements OnInit {
       var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
+      var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
+      this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
@@ -721,14 +731,14 @@ export class MapViewComponent implements OnInit {
     var month = this.months.find(a => a.id === this.month);
     this.fileName = `Cluster_per_block_report_${month.name}_${this.year}`;
     var blockNames = [];
-    // console.log(this.blocksNames);
+    console.log(Number(localStorage.getItem('distId')));
     this.blocksNames.forEach(item => {
       if (item.distId && item.distId === Number(localStorage.getItem('distId'))) {
         blockNames.push(item);
       }
     });
     // console.log(data);
-    // console.log(blockNames);
+    console.log(blockNames);
     if (blockNames.length > 1) {
       this.blocksNames = blockNames;
     }
@@ -764,6 +774,8 @@ export class MapViewComponent implements OnInit {
       var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
+      var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
+      this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
 
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
@@ -911,6 +923,8 @@ export class MapViewComponent implements OnInit {
       var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
+      var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
+      this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
