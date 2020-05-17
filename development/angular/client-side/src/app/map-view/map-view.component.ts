@@ -559,13 +559,13 @@ export class MapViewComponent implements OnInit {
     }
 
     if (this.blocksIds.includes(label.id)) {
-      // if (this.skul) {
-      //   localStorage.setItem('dist', label.dist);
-      //   localStorage.setItem('distId', label.distId);
-      // } else {
-      localStorage.setItem('dist', localStorage.getItem('dist'));
-      localStorage.setItem('distId', localStorage.getItem('distId'));
-      // }
+      if (this.skul) {
+        localStorage.setItem('dist', label.dist);
+        localStorage.setItem('distId', label.distId);
+      } else {
+        localStorage.setItem('dist', localStorage.getItem('dist'));
+        localStorage.setItem('distId', localStorage.getItem('distId'));
+      }
       localStorage.setItem('block', label.name);
       localStorage.setItem('blockId', label.id);
       this.myBlockData(label.id);
@@ -743,7 +743,7 @@ export class MapViewComponent implements OnInit {
       this.blocksNames = blockNames;
     }
     let obj = this.blocksNames.find(o => o.id == data);
-    // console.log(obj);
+    console.log(obj);
     localStorage.setItem('block', obj.name);
     localStorage.setItem('blockId', data);
     this.titleName = localStorage.getItem('dist');
@@ -755,7 +755,7 @@ export class MapViewComponent implements OnInit {
     this.myDistrict = Number(localStorage.getItem('distId'));
     this.myCluster = null;
 
-    // console.log(this.myDistrict);
+    console.log(this.myDistrict);
     this.month_year['id'] = data;
     this.service.clusterPerBlock(this.month_year).subscribe(res => {
       this.mylatlngData = res;
