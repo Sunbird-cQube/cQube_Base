@@ -1,0 +1,2 @@
+nodejs_version: 12
+ansible_distribution_release: trusty

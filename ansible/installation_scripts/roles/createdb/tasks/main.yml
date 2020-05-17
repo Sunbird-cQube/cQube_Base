@@ -83,15 +83,3 @@
     path_to_script: emission.sql
   notify:
    - restart postgresql
-
-- name: Check if database exists
-  become: yes
-  become_user: postgres
-  command: psql \{{ db_name }}
-  ignore_errors: yes
-  register: database_output
-
-- debug:
-    msg: database exists
-  when: database_output is success
-

@@ -15,18 +15,15 @@ if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 sudo apt update -y
 sudo apt install python -y
 sudo apt-get install python-apt -y
-chmod u+x $INS_DIR/validation_scripts/*.sh
+chmod u+x validate.sh
 sudo apt install unzip -y
 
-if [[ ! -f vars/main.yml ]]; then
-    tput setaf 1; echo "ERROR: vars/main.yml is not available. Please copy vars/main.yml.template as vars/main.yml and fill all the details."; tput sgr0
+if [[ ! -f config.yml ]]; then
+    tput setaf 1; echo "ERROR: config.yml is not available. Please copy config.yml.template as config.yml and fill all the details."; tput sgr0
     exit;
 fi
 
-. "$INS_DIR/validation_scripts/check_vars_file.sh"
-. "$INS_DIR/validation_scripts/install_aws_cli.sh"
-. "$INS_DIR/validation_scripts/validate_bucket_name.sh"
-. "$INS_DIR/validation_scripts/validate_postgres.sh"
+. "validate.sh"
 
 sudo apt-get install software-properties-common -y
 sudo apt-add-repository ppa:ansible/ansible -y

@@ -178,7 +178,7 @@
             "lastModifier": "Ansible"
         },
         "component": {"id": "{{ item.id }}", "name": "postgresql-CQube-Source",
-        "properties" : { "Password" : "#{db_passwd}"}}
+        "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"

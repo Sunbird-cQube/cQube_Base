@@ -8,4 +8,4 @@
 
 /ansible/installation_scripts/nifi.json
 
-/ansible/installation_scripts/vars/main.yml
+/ansible/installation_scripts/config.yml
