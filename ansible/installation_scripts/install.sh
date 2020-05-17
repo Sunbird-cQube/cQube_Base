@@ -23,6 +23,7 @@ if [[ ! -f config.yml ]]; then
     exit;
 fi
 
+. "$INS_DIR/validation_scripts/install_aws_cli.sh"
 . "validate.sh"
 
 sudo apt-get install software-properties-common -y

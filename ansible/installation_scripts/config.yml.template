@@ -13,7 +13,7 @@ system_user_name:                          # Non-root username with sudo privile
 # Database Parameters
 db_user: cqube_db_user                     # Username for the cQube database 
 db_name: cqube_db                          # Database name for the cQube database
-db_password:                               # Password to access the cQube database
+db_password:                               # Password to access the cQube database, password should contain atleast 1 lower,upper,number,special character
 emission_db_name: cqube_emission_db        # Emission database name to authenticate the client, to upload the data into cQube system.
 
 # S3 Parameters
