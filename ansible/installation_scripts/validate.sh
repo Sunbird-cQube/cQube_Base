@@ -1,3 +1,14 @@
+check_length(){
+    len_status=1
+    str_length=${#1}
+    if [[ $str_length -ge 3 && $str_length -le 63 ]]; then 
+        len_status=0
+        return $len_status;
+    else 
+        return $len_status;
+    fi
+}
+
 check_postgres(){
     temp=$(psql -V > /dev/null 2>&1; echo $?)
 
@@ -133,7 +144,8 @@ check_aws_key(){
     fi
 }
 check_s3_bucket(){
-    #check_aws_key $3 $4
+check_length $1
+if [[ $? == 0 ]]; then
     if [[ $aws_key_status == 0 ]]; then
         bucketstatus=`aws s3api head-bucket --bucket "${2}" 2>&1`
         if [ $? == 0 ]
@@ -165,6 +177,9 @@ check_s3_bucket(){
             tput setaf 1; echo "Error: [ $1 : $2 ] $bucketstatus"; tput sgr0; fail=1
         fi
     fi
+ else
+        echo "Error - Length of the value $1 is not correct. Provide the length between 3 and 63."; fail=1
+fi
 }
 
 check_nifi_port(){
@@ -175,6 +190,8 @@ check_nifi_port(){
 }
 
 check_db_naming(){
+check_length $1
+if [[ $? == 0 ]]; then	
     initial="$(echo $2 | head -c 1)"
     if [[ $initial != [0-9] ]] ; then
         echo "$2" |  grep "[@#$%^&*-]"
@@ -184,6 +201,9 @@ check_db_naming(){
     else
         echo "Error - Naming convention is not correct. Please change the value of $1."; fail=1
     fi
+ else
+        echo "Error - Length of the value $1 is not correct. Provide the length between 3 and 63."; fail=1
+fi
 }
 
 check_db_password(){

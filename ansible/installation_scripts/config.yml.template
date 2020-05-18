@@ -10,11 +10,14 @@
 
 system_user_name:                          # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
 
+#Database variables naming convention, the variable length should be between [3-63] characters and should contain upper/lower characters, it should start with _ or lower or upper characters.
+
 # Database Parameters
-db_user: cqube_db_user                     # Username for the cQube database 
-db_name: cqube_db                          # Database name for the cQube database
-db_password:                               # Password to access the cQube database, password should contain atleast 1 lower,upper,number,special character
+db_user: cqube_db_user                     # Create your own username for the cQube database
+db_name: cqube_db                          # Enter your own database name for the cQube database
+db_password:                               # Create your own password to for the cQube database, password should contain atleast 1 lower,upper,number,special character
 emission_db_name: cqube_emission_db        # Emission database name to authenticate the client, to upload the data into cQube system.
+
 
 # S3 Parameters
 # Naming convention to follow while choosing the bucket name
@@ -23,12 +26,15 @@ emission_db_name: cqube_emission_db        # Emission database name to authentic
 # The bucket name cannot contain underscores, end with a dash, have consecutive periods, or use dashes adjacent to periods.
 # The bucket name cannot be formatted as an IP address (198.51.100.24).
 
+
 s3_input_bucket:                            # s3 input bucket name, to store cQube raw input data. ( Example: cqube-prod-input )
 s3_output_bucket:                           # s3 output bucket name, to store the cQube processed output data ( Example: cqube-prod-output )
 s3_emission_bucket:                         # s3 emission bucket name, to store emitted data files (temporary storage location till data files process completes) ( Example: cqube-prod-emission )
 s3_access_key:                              # AWS Access key for creation of s3 bucket
 s3_secret_key:                              # AWS Secret key for creation of s3 bucket
 aws_default_region: 'ap-south-1'            # aws default region for creation of s3 bucket
+
+#If you have installed SSL certificate, please use `https` else use `http` in api_endpoint
 
 api_endpoint:                               # https://domain.com/api ( `http://<public_ip>:3000/api` Example: http://13.234.239.17:3000/api )
 local_ipv4_address:                         # enter the private ip of this server. To find the ip address. Use `ip addr` or `ifconfig`
