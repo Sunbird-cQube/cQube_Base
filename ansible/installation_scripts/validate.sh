@@ -1,3 +1,93 @@
+check_postgres(){
+    temp=$(psql -V > /dev/null 2>&1; echo $?)
+
+if [ $temp == 0 ]; then
+    version=`psql -V | head -n1 | cut -d" " -f3`
+    if [ $version>=10.12 ]
+    then
+	while true; do
+    	read -p "Warning - Postgres is already present in this machine. Do you want to re-install it? (yes/no) " answer
+    	case $answer in
+     	    yes )
+		    sudo apt-get --purge remove postgresql -y
+		    dpkg -l | grep postgres
+		    sudo apt-get --purge remove postgresql postgresql-doc postgresql-common -y
+		    sudo apt autoremove -y
+		    break
+		    ;;
+            no )
+	    	    tput setaf 1; echo "Please uninstall postgres and rerun the installation"; tput sgr0 ; fail=1
+		    ;;
+	    * )     ;;
+        esac
+        done
+     fi
+fi
+}
+
+check_mem_variables(){
+kb=`head -1 /proc/meminfo | awk '{ print $2 }'` #reading RAM size in kb
+mb=`echo "scale=0; $kb / 1024" | bc` # to MB    #converting RAM size to mb
+
+java_arg_2=$3
+java_arg_3=$4
+share_mem=$1 
+work_mem=$2
+if [[ $4 =~ ^-Xmx[0-9]+[m|g]$ ]]; then
+    raw_java_arg_3="$( echo "$4" | sed -e 's/^-Xmx//; s/[m|g]$//' )"
+    if [[ $4 =~ g$ ]]; then 
+        final_java_arg_3=$(($raw_java_arg_3*1024))
+    else
+        final_java_arg_3=$raw_java_arg_3
+    fi
+else
+    echo "Error - Please enter the proper value in java_arg_3"; fail=1
+fi
+
+if [[ $3 =~ ^-Xms[0-9]+[m|g]$ ]]; then
+    raw_java_arg_2="$( echo "$3" | sed -e 's/^-Xms//; s/[m|g]$//' )"
+    if [[ $3 =~ g$ ]]; then
+        final_java_arg_2=$(($raw_java_arg_2*1024))
+    else
+        final_java_arg_2=$raw_java_arg_2
+    fi
+else
+    echo "Error - Please enter the proper value in java_arg_2"; fail=1
+fi
+
+if [[ $2 =~ ^[0-9]+(GB|MB)$ ]]; then
+    raw_work_mem="$(echo $2 | sed -e 's/\(GB\|MB\)$//')"
+    if [[ $2 =~ GB$ ]]; then
+        final_work_mem=$(($raw_work_mem*1024))
+    else
+        final_work_mem=$raw_work_mem
+    fi
+else
+    echo "Error - Please enter the proper value in work_memory"; fail=1
+fi
+
+if [[ $1 =~ ^[0-9]+(GB|MB)$ ]]; then
+    raw_share_mem="$(echo $1 | sed -e 's/\(GB\|MB\)$//')"
+    if [[ $1 =~ GB$ ]]; then
+        final_share_mem=$(($raw_share_mem*1024))
+    else
+        final_share_mem=$raw_share_mem
+    fi
+else
+    echo "Error - Please enter the proper value in share_memory"; fail=1
+fi
+
+#addition of all memories
+if [[ $(($final_java_arg_2+$final_java_arg_3+$final_work_mem+$final_share_mem)) -ge $mb ]] ; then
+    echo "Error - Memory values are more than the RAM size" ; fail=1
+fi
+
+#comparing if java2 is greater than java3
+if [[ $final_java_arg_2 -ge $final_java_arg_3 ]]  ; then
+   echo "Error - java_arg_2 should be less than java_arg_3"; fail=1
+fi
+}
+
 check_sys_user(){
     who | grep $2 > /dev/null 2>&1
     result=$?
@@ -119,83 +209,6 @@ check_api_endpoint(){
     fi
 }
 
-check_mem_variables(){
-##=========================================================================
-    kb=`head -1 /proc/meminfo | awk '{ print $2 }'` #reading RAM size in kb
-    mb=`echo "scale=0; $kb / 1024" | bc` # to MB    #converting RAM size to mb
-
-java_arg_2=$1
-java_arg_3=$2
-
-java3_arg=`echo $2 | cut -c 5-` #start reading from 512m and leave the rest of it
-
-#jk3=`echo ${java3_arg: -1}` # get the last 1 characters to know if m or g
-#jk3_mem="${java3_arg::-1}"  #remove the last character and get the number only
-if [ ! "$jk3" = "m" ] || [ ! "$jk3" = "g" ] ; then
-	echo "Error - Invalid memory type $java_arg_3"; fail=1
-fi
-
-if [ $jk3 = "g" ] ; then
-   jk3_mem=$(($jk3_mem*1024))
-fi
-
-jk3_cr=`echo $java_arg_3 | cut -c1-4`
-if [[ ! $jk3_mem =~ ^[0-9]+$ ]] || [ ! $jk3_cr == "-Xmx" ] ; then
-        echo "Error - Invalid memory type $java_arg_3"; fail=1
-fi
-
-java2_arg=`echo $java_arg_2 | cut -c 5-`
-#jk2=`echo ${java2_arg: -1}`
-#jk2_mem="${java2_arg::-1}"
-
-if [ ! "$jk2" = "m" ] || [ ! "$jk2" = "g" ] ; then
-        echo "Error - Invalid memory type $java_arg_2"; fail=1
-fi
-
-if [ $jk2 = "g" ] ; then
-   jk2_mem=$(($jk2_mem*1024))
-fi
-
-jk2_cr=`echo $java_arg_2 | cut -c1-4`
-if [[ ! $jk2_mem =~ ^[0-9]+$ ]] || [ ! $jk2_cr == "-Xms" ] ; then
-        echo "Error - Invalid memory type $java_arg_2"; fail=1 
-fi
-
-work_mem=$3
-#wk=`echo ${work_mem: -2}` #get the last to characters either MB or GB
-#wk_mem="${work_mem::-2}"  #remove last 2 characters and assign the number"
-
-if [ ! "$wh" = "MB" ] || [ ! "$wk" = "GB" ] ; then
-        echo "Error - Invalid memory type $work_mem"; fail=1
-fi
-
-share_mem=$4
-#sk=`echo ${share_mem: -2}` #get the last to characters either MB or GB
-#sk_mem="${share_mem::-2}"  #remove last 2 characters and assign the number"
-
-if [ ! "$sk" = "MB" ] || [ ! "$sk" = "GB" ] ; then
-        echo "Error - Invalid memory type $share_mem"; fail=1
-fi
-
-#coversion to MB
-if [ $wk = "GB" ]; then
-	w_mem=$(($wk_mem*1024))
-fi
-
-#conversion to MB
-if [ $sk = "GB" ]; then
-        s_mem=$(($sk_mem*1024))
-fi
-
-#addition of all memories
-case $jk in
-	"m") if [ ! $(($jk_mem+$jk2_mem+$w_mem+$s_mem)) -le $mb ]; then 
-            echo "Invalid memory configuration."
-        fi
-	;;
-esac
-}
-##=========================================================================
 get_config_values(){
 key=$1
 vals[$key]=$(awk ''/^$key:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
@@ -214,9 +227,10 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "db_user" "db_name" "db_password" "emission_db_name" "nifi_port" "s3_input_bucket" "s3_output_bucket" \
-	        "s3_emission_bucket" "shared_buffers" "work_mem" "java_arg_2" "java_arg_3" "s3_access_key" "s3_secret_key" "aws_default_region" \
-		"local_ipv4_address" "api_endpoint" "db_connection_url" "db_driver_dir" "db_driver_class_name" "nifi_error_dir") 
+declare -a arr=("system_user_name" "db_user" "db_name" "db_password" "emission_db_name" "nifi_port" "s3_access_key" "s3_secret_key" \
+		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" "shared_buffers" "work_mem" "java_arg_2" "java_arg_3" \
+		"aws_default_region" "local_ipv4_address" "api_endpoint" "db_connection_url" "db_driver_dir" \
+		"db_driver_class_name" "nifi_error_dir") 
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -229,7 +243,7 @@ aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' config
 shared_buffers=$(awk ''/^shared_buffers:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 work_mem=$(awk ''/^work_mem:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 java_arg_2=$(awk ''/^java_arg_2:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-java_arg_3=$(awk ''/^java_arg_3' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+java_arg_3=$(awk ''/^java_arg_3:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}
@@ -300,6 +314,7 @@ case $key in
        if [[ $value == "" ]]; then
           echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
        else
+	  check_postgres
           check_db_naming $key $value
        fi
        ;;
@@ -364,7 +379,8 @@ case $key in
    java_arg_3)
        if [[ $value == "" ]]; then
           echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
-            #check_mem_variables $java_arg_2 $java_arg_3 $work_mem $shared_buffers 
+       else
+           check_mem_variables $shared_buffers $work_mem $java_arg_2 $java_arg_3
        fi
        ;;
     nifi_error_dir)

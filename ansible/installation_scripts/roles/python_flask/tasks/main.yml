@@ -37,6 +37,8 @@
                AWS_DEFAULT_REGION = "{{ aws_default_region }}"
 
 - name: starting flask app
-  shell: /opt/emission_server/flaskenv/bin/python server.py &
+  become: yes
+  become_user: "{{ system_user_name }}"
+  shell: /opt/emission_server/flaskenv/bin/python3 server.py &
   args:
     chdir: ../../development/python
