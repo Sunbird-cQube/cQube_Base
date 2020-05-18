@@ -45,7 +45,7 @@ Once installation completed without any errors, you will be prompted the followi
 
 <b>Uploading data to S3 Emission bucket</b>
 
-Create cqube_emission directory and place below file structure in the cqube_emission folder.
+Create `cqube_emission` directory and place the data files as shown in file structure below inside the cqube_emission folder.
 
 ```
 cqube_emission
@@ -66,11 +66,16 @@ cqube_emission
 └── users_master
     └── users.zip
 ```
-- Connect to emission database in postgres and manually add the emission user.
-- After adding the user, we need to configure the `cQube/development/python/client/config.py`
-- Update the emission username, password, and the directory where the files are placed.
-- example to set the directory path:`/home/ubuntu/cqube_emission/`
-- After completing the configuration upload the files using command `python3 client.py`
-
-- Make sure the ports 3000, 4200, 8096 and 5000 are accessible through the system firewall
-- Finally See the output in ```http://<host_name_or_ip>:4200```
+- Connect to emission database in postgres using below command.
+- Create a user in postgres emission database to give data upload access to the client.
+- After adding the user, Update below mentioned emission user details in `cQube/development/python/client/config.py`.
+  - emission username 
+  - emission password
+  - location of the cqube_emission directory where the files are placed. Example: `/home/ubuntu/cqube_emission/`
+- After completing the configuration. Save and close the file.
+- Execute the client.py file located in `cQube/development/python/client/` directory, as mentioned below to emit the data files to s3_emission bucket. 
+```
+python3 client.py
+```
+- Make sure the ports 3000, 4200 and 5000 are accessible through the system firewall
+- Finally see the output in ```http://<host_name_or_ip>:4200```
