@@ -62,6 +62,11 @@
                             }
             },
 	    {
+                "parameter":{"name":"emission_db_name",
+                        "value":""
+                            }
+            },
+	    {
 		"parameter":{"name":"db_password",
 		"sensitive": true,
 			"value":""
