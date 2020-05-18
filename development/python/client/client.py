@@ -13,6 +13,8 @@ st=time.time()
 
 file_path = file_path
 emission_url= emission_url
+if emission_url[-1]!='/':
+    emission_url+='/'
 headers = { "Content-Type" : "application/json" }
 payload = { "username": username,"password": password }
 
