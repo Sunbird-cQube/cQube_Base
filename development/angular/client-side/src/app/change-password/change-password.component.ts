@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
+declare const $;
+
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
