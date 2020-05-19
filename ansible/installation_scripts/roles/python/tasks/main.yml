@@ -1,9 +1,0 @@
-- name: Installing python3
-  apt: name=python3
-- name: Installing pip
-  apt: name=python3-pip
-- name: Installing pip3
-  apt: name=python-pip
-- pip:
-    name: boto3
-
