@@ -5,7 +5,7 @@ const crcHelper = require('./crcHelper');
 const auth = require('../../middleware/check-auth');
 const s3File = require('./s3File');
 
-router.post('/allClusterWise', async(req, res) => {
+router.post('/allClusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all cluster wise api ---');
 
@@ -33,7 +33,7 @@ router.post('/allClusterWise', async(req, res) => {
     }
 })
 
-router.post('/clusterWise/:distId/:blockId',  async(req, res) => {
+router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc cluster per block and per district api ---');
 

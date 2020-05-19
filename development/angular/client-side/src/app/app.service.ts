@@ -44,35 +44,31 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/attendance/schoolPerCluster`, { data: data, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    schoolCount() {
-        return this.http.get(`${this.baseUrl}/schoolCount`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-
     // crc new apis
     crcDistWiseData() {
-        return this.http.post(`${this.baseUrl}/crc/districtWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/crc/districtWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
     crcBlockWiseData(distId) {
-        return this.http.post(`${this.baseUrl}/crc/blockWise/${distId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/crc/blockWise/${distId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
     crcClusterWiseData(distId, blockId) {
-        return this.http.post(`${this.baseUrl}/crc/clusterWise/${distId}/${blockId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/crc/clusterWise/${distId}/${blockId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     crcSchoolWiseData(distId, blockId, clusterId) {
-        return this.http.post(`${this.baseUrl}/crc/schoolWise/${distId}/${blockId}/${clusterId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/crc/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     crcAllBlockWiseData() {
-        return this.http.post(`${this.baseUrl}/crc/allBlockWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/crc/allBlockWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     crcAllClusterWiseData() {
-        return this.http.post(`${this.baseUrl}/crc/allClusterWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/crc/allClusterWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     crcAllSchoolWiseData() {
-        return this.http.post(`${this.baseUrl}/crc/allSchoolWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/crc/allSchoolWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     // sem wise services

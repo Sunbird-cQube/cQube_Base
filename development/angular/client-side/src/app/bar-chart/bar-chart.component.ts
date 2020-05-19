@@ -134,6 +134,9 @@ export class BarChartComponent implements OnInit {
     this.fileName = "Dist_level_CRC_Report";
     this.blockHidden = true;
     this.clusterHidden = true;
+    this.crcDistrictsNames = [];
+    this.visitedSchools = 0;
+    this.notVisitedSchools = 0;
     this.myDistrict = '';
     this.errMsg();
     this.dist = false;
@@ -157,13 +160,7 @@ export class BarChartComponent implements OnInit {
       this.result = this.result.visits;
       this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
 
-      let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
-      let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
-
-      // document.getElementById('select').style.display = 'block';
-
       this.reportData = this.crcDistrictsNames = this.result;
-      this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
       for (var i = 0; i < this.result.length; i++) {
         if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
           this.schoolCount = this.schoolCount + this.result[i].totalSchools;
@@ -173,14 +170,15 @@ export class BarChartComponent implements OnInit {
         labels.push(this.result[i].districtName);
         this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
       }
+
+      this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
       this.countVisitedAndNotVisited(a);
 
       let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
       let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
       let obj = {
         xAxis: x_axis.value,
-        yAxis: y_axis.value,
-        pointBackgroundColor: colors
+        yAxis: y_axis.value
       }
 
       this.createChart(labels, this.chartData, this.tableHead, obj);
@@ -229,15 +227,12 @@ export class BarChartComponent implements OnInit {
         this.result = res;
         let a = this.result.schoolsVisitedCount
         this.result = this.result.visits;
-        let sorted = this.result.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
-        let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
         this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
 
         if (this.result.length > 0) {
           var labels = [];
           this.reportData = this.crcDistrictsNames = this.result;
-          this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
           for (var i = 0; i < this.result.length; i++) {
             if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
               this.schoolCount = this.schoolCount + this.result[i].totalSchools;
@@ -247,6 +242,7 @@ export class BarChartComponent implements OnInit {
             labels.push(this.result[i].districtName);
             this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
           }
+          this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
 
           this.countVisitedAndNotVisited(a);
 
@@ -254,8 +250,7 @@ export class BarChartComponent implements OnInit {
           let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
           let obj = {
             xAxis: x_axis.value,
-            yAxis: y_axis.value,
-            pointBackgroundColor: colors
+            yAxis: y_axis.value
           }
 
           this.createChart(labels, this.chartData, this.tableHead, obj);
@@ -359,6 +354,9 @@ export class BarChartComponent implements OnInit {
     this.clusterHidden = true;
     this.fileName = "Block_level_CRC_Report"
     this.myBlock = '';
+    this.crcBlocksNames = [];
+    this.visitedSchools = 0;
+    this.notVisitedSchools = 0;
     this.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
@@ -382,10 +380,6 @@ export class BarChartComponent implements OnInit {
       this.crcBlocksNames = result;
       let a = this.crcBlocksNames.schoolsVisitedCount
       this.reportData = this.crcBlocksNames = this.crcBlocksNames.visits;
-      this.crcBlocksNames.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
-      
-      let sorted = this.crcBlocksNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
-      let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
       if (this.result.length > 0) {
         var labels = [];
@@ -398,15 +392,14 @@ export class BarChartComponent implements OnInit {
           labels.push(this.crcBlocksNames[i].blockName);
           this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
         }
-
+        this.crcBlocksNames.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
         this.countVisitedAndNotVisited(a);
 
         let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
         let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
         let obj = {
           xAxis: x_axis.value,
-          yAxis: y_axis.value,
-          pointBackgroundColor: colors
+          yAxis: y_axis.value
         }
 
         this.createChart(labels, this.chartData, this.tableHead, obj);
@@ -461,6 +454,9 @@ export class BarChartComponent implements OnInit {
     this.blockHidden = false;
     this.fileName = "Cluster_level_CRC_Report"
     this.myCluster = '';
+    this.crcClusterNames = [];
+    this.visitedSchools = 0;
+    this.notVisitedSchools = 0;
     this.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
@@ -489,9 +485,6 @@ export class BarChartComponent implements OnInit {
       let a = this.crcClusterNames.schoolsVisitedCount
       this.crcClusterNames = this.crcClusterNames.visits;
       this.reportData = this.crcClusterNames;
-      this.crcClusterNames.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
-      let sorted = this.crcClusterNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
-      let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
       var labels = [];
       for (var i = 0; i < this.crcClusterNames.length; i++) {
@@ -503,15 +496,14 @@ export class BarChartComponent implements OnInit {
         labels.push(this.crcClusterNames[i].clusterName);
         this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
       }
-
+      this.crcClusterNames.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
       this.countVisitedAndNotVisited(a);
 
       let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
       let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
       let obj = {
         xAxis: x_axis.value,
-        yAxis: y_axis.value,
-        pointBackgroundColor: colors
+        yAxis: y_axis.value
       }
 
       this.createChart(labels, this.chartData, this.tableHead, obj);
@@ -569,6 +561,8 @@ export class BarChartComponent implements OnInit {
     this.visitCount = 0;
     this.fileName = "School_level_CRC_Report"
     this.crcSchoolNames = [];
+    this.visitedSchools = 0;
+    this.notVisitedSchools = 0;
     this.dist = false;
     this.blok = false;
     this.clust = true;
@@ -593,9 +587,6 @@ export class BarChartComponent implements OnInit {
       this.crcSchoolNames = result;
       let a = this.crcSchoolNames.schoolsVisitedCount
       this.reportData = this.crcSchoolNames = this.crcSchoolNames.visits;
-      
-      let sorted = this.crcSchoolNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
-      let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
       var labels = [];
       for (var i = 0; i < this.crcSchoolNames.length; i++) {
@@ -613,8 +604,7 @@ export class BarChartComponent implements OnInit {
       let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
       let obj = {
         xAxis: x_axis.value,
-        yAxis: y_axis.value,
-        pointBackgroundColor: colors
+        yAxis: y_axis.value
       }
 
       this.createChart(labels, this.chartData, this.tableHead, obj);
@@ -660,6 +650,8 @@ export class BarChartComponent implements OnInit {
   }
 
   countVisitedAndNotVisited(data) {
+    this.visitedSchools = 0;
+    this.notVisitedSchools = 0;
     this.visitedSchools = data.totalSchoolsVisited;
     this.notVisitedSchools = data.totalSchoolsNotVisited;
   }
@@ -777,70 +769,4 @@ export class BarChartComponent implements OnInit {
       this.myClusterData(JSON.parse(localStorage.getItem('clusterId')));
     }
   }
-
-  color() {
-    // Converts a #ffffff hex string into an [r,g,b] array
-    function hex2rgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-      ] : null;
-    }
-
-    // Inverse of the above
-    function rgb2hex(rgb) {
-      return '#' + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
-    }
-
-    // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
-    // Taken from the awesome ROT.js roguelike dev library at
-    // https://github.com/ondras/rot.js
-    function _interpolateRgb(color1, color2, factor) {
-      if (arguments.length < 3) { factor = 0.5; }
-
-      let result = color1.slice();
-
-      for (let i = 0; i < 3; i++) {
-        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
-      }
-      return result;
-    }
-
-    function generateGradient(color1, color2, total, interpolation) {
-      const colorStart = typeof color1 === 'string' ? hex2rgb(color1) : color1;
-      const colorEnd = typeof color2 === 'string' ? hex2rgb(color2) : color2;
-
-      // will the gradient be via RGB or HSL
-      switch (interpolation) {
-        case 'rgb':
-          return colorsToGradientRgb(colorStart, colorEnd, total);
-        // case 'hsl':
-        //   return colorsToGradientHsl(colorStart, colorEnd, total);
-        default:
-          return false;
-      }
-    }
-
-    function colorsToGradientRgb(startColor, endColor, steps) {
-      // returns array of hex values for color, since rgb would be an array of arrays and not strings, easier to handle hex strings
-      let arrReturnColors = [];
-      let interimColorRGB;
-      let interimColorHex;
-      const totalColors = steps;
-      const factorStep = 1 / (totalColors - 1);
-
-      for (let idx = 0; idx < totalColors; idx++) {
-        interimColorRGB = _interpolateRgb(startColor, endColor, factorStep * idx);
-        interimColorHex = rgb2hex(interimColorRGB);
-        arrReturnColors.push(interimColorHex);
-      }
-      return arrReturnColors;
-    }
-    return {
-      generateGradient
-    };
-  }
-
 }
