@@ -118,7 +118,7 @@
                             <label for="date" style="color: blue; font-family: Arial;">Enter the
                                 user_validity_start_date</label>
                             <input type="date" name="start_date" class="form-control form-control-user textbox-n"
-                                #start_date="ngModel" (change)="test()" min="{{minDate}}"
+                                #start_date="ngModel" (change)="test()" min="{{minDate}}" onkeydown="return false"
                                 [(ngModel)]="logData.start_date" required
                                 [ngClass]="{'invalid-textbox' :formData.submitted && !start_date.valid }">
                             <div *ngIf="formData.submitted && start_date?.errors">
@@ -131,6 +131,7 @@
                                 user_validity_end_date</label>
                             <input name="end_date" class="form-control form-control-user textbox-n" type="date"
                                 #end_date="ngModel" min="{{maxDate}}" [(ngModel)]="logData.end_date" required
+                                onkeydown="return false"
                                 [ngClass]="{'invalid-textbox' :formData.submitted && !end_date.valid }">
                             <div *ngIf="formData.submitted && end_date?.errors">
                                 <label *ngIf="end_date.errors.required" class="validation-message">This
