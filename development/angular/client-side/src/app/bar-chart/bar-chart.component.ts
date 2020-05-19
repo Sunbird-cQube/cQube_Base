@@ -163,6 +163,7 @@ export class BarChartComponent implements OnInit {
       // document.getElementById('select').style.display = 'block';
 
       this.reportData = this.crcDistrictsNames = this.result;
+      this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
       for (var i = 0; i < this.result.length; i++) {
         if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
           this.schoolCount = this.schoolCount + this.result[i].totalSchools;
@@ -236,6 +237,7 @@ export class BarChartComponent implements OnInit {
         if (this.result.length > 0) {
           var labels = [];
           this.reportData = this.crcDistrictsNames = this.result;
+          this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
           for (var i = 0; i < this.result.length; i++) {
             if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
               this.schoolCount = this.schoolCount + this.result[i].totalSchools;
@@ -377,10 +379,11 @@ export class BarChartComponent implements OnInit {
       console.log(result);
       $('#table').DataTable().destroy();
       $('#table').empty();
-      this.reportData = this.crcBlocksNames = result;
+      this.crcBlocksNames = result;
       let a = this.crcBlocksNames.schoolsVisitedCount
-      this.crcBlocksNames = this.crcBlocksNames.visits;
-
+      this.reportData = this.crcBlocksNames = this.crcBlocksNames.visits;
+      this.crcBlocksNames.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
+      
       let sorted = this.crcBlocksNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
       let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
@@ -486,7 +489,7 @@ export class BarChartComponent implements OnInit {
       let a = this.crcClusterNames.schoolsVisitedCount
       this.crcClusterNames = this.crcClusterNames.visits;
       this.reportData = this.crcClusterNames;
-
+      this.crcClusterNames.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
       let sorted = this.crcClusterNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
       let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 
@@ -587,10 +590,10 @@ export class BarChartComponent implements OnInit {
       $('#table').DataTable().destroy();
       $('#table').empty();
 
-      this.reportData = this.crcSchoolNames = result;
+      this.crcSchoolNames = result;
       let a = this.crcSchoolNames.schoolsVisitedCount
-      this.crcSchoolNames = this.crcSchoolNames.visits;
-
+      this.reportData = this.crcSchoolNames = this.crcSchoolNames.visits;
+      
       let sorted = this.crcSchoolNames.sort((a, b) => (a.visit_0 > b.visit_0) ? 1 : ((b.visit_0 > a.visit_0) ? -1 : 0));
       let colors = this.color().generateGradient('#7FFF00', '#FF0000', sorted.length, 'rgb');
 

@@ -441,13 +441,13 @@ export class MapViewComponent implements OnInit {
       this.lat = 22.3660414123535;
       this.lng = 71.48396301269531;
 
-      var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-        var object = previous.filter(object => object['x_axis'] === current['x_axis']);
-        if (object.length == 0) previous.push(current);
-        return previous;
-      }, []);
+      // var uniqueData = this.mylatlngData.reduce(function (previous, current) {
+      //   var object = previous.filter(object => object['x_axis'] === current['x_axis']);
+      //   if (object.length == 0) previous.push(current);
+      //   return previous;
+      // }, []);
 
-      var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+      var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
       var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;

@@ -3,14 +3,7 @@ const dist_wise_data = require('./controller/attendanceRoutes/dist_wise_data');
 const block_wise_data = require('./controller/attendanceRoutes/block_wise_data');
 const cluster_wise_data = require('./controller/attendanceRoutes/cluster_wise_data');
 const school_wise_data = require('./controller/attendanceRoutes/school_wise_data');
-const getSchoolData = require('./controller/attendanceRoutes/getSchoolData');
-const blcokPerDist = require('./controller/attendanceRoutes/blockPerDistrict');
-const clustePerBlock = require('./controller/attendanceRoutes/clusterPerBlocks');
-const schoolPerCluster = require('./controller/attendanceRoutes/schoolsPerCluster');
-const clusterPerDist = require('./controller/attendanceRoutes/clustersPerDist');
-const schoolPerDist = require('./controller/attendanceRoutes/schoolPerDist');
-const schoolPerBlock = require('./controller/attendanceRoutes/schoolPerBlock');
-const schoolCount = require('./controller/attendanceRoutes/schoolCount');
+
 const roleLogin = require('./controller/users/roleBasedLogin');
 const changePasswd = require('./controller/users/changePassword');
 const addUser = require('./controller/users/addUser');
@@ -37,19 +30,13 @@ router.use('/crc', crcBlockWise);
 router.use('/crc', crcClusterWise);
 router.use('/crc', crcSchoolWise);
 
-// router.use('/crcData', crcData);
-router.use('/dist_wise_data', dist_wise_data);
-router.use('/block_wise_data', block_wise_data);
-router.use('/cluster_wise_data', cluster_wise_data);
-router.use('/school_wise_data', school_wise_data);
-router.use('/getSchoolData', getSchoolData);
-router.use('/blcokPerDist', blcokPerDist);
-router.use('/clustePerBlock', clustePerBlock);
-router.use('/schoolPerCluster', schoolPerCluster);
-router.use('/clusterPerDist', clusterPerDist);
-router.use('/schoolPerDist', schoolPerDist);
-router.use('/schoolPerBlock', schoolPerBlock);
-router.use('/schoolCount', schoolCount);
+// attendance routes
+router.use('/attendance', dist_wise_data);
+router.use('/attendance', block_wise_data);
+router.use('/attendance', cluster_wise_data);
+router.use('/attendance', school_wise_data);
+
+// user details routes
 router.use('/roleBasedLogin', roleLogin);
 router.use('/changePassword', changePasswd);
 router.use('/addUser', addUser);

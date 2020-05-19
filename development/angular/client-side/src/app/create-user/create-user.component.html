@@ -43,15 +43,14 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group" style="margin-bottom: 35px;">
-                                    <label for="roleid" style="color: blue; font-family: Arial;">Select the role
-                                        id</label><br>
-                                    <select class="dwnld" required
+                                    <label for="roleid" style="color: blue; font-family: Arial;">Select the role</label><br>
+                                    <select class="dwnld" required 
                                         style="padding: 9px;width: 100%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 5px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
                                         #role="ngModel" [(ngModel)]="logData.roleid" name="roleid">
-                                        <option [value]="" disabled selected="selected"> select role id
+                                        <option [value]="" disabled selected> Select role
                                         </option>
-                                        <option *ngFor="let rl of roleIds, let i = index" [(ngValue)]="roleIds[i]">
-                                            {{rl}}
+                                        <option *ngFor="let rl of roleIds, let i = index" [(ngValue)]="rl.roleId">
+                                            {{rl.roleName}}
                                         </option>
                                     </select>
                                     <div *ngIf="formData.submitted && role?.errors">

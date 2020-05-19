@@ -14,48 +14,35 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/roleBasedLogin`, data);
     }
 
+    //Attendance report
     dist_wise_data(data) {
-        return this.http.post(`${this.baseUrl}/dist_wise_data`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/attendance/distWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     block_wise_data(data) {
-        return this.http.post(`${this.baseUrl}/block_wise_data`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/attendance/blockWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     cluster_wise_data(data) {
-        return this.http.post(`${this.baseUrl}/cluster_wise_data`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/attendance/clusterWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     school_wise_data(data) {
-        return this.http.post(`${this.baseUrl}/school_wise_data`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/attendance/schoolWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    // getSchoolData() {
-    //     return this.http.get(`${this.baseUrl}/getSchoolData`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    // }
 
     blockPerDist(data) {
-        return this.http.post(`${this.baseUrl}/blcokPerDist`, { data: data, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/attendance/blockPerDist`, { data: data, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     clusterPerBlock(data) {
-        return this.http.post(`${this.baseUrl}/clustePerBlock`, { data: data, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/attendance/clusterPerBlock`, { data: data, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     schoolsPerCluster(data) {
-        return this.http.post(`${this.baseUrl}/schoolPerCluster`, { data: data, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/attendance/schoolPerCluster`, { data: data, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
-
-    // clusterPerDist(distId) {
-    //     return this.http.post(`${this.baseUrl}/clusterPerDist`, { distId: distId, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    // }
-
-    // schoolPerDist(distId) {
-    //     return this.http.post(`${this.baseUrl}/schoolPerDist`, { distId: distId, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    // }
-    // schoolPerBlock(blockId) {
-    //     return this.http.post(`${this.baseUrl}/schoolPerDist`, { blockId: blockId, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    // }
 
     schoolCount() {
         return this.http.get(`${this.baseUrl}/schoolCount`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
@@ -87,8 +74,6 @@ export class AppServiceComponent {
     crcAllSchoolWiseData() {
         return this.http.post(`${this.baseUrl}/crc/allSchoolWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
-
-
 
     // sem wise services
     all_dist_sem_data() {
@@ -159,5 +144,4 @@ export class AppServiceComponent {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
-
 }

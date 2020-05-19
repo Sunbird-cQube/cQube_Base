@@ -59,7 +59,7 @@
                         <select class="dwnld"
                             style="padding: 3px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                             [(ngModel)]="downloadType" name="downloadType">
-                            <option [value]="downloadType" disabled selected="selected"> select for Download</option>
+                            <option [value]="downloadType" disabled selected="selected"> Download Report</option>
                             <option *ngFor="let md of modes, let i = index"[(ngValue)]="modes[i]">
                                 {{md}} Report
                             </option>
@@ -219,9 +219,9 @@
         <div style="margin-right: 7%;">
             <span style="float: right;">Total schools not visited: {{notVisitedSchools}}</span>
         </div>
-        <div>
+        <!-- <div>
             <span style="float: right;">Date range: {{dateRange}}</span>
-        </div>
+        </div> -->
     </div>
     <!-- <div class="loader" id="loader"></div> -->
 

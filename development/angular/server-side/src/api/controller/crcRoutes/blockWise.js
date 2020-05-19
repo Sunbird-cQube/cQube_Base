@@ -1,18 +1,19 @@
 const router = require('express').Router();
-var const_data = require('../../lib/config'); // Log Variables
 const { logger } = require('../../lib/logger');
 var groupArray = require('group-array');
 const crcHelper = require('./crcHelper');
+const auth = require('../../middleware/check-auth');
+const s3File = require('./s3File');
 
-router.post('/allBlockWise', async(req, res) => {
+router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all block wise api ---');
 
         // to store the s3 file data to variables
         let fullData = {}
         fullData = {
-            frequencyData: await frequencyData(),
-            crcMetaData: await crcMetaData()
+            frequencyData: await s3File.frequencyData(),
+            crcMetaData: await s3File.crcMetaData()
         }
 
         // crc meta data group by block id
@@ -24,23 +25,23 @@ router.post('/allBlockWise', async(req, res) => {
         let level = 'block';
 
         let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-
+        logger.info('--- crc all block wise api response sent ---');
         res.send(crcResult)
     } catch (e) {
-        console.log(e);
-        logger.error(e)
+        logger.error(`Error :: ${e}`)
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
     }
 })
 
-router.post('/blockWise/:distId', async (req, res) => {
+router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc block per district api ---');
 
         // to store the s3 file data to variables
         let fullData = {}
         fullData = {
-            frequencyData: await frequencyData(),
-            crcMetaData: await crcMetaData()
+            frequencyData: await s3File.frequencyData(),
+            crcMetaData: await s3File.crcMetaData()
         }
 
         // filter crc meta data by district id
@@ -62,50 +63,12 @@ router.post('/blockWise/:distId', async (req, res) => {
         let level = 'block';
 
         let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-
+        logger.info('--- crc block per district api response sent ---');
         res.send(crcResult)
     } catch (e) {
-        console.log(e);
-        logger.error(e)
+        logger.error(`Error :: ${e}`)
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
     }
 })
-
-frequencyData = () => {
-    return new Promise((resolve, reject) => {
-        const_data['getParams']['Key'] = 'CRC/crc_frequency_scatter.json'
-        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
-            if (err) {
-                console.log(err);
-                res.send([]);
-            } else if (!data) {
-                console.log("Something went wrong or s3 file not found");
-                res.send([]);
-            } else {
-                let crcData = data.Body.toString();
-                crcData = JSON.parse(crcData);
-                resolve(crcData)
-            }
-        });
-    })
-}
-
-crcMetaData = () => {
-    return new Promise((resolve, reject) => {
-        const_data['getParams']['Key'] = 'CRC/crc_metadata.json'
-        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
-            if (err) {
-                console.log(err);
-                res.send([]);
-            } else if (!data) {
-                console.log("Something went wrong or s3 file not found");
-                res.send([]);
-            } else {
-                let crcData = data.Body.toString();
-                crcData = JSON.parse(crcData);
-                resolve(crcData)
-            }
-        });
-    })
-}
 
 module.exports = router;
