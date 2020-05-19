@@ -1,10 +1,10 @@
 const router = require('express').Router();
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const auth = require('../../middleware/check-auth');
 
 var const_data = require('../../lib/config');
 
-router.post('/', function (req, res) {
+router.post('/', auth.authController, async function (req, res) {
     const_data['getParams']['Key'] = 'static/users.json'
     const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
         if (err) {

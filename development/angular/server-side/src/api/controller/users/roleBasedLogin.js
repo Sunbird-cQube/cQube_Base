@@ -18,7 +18,6 @@ router.post('/', function (req, res) {
             users = JSON.parse(data.Body.toString());
 
             const user = users.find(u => u.user_email === req.body.email && u.password === req.body.cnfpass);
-            // console.log(users);
             if (user) {
                 jwt.sign(user, 'secret', { expiresIn: '24h' }, (err, data) => {
                     res.status(200).json({ msg: "Logged In", token: data, role: user.role_id, user_id: user.user_id });
