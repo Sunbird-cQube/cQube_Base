@@ -1,9 +1,8 @@
 const router = require('express').Router();
 var const_data = require('../../lib/config'); // Log Variables
 const { logger } = require('../../lib/logger');
-const auth = require('../../middleware/check-auth');
 
-router.post('/districtWise', auth.authController, async (req, res) => {
+router.post('/districtWise', (req, res) => {
     try {
         logger.info('--- district wise sem api ---');
         const_data['getParams']['Key'] = 'semester/district_assesment_2.json'

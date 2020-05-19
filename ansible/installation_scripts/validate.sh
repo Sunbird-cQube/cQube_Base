@@ -44,6 +44,7 @@ java_arg_2=$3
 java_arg_3=$4
 share_mem=$1 
 work_mem=$2
+java_arg_check=0
 if [[ $4 =~ ^-Xmx[0-9]+[m|g]$ ]]; then
     raw_java_arg_3="$( echo "$4" | sed -e 's/^-Xmx//; s/[m|g]$//' )"
     if [[ $4 =~ g$ ]]; then 
@@ -53,6 +54,7 @@ if [[ $4 =~ ^-Xmx[0-9]+[m|g]$ ]]; then
     fi
 else
     echo "Error - Please enter the proper value in java_arg_3"; fail=1
+    java_arg_check=1
 fi
 
 if [[ $3 =~ ^-Xms[0-9]+[m|g]$ ]]; then
@@ -64,6 +66,7 @@ if [[ $3 =~ ^-Xms[0-9]+[m|g]$ ]]; then
     fi
 else
     echo "Error - Please enter the proper value in java_arg_2"; fail=1
+    java_arg_check=1
 fi
 
 if [[ $2 =~ ^[0-9]+(GB|MB)$ ]]; then
@@ -94,8 +97,10 @@ if [[ $(($final_java_arg_2+$final_java_arg_3+$final_work_mem+$final_share_mem)) 
 fi
 
 #comparing if java2 is greater than java3
-if [[ $final_java_arg_2 -ge $final_java_arg_3 ]]  ; then
-   echo "Error - java_arg_2 should be less than java_arg_3"; fail=1
+if [[ $java_arg_check == 0 ]]; then
+    if [[ $final_java_arg_2 -ge $final_java_arg_3 ]]  ; then
+       echo "Error - java_arg_2 should be less than java_arg_3"; fail=1
+    fi
 fi
 }
 
@@ -223,9 +228,10 @@ check_api_endpoint(){
     public_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
     if [[ ! "$ip_api" =~ ^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))$ ]]; then
         echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
-        if [[ ! $ip_api == $public_ip ]] ; then
+	else
+          if [[ ! $ip_api == $public_ip ]] ; then
             echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
-        fi
+          fi
     fi
 }
 
