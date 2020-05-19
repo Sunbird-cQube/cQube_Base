@@ -73,58 +73,58 @@ export class AppServiceComponent {
 
     // sem wise services
     all_dist_sem_data() {
-        return this.http.post(`${this.baseUrl}/sem/districtWise`, {
+        return this.http.post(`${this.baseUrl}/sem/districtWise`, {}, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') },
-            'startDate': '01-08-2019',
-            'endDate': '31-10-2019'
+            // 'startDate': '01-08-2019',
+            // 'endDate': '31-10-2019'
         });
     }
 
     all_block_sem_data() {
-        return this.http.post(`${this.baseUrl}/sem/allBlockWise`, {
+        return this.http.post(`${this.baseUrl}/sem/allBlockWise`, {}, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') },
-            'startDate': '01-08-2019',
-            'endDate': '31-10-2019'
+            // 'startDate': '01-08-2019',
+            // 'endDate': '31-10-2019'
         });
     }
 
     block_wise_sem_data(distId) {
-        return this.http.post(`${this.baseUrl}/sem/blockWise/${distId}`, {
+        return this.http.post(`${this.baseUrl}/sem/blockWise/${distId}`, {}, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') },
-            'startDate': '01-08-2019',
-            'endDate': '31-10-2019'
+            // 'startDate': '01-08-2019',
+            // 'endDate': '31-10-2019'
         });
     }
 
     all_cluster_sem_data() {
-        return this.http.post(`${this.baseUrl}/sem/allClusterWise`, {
+        return this.http.post(`${this.baseUrl}/sem/allClusterWise`, {}, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') },
-            'startDate': '01-08-2019',
-            'endDate': '31-10-2019'
+            // 'startDate': '01-08-2019',
+            // 'endDate': '31-10-2019'
         });
     }
 
     cluster_wise_sem_data(distId, blockId) {
-        return this.http.post(`${this.baseUrl}/sem/clusterWise/${distId}/${blockId}`, {
+        return this.http.post(`${this.baseUrl}/sem/clusterWise/${distId}/${blockId}`, {}, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') },
-            'startDate': '01-08-2019',
-            'endDate': '31-10-2019'
+            // 'startDate': '01-08-2019',
+            // 'endDate': '31-10-2019'
         });
     }
 
     all_school_sem_data() {
-        return this.http.post(`${this.baseUrl}/sem/allSchoolWise`, {
+        return this.http.post(`${this.baseUrl}/sem/allSchoolWise`, {}, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') },
-            'startDate': '01-08-2019',
-            'endDate': '31-10-2019'
+            // 'startDate': '01-08-2019',
+            // 'endDate': '31-10-2019'
         });
     }
 
     school_wise_sem_data(distId, blockId, clusterId) {
-        return this.http.post(`${this.baseUrl}/sem/schoolWise/${distId}/${blockId}/${clusterId}`, {
+        return this.http.post(`${this.baseUrl}/sem/schoolWise/${distId}/${blockId}/${clusterId}`, {}, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') },
-            'startDate': '01-08-2019',
-            'endDate': '31-10-2019'
+            // 'startDate': '01-08-2019',
+            // 'endDate': '31-10-2019'
         });
     }
 

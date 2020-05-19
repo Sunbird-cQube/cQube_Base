@@ -22,7 +22,32 @@
                                     field is required</label>
                             </div>
                         </div>
+                        <div class="form-group" style="margin-bottom: 35px;">
+                            <label for="middlename" style="color: blue; font-family: Arial;">Enter your middle
+                                name</label>
+                            <input type="text" #middlename="ngModel" [(ngModel)]="logData.middlename"
+                                class="form-control form-control-user" name="middlename"
+                                [ngClass]="{'invalid-textbox' :formData.submitted && !middlename.valid }">
+                            <div *ngIf="formData.submitted && middlename?.errors">
+                                <!-- <label *ngIf="middlename.errors.required" class="validation-message">This
+                                    field is required</label> -->
+                            </div>
+                        </div>
 
+                        <div class="form-group" style="margin-bottom: 35px;">
+                            <label for="lastname" style="color: blue; font-family: Arial;">Enter your last name</label>
+
+                            <input type="text" #lastname="ngModel" [(ngModel)]="logData.lastname"
+                                class="form-control form-control-user" name="lastname"
+                                [ngClass]="{'invalid-textbox' :formData.submitted && !lastname.valid }">
+                            <div *ngIf="formData.submitted && lastname?.errors">
+                                <!-- <label *ngIf="lastname.errors.required" class="validation-message">This
+                                    field is required</label> -->
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-4">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group" style="margin-bottom: 35px;">
@@ -43,11 +68,12 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group" style="margin-bottom: 35px;">
-                                    <label for="roleid" style="color: blue; font-family: Arial;">Select the role</label><br>
-                                    <select class="dwnld" required 
+                                    <label for="roleid" style="color: blue; font-family: Arial;">Select the
+                                        role</label><br>
+                                    <select class="dwnld" required
                                         style="padding: 9px;width: 100%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 5px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
                                         #role="ngModel" [(ngModel)]="logData.roleid" name="roleid">
-                                        <option [value]="" disabled selected> Select role
+                                        <option [value]="logData.roleid" disabled selected> Select role
                                         </option>
                                         <option *ngFor="let rl of roleIds, let i = index" [(ngValue)]="rl.roleId">
                                             {{rl.roleName}}
@@ -58,32 +84,6 @@
                                             field is required</label>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="margin-bottom: 35px;">
-                            <label for="date" style="color: blue; font-family: Arial;">Enter the
-                                user_validity_start_date</label>
-                            <input type="date" name="start_date" class="form-control form-control-user textbox-n"
-                                #start_date="ngModel" (change)="test()" min="{{minDate}}"
-                                [(ngModel)]="logData.start_date" required
-                                [ngClass]="{'invalid-textbox' :formData.submitted && !start_date.valid }">
-                            <div *ngIf="formData.submitted && start_date?.errors">
-                                <label *ngIf="start_date.errors.required" class="validation-message">This
-                                    field is required</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group" style="margin-bottom: 35px;">
-                            <label for="middlename" style="color: blue; font-family: Arial;">Enter your middle
-                                name</label>
-                            <input type="text" #middlename="ngModel" [(ngModel)]="logData.middlename"
-                                class="form-control form-control-user" name="middlename"
-                                [ngClass]="{'invalid-textbox' :formData.submitted && !middlename.valid }">
-                            <div *ngIf="formData.submitted && middlename?.errors">
-                                <!-- <label *ngIf="middlename.errors.required" class="validation-message">This
-                                    field is required</label> -->
                             </div>
                         </div>
                         <div class="form-group" style="margin-bottom: 35px;">
@@ -101,30 +101,6 @@
                         </div>
 
                         <div class="form-group" style="margin-bottom: 35px;">
-                            <label for="date" style="color: blue; font-family: Arial;">Enter the
-                                user_validity_end_date</label>
-                            <input name="end_date" class="form-control form-control-user textbox-n" type="date"
-                                #end_date="ngModel" min="{{maxDate}}" [(ngModel)]="logData.end_date" required
-                                [ngClass]="{'invalid-textbox' :formData.submitted && !end_date.valid }">
-                            <div *ngIf="formData.submitted && end_date?.errors">
-                                <label *ngIf="end_date.errors.required" class="validation-message">This
-                                    field is required</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group" style="margin-bottom: 35px;">
-                            <label for="lastname" style="color: blue; font-family: Arial;">Enter your last name</label>
-
-                            <input type="text" #lastname="ngModel" [(ngModel)]="logData.lastname"
-                                class="form-control form-control-user" name="lastname"
-                                [ngClass]="{'invalid-textbox' :formData.submitted && !lastname.valid }">
-                            <div *ngIf="formData.submitted && lastname?.errors">
-                                <!-- <label *ngIf="lastname.errors.required" class="validation-message">This
-                                    field is required</label> -->
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin-bottom: 35px;">
                             <label for="Designation" style="color: blue; font-family: Arial;">Enter the user
                                 Designation</label>
 
@@ -136,6 +112,32 @@
                                     field is required</label>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group" style="margin-bottom: 35px;">
+                            <label for="date" style="color: blue; font-family: Arial;">Enter the
+                                user_validity_start_date</label>
+                            <input type="date" name="start_date" class="form-control form-control-user textbox-n"
+                                #start_date="ngModel" (change)="test()" min="{{minDate}}"
+                                [(ngModel)]="logData.start_date" required
+                                [ngClass]="{'invalid-textbox' :formData.submitted && !start_date.valid }">
+                            <div *ngIf="formData.submitted && start_date?.errors">
+                                <label *ngIf="start_date.errors.required" class="validation-message">This
+                                    field is required</label>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 35px;">
+                            <label for="date" style="color: blue; font-family: Arial;">Enter the
+                                user_validity_end_date</label>
+                            <input name="end_date" class="form-control form-control-user textbox-n" type="date"
+                                #end_date="ngModel" min="{{maxDate}}" [(ngModel)]="logData.end_date" required
+                                [ngClass]="{'invalid-textbox' :formData.submitted && !end_date.valid }">
+                            <div *ngIf="formData.submitted && end_date?.errors">
+                                <label *ngIf="end_date.errors.required" class="validation-message">This
+                                    field is required</label>
+                            </div>
+                        </div>
+
 
                         <div class="form-group" style="margin-bottom: 35px;">
                             <label for="password" style="color: blue; font-family: Arial;">Password</label>
