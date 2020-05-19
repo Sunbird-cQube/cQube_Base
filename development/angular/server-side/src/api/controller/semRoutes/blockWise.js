@@ -1,8 +1,9 @@
 const router = require('express').Router();
 var const_data = require('../../lib/config'); // Log Variables
 const { logger } = require('../../lib/logger');
+const auth = require('../../middleware/check-auth');
 
-router.post('/allBlockWise', (req, res) => {
+router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         var filterData = ''
         logger.info('--- all blocks sem api ---');
@@ -83,7 +84,7 @@ router.post('/allBlockWise', (req, res) => {
     }
 })
 
-router.post('/blockWise/:distId', (req, res) => {
+router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         var filterData = '';
         logger.info('--- block wise attendance api ---');
