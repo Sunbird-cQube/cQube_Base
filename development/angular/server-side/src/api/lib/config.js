@@ -13,7 +13,7 @@ const Config = {
     fileLogLevel: process.env.FILE_LOG_LEVEL || DEFAULT_LOG_LEVEL,
     consoleLogLevel: process.env.CONSOLE_LOG_LEVEL || DEFAULT_LOG_LEVEL,
     // envName: (() => {
-    //     switch (process.env.NODE_ENV.toUpperCase()) {
+    //     switch (process.env.NODE_ENV) {
     //         case 'DEVELOPMENT':
     //             return 'DEV';
     //         case 'PRODUCTION':
@@ -33,7 +33,6 @@ var s3 = new aws.S3({ 'accessKeyId': accessKeyId, 'secretAccessKey': secretAcces
 var getParams = {
     Bucket: bucketName, //replace example bucket with your s3 bucket name
     Key: '', // replace file location with your s3 file location
-    // Body: ''
 };
 
 module.exports = {
