@@ -1,14 +1,13 @@
 const router = require('express').Router();
 var const_data = require('../../lib/config'); // Log Variables
 const { logger } = require('../../lib/logger');
-const auth = require('../../middleware/check-auth');
 
-router.post('/allClusterWise', auth.authController, async (req, res) => {
+router.post('/allClusterWise', (req, res) => {
     try {
         var filterData = ''
         logger.info('--- all cluster wise attendance api ---');
         const_data['getParams']['Key'] = 'semester/cluster_assesment_2.json'
-        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
+        const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
             if (err) {
                 console.log(err);
                 res.send([]);
@@ -33,7 +32,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 let totalSchools = clusterData.reduce((prev, next) => prev + next.total_schools, 0);
 
                 // map and extract required  values to show in the leaflet-map
-                var blockDetails = clusterData.map(function (item) {
+                var blockDetails = clusterData.map(function(item) {
                     let obj = {
                         districtId: item['district_id'],
                         districtName: item['district_name'],
@@ -86,12 +85,12 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
 })
 
 
-router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
+router.post('/clusterWise/:distId/:blockId', (req, res) => {
     try {
         var filterData = ''
         logger.info('--- cluster wise attendance api ---');
         const_data['getParams']['Key'] = 'semester/cluster_assesment_2.json'
-        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
+        const_data['s3'].getObject(const_data['getParams'], async function(err, data) {
             if (err) {
                 console.log(err);
                 res.send([]);
@@ -123,7 +122,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                 let totalSchools = filterData.reduce((prev, next) => prev + next.total_schools, 0);
 
                 // map and extract required  values to show in the leaflet-map
-                var blockDetails = filterData.map(function (item) {
+                var blockDetails = filterData.map(function(item) {
                     let obj = {
                         districtId: item['district_id'],
                         districtName: item['district_name'],
