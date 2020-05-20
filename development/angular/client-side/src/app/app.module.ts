@@ -23,6 +23,7 @@ import { MatPaginatorModule, MatSortModule } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
     BarChartComponent,
     ChangePasswordComponent,
     CreateUserComponent,
+    ComingSoonComponent,
   ],
   imports: [
     BrowserModule,
