@@ -156,6 +156,7 @@ export class BarChartComponent implements OnInit {
       this.chartData = [];
       var labels = [];
       this.result = JSON.parse(localStorage.getItem('resData'));
+      console.log(this.result);
       let a = this.result.schoolsVisitedCount
       this.result = this.result.visits;
       this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
@@ -254,7 +255,7 @@ export class BarChartComponent implements OnInit {
           }
 
           this.createChart(labels, this.chartData, this.tableHead, obj);
-
+          console.log(this.result);
           this.tableData = this.result;
           this.dtOptions = {
             data: this.tableData,

@@ -16,6 +16,7 @@ var globalMap;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapViewComponent implements OnInit {
+  public disabled = false;
   public title: string = '';
   public titleName: string = '';
   public districts: any = [];
@@ -125,7 +126,9 @@ export class MapViewComponent implements OnInit {
   loaderAndErr() {
     if (this.markers.length !== 0) {
       document.getElementById('spinner').style.display = 'none';
+      this.disabled = true;
     } else {
+      this.disabled = false;
       document.getElementById('spinner').style.display = 'none';
       document.getElementById('errMsg').style.color = 'red';
       document.getElementById('errMsg').style.display = 'block';
@@ -195,16 +198,18 @@ export class MapViewComponent implements OnInit {
   getYear() {
     this.element.disabled = false;
   }
-
-  districtWise() {
+  public myData;
+  async districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
     var month = this.months.find(a => a.id === this.month);
     this.fileName = `District_wise_report_${month.name}_${this.year}`;
 
-    this.service.dist_wise_data(this.month_year).subscribe(res => {
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
       this.mylatlngData = res;
-
       var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1);
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
@@ -215,8 +220,12 @@ export class MapViewComponent implements OnInit {
       this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
 
       var distNames = [];
-      for (var i = 0; i < sorted.length; i++) {
 
+      this.markers = [];
+      this.studentCount = 0;
+      this.schoolCount = 0;
+
+      for (var i = 0; i < sorted.length; i++) {
         this.districtsIds.push(sorted[i]['x_axis']);
         distNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['district_name'] });
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
@@ -232,8 +241,8 @@ export class MapViewComponent implements OnInit {
             schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             blok: this.blok,
           });
-        var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
 
+        var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
         globalMap.setZoom(7.4);
         markerIcon.addTo(globalMap).bindPopup(
           "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
@@ -243,15 +252,14 @@ export class MapViewComponent implements OnInit {
         );
         this.popups(markerIcon, this.markers[i]);
       }
-
+      console.log(this.markers);
       distNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
       this.districtsNames = distNames;
 
       globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      var stdSch: any = { schCount: this.schoolCount, stdCount: this.studentCount }
-      localStorage.setItem('schStd', JSON.stringify(stdSch));
+
       this.markers.forEach(dist => {
         var obj = {
           DistrictId: dist.id,
@@ -264,7 +272,7 @@ export class MapViewComponent implements OnInit {
       });
       this.loaderAndErr();
       this.changeDetection.markForCheck();
-    })
+    });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'none';
 
@@ -276,7 +284,10 @@ export class MapViewComponent implements OnInit {
     var month = this.months.find(a => a.id === this.month);
     this.fileName = `Block_wise_report_${month.name}_${this.year}`
 
-    this.service.block_wise_data(this.month_year).subscribe(res => {
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
       this.mylatlngData = res;
 
 
@@ -286,6 +297,11 @@ export class MapViewComponent implements OnInit {
       var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
       this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
       var blockNames = [];
+
+      this.markers = [];
+      this.studentCount = 0;
+      this.schoolCount = 0;
+
       for (var i = 0; i < sorted.length; i++) {
         this.blocksIds.push(sorted[i]['x_axis']);
         blockNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'], distId: sorted[i]['district_id'] });
@@ -352,7 +368,10 @@ export class MapViewComponent implements OnInit {
     var month = this.months.find(a => a.id === this.month);
     this.fileName = `School_wise_report_${month.name}_${this.year}`
 
-    this.service.school_wise_data(this.month_year).subscribe(res => {
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
       this.mylatlngData = res;
       this.lat = 22.3660414123535;
       this.lng = 71.48396301269531;
@@ -362,6 +381,10 @@ export class MapViewComponent implements OnInit {
       this.colors = colors;
       var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
       this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
+
+      this.markers = [];
+      this.studentCount = 0;
+      this.schoolCount = 0;
 
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
@@ -436,17 +459,15 @@ export class MapViewComponent implements OnInit {
     var month = this.months.find(a => a.id === this.month);
     this.fileName = `Cluster_wise_report_${month.name}_${this.year}`
 
-    this.service.cluster_wise_data(this.month_year).subscribe(res => {
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.cluster_wise_data(this.month_year).subscribe(res => {
       this.mylatlngData = res;
       this.lat = 22.3660414123535;
       this.lng = 71.48396301269531;
 
-      // var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-      //   var object = previous.filter(object => object['x_axis'] === current['x_axis']);
-      //   if (object.length == 0) previous.push(current);
-      //   return previous;
-      // }, []);
-
+      this.markers = [];
       var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       this.colors = colors;
@@ -454,6 +475,11 @@ export class MapViewComponent implements OnInit {
       this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
       var clustNames = [];
       var blockNames = [];
+
+      this.markers = [];
+      this.studentCount = 0;
+      this.schoolCount = 0;
+
       for (var i = 0; i < sorted.length; i++) {
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
@@ -526,9 +552,9 @@ export class MapViewComponent implements OnInit {
   commonAtStateLevel() {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.markers = [];
     this.errMsg();
     this.reportData = [];
+    this.markers = [];
     this.studentCount = 0;
     this.schoolCount = 0;
     this.blockHidden = true;
@@ -645,7 +671,10 @@ export class MapViewComponent implements OnInit {
 
     this.month_year['id'] = data;
 
-    this.service.blockPerDist(this.month_year).subscribe(res => {
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
       this.mylatlngData = res;
 
       this.lat = Number(this.mylatlngData[0]['y_value']);
@@ -658,6 +687,10 @@ export class MapViewComponent implements OnInit {
       this.colors = colors;
       var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
       this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
+      this.markers = [];
+      this.studentCount = 0;
+      this.schoolCount = 0;
+
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
@@ -756,8 +789,11 @@ export class MapViewComponent implements OnInit {
     this.myCluster = null;
 
     console.log(this.myDistrict);
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
     this.month_year['id'] = data;
-    this.service.clusterPerBlock(this.month_year).subscribe(res => {
+    this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
       this.mylatlngData = res;
       if (this.mylatlngData[0]['y_value'] !== 0 && this.mylatlngData[0]['z_value']) {
         this.lat = Number(this.mylatlngData[0]['y_value']);
@@ -776,6 +812,10 @@ export class MapViewComponent implements OnInit {
       this.colors = colors;
       var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
       this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
+
+      this.markers = [];
+      this.studentCount = 0;
+      this.schoolCount = 0;
 
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
@@ -906,8 +946,12 @@ export class MapViewComponent implements OnInit {
     this.myBlock = blockId;
     this.myDistrict = Number(localStorage.getItem('distId'));
 
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+
     this.month_year['id'] = data;
-    this.service.schoolsPerCluster(this.month_year).subscribe(res => {
+    this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
 
       this.mylatlngData = res;
       this.lat = Number(this.mylatlngData[0]['y_value']);
@@ -925,6 +969,11 @@ export class MapViewComponent implements OnInit {
       this.colors = colors;
       var noOfdays = new Date(this.month_year.year, this.month_year.month, 0).getDate();;
       this.dateRange = `01-${this.month_year.month}-${this.month_year.year}` + " to " + `${noOfdays}-${this.month_year.month}-${this.month_year.year}`;
+
+      this.markers = [];
+      this.studentCount = 0;
+      this.schoolCount = 0;
+
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
