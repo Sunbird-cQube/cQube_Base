@@ -97,7 +97,7 @@ export class BarChartComponent implements OnInit {
     { key: "totalSchools", value: "Total schools" }
   ]
 
-
+  myData;
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -156,7 +156,7 @@ export class BarChartComponent implements OnInit {
       this.chartData = [];
       var labels = [];
       this.result = JSON.parse(localStorage.getItem('resData'));
-      console.log(this.result);
+      // console.log(this.result);
       let a = this.result.schoolsVisitedCount
       this.result = this.result.visits;
       this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
@@ -221,10 +221,14 @@ export class BarChartComponent implements OnInit {
       this.schoolCount = 0;
       this.visitCount = 0;
       this.chartData = []
-      this.service.crcDistWiseData().subscribe(res => {
+
+      if (this.myData) {
+        this.myData.unsubscribe();
+      }
+      this.myData = this.service.crcDistWiseData().subscribe(res => {
 
         localStorage.setItem('resData', JSON.stringify(res));
-        console.log(res);
+        // console.log(res);
         this.result = res;
         let a = this.result.schoolsVisitedCount
         this.result = this.result.visits;
@@ -255,7 +259,7 @@ export class BarChartComponent implements OnInit {
           }
 
           this.createChart(labels, this.chartData, this.tableHead, obj);
-          console.log(this.result);
+          // console.log(this.result);
           this.tableData = this.result;
           this.dtOptions = {
             data: this.tableData,
@@ -300,7 +304,10 @@ export class BarChartComponent implements OnInit {
     var element1: any = document.getElementsByClassName('dwnld');
     element1[0].disabled = true;
     this.fileName = "Block_level_CRC_Report";
-    this.service.crcAllBlockWiseData().subscribe(res => {
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.crcAllBlockWiseData().subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -317,7 +324,10 @@ export class BarChartComponent implements OnInit {
     var element1: any = document.getElementsByClassName('dwnld');
     element1[0].disabled = true;
     this.fileName = "Cluster_level_CRC_Report";
-    this.service.crcAllClusterWiseData().subscribe(res => {
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.crcAllClusterWiseData().subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -334,7 +344,10 @@ export class BarChartComponent implements OnInit {
     var element1: any = document.getElementsByClassName('dwnld');
     element1[0].disabled = true;
     this.fileName = "School_level_CRC_Report";
-    this.service.crcAllSchoolWiseData().subscribe(res => {
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.crcAllSchoolWiseData().subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -374,8 +387,11 @@ export class BarChartComponent implements OnInit {
     localStorage.setItem('dist', obj.name);
     localStorage.setItem('distId', data);
 
-    this.service.crcBlockWiseData(data).subscribe((result: any) => {
-      console.log(result);
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.crcBlockWiseData(data).subscribe((result: any) => {
+
       $('#table').DataTable().destroy();
       $('#table').empty();
       this.crcBlocksNames = result;
@@ -404,7 +420,7 @@ export class BarChartComponent implements OnInit {
         }
 
         this.createChart(labels, this.chartData, this.tableHead, obj);
-        console.log(this.crcBlocksNames);
+        // console.log(this.crcBlocksNames);
         this.tableData = this.crcBlocksNames;
         this.dtOptions = {
           data: this.tableData,
@@ -477,7 +493,10 @@ export class BarChartComponent implements OnInit {
     localStorage.setItem('block', JSON.stringify(obj.name));
     this.hierName = obj.name;
 
-    this.service.crcClusterWiseData(JSON.parse(localStorage.getItem('distId')), data).subscribe((result: any) => {
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.crcClusterWiseData(JSON.parse(localStorage.getItem('distId')), data).subscribe((result: any) => {
 
       $('#table').DataTable().destroy();
       $('#table').empty();
@@ -508,7 +527,7 @@ export class BarChartComponent implements OnInit {
       }
 
       this.createChart(labels, this.chartData, this.tableHead, obj);
-      console.log(this.crcClusterNames);
+      // console.log(this.crcClusterNames);
       this.tableData = this.crcClusterNames;
       this.dtOptions = {
         data: this.tableData,
@@ -581,7 +600,10 @@ export class BarChartComponent implements OnInit {
     this.hierName = obj.name;
     localStorage.setItem('clusterId', data);
 
-    this.service.crcSchoolWiseData(distId, blockId, data).subscribe(async (result: any) => {
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.crcSchoolWiseData(distId, blockId, data).subscribe(async (result: any) => {
       $('#table').DataTable().destroy();
       $('#table').empty();
 
