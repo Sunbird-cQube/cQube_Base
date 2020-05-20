@@ -1,51 +1,79 @@
-<h1>Installation of CQube</h1>
-<h3>For Ubuntu Linux</h3>
+<h1>cQube</h1>
 
+<b>Prerequisites:</b>
+- ubuntu 18.04 (recommended)
+- 16GB of System RAM
+- 4 core CPU
+
+<b>Installation:</b>
 - Open Terminal
-- Navigate to the directory where CQube has been downloaded or cloned 
+- Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
 ```
-- Fill the configuration details in ` vars/main.yml` ( AWS Secret Key & Access Key )
+- Copy the config.yml.template to config.yml 
+`cp config.yml.template config.yml`
+- This script installs the cQube components in a sequence as mentioned below:
+  - Installs Ansible
+  - Installs Openjdk
+  - Installs Python, pip and flask
+  - Creates S3 buckets
+  - Installs Postgresql
+  - Installs NodeJS
+  - Installs Angular and Chart JS
+  - Installs Apache Nifi
+- Fill the configuration details for above mentioned list in `config.yml` (* all values are mandatory)
+- Edit using `nano config.yml`
+- Save and Close the file
 - Give the permission to install.sh file
 ```
 chmod u+x install.sh
 ```
-- Run the install.sh shell script file using sudo command
+- Install cQube using the non-root user with sudo privilege
+- Start the installation by running install.sh shell script file as mentioned below
 ```
 sudo ./install.sh
 ```
-This script sets up the infra in a sequence as mentioned below:
-  - Installs Ansible
-  - Installs Openjdk
-  - Installs Python3 and Pip
-  - Installs Apache Nifi
-  - Creates S3 buckets
-  - Installs and configures SFTP
-  - Installs Postgresql
-  - Installs Node.js and Express framework
+Configuration filled in `config.yml` will be validated first. If there is any error while validation, the installation will be aborted. In such case, solve the errors and restart the installation `sudo  ./insatll.sh`
 
-Once installation completed without any errors, you will see the following message. 
+Once installation completed without any errors, you will be prompted the following message. 
 ```CQube installed successfully!!``` 
 
 
 <b>Post Installation </b>
 
-<b>Uploading data to SFTP location</b>
+<b>Uploading data to S3 Emission bucket</b>
 
-- In terminal, login as root by entering ```sudo su```
-- Then ```cat /home/<username>/.ssh/id_rsa```
-- Copy id_rsa to (local) machine where you have the data files to be uploaded
-- Give the 400 permission to id_rsa file using ```chmod 400 id_rsa```
-- Connect to sftp using ```sftp -i id_rsa <username>@<host_name_or_ip>```
-- Put the data files into respective sftp directories as mentioned below
+Create `cqube_emission` directory and place the data files as shown in file structure below inside the cqube_emission folder.
+
 ```
-school_master_lat_long.json   ->   /cqube/data/s3_school_latlong
-school_geo_master.csv   ->   /cqube/data/lat_long
-student_attendance_sample.csv   ->   /cqube/data/emits
+cqube_emission
+.
+├── roles_master
+│   └── roles.zip
+├── static
+│   ├── block_master
+│   │   └── block_mst.zip
+│   ├── cluster_master
+│   │   └── cluster_mst.zip
+│   ├── district_master
+│   │   └── district_mst.zip
+│   └── school_master
+│       └── school_mst.zip
+├── student_attendance
+│   └── StudentAttenadance_8.zip
+└── users_master
+    └── users.zip
 ```
-- Allow the ports 3000 and 4200 in firewall
-- See the output in ```http://<host_name_or_ip>:4200```
-
-
-
+- Login to the cQube dashboard and create emission user
+- After adding the user, Update below mentioned emission user details in `cQube/development/python/client/config.py`.
+  - emission username 
+  - emission password
+  - location of the cqube_emission directory where the files are placed. Example: `/home/ubuntu/cqube_emission/`
+- After completing the configuration. Save and close the file.
+- Execute the client.py file located in `cQube/development/python/client/` directory, as mentioned below to emit the data files to s3_emission bucket. 
+```
+python3 client.py
+```
+- Make sure the ports 3000, 4200 and 5000 are accessible through the system firewall
+- Finally see the output in ```http://<host_name_or_ip>:4200```
