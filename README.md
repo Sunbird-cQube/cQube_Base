@@ -66,8 +66,7 @@ cqube_emission
 └── users_master
     └── users.zip
 ```
-- Connect to emission database in postgres using below command.
-- Create a user in postgres emission database to give data upload access to the client.
+- Login to the cQube dashboard and create emission user
 - After adding the user, Update below mentioned emission user details in `cQube/development/python/client/config.py`.
   - emission username 
   - emission password

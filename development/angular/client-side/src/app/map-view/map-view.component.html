@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-8" aria-disabled="disabled">
             <div *ngIf='skul'>
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Attendance report for: <span (click)="districtWise()"
@@ -9,9 +9,10 @@
             <div *ngIf='dist'>
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Attendance report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
-                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
-                        {{hierName}}</span> </p>
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span>
+                    <span (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{hierName}}</span>
+                </p>
             </div>
             <div *ngIf="blok">
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
@@ -26,8 +27,8 @@
             <div *ngIf="clust">
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Attendance report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
-                        (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span>
+                    <span (click)="clickedMarker(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span (click)="clickedMarker(blockName)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{title}}</span><span>/ </span><span>

@@ -15,7 +15,9 @@ var globalMap;
   styleUrls: ['./sem-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SemViewComponent implements OnInit {
+export class SemViewComponent {
+// implements OnInit {
+  /*
   public title: string = '';
   public titleName: string = '';
   public colors: any;
@@ -782,5 +784,5 @@ export class SemViewComponent implements OnInit {
       generateGradient
     };
   }
-
+*/
 }
