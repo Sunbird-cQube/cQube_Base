@@ -252,7 +252,7 @@ export class MapViewComponent implements OnInit {
         );
         this.popups(markerIcon, this.markers[i]);
       }
-      console.log(this.markers);
+
       distNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
       this.districtsNames = distNames;
 
@@ -577,7 +577,6 @@ export class MapViewComponent implements OnInit {
 
 
   clickedMarker(label) {
-    // console.log(label);
     if (this.districtsIds.includes(label.id)) {
       localStorage.setItem('dist', label.name);
       localStorage.setItem('distId', label.id);
@@ -764,19 +763,17 @@ export class MapViewComponent implements OnInit {
     var month = this.months.find(a => a.id === this.month);
     this.fileName = `Cluster_per_block_report_${month.name}_${this.year}`;
     var blockNames = [];
-    console.log(Number(localStorage.getItem('distId')));
     this.blocksNames.forEach(item => {
       if (item.distId && item.distId === Number(localStorage.getItem('distId'))) {
         blockNames.push(item);
       }
     });
     // console.log(data);
-    console.log(blockNames);
+    // console.log(blockNames);
     if (blockNames.length > 1) {
       this.blocksNames = blockNames;
     }
     let obj = this.blocksNames.find(o => o.id == data);
-    console.log(obj);
     localStorage.setItem('block', obj.name);
     localStorage.setItem('blockId', data);
     this.titleName = localStorage.getItem('dist');
@@ -788,7 +785,6 @@ export class MapViewComponent implements OnInit {
     this.myDistrict = Number(localStorage.getItem('distId'));
     this.myCluster = null;
 
-    console.log(this.myDistrict);
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -816,7 +812,7 @@ export class MapViewComponent implements OnInit {
       this.markers = [];
       this.studentCount = 0;
       this.schoolCount = 0;
-
+      // sorted.pop();
       for (var i = 0; i < sorted.length; i++) {
         this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
         this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
@@ -850,7 +846,8 @@ export class MapViewComponent implements OnInit {
         this.popups(markerIcon, this.markers[i]);
 
       };
-
+      console.log(this.markers);
+      console.log(this.markers.length);
       clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
       this.clusterNames = clustNames;
 

@@ -106,7 +106,7 @@ export class BarChartComponent implements OnInit {
   }
 
   loaderAndErr() {
-    if (this.scatterChart !== null) {
+    if (this.chartData.length !== 0) {
       document.getElementById('spinner').style.display = 'none';
     } else {
       document.getElementById('spinner').style.display = 'none';
@@ -121,10 +121,12 @@ export class BarChartComponent implements OnInit {
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('spinner').style.marginTop = '3%';
   }
+
   public tableHead: any;
   public chartData: any = [];
   public modes: any
-  districtWise() {
+
+  async districtWise() {
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
       $('#table').empty();
@@ -182,8 +184,7 @@ export class BarChartComponent implements OnInit {
         yAxis: y_axis.value
       }
 
-      this.createChart(labels, this.chartData, this.tableHead, obj);
-      this.loaderAndErr();
+      await this.createChart(labels, this.chartData, this.tableHead, obj);
 
       this.tableData = this.result;
       this.dtOptions = {
@@ -216,6 +217,7 @@ export class BarChartComponent implements OnInit {
       };
       this.dataTable = $(this.table.nativeElement);
       this.dataTable.DataTable(this.dtOptions);
+      await this.loaderAndErr();
       this.changeDetection.markForCheck();
     } else {
       this.schoolCount = 0;
