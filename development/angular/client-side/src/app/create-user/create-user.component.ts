@@ -26,6 +26,17 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dateCheck();
+  }
+
+  dateCheck() {
+    if (this.logData.start_date === undefined) {
+      var element = <HTMLFormElement>document.getElementById('endDate');
+      element.disabled = true;
+    } else {
+      var element = <HTMLFormElement>document.getElementById('endDate');
+      element.disabled = false;
+    }
   }
 
   test() {
