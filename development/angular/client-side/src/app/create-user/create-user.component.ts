@@ -15,6 +15,7 @@ export class CreateUserComponent implements OnInit {
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   minValidate;
+  maxValidate;
   today = new Date();
 
   minDate = `${this.today.getFullYear()}-${("0" + (this.today.getMonth() + 1)).slice(-2)}-${("0" + (this.today.getDate())).slice(-2)}`
@@ -36,6 +37,7 @@ export class CreateUserComponent implements OnInit {
     } else {
       var element = <HTMLFormElement>document.getElementById('endDate');
       element.disabled = false;
+      this.minValidate = (this.minDate > this.logData.start_date);
     }
   }
 
@@ -46,22 +48,22 @@ export class CreateUserComponent implements OnInit {
   }
 
   onSubmit() {
-    this.logData['createrId'] = localStorage.getItem('user_id');
-    this.service.addUser(this.logData).subscribe(res => {
-      if (res['msg'] === "User Added") {
-        document.getElementById('success').style.display = "Block";
-        this.msg = res['msg'];
-        this.err = '';
-        this.minValidate = (this.minDate < this.logData.start_date);
-        setTimeout(() => {
-          this.router.navigate(['home/map-view']);
-        }, 2000);
-      }
-      if (res['msg'] === "User already exist") {
-        this.err = res['msg'];
-      }
-    })
-
+    if (!this.minValidate) {
+      this.logData['createrId'] = localStorage.getItem('user_id');
+      this.service.addUser(this.logData).subscribe(res => {
+        if (res['msg'] === "User Added") {
+          document.getElementById('success').style.display = "Block";
+          this.msg = res['msg'];
+          this.err = '';
+          setTimeout(() => {
+            this.router.navigate(['home/map-view']);
+          }, 2000);
+        }
+        if (res['msg'] === "User already exist") {
+          this.err = res['msg'];
+        }
+      });
+    }
   }
 
 }

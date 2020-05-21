@@ -124,8 +124,8 @@
                             <div *ngIf="formData.submitted && start_date?.errors">
                                 <label *ngIf="start_date.errors.required" class="validation-message">This
                                     field is required</label>
-                                <label *ngIf="minValidate" class="validation-message">Invalid date</label>
                             </div>
+                            <label *ngIf="minValidate" class="validation-message">Invalid date</label>
                         </div>
                         <div class="form-group" style="margin-bottom: 35px;">
                             <label for="date" style="color: blue; font-family: Arial;">Enter the

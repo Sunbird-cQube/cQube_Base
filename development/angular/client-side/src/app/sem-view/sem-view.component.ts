@@ -373,7 +373,13 @@ export class SemViewComponent implements OnInit {
     // api call to get the clusterwise data for selected district, block
     this.service.cluster_wise_sem_data(this.districtHierarchy.distId, blockId).subscribe(res => {
       this.data = res;
-      this.clusterMarkers = this.data['sortedData']
+      this.clusterMarkers = this.data['sortedData'];
+      // console.log(this.clusterMarkers);
+      this.clusterMarkers.forEach(element => {
+        if (element.clusterName === null) {
+          element.clusterName = 'NO NAME FOUND';
+        }
+      });
       // set hierarchy values
       this.blockHierarchy = {
         distId: this.data['sortedData'][0].districtId,
@@ -666,11 +672,6 @@ export class SemViewComponent implements OnInit {
     if (m.lastOpen != null) {
       m.lastOpen.close();
     }
-  }
-
-  logout() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/']);
   }
 
   // drilldown/ click functionality on markers
