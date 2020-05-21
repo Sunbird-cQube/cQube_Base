@@ -14,7 +14,7 @@ export class CreateUserComponent implements OnInit {
   roleIds: any = [{ roleId: 1, roleName: "Admin" }, { roleId: 2, roleName: "Dashboard report creator" }, { roleId: 3, roleName: "Dashboard report viewer" }, { roleId: 4, roleName: "Adhoc analyst" }, { roleId: 5, roleName: "Data emission" }];
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-
+  minValidate;
   today = new Date();
 
   minDate = `${this.today.getFullYear()}-${("0" + (this.today.getMonth() + 1)).slice(-2)}-${("0" + (this.today.getDate())).slice(-2)}`
@@ -52,6 +52,7 @@ export class CreateUserComponent implements OnInit {
         document.getElementById('success').style.display = "Block";
         this.msg = res['msg'];
         this.err = '';
+        this.minValidate = (this.minDate < this.logData.start_date);
         setTimeout(() => {
           this.router.navigate(['home/map-view']);
         }, 2000);
