@@ -1,3 +1,5 @@
+#!/bin/bash 
+
 check_length(){
     len_status=1
     str_length=${#1}
@@ -7,6 +9,20 @@ check_length(){
     else 
         return $len_status;
     fi
+}
+
+check_s3_bucket_naming()
+{
+s3_bucket_naming_status=0
+if [[ $1 =~ ^[a-z0-9.-]*[^-]$ ]]; then
+    if [[ (( $1 =~ \-{2,} ))  ||  (( $1 =~ \.{2,} )) || (( $1 == *\-\.* )) || (( $1 == *\.\-* )) || (( $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ )) ]]; then
+        s3_bucket_naming_status=1
+        return $s3_bucket_naming_status;
+    fi
+else
+    s3_bucket_naming_status=1
+    return $s3_bucket_naming_status;
+fi
 }
 
 check_postgres(){
@@ -44,6 +60,7 @@ java_arg_2=$3
 java_arg_3=$4
 share_mem=$1 
 work_mem=$2
+java_arg_check=0
 if [[ $4 =~ ^-Xmx[0-9]+[m|g]$ ]]; then
     raw_java_arg_3="$( echo "$4" | sed -e 's/^-Xmx//; s/[m|g]$//' )"
     if [[ $4 =~ g$ ]]; then 
@@ -53,6 +70,7 @@ if [[ $4 =~ ^-Xmx[0-9]+[m|g]$ ]]; then
     fi
 else
     echo "Error - Please enter the proper value in java_arg_3"; fail=1
+    java_arg_check=1
 fi
 
 if [[ $3 =~ ^-Xms[0-9]+[m|g]$ ]]; then
@@ -64,6 +82,7 @@ if [[ $3 =~ ^-Xms[0-9]+[m|g]$ ]]; then
     fi
 else
     echo "Error - Please enter the proper value in java_arg_2"; fail=1
+    java_arg_check=1
 fi
 
 if [[ $2 =~ ^[0-9]+(GB|MB)$ ]]; then
@@ -94,8 +113,10 @@ if [[ $(($final_java_arg_2+$final_java_arg_3+$final_work_mem+$final_share_mem)) 
 fi
 
 #comparing if java2 is greater than java3
-if [[ $final_java_arg_2 -ge $final_java_arg_3 ]]  ; then
-   echo "Error - java_arg_2 should be less than java_arg_3"; fail=1
+if [[ $java_arg_check == 0 ]]; then
+    if [[ $final_java_arg_2 -ge $final_java_arg_3 ]]  ; then
+       echo "Error - java_arg_2 should be less than java_arg_3"; fail=1
+    fi
 fi
 }
 
@@ -136,7 +157,7 @@ check_ip()
 
 check_aws_key(){
     aws_key_status=0
-    export AWS_ACCESS_KEY_ID=$1
+    export AWS_ACCESS_KEY_ID=$2
     export AWS_SECRET_ACCESS_KEY=$2
     aws s3api list-buckets > /dev/null 2>&1
     if [ ! $? -eq 0 ]; then echo "ERROR - Invalid aws access or secret keys"; fail=1
@@ -144,8 +165,10 @@ check_aws_key(){
     fi
 }
 check_s3_bucket(){
-check_length $1
+check_length $2
 if [[ $? == 0 ]]; then
+  check_s3_bucket_naming $2
+  if [[ $? == 0 ]]; then
     if [[ $aws_key_status == 0 ]]; then
         bucketstatus=`aws s3api head-bucket --bucket "${2}" 2>&1`
         if [ $? == 0 ]
@@ -170,13 +193,16 @@ if [[ $? == 0 ]]; then
         elif [[ $bucketstatus == *"Not Found"* ]]; then
             echo "Bucket name $2 is available."
         elif [[ "$bucketstatus" == *"Forbidden"* ]]; then
-            tput setaf 1; echo "Error: [ $1 : $2 ] Bucket already exists but not owned. Please change the bucket name in vars/main.yml"; tput sgr0; fail=1
+            tput setaf 1; echo "Error: [ $1 : $2 ] Bucket already exists but not owned. Please change the bucket name in config.yml"; tput sgr0; fail=1
         elif [[ "$bucketstatus" == *"Bad Request"* ]]; then
-            tput setaf 1; echo "Error: [ $1 : $2 ] Bucket name should be between 3 and 63 characters. Please change the bucket name in vars/main.yml"; tput sgr0; fail=1
+            tput setaf 1; echo "Error: [ $1 : $2 ] Bucket name should be between 3 and 63 characters. Please change the bucket name in config.yml"; tput sgr0; fail=1
         else
             tput setaf 1; echo "Error: [ $1 : $2 ] $bucketstatus"; tput sgr0; fail=1
         fi
     fi
+  else
+      echo "Error - $1 S3 Bucket name value is not as per naming convention. Please change the bucket name."; fail=1
+  fi
  else
         echo "Error - Length of the value $1 is not correct. Provide the length between 3 and 63."; fail=1
 fi
@@ -223,8 +249,19 @@ check_api_endpoint(){
     public_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
     if [[ ! "$ip_api" =~ ^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))$ ]]; then
         echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
-        if [[ ! $ip_api == $public_ip ]] ; then
+	else
+          if [[ ! $ip_api == $public_ip ]] ; then
             echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
+          fi
+    fi
+}
+
+check_aws_default_region(){
+    region_len=${#2}
+    if [[ $region_len -ge 9 ]] && [[ $region_len -le 15 ]]; then
+        curl https://s3.$2.amazonaws.com > /dev/null 2>&1
+        if [[ ! $? == 0 ]]; then 
+            echo "Error - There is a problem reaching the aws default region. Please check the $1 value." ; fail=1
         fi
     fi
 }
@@ -408,6 +445,13 @@ case $key in
           echo "ERROR - Valid values for $key is /opt/nifi/nifi_errors"; fail=1
        fi
        ;;
+   aws_default_region)
+       if [[ $value == "" ]]; then
+          echo "ERROR - Value for $key cannot be empty. Please fill this value. Recommended value is ap-south-1"; fail=1
+       else
+           check_aws_default_region
+       fi
+       ;;
    *)
        if [[ $value == "" ]]; then
           echo -e "\e[0;31m${bold}ERROR - Value for $key cannot be empty. Please fill this value${normal}"; fail=1
@@ -417,7 +461,7 @@ esac
 done
 
 if [[ $fail -eq 1 ]]; then
-   echo -e "\e[0;34m${bold}Config file has errors. Please rectify the issues and rerun${normal}"
+   echo -e "\e[0;34m${bold}Config file has errors. Please rectify the issues and restart the installation${normal}"
    exit 1
 else
    echo -e "\e[0;32m${bold}Config file successfully validated${normal}"

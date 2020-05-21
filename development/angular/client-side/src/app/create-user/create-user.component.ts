@@ -11,7 +11,7 @@ export class CreateUserComponent implements OnInit {
   logData: any = {};
   err;
   msg;
-  roleIds: any = [{ roleId: 1, roleName: "Admin" }, { roleId: 3, roleName: "Report viewer" }];
+  roleIds: any = [{ roleId: 1, roleName: "Admin" }, { roleId: 2, roleName: "Dashboard report creator" }, { roleId: 3, roleName: "Dashboard report viewer" }, { roleId: 4, roleName: "Adhoc analyst" }, { roleId: 5, roleName: "Data emission" }];
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 
@@ -26,6 +26,17 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dateCheck();
+  }
+
+  dateCheck() {
+    if (this.logData.start_date === undefined) {
+      var element = <HTMLFormElement>document.getElementById('endDate');
+      element.disabled = true;
+    } else {
+      var element = <HTMLFormElement>document.getElementById('endDate');
+      element.disabled = false;
+    }
   }
 
   test() {

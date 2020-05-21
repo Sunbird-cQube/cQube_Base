@@ -8,3 +8,8 @@ input[type=text].invalid-textbox,input[type=password].invalid-textbox{
 div, button, a , span{
     font-family: Arial;
 }
+
+input[type=date]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+}
