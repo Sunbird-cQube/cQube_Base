@@ -148,7 +148,7 @@ export class BarChartComponent implements OnInit {
 
     this.schoolCount = 0;
     this.visitCount = 0;
-    document.getElementById('home').style.display = 'none';
+    // document.getElementById('home').style.display = 'none';
 
     this.tableData = [];
 
@@ -461,7 +461,7 @@ export class BarChartComponent implements OnInit {
       }
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-    document.getElementById('home').style.display = 'block';;
+    // document.getElementById('home').style.display = 'block';;
   }
 
   myBlockData(data) {
@@ -569,7 +569,7 @@ export class BarChartComponent implements OnInit {
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
 
 
-    document.getElementById('home').style.display = 'block';;
+    // document.getElementById('home').style.display = 'block';;
   }
 
   myClusterData(data) {
@@ -671,7 +671,7 @@ export class BarChartComponent implements OnInit {
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     });
-    document.getElementById('home').style.display = 'block';
+    // document.getElementById('home').style.display = 'block';
   }
 
   countVisitedAndNotVisited(data) {
@@ -793,5 +793,8 @@ export class BarChartComponent implements OnInit {
     if (this.clust) {
       this.myClusterData(JSON.parse(localStorage.getItem('clusterId')));
     }
+  }
+  redirectTo() {
+    this.router.navigate(['home/dashboard']);
   }
 }

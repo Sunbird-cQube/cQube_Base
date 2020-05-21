@@ -157,7 +157,7 @@ check_ip()
 
 check_aws_key(){
     aws_key_status=0
-    export AWS_ACCESS_KEY_ID=$2
+    export AWS_ACCESS_KEY_ID=$1
     export AWS_SECRET_ACCESS_KEY=$2
     aws s3api list-buckets > /dev/null 2>&1
     if [ ! $? -eq 0 ]; then echo "ERROR - Invalid aws access or secret keys"; fail=1
