@@ -130,7 +130,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                         blockId: item['block_id'],
                         blockName: item['block_name'],
                         clusterId: item['x_axis'],
-                        clusterName: item['crc_name'],
+                        clusterName: item['cluster_name'],
                         assesmentPercentage: item['x_value'],
                         grade_3: item['grade_3'],
                         grade_4: item['grade_4'],

@@ -1,0 +1,25 @@
+<div class="container">
+    <br>
+    <div *ngFor="let cardData of cardsDataLength">
+        <div class="row">
+            <div class="col-md-4" *ngFor="let record of cardData">
+                <div class="flipcard h">
+                    <div class="front">
+                        <img src="../../assets/{{record.imgTitle}}" class="center" style="width:240px;height: 140px;">
+                        <h4 class="card-title">{{record.title}}</h4>
+                    </div>
+                    <div class="back">
+                        <h5 id="text">
+                            <p *ngFor="let textData of record.data">
+                                {{textData.metric}} <br> {{textData.value}}
+                                <br>
+                            </p>
+                        </h5>
+                    </div>
+                </div>
+                <br><br>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>

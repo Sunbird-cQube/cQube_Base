@@ -4,6 +4,8 @@ const block_wise_data = require('./controller/attendanceRoutes/block_wise_data')
 const cluster_wise_data = require('./controller/attendanceRoutes/cluster_wise_data');
 const school_wise_data = require('./controller/attendanceRoutes/school_wise_data');
 
+const dashboard = require('./controller/dashboardRoutes/dashboard');
+
 const roleLogin = require('./controller/users/roleBasedLogin');
 const changePasswd = require('./controller/users/changePassword');
 const addUser = require('./controller/users/addUser');
@@ -40,5 +42,6 @@ router.use('/attendance', school_wise_data);
 router.use('/roleBasedLogin', roleLogin);
 router.use('/changePassword', changePasswd);
 router.use('/addUser', addUser);
+router.use('/dashboard', dashboard);
 
 module.exports = router;

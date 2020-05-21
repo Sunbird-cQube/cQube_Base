@@ -126,7 +126,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                         blockId: item['block_id'],
                         blockName: item['block_name'],
                         clusterId: item['cluster_id'],
-                        clusterName: item['crc_name'],
+                        clusterName: item['cluster_name'],
                         schoolId: item['x_axis'],
                         schoolName: item['school_name'],
                         assesmentPercentage: item['x_value'],
