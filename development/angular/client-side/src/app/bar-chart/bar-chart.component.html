@@ -1,4 +1,4 @@
-<div class="container-fluid" style="font-family: Arial;">
+<div class="container-fluid" style="font-family: Arial; width: 100%;">
     <div class="row">
         <div class="col-sm-7">
             <div *ngIf='skul'>
@@ -60,7 +60,7 @@
                             style="padding: 3px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                             [(ngModel)]="downloadType" name="downloadType">
                             <option [value]="downloadType" disabled selected="selected"> Download Report</option>
-                            <option *ngFor="let md of modes, let i = index"[(ngValue)]="modes[i]">
+                            <option *ngFor="let md of modes, let i = index" [(ngValue)]="modes[i]">
                                 {{md}} Report
                             </option>
                         </select>
