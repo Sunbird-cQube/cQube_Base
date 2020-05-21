@@ -31,7 +31,8 @@ export class CreateUserComponent implements OnInit {
   }
 
   dateCheck() {
-    if (this.logData.start_date === undefined) {
+    this.minValidate = (this.minDate > this.logData.start_date);
+    if (this.logData.start_date === undefined || this.minValidate) {
       var element = <HTMLFormElement>document.getElementById('endDate');
       element.disabled = true;
     } else {
@@ -41,6 +42,10 @@ export class CreateUserComponent implements OnInit {
     }
   }
 
+  maxDateValidator() {
+    this.maxValidate = (this.maxDate > this.logData.end_date);
+  }
+
   test() {
     var date: any = new Date(new Date(this.logData.start_date + " " + "00:00:00")).getTime();
     this.futureDate = new Date(date + 86400000 * 2);
@@ -48,7 +53,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.minValidate) {
+    if (!this.minValidate && !this.maxValidate) {
       this.logData['createrId'] = localStorage.getItem('user_id');
       this.service.addUser(this.logData).subscribe(res => {
         if (res['msg'] === "User Added") {
