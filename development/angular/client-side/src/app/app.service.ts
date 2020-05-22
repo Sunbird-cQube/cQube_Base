@@ -140,4 +140,10 @@ export class AppServiceComponent {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
+
+    // dashboard data 
+
+    dashboard() {
+        return this.http.post(`${this.baseUrl}/dashboard`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
 }
