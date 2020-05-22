@@ -211,6 +211,7 @@ export class BarChartComponent implements OnInit {
           { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
           { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
           { title: "Visits per schools", data: "visits_per_school" },
+          { title: "Visited schools count", data: "visitedSchoolCount" },
           { title: "Total schools", data: "totalSchools" },
           { title: "Total visits", data: "totalVisits" }
         ]
@@ -286,6 +287,7 @@ export class BarChartComponent implements OnInit {
               { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
               { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
               { title: "Visits per schools", data: "visits_per_school" },
+              { title: "Visited schools count", data: "visitedSchoolCount" },
               { title: "Total schools", data: "totalSchools" },
               { title: "Total visits", data: "totalVisits" }
             ]
@@ -448,6 +450,7 @@ export class BarChartComponent implements OnInit {
             { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
             { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
             { title: "Visits per schools", data: "visits_per_school" },
+            { title: "Visited schools count", data: "visitedSchoolCount" },
             { title: "Total schools", data: "totalSchools" },
             { title: "Total visits", data: "totalVisits" }
           ]
@@ -556,6 +559,7 @@ export class BarChartComponent implements OnInit {
           { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
           { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
           { title: "Visits per schools", data: "visits_per_school" },
+          { title: "Visited schools count", data: "visitedSchoolCount" },
           { title: "Total schools", data: "totalSchools" },
           { title: "Total visits", data: "totalVisits" }
         ]
