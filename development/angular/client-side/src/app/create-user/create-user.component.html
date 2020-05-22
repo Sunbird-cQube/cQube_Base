@@ -124,21 +124,21 @@
                             <div *ngIf="formData.submitted && start_date?.errors">
                                 <label *ngIf="start_date.errors.required" class="validation-message">This
                                     field is required</label>
-                                <label *ngIf="minValidate" class="validation-message">Invalid date</label>
                             </div>
+                            <label *ngIf="minValidate" class="validation-message">Invalid date</label>
                         </div>
                         <div class="form-group" style="margin-bottom: 35px;">
                             <label for="date" style="color: blue; font-family: Arial;">Enter the
                                 user_validity_end_date</label>
                             <input name="end_date" class="form-control form-control-user textbox-n" type="date"
                                 #end_date="ngModel" min="{{maxDate}}" [(ngModel)]="logData.end_date" required
-                                onkeydown="return false" id="endDate"
+                                onkeydown="return false" id="endDate" (change)="maxDateValidator()"
                                 [ngClass]="{'invalid-textbox' :formData.submitted && !end_date.valid }">
                             <div *ngIf="formData.submitted && end_date?.errors">
                                 <label *ngIf="end_date.errors.required" class="validation-message">This
                                     field is required</label>
-                                <label *ngIf="end_date.errors.min" class="validation-message">Invalid date</label>
                             </div>
+                            <label *ngIf="maxValidate" class="validation-message">Invalid date</label>
                         </div>
 
 

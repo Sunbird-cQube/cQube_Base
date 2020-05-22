@@ -32,14 +32,14 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('user_id', res['user_id']);
         this.role = res['role'];
 
-        if (this.role == 1) {
-          this.router.navigate(['home/map-view']);
+        if (this.role) {
+          this.router.navigate(['home/dashboard']);
         }
-        else if (this.role == 3) {
-          this.router.navigate(['home/teacher-attendance'])
-        } else {
-          this.router.navigate(['home/map-view']);
-        }
+        // else if (this.role == 3) {
+        //   this.router.navigate(['home/teacher-attendance'])
+        // } else {
+        //   this.router.navigate(['home/map-view']);
+        // }
       } else if (res['errMsg']) {
         this.email = this.logData.email;
         this.err = res['errMsg'];
