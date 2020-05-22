@@ -5,8 +5,10 @@
             <div class="col-md-4" *ngFor="let record of cardData">
                 <div class="flipcard h">
                     <div class="front">
-                        <img src="../../assets/{{record.imgTitle}}" class="center" style="width:240px;height: 140px;">
-                        <h4 class="card-title">{{record.title}}</h4>
+                        <img src="../../assets/{{record.imgTitle}}" class="center"
+                            style="width:120px;height: 80px; float: right; margin: 2% 2% 0% 0%;">
+                        <p class="card-title" style="margin-top: 36%;margin-left: 3%; float: left; font-size: 16px;">
+                            {{record.title}}</p>
                     </div>
                     <div class="back">
                         <h5 id="text">
