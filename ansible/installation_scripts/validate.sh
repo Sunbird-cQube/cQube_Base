@@ -157,7 +157,7 @@ check_ip()
 
 check_aws_key(){
     aws_key_status=0
-    export AWS_ACCESS_KEY_ID=$2
+    export AWS_ACCESS_KEY_ID=$1
     export AWS_SECRET_ACCESS_KEY=$2
     aws s3api list-buckets > /dev/null 2>&1
     if [ ! $? -eq 0 ]; then echo "ERROR - Invalid aws access or secret keys"; fail=1
@@ -216,19 +216,13 @@ check_nifi_port(){
 }
 
 check_db_naming(){
-check_length $1
-if [[ $? == 0 ]]; then	
-    initial="$(echo $2 | head -c 1)"
-    if [[ $initial != [0-9] ]] ; then
-        echo "$2" |  grep "[@#$%^&*-]"
-        if [[ ! $? -eq 1 ]]; then
-            echo "Error - Naming convention is not correct. Please change the value of $1."; fail=1
-        fi
-    else
+check_length $2
+if [[ $? == 0 ]]; then
+    if [[ ! $2 =~ ^[A-Za-z_]*[^_0-9\$\@\#\%\*\-\^\?]$ ]]; then
         echo "Error - Naming convention is not correct. Please change the value of $1."; fail=1
     fi
- else
-        echo "Error - Length of the value $1 is not correct. Provide the length between 3 and 63."; fail=1
+else
+    echo "Error - Length of the value $1 is not correct. Provide the length between 3 and 63."; fail=1
 fi
 }
 
@@ -245,14 +239,13 @@ check_db_password(){
 }
 
 check_api_endpoint(){
-    ip_api=$(echo "$2" | grep -o -P '(?<=//).*(?=:)')
-    public_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-    if [[ ! "$ip_api" =~ ^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))$ ]]; then
-        echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
-	else
-          if [[ ! $ip_api == $public_ip ]] ; then
-            echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
-          fi
+    if [[ $2 =~ ^https?://[^-][a-z0-9i.-]{2,}\.[a-z]{2,}$ ]]; then
+        temp_fqdn=`echo $2 | sed -E 's/http:\/\/|https:\/\///g'`
+        if ! [[ ${#temp_fqdn} -le 255 ]]; then
+            echo "Error - FQDN exceeding 255 characters. Please provide the proper api url for $1"; fail=1
+        fi
+    else
+        echo "Error - Please provide the proper api url for $1"; fail=1
     fi
 }
 
