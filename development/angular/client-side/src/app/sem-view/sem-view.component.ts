@@ -15,9 +15,7 @@ var globalMap;
   styleUrls: ['./sem-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SemViewComponent {
-// implements OnInit {
-  /*
+export class SemViewComponent implements OnInit {
   public title: string = '';
   public titleName: string = '';
   public colors: any;
@@ -130,7 +128,7 @@ export class SemViewComponent {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-
+      this.districtId = undefined;
       this.errMsg();
 
       // these are for showing the hierarchy names based on selection
@@ -152,7 +150,7 @@ export class SemViewComponent {
 
         // options to set for markers in the map
         let options = {
-          radius: 7,
+          radius: 5,
           fillOpacity: 1,
           strokeWeight: 0.01,
           mapZoom: 7,
@@ -167,7 +165,7 @@ export class SemViewComponent {
       })
       // adding the markers to the map layers
       globalMap.addLayer(this.layerMarkers);
-      document.getElementById('home').style.display = 'none';
+      // document.getElementById('home').style.display = 'none';
     } catch (e) {
       console.log(e);
     }
@@ -208,7 +206,7 @@ export class SemViewComponent {
         this.genericFun(this.data, options);
       })
       globalMap.addLayer(this.layerMarkers);
-      document.getElementById('home').style.display = 'block';
+      // document.getElementById('home').style.display = 'block';
     } catch (e) {
       console.log(e);
     }
@@ -249,7 +247,7 @@ export class SemViewComponent {
         this.genericFun(this.data, options);
       })
       globalMap.addLayer(this.layerMarkers);
-      document.getElementById('home').style.display = 'block';
+      // document.getElementById('home').style.display = 'block';
     } catch (e) {
       console.log(e);
     }
@@ -291,7 +289,7 @@ export class SemViewComponent {
         this.genericFun(this.data, options);
       })
       globalMap.addLayer(this.layerMarkers);
-      document.getElementById('home').style.display = 'block';
+      // document.getElementById('home').style.display = 'block';
     } catch (e) {
       console.log(e);
     }
@@ -303,7 +301,7 @@ export class SemViewComponent {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.errMsg();
-
+    this.blockId = undefined;
     // these are for showing the hierarchy names based on selection
     this.skul = false;
     this.dist = true;
@@ -346,7 +344,7 @@ export class SemViewComponent {
       this.blockMarkers.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
     })
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
+    // document.getElementById('home').style.display = 'block';
   }
 
   // to load all the clusters for selected block for state data on the map
@@ -355,7 +353,7 @@ export class SemViewComponent {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.errMsg();
-
+    this.clusterId = undefined;
     // these are for showing the hierarchy names based on selection
     this.skul = false;
     this.dist = false;
@@ -376,6 +374,11 @@ export class SemViewComponent {
     this.service.cluster_wise_sem_data(this.districtHierarchy.distId, blockId).subscribe(res => {
       this.data = res;
       this.clusterMarkers = this.data['sortedData']
+      this.clusterMarkers.forEach(element => {
+        if(element.clusterName == null){
+          element.clusterName = 'NO NAME FOUND';
+        }
+      });
       // set hierarchy values
       this.blockHierarchy = {
         distId: this.data['sortedData'][0].districtId,
@@ -399,7 +402,7 @@ export class SemViewComponent {
       this.clusterMarkers.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
     })
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
+    // document.getElementById('home').style.display = 'block';
   }
 
   // to load all the schools for selected cluster for state data on the map
@@ -442,7 +445,7 @@ export class SemViewComponent {
       this.genericFun(this.data, options);
     })
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
+    // document.getElementById('home').style.display = 'block';
   }
 
   // common function for all the data to show in the map
@@ -670,11 +673,6 @@ export class SemViewComponent {
     }
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/']);
-  }
-
   // drilldown/ click functionality on markers
   onClick_Marker(event) {
     var data = event.target.myJsonData;
@@ -784,5 +782,8 @@ export class SemViewComponent {
       generateGradient
     };
   }
-*/
+
+  redirectTo() {
+    this.router.navigate(['home/dashboard']);
+  }
 }
