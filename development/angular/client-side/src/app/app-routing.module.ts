@@ -21,11 +21,11 @@ const routes: Routes = [
   },
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
+      // {
+      //   path: 'dashboard', component: DashboardComponent, canActivateChild: [AuthGuard]
+      // },
       {
-        path: 'dashboard', component: DashboardComponent, canActivateChild: [AuthGuard]
-      },
-      {
-        path: 'map-view', component: MapViewComponent, canActivateChild: [AuthGuard]
+        path: 'attendance-report', component: MapViewComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'teacher-attendance', component: TeacherAttendanceComponent, canActivateChild: [AuthGuard]

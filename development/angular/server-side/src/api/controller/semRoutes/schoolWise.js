@@ -70,7 +70,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                     },
                     sortedData
                 }
-
+                logger.info('--- semseter all school wise api reponse sent ---');
                 res.send(resultObj)
             }
         })
@@ -156,7 +156,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                     },
                     sortedData
                 }
-
+                logger.info('--- semseter school wise api reponse sent ---');
                 res.send(resultObj)
             }
         })

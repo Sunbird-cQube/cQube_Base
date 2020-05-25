@@ -77,6 +77,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                     },
                     sortedData
                 }
+                logger.info('--- semseter cluster wise api reponse sent ---');
                 res.send(resultObj)
             }
         })
@@ -167,6 +168,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                     },
                     sortedData
                 }
+                logger.info('--- semseter cluster wise api reponse sent ---');
                 res.send(resultObj)
             }
         })
