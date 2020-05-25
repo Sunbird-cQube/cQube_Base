@@ -34,7 +34,9 @@ s3_access_key:                              # AWS Access key for creation of s3 
 s3_secret_key:                              # AWS Secret key for creation of s3 bucket
 aws_default_region: 'ap-south-1'            # aws default region for creation of s3 bucket
 
-#If you have installed SSL certificate, please use `https` else use `http` in api_endpoint
+# Please fill api_endpoint where node server will be accessible.
+# Node server will be running on 3000 port using local ip.
+# If you are using reverse proxy and using SSL certificate, please enter the right api endpoint url.
 
 api_endpoint:                               # https://domain.com/api ( `http://<public_ip>:3000/api` Example: http://13.234.239.17:3000/api )
 local_ipv4_address:                         # enter the private ip of this server. To find the ip address. Use `ip addr` or `ifconfig`

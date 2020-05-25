@@ -1,7 +1,7 @@
 .flipcard {
   background-color: transparent;
   position: relative;
-  height: 200px;
+  height: 190px;
   perspective: 1000px;
 }
 .flipcard.v:hover .front, .flipcard.v.flip .front{
@@ -44,8 +44,8 @@
   text-align: center;
   box-sizing: border-box;
   transition: all 0.5s ease-in;
-  color: rgb(71, 70, 70);
-  background-color:#d1d3d6;
+  color: rgb(255, 254, 254);
+  background-color:#3a3b3b;
   /* padding: 10px; */
   backface-visibility: hidden;
 }
@@ -53,9 +53,9 @@
 #text {
   z-index: 100;
   position: absolute;
-  color: rgb(71, 70, 70);
-  font-size: 15px;
+  color: rgb(255, 255, 255);
+  font-size: 17px;
   left: 20px;
   right:20px;
-  top: 40px; 
+  top: 20px; 
 }
