@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.service.login(this.logData).subscribe(res => {
       if (res['msg']) {
+        localStorage.clear();
         localStorage.setItem('email', this.logData.email);
         localStorage.setItem('token', res['token']);
         localStorage.setItem('role', res['role']);
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit {
         this.role = res['role'];
 
         if (this.role) {
-          this.router.navigate(['home/dashboard']);
+          this.router.navigate(['home/attendance-report']);
         }
         // else if (this.role == 3) {
         //   this.router.navigate(['home/teacher-attendance'])

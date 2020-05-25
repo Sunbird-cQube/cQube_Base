@@ -75,7 +75,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                     },
                     sortedData
                 }
-
+                logger.info('--- semester block wise api reponse sent ---');
                 res.send(resultObj)
             }
         })
@@ -162,7 +162,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                     },
                     sortedData
                 }
-
+                logger.info('--- semester block wise api reponse sent ---');
                 res.send(resultObj)
             }
         })

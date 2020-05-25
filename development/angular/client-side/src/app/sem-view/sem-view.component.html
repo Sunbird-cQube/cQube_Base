@@ -62,7 +62,7 @@
                         (click)="downloadReport()">
                     <img src="../../assets/home.png" title="Home" id="home"
                         style="cursor: pointer;height: 30px;width: 30px;float: right;margin: 2px 0px 0px 0px;"
-                        alt="Home" (click)="redirectTo()">
+                        alt="Home" (click)="districtWise()">
                 </div>
             </div>
         </div>
@@ -117,29 +117,16 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div #mapContainer id="map" class="active" style="width: 100%; height: 78vh"></div>
+            <div #mapContainer id="map" class="active" style="width: 100%; height: 77vh"></div>
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
-        <div class="col-sm-4">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; padding: 5px 0px 5px 0px;position: relative; bottom: 0; left: 0;z-index: 999;">
+        <div class="col-sm-6">
             <span>Number of students: {{studentCount}}</span>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <span style="text-align: center;">Number of schools: {{schoolCount}}</span>
         </div>
     </div>
 </div>
-<!-- <p style="text-align: center;">Semester reports will come soon</p> -->
-<!-- <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12">
-            <p style="color: #284d8a;">Semester Report :</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <app-coming-soon></app-coming-soon>
-        </div>
-    </div>
-</div> -->
