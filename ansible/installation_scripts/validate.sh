@@ -277,7 +277,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "db_user" "db_name" "db_password" "emission_db_name" "nifi_port" "s3_access_key" "s3_secret_key" \
+declare -a arr=("system_user_name" "db_user" "db_name" "db_password" "nifi_port" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" "shared_buffers" "work_mem" "java_arg_2" "java_arg_3" \
 		"aws_default_region" "local_ipv4_address" "api_endpoint" "db_connection_url" "db_driver_dir" \
 		"db_driver_class_name" "nifi_error_dir") 
@@ -387,13 +387,6 @@ case $key in
           echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_api_endpoint $key $value
-       fi
-       ;;
-   emission_db_name)
-       if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
-       else
-          check_db_naming $key $value
        fi
        ;;
    db_connection_url)
