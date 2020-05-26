@@ -6,7 +6,7 @@ const auth = require('../../middleware/check-auth');
 router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         var filterData = '';
-        logger.info('--- school wise attendance api ---');
+        logger.info('--- semseter all school wise api ---');
         const_data['getParams']['Key'] = 'semester/school_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
@@ -28,11 +28,16 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
                 // })
 
+                schoolData = schoolData.filter(function (el) {
+                    return el.x_value != null;
+                });
+
                 // calculate totalstudents and totalschools of all districts for state
                 let totalStudents = schoolData.reduce((prev, next) => prev + parseInt(next.students_count), 0);
                 let totalSchools = schoolData.length
 
-                // map and extract required  values to show in the leaflet-map
+                // map and extract required  values to show in the leaflet-
+
                 var blockDetails = schoolData.map(function (item) {
                     let obj = {
                         districtId: item['district_id'],
@@ -70,7 +75,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                     },
                     sortedData
                 }
-
+                logger.info('--- semseter all school wise api reponse sent ---');
                 res.send(resultObj)
             }
         })
@@ -112,6 +117,10 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 // filterData = filterData.filter(obj => {
                 //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
                 // })
+               
+                filterData = filterData.filter(function (el) {
+                    return el.x_value != null;
+                });
 
 
                 // calculate totalstudents and totalschools of all districts for state
@@ -156,7 +165,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                     },
                     sortedData
                 }
-
+                logger.info('--- semseter school wise api reponse sent ---');
                 res.send(resultObj)
             }
         })

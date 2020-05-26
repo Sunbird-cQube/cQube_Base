@@ -30,7 +30,7 @@
   blockinfile:
         path: ../../development/python/env.py
         block: |
-               DATABASE_URI = "postgresql://{{ db_user }}:{{ db_password }}@localhost:5432/{{ emission_db_name }}"
+               DATABASE_URI = "postgresql://{{ db_user }}:{{ db_password }}@localhost:5432/{{ db_name }}"
                AWS_SECRET_KEY = "{{ s3_secret_key }}"
                AWS_ACCESS_KEY = "{{ s3_access_key }}"
                BUCKET_NAME = "{{ s3_emission_bucket }}"
@@ -39,6 +39,6 @@
 - name: starting flask app
   become: yes
   become_user: "{{ system_user_name }}"
-  shell: /opt/emission_server/flaskenv/bin/python3 server.py &
+  shell: /opt/emission_server/flaskenv/bin/gunicorn -w 3 -b 0.0.0.0:5000 server:application &
   args:
     chdir: ../../development/python

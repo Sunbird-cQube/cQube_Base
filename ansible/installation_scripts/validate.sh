@@ -43,7 +43,7 @@ if [ $temp == 0 ]; then
 		    break
 		    ;;
             no )
-	    	    tput setaf 1; echo "Please uninstall postgres and rerun the installation"; tput sgr0 ; fail=1
+	    	    tput setaf 1; echo "Please uninstall postgres and rerun the installation"; tput sgr0 ; fail=1; break;
 		    ;;
 	    * )     ;;
         esac
@@ -124,7 +124,7 @@ check_sys_user(){
     who | grep $2 > /dev/null 2>&1
     result=$?
     if [[ `egrep -i ^$2: /etc/passwd ; echo $?` != 0 && $result != 0 ]]; then 
-        echo "ERROR - Please check the system_user_name."; fail=1
+        echo "Error - Please check the system_user_name."; fail=1
     fi
 }
 
@@ -143,15 +143,15 @@ check_ip()
             && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
         ip_stat=$?
         if [[ ! $ip_stat == 0 ]]; then
-            echo "ERROR - Invalid value for $key"; fail=1
+            echo "Error - Invalid value for $key"; fail=1
             ip_pass=0
         fi
         is_local_ip=`ip a | grep $2` > /dev/null 2>&1
         if [[ $ip_pass == 0 && $is_local_ip != *$2* ]]; then
-            echo "ERROR - Invalid value for $key. Please enter the local ip of this system."; fail=1 
+            echo "Error - Invalid value for $key. Please enter the local ip of this system."; fail=1 
         fi
     else
-        echo "ERROR - Invalid value for $key"; fail=1
+        echo "Error - Invalid value for $key"; fail=1
     fi
 }
 
@@ -160,7 +160,7 @@ check_aws_key(){
     export AWS_ACCESS_KEY_ID=$1
     export AWS_SECRET_ACCESS_KEY=$2
     aws s3api list-buckets > /dev/null 2>&1
-    if [ ! $? -eq 0 ]; then echo "ERROR - Invalid aws access or secret keys"; fail=1
+    if [ ! $? -eq 0 ]; then echo "Error - Invalid aws access or secret keys"; fail=1
         aws_key_status=1
     fi
 }
@@ -239,14 +239,29 @@ check_db_password(){
 }
 
 check_api_endpoint(){
-    if [[ $2 =~ ^https?://[^-][a-z0-9i.-]{2,}\.[a-z]{2,}$ ]]; then
-        temp_fqdn=`echo $2 | sed -E 's/http:\/\/|https:\/\///g'`
+if [[ ! $2 =~ ^https?://[0-9] ]]; then
+
+   if [[ $2 =~ ^https?://[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
+        temp_fqdn=`echo $1 | sed -E 's/http:\/\/|https:\/\///g'`
         if ! [[ ${#temp_fqdn} -le 255 ]]; then
-            echo "Error - FQDN exceeding 255 characters. Please provide the proper api url for $1"; fail=1
+         echo "Error - FQDN exceeding 255 characters. Please provide the proper api url for $1"; fail=1
         fi
     else
         echo "Error - Please provide the proper api url for $1"; fail=1
     fi
+
+else
+    ip_api=$(echo "$2" | grep -o -P '(?<=//).*(?=:)')
+    public_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+    if [[ ! "$ip_api" =~ ^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))$ ]]; then
+        echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
+        else
+          if [[ ! $ip_api == $public_ip ]] ; then
+            echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
+          fi
+    fi
+
+fi
 }
 
 check_aws_default_region(){
@@ -277,7 +292,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "db_user" "db_name" "db_password" "emission_db_name" "nifi_port" "s3_access_key" "s3_secret_key" \
+declare -a arr=("system_user_name" "db_user" "db_name" "db_password" "nifi_port" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" "shared_buffers" "work_mem" "java_arg_2" "java_arg_3" \
 		"aws_default_region" "local_ipv4_address" "api_endpoint" "db_connection_url" "db_driver_dir" \
 		"db_driver_class_name" "nifi_error_dir") 
@@ -308,61 +323,61 @@ value=${vals[$key]}
 case $key in
    system_user_name)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_sys_user $key $value
        fi
        ;;
    s3_access_key)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        fi
        ;;
    s3_secret_key)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
       else
           check_aws_key $aws_access_key $aws_secret_key
        fi
        ;;
    s3_input_bucket)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    s3_output_bucket)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    s3_emission_bucket)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    local_ipv4_address)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_ip $key $value
        fi
        ;;
    nifi_port)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_nifi_port $key $value
        fi
        ;;
    db_user)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
 	  check_postgres
           check_db_naming $key $value
@@ -370,84 +385,77 @@ case $key in
        ;;
    db_name)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_db_naming $key $value
        fi
        ;;
    db_password)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_db_password $key $value
        fi
        ;;
    api_endpoint)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_api_endpoint $key $value
        fi
        ;;
-   emission_db_name)
-       if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
-       else
-          check_db_naming $key $value
-       fi
-       ;;
    db_connection_url)
        if [[ ! "$value" =~ ^(jdbc:postgresql://localhost:5432/)$ ]]; then
-          echo "ERROR - Valid values for $key is jdbc:postgresql://localhost:5432/"; fail=1
+          echo "Error - Valid values for $key is jdbc:postgresql://localhost:5432/"; fail=1
        fi
        ;;
    db_driver_dir)
        if [[ ! "$value" =~ ^(jars/postgresql-42.2.10.jar)$ ]]; then
-          echo "ERROR - Valid values for $key is jars/postgresql-42.2.10.jar"; fail=1
+          echo "Error - Valid values for $key is jars/postgresql-42.2.10.jar"; fail=1
        fi
        ;;
    db_driver_class_name)
        if [[ ! "$value" =~ ^(org.postgresql.Driver)$ ]]; then
-          echo "ERROR - Valid values for $key is org.postgresql.Driver"; fail=1
+          echo "Error - Valid values for $key is org.postgresql.Driver"; fail=1
        fi
        ;;
    shared_buffers)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        fi
        ;;
    work_mem)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        fi
        ;;
    java_arg_2)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        fi
        ;;
    java_arg_3)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
            check_mem_variables $shared_buffers $work_mem $java_arg_2 $java_arg_3
        fi
        ;;
     nifi_error_dir)
        if [[ ! "$value" =~ ^(/opt/nifi/nifi_errors)$ ]]; then
-          echo "ERROR - Valid values for $key is /opt/nifi/nifi_errors"; fail=1
+          echo "Error - Valid values for $key is /opt/nifi/nifi_errors"; fail=1
        fi
        ;;
    aws_default_region)
        if [[ $value == "" ]]; then
-          echo "ERROR - Value for $key cannot be empty. Please fill this value. Recommended value is ap-south-1"; fail=1
+          echo "Error - Value for $key cannot be empty. Please fill this value. Recommended value is ap-south-1"; fail=1
        else
            check_aws_default_region
        fi
        ;;
    *)
        if [[ $value == "" ]]; then
-          echo -e "\e[0;31m${bold}ERROR - Value for $key cannot be empty. Please fill this value${normal}"; fail=1
+          echo -e "\e[0;31m${bold}Error - Value for $key cannot be empty. Please fill this value${normal}"; fail=1
        fi
        ;;
 esac

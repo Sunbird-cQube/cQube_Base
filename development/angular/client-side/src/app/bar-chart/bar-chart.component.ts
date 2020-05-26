@@ -148,7 +148,7 @@ export class BarChartComponent implements OnInit {
 
     this.schoolCount = 0;
     this.visitCount = 0;
-    // document.getElementById('home').style.display = 'none';
+    document.getElementById('home').style.display = 'none';
 
     this.tableData = [];
 
@@ -464,7 +464,7 @@ export class BarChartComponent implements OnInit {
       }
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-    // document.getElementById('home').style.display = 'block';;
+    document.getElementById('home').style.display = 'block';;
   }
 
   myBlockData(data) {
@@ -484,7 +484,7 @@ export class BarChartComponent implements OnInit {
     this.visitCount = 0;
     this.tableData = [];
     this.chartData = [];
-    this.tableHead = "CRC Name";
+    this.tableHead = "Cluster Name";
     this.dist = false;
     this.blok = true;
     this.clust = false;
@@ -573,7 +573,7 @@ export class BarChartComponent implements OnInit {
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
 
 
-    // document.getElementById('home').style.display = 'block';;
+    document.getElementById('home').style.display = 'block';;
   }
 
   myClusterData(data) {
@@ -675,7 +675,7 @@ export class BarChartComponent implements OnInit {
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     });
-    // document.getElementById('home').style.display = 'block';
+    document.getElementById('home').style.display = 'block';
   }
 
   countVisitedAndNotVisited(data) {
