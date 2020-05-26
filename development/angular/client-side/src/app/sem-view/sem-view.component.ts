@@ -105,7 +105,7 @@ export class SemViewComponent implements OnInit {
       }
     ).addTo(globalMap);
   }
-
+  
   // to load and hide the spinner 
   loaderAndErr() {
     if (this.data.length !== 0) {
@@ -251,7 +251,7 @@ export class SemViewComponent implements OnInit {
         }
         if (this.data['sortedData'].length > 0) {
           let result = this.data['sortedData']
-
+          this.clusterMarkers = [];
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
@@ -309,6 +309,7 @@ export class SemViewComponent implements OnInit {
               markerIcon.on('mouseout', function (e) {
                 this.closePopup();
               });
+              markerIcon.on('click', this.onClick_Marker, this);
 
               this.layerMarkers.addLayer(markerIcon);
               markerIcon.myJsonData = this.clusterMarkers[i];
@@ -381,6 +382,7 @@ export class SemViewComponent implements OnInit {
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
         }
+        this.schoolMarkers = [];
         if (this.data['sortedData'].length > 0) {
           let result = this.data['sortedData']
 

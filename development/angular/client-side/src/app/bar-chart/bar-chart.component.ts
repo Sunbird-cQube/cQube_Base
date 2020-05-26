@@ -484,7 +484,7 @@ export class BarChartComponent implements OnInit {
     this.visitCount = 0;
     this.tableData = [];
     this.chartData = [];
-    this.tableHead = "CRC Name";
+    this.tableHead = "Cluster Name";
     this.dist = false;
     this.blok = true;
     this.clust = false;
