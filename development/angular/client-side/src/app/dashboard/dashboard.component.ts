@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
 
   cardsData: any = '';
   cardsDataLength: any = [];
-  
+
   ngOnInit() {
     this.loadCards();
   }
@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
         },
         {
           title: this.cardsData.average_inspection.title,
-          imgTitle: 'avg_inspection.jpeg',          
+          imgTitle: 'avg_inspection.jpeg',
           // path: '',
           data: this.cardsData.average_inspection.data
         },

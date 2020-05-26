@@ -275,7 +275,7 @@ export class MapViewComponent implements OnInit {
       this.changeDetection.markForCheck();
     });
     globalMap.addLayer(this.layerMarkers);
-    // document.getElementById('home').style.display = 'none';
+    document.getElementById('home').style.display = 'none';
 
   }
 
@@ -359,7 +359,7 @@ export class MapViewComponent implements OnInit {
 
     });
     globalMap.addLayer(this.layerMarkers);
-    // document.getElementById('home').style.display = 'block';
+    document.getElementById('home').style.display = 'block';
     ;
   }
 
@@ -449,7 +449,7 @@ export class MapViewComponent implements OnInit {
       }
     });
     globalMap.addLayer(this.layerMarkers);
-    // document.getElementById('home').style.display = 'block';
+    document.getElementById('home').style.display = 'block';
     ;
   }
 
@@ -545,7 +545,7 @@ export class MapViewComponent implements OnInit {
       }
     });
     globalMap.addLayer(this.markersList);
-    // document.getElementById('home').style.display = 'block';
+    document.getElementById('home').style.display = 'block';
     ;
     this.cluster = [];
   }
@@ -740,7 +740,7 @@ export class MapViewComponent implements OnInit {
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     })
-      // document.getElementById('home').style.display = 'block';
+      document.getElementById('home').style.display = 'block';
       ;
     globalMap.addLayer(this.layerMarkers);
   }
@@ -871,7 +871,7 @@ export class MapViewComponent implements OnInit {
       this.changeDetection.markForCheck();
     });
     globalMap.addLayer(this.layerMarkers);
-    // document.getElementById('home').style.display = 'block';
+    document.getElementById('home').style.display = 'block';
     ;
   }
 
@@ -1027,7 +1027,7 @@ export class MapViewComponent implements OnInit {
       this.changeDetection.markForCheck();
     });
     globalMap.addLayer(this.layerMarkers);
-    // document.getElementById('home').style.display = 'block';
+    document.getElementById('home').style.display = 'block';
     ;
   }
 

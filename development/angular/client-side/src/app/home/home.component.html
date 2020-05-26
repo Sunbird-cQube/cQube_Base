@@ -21,7 +21,7 @@
         </mat-toolbar-row>
       </mat-toolbar>
       <div *ngIf="showsideMenu">
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
+        <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
           [routerLink]="['dashboard']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -29,7 +29,7 @@
           <td>
             &nbsp;&nbsp;Dashboard</td>
 
-        </a>
+        </a> -->
         <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
           [routerLink]="['teacher-attendance']">
           <td>
@@ -52,7 +52,7 @@
         </a>
       </div>
       <div *ngIf="!showsideMenu">
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
+        <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
           [routerLink]="['dashboard']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -60,9 +60,9 @@
           <td>
             &nbsp;&nbsp;Dashboard</td>
 
-        </a>
+        </a> -->
         <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
-          [routerLink]="['map-view']">
+          [routerLink]="['attendance-report']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>

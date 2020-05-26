@@ -73,6 +73,7 @@ router.post('/districtWise', auth.authController, async (req, res) => {
                     },
                     sortedData
                 }
+                logger.info('--- semester district wise api reponse sent ---');
                 res.send(resultObj);
             }
         });
