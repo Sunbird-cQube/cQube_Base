@@ -90,56 +90,271 @@ day_21 boolean,day_22 boolean,day_23 boolean,day_24 boolean,day_25 boolean,day_2
 day_31 boolean,month int,year int
 );
 
-create table IF NOT EXISTS student_attendance_meta_hist as select * from student_attendance_meta;
-
-CREATE OR REPLACE FUNCTION day_wise_attendance(table_catalog text,table_schema text,month int,year int)
+CREATE OR REPLACE FUNCTION student_attendance_refresh(year int,month int)
 RETURNS text AS
 $$
 DECLARE
-_col_sql text :='SELECT string_agg(column_name,'','') FROM information_schema.columns WHERE table_catalog = table_catalog 
-AND table_schema= table_schema AND table_name = ''student_attendance_meta'' 
-AND (ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_1 = True and month= '||month||' and year = '||year||') THEN 1 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_2 = True and month= '||month||' and year = '||year||') THEN 2 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_3 = True and month= '||month||' and year = '||year||') THEN 3 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_4 = True and month= '||month||' and year = '||year||') THEN 4 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_5 = True and month= '||month||' and year = '||year||') THEN 5 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_6 = True and month= '||month||' and year = '||year||') THEN 6 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_7 = True and month= '||month||' and year = '||year||') THEN 7 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_8 = True and month= '||month||' and year = '||year||') THEN 8 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_9 = True and month= '||month||' and year = '||year||') THEN 9 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_10 = True and month= '||month||' and year = '||year||') THEN 10 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_11 = True and month= '||month||' and year = '||year||') THEN 11 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_12 = True and month= '||month||' and year = '||year||') THEN 12 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_13 = True and month= '||month||' and year = '||year||') THEN 13 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_14 = True and month= '||month||' and year = '||year||') THEN 14 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_15 = True and month= '||month||' and year = '||year||') THEN 15 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_16 = True and month= '||month||' and year = '||year||') THEN 16 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_17 = True and month= '||month||' and year = '||year||') THEN 17 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_18 = True and month= '||month||' and year = '||year||') THEN 18 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_19 = True and month= '||month||' and year = '||year||') THEN 19 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_20 = True and month= '||month||' and year = '||year||') THEN 20 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_21 = True and month= '||month||' and year =  '||year||') THEN 21 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_22 = True and month= '||month||' and year = '||year||') THEN 22 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_23 = True and month= '||month||' and year = '||year||') THEN 23 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_24 = True and month= '||month||' and year = '||year||') THEN 24 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_25 = True and month= '||month||' and year = '||year||') THEN 25 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_26 = True and month= '||month||' and year = '||year||') THEN 26 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_27 = True and month= '||month||' and year = '||year||') THEN 27 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_28 = True and month= '||month||' and year = '||year||') THEN 28 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_29 = True and month= '||month||' and year = '||year||') THEN 29 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_30 = True and month= '||month||' and year = '||year||') THEN 30 END
-OR ordinal_position = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_31 = True and month= '||month||' and year = '||year||') THEN 31 END)';
+_col_sql text :='select string_agg(column_name,'','') from (select ''day_1'' as column_name from student_attendance_meta where day_1 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_2'' as column_name from student_attendance_meta where day_2 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_3'' as column_name from student_attendance_meta where day_3 = True and month= '||month||' and year = '||year||' 
+UNION 
+select ''day_4'' as column_name from student_attendance_meta where day_4 = True and month= '||month||' and year = '||year||' 
+UNION 
+select ''day_5'' as column_name from student_attendance_meta where day_5 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_6'' as column_name from student_attendance_meta where day_6 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_7'' as column_name from student_attendance_meta where day_7 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_8'' as column_name from student_attendance_meta where day_8 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_9'' as column_name from student_attendance_meta where day_9 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_10'' as column_name from student_attendance_meta where day_10 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_11'' as column_name from student_attendance_meta where day_11 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_12'' as column_name from student_attendance_meta where day_12 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_13'' as column_name from student_attendance_meta where day_13 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_14'' as column_name from student_attendance_meta where day_14 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_15'' as column_name from student_attendance_meta where day_15 = True and month= '||month||' and year = '||year||' 
+UNION 
+select ''day_16'' as column_name from student_attendance_meta where day_16 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_17'' as column_name from student_attendance_meta where day_17 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_18'' as column_name from student_attendance_meta where day_18 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_19'' as column_name from student_attendance_meta where day_19 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_20'' as column_name from student_attendance_meta where day_20 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_21'' as column_name from student_attendance_meta where day_21 = True and month=  '||month||' and year = '||year||'
+UNION 
+select ''day_22'' as column_name from student_attendance_meta where day_22 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_23'' as column_name from student_attendance_meta where day_23 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_24'' as column_name from student_attendance_meta where day_24 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_25'' as column_name from student_attendance_meta where day_25 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_26'' as column_name from student_attendance_meta where day_26 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_27'' as column_name from student_attendance_meta where day_27 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_28'' as column_name from student_attendance_meta where day_28 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_29'' as column_name from student_attendance_meta where day_29 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_30'' as column_name from student_attendance_meta where day_30 = True and month= '||month||' and year = '||year||'
+UNION 
+select ''day_31'' as column_name from student_attendance_meta where day_31 = True and month= '||month||' and year = '||year||') as col_tab;';
 
 _column text :='';
 _sql text:='';
+
+_start_date text:='select (cast('||year||' as varchar)'||'||'||'''-'''||'||'||'cast('||month||' as varchar)'||'||'||'''-01'''||')::date';
+start_date date;
+l_query text;
+r_query text;
+c_query text;
+d_query text;
+res text;
+u_query text;
+m_query text;
+_cols text:='select string_agg(days_to_be_processed'||'||''  ''||'''||'boolean'''||','','') from student_attendance_meta_temp where month='||month||' and year='||year;
+col_name text;
+d_meta text;
+us_query text;
+cnt_query text;
+_count int;
+rec_query text;
+rec_exists boolean;
+error_msg text;
 BEGIN
+cnt_query:='select count(*) from student_attendance_meta where month='||month||' and year='||year;
+rec_query:='select EXISTS(select 1 from student_attendance_temp where month= '||month||' and year = '||year||')';
+EXECUTE rec_query into rec_exists;
+EXECUTE cnt_query into _count;
+IF rec_exists=False THEN
+error_msg:='student_attendance_temp table has no records for the month '||month||' and year '||year;  
+RAISE log 'student_attendance_temp table has no records for the month % and year %',month,year;
+return error_msg;
+END IF;
+IF _count = 0 THEN  
+   EXECUTE 'INSERT INTO student_attendance_meta(month,year) values('||month||','||year||')';
+END IF;
+
+EXECUTE _start_date into start_date;
+
+l_query:='select '||'days_in_a_month.day '||'as processed_date'||','||month||'as month'||','||year||'as year'||', '||'''day_'''||'||'||'date_part('||'''day'''||',days_in_a_month.day) as days_to_be_processed,True as to_run from (select (generate_series('''||start_date||'''::date,('''||start_date||'''::date+'||'''1month'''||'::interval-'||'''1day'''||'::interval)::date,'||'''1day'''||'::interval)::date) as day) as days_in_a_month';
+
+d_query:='drop table if exists student_attendance_meta_temp';
+
+EXECUTE d_query;
+
+c_query:='create table if not exists student_attendance_meta_temp as '||l_query;
+
+
+EXECUTE c_query;
+
+
+m_query:='update student_attendance_meta_temp set to_run=False where (extract(dow from processed_date)=0 and month='||month||' and year='||year||') or  processed_date>current_date';
+EXECUTE m_query;
+EXECUTE _cols into col_name;
+d_meta:='drop table if exists student_attendance_meta_stg';
+EXECUTE d_meta;
+res :='create table if not exists student_attendance_meta_stg as select * from crosstab('''||'select month,year,days_to_be_processed,to_run from student_attendance_meta_temp order by 1,2'||''','''||'select days_to_be_processed from student_attendance_meta_temp'||''') as t('||'month int,year int,'||col_name||')';
+
+EXECUTE res;
+
+u_query:='UPDATE student_attendance_meta sam
+     set day_1 = CASE WHEN day_1 = False THEN
+    False
+    ELSE (select day_1 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_2 = CASE WHEN day_2 = False THEN
+    False
+    ELSE (select day_2 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_3 = CASE WHEN day_3 = False THEN
+    False
+    ELSE (select day_3 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_4 = CASE WHEN day_4 = False THEN
+    False
+    ELSE (select day_4 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_5 = CASE WHEN day_5 = False THEN
+    False
+    ELSE (select day_5 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_6 = CASE WHEN day_6 = False THEN
+    False
+    ELSE (select day_6 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_7 = CASE WHEN day_7 = False THEN
+    False
+    ELSE (select day_7 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_8 = CASE WHEN day_8 = False THEN
+    False
+    ELSE (select day_8 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_9 = CASE WHEN day_9 = False THEN
+    False
+    ELSE (select day_9 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+    ,day_10 = CASE WHEN day_10 = False THEN
+    False
+    ELSE (select day_10 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+    ,day_11 = CASE WHEN day_11 = False THEN
+    False
+    ELSE (select day_11 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_12 = CASE WHEN day_12 = False THEN
+    False
+    ELSE (select day_12 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_13 = CASE WHEN day_13 = False THEN
+    False
+    ELSE (select day_13 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_14 = CASE WHEN day_14 = False THEN
+    False
+    ELSE (select day_14 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_15 = CASE WHEN day_15 = False THEN
+    False
+    ELSE (select day_15 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_16 = CASE WHEN day_16 = False THEN
+    False
+    ELSE (select day_16 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_17 = CASE WHEN day_17 = False THEN
+    False
+    ELSE (select day_17 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_18 = CASE WHEN day_18 = False THEN
+    False
+    ELSE (select day_18 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_19 = CASE WHEN day_19 = False THEN
+    False
+    ELSE (select day_19 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+    ,day_20 = CASE WHEN day_20 = False THEN
+    False
+    ELSE (select day_20 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+    ,day_21 = CASE WHEN day_21 = False THEN
+    False
+    ELSE (select day_21 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_22 = CASE WHEN day_22 = False THEN
+    False
+    ELSE (select day_22 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_23 = CASE WHEN day_23 = False THEN
+    False
+    ELSE (select day_23 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_24 = CASE WHEN day_24 = False THEN
+    False
+    ELSE (select day_24 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_25 = CASE WHEN day_25 = False THEN
+    False
+    ELSE (select day_25 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_26 = CASE WHEN day_26 = False THEN
+    False
+    ELSE (select day_26 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_27 = CASE WHEN day_27 = False THEN
+    False
+    ELSE (select day_27 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_28 = CASE WHEN day_28 = False THEN
+    False
+    ELSE (select day_28 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_29 = CASE WHEN day_29 = False THEN
+    False
+    ELSE (select day_29 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_30 = CASE WHEN day_30 = False THEN
+    False
+    ELSE (select day_30 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,day_31 = CASE WHEN day_31 = False THEN
+    False
+    ELSE (select day_31 from student_attendance_meta_stg where month='||month||' and year='||year||')
+  END
+   ,month = '||month||'
+   ,year = '||year;
+
+EXECUTE u_query;
 EXECUTE _col_sql into _column;
+
 _sql :=
       'WITH s AS (select * from student_attendance_temp where student_attendance_temp.month='||month||'
  and student_attendance_temp.year='||year||'),
 upd AS (
 UPDATE student_attendance_trans
-     set day_2 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_2 = True and month='||month||' and year='||year||') THEN
+     set day_1 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_1 = True and month='||month||' and year='||year||') THEN
+   s.day_1
+   ELSE student_attendance_trans.day_1
+  END
+  ,day_2 = CASE WHEN EXISTS (select 1 from student_attendance_meta where day_2 = True and month='||month||' and year='||year||') THEN
    s.day_2
    ELSE student_attendance_trans.day_2
   END
@@ -268,12 +483,207 @@ UPDATE student_attendance_trans
        select s.attendance_id,s.student_id,s.school_id,s.year,s.month,'||_column ||',created_on,updated_on
        from s
        where s.attendance_id not in (select attendance_id from upd)';
+
+us_query := 'UPDATE student_attendance_meta sam
+     set day_1 = CASE WHEN day_1 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_1 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_1
+  END
+   ,day_2 = CASE WHEN day_2 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_2 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_2
+  END
+   ,day_3 = CASE WHEN day_3 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_3 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_3
+  END
+   ,day_4 = CASE WHEN day_4 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_4 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_4
+  END
+   ,day_5 = CASE WHEN day_5 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_5 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_5
+  END
+   ,day_6 = CASE WHEN day_6 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_6 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_6
+  END
+   ,day_7 = CASE WHEN day_7 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_7 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_7
+  END
+   ,day_8 = CASE WHEN day_8 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_8 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_8
+  END
+   ,day_9 = CASE WHEN day_9 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_9 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_9
+  END
+    ,day_10 = CASE WHEN day_10 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_10 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_10
+  END
+    ,day_11 = CASE WHEN day_11 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_11 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_11
+  END
+   ,day_12 = CASE WHEN day_12 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_12 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_12
+  END
+   ,day_13 = CASE WHEN day_13 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_13 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_13
+  END
+   ,day_14 = CASE WHEN day_14 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_14 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_14
+  END
+   ,day_15 = CASE WHEN day_15 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_15 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_15
+  END
+   ,day_16 = CASE WHEN day_16 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_16 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_16
+  END
+   ,day_17 = CASE WHEN day_17 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_17 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_17
+  END
+   ,day_18 = CASE WHEN day_18 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_18 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_18
+  END
+   ,day_19 = CASE WHEN day_19 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_19 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_19
+  END
+    ,day_20 = CASE WHEN day_20 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_20 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_20
+  END
+    ,day_21 = CASE WHEN day_21 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_21 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_21
+  END
+   ,day_22 = CASE WHEN day_22 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_22 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_22
+  END
+   ,day_23 = CASE WHEN day_23 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_23 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_23
+  END
+   ,day_24 = CASE WHEN day_24 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_24 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_24
+  END
+   ,day_25 = CASE WHEN day_25 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_25 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_25
+  END
+   ,day_26 = CASE WHEN day_26 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_26 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_26
+  END
+   ,day_27 = CASE WHEN day_27 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_27 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_27
+  END
+   ,day_28 = CASE WHEN day_28 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_28 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_28
+  END
+   ,day_29 = CASE WHEN day_29 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_29 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_29
+  END
+   ,day_30 = CASE WHEN day_30 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_30 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_30
+  END
+   ,day_31 = CASE WHEN day_31 = False THEN
+    False
+    WHEN EXISTS (select 1 from student_attendance_trans where day_31 is not null and month='||month||' and year='||year||' limit 1) THEN
+   False
+   ELSE sam.day_31
+  END
+   ,month = '||month||'
+   ,year = '||year;
+
    IF _column <> '' THEN  
  EXECUTE _sql;
+ EXECUTE us_query;
    END IF;
- RETURN 0;
+
+
+return 0;
 END;
 $$  LANGUAGE plpgsql;
+
 
 /* temperory table */
 ----------------------------------------------

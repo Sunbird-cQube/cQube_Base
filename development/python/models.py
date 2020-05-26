@@ -1,4 +1,3 @@
-from datetime import datetime
 from config import db,ma
 
 class Users(db.Model):
@@ -10,6 +9,7 @@ class Users(db.Model):
     user_email = db.Column(db.String(100))
     password = db.Column(db.String(256))
     user_status = db.Column(db.Integer)
+    role_id = db.Column(db.Integer)
     user_validity_start_date = db.Column(db.DateTime)
     user_validity_end_date = db.Column(db.DateTime)
 
