@@ -4,7 +4,7 @@ const { logger } = require('../../lib/logger');
 const frequencyData = () => {
     return new Promise((resolve, reject) => {
         try {
-            const_data['getParams']['Key'] = 'CRC/crc_frequency_2020_2.json'
+            const_data['getParams']['Key'] = 'CRC/crc_frequency_2019_8.json'
             const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
                 if (err) {
                     logger.error(err);
