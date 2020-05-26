@@ -59,6 +59,7 @@ def active_user(username):
     existing_person = Users.query \
         .filter(Users.user_email == username) \
         .filter(Users.user_status == 1) \
+        .filter(Users.role_id == 5) \
         .filter(Users.user_validity_start_date <= datetime.now().strftime('%Y-%m-%d %H:%M:%S')) \
         .filter(Users.user_validity_end_date >= datetime.now().strftime('%Y-%m-%d %H:%M:%S')) \
         .all()
