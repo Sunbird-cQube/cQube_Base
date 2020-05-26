@@ -309,7 +309,8 @@ export class SemViewComponent implements OnInit {
               markerIcon.on('mouseout', function (e) {
                 this.closePopup();
               });
-
+              markerIcon.on('click', this.onClick_Marker, this);
+              
               this.layerMarkers.addLayer(markerIcon);
               markerIcon.myJsonData = this.clusterMarkers[i];
             }
