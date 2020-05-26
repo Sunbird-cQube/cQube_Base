@@ -15,7 +15,7 @@ system_user_name:                          # Non-root username with sudo privile
 # Database Parameters
 db_user: cqube_db_user                     # Create your own username for the cQube database
 db_name: cqube_db                          # Enter your own database name for the cQube database
-db_password:                               # Create your own password to for the cQube database, password should contain atleast 1 lower,upper,number,special character
+db_password:                               # Create your own password to for the cQube database, password should contain atleast 1 lower,upper,number,special character and minimum 8 characters
 
 
 # S3 Parameters

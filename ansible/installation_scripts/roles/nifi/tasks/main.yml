@@ -94,6 +94,8 @@
 
 - name: upload parameters
   action: shell curl -d @nifi.json -H Content-Type:application/json -X POST http://localhost:{{ nifi_port }}/nifi-api/parameter-contexts
+  args:
+    warn: false
 
 - name: Get processor group
   uri:
