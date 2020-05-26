@@ -2,6 +2,10 @@
 
 /development/angular/server-side/node_modules
 
+/development/angular/client-side/package-lock.json
+
+/development/angular/server-side/package-lock.json
+
 /development/angular/server-side/.env
 
 /development/python/env.py
