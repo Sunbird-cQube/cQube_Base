@@ -4789,9 +4789,9 @@
                     </bends>
                     <destination>
                         <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>e5785728-83a9-30d1-0000-000000000000</id>
+                        <id>10fc693b-ceea-3bda-0000-000000000000</id>
                         <type>PROCESSOR</type>
-                        <versionedComponentId>e5785728-83a9-30d1-a8a2-b89630f85bc4</versionedComponentId>
+                        <versionedComponentId>10fc693b-ceea-3bda-ad22-0d71fccb48e2</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
                     <labelIndex>1</labelIndex>
@@ -16668,7 +16668,7 @@ on b.x_axis=c.x_axis
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>CRC/${query_type}_${year}_${month}.json</value>
+<value>CRC/crc_frequency_scatter.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
@@ -21376,7 +21376,7 @@ GROUP BY cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,blo
                     <config>
                         <bulletinLevel>WARN</bulletinLevel>
                         <comments></comments>
-                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <concurrentlySchedulableTaskCount>5</concurrentlySchedulableTaskCount>
                         <descriptors>
                             <entry>
 <key>put-db-record-record-reader</key>
@@ -28342,7 +28342,7 @@ on b.x_axis=c.x_axis
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>DISABLED</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -30619,10 +30619,13 @@ block_id,INITCAP(block_name) as block_name,district_id,INITCAP(district_name)as 
        INITCAP(block_name) as block_name, 
        district_id, 
        INITCAP(district_name) as district_name, 
-       visit_count,  
+       visit_count, 
        month, 
        year 
-FROM   crc_visits_frequency </value>
+FROM   crc_visits_frequency 
+where school_id in (select school_id from school_hierarchy_details)
+and year = (select max(year) from crc_visits_frequency group by year order by year desc limit 1)
+and month= (select max(month) from crc_visits_frequency group by year order by year desc limit 1)</value>
                             </entry>
                             <entry>
 <key>sql-post-query</key>
@@ -30667,7 +30670,7 @@ FROM   crc_visits_frequency </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -32622,7 +32625,7 @@ from school_geo_master group by cluster_id) as a
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                 </processors>
@@ -34128,7 +34131,7 @@ english AS "subject_4",sanskrit AS "subject_8" FROM flowfile </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>DISABLED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                 </processors>
@@ -36358,5 +36361,5 @@ from flowfile</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/26/2020 20:37:56 IST</timestamp>
+    <timestamp>05/27/2020 11:14:31 IST</timestamp>
 </template>
