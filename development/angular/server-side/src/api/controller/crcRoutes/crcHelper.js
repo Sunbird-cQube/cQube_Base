@@ -76,7 +76,7 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
                 })
                 let x = Array.from(frequencyDataFilteredSchool.reduce((m, t) => m.set(t.school_id, t), new Map()).values());
                 frequencySchoolDistinct += x.length
-
+                // console.log(x.length);
                 let totalVisits = visit_0_Total + visit_1_2_Total + visit_3_5_Total + visit_6_10_Total + visit_10_more_Total
                 let totalCRCVisits = visit_0.length + visit_1_2.length + visit_3_5.length + visit_6_10.length + visit_10_more.length
 
@@ -92,16 +92,19 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
                 }
                 let schoolData = '';
                 if (level == 'district') {
+                    resultObj['visitedSchoolCount'] = x.length;
                     // count of schools for districts
                     schoolData = crcMetaDataGroupData[resultObj.districtId];
                     crcMetadataFilteredSchool = schoolData.length;
                 } else if (level == 'block') {
+                    resultObj['visitedSchoolCount'] = x.length;
                     resultObj['blockId'] = crcFrequencyGroupData[keys[i]][0].block_id;
                     resultObj['blockName'] = crcFrequencyGroupData[keys[i]][0].block_name;
                     // count of schools for blocks
                     schoolData = crcMetaDataGroupData[resultObj.blockId];
                     crcMetadataFilteredSchool = schoolData.length;
                 } else if (level == 'cluster') {
+                    resultObj['visitedSchoolCount'] = x.length;
                     resultObj['blockId'] = crcFrequencyGroupData[keys[i]][0].block_id;
                     resultObj['blockName'] = crcFrequencyGroupData[keys[i]][0].block_name;
                     resultObj['clusterId'] = crcFrequencyGroupData[keys[i]][0].cluster_id;
@@ -133,11 +136,12 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
                     return (obj.school_id)
                 })
                 let y = Array.from(crcMetadataFiltereSchool.reduce((m, t) => m.set(t.school_id, t), new Map()).values());
-                metadataSchoolDistinct += y.length
-
+                metadataSchoolDistinct += y.length;
+                
+                                
                 // finding all the other values
                 let no_of_schools_per_crc = (crcMetadataFilteredSchool / clusterDupMetadata.length).toFixed(2);
-                let visits_per_school = (totalVisits / crcMetadataFilteredSchool).toFixed(2);
+                let visits_per_school = (totalVisits / x.length).toFixed(2);
                 let percentage_crc_visited_school = ((frequencyClusterDistinct.length / clusterDupMetadata.length) * 100).toFixed(2)
 
                 // assigning the values to keys

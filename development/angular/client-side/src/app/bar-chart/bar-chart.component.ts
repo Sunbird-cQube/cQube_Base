@@ -211,6 +211,7 @@ export class BarChartComponent implements OnInit {
           { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
           { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
           { title: "Visits per schools", data: "visits_per_school" },
+          { title: "Visited schools count", data: "visitedSchoolCount" },
           { title: "Total schools", data: "totalSchools" },
           { title: "Total visits", data: "totalVisits" }
         ]
@@ -286,6 +287,7 @@ export class BarChartComponent implements OnInit {
               { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
               { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
               { title: "Visits per schools", data: "visits_per_school" },
+              { title: "Visited schools count", data: "visitedSchoolCount" },
               { title: "Total schools", data: "totalSchools" },
               { title: "Total visits", data: "totalVisits" }
             ]
@@ -448,6 +450,7 @@ export class BarChartComponent implements OnInit {
             { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
             { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
             { title: "Visits per schools", data: "visits_per_school" },
+            { title: "Visited schools count", data: "visitedSchoolCount" },
             { title: "Total schools", data: "totalSchools" },
             { title: "Total visits", data: "totalVisits" }
           ]
@@ -481,7 +484,7 @@ export class BarChartComponent implements OnInit {
     this.visitCount = 0;
     this.tableData = [];
     this.chartData = [];
-    this.tableHead = "CRC Name";
+    this.tableHead = "Cluster Name";
     this.dist = false;
     this.blok = true;
     this.clust = false;
@@ -556,6 +559,7 @@ export class BarChartComponent implements OnInit {
           { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
           { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
           { title: "Visits per schools", data: "visits_per_school" },
+          { title: "Visited schools count", data: "visitedSchoolCount" },
           { title: "Total schools", data: "totalSchools" },
           { title: "Total visits", data: "totalVisits" }
         ]
@@ -793,5 +797,8 @@ export class BarChartComponent implements OnInit {
     if (this.clust) {
       this.myClusterData(JSON.parse(localStorage.getItem('clusterId')));
     }
+  }
+  redirectTo() {
+    this.router.navigate(['home/dashboard']);
   }
 }

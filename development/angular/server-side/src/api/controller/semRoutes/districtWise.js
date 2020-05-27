@@ -27,7 +27,9 @@ router.post('/districtWise', auth.authController, async (req, res) => {
                 // var filterData = districtData.filter(obj => {
                 //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
                 // })
-
+                districtData = districtData.filter(function (el) {
+                    return el.x_value != null;
+                });
                 // calculate totalstudents and totalschools of all districts for state
                 let totalStudents = districtData.reduce((prev, next) => prev + parseInt(next.students_count), 0);
                 let totalSchools = districtData.reduce((prev, next) => prev + next.total_schools, 0);
@@ -73,11 +75,13 @@ router.post('/districtWise', auth.authController, async (req, res) => {
                     },
                     sortedData
                 }
+                logger.info('--- semester district wise api reponse sent ---');
                 res.send(resultObj);
             }
         });
     } catch (e) {
-        logger.error(e)
+        logger.error(e);
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
     }
 })
 

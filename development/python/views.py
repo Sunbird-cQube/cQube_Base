@@ -1,14 +1,14 @@
 from flask import abort
 from flask_restful import reqparse
 from flask_jwt import JWT, jwt_required, current_identity
-from config import app, db
+from config import app
 from users import User
-from models import Users, UserSchema
+from models import Users
 from config import bcrypt
-import os
 from env import *
 import logging
 import boto3
+from datetime import datetime
 from botocore.client import Config
 from botocore.exceptions import ClientError
 
@@ -57,24 +57,27 @@ def get_user_id(user_id):
 
 def active_user(username):
     existing_person = Users.query \
-        .filter(Users.email == username) \
-        .filter(Users.status == 'A') \
+        .filter(Users.user_email == username) \
+        .filter(Users.user_status == 1) \
+        .filter(Users.role_id == 5) \
+        .filter(Users.user_validity_start_date <= datetime.now().strftime('%Y-%m-%d %H:%M:%S')) \
+        .filter(Users.user_validity_end_date >= datetime.now().strftime('%Y-%m-%d %H:%M:%S')) \
         .all()
     if existing_person:
         return existing_person
     else:
-        return None
+        abort(401, f'User unauthorized')
 
 def authenticate(username, password):
     user = active_user(username)[0]
-    users = [User(user.user_id,user.email,user.password)]
+    users = [User(user.user_id,user.user_email,user.password)]
     lusers = {u.username: u for u in users}
     user = lusers.get(username, None)
     if user and \
             bcrypt.check_password_hash(user.password, password):
         return user
     else:
-        abort(409, f'User not available')
+        abort(401, f'User unauthorized')
 
 def identity(payload):
     user_id = payload['identity']
@@ -87,41 +90,6 @@ jwt = JWT(app, authenticate, identity)
 def protected():
     return '%s' % current_identity
 
-@app.route("/user",methods=["POST"])
-@jwt_required()
-def create():
-    parser = reqparse.RequestParser()
-    fname = parser.add_argument("fname")
-    mname = parser.add_argument("mname")
-    lname = parser.add_argument("lname")
-    password = parser.add_argument("password")
-    args = parser.parse_args()
-    args["email"]=(str(args["fname"])+str(args["mname"])+str(args["lname"])+"@cqube.com").lower()
-    args["status"] = "A"
-    args["password"]=bcrypt.generate_password_hash(args["password"]).decode('UTF-8')
-    existing_person = Users.query \
-        .filter(Users.fname == args["fname"]) \
-        .filter(Users.fname == args["mname"]) \
-        .filter(Users.lname == args["lname"]) \
-        .filter(Users.lname == args["email"]) \
-        .one_or_none()
-    if existing_person is None:
-        schema = UserSchema()
-        new_user = schema.load(args, session=db.session)
-        db.session.add(new_user)
-        db.session.commit()
-        return schema.dump(new_user).get("email"), 201
-    else:
-        logging.info(f'User {fname} {mname} {lname} exists already')
-        abort(409, f'User {fname} {mname} {lname} exists already')
-
-
-#with open(object_name, 'rb') as f:
-#    files = {'file': (object_name, f)}
-#    http_response = requests.post(response['url'], data=response['fields'], files=files)
-
-
-
 @app.route('/upload-url',methods=['POST'])
 @jwt_required()
 def aws_upload_url():
@@ -131,4 +99,4 @@ def aws_upload_url():
     if args["filename"]:
         return create_presigned_post(BUCKET_NAME,str(args["filename"]))
     else:
-        return "Filename is required"
+        abort(400, f'Bad request, validate the payload')
