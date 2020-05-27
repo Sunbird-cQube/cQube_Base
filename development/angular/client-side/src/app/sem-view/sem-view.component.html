@@ -53,8 +53,9 @@
                             Wait...</span>
 
                     </div>
-                    <p id="errMsg" style="display: none; text-align: center; margin-top: 1%; font-family: Arial;"></p>
-
+                    <p id="errMsg"
+                        style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                    </p>
                 </div>
                 <div class="col-sm-5">
                     <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
@@ -107,7 +108,7 @@
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.clusterId"
                     style="font-family: Arial;font-size: 11px; "
-                    [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
+                    [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                     {{cluster.clusterName}}
                 </option>
             </select>
