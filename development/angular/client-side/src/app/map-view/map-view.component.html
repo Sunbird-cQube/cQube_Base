@@ -82,7 +82,7 @@
             <select
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
-                <option [value]="myDistrict" disabled selected="selected">Choose a District
+                <option [value]="myDistrict" disabled selected="selected" style="color: white;">Choose a District
                 </option>
                 <option *ngFor="let dist of districtsNames" [(ngValue)]="dist.id"
                     style="font-family: Arial; font-size: 11px;">
@@ -93,7 +93,7 @@
             <select [hidden]="blockHidden"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
-                <option [value]="myBlock" disabled selected="selected">Choose a Block
+                <option [value]="myBlock" disabled selected="selected" style="color: white;">Choose a Block
                 </option>
                 <option *ngFor="let block of blocksNames" [(ngValue)]="block.id"
                     style="font-family: Arial;font-size: 11px;">

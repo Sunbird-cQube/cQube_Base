@@ -603,9 +603,9 @@ export class SemViewComponent implements OnInit {
         this.data = res;
         this.clusterMarkers = this.data['sortedData']
         this.clusterMarkers.forEach(element => {
-          if (element.clusterName == null) {
-            element.clusterName = 'NO NAME FOUND';
-          }
+          // if (element.clusterName == null) {
+          //   element.clusterName = 'NO NAME FOUND';
+          // }
         });
         // set hierarchy values
         this.blockHierarchy = {
