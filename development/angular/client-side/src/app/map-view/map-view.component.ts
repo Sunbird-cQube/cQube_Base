@@ -88,7 +88,6 @@ export class MapViewComponent implements OnInit {
       });
       this.month = this.months[this.months.length - 1].id;
       this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
-      // console.log(this.month);
       if (this.month) {
         this.month_year = {
           month: this.month,
@@ -96,7 +95,6 @@ export class MapViewComponent implements OnInit {
         };
         this.districtWise();
       }
-      // console.log(this.month_year);
     });
   }
 
@@ -206,6 +204,7 @@ export class MapViewComponent implements OnInit {
       }
     }
   }
+
   getYear() {
     var allMonths = [];
     allMonths = this.getMonthYear[`${this.year} `];
@@ -219,8 +218,8 @@ export class MapViewComponent implements OnInit {
     });
     this.element.disabled = false;
   }
-  public myData;
 
+  public myData;
   async districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
