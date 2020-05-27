@@ -10,11 +10,11 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         const_data['getParams']['Key'] = 'semester/school_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
-                console.log(err);
-                res.send([]);
+                logger.error(err);
+                res.send({ errMsg: "Something went wrong" });
             } else if (!data) {
-                console.log("Something went wrong or s3 file not found");
-                res.send([]);
+                logger.error("No data found in s3 file");
+                res.send({ errMsg: "No such data found" });
             } else {
                 let schoolData = data.Body.toString();
                 schoolData = JSON.parse(schoolData);
@@ -92,11 +92,11 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         const_data['getParams']['Key'] = 'semester/school_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
-                console.log(err);
-                res.send([]);
+                logger.error(err);
+                res.send({ errMsg: "Something went wrong" });
             } else if (!data) {
-                console.log("Something went wrong or s3 file not found");
-                res.send([]);
+                logger.error("No data found in s3 file");
+                res.send({ errMsg: "No such data found" });
             } else {
                 let schoolData = data.Body.toString();
                 schoolData = JSON.parse(schoolData);
@@ -118,7 +118,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 // filterData = filterData.filter(obj => {
                 //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
                 // })
-               
+
                 filterData = filterData.filter(function (el) {
                     return el.x_value != null;
                 });
