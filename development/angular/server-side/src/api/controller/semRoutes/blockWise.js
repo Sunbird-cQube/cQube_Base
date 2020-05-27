@@ -27,7 +27,10 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                 // filterData = blockData.filter(obj => {
                 //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
                 // })
-
+        
+                blockData = blockData.filter(function (el) {
+                    return el.x_value != null;
+                });
                 // calculate totalstudents and totalschools of all districts for state
                 let totalStudents = blockData.reduce((prev, next) => prev + parseInt(next.students_count), 0);
                 let totalSchools = blockData.reduce((prev, next) => prev + next.total_schools, 0);
@@ -114,6 +117,10 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                 // filterData = filterData.filter(obj => {
                 //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
                 // })
+
+                filterData = filterData.filter(function (el) {
+                    return el.x_value != null;
+                });
 
                 // calculate totalstudents and totalschools of all districts for state
                 let totalStudents = filterData.reduce((prev, next) => prev + parseInt(next.students_count), 0);
