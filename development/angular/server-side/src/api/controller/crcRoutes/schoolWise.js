@@ -28,8 +28,8 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         logger.info('--- crc all school wise api reponse sent ---');
         res.send(crcResult)
     } catch (e) {
-        console.log(e);
-        logger.error(e)
+        logger.error(e);
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
     }
 })
 

@@ -80,7 +80,8 @@ router.post('/districtWise', auth.authController, async (req, res) => {
             }
         });
     } catch (e) {
-        logger.error(e)
+        logger.error(e);
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
     }
 })
 
