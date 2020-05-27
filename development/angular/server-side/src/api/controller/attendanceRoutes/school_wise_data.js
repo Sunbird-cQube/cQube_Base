@@ -13,10 +13,10 @@ router.post('/schoolWise', auth.authController, function (req, res) {
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send([]);
+                res.send({ errMsg: "Something went wrong" });
             } else if (!data) {
-                logger.info("Something went wrong or s3 file not found");
-                res.send([]);
+                logger.error("No data found in s3 file");
+                res.send({ errMsg: "No such data found" });
             } else {
                 logger.info('--- Attendance school wise api response sent ---');
                 res.send(data.Body);
@@ -39,26 +39,29 @@ router.post('/schoolPerCluster', auth.authController, async (req, res) => {
         var year = req.body.data.year;
 
         var allSchools = await axios.post(`${baseUrl}/attendance/schoolWise`, { month: month, year: year }, { 'headers': { 'token': "Bearer" + token } });
-
-        var schoolsDetails = [];
-        allSchools.data.forEach(schools => {
-            if (clusterId === schools.cluster_id) {
-                obj = {
-                    x_axis: schools.x_axis,
-                    cluster: schools.cluster_name,
-                    distName: schools.district_name,
-                    blockName: schools.block_name,
-                    schoolName: schools.school_name,
-                    x_value: schools.x_value,
-                    y_value: schools.y_value,
-                    z_value: schools.z_value,
-                    students_count: schools.students_count,
+        if (allSchools.data['errMsg']) {
+            res.send({ errMsg: "Something went wrong" });
+        } else {
+            var schoolsDetails = [];
+            allSchools.data.forEach(schools => {
+                if (clusterId === schools.cluster_id) {
+                    obj = {
+                        x_axis: schools.x_axis,
+                        cluster: schools.cluster_name,
+                        distName: schools.district_name,
+                        blockName: schools.block_name,
+                        schoolName: schools.school_name,
+                        x_value: schools.x_value,
+                        y_value: schools.y_value,
+                        z_value: schools.z_value,
+                        students_count: schools.students_count,
+                    }
+                    schoolsDetails.push(obj);
                 }
-                schoolsDetails.push(obj);
-            }
-        });
-        logger.info('--- Attendance schoolPerCluster api response sent ---');
-        res.send(schoolsDetails);
+            });
+            logger.info('--- Attendance schoolPerCluster api response sent ---');
+            res.send(schoolsDetails);
+        }
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
