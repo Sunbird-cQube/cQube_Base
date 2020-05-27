@@ -1118,7 +1118,8 @@ total_present  int,
 total_working_days  int,
 students_count bigint,
 created_on  TIMESTAMP without time zone ,
-updated_on  TIMESTAMP without time zone
+updated_on  TIMESTAMP without time zone,
+primary key(school_id,month,year)
 );
 
 create index if not exists school_student_total_attendance_id on school_student_total_attendance(month,school_id,block_id,cluster_id);
@@ -1177,7 +1178,8 @@ missed_visit_count int,
 month int,
 year int,
 created_on  TIMESTAMP without time zone,
-updated_on  TIMESTAMP without time zone
+updated_on  TIMESTAMP without time zone,
+primary key(school_id,month,year)
 );
 
 create index if not exists crc_visits_frequency_id on crc_visits_frequency(school_id,block_id,cluster_id,district_id);
@@ -1226,8 +1228,8 @@ subject_8_marks_scored  int,
 subject_8_total_marks  int,
 students_count bigint,
 created_on  TIMESTAMP without time zone ,
-updated_on  TIMESTAMP without time zone
+updated_on  TIMESTAMP without time zone,
+primary key(school_id,semester,grade)
 );
 
 create index if not exists school_student_total_marks_id on school_student_subject_total_marks(semester,school_id,block_id,cluster_id);
-
