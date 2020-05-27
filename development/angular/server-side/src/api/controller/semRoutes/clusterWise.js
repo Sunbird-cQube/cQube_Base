@@ -86,7 +86,8 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
             }
         })
     } catch (e) {
-        logger.error(e)
+        logger.error(e);
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
     }
 })
 
@@ -182,7 +183,8 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
             }
         })
     } catch (e) {
-        logger.error(e)
+        logger.error(e);
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
     }
 })
 
