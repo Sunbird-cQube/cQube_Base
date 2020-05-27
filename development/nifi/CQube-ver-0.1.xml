@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>initial release with static,student attendance and crc, work flows</description>
+    <description>final release of version 1.0, with static, student attendance, crc and assessment data sources.</description>
     <groupId>17027687-0171-1000-87b7-d3b165adefac</groupId>
-    <name>CQube-ver-0.1</name>
+    <name>cQube-ver-1.0</name>
     <snippet>
         <processGroups>
             <id>e4e50836-5820-391f-0000-000000000000</id>
@@ -1467,34 +1467,6 @@
                         <id>ebc8e1a3-2dcc-382d-0000-000000000000</id>
                         <type>PROCESSOR</type>
                         <versionedComponentId>ebc8e1a3-2dcc-382d-b1fe-eb0db522c404</versionedComponentId>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <connections>
-                    <id>3077f7a6-beb7-3604-0000-000000000000</id>
-                    <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
-                    <versionedComponentId>3077f7a6-beb7-3604-96f2-70572482727c</versionedComponentId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <destination>
-                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>3a4cf1e8-ad7c-362c-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                        <versionedComponentId>3a4cf1e8-ad7c-362c-9307-eb3e970fd948</versionedComponentId>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <selectedRelationships>success</selectedRelationships>
-                    <source>
-                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>27cd9e5f-7c20-3196-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                        <versionedComponentId>27cd9e5f-7c20-3196-830a-8b8bb74d418c</versionedComponentId>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -4427,34 +4399,6 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
-                    <id>7ee01f33-abe3-3ba5-0000-000000000000</id>
-                    <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
-                    <versionedComponentId>7ee01f33-abe3-3ba5-b4f0-5cb1b2f16a68</versionedComponentId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <destination>
-                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>169fddb8-8f4b-3a0a-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                        <versionedComponentId>169fddb8-8f4b-3a0a-a1f7-c54e53c716f2</versionedComponentId>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <selectedRelationships>success</selectedRelationships>
-                    <source>
-                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>40de57e3-e4f6-3d8c-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                        <versionedComponentId>40de57e3-e4f6-3d8c-975c-9fabde4aee44</versionedComponentId>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <connections>
                     <id>7f49bd11-6432-3100-0000-000000000000</id>
                     <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
                     <versionedComponentId>7f49bd11-6432-3100-bbaa-2cc7dc39c053</versionedComponentId>
@@ -4789,9 +4733,9 @@
                     </bends>
                     <destination>
                         <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>e5785728-83a9-30d1-0000-000000000000</id>
+                        <id>10fc693b-ceea-3bda-0000-000000000000</id>
                         <type>PROCESSOR</type>
-                        <versionedComponentId>e5785728-83a9-30d1-a8a2-b89630f85bc4</versionedComponentId>
+                        <versionedComponentId>10fc693b-ceea-3bda-ad22-0d71fccb48e2</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
                     <labelIndex>1</labelIndex>
@@ -16227,7 +16171,7 @@ GROUP BY district_id,district_latitude,district_longitude,district_name ,year,mo
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                 </processors>
@@ -16348,7 +16292,9 @@ Round(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_s
 	)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY block_id,grade 
 ;
 select a.x_axis,block_name,x_value,district_id,district_name,y_axis,y_value,z_axis,z_value,students_count,total_schools,a.semester, 
@@ -16366,7 +16312,9 @@ Round(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_s
 	)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district_name,semester )as a
 left join 
 (select * from crosstab(
@@ -16385,8 +16333,7 @@ on a.x_axis=b.x_axis left join
  round(sum(case when x_value between 60 and 75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_60_75,
  round(sum(case when x_value &gt;=75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_above_75
    from block_school group by x_axis) as c
-on b.x_axis=c.x_axis
-</value>
+on b.x_axis=c.x_axis</value>
                             </entry>
                             <entry>
 <key>sql-post-query</key>
@@ -16431,7 +16378,7 @@ on b.x_axis=c.x_axis
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -16668,7 +16615,7 @@ on b.x_axis=c.x_axis
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>CRC/${query_type}_${year}_${month}.json</value>
+<value>CRC/crc_frequency_scatter.json</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
@@ -17600,7 +17547,7 @@ left join district_tmp as d on s.district_id=d.district_id</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQL</type>
                 </processors>
@@ -18066,104 +18013,6 @@ left join district_tmp as d on s.district_id=d.district_id</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>1000 days</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                        <yieldDuration>1 sec</yieldDuration>
-                    </config>
-                    <executionNodeRestricted>false</executionNodeRestricted>
-                    <name>GenerateFlowFile</name>
-                    <relationships>
-                        <autoTerminate>false</autoTerminate>
-                        <name>success</name>
-                    </relationships>
-                    <state>RUNNING</state>
-                    <style/>
-                    <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
-                </processors>
-                <processors>
-                    <id>27cd9e5f-7c20-3196-0000-000000000000</id>
-                    <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
-                    <position>
-                        <x>-40.36850720308064</x>
-                        <y>-3175.09001368525</y>
-                    </position>
-                    <versionedComponentId>27cd9e5f-7c20-3196-830a-8b8bb74d418c</versionedComponentId>
-                    <bundle>
-                        <artifact>nifi-standard-nar</artifact>
-                        <group>org.apache.nifi</group>
-                        <version>1.10.0</version>
-                    </bundle>
-                    <config>
-                        <bulletinLevel>WARN</bulletinLevel>
-                        <comments></comments>
-                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                        <descriptors>
-                            <entry>
-<key>File Size</key>
-<value>
-    <name>File Size</name>
-</value>
-                            </entry>
-                            <entry>
-<key>Batch Size</key>
-<value>
-    <name>Batch Size</name>
-</value>
-                            </entry>
-                            <entry>
-<key>Data Format</key>
-<value>
-    <name>Data Format</name>
-</value>
-                            </entry>
-                            <entry>
-<key>Unique FlowFiles</key>
-<value>
-    <name>Unique FlowFiles</name>
-</value>
-                            </entry>
-                            <entry>
-<key>generate-ff-custom-text</key>
-<value>
-    <name>generate-ff-custom-text</name>
-</value>
-                            </entry>
-                            <entry>
-<key>character-set</key>
-<value>
-    <name>character-set</name>
-</value>
-                            </entry>
-                        </descriptors>
-                        <executionNode>ALL</executionNode>
-                        <lossTolerant>false</lossTolerant>
-                        <penaltyDuration>30 sec</penaltyDuration>
-                        <properties>
-                            <entry>
-<key>File Size</key>
-<value>0B</value>
-                            </entry>
-                            <entry>
-<key>Batch Size</key>
-<value>1</value>
-                            </entry>
-                            <entry>
-<key>Data Format</key>
-<value>Text</value>
-                            </entry>
-                            <entry>
-<key>Unique FlowFiles</key>
-<value>false</value>
-                            </entry>
-                            <entry>
-<key>generate-ff-custom-text</key>
-                            </entry>
-                            <entry>
-<key>character-set</key>
-<value>UTF-8</value>
-                            </entry>
-                        </properties>
-                        <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -19132,7 +18981,7 @@ left join district_tmp as d on s.district_id=d.district_id</value>
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingPeriod>3 sec</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -19146,7 +18995,7 @@ left join district_tmp as d on s.district_id=d.district_id</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.aws.s3.DeleteS3Object</type>
                 </processors>
@@ -19638,104 +19487,6 @@ left join district_tmp as d on s.district_id=d.district_id</value>
                     <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
-                </processors>
-                <processors>
-                    <id>40de57e3-e4f6-3d8c-0000-000000000000</id>
-                    <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
-                    <position>
-                        <x>-5336.0</x>
-                        <y>616.0</y>
-                    </position>
-                    <versionedComponentId>40de57e3-e4f6-3d8c-975c-9fabde4aee44</versionedComponentId>
-                    <bundle>
-                        <artifact>nifi-standard-nar</artifact>
-                        <group>org.apache.nifi</group>
-                        <version>1.10.0</version>
-                    </bundle>
-                    <config>
-                        <bulletinLevel>WARN</bulletinLevel>
-                        <comments></comments>
-                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                        <descriptors>
-                            <entry>
-<key>File Size</key>
-<value>
-    <name>File Size</name>
-</value>
-                            </entry>
-                            <entry>
-<key>Batch Size</key>
-<value>
-    <name>Batch Size</name>
-</value>
-                            </entry>
-                            <entry>
-<key>Data Format</key>
-<value>
-    <name>Data Format</name>
-</value>
-                            </entry>
-                            <entry>
-<key>Unique FlowFiles</key>
-<value>
-    <name>Unique FlowFiles</name>
-</value>
-                            </entry>
-                            <entry>
-<key>generate-ff-custom-text</key>
-<value>
-    <name>generate-ff-custom-text</name>
-</value>
-                            </entry>
-                            <entry>
-<key>character-set</key>
-<value>
-    <name>character-set</name>
-</value>
-                            </entry>
-                        </descriptors>
-                        <executionNode>ALL</executionNode>
-                        <lossTolerant>false</lossTolerant>
-                        <penaltyDuration>30 sec</penaltyDuration>
-                        <properties>
-                            <entry>
-<key>File Size</key>
-<value>0B</value>
-                            </entry>
-                            <entry>
-<key>Batch Size</key>
-<value>1</value>
-                            </entry>
-                            <entry>
-<key>Data Format</key>
-<value>Text</value>
-                            </entry>
-                            <entry>
-<key>Unique FlowFiles</key>
-<value>false</value>
-                            </entry>
-                            <entry>
-<key>generate-ff-custom-text</key>
-                            </entry>
-                            <entry>
-<key>character-set</key>
-<value>UTF-8</value>
-                            </entry>
-                        </properties>
-                        <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
-                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                        <yieldDuration>1 sec</yieldDuration>
-                    </config>
-                    <executionNodeRestricted>false</executionNodeRestricted>
-                    <name>GenerateFlowFile</name>
-                    <relationships>
-                        <autoTerminate>false</autoTerminate>
-                        <name>success</name>
-                    </relationships>
-                    <state>RUNNING</state>
-                    <style/>
-                    <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
                 </processors>
                 <processors>
                     <id>413ead79-5a0a-38ad-0000-000000000000</id>
@@ -21376,7 +21127,7 @@ GROUP BY cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,blo
                     <config>
                         <bulletinLevel>WARN</bulletinLevel>
                         <comments></comments>
-                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <concurrentlySchedulableTaskCount>5</concurrentlySchedulableTaskCount>
                         <descriptors>
                             <entry>
 <key>put-db-record-record-reader</key>
@@ -27180,7 +26931,18 @@ from school_geo_master group by district_id) as a
                             </entry>
                             <entry>
 <key>SQL select query</key>
-<value>create or replace view school_grade as
+<value>create or replace view school_semester_no_data as
+select school_id,semester from school_student_subject_total_marks 
+WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+group by school_id,semester
+having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
+ case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+ +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+ case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+ +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+ ) = 0;
+
+create or replace view school_grade as
 	SELECT school_id AS x_axis,grade,
 Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
 	case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
@@ -27190,7 +26952,9 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 	),0)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL 
+AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL 
+AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY school_id,grade; 
 
 select a.x_axis,school_name,cluster_id,cluster_name,crc_name,block_id,block_name,x_value,district_id,district_name,y_axis,y_value,z_axis,z_value,
@@ -27209,7 +26973,9 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 	),0)*100.0/
 NULLIF(Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),0),1) AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,semester )as a
 left join 
 (select * from crosstab(
@@ -27218,8 +26984,7 @@ left join
 (x_axis bigint,"grade_3" numeric,"grade_4" numeric,"grade_5" numeric,"grade_6" numeric
 ,"grade_7" numeric,"grade_8" numeric)
 ) as b
-on a.x_axis=b.x_axis
-</value>
+on a.x_axis=b.x_axis</value>
                             </entry>
                             <entry>
 <key>sql-post-query</key>
@@ -27264,7 +27029,7 @@ on a.x_axis=b.x_axis
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -27720,7 +27485,9 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 	),0)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY cluster_id,grade; 
 
 select a.x_axis,cluster_name,block_id,block_name,x_value,district_id,district_name,y_axis,y_value,z_axis,z_value,students_count,total_schools,a.semester, 
@@ -27739,7 +27506,9 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 	),0)*100.0/
 NULLIF(Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),0),1) AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,block_name,district_id,district_name,semester )as a
 left join 
 (select * from crosstab(
@@ -27759,8 +27528,7 @@ select x_axis,sum(case when x_value &lt;=33 then 1 else 0 end)as value_below_33,
  round(sum(case when x_value between 60 and 75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_60_75,
  round(sum(case when x_value &gt;=75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_above_75
    from cluster_school group by x_axis)as c
-on b.x_axis=c.x_axis
-</value>
+on b.x_axis=c.x_axis</value>
                             </entry>
                             <entry>
 <key>sql-post-query</key>
@@ -27805,7 +27573,7 @@ on b.x_axis=c.x_axis
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -28342,7 +28110,7 @@ on b.x_axis=c.x_axis
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>DISABLED</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -30619,10 +30387,13 @@ block_id,INITCAP(block_name) as block_name,district_id,INITCAP(district_name)as 
        INITCAP(block_name) as block_name, 
        district_id, 
        INITCAP(district_name) as district_name, 
-       visit_count,  
+       visit_count, 
        month, 
        year 
-FROM   crc_visits_frequency </value>
+FROM   crc_visits_frequency 
+where school_id in (select school_id from school_hierarchy_details)
+and year = (select max(year) from crc_visits_frequency group by year order by year desc limit 1)
+and month= (select max(month) from crc_visits_frequency group by year order by year desc limit 1)</value>
                             </entry>
                             <entry>
 <key>sql-post-query</key>
@@ -30667,7 +30438,7 @@ FROM   crc_visits_frequency </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -31211,9 +30982,6 @@ FROM   crc_visits_frequency </value>
 <value>create or replace view district_grade as
 SELECT district_id AS x_axis,grade,
 Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
-	case when subject_create or replace view district_grade as
-SELECT district_id AS x_axis,grade,
-Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
 	case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
 	+case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
 	case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
@@ -31221,7 +30989,7 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 	),0)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
 GROUP BY district_id,grade;
 
 
@@ -31235,7 +31003,9 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 	),0)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 
+AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY district_id,school_id;
 
 select a.x_axis,district_name,x_value,y_axis,y_value,z_axis,z_value,students_count,total_schools,a.semester, 
@@ -31253,66 +31023,9 @@ Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value,
 'latitude' AS y_axis,district_latitude AS y_value,'longitude' AS z_axis,district_longitude AS z_value,
 Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,semester
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
-GROUP BY district_id,district_latitude,district_longitude,district_name,semester)as a
-left join 
-(select * from crosstab(
-'select x_axis,grade,x_value from district_grade order by 1',
-'select distinct(grade) from district_grade order by 1') as 
-(x_axis bigint,"grade_3" numeric(4,2),"grade_4" numeric(4,2),"grade_5" numeric(4,2),"grade_6" numeric(4,2)
-,"grade_7" numeric(4,2),"grade_8" numeric(4,2))) b
-on a.x_axis=b.x_axis
-left join (select x_axis,
- sum(case when x_value &lt;=33 then 1 else 0 end)as value_below_33,
- sum(case when x_value between 33 and 60 then 1 else 0 end)as value_between_33_60,
- sum(case when x_value between 60 and 75 then 1 else 0 end)as value_between_60_75,
- sum(case when x_value &gt;=75 then 1 else 0 end)as value_above_75,
- round(sum(case when x_value &lt;=33 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_below_33,
- round(sum(case when x_value between 33 and 60 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_33_60,
- round(sum(case when x_value between 60 and 75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_60_75,
- round(sum(case when x_value &gt;=75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_above_75
-   from district_school group by x_axis) as c 
-   on b.x_axis=c.x_axis
-3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
-	+case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
-	case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
-	+case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
-	),0)*100.0/
-Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
-	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
-GROUP BY district_id,grade;
-
-
-create or replace view district_school as
-SELECT district_id AS x_axis,school_id,
-Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
-	case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
-	+case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
-	case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
-	+case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
-	),0)*100.0/
-Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
-	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
-GROUP BY district_id,school_id;
-
-select a.x_axis,district_name,x_value,y_axis,y_value,z_axis,z_value,students_count,total_schools,a.semester, 
-b.grade_3,b.grade_4,b.grade_5,b.grade_6,b.grade_7,b.grade_8,c.value_below_33,c.value_between_33_60,c.value_between_60_75,c.value_above_75,
-c.percent_below_33,c.percent_between_33_60,c.percent_between_60_75,c.percent_above_75
-from
-(SELECT district_id AS x_axis,Initcap(district_name) AS district_name, 
-Round(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
-	case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
-	+case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
-	case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
-	+case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
-	)*100.0/
-Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
-	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value,
-'latitude' AS y_axis,district_latitude AS y_value,'longitude' AS z_axis,district_longitude AS z_value,
-Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,semester
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY district_id,district_latitude,district_longitude,district_name,semester)as a
 left join 
 (select * from crosstab(
@@ -31376,7 +31089,7 @@ left join (select x_axis,
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -32622,7 +32335,7 @@ from school_geo_master group by cluster_id) as a
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                 </processors>
@@ -34128,7 +33841,7 @@ english AS "subject_4",sanskrit AS "subject_8" FROM flowfile </value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>DISABLED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                 </processors>
@@ -36358,5 +36071,5 @@ from flowfile</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/26/2020 20:37:56 IST</timestamp>
+    <timestamp>05/27/2020 12:31:10 IST</timestamp>
 </template>
