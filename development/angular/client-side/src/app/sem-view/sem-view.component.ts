@@ -188,6 +188,7 @@ export class SemViewComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
       // these are for showing the hierarchy names based on selection
@@ -267,7 +268,7 @@ export class SemViewComponent implements OnInit {
               this.studentCount = this.data['totalValues'].totalStudents;
 
               this.blockMarkers.forEach(schoolData => {
-                this.fileName = "School_wise_report"
+                this.fileName = "Block_wise_report"
                 let obj = {
                   DistrictId: schoolData.districtId,
                   DistrictName: schoolData.districtName,
@@ -308,6 +309,7 @@ export class SemViewComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
       this.clusterId = undefined;
@@ -390,14 +392,14 @@ export class SemViewComponent implements OnInit {
               this.studentCount = this.data['totalValues'].totalStudents;
 
               this.clusterMarkers.forEach(schoolData => {
-                this.fileName = "School_wise_report"
+                this.fileName = "Cluster_wise_report"
                 let obj = {
                   DistrictId: schoolData.districtId,
                   DistrictName: schoolData.districtName,
                   BlockId: schoolData.blockId,
                   BlockName: schoolData.blockName,
                   ClusterId: schoolData.clusterId,
-                  CRCName: schoolData.clusterName,
+                  ClusterName: schoolData.clusterName,
                   Semester_Performance: schoolData.assesmentPercentage + " %",
                   Grade3: schoolData.grade_3 + " %",
                   Grade4: schoolData.grade_4 + " %",
@@ -405,8 +407,8 @@ export class SemViewComponent implements OnInit {
                   Grade6: schoolData.grade_6 + " %",
                   Grade7: schoolData.grade_7 + " %",
                   Grade8: schoolData.grade_8 + " %",
-                  TotalSchools: Number(this.data['totalValues'].totalSchools),
-                  TotalStudents: Number(this.data['totalValues'].totalStudents)
+                  TotalSchools: Number(schoolData.schoolsCount.replace(/\,/g, '')),
+                  TotalStudents: Number(schoolData.studentsCount.replace(/\,/g, ''))
                 }
                 this.reportData.push(obj);
               });
@@ -433,7 +435,7 @@ export class SemViewComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
-
+      this.reportData = [];
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -464,30 +466,7 @@ export class SemViewComponent implements OnInit {
             let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
             this.colors = colors;
 
-            for (var i = 0; i < result.length; i++) {
-              this.schoolMarkers.push(
-                {
-                  districtId: result[i].districtId,
-                  districtName: result[i].districtName,
-                  blockId: result[i].blockId,
-                  blockName: result[i].blockName,
-                  clusterId: result[i].clusterId,
-                  clusterName: result[i].clusterName,
-                  schoolId: result[i].schoolId,
-                  schoolName: result[i].schoolName,
-                  assesmentPercentage: result[i].assesmentPercentage,
-                  grade_3: result[i].grade_3,
-                  grade_4: result[i].grade_4,
-                  grade_5: result[i].grade_5,
-                  grade_6: result[i].grade_6,
-                  grade_7: result[i].grade_7,
-                  grade_8: result[i].grade_8,
-                  lat: result[i].lat,
-                  lng: result[i].lng,
-                  studentsCount: result[i].studentsCount
-                });
-            };
-
+            this.schoolMarkers = result;
             if (this.schoolMarkers.length !== 0) {
               for (let i = 0; i < this.schoolMarkers.length; i++) {
                 var markerIcon = L.circleMarker([this.schoolMarkers[i].lat, this.schoolMarkers[i].lng], {
@@ -539,9 +518,9 @@ export class SemViewComponent implements OnInit {
                   BlockId: schoolData.blockId,
                   BlockName: schoolData.blockName,
                   ClusterId: schoolData.clusterId,
-                  CRCName: schoolData.clusterName,
-                  SchoolId: schoolData.schooolId,
-                  SchoolName: schoolData.schooolName,
+                  ClusterName: schoolData.clusterName,
+                  SchoolId: schoolData.schoolId,
+                  SchoolName: schoolData.schoolName,
                   Semester_Performance: schoolData.assesmentPercentage + " %",
                   Grade3: schoolData.grade_3 + " %",
                   Grade4: schoolData.grade_4 + " %",
@@ -549,8 +528,7 @@ export class SemViewComponent implements OnInit {
                   Grade6: schoolData.grade_6 + " %",
                   Grade7: schoolData.grade_7 + " %",
                   Grade8: schoolData.grade_8 + " %",
-                  TotalSchools: Number(this.data['totalValues'].totalSchools),
-                  TotalStudents: Number(this.data['totalValues'].totalStudents)
+                  TotalStudents: Number(schoolData.studentsCount.replace(/\,/g, ''))
                 }
                 this.reportData.push(obj);
               });
@@ -611,7 +589,7 @@ export class SemViewComponent implements OnInit {
           radius: 3.5,
           fillOpacity: 1,
           strokeWeight: 0.01,
-          mapZoom: 9,
+          mapZoom: 8.3,
           centerLat: this.data['sortedData'][0].lat,
           centerLng: this.data['sortedData'][0].lng,
           level: 'block'
@@ -865,7 +843,7 @@ export class SemViewComponent implements OnInit {
             "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
-          this.fileName = "Block_wise_report"
+          this.fileName = "Block_Per_dist_report"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
@@ -902,14 +880,14 @@ export class SemViewComponent implements OnInit {
             "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
-          this.fileName = "Cluster_wise_report"
+          this.fileName = "Cluster_per_block_report"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
             BlockId: this.markers[i].blockId,
             BlockName: this.markers[i].blockName,
             ClusterId: this.markers[i].clusterId,
-            CRCName: this.markers[i].clusterName,
+            ClusterName: this.markers[i].clusterName,
             Semester_Performance: this.markers[i].assesmentPercentage + " %",
             Grade3: this.markers[i].grade_3 + " %",
             Grade4: this.markers[i].grade_4 + " %",
@@ -937,14 +915,14 @@ export class SemViewComponent implements OnInit {
             "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
             "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount
           );
-          this.fileName = "School_wise_report"
+          this.fileName = "School_per_cluster_report"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
             BlockId: this.markers[i].blockId,
             BlockName: this.markers[i].blockName,
             ClusterId: this.markers[i].clusterId,
-            CRCName: this.markers[i].clusterName,
+            ClusterName: this.markers[i].clusterName,
             SchoolId: this.markers[i].schoolId,
             SchoolName: this.markers[i].schoolName,
             Semester_Performance: this.markers[i].assesmentPercentage + " %",
@@ -954,7 +932,6 @@ export class SemViewComponent implements OnInit {
             Grade6: this.markers[i].grade_6 + " %",
             Grade7: this.markers[i].grade_7 + " %",
             Grade8: this.markers[i].grade_8 + " %",
-            TotalSchools: Number(this.data['totalValues'].totalSchools.replace(/\,/g, '')),
             TotalStudents: Number(this.markers[i].studentsCount.replace(/\,/g, ''))
           }
           this.reportData.push(obj);
