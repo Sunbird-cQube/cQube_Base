@@ -229,9 +229,7 @@ export class BarChartComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.crcDistWiseData().subscribe(res => {
-
         localStorage.setItem('resData', JSON.stringify(res));
-        // console.log(res);
         this.result = res;
         let a = this.result.schoolsVisitedCount
         this.result = this.result.visits;
