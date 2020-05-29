@@ -8,10 +8,10 @@ const frequencyData = () => {
             const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
                 if (err) {
                     logger.error(err);
-                    res.send({ errMsg: "Something went wrong" });
+                    resolve([]);
                 } else if (!data) {
                     logger.error("No data found in s3 file");
-                    res.send({ errMsg: "No such data found" });
+                    resolve([]);
                 } else {
                     let crcData = data.Body.toString();
                     crcData = JSON.parse(crcData);
@@ -31,10 +31,10 @@ const crcMetaData = () => {
             const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
                 if (err) {
                     logger.error(err);
-                    res.send({ errMsg: "Something went wrong" });
+                    resolve([]);
                 } else if (!data) {
                     logger.error("No data found in s3 file");
-                    res.send({ errMsg: "No such data found" });
+                    resolve([]);
                 } else {
                     let crcData = data.Body.toString();
                     crcData = JSON.parse(crcData);
