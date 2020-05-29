@@ -2,7 +2,7 @@
 <template encoding-version="1.3">
     <description>initial release with static,student attendance,crc and assessment, work flows</description>
     <groupId>17027687-0171-1000-87b7-d3b165adefac</groupId>
-    <name>cQube-ver-1.0</name>
+    <name>CQube-ver-0.1</name>
     <snippet>
         <processGroups>
             <id>e4e50836-5820-391f-0000-000000000000</id>
@@ -272,6 +272,42 @@
                         <id>7f890f1f-9414-3bdf-0000-000000000000</id>
                         <type>PROCESSOR</type>
                         <versionedComponentId>7f890f1f-9414-3bdf-a11d-6adcdf52d7fc</versionedComponentId>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>0bb7e4f2-f991-3bda-0000-000000000000</id>
+                    <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
+                    <versionedComponentId>0bb7e4f2-f991-3bda-b235-2fe180643aa6</versionedComponentId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>2424.0</x>
+                        <y>1000.0</y>
+                    </bends>
+                    <bends>
+                        <x>2384.0</x>
+                        <y>1440.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
+                        <id>10f21942-2213-30bb-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>10f21942-2213-30bb-9c0a-283327a4b8b9</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>success</selectedRelationships>
+                    <source>
+                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
+                        <id>96509195-4fde-3dad-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>96509195-4fde-3dad-9d7a-00045506be41</versionedComponentId>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -765,33 +801,6 @@
                         <id>6f6bf40e-430b-36a2-0000-000000000000</id>
                         <type>PROCESSOR</type>
                         <versionedComponentId>6f6bf40e-430b-36a2-839e-e2be696e902b</versionedComponentId>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <connections>
-                    <id>1986dc28-b5c6-39f4-0000-000000000000</id>
-                    <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
-                    <versionedComponentId>1986dc28-b5c6-39f4-89cb-72eb64385e19</versionedComponentId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <destination>
-                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>9ca937d4-1c7a-3c24-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                        <versionedComponentId>9ca937d4-1c7a-3c24-8af2-efd355eb8724</versionedComponentId>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <source>
-                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>86d8ee7a-8652-3ed8-0000-000000000000</id>
-                        <type>FUNNEL</type>
-                        <versionedComponentId>86d8ee7a-8652-3ed8-8ad8-42c7b99dab45</versionedComponentId>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -2110,37 +2119,6 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
-                    <id>42c953c3-0d28-33f0-0000-000000000000</id>
-                    <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
-                    <versionedComponentId>42c953c3-0d28-33f0-9d5f-2c3ff377048a</versionedComponentId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <bends>
-                        <x>2296.0</x>
-                        <y>1288.0</y>
-                    </bends>
-                    <destination>
-                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>10f21942-2213-30bb-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                        <versionedComponentId>10f21942-2213-30bb-9c0a-283327a4b8b9</versionedComponentId>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>0</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <source>
-                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>86d8ee7a-8652-3ed8-0000-000000000000</id>
-                        <type>FUNNEL</type>
-                        <versionedComponentId>86d8ee7a-8652-3ed8-8ad8-42c7b99dab45</versionedComponentId>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <connections>
                     <id>439cb18f-149d-30bb-0000-000000000000</id>
                     <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
                     <versionedComponentId>439cb18f-149d-30bb-aa43-3c583e65996e</versionedComponentId>
@@ -2385,33 +2363,6 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
-                    <id>4a66e4ce-2c73-3c82-0000-000000000000</id>
-                    <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
-                    <versionedComponentId>4a66e4ce-2c73-3c82-85d1-3f3983c33a05</versionedComponentId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <destination>
-                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>b7efa88c-7aa3-369e-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                        <versionedComponentId>b7efa88c-7aa3-369e-9df4-7c50fcaa9a59</versionedComponentId>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <source>
-                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
-                        <id>86d8ee7a-8652-3ed8-0000-000000000000</id>
-                        <type>FUNNEL</type>
-                        <versionedComponentId>86d8ee7a-8652-3ed8-8ad8-42c7b99dab45</versionedComponentId>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <connections>
                     <id>4b387005-2ff6-356a-0000-000000000000</id>
                     <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
                     <versionedComponentId>4b387005-2ff6-356a-aba4-5705761f084a</versionedComponentId>
@@ -2650,8 +2601,8 @@
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <bends>
-                        <x>952.0</x>
-                        <y>1120.0</y>
+                        <x>768.0</x>
+                        <y>840.0</y>
                     </bends>
                     <destination>
                         <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
@@ -4392,6 +4343,34 @@
                     <zIndex>9</zIndex>
                 </connections>
                 <connections>
+                    <id>82688254-13c4-33f2-0000-000000000000</id>
+                    <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
+                    <versionedComponentId>82688254-13c4-33f2-89ac-66f3d5658a13</versionedComponentId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
+                        <id>b7efa88c-7aa3-369e-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>b7efa88c-7aa3-369e-9df4-7c50fcaa9a59</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>success</selectedRelationships>
+                    <source>
+                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
+                        <id>96509195-4fde-3dad-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>96509195-4fde-3dad-9d7a-00045506be41</versionedComponentId>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>84009730-2dfd-31cf-0000-000000000000</id>
                     <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
                     <versionedComponentId>84009730-2dfd-31cf-94f8-5d2564cac5f5</versionedComponentId>
@@ -4841,6 +4820,42 @@
                         <versionedComponentId>824b1df7-0e6d-380e-8e96-a9b1456fbe47</versionedComponentId>
                     </source>
                     <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>8e5fc2f5-8f48-361e-0000-000000000000</id>
+                    <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
+                    <versionedComponentId>8e5fc2f5-8f48-361e-8497-1cf2eb30145b</versionedComponentId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>2440.0</x>
+                        <y>1008.0</y>
+                    </bends>
+                    <bends>
+                        <x>2408.0</x>
+                        <y>1312.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
+                        <id>9ca937d4-1c7a-3c24-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>9ca937d4-1c7a-3c24-8af2-efd355eb8724</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>success</selectedRelationships>
+                    <source>
+                        <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
+                        <id>96509195-4fde-3dad-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>96509195-4fde-3dad-9d7a-00045506be41</versionedComponentId>
+                    </source>
+                    <zIndex>15</zIndex>
                 </connections>
                 <connections>
                     <id>8fe45f8c-70af-3e29-0000-000000000000</id>
@@ -7612,8 +7627,8 @@
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <bends>
-                        <x>1504.0</x>
-                        <y>1208.0</y>
+                        <x>1280.0</x>
+                        <y>1088.0</y>
                     </bends>
                     <destination>
                         <groupId>e4e50836-5820-391f-0000-000000000000</groupId>
@@ -13434,8 +13449,8 @@
                     <id>86d8ee7a-8652-3ed8-0000-000000000000</id>
                     <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
                     <position>
-                        <x>920.0</x>
-                        <y>928.0</y>
+                        <x>1248.0</x>
+                        <y>864.0</y>
                     </position>
                     <versionedComponentId>86d8ee7a-8652-3ed8-8ad8-42c7b99dab45</versionedComponentId>
                 </funnels>
@@ -14929,7 +14944,7 @@ from flowfile</value>
                         <autoTerminate>false</autoTerminate>
                         <name>valid_zip</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -15198,7 +15213,9 @@ Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_school
   ),Data_upto_date(Max(year), 
   (SELECT Max(month) FROM school_student_total_attendance GROUP BY year HAVING year=Max(year)) 
   ),year,month 
-FROM school_student_total_attendance WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL
+FROM school_student_total_attendance WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null
 GROUP BY district_id,district_latitude,district_longitude,district_name ,year,month</value>
                             </entry>
                             <entry>
@@ -15244,7 +15261,7 @@ GROUP BY district_id,district_latitude,district_longitude,district_name ,year,mo
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>DISABLED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -15784,7 +15801,9 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 	),0)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null
 GROUP BY block_id,school_id;
 
 create or replace view block_grade as
@@ -15797,7 +15816,7 @@ Round(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_s
 	)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL and cluster_name is not null
 AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY block_id,grade 
@@ -15818,7 +15837,7 @@ Round(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_s
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
 FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
-AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 and cluster_name is not null
 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district_name,semester )as a
 left join 
@@ -15883,7 +15902,7 @@ on b.x_axis=c.x_axis</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -19975,7 +19994,9 @@ Sum(students_count) AS students_count,Data_from_date(Min(year),
  ),Data_upto_date(Max(year), 
  (SELECT Max(month) FROM school_student_total_attendance GROUP BY year HAVING year=Max(year)) 
  ),year,month 
-FROM school_student_total_attendance WHERE block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_total_attendance WHERE block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null
 GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month</value>
                             </entry>
                             <entry>
@@ -20021,7 +20042,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>DISABLED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -20684,7 +20705,9 @@ Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_school
   ),Data_upto_date(Max(year), 
   (SELECT Max(month) FROM school_student_total_attendance GROUP BY year HAVING year=Max(year)) 
   ),year,month 
-FROM school_student_total_attendance WHERE cluster_latitude IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL
+FROM school_student_total_attendance WHERE cluster_latitude IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null
 GROUP BY cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,block_id,block_name,district_id,district_name,year,month</value>
                             </entry>
                             <entry>
@@ -20730,7 +20753,7 @@ GROUP BY cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,blo
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>DISABLED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -24145,8 +24168,10 @@ Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_school
   ),Data_upto_date(Max(year), 
   (SELECT Max(month) FROM school_student_total_attendance GROUP BY year HAVING year=Max(year)) 
   ),year,month 
-FROM school_student_total_attendance WHERE block_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL
-GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district_name,year,month </value>
+FROM school_student_total_attendance WHERE block_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null
+GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district_name,year,month</value>
                             </entry>
                             <entry>
 <key>sql-post-query</key>
@@ -24191,7 +24216,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>DISABLED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -25111,7 +25136,7 @@ from school_geo_master group by district_id) as a
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogAttribute</type>
                 </processors>
@@ -26691,8 +26716,8 @@ from school_geo_master group by district_id) as a
                     <id>96509195-4fde-3dad-0000-000000000000</id>
                     <parentGroupId>e4e50836-5820-391f-0000-000000000000</parentGroupId>
                     <position>
-                        <x>2552.0</x>
-                        <y>896.0</y>
+                        <x>2560.0</x>
+                        <y>856.0</y>
                     </position>
                     <versionedComponentId>96509195-4fde-3dad-9d7a-00045506be41</versionedComponentId>
                     <bundle>
@@ -26783,7 +26808,8 @@ from school_geo_master group by district_id) as a
 <key>SQL select query</key>
 <value>create or replace view school_semester_no_data as
 select school_id,semester from school_student_subject_total_marks 
-WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 and cluster_name is not null
+AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
 group by school_id,semester
 having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
  case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
@@ -26804,7 +26830,8 @@ Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
 FROM school_student_subject_total_marks WHERE district_name IS NOT NULL 
 AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL 
-AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
+AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL 
+and school_id not in (select school_id from school_semester_no_data) and cluster_name is not null
 GROUP BY school_id,grade; 
 
 select a.x_axis,school_name,cluster_id,cluster_name,crc_name,block_id,block_name,x_value,district_id,district_name,y_axis,y_value,z_axis,z_value,
@@ -26824,7 +26851,7 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 NULLIF(Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),0),1) AS x_value
 FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
-AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 and cluster_name is not null
 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,semester )as a
 left join 
@@ -26879,7 +26906,7 @@ on a.x_axis=b.x_axis</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -27207,7 +27234,9 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 	),0)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 and cluster_name is not null
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL
 GROUP BY cluster_id,school_id;
 
 create or replace view cluster_grade as
@@ -27221,7 +27250,7 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
 FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
-AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 and cluster_name is not null
 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY cluster_id,grade; 
 
@@ -27241,7 +27270,7 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 	),0)*100.0/
 NULLIF(Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),0),1) AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL and cluster_name is not null
 AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,block_name,district_id,district_name,semester )as a
@@ -27308,7 +27337,7 @@ on b.x_axis=c.x_axis</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -28699,7 +28728,7 @@ from school_geo_master group by block_id) as a
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.UnpackContent</type>
                 </processors>
@@ -29106,7 +29135,7 @@ block_id,INITCAP(block_name) as block_name,district_id,INITCAP(district_name)as 
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -30173,7 +30202,7 @@ and month= (select max(month) from crc_visits_frequency group by year order by y
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -30724,7 +30753,9 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 	),0)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 and cluster_name is not null
+AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL 
 GROUP BY district_id,grade;
 
 
@@ -30739,7 +30770,7 @@ Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
 	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
 FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
-AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 and cluster_name is not null
 AND school_latitude &lt;&gt;0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY district_id,school_id;
 
@@ -30759,7 +30790,7 @@ Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_
 'latitude' AS y_axis,district_latitude AS y_value,'longitude' AS z_axis,district_longitude AS z_value,
 Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,semester
 FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
-AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 
+AND block_latitude &lt;&gt; 0 AND cluster_latitude IS NOT NULL AND cluster_latitude &lt;&gt; 0 AND school_latitude &lt;&gt;0 and cluster_name is not null
 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY district_id,district_latitude,district_longitude,district_name,semester)as a
 left join 
@@ -30779,7 +30810,8 @@ left join (select x_axis,
  round(sum(case when x_value between 60 and 75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_60_75,
  round(sum(case when x_value &gt;=75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_above_75
    from district_school group by x_axis) as c 
-   on b.x_axis=c.x_axis</value>
+   on b.x_axis=c.x_axis
+</value>
                             </entry>
                             <entry>
 <key>sql-post-query</key>
@@ -30824,7 +30856,7 @@ left join (select x_axis,
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -32295,7 +32327,7 @@ from school_geo_master group by cluster_id) as a
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                 </processors>
@@ -33226,7 +33258,7 @@ students_count=a.students_count</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>DISABLED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -35948,5 +35980,5 @@ from flowfile</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/28/2020 13:13:03 IST</timestamp>
+    <timestamp>05/28/2020 15:37:22 IST</timestamp>
 </template>

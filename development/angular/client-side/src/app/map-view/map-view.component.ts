@@ -255,18 +255,21 @@ export class MapViewComponent implements OnInit {
               lng: sorted[i]['z_value'],
               stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
               schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              blok: this.blok,
+              // blok: this.blok,
             });
-
-          var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
-          globalMap.setZoom(7.4);
-          markerIcon.addTo(globalMap).bindPopup(
-            "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
-            "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-          );
-          this.popups(markerIcon, this.markers[i]);
+        }
+        if (this.markers.length > 0) {
+          for (var i = 0; i < this.markers.length; i++) {
+            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
+            globalMap.setZoom(7.4);
+            markerIcon.addTo(globalMap).bindPopup(
+              "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
+              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
+              "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
+              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+            );
+            this.popups(markerIcon, this.markers[i]);
+          }
         }
 
         distNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
