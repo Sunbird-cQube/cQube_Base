@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   role: any;
   showSubmenu: any;
   showsideMenu: boolean = false;
-  showCreateUser:boolean = false;
+  showCreateUser: boolean = false;
   ngOnInit() {
     this.email = localStorage.getItem('email');
 
@@ -23,10 +23,11 @@ export class HomeComponent implements OnInit {
       this.showCreateUser = true;
     }
     if (this.role == 3) {
-      this.showsideMenu = true;
+      this.showsideMenu = false;
       this.showCreateUser = false;
     }
     if (this.role == 5) {
+      this.showsideMenu = true;
       this.showCreateUser = false;
     }
 

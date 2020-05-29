@@ -30,7 +30,7 @@
             &nbsp;&nbsp;Dashboard</td>
 
         </a> -->
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
+        <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
           [routerLink]="['teacher-attendance']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -39,9 +39,9 @@
             &nbsp;&nbsp;Teacher Attendance Report</td>
 
 
-        </a>
+        </a> -->
 
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
+        <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
           [routerLink]="['crc-report']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -49,7 +49,7 @@
           <td>
             &nbsp;&nbsp; CRC Report </td>
 
-        </a>
+        </a> -->
       </div>
       <div *ngIf="!showsideMenu">
         <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
@@ -116,8 +116,6 @@
               User</span> </a>
           <a mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
             [routerLink]="['changePassword']"><span style="margin-left: 40px;">Change Password</span></a>
-          <!-- <a mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
-          [routerLink]="['teacher-attendance']" >Submenu Item 3</a> -->
         </div>
       </mat-list>
     </mat-nav-list>

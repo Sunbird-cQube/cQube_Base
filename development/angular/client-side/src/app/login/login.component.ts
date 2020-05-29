@@ -37,9 +37,10 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['home/attendance-report']);
         }
         else if (this.role == 3) {
-          this.router.navigate(['home/teacher-attendance'])
-        } else {
-          this.router.navigate(['home/attendance-report']);
+          this.router.navigate(['home/attendance-report'])
+        }
+        else if (this.role == 5) {
+          this.router.navigate(['home/changePassword']);
         }
       } else if (res['errMsg']) {
         this.email = this.logData.email;
