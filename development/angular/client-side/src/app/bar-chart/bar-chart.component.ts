@@ -229,74 +229,77 @@ export class BarChartComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.crcDistWiseData().subscribe(res => {
+        if (!res['errMsg']) {
+          localStorage.setItem('resData', JSON.stringify(res));
+          this.result = res;
+          let a = this.result.schoolsVisitedCount
+          this.result = this.result.visits;
 
-        localStorage.setItem('resData', JSON.stringify(res));
-        // console.log(res);
-        this.result = res;
-        let a = this.result.schoolsVisitedCount
-        this.result = this.result.visits;
+          this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
 
-        this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
-
-        if (this.result.length > 0) {
-          var labels = [];
-          this.reportData = this.crcDistrictsNames = this.result;
-          for (var i = 0; i < this.result.length; i++) {
-            if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
-              this.schoolCount = this.schoolCount + this.result[i].totalSchools;
-              this.visitCount = this.visitCount + Number(this.result[i].totalVisits);
+          if (this.result.length > 0) {
+            var labels = [];
+            this.reportData = this.crcDistrictsNames = this.result;
+            for (var i = 0; i < this.result.length; i++) {
+              if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
+                this.schoolCount = this.schoolCount + this.result[i].totalSchools;
+                this.visitCount = this.visitCount + Number(this.result[i].totalVisits);
+              }
+              this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
+              labels.push(this.result[i].districtName);
+              this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
             }
-            this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
-            labels.push(this.result[i].districtName);
-            this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
+            this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
+
+            this.countVisitedAndNotVisited(a);
+
+            let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+            let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
+            let obj = {
+              xAxis: x_axis.value,
+              yAxis: y_axis.value
+            }
+
+            this.createChart(labels, this.chartData, this.tableHead, obj);
+            // console.log(this.result);
+            this.tableData = this.result;
+            this.dtOptions = {
+              data: this.tableData,
+              iDisplayLength: this.result.length,
+              "bLengthChange": false,
+              "bInfo": false,
+              "bPaginate": false,
+              scrollY: "39vh",
+              scrollX: true,
+              scrollCollapse: true,
+              paging: false,
+              "searching": false,
+              fixedColumns: {
+                leftColumns: 1
+              },
+              columns: [
+                { title: 'District Name', data: 'districtName' },
+                { title: 'Visit-0 times (%)', data: 'visit_0' },
+                { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
+                { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
+                { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
+                { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+                { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
+                { title: "Visits per schools", data: "visits_per_school" },
+                { title: "Visited schools count", data: "visitedSchoolCount" },
+                { title: "Total schools", data: "totalSchools" },
+                { title: "Total visits", data: "totalVisits" }
+              ]
+            };
+            this.dataTable = $(this.table.nativeElement);
+            this.dataTable.DataTable(this.dtOptions);
+
+            this.loaderAndErr();
+            this.changeDetection.markForCheck();
           }
-          this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
-
-          this.countVisitedAndNotVisited(a);
-
-          let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-          let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-          let obj = {
-            xAxis: x_axis.value,
-            yAxis: y_axis.value
-          }
-
-          this.createChart(labels, this.chartData, this.tableHead, obj);
-          // console.log(this.result);
-          this.tableData = this.result;
-          this.dtOptions = {
-            data: this.tableData,
-            iDisplayLength: this.result.length,
-            "bLengthChange": false,
-            "bInfo": false,
-            "bPaginate": false,
-            scrollY: "39vh",
-            scrollX: true,
-            scrollCollapse: true,
-            paging: false,
-            "searching": false,
-            fixedColumns: {
-              leftColumns: 1
-            },
-            columns: [
-              { title: 'District Name', data: 'districtName' },
-              { title: 'Visit-0 times (%)', data: 'visit_0' },
-              { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
-              { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
-              { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
-              { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
-              { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-              { title: "Visits per schools", data: "visits_per_school" },
-              { title: "Visited schools count", data: "visitedSchoolCount" },
-              { title: "Total schools", data: "totalSchools" },
-              { title: "Total visits", data: "totalVisits" }
-            ]
-          };
-          this.dataTable = $(this.table.nativeElement);
-          this.dataTable.DataTable(this.dtOptions);
-
+        } else {
+          this.chartData = [];
           this.loaderAndErr();
-          this.changeDetection.markForCheck();
         }
       });
     }
@@ -312,13 +315,18 @@ export class BarChartComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.crcAllBlockWiseData().subscribe(res => {
-      this.reportData = res['visits'];
-      if (res !== null) {
-        document.getElementById('spinner').style.display = 'none';
-        element1[0].disabled = false;
+      if (!res['errMsg']) {
+        this.reportData = res['visits'];
+        if (res !== null) {
+          document.getElementById('spinner').style.display = 'none';
+          element1[0].disabled = false;
+        }
+        this.downloadRoport();
+        this.changeDetection.markForCheck();
+      } else {
+        this.chartData = [];
+        this.loaderAndErr();
       }
-      this.downloadRoport();
-      this.changeDetection.markForCheck();
     });
   }
 
@@ -332,13 +340,18 @@ export class BarChartComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.crcAllClusterWiseData().subscribe(res => {
-      this.reportData = res['visits'];
-      if (res !== null) {
-        document.getElementById('spinner').style.display = 'none';
-        element1[0].disabled = false;
+      if (!res['errMsg']) {
+        this.reportData = res['visits'];
+        if (res !== null) {
+          document.getElementById('spinner').style.display = 'none';
+          element1[0].disabled = false;
+        }
+        this.downloadRoport();
+        this.changeDetection.markForCheck();
+      } else {
+        this.chartData = [];
+        this.loaderAndErr();
       }
-      this.downloadRoport();
-      this.changeDetection.markForCheck();
     });
   }
 
@@ -352,13 +365,18 @@ export class BarChartComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.crcAllSchoolWiseData().subscribe(res => {
-      this.reportData = res['visits'];
-      if (res !== null) {
-        document.getElementById('spinner').style.display = 'none';
-        element1[0].disabled = false;
+      if (!res['errMsg']) {
+        this.reportData = res['visits'];
+        if (res !== null) {
+          document.getElementById('spinner').style.display = 'none';
+          element1[0].disabled = false;
+        }
+        this.downloadRoport();
+        this.changeDetection.markForCheck();
+      } else {
+        this.chartData = [];
+        this.loaderAndErr();
       }
-      this.downloadRoport();
-      this.changeDetection.markForCheck();
     });
   }
 
@@ -395,71 +413,75 @@ export class BarChartComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.crcBlockWiseData(data).subscribe((result: any) => {
+      if (!result['errMsg']) {
+        $('#table').DataTable().destroy();
+        $('#table').empty();
+        this.crcBlocksNames = result;
+        let a = this.crcBlocksNames.schoolsVisitedCount
+        this.reportData = this.crcBlocksNames = this.crcBlocksNames.visits;
 
-      $('#table').DataTable().destroy();
-      $('#table').empty();
-      this.crcBlocksNames = result;
-      let a = this.crcBlocksNames.schoolsVisitedCount
-      this.reportData = this.crcBlocksNames = this.crcBlocksNames.visits;
-
-      if (this.result.length > 0) {
-        var labels = [];
-        for (var i = 0; i < this.crcBlocksNames.length; i++) {
-          if (typeof (this.crcBlocksNames[i].totalSchools) === "number" && typeof (parseInt(this.crcBlocksNames[i].totalVisits)) === "number") {
-            this.schoolCount = this.schoolCount + this.crcBlocksNames[i].totalSchools;
-            this.visitCount = this.visitCount + Number(this.crcBlocksNames[i].totalVisits);
+        if (this.result.length > 0) {
+          var labels = [];
+          for (var i = 0; i < this.crcBlocksNames.length; i++) {
+            if (typeof (this.crcBlocksNames[i].totalSchools) === "number" && typeof (parseInt(this.crcBlocksNames[i].totalVisits)) === "number") {
+              this.schoolCount = this.schoolCount + this.crcBlocksNames[i].totalSchools;
+              this.visitCount = this.visitCount + Number(this.crcBlocksNames[i].totalVisits);
+            }
+            this.blocksNames.push({ id: this.crcBlocksNames[i].blockId, name: this.crcBlocksNames[i].blockName });
+            labels.push(this.crcBlocksNames[i].blockName);
+            this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
           }
-          this.blocksNames.push({ id: this.crcBlocksNames[i].blockId, name: this.crcBlocksNames[i].blockName });
-          labels.push(this.crcBlocksNames[i].blockName);
-          this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
+          this.crcBlocksNames.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
+          this.countVisitedAndNotVisited(a);
+
+          let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+          let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
+          let obj = {
+            xAxis: x_axis.value,
+            yAxis: y_axis.value
+          }
+
+          this.createChart(labels, this.chartData, this.tableHead, obj);
+          // console.log(this.crcBlocksNames);
+          this.tableData = this.crcBlocksNames;
+          this.dtOptions = {
+            data: this.tableData,
+            iDisplayLength: this.crcBlocksNames.length,
+            "bLengthChange": false,
+            "bInfo": false,
+            "bPaginate": false,
+            scrollY: "39vh",
+            scrollX: true,
+            scrollCollapse: true,
+            paging: false,
+            "searching": false,
+            fixedColumns: {
+              leftColumns: 1
+            },
+            columns: [
+              { title: 'District Name', data: 'districtName' },
+              { title: 'Block Name', data: 'blockName' },
+              { title: 'Visit-0 times (%)', data: 'visit_0' },
+              { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
+              { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
+              { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
+              { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+              { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
+              { title: "Visits per schools", data: "visits_per_school" },
+              { title: "Visited schools count", data: "visitedSchoolCount" },
+              { title: "Total schools", data: "totalSchools" },
+              { title: "Total visits", data: "totalVisits" }
+            ]
+          };
+          this.dataTable = $(this.table.nativeElement);
+          this.dataTable.DataTable(this.dtOptions);
+
+
+          this.changeDetection.markForCheck();
+          this.loaderAndErr();
         }
-        this.crcBlocksNames.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
-        this.countVisitedAndNotVisited(a);
-
-        let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-        let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-        let obj = {
-          xAxis: x_axis.value,
-          yAxis: y_axis.value
-        }
-
-        this.createChart(labels, this.chartData, this.tableHead, obj);
-        // console.log(this.crcBlocksNames);
-        this.tableData = this.crcBlocksNames;
-        this.dtOptions = {
-          data: this.tableData,
-          iDisplayLength: this.crcBlocksNames.length,
-          "bLengthChange": false,
-          "bInfo": false,
-          "bPaginate": false,
-          scrollY: "39vh",
-          scrollX: true,
-          scrollCollapse: true,
-          paging: false,
-          "searching": false,
-          fixedColumns: {
-            leftColumns: 1
-          },
-          columns: [
-            { title: 'District Name', data: 'districtName' },
-            { title: 'Block Name', data: 'blockName' },
-            { title: 'Visit-0 times (%)', data: 'visit_0' },
-            { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
-            { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
-            { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
-            { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
-            { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-            { title: "Visits per schools", data: "visits_per_school" },
-            { title: "Visited schools count", data: "visitedSchoolCount" },
-            { title: "Total schools", data: "totalSchools" },
-            { title: "Total visits", data: "totalVisits" }
-          ]
-        };
-        this.dataTable = $(this.table.nativeElement);
-        this.dataTable.DataTable(this.dtOptions);
-
-
-        this.changeDetection.markForCheck();
+      } else {
+        this.chartData = [];
         this.loaderAndErr();
       }
     });
@@ -502,77 +524,79 @@ export class BarChartComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.crcClusterWiseData(JSON.parse(localStorage.getItem('distId')), data).subscribe((result: any) => {
+      if (!result['errMsg']) {
+        $('#table').DataTable().destroy();
+        $('#table').empty();
 
-      $('#table').DataTable().destroy();
-      $('#table').empty();
+        this.crcClusterNames = result;
+        let a = this.crcClusterNames.schoolsVisitedCount
+        this.crcClusterNames = this.crcClusterNames.visits;
+        this.reportData = this.crcClusterNames;
 
-      this.crcClusterNames = result;
-      let a = this.crcClusterNames.schoolsVisitedCount
-      this.crcClusterNames = this.crcClusterNames.visits;
-      this.reportData = this.crcClusterNames;
-
-      var labels = [];
-      for (var i = 0; i < this.crcClusterNames.length; i++) {
-        if (typeof (this.crcClusterNames[i].totalSchools) === "number" && typeof (parseInt(this.crcClusterNames[i].totalVisits)) === "number") {
-          this.schoolCount = this.schoolCount + this.crcClusterNames[i].totalSchools;
-          this.visitCount = this.visitCount + Number(this.crcClusterNames[i].totalVisits);
+        var labels = [];
+        for (var i = 0; i < this.crcClusterNames.length; i++) {
+          if (typeof (this.crcClusterNames[i].totalSchools) === "number" && typeof (parseInt(this.crcClusterNames[i].totalVisits)) === "number") {
+            this.schoolCount = this.schoolCount + this.crcClusterNames[i].totalSchools;
+            this.visitCount = this.visitCount + Number(this.crcClusterNames[i].totalVisits);
+          }
+          this.clusterNames.push({ id: this.crcClusterNames[i].clusterId, name: this.crcClusterNames[i].clusterName });
+          labels.push(this.crcClusterNames[i].clusterName);
+          this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
         }
-        this.clusterNames.push({ id: this.crcClusterNames[i].clusterId, name: this.crcClusterNames[i].clusterName });
-        labels.push(this.crcClusterNames[i].clusterName);
-        this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
+        this.crcClusterNames.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
+        this.countVisitedAndNotVisited(a);
+
+        let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+        let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
+        let obj = {
+          xAxis: x_axis.value,
+          yAxis: y_axis.value
+        }
+
+        this.createChart(labels, this.chartData, this.tableHead, obj);
+        // console.log(this.crcClusterNames);
+        this.tableData = this.crcClusterNames;
+        this.dtOptions = {
+          data: this.tableData,
+          iDisplayLength: this.crcClusterNames.length,
+          "bLengthChange": false,
+          "bInfo": false,
+          "bPaginate": false,
+          scrollY: "39vh",
+          scrollX: true,
+          scrollCollapse: true,
+          paging: false,
+          "searching": false,
+          fixedColumns: {
+            leftColumns: 1
+          },
+          columns: [
+            { title: 'District Name', data: 'districtName' },
+            { title: 'Block Name', data: 'blockName' },
+            { title: 'Cluster Name', data: 'clusterName' },
+            { title: 'Visit-0 times (%)', data: 'visit_0' },
+            { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
+            { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
+            { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
+            { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+            { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
+            { title: "Visits per schools", data: "visits_per_school" },
+            { title: "Visited schools count", data: "visitedSchoolCount" },
+            { title: "Total schools", data: "totalSchools" },
+            { title: "Total visits", data: "totalVisits" }
+          ]
+        };
+        this.dataTable = $(this.table.nativeElement);
+        this.dataTable.DataTable(this.dtOptions);
+
+        this.changeDetection.markForCheck();
+        this.loaderAndErr();
+      } else {
+        this.chartData = [];
+        this.loaderAndErr();
       }
-      this.crcClusterNames.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
-      this.countVisitedAndNotVisited(a);
-
-      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-      let obj = {
-        xAxis: x_axis.value,
-        yAxis: y_axis.value
-      }
-
-      this.createChart(labels, this.chartData, this.tableHead, obj);
-      // console.log(this.crcClusterNames);
-      this.tableData = this.crcClusterNames;
-      this.dtOptions = {
-        data: this.tableData,
-        iDisplayLength: this.crcClusterNames.length,
-        "bLengthChange": false,
-        "bInfo": false,
-        "bPaginate": false,
-        scrollY: "39vh",
-        scrollX: true,
-        scrollCollapse: true,
-        paging: false,
-        "searching": false,
-        fixedColumns: {
-          leftColumns: 1
-        },
-        columns: [
-          { title: 'District Name', data: 'districtName' },
-          { title: 'Block Name', data: 'blockName' },
-          { title: 'Cluster Name', data: 'clusterName' },
-          { title: 'Visit-0 times (%)', data: 'visit_0' },
-          { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
-          { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
-          { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
-          { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
-          { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-          { title: "Visits per schools", data: "visits_per_school" },
-          { title: "Visited schools count", data: "visitedSchoolCount" },
-          { title: "Total schools", data: "totalSchools" },
-          { title: "Total visits", data: "totalVisits" }
-        ]
-      };
-      this.dataTable = $(this.table.nativeElement);
-      this.dataTable.DataTable(this.dtOptions);
-
-      this.changeDetection.markForCheck();
-      this.loaderAndErr();
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-
-
     document.getElementById('home').style.display = 'block';;
   }
 
@@ -610,70 +634,75 @@ export class BarChartComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.crcSchoolWiseData(distId, blockId, data).subscribe(async (result: any) => {
-      $('#table').DataTable().destroy();
-      $('#table').empty();
+      if (!result['errMsg']) {
+        $('#table').DataTable().destroy();
+        $('#table').empty();
 
-      this.crcSchoolNames = result;
-      let a = this.crcSchoolNames.schoolsVisitedCount
-      this.reportData = this.crcSchoolNames = this.crcSchoolNames.visits;
+        this.crcSchoolNames = result;
+        let a = this.crcSchoolNames.schoolsVisitedCount
+        this.reportData = this.crcSchoolNames = this.crcSchoolNames.visits;
 
-      var labels = [];
-      for (var i = 0; i < this.crcSchoolNames.length; i++) {
-        if (typeof (this.crcSchoolNames[i].totalSchools) === "number" && typeof (parseInt(this.crcSchoolNames[i].totalVisits)) === "number") {
-          this.schoolCount = this.schoolCount + this.crcSchoolNames[i].totalSchools;
-          this.visitCount = this.visitCount + Number(this.crcSchoolNames[i].totalVisits);
+        var labels = [];
+        for (var i = 0; i < this.crcSchoolNames.length; i++) {
+          if (typeof (this.crcSchoolNames[i].totalSchools) === "number" && typeof (parseInt(this.crcSchoolNames[i].totalVisits)) === "number") {
+            this.schoolCount = this.schoolCount + this.crcSchoolNames[i].totalSchools;
+            this.visitCount = this.visitCount + Number(this.crcSchoolNames[i].totalVisits);
+          }
+          labels.push(this.crcSchoolNames[i].schoolName);
+          this.chartData.push({ x: Number(this.crcSchoolNames[i][this.xAxis]), y: Number(this.crcSchoolNames[i][this.yAxis]) });
         }
-        labels.push(this.crcSchoolNames[i].schoolName);
-        this.chartData.push({ x: Number(this.crcSchoolNames[i][this.xAxis]), y: Number(this.crcSchoolNames[i][this.yAxis]) });
+
+        this.countVisitedAndNotVisited(a);
+
+        let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+        let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
+        let obj = {
+          xAxis: x_axis.value,
+          yAxis: y_axis.value
+        }
+
+        this.createChart(labels, this.chartData, this.tableHead, obj);
+
+        this.tableData = this.crcSchoolNames;
+        this.dtOptions = {
+          data: this.tableData,
+          iDisplayLength: this.crcSchoolNames.length,
+          "bLengthChange": false,
+          "bInfo": false,
+          "bPaginate": false,
+          scrollY: "39vh",
+          scrollX: true,
+          scrollCollapse: true,
+          paging: false,
+          "searching": false,
+          fixedColumns: {
+            leftColumns: 1
+          },
+          columns: [
+            { title: 'District Name', data: 'districtName' },
+            { title: 'Block Name', data: 'blockName' },
+            { title: 'Cluster Name', data: 'clusterName' },
+            { title: 'School Name', data: 'schoolName' },
+            { title: 'Visit-0 times (%)', data: 'visit_0' },
+            { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
+            { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
+            { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
+            { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+            { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
+            { title: "Visits per schools", data: "visits_per_school" },
+            { title: "Total schools", data: "totalSchools" },
+            { title: "Total visits", data: "totalVisits" }
+          ]
+        };
+        this.dataTable = $(this.table.nativeElement);
+        this.dataTable.DataTable(this.dtOptions);
+
+        this.loaderAndErr();
+        this.changeDetection.markForCheck();
+      } else {
+        this.chartData = [];
+        this.loaderAndErr();
       }
-
-      this.countVisitedAndNotVisited(a);
-
-      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-      let obj = {
-        xAxis: x_axis.value,
-        yAxis: y_axis.value
-      }
-
-      this.createChart(labels, this.chartData, this.tableHead, obj);
-
-      this.tableData = this.crcSchoolNames;
-      this.dtOptions = {
-        data: this.tableData,
-        iDisplayLength: this.crcSchoolNames.length,
-        "bLengthChange": false,
-        "bInfo": false,
-        "bPaginate": false,
-        scrollY: "39vh",
-        scrollX: true,
-        scrollCollapse: true,
-        paging: false,
-        "searching": false,
-        fixedColumns: {
-          leftColumns: 1
-        },
-        columns: [
-          { title: 'District Name', data: 'districtName' },
-          { title: 'Block Name', data: 'blockName' },
-          { title: 'Cluster Name', data: 'clusterName' },
-          { title: 'School Name', data: 'schoolName' },
-          { title: 'Visit-0 times (%)', data: 'visit_0' },
-          { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
-          { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
-          { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
-          { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
-          { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-          { title: "Visits per schools", data: "visits_per_school" },
-          { title: "Total schools", data: "totalSchools" },
-          { title: "Total visits", data: "totalVisits" }
-        ]
-      };
-      this.dataTable = $(this.table.nativeElement);
-      this.dataTable.DataTable(this.dtOptions);
-
-      this.loaderAndErr();
-      this.changeDetection.markForCheck();
     });
     document.getElementById('home').style.display = 'block';
   }

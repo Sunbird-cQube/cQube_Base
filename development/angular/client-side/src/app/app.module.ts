@@ -25,6 +25,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { CreateUserComponent } from './create-user/create-user.component';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     CreateUserComponent,
     ComingSoonComponent,
     DashboardComponent,
+    SchoolInfrastructureComponent,
   ],
   imports: [
     BrowserModule,
