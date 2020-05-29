@@ -111,7 +111,7 @@
           </button>
         </mat-list-item>
         <div class="submenu" [ngClass]="{'expanded' : showSubmenu}">
-          <a *ngIf="!showsideMenu" mat-list-item (click)="sidenav.toggle()" style="font-family: Arial;  
+          <a *ngIf="showCreateUser" mat-list-item (click)="sidenav.toggle()" style="font-family: Arial;  
           border-bottom: 1px solid lightgray;" [routerLink]="['addUser']"><span style="margin-left: 40px;">Create
               User</span> </a>
           <a mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"

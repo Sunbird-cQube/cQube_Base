@@ -17,9 +17,7 @@ router.post('/', function (req, res) {
                 logger.error("No data found in s3 file");
                 res.send({ errMsg: "No such data found" });
             } else {
-
                 users = JSON.parse(data.Body.toString());
-
                 const user = users.find(u => u.user_email === req.body.email && u.password === req.body.cnfpass);
                 if (user) {
                     jwt.sign(user, 'secret', { expiresIn: '24h' }, (err, data) => {
