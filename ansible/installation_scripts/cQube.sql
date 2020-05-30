@@ -729,9 +729,9 @@ school_email_contact  varchar(50),
 school_website  varchar(50),
 school_lowest_class  int,
 school_highest_class  int,
-school_management_type_id int unique,
-school_category_id  int unique,
-school_medium_id  int unique,
+school_management_type_id int ,
+school_category_id  int ,
+school_medium_id  int ,
 created_on  TIMESTAMP without time zone NOT NULL,
 updated_on  TIMESTAMP without time zone NOT NULL
 );
