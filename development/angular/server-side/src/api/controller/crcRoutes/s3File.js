@@ -4,14 +4,14 @@ const { logger } = require('../../lib/logger');
 const frequencyData = () => {
     return new Promise((resolve, reject) => {
         try {
-            const_data['getParams']['Key'] = 'CRC/crc_frequency_2020_2.json'
+            const_data['getParams']['Key'] = 'CRC/crc_frequency_scatter.json'
             const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
                 if (err) {
                     logger.error(err);
-                    res.send([]);
+                    resolve([]);
                 } else if (!data) {
-                    logger.info("Something went wrong or s3 file not found");
-                    res.send([]);
+                    logger.error("No data found in s3 file");
+                    resolve([]);
                 } else {
                     let crcData = data.Body.toString();
                     crcData = JSON.parse(crcData);
@@ -31,10 +31,10 @@ const crcMetaData = () => {
             const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
                 if (err) {
                     logger.error(err);
-                    res.send([]);
+                    resolve([]);
                 } else if (!data) {
-                    logger.info("Something went wrong or s3 file not found");
-                    res.send([]);
+                    logger.error("No data found in s3 file");
+                    resolve([]);
                 } else {
                     let crcData = data.Body.toString();
                     crcData = JSON.parse(crcData);

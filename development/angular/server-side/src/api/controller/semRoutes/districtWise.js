@@ -9,11 +9,11 @@ router.post('/districtWise', auth.authController, async (req, res) => {
         const_data['getParams']['Key'] = 'semester/district_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
-                console.log(err);
-                res.send([]);
+                logger.error(err);
+                res.send({ errMsg: "Something went wrong" });
             } else if (!data) {
-                console.log("Something went wrong or s3 file not found");
-                res.send([]);
+                logger.error("No data found in s3 file");
+                res.send({ errMsg: "No such data found" });
             } else {
                 let districtData = data.Body.toString();
                 districtData = JSON.parse(districtData);
@@ -27,7 +27,9 @@ router.post('/districtWise', auth.authController, async (req, res) => {
                 // var filterData = districtData.filter(obj => {
                 //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
                 // })
-
+                districtData = districtData.filter(function (el) {
+                    return el.x_value != null;
+                });
                 // calculate totalstudents and totalschools of all districts for state
                 let totalStudents = districtData.reduce((prev, next) => prev + parseInt(next.students_count), 0);
                 let totalSchools = districtData.reduce((prev, next) => prev + next.total_schools, 0);
@@ -73,11 +75,13 @@ router.post('/districtWise', auth.authController, async (req, res) => {
                     },
                     sortedData
                 }
+                logger.info('--- semester district wise api reponse sent ---');
                 res.send(resultObj);
             }
         });
     } catch (e) {
-        logger.error(e)
+        logger.error(e);
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
     }
 })
 

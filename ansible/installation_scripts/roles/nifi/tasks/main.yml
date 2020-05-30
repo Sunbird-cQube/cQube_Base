@@ -94,6 +94,8 @@
 
 - name: upload parameters
   action: shell curl -d @nifi.json -H Content-Type:application/json -X POST http://localhost:{{ nifi_port }}/nifi-api/parameter-contexts
+  args:
+    warn: false
 
 - name: Get processor group
   uri:
@@ -198,23 +200,6 @@
      }
   loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
   when: item.component.name == 'postgresql-CQube-Source'
-  no_log: True
-
-- name: Add postgre-emission-pwd
-  uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
-    method: PUT
-    body_format: json
-    body: {"revision": {
-             "version": "{{ item.revision.version }}",
-            "lastModifier": "Ansible"
-        },
-        "component": {"id": "{{ item.id }}", "name": "postgresql-CQube-emission",
-        "properties" : { "Password" : "#{db_password}"}}
-
-     }
-  loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgresql-CQube-emission'
   no_log: True
 
 - name: Fetch nifi processor group id

@@ -6,15 +6,15 @@ const auth = require('../../middleware/check-auth');
 router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         var filterData = '';
-        logger.info('--- school wise attendance api ---');
+        logger.info('--- semseter all school wise api ---');
         const_data['getParams']['Key'] = 'semester/school_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
-                console.log(err);
-                res.send([]);
+                logger.error(err);
+                res.send({ errMsg: "Something went wrong" });
             } else if (!data) {
-                console.log("Something went wrong or s3 file not found");
-                res.send([]);
+                logger.error("No data found in s3 file");
+                res.send({ errMsg: "No such data found" });
             } else {
                 let schoolData = data.Body.toString();
                 schoolData = JSON.parse(schoolData);
@@ -28,11 +28,16 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
                 // })
 
+                schoolData = schoolData.filter(function (el) {
+                    return el.x_value != null;
+                });
+
                 // calculate totalstudents and totalschools of all districts for state
                 let totalStudents = schoolData.reduce((prev, next) => prev + parseInt(next.students_count), 0);
                 let totalSchools = schoolData.length
 
-                // map and extract required  values to show in the leaflet-map
+                // map and extract required  values to show in the leaflet-
+
                 var blockDetails = schoolData.map(function (item) {
                     let obj = {
                         districtId: item['district_id'],
@@ -70,12 +75,13 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                     },
                     sortedData
                 }
-
+                logger.info('--- semseter all school wise api reponse sent ---');
                 res.send(resultObj)
             }
         })
     } catch (e) {
-        logger.error(e)
+        logger.error(e);
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
     }
 })
 
@@ -86,11 +92,11 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         const_data['getParams']['Key'] = 'semester/school_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
-                console.log(err);
-                res.send([]);
+                logger.error(err);
+                res.send({ errMsg: "Something went wrong" });
             } else if (!data) {
-                console.log("Something went wrong or s3 file not found");
-                res.send([]);
+                logger.error("No data found in s3 file");
+                res.send({ errMsg: "No such data found" });
             } else {
                 let schoolData = data.Body.toString();
                 schoolData = JSON.parse(schoolData);
@@ -113,6 +119,10 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
                 // })
 
+                filterData = filterData.filter(function (el) {
+                    return el.x_value != null;
+                });
+
 
                 // calculate totalstudents and totalschools of all districts for state
                 let totalStudents = filterData.reduce((prev, next) => prev + parseInt(next.students_count), 0);
@@ -126,7 +136,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                         blockId: item['block_id'],
                         blockName: item['block_name'],
                         clusterId: item['cluster_id'],
-                        clusterName: item['crc_name'],
+                        clusterName: item['cluster_name'],
                         schoolId: item['x_axis'],
                         schoolName: item['school_name'],
                         assesmentPercentage: item['x_value'],
@@ -156,12 +166,13 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                     },
                     sortedData
                 }
-
+                logger.info('--- semseter school wise api reponse sent ---');
                 res.send(resultObj)
             }
         })
     } catch (e) {
-        logger.error(e)
+        logger.error(e);
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
     }
 })
 

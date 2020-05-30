@@ -49,7 +49,9 @@
                             Wait...</span>
 
                     </div>
-                    <p id="errMsg" style="display: none; text-align: center; margin-top: 1%; font-family: Arial;"></p>
+                    <p id="errMsg"
+                        style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                    </p>
 
                 </div>
                 <div class="col-sm-5">
@@ -80,7 +82,7 @@
             <select
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
-                <option [value]="myDistrict" disabled selected="selected">Choose a District
+                <option [value]="myDistrict" disabled selected="selected" style="color: white;">Choose a District
                 </option>
                 <option *ngFor="let dist of districtsNames" [(ngValue)]="dist.id"
                     style="font-family: Arial; font-size: 11px;">
@@ -91,7 +93,7 @@
             <select [hidden]="blockHidden"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
-                <option [value]="myBlock" disabled selected="selected">Choose a Block
+                <option [value]="myBlock" disabled selected="selected" style="color: white;">Choose a Block
                 </option>
                 <option *ngFor="let block of blocksNames" [(ngValue)]="block.id"
                     style="font-family: Arial;font-size: 11px;">
@@ -138,11 +140,11 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 78vh"></div>
+            <div #mapContainer id="mapContainer" class="active" style="width: 100%; height: 77vh"></div>
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial;padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial;padding: 5px 0px 5px 0px;position: relative; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-4">
             <span>Number of students: {{studentCount}}</span>
         </div>

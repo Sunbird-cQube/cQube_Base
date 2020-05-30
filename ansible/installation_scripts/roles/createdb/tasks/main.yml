@@ -43,14 +43,6 @@
   become: true
   become_user: postgres
   postgresql_db:
-    name: "{{ emission_db_name }}"
-    encoding: 'UTF-8'
-    state: present
-
-- name: Ensure database is created
-  become: true
-  become_user: postgres
-  postgresql_db:
     name: "{{ db_name }}"
     encoding: 'UTF-8'
     state: present
@@ -74,12 +66,5 @@
   postgresql_query:
     db: "{{ db_name }}"
     path_to_script: cQube.sql
-
-- name: Run queries from SQL script
-  become: true
-  become_user: postgres
-  postgresql_query:
-    db: "{{ emission_db_name }}"
-    path_to_script: emission.sql
   notify:
    - restart postgresql

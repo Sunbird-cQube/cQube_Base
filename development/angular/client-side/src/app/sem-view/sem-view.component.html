@@ -1,6 +1,6 @@
-<!-- <div class="container-fluid">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Semester report for: <span (click)="districtWise()"
@@ -39,9 +39,9 @@
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-7">
                     <div class="col-sm-12" id="spinner">
                         <div class="spinner-border text-secondary"
                             style="height: 20px; width: 20px; font-size: 21px; margin: 1% 5% 0% 0%; float: left; font-family: Arial;"
@@ -53,10 +53,11 @@
                             Wait...</span>
 
                     </div>
-                    <p id="errMsg" style="display: none; text-align: center; margin-top: 1%; font-family: Arial;"></p>
-
+                    <p id="errMsg"
+                        style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                    </p>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
                         style="cursor: pointer;height: 23px;width: 25px;float: right;margin: 5px 0px 0px 8px;"
                         (click)="downloadReport()">
@@ -82,7 +83,7 @@
         <div class="col-sm-7" style="font-family: Arial;">
 
             <select
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.districtId"
@@ -92,7 +93,7 @@
             </select>
 
             <select [hidden]="blockHidden"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="blockId" (change)="onBlockSelect(blockId)">
                 <option [value]="blockId" disabled selected="selected">Choose a Block</option>
                 <option *ngFor="let block of blockMarkers" [(ngValue)]="block.blockId"
@@ -102,12 +103,12 @@
             </select>
 
             <select [hidden]="clusterHidden"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(72, 183, 228);"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="clusterId" (change)="onClusterSelect(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.clusterId"
                     style="font-family: Arial;font-size: 11px; "
-                    [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
+                    [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                     {{cluster.clusterName}}
                 </option>
             </select>
@@ -117,29 +118,16 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div #mapContainer id="map" class="active" style="width: 100%; height: 78vh"></div>
+            <div #mapContainer id="map" class="active" style="width: 100%; height: 77vh"></div>
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
-        <div class="col-sm-4">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; padding: 5px 0px 5px 0px;position: relative; bottom: 0; left: 0;z-index: 999;">
+        <div class="col-sm-6">
             <span>Number of students: {{studentCount}}</span>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <span style="text-align: center;">Number of schools: {{schoolCount}}</span>
-        </div>
-    </div>
-</div> -->
-<!-- <p style="text-align: center;">Semester reports will come soon</p> -->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12">
-            <p style="color: #284d8a;">Semester Report :</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <app-coming-soon></app-coming-soon>
         </div>
     </div>
 </div>
