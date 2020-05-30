@@ -83,28 +83,19 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
                 let resultObj = {
                     districtId: crcFrequencyGroupData[keys[i]][0].district_id,
                     districtName: crcFrequencyGroupData[keys[i]][0].district_name,
-                    visit_0: ((visit_0.length / totalCRCVisits) * 100).toFixed(2),
-                    visit_1_2: ((visit_1_2.length / totalCRCVisits) * 100).toFixed(2),
-                    visit_3_5: ((visit_3_5.length / totalCRCVisits) * 100).toFixed(2),
-                    visit_6_10: ((visit_6_10.length / totalCRCVisits) * 100).toFixed(2),
-                    visit_10_more: ((visit_10_more.length / totalCRCVisits) * 100).toFixed(2),
-                    totalVisits: totalVisits
                 }
                 let schoolData = '';
                 if (level == 'district') {
-                    resultObj['visitedSchoolCount'] = x.length;
                     // count of schools for districts
                     schoolData = crcMetaDataGroupData[resultObj.districtId];
                     crcMetadataFilteredSchool = schoolData.length;
                 } else if (level == 'block') {
-                    resultObj['visitedSchoolCount'] = x.length;
                     resultObj['blockId'] = crcFrequencyGroupData[keys[i]][0].block_id;
                     resultObj['blockName'] = crcFrequencyGroupData[keys[i]][0].block_name;
                     // count of schools for blocks
                     schoolData = crcMetaDataGroupData[resultObj.blockId];
                     crcMetadataFilteredSchool = schoolData.length;
                 } else if (level == 'cluster') {
-                    resultObj['visitedSchoolCount'] = x.length;
                     resultObj['blockId'] = crcFrequencyGroupData[keys[i]][0].block_id;
                     resultObj['blockName'] = crcFrequencyGroupData[keys[i]][0].block_name;
                     resultObj['clusterId'] = crcFrequencyGroupData[keys[i]][0].cluster_id;
@@ -119,11 +110,17 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
                     resultObj['clusterName'] = crcFrequencyGroupData[keys[i]][0].cluster_name;
                     resultObj['schoolId'] = crcFrequencyGroupData[keys[i]][0].school_id;
                     resultObj['schoolName'] = crcFrequencyGroupData[keys[i]][0].school_name;
-
                     // count of schools for each school
                     schoolData = crcMetaDataGroupData[resultObj.schoolId];
                     crcMetadataFilteredSchool = schoolData.length;
                 }
+
+                resultObj['visit_0'] = ((visit_0.length / totalCRCVisits) * 100).toFixed(2);
+                resultObj['visit_1_2'] = ((visit_1_2.length / totalCRCVisits) * 100).toFixed(2);
+                resultObj['visit_3_5'] = ((visit_3_5.length / totalCRCVisits) * 100).toFixed(2);
+                resultObj['visit_6_10'] = ((visit_6_10.length / totalCRCVisits) * 100).toFixed(2);
+                resultObj['visit_10_more'] = ((visit_10_more.length / totalCRCVisits) * 100).toFixed(2);
+                resultObj['totalVisits'] = totalVisits;
 
                 // to find the distinct cluster_id of crc meta data for each district
                 var crcMetadataFilteredCluster = schoolData.filter(obj => {
@@ -137,8 +134,8 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
                 })
                 let y = Array.from(crcMetadataFiltereSchool.reduce((m, t) => m.set(t.school_id, t), new Map()).values());
                 metadataSchoolDistinct += y.length;
-                
-                                
+
+
                 // finding all the other values
                 let no_of_schools_per_crc = (crcMetadataFilteredSchool / clusterDupMetadata.length).toFixed(2);
                 let visits_per_school = (totalVisits / x.length).toFixed(2);
@@ -147,6 +144,9 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
                 // assigning the values to keys
                 resultObj['no_of_schools_per_crc'] = no_of_schools_per_crc
                 resultObj['visits_per_school'] = visits_per_school
+                if (level != 'school') {
+                    resultObj['visitedSchoolCount'] = x.length;
+                }
                 resultObj['percentage_crc_visited_school'] = percentage_crc_visited_school + ' %'
                 resultObj['totalSchools'] = crcMetadataFilteredSchool
                 finalObj.visits.push(resultObj)

@@ -11,11 +11,11 @@ router.post('/', auth.authController, async function (req, res) {
         const_data['getParams']['Key'] = 'static/users.json'
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
-                console.log(err);
-                res.send([]);
+                logger.error(err);
+                res.send({ errMsg: "Something went wrong" });
             } else if (!data) {
-                console.log("Something went wrong or s3 file not found");
-                res.send([]);
+                logger.error("No data found in s3 file");
+                res.send({ errMsg: "No such data found" });
             } else {
                 users = JSON.parse(data.Body.toString());
     
