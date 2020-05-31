@@ -24,7 +24,7 @@ router.post('/', function (req, res) {
                         res.status(200).json({ msg: "Logged In", token: data, role: user.role_id, user_id: user.user_id });
                     })
                 } else {
-                    const roleUser = users.find(u => u.user_email === req.body.email);
+                    const roleUser = users.find(u => u.user_email === req.body.email && u.user_status === 1);
                     if (roleUser) {
                         if (roleUser.user_validity_end_date > `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)}`) {
                             bcrypt.compare(req.body.cnfpass, roleUser.password, function (err, result) {

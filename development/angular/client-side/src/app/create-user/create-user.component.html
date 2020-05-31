@@ -6,7 +6,7 @@
             <p id="success"
                 style="background-color: green;color: white; padding: 5px 0px 5px 0px;border-radius: 5px; display: none; text-align: center;">
                 {{msg}}</p>
-            <form class="user" #formData="ngForm" (ngSubmit)="formData.valid && onSubmit()"
+            <form class="user" #formData="ngForm" (ngSubmit)="formData.valid && onSubmit(formData)"
                 style="padding: 0px 25px 0px 25px;">
                 <div class="row">
                     <div class="col-sm-4">

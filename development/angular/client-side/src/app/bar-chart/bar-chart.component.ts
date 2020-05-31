@@ -98,7 +98,9 @@ export class BarChartComponent implements OnInit {
   ]
 
   myData;
-  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
+  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
+    localStorage.removeItem('resData');
+  }
 
   ngOnInit() {
     this.createChart(["clg"], [], '', {});
@@ -132,6 +134,7 @@ export class BarChartComponent implements OnInit {
       $('#table').empty();
     }
     this.scatterChart.destroy();
+    this.reportData = [];
     this.tableHead = "District Name";
     this.fileName = "Dist_level_CRC_Report";
     this.blockHidden = true;
@@ -302,6 +305,18 @@ export class BarChartComponent implements OnInit {
           this.loaderAndErr();
         }
       });
+    }
+  }
+
+  distWise() {
+    this.reportData = [];
+    this.fileName = "District_level_CRC_Report";
+    if (JSON.parse(localStorage.getItem('resData')) !== null) {
+      this.chartData = [];
+      this.result = JSON.parse(localStorage.getItem('resData'));
+      this.result = this.result.visits;
+      this.reportData = this.result;
+      this.downloadRoport();
     }
   }
 
@@ -783,7 +798,7 @@ export class BarChartComponent implements OnInit {
   public downloadType: String;
   downloadReportofState(downloadType) {
     if (downloadType === 'Dist_Wise') {
-      this.downloadRoport();
+      this.distWise();
     }
     if (downloadType === 'Block_Wise') {
       this.blockWise();
