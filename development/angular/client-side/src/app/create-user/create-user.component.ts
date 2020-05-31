@@ -1,6 +1,7 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-create-user',
@@ -19,7 +20,7 @@ export class CreateUserComponent implements OnInit {
   today = new Date();
 
   minDate = `${this.today.getFullYear()}-${("0" + (this.today.getMonth() + 1)).slice(-2)}-${("0" + (this.today.getDate())).slice(-2)}`
-  futureDate;
+  futureDate: any;
   maxDate;
 
   constructor(private service: AppServiceComponent, private router: Router) {
@@ -48,11 +49,11 @@ export class CreateUserComponent implements OnInit {
 
   test() {
     var date: any = new Date(new Date(this.logData.start_date + " " + "00:00:00")).getTime();
-    this.futureDate = new Date(date + 86400000 * 2);
-    this.maxDate = `${this.futureDate.getFullYear()}-${("0" + (this.futureDate.getMonth() + 1)).slice(-2)}-${("0" + (this.futureDate.getDate() - 1)).slice(-2)}`;
+    this.futureDate = new Date(date + 86400000);
+    this.maxDate = `${this.futureDate.getFullYear()}-${("0" + (this.futureDate.getMonth() + 1)).slice(-2)}-${("0" + (this.futureDate.getDate() + 0)).slice(-2)}`;
   }
 
-  onSubmit() {
+  onSubmit(formData: NgForm) {
     if (!this.minValidate && !this.maxValidate) {
       this.logData['createrId'] = localStorage.getItem('user_id');
       this.service.addUser(this.logData).subscribe(res => {
@@ -61,7 +62,8 @@ export class CreateUserComponent implements OnInit {
           this.msg = res['msg'];
           this.err = '';
           setTimeout(() => {
-            this.router.navigate(['home/map-view']);
+            formData.resetForm();
+            document.getElementById('success').style.display = "none";
           }, 2000);
         }
         if (res['msg'] === "User already exist") {

@@ -98,7 +98,9 @@ export class BarChartComponent implements OnInit {
   ]
 
   myData;
-  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) { }
+  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
+    localStorage.removeItem('resData');
+  }
 
   ngOnInit() {
     this.createChart(["clg"], [], '', {});
