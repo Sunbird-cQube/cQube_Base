@@ -12,10 +12,10 @@ router.post('/', function (req, res) {
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 users = JSON.parse(data.Body.toString());
                 const user = users.find(u => u.user_email === req.body.email && u.password === req.body.cnfpass);
@@ -35,14 +35,14 @@ router.post('/', function (req, res) {
                                         })
                                     }
                                 } else {
-                                    res.send({ errMsg: "Password is wrong" });
+                                    res.status(401).json({ errMsg: "Password is wrong" });
                                 }
                             });
                         } else {
-                            res.send({ errMsg: "User validity exceeded" });
+                            res.status(403).json({ errMsg: "User validity exceeded" });
                         }
                     } else {
-                        res.send({ errMsg: "User not found" })
+                        res.status(404).json({ errMsg: "User not found" });
                     }
                 }
             }

@@ -13,13 +13,13 @@ router.post('/schoolWise', auth.authController, function (req, res) {
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 logger.info('--- Attendance school wise api response sent ---');
-                res.send(data.Body);
+                res.status(200).send(data.Body);
             }
         });
     } catch (e) {
@@ -40,7 +40,7 @@ router.post('/schoolPerCluster', auth.authController, async (req, res) => {
 
         var allSchools = await axios.post(`${baseUrl}/attendance/schoolWise`, { month: month, year: year }, { 'headers': { 'token': "Bearer" + token } });
         if (allSchools.data['errMsg']) {
-            res.send({ errMsg: "Something went wrong" });
+            res.status(500).json({ errMsg: "Something went wrong" });
         } else {
             var schoolsDetails = [];
             allSchools.data.forEach(schools => {
@@ -60,7 +60,7 @@ router.post('/schoolPerCluster', auth.authController, async (req, res) => {
                 }
             });
             logger.info('--- Attendance schoolPerCluster api response sent ---');
-            res.send(schoolsDetails);
+            res.status(200).send(schoolsDetails);
         }
     } catch (e) {
         logger.error(`Error :: ${e}`)

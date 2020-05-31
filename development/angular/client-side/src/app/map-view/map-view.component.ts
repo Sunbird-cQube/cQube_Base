@@ -4,6 +4,8 @@ import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import * as data from './../../assets/india.json';
+import * as R from 'leaflet-responsive-popup';
+// import * as L from 'leaflet';
 
 declare let L;
 
@@ -50,7 +52,7 @@ export class MapViewComponent implements OnInit {
   public blockName: any;
   public clustName: any;
   public markerData;
-  public layerMarkers = new L.layerGroup();
+  public layerMarkers: any = new L.layerGroup();
   public levelWise: any;
 
   // google maps zoom level
@@ -240,6 +242,7 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
+        console.log(res);
         if (!res['errMsg']) {
           this.mylatlngData = res;
           var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1);
@@ -273,11 +276,19 @@ export class MapViewComponent implements OnInit {
             for (var i = 0; i < this.markers.length; i++) {
               var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
               globalMap.setZoom(7.4);
+              // const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+              //   "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
+              //   "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
+              //   "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
+              //   "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+              // );
+
               markerIcon.addTo(globalMap).bindPopup(
                 "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
                 "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
                 "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
                 "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+                // popup
               );
               this.popups(markerIcon, this.markers[i]);
             }
