@@ -319,7 +319,7 @@ export class BarChartComponent implements OnInit {
       this.downloadRoport();
     }
   }
-  
+
   blockWise() {
     this.reportData = [];
     this.errMsg();
@@ -798,7 +798,7 @@ export class BarChartComponent implements OnInit {
   public downloadType: String;
   downloadReportofState(downloadType) {
     if (downloadType === 'Dist_Wise') {
-      this.districtWise();
+      this.distWise();
     }
     if (downloadType === 'Block_Wise') {
       this.blockWise();
