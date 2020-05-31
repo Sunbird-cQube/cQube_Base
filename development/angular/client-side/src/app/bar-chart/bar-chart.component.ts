@@ -156,10 +156,12 @@ export class BarChartComponent implements OnInit {
     this.tableData = [];
 
     this.dateRange = localStorage.getItem('dateRange');
+    // if (this.result.length > 0) {
     if (JSON.parse(localStorage.getItem('resData')) !== null) {
       this.chartData = [];
       var labels = [];
       this.result = JSON.parse(localStorage.getItem('resData'));
+      // console.log(this.result);
       let a = this.result.schoolsVisitedCount
       this.result = this.result.visits;
       this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
@@ -262,6 +264,7 @@ export class BarChartComponent implements OnInit {
             }
 
             this.createChart(labels, this.chartData, this.tableHead, obj);
+            // console.log(this.result);
             this.tableData = this.result;
             this.dtOptions = {
               data: this.tableData,
@@ -316,7 +319,7 @@ export class BarChartComponent implements OnInit {
       this.downloadRoport();
     }
   }
-
+  
   blockWise() {
     this.reportData = [];
     this.errMsg();
@@ -454,6 +457,7 @@ export class BarChartComponent implements OnInit {
           }
 
           this.createChart(labels, this.chartData, this.tableHead, obj);
+          // console.log(this.crcBlocksNames);
           this.tableData = this.crcBlocksNames;
           this.dtOptions = {
             data: this.tableData,
@@ -565,6 +569,7 @@ export class BarChartComponent implements OnInit {
         }
 
         this.createChart(labels, this.chartData, this.tableHead, obj);
+        // console.log(this.crcClusterNames);
         this.tableData = this.crcClusterNames;
         this.dtOptions = {
           data: this.tableData,
@@ -793,7 +798,7 @@ export class BarChartComponent implements OnInit {
   public downloadType: String;
   downloadReportofState(downloadType) {
     if (downloadType === 'Dist_Wise') {
-      this.distWise();
+      this.districtWise();
     }
     if (downloadType === 'Block_Wise') {
       this.blockWise();
