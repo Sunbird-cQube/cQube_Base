@@ -4,10 +4,10 @@ import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import * as data from './../../assets/india.json';
+import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
-// import * as L from 'leaflet';
 
-declare let L;
+// declare let L;
 
 var globalMap;
 
@@ -131,7 +131,7 @@ export class MapViewComponent implements OnInit {
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
       {
         token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
-        id: 'mapbox.streets',
+        // id: 'mapbox.streets',
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
         minZoom: 4,
         maxZoom: 18,
@@ -242,7 +242,6 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
-        console.log(res);
         if (!res['errMsg']) {
           this.mylatlngData = res;
           var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1);
@@ -275,21 +274,16 @@ export class MapViewComponent implements OnInit {
           if (this.markers.length > 0) {
             for (var i = 0; i < this.markers.length; i++) {
               var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
-              globalMap.setZoom(7.4);
-              // const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
-              //   "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
-              //   "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
-              //   "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-              //   "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-              // );
 
-              markerIcon.addTo(globalMap).bindPopup(
+
+              const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
                 "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
                 "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
                 "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
                 "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-                // popup
               );
+              markerIcon.addTo(globalMap).bindPopup(popup);
+
               this.popups(markerIcon, this.markers[i]);
             }
           }
@@ -373,13 +367,14 @@ export class MapViewComponent implements OnInit {
               var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
               globalMap.setZoom(7);
-              markerIcon.addTo(globalMap).bindPopup(
+              const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
                 "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
                 "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
                 "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].name +
                 "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
                 "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
               );
+              markerIcon.addTo(globalMap).bindPopup(popup);
               this.popups(markerIcon, this.markers[i]);
             }
             blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -462,7 +457,7 @@ export class MapViewComponent implements OnInit {
 
               var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 0, 0, 0);
 
-              markerIcon.addTo(globalMap).bindPopup(
+              const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
                 "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
                 "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
                 "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
@@ -470,6 +465,7 @@ export class MapViewComponent implements OnInit {
                 "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
                 "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
               );
+              markerIcon.addTo(globalMap).bindPopup(popup);
 
               markerIcon.on('mouseover', function (e) {
                 this.openPopup();
@@ -574,7 +570,7 @@ export class MapViewComponent implements OnInit {
           if (this.markers.length !== 0) {
             for (let i = 0; i < this.markers.length; i++) {
               var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 1, 0.01, 0);
-              markerIcon.addTo(globalMap).bindPopup(
+              const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
                 "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
                 "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
                 "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
@@ -582,6 +578,7 @@ export class MapViewComponent implements OnInit {
                 "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
                 "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
               );
+              markerIcon.addTo(globalMap).bindPopup(popup);
 
               this.popups(markerIcon, this.markers[i]);
             }
@@ -785,13 +782,14 @@ export class MapViewComponent implements OnInit {
               });
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
-            markerIcon.addTo(globalMap).bindPopup(
+            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
               "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
               "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
               "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].name +
               "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
               "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
             );
+            markerIcon.addTo(globalMap).bindPopup(popup);
             this.popups(markerIcon, this.markers[i]);
           }
 
@@ -921,7 +919,7 @@ export class MapViewComponent implements OnInit {
               });
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
-            markerIcon.addTo(globalMap).bindPopup(
+            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
               "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
               "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
               "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
@@ -929,6 +927,7 @@ export class MapViewComponent implements OnInit {
               "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
               "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
             );
+            markerIcon.addTo(globalMap).bindPopup(popup);
             this.popups(markerIcon, this.markers[i]);
 
           };
@@ -1081,7 +1080,7 @@ export class MapViewComponent implements OnInit {
 
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
-            markerIcon.addTo(globalMap).bindPopup(
+            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
               "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
               "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
               "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
@@ -1089,6 +1088,7 @@ export class MapViewComponent implements OnInit {
               "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
               "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
             );
+            markerIcon.addTo(globalMap).bindPopup(popup);
             markerIcon.on('mouseover', function (e) {
               this.openPopup();
             });
@@ -1183,8 +1183,7 @@ export class MapViewComponent implements OnInit {
     }
 
     // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
-    // Taken from the awesome ROT.js roguelike dev library at
-    // https://github.com/ondras/rot.js
+
     function _interpolateRgb(color1, color2, factor) {
       if (arguments.length < 3) { factor = 0.5; }
 
@@ -1229,10 +1228,6 @@ export class MapViewComponent implements OnInit {
     return {
       generateGradient
     };
-  }
-
-  redirectTo() {
-    this.router.navigate(['home/dashboard']);
   }
 
 }

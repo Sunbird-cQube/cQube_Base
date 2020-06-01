@@ -42,7 +42,7 @@ router.post('/', function (req, res) {
                             res.status(403).json({ errMsg: "User validity exceeded" });
                         }
                     } else {
-                        res.status(404).json({ errMsg: "User not found" });
+                        res.status(403).json({ errMsg: "User not found" });
                     }
                 }
             }

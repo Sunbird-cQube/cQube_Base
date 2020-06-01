@@ -1,13 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { MapViewComponent } from './map-view/map-view.component';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +25,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
+import { InterceptorService } from './interceptor.service';
 
 @NgModule({
   declarations: [
@@ -55,7 +55,7 @@ import { SchoolInfrastructureComponent } from './school-infrastructure/school-in
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    HttpClientModule, LeafletModule.forRoot(),
+    HttpClientModule,
     FormsModule,
     BrowserAnimationsModule
   ],
@@ -64,7 +64,15 @@ import { SchoolInfrastructureComponent } from './school-infrastructure/school-in
     MatPaginatorModule,
     MatSortModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+
+
+    }
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

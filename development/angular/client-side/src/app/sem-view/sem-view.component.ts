@@ -4,8 +4,8 @@ import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import * as data from '../../assets/india.json';
-
-declare let L;
+import * as L from 'leaflet';
+import * as R from 'leaflet-responsive-popup';
 
 var globalMap;
 
@@ -232,7 +232,7 @@ export class SemViewComponent implements OnInit {
                   strokeWeight: 0.01
                 }).addTo(globalMap);
 
-                markerIcon.addTo(globalMap).bindPopup(
+                const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
                   "<b>Semester Performance: </b>" + "&nbsp;" + this.blockMarkers[i].assesmentPercentage + " %" +
                   "<br><b>District: </b>" + "&nbsp;" + this.blockMarkers[i].districtName +
                   "<br><b>Block: </b>" + "&nbsp;" + this.blockMarkers[i].blockName +
@@ -249,6 +249,7 @@ export class SemViewComponent implements OnInit {
                   "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.blockMarkers[i].percent_between_60_75 + " %" + ` (${this.blockMarkers[i].value_between_60_75} out of ${this.blockMarkers[i].schoolsCount})` +
                   "<br><b>% above 75%:</b>" + "&nbsp;" + this.blockMarkers[i].percent_above_75 + " %" + ` (${this.blockMarkers[i].value_above_75} out of ${this.blockMarkers[i].schoolsCount})`
                 );
+                markerIcon.addTo(globalMap).bindPopup(popup);
 
                 markerIcon.on('mouseover', function (e) {
                   this.openPopup();
@@ -355,7 +356,7 @@ export class SemViewComponent implements OnInit {
                   strokeWeight: 0.01
                 }).addTo(globalMap);
 
-                markerIcon.addTo(globalMap).bindPopup(
+                const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
                   "<b>Semester Performance: </b>" + "&nbsp;" + this.clusterMarkers[i].assesmentPercentage + " %" +
                   "<br><b>District: </b>" + "&nbsp;" + this.clusterMarkers[i].districtName +
                   "<br><b>Block: </b>" + "&nbsp;" + this.clusterMarkers[i].blockName +
@@ -373,6 +374,7 @@ export class SemViewComponent implements OnInit {
                   "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_between_60_75 + " %" + ` (${this.clusterMarkers[i].value_between_60_75} out of ${this.clusterMarkers[i].schoolsCount})` +
                   "<br><b>% above 75%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_above_75 + " %" + ` (${this.clusterMarkers[i].value_above_75} out of ${this.clusterMarkers[i].schoolsCount})`
                 );
+                markerIcon.addTo(globalMap).bindPopup(popup);
 
                 markerIcon.on('mouseover', function (e) {
                   this.openPopup();
@@ -479,7 +481,7 @@ export class SemViewComponent implements OnInit {
                   strokeWeight: 0
                 }).addTo(globalMap);
 
-                markerIcon.addTo(globalMap).bindPopup(
+                const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
                   "<b>Semester Performance: </b>" + "&nbsp;" + this.schoolMarkers[i].assesmentPercentage + " %" +
                   "<br><b>District: </b>" + "&nbsp;" + this.schoolMarkers[i].districtName +
                   "<br><b>Block: </b>" + "&nbsp;" + this.schoolMarkers[i].blockName +
@@ -493,6 +495,7 @@ export class SemViewComponent implements OnInit {
                   "<br><b>Grade 8:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_8 + " %" +
                   "<br><b>Number of students:</b>" + "&nbsp;" + this.schoolMarkers[i].studentsCount
                 );
+                markerIcon.addTo(globalMap).bindPopup(popup);
 
                 markerIcon.on('mouseover', function (e) {
                   this.openPopup();
@@ -791,7 +794,7 @@ export class SemViewComponent implements OnInit {
 
         // data to show on the tooltip for the desired levels
         if (options.level == 'district') {
-          markerIcon.addTo(globalMap).bindPopup(
+          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Grade 3:</b>" + "&nbsp;" + this.markers[i].grade_3 + " %" +
@@ -807,6 +810,7 @@ export class SemViewComponent implements OnInit {
             "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
+          markerIcon.addTo(globalMap).bindPopup(popup);
 
           // to download the report
           this.fileName = "District_wise_report";
@@ -826,7 +830,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
 
         } else if (options.level == 'block') {
-          markerIcon.addTo(globalMap).bindPopup(
+          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
@@ -843,6 +847,7 @@ export class SemViewComponent implements OnInit {
             "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
+          markerIcon.addTo(globalMap).bindPopup(popup);
           this.fileName = "Block_Per_dist_report"
           let obj = {
             DistrictId: this.markers[i].districtId,
@@ -862,7 +867,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
 
         } else if (options.level == 'cluster') {
-          markerIcon.addTo(globalMap).bindPopup(
+          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
@@ -880,6 +885,7 @@ export class SemViewComponent implements OnInit {
             "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
+          markerIcon.addTo(globalMap).bindPopup(popup);
           this.fileName = "Cluster_per_block_report"
           let obj = {
             DistrictId: this.markers[i].districtId,
@@ -901,7 +907,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
 
         } else if (options.level == 'school') {
-          markerIcon.addTo(globalMap).bindPopup(
+          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
@@ -915,6 +921,8 @@ export class SemViewComponent implements OnInit {
             "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
             "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount
           );
+          markerIcon.addTo(globalMap).bindPopup(popup);
+
           this.fileName = "School_per_cluster_report"
           let obj = {
             DistrictId: this.markers[i].districtId,
@@ -1088,7 +1096,4 @@ export class SemViewComponent implements OnInit {
     };
   }
 
-  redirectTo() {
-    this.router.navigate(['home/dashboard']);
-  }
 }
