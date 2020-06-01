@@ -366,7 +366,7 @@ export class SemViewComponent implements OnInit {
                   "<br><b>Grade 6:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_6 + " %" +
                   "<br><b>Grade 7:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_7 + " %" +
                   "<br><b>Grade 8:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_8 + " %" +
-                  "<br><b>Number of students:</b>" + "&nbsp;" + this.clusterMarkers[i].studentsCount +
+                  "<br><b>Number of schools:</b>" + "&nbsp;" + this.clusterMarkers[i].schoolsCount +
                   "<br><b>Number of students:</b>" + "&nbsp;" + this.clusterMarkers[i].studentsCount +
                   "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_below_33 + " %" + ` (${this.clusterMarkers[i].value_below_33} out of ${this.clusterMarkers[i].schoolsCount})` +
                   "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_between_33_60 + " %" + ` (${this.clusterMarkers[i].value_between_33_60} out of ${this.clusterMarkers[i].schoolsCount})` +
@@ -937,7 +937,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
         }
 
-        this.popups(markerIcon, this.markers, options);
+        this.popups(markerIcon, this.markers[i], options);
       }
 
       this.loaderAndErr();
@@ -961,7 +961,7 @@ export class SemViewComponent implements OnInit {
       if (options.level != 'school') {
         markerIcon.on('click', this.onClick_Marker, this)
       }
-      markerIcon.myJsonData = markers[i];
+      markerIcon.myJsonData = markers;
     }
   }
 

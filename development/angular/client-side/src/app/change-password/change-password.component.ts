@@ -20,7 +20,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    $("#exampleInputEmail").attr("disabled", "disabled");
+    // $("#exampleInputEmail").attr("disabled", "disabled");
     // document.addEventListener('contextmenu', function (e) {
     //   e.preventDefault();
     // });

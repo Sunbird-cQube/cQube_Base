@@ -139,7 +139,6 @@ export class AppServiceComponent {
     }
 
     addUser(data) {
-        console.log(data);
         return this.http.post(`${this.baseUrl}/addUser`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
