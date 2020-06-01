@@ -49,7 +49,7 @@ router.post('/', function (req, res) {
         });
     } catch (e) {
         logger.error(`Error :: ${e}`);
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 });
 
