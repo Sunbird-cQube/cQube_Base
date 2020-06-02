@@ -80,7 +80,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         })
     } catch (e) {
         logger.error(e);
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 
@@ -171,7 +171,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         })
     } catch (e) {
         logger.error(e);
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 
