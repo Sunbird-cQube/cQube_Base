@@ -17,6 +17,9 @@ const crcBlockWise = require('../api/controller/crcRoutes/blockWise');
 const crcClusterWise = require('../api/controller/crcRoutes/clusterWise');
 const crcSchoolWise = require('../api/controller/crcRoutes/schoolWise');
 
+//Infra
+const infraDistWise = require('../api/controller/Infra/infra-distWise');
+
 const semDistrictWise = require('../api/controller/semRoutes/districtWise');
 const semBlockWise = require('../api/controller/semRoutes/blockWise');
 const semClusterWise = require('../api/controller/semRoutes/clusterWise');
@@ -45,5 +48,8 @@ router.use('/roleBasedLogin', roleLogin);
 router.use('/changePassword', changePasswd);
 router.use('/addUser', addUser);
 router.use('/dashboard', dashboard);
+
+// Infra
+router.use('/infra', infraDistWise);
 
 module.exports = router;
