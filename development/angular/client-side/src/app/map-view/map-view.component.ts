@@ -274,7 +274,7 @@ export class MapViewComponent implements OnInit {
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
 
 
-            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+            const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
               "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
               "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
               "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
@@ -363,7 +363,7 @@ export class MapViewComponent implements OnInit {
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
             globalMap.setZoom(7);
-            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+            const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
               "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
               "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
               "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].name +
@@ -451,7 +451,7 @@ export class MapViewComponent implements OnInit {
 
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 0, 0, 0);
 
-            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+            const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
               "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
               "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
               "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
@@ -562,7 +562,7 @@ export class MapViewComponent implements OnInit {
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 1, 0.01, 0);
-            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+            const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
               "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
               "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
               "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
@@ -771,7 +771,7 @@ export class MapViewComponent implements OnInit {
             });
           var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
-          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].name +
@@ -906,7 +906,7 @@ export class MapViewComponent implements OnInit {
             });
           var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
-          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
@@ -1065,7 +1065,7 @@ export class MapViewComponent implements OnInit {
 
           var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
-          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +

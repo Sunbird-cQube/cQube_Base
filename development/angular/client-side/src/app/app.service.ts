@@ -149,4 +149,9 @@ export class AppServiceComponent {
     dashboard() {
         return this.http.post(`${this.baseUrl}/dashboard`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
+
+    //Infra
+    infraDistWise(){
+        return this.http.post(`${this.baseUrl}/infra/distWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
 }

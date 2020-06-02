@@ -11,6 +11,7 @@ import { AuthGuard } from './auth.guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,9 @@ const routes: Routes = [
       },
       {
         path: 'semester-report', component: SemViewComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'school-infrastructure', component: SchoolInfrastructureComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'crc-report', component: BarChartComponent, canActivateChild: [AuthGuard]
