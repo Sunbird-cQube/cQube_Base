@@ -29,7 +29,7 @@ export class SchoolInfrastructureComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: "District Names",
+          labelString: "Average Values",
           fontSize: 12,
           fontColor: "dark gray"
         }
@@ -43,7 +43,7 @@ export class SchoolInfrastructureComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: "Average Values",
+          labelString: "District Names",
           fontSize: 12,
           fontColor: "dark gray",
         }
@@ -51,7 +51,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     }
   };;
   public barChartLabels: any = [];
-  public barChartType: any = 'bar';
+  public barChartType: any = 'horizontalBar';
   public barChartLegend = false;
   public barChartPlugins = [];
   public barChartColors: any = [
@@ -112,7 +112,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
   generateChart(distNames, data) {
     this.barChartLabels = distNames;
-    this.barChartType = 'bar';
+    this.barChartType = 'horizontalBar';
     this.barChartData = data;
   }
 
