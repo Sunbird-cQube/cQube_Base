@@ -114,12 +114,6 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
                     schoolData = crcMetaDataGroupData[resultObj.schoolId];
                     crcMetadataFilteredSchool = schoolData.length;
                 }
-                if (level != 'school') {
-                    let visitSchoolCount = x.filter(a => {
-                        return a.visit_count > 0
-                    });
-                    resultObj['visitedSchoolCount'] = visitSchoolCount.length
-                }
 
                 resultObj['visit_0'] = ((visit_0.length / totalCRCVisits) * 100).toFixed(2);
                 resultObj['visit_1_2'] = ((visit_1_2.length / totalCRCVisits) * 100).toFixed(2);
@@ -151,7 +145,10 @@ const percentageCalculation = (crcMetaDataGroupData, crcFrequencyGroupData, leve
                 resultObj['no_of_schools_per_crc'] = no_of_schools_per_crc
                 resultObj['visits_per_school'] = visits_per_school
                 if (level != 'school') {
-                    resultObj['visitedSchoolCount'] = x.length;
+                    let visitSchoolCount = x.filter(a => {
+                        return a.visit_count > 0
+                    });
+                    resultObj['visitedSchoolCount'] = visitSchoolCount.length
                 }
                 resultObj['percentage_crc_visited_school'] = percentage_crc_visited_school + ' %'
                 resultObj['totalSchools'] = crcMetadataFilteredSchool
