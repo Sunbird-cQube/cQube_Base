@@ -13,23 +13,22 @@ from get_dir import pwd
 class District_validation(unittest.TestCase):
     def setUp(self):
         driver_path = pwd()
-        self.driver = webdriver.Firefox(executable_path=driver_path.get_driver_path())
+        self.driver = webdriver.Chrome(driver_path.get_driver_path())
         driver = cqube(self.driver)
         driver.open_cqube_appln()
         driver = cqube(self.driver)
         driver.login_cqube()
         driver.navigate_to_student_report()
-        x = arg()
-        # driver.select_month_year(x.list[0], x.list[1])
 
     def test_validate_blockrecords(self):
         time.sleep(5)
         self.driver.find_element_by_xpath(Data.SARD1).click()
         self.driver.find_element_by_xpath(Data.SARB1).click()
-        self.driver.find_element_by_xpath(Data.Download)
+        time.sleep(3)
         self.driver.find_element_by_xpath(Data.Download).click()
+        time.sleep(4)
         lists = self.driver.find_elements_by_class_name(Data.dots)
-        count = len(lists)
+        count = len(lists)-1
         self.assertNotEqual(0,count,msg="dots are mismatched")
     def tearDown(self):
             time.sleep(5)
