@@ -12,7 +12,7 @@ from get_dir import pwd
 class SAR(unittest.TestCase):
     def setUp(self):
         driver_path = pwd()
-        self.driver = webdriver.Firefox(executable_path=driver_path.get_driver_path())
+        self.driver = webdriver.Chrome(driver_path.get_driver_path())
         driver = cqube(self.driver)
         driver.open_cqube_appln()
         driver = cqube(self.driver)
@@ -22,8 +22,10 @@ class SAR(unittest.TestCase):
         driver.select_month_year(x.list[0], x.list[1])
 
     def test_checking_dots_on_cluster(self):
+        time.sleep(5)
         self.driver.find_element_by_xpath(Data.Dashboard).click()
         self.driver.find_element_by_xpath(Data.SAR).click()
+        time.sleep(5)
         self.driver.find_element_by_xpath(Data.Schools).click()
 
         time.sleep(10)
