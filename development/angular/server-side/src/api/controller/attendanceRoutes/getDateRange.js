@@ -25,7 +25,7 @@ router.get('/getDateRange', auth.authController, function (req, res) {
         });
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
     }
 });
 

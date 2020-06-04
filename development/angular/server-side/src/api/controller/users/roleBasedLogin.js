@@ -42,14 +42,14 @@ router.post('/', function (req, res) {
                             res.status(403).json({ errMsg: "User validity exceeded" });
                         }
                     } else {
-                        res.status(403).json({ errMsg: "User not found" });
+                        res.status(404).json({ errMsg: "User not found" });
                     }
                 }
             }
         });
     } catch (e) {
         logger.error(`Error :: ${e}`);
-        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
     }
 });
 

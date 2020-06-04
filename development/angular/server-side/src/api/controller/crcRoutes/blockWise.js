@@ -29,7 +29,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         res.status(200).send(crcResult);
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
     }
 })
 
@@ -67,7 +67,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         res.status(200).send(crcResult);
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
     }
 })
 

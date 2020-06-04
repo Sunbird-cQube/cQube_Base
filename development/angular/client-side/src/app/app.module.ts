@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { MapViewComponent } from './map-view/map-view.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
@@ -54,7 +55,7 @@ import { SchoolInfrastructureComponent } from './school-infrastructure/school-in
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    HttpClientModule,
+    HttpClientModule, LeafletModule.forRoot(),
     FormsModule,
     BrowserAnimationsModule
   ],

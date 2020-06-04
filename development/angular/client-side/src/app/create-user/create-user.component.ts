@@ -57,15 +57,18 @@ export class CreateUserComponent implements OnInit {
     if (!this.minValidate && !this.maxValidate) {
       this.logData['createrId'] = localStorage.getItem('user_id');
       this.service.addUser(this.logData).subscribe(res => {
-        document.getElementById('success').style.display = "Block";
-        this.msg = res['msg'];
-        this.err = '';
-        setTimeout(() => {
-          formData.resetForm();
-          document.getElementById('success').style.display = "none";
-        }, 2000);
-      }, err => {
-        this.err = err.error['msg'];
+        if (res['msg'] === "User Added") {
+          document.getElementById('success').style.display = "Block";
+          this.msg = res['msg'];
+          this.err = '';
+          setTimeout(() => {
+            formData.resetForm();
+            document.getElementById('success').style.display = "none";
+          }, 2000);
+        }
+        if (res['msg'] === "User already exist") {
+          this.err = res['msg'];
+        }
       });
     }
   }

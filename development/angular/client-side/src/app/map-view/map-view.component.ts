@@ -4,10 +4,10 @@ import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import * as data from './../../assets/india.json';
-import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
+// import * as L from 'leaflet';
 
-// declare let L;
+declare let L;
 
 var globalMap;
 
@@ -75,33 +75,34 @@ export class MapViewComponent implements OnInit {
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
     service.getDateRange().subscribe(res => {
-      this.getMonthYear = res;
-      this.years = Object.keys(this.getMonthYear);
-      this.year = this.years[this.years.length - 1];
-      var allMonths = [];
-      allMonths = this.getMonthYear[`${this.year}`];
-      this.months = [];
-      allMonths.forEach(month => {
-        var obj = {
-          name: month.month_name,
-          id: month.month
+      if (!res['errMsg']) {
+        this.getMonthYear = res;
+        this.years = Object.keys(this.getMonthYear);
+        this.year = this.years[this.years.length - 1];
+        var allMonths = [];
+        allMonths = this.getMonthYear[`${this.year}`];
+        this.months = [];
+        allMonths.forEach(month => {
+          var obj = {
+            name: month.month_name,
+            id: month.month
+          }
+          this.months.push(obj);
+        });
+        this.month = this.months[this.months.length - 1].id;
+        this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
+        if (this.month) {
+          this.month_year = {
+            month: this.month,
+            year: this.year
+          };
+          this.districtWise();
         }
-        this.months.push(obj);
-      });
-      this.month = this.months[this.months.length - 1].id;
-      this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
-      if (this.month) {
-        this.month_year = {
-          month: this.month,
-          year: this.year
-        };
-        this.districtWise();
+      } else {
+        document.getElementById('home').style.display = 'none';
+        this.getMonthYear = {};
+        this.loaderAndErr();
       }
-
-    }, err => {
-      document.getElementById('home').style.display = 'none';
-      this.getMonthYear = {};
-      this.loaderAndErr();
     });
   }
 
@@ -130,7 +131,7 @@ export class MapViewComponent implements OnInit {
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
       {
         token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
-        // id: 'mapbox.streets',
+        id: 'mapbox.streets',
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
         minZoom: 4,
         maxZoom: 18,
@@ -241,73 +242,81 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1);
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
+        console.log(res);
+        if (!res['errMsg']) {
+          this.mylatlngData = res;
+          var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1);
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          this.colors = colors;
 
-        var distNames = [];
+          var distNames = [];
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
+          this.markers = [];
+          this.studentCount = 0;
+          this.schoolCount = 0;
 
-        for (var i = 0; i < sorted.length; i++) {
-          this.districtsIds.push(sorted[i]['x_axis']);
-          distNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['district_name'] });
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: sorted[i]['district_name'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              // blok: this.blok,
-            });
-        }
-        if (this.markers.length > 0) {
-          for (var i = 0; i < this.markers.length; i++) {
-            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
-
-
-            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
-              "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
-              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
-              "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-            );
-            markerIcon.addTo(globalMap).bindPopup(popup);
-
-            this.popups(markerIcon, this.markers[i]);
+          for (var i = 0; i < sorted.length; i++) {
+            this.districtsIds.push(sorted[i]['x_axis']);
+            distNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['district_name'] });
+            this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+            this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
+            this.markers.push(
+              {
+                id: sorted[i]['x_axis'],
+                name: sorted[i]['district_name'],
+                label: sorted[i]['x_value'],
+                lat: sorted[i]['y_value'],
+                lng: sorted[i]['z_value'],
+                stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                // blok: this.blok,
+              });
           }
-        }
+          if (this.markers.length > 0) {
+            for (var i = 0; i < this.markers.length; i++) {
+              var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
+              globalMap.setZoom(7.4);
+              // const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+              //   "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
+              //   "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
+              //   "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
+              //   "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+              // );
 
-        distNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        this.districtsNames = distNames;
-
-        globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
-        this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
-        this.markers.forEach(dist => {
-          var obj = {
-            DistrictId: dist.id,
-            DistrictName: dist.name,
-            Attendance: dist.label + " %",
-            TotalSchools: Number(dist.schCount.replace(/\,/g, '')),
-            TotalStudents: Number(dist.stdCount.replace(/\,/g, ''))
+              markerIcon.addTo(globalMap).bindPopup(
+                "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
+                "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
+                "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
+                "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+                // popup
+              );
+              this.popups(markerIcon, this.markers[i]);
+            }
           }
-          this.reportData.push(obj);
-        });
-        this.loaderAndErr();
-        this.changeDetection.markForCheck();
-      }, err => {
-        this.markers = [];
-        this.loaderAndErr();
+
+          distNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+          this.districtsNames = distNames;
+
+          globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
+          this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+
+          this.markers.forEach(dist => {
+            var obj = {
+              DistrictId: dist.id,
+              DistrictName: dist.name,
+              Attendance: dist.label + " %",
+              TotalSchools: Number(dist.schCount.replace(/\,/g, '')),
+              TotalStudents: Number(dist.stdCount.replace(/\,/g, ''))
+            }
+            this.reportData.push(obj);
+          });
+          this.loaderAndErr();
+          this.changeDetection.markForCheck();
+        } else {
+          this.markers = [];
+          this.loaderAndErr();
+        }
       });
     } else {
       this.markers = [];
@@ -328,74 +337,75 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
+        if (!res['errMsg']) {
+          this.mylatlngData = res;
+          var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          this.colors = colors;
 
-        var blockNames = [];
+          var blockNames = [];
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
+          this.markers = [];
+          this.studentCount = 0;
+          this.schoolCount = 0;
 
-        for (var i = 0; i < sorted.length; i++) {
-          this.blocksIds.push(sorted[i]['x_axis']);
-          blockNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'], distId: sorted[i]['district_id'] });
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              distId: sorted[i]['district_id'],
-              dist: sorted[i]['district_name'],
-              name: sorted[i]['block_name'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+          for (var i = 0; i < sorted.length; i++) {
+            this.blocksIds.push(sorted[i]['x_axis']);
+            blockNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'], distId: sorted[i]['district_id'] });
+            this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+            this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
+            this.markers.push(
+              {
+                id: sorted[i]['x_axis'],
+                distId: sorted[i]['district_id'],
+                dist: sorted[i]['district_name'],
+                name: sorted[i]['block_name'],
+                label: sorted[i]['x_value'],
+                lat: sorted[i]['y_value'],
+                lng: sorted[i]['z_value'],
+                stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
 
-            });
-        }
-        if (this.markers.length !== 0) {
-          for (let i = 0; i < this.markers.length; i++) {
-            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
-
-            globalMap.setZoom(7);
-            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
-              "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
-              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-              "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].name +
-              "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-            );
-            markerIcon.addTo(globalMap).bindPopup(popup);
-            this.popups(markerIcon, this.markers[i]);
+              });
           }
-          blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-          this.blocksNames = blockNames;
-          globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
-          // var schStdCount = JSON.parse(localStorage.getItem('schStd'));
-          this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.markers.forEach(block => {
-            var obj = {
-              BlockId: block.id,
-              BlockName: block.name,
-              DistrictName: block.dist,
-              Attendance: block.label + " %",
-              TotalSchools: Number(block.schCount.replace(/\,/g, '')),
-              TotalStudents: Number(block.stdCount.replace(/\,/g, ''))
+          if (this.markers.length !== 0) {
+            for (let i = 0; i < this.markers.length; i++) {
+              var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
+
+              globalMap.setZoom(7);
+              markerIcon.addTo(globalMap).bindPopup(
+                "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
+                "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
+                "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].name +
+                "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
+                "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+              );
+              this.popups(markerIcon, this.markers[i]);
             }
-            this.reportData.push(obj);
-          });
+            blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+            this.blocksNames = blockNames;
+            globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
+            // var schStdCount = JSON.parse(localStorage.getItem('schStd'));
+            this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.markers.forEach(block => {
+              var obj = {
+                BlockId: block.id,
+                BlockName: block.name,
+                DistrictName: block.dist,
+                Attendance: block.label + " %",
+                TotalSchools: Number(block.schCount.replace(/\,/g, '')),
+                TotalStudents: Number(block.stdCount.replace(/\,/g, ''))
+              }
+              this.reportData.push(obj);
+            });
+            this.loaderAndErr();
+            this.changeDetection.markForCheck();
+          }
+        } else {
+          this.markers = [];
           this.loaderAndErr();
-          this.changeDetection.markForCheck();
         }
-      }, err => {
-        this.markers = [];
-        this.loaderAndErr();
       });
     } else {
       this.markers = [];
@@ -417,82 +427,83 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        this.lat = 22.3660414123535;
-        this.lng = 71.48396301269531;
+        if (!res['errMsg']) {
+          this.mylatlngData = res;
+          this.lat = 22.3660414123535;
+          this.lng = 71.48396301269531;
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
+          var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          this.colors = colors;
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
+          this.markers = [];
+          this.studentCount = 0;
+          this.schoolCount = 0;
 
-        for (var i = 0; i < sorted.length; i++) {
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.districtsIds.push(sorted[i]['x_axis']);
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              cluster: sorted[i]['cluster_name'],
-              dist: sorted[i]['district_name'],
-              block: sorted[i]['block_name'],
-              name: sorted[i]['school_name'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-            });
-        };
+          for (var i = 0; i < sorted.length; i++) {
+            this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+            this.districtsIds.push(sorted[i]['x_axis']);
+            this.markers.push(
+              {
+                id: sorted[i]['x_axis'],
+                cluster: sorted[i]['cluster_name'],
+                dist: sorted[i]['district_name'],
+                block: sorted[i]['block_name'],
+                name: sorted[i]['school_name'],
+                label: sorted[i]['x_value'],
+                lat: sorted[i]['y_value'],
+                lng: sorted[i]['z_value'],
+                stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+              });
+          };
 
-        if (this.markers.length !== 0) {
-          for (let i = 0; i < this.markers.length; i++) {
+          if (this.markers.length !== 0) {
+            for (let i = 0; i < this.markers.length; i++) {
 
-            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 0, 0, 0);
+              var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 0, 0, 0);
 
-            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
-              "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
-              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-              "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-              "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].cluster +
-              "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
-              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-            );
-            markerIcon.addTo(globalMap).bindPopup(popup);
+              markerIcon.addTo(globalMap).bindPopup(
+                "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
+                "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
+                "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
+                "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].cluster +
+                "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
+                "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+              );
 
-            markerIcon.on('mouseover', function (e) {
-              this.openPopup();
-            });
-            markerIcon.on('mouseout', function (e) {
-              this.closePopup();
-            });
+              markerIcon.on('mouseover', function (e) {
+                this.openPopup();
+              });
+              markerIcon.on('mouseout', function (e) {
+                this.closePopup();
+              });
 
-            this.layerMarkers.addLayer(markerIcon);
-            markerIcon.myJsonData = this.markers[i];
-          }
-          globalMap.setView(new L.LatLng(this.lat, this.lng), 7.3);
-          // var schStdCount = JSON.parse(localStorage.getItem('schStd'));
-          this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.markers.forEach(school => {
-            var obj = {
-              SchoolId: school.id,
-              SchoolName: school.name,
-              ClusterName: school.cluster,
-              BlockName: school.block,
-              DistrictName: school.dist,
-              Attendance: school.label + " %",
-              TotalStudents: Number(school.stdCount.replace(/\,/g, ''))
+              this.layerMarkers.addLayer(markerIcon);
+              markerIcon.myJsonData = this.markers[i];
             }
-            this.reportData.push(obj);
-          });
+            globalMap.setView(new L.LatLng(this.lat, this.lng), 7.3);
+            // var schStdCount = JSON.parse(localStorage.getItem('schStd'));
+            this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.markers.forEach(school => {
+              var obj = {
+                SchoolId: school.id,
+                SchoolName: school.name,
+                ClusterName: school.cluster,
+                BlockName: school.block,
+                DistrictName: school.dist,
+                Attendance: school.label + " %",
+                TotalStudents: Number(school.stdCount.replace(/\,/g, ''))
+              }
+              this.reportData.push(obj);
+            });
+            this.loaderAndErr();
+            this.changeDetection.markForCheck();
+          }
+        } else {
+          this.markers = [];
           this.loaderAndErr();
-          this.changeDetection.markForCheck();
         }
-      }, err => {
-        this.markers = [];
-        this.loaderAndErr();
       });
     } else {
       this.markers = [];
@@ -515,92 +526,93 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.cluster_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        this.lat = 22.3660414123535;
-        this.lng = 71.48396301269531;
+        if (!res['errMsg']) {
+          this.mylatlngData = res;
+          this.lat = 22.3660414123535;
+          this.lng = 71.48396301269531;
 
-        this.markers = [];
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
+          this.markers = [];
+          var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          this.colors = colors;
 
-        var clustNames = [];
-        var blockNames = [];
+          var clustNames = [];
+          var blockNames = [];
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
+          this.markers = [];
+          this.studentCount = 0;
+          this.schoolCount = 0;
 
-        for (var i = 0; i < sorted.length; i++) {
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.clusterIds.push(sorted[i]['x_axis']);
-          this.blocksIds.push(sorted[i]['block_id']);
-          if (sorted[i]['cluster_name'] !== null) {
-            clustNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
-          } else {
-            clustNames.push({ id: sorted[i]['x_axis'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
-          }
-          blockNames.push({ id: sorted[i]['block_id'], name: sorted[i]['block_name'], distId: sorted[i]['district_id'] });
-          this.cluster.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: (sorted[i]['cluster_name']),
-              distId: sorted[i]['district_id'],
-              dist: sorted[i]['district_name'],
-              blockId: sorted[i]['block_id'],
-              block: sorted[i]['block_name'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-            });
-        };
-        this.markers = this.cluster;
-
-        if (this.markers.length !== 0) {
-          for (let i = 0; i < this.markers.length; i++) {
-            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 1, 0.01, 0);
-            const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
-              "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
-              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-              "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-              "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].name +
-              "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-            );
-            markerIcon.addTo(globalMap).bindPopup(popup);
-
-            this.popups(markerIcon, this.markers[i]);
-          }
-
-          clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-          this.clusterNames = clustNames;
-          blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-          this.blocksNames = blockNames;
-          globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
-          // var schStdCount = JSON.parse(localStorage.getItem('schStd'));
-          this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.markers.forEach(cluster => {
-            var obj = {
-              ClusterId: cluster.id,
-              ClusterName: cluster.name,
-              BlockName: cluster.block,
-              DistrictName: cluster.dist,
-              Attendance: cluster.label + " %",
-              TotalSchools: Number(cluster.schCount.replace(/\,/g, '')),
-              TotalStudents: Number(cluster.stdCount.replace(/\,/g, ''))
+          for (var i = 0; i < sorted.length; i++) {
+            this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
+            this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+            this.clusterIds.push(sorted[i]['x_axis']);
+            this.blocksIds.push(sorted[i]['block_id']);
+            if (sorted[i]['cluster_name'] !== null) {
+              clustNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
+            } else {
+              clustNames.push({ id: sorted[i]['x_axis'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
             }
-            this.reportData.push(obj);
-          });
+            blockNames.push({ id: sorted[i]['block_id'], name: sorted[i]['block_name'], distId: sorted[i]['district_id'] });
+            this.cluster.push(
+              {
+                id: sorted[i]['x_axis'],
+                name: (sorted[i]['cluster_name']),
+                distId: sorted[i]['district_id'],
+                dist: sorted[i]['district_name'],
+                blockId: sorted[i]['block_id'],
+                block: sorted[i]['block_name'],
+                label: sorted[i]['x_value'],
+                lat: sorted[i]['y_value'],
+                lng: sorted[i]['z_value'],
+                stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+              });
+          };
+          this.markers = this.cluster;
+
+          if (this.markers.length !== 0) {
+            for (let i = 0; i < this.markers.length; i++) {
+              var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 1, 0.01, 0);
+              markerIcon.addTo(globalMap).bindPopup(
+                "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
+                "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
+                "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
+                "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].name +
+                "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
+                "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+              );
+
+              this.popups(markerIcon, this.markers[i]);
+            }
+
+            clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+            this.clusterNames = clustNames;
+            blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+            this.blocksNames = blockNames;
+            globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
+            // var schStdCount = JSON.parse(localStorage.getItem('schStd'));
+            this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.markers.forEach(cluster => {
+              var obj = {
+                ClusterId: cluster.id,
+                ClusterName: cluster.name,
+                BlockName: cluster.block,
+                DistrictName: cluster.dist,
+                Attendance: cluster.label + " %",
+                TotalSchools: Number(cluster.schCount.replace(/\,/g, '')),
+                TotalStudents: Number(cluster.stdCount.replace(/\,/g, ''))
+              }
+              this.reportData.push(obj);
+            });
+            this.loaderAndErr();
+            this.changeDetection.markForCheck();
+          }
+        } else {
+          this.markers = [];
           this.loaderAndErr();
-          this.changeDetection.markForCheck();
         }
-      }, err => {
-        this.markers = [];
-        this.loaderAndErr();
       });
     } else {
       this.markers = [];
@@ -738,72 +750,74 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        this.lat = Number(this.mylatlngData[0]['y_value']);
-        this.lng = Number(this.mylatlngData[0]['z_value']);
+        if (!res['errMsg']) {
+          this.mylatlngData = res;
 
-        var blokName = [];
+          this.lat = Number(this.mylatlngData[0]['y_value']);
+          this.lng = Number(this.mylatlngData[0]['z_value']);
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
+          var blokName = [];
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
+          var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          this.colors = colors;
 
-        for (var i = 0; i < sorted.length; i++) {
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.blocksIds.push(sorted[i]['x_axis']);
-          blokName.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: sorted[i]['block_name'],
-              dist: sorted[i]['distName'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              blok: this.blok,
-            });
-          var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
+          this.markers = [];
+          this.studentCount = 0;
+          this.schoolCount = 0;
 
-          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-            "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].name +
-            "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-          );
-          markerIcon.addTo(globalMap).bindPopup(popup);
-          this.popups(markerIcon, this.markers[i]);
-        }
+          for (var i = 0; i < sorted.length; i++) {
+            this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+            this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
+            this.blocksIds.push(sorted[i]['x_axis']);
+            blokName.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
+            this.markers.push(
+              {
+                id: sorted[i]['x_axis'],
+                name: sorted[i]['block_name'],
+                dist: sorted[i]['distName'],
+                label: sorted[i]['x_value'],
+                lat: sorted[i]['y_value'],
+                lng: sorted[i]['z_value'],
+                stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                blok: this.blok,
+              });
+            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
-        blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        this.blocksNames = blokName;
-
-        globalMap.setView(new L.LatLng(this.lat, this.lng), 8.3);
-        this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.markers.forEach(block => {
-          var obj = {
-            BlockId: block.id,
-            BlockName: block.name,
-            DistrictName: block.dist,
-            Attendance: block.label + " %",
-            TotalSchools: Number(block.schCount.replace(/\,/g, '')),
-            TotalStudents: Number(block.stdCount.replace(/\,/g, ''))
+            markerIcon.addTo(globalMap).bindPopup(
+              "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
+              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
+              "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].name +
+              "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
+              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+            );
+            this.popups(markerIcon, this.markers[i]);
           }
-          this.reportData.push(obj);
-        });
-        this.loaderAndErr();
-        this.changeDetection.markForCheck();
-      }, err => {
-        this.markers = [];
-        this.loaderAndErr();
+
+          blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+          this.blocksNames = blokName;
+
+          globalMap.setView(new L.LatLng(this.lat, this.lng), 8.3);
+          this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.markers.forEach(block => {
+            var obj = {
+              BlockId: block.id,
+              BlockName: block.name,
+              DistrictName: block.dist,
+              Attendance: block.label + " %",
+              TotalSchools: Number(block.schCount.replace(/\,/g, '')),
+              TotalStudents: Number(block.stdCount.replace(/\,/g, ''))
+            }
+            this.reportData.push(obj);
+          });
+          this.loaderAndErr();
+          this.changeDetection.markForCheck();
+        } else {
+          this.markers = [];
+          this.loaderAndErr();
+        }
       });
     } else {
       this.markers = [];
@@ -860,89 +874,90 @@ export class MapViewComponent implements OnInit {
       }
       this.month_year['id'] = data;
       this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        if (this.mylatlngData[0]['y_value'] !== 0 && this.mylatlngData[0]['z_value']) {
-          this.lat = Number(this.mylatlngData[0]['y_value']);
-          this.lng = Number(this.mylatlngData[0]['z_value']);
+        if (!res['errMsg']) {
+          this.mylatlngData = res;
+          if (this.mylatlngData[0]['y_value'] !== 0 && this.mylatlngData[0]['z_value']) {
+            this.lat = Number(this.mylatlngData[0]['y_value']);
+            this.lng = Number(this.mylatlngData[0]['z_value']);
+          }
+          var clustNames = [];
+
+          var uniqueData = this.mylatlngData.reduce(function (previous, current) {
+            var object = previous.filter(object => object['x_axis'] === current['x_axis']);
+            if (object.length == 0) previous.push(current);
+            return previous;
+          }, []);
+
+          var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          this.colors = colors;
+
+          this.markers = [];
+          this.studentCount = 0;
+          this.schoolCount = 0;
+          // sorted.pop();
+          for (var i = 0; i < sorted.length; i++) {
+            this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+            this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
+            this.clusterIds.push(sorted[i]['x_axis']);
+            if (sorted[i]['cluster_name'] !== null) {
+              clustNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
+            } else {
+              clustNames.push({ id: sorted[i]['x_axis'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
+            }
+            this.markers.push(
+              {
+                id: sorted[i]['x_axis'],
+                name: sorted[i]['cluster_name'],
+                distId: sorted[i]['distId'],
+                dist: sorted[i]['distName'],
+                blockId: sorted[i]['blockId'],
+                block: sorted[i]['blockName'],
+                label: sorted[i]['x_value'],
+                lat: sorted[i]['y_value'],
+                lng: sorted[i]['z_value'],
+                stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+              });
+            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
+
+            markerIcon.addTo(globalMap).bindPopup(
+              "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
+              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
+              "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
+              "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].name +
+              "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
+              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+            );
+            this.popups(markerIcon, this.markers[i]);
+
+          };
+          // console.log(this.markers);
+          // console.log(this.markers.length);
+          clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+          this.clusterNames = clustNames;
+
+          globalMap.setView(new L.LatLng(this.lat, this.lng), 10);
+          this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.markers.forEach(cluster => {
+            var obj = {
+              ClusterId: cluster.id,
+              ClusterName: cluster.name,
+              BlockName: cluster.block,
+              DistrictName: cluster.dist,
+              Attendance: cluster.label + " %",
+              TotalSchools: Number(cluster.schCount.replace(/\,/g, '')),
+              TotalStudents: Number(cluster.stdCount.replace(/\,/g, ''))
+            }
+            this.reportData.push(obj);
+          });
+          this.loaderAndErr();
+          this.changeDetection.markForCheck();
+        } else {
+          this.markers = [];
+          this.loaderAndErr();
         }
-        var clustNames = [];
-
-        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-          var object = previous.filter(object => object['x_axis'] === current['x_axis']);
-          if (object.length == 0) previous.push(current);
-          return previous;
-        }, []);
-
-        var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
-
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
-        // sorted.pop();
-        for (var i = 0; i < sorted.length; i++) {
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.clusterIds.push(sorted[i]['x_axis']);
-          if (sorted[i]['cluster_name'] !== null) {
-            clustNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
-          } else {
-            clustNames.push({ id: sorted[i]['x_axis'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
-          }
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: sorted[i]['cluster_name'],
-              distId: sorted[i]['distId'],
-              dist: sorted[i]['distName'],
-              blockId: sorted[i]['blockId'],
-              block: sorted[i]['blockName'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-            });
-          var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
-
-          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-            "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-            "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].name +
-            "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-          );
-          markerIcon.addTo(globalMap).bindPopup(popup);
-          this.popups(markerIcon, this.markers[i]);
-
-        };
-        // console.log(this.markers);
-        // console.log(this.markers.length);
-        clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        this.clusterNames = clustNames;
-
-        globalMap.setView(new L.LatLng(this.lat, this.lng), 10);
-        this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.markers.forEach(cluster => {
-          var obj = {
-            ClusterId: cluster.id,
-            ClusterName: cluster.name,
-            BlockName: cluster.block,
-            DistrictName: cluster.dist,
-            Attendance: cluster.label + " %",
-            TotalSchools: Number(cluster.schCount.replace(/\,/g, '')),
-            TotalStudents: Number(cluster.stdCount.replace(/\,/g, ''))
-          }
-          this.reportData.push(obj);
-        });
-        this.loaderAndErr();
-        this.changeDetection.markForCheck();
-      }, err => {
-        this.markers = [];
-        this.loaderAndErr();
       });
     } else {
       this.markers = [];
@@ -1028,82 +1043,83 @@ export class MapViewComponent implements OnInit {
 
       this.month_year['id'] = data;
       this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        this.lat = Number(this.mylatlngData[0]['y_value']);
-        this.lng = Number(this.mylatlngData[0]['z_value']);
+        if (!res['errMsg']) {
+          this.mylatlngData = res;
+          this.lat = Number(this.mylatlngData[0]['y_value']);
+          this.lng = Number(this.mylatlngData[0]['z_value']);
 
-        this.clusterIds = [];
-        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-          var object = previous.filter(object => object['x_axis'] === current['x_axis']);
-          if (object.length == 0) previous.push(current);
-          return previous;
-        }, []);
+          this.clusterIds = [];
+          var uniqueData = this.mylatlngData.reduce(function (previous, current) {
+            var object = previous.filter(object => object['x_axis'] === current['x_axis']);
+            if (object.length == 0) previous.push(current);
+            return previous;
+          }, []);
 
-        var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
+          var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          this.colors = colors;
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
+          this.markers = [];
+          this.studentCount = 0;
+          this.schoolCount = 0;
 
-        for (var i = 0; i < sorted.length; i++) {
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: sorted[i]['schoolName'],
-              block: sorted[i]['blockName'],
-              dist: sorted[i]['distName'],
-              cluster: sorted[i]['cluster'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+          for (var i = 0; i < sorted.length; i++) {
+            this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
+            this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
+            this.markers.push(
+              {
+                id: sorted[i]['x_axis'],
+                name: sorted[i]['schoolName'],
+                block: sorted[i]['blockName'],
+                dist: sorted[i]['distName'],
+                cluster: sorted[i]['cluster'],
+                label: sorted[i]['x_value'],
+                lat: sorted[i]['y_value'],
+                lng: sorted[i]['z_value'],
+                stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+              });
+
+            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
+
+            markerIcon.addTo(globalMap).bindPopup(
+              "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
+              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
+              "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
+              "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].cluster +
+              "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
+              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
+            );
+            markerIcon.on('mouseover', function (e) {
+              this.openPopup();
+            });
+            markerIcon.on('mouseout', function (e) {
+              this.closePopup();
             });
 
-          var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
-
-          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-            "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-            "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].cluster +
-            "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-          );
-          markerIcon.addTo(globalMap).bindPopup(popup);
-          markerIcon.on('mouseover', function (e) {
-            this.openPopup();
+            this.layerMarkers.addLayer(markerIcon);
+            markerIcon.myJsonData = this.markers[i];
+          };
+          globalMap.setView(new L.LatLng(this.lat, this.lng), 12);
+          this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.markers.forEach(school => {
+            var obj = {
+              SchoolId: school.id,
+              SchoolName: school.name,
+              ClusterName: school.cluster,
+              BlockName: school.block,
+              DistrictName: school.dist,
+              Attendance: school.label + " %",
+              TotalStudents: school.stdCount
+            }
+            this.reportData.push(obj);
           });
-          markerIcon.on('mouseout', function (e) {
-            this.closePopup();
-          });
-
-          this.layerMarkers.addLayer(markerIcon);
-          markerIcon.myJsonData = this.markers[i];
-        };
-        globalMap.setView(new L.LatLng(this.lat, this.lng), 12);
-        this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.markers.forEach(school => {
-          var obj = {
-            SchoolId: school.id,
-            SchoolName: school.name,
-            ClusterName: school.cluster,
-            BlockName: school.block,
-            DistrictName: school.dist,
-            Attendance: school.label + " %",
-            TotalStudents: school.stdCount
-          }
-          this.reportData.push(obj);
-        });
-        this.loaderAndErr();
-        this.changeDetection.markForCheck();
-      }, err => {
-        this.markers = [];
-        this.loaderAndErr();
+          this.loaderAndErr();
+          this.changeDetection.markForCheck();
+        } else {
+          this.markers = [];
+          this.loaderAndErr();
+        }
       });
     } else {
       this.markers = [];
@@ -1167,7 +1183,8 @@ export class MapViewComponent implements OnInit {
     }
 
     // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
-
+    // Taken from the awesome ROT.js roguelike dev library at
+    // https://github.com/ondras/rot.js
     function _interpolateRgb(color1, color2, factor) {
       if (arguments.length < 3) { factor = 0.5; }
 
@@ -1212,6 +1229,10 @@ export class MapViewComponent implements OnInit {
     return {
       generateGradient
     };
+  }
+
+  redirectTo() {
+    this.router.navigate(['home/dashboard']);
   }
 
 }
