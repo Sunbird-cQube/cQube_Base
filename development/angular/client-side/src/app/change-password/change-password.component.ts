@@ -39,16 +39,16 @@ export class ChangePasswordComponent implements OnInit {
       } else {
         this.changePasswdData['updaterId'] = localStorage.getItem('user_id');
         this.service.changePassword(this.changePasswdData).subscribe(res => {
-          if (res['msg'] === 'Password changed successfully') {
-            document.getElementById('success').style.display = "Block";
-            this.err = '';
-            this.successMsg = res['msg'] + "\n" + " please login aging...";
-            this.isDisabled = true;
-            setTimeout(() => {
-              localStorage.clear();
-              this.router.navigate(['/']);
-            }, 2000);
-          }
+          document.getElementById('success').style.display = "Block";
+          this.err = '';
+          this.successMsg = res['msg'] + "\n" + " please login aging...";
+          this.isDisabled = true;
+          setTimeout(() => {
+            localStorage.clear();
+            this.router.navigate(['/']);
+          }, 2000);
+        }, err => {
+          this.err = "Something went wrong"
         })
       }
     } else {
