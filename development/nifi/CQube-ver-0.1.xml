@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>final release-1.0</description>
+    <description>release-version-1.0</description>
     <groupId>5bf39748-0172-1000-f285-86fa4dbbdea3</groupId>
     <name>CQube-ver-0.1</name>
     <snippet>
@@ -14305,7 +14305,7 @@ visit_count=a.visit_count,missed_visit_count=a.missed_visit_count,updated_on=now
                             </entry>
                             <entry>
 <key>manifest_datasource</key>
-<value>${filename:startsWith('manifest_datasource_')}</value>
+<value>${filename:startsWith('manifest_datasource')}</value>
                             </entry>
                             <entry>
 <key>static_block</key>
@@ -14329,11 +14329,11 @@ visit_count=a.visit_count,missed_visit_count=a.missed_visit_count,updated_on=now
                             </entry>
                             <entry>
 <key>static_users</key>
-<value>${filename:find('users')}</value>
+<value>${filename:startsWith('users')}</value>
                             </entry>
                             <entry>
 <key>student_attendance</key>
-<value>${filename:matches('StudentAttendance')}</value>
+<value>${filename:startsWith('StudentAttendance')}</value>
                             </entry>
                             <entry>
 <key>student_sem</key>
@@ -14395,7 +14395,7 @@ visit_count=a.visit_count,missed_visit_count=a.missed_visit_count,updated_on=now
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -37076,5 +37076,5 @@ block_id,INITCAP(block_name) as block_name,district_id,INITCAP(district_name)as 
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>06/04/2020 14:49:05 IST</timestamp>
+    <timestamp>06/04/2020 17:35:10 IST</timestamp>
 </template>

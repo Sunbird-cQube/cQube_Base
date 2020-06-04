@@ -6,7 +6,7 @@ CREATE EXTENSION IF NOT EXISTS tablefunc;
 
 create table IF NOT EXISTS manifest_datasource(
 file_id int,
-emission_time timestamp,
+emission_time text,
 folder_name text,
 is_zip boolean,
 total_files_in_zip_file int ,
