@@ -2,6 +2,21 @@
 
 CREATE EXTENSION IF NOT EXISTS tablefunc;
 
+/* manifest datasource */
+
+create table IF NOT EXISTS manifest_datasource(
+file_id int,
+emission_time timestamp,
+folder_name text,
+is_zip boolean,
+total_files_in_zip_file int ,
+relative_file_path text,
+total_number_of_records_manifest int,
+total_number_of_columns int,
+total_number_of_records_csv int,
+primary key(emission_time)
+);
+
 /* nifi metadata table */
 
 CREATE TABLE IF NOT EXISTS zip_files_processing (
