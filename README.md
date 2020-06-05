@@ -10,7 +10,6 @@
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.0
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
