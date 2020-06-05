@@ -11,56 +11,15 @@
   <mat-sidenav #sidenav>
     <mat-nav-list style="font-family: Arial;" class=sidenav>
       <mat-toolbar style="height: 80px; background-color: white; border-bottom: 1px solid lightgray;">
-
-        <!-- <img mat-card-image src="../../assets/person_Icon.png" alt="Photo" class="img-circle profile"
-          style="height: 50%;"> -->
-
         <mat-toolbar-row style="color: rgb(84, 116, 223);">
           <span class="span" style="font-size: 15px;"><b>Logged in as: </b><br>
             <span>{{email}}</span></span>
         </mat-toolbar-row>
       </mat-toolbar>
       <div *ngIf="showsideMenu">
-        <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
-          [routerLink]="['dashboard']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp;Dashboard</td>
 
-        </a> -->
-        <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
-          [routerLink]="['teacher-attendance']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp;Teacher Attendance Report</td>
-
-
-        </a> -->
-
-        <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
-          [routerLink]="['crc-report']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; CRC Report </td>
-
-        </a> -->
       </div>
       <div *ngIf="!showsideMenu">
-        <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
-          [routerLink]="['dashboard']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp;Dashboard</td>
-
-        </a> -->
         <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
           [routerLink]="['attendance-report']">
           <td>
@@ -105,10 +64,11 @@
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
           <td>
-            &nbsp; &nbsp;User</td>
-          <button mat-button mat-icon-button (click)="showSubmenu = !showSubmenu">
-            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}">expand_more</mat-icon>
-          </button>
+            &nbsp;
+            <button mat-button mat-icon-button (click)="showSubmenu = !showSubmenu"> <span>User</span>
+              <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}">expand_more</mat-icon>
+            </button>
+          </td>
         </mat-list-item>
         <div class="submenu" [ngClass]="{'expanded' : showSubmenu}">
           <a *ngIf="showCreateUser" mat-list-item (click)="sidenav.toggle()" style="font-family: Arial;  

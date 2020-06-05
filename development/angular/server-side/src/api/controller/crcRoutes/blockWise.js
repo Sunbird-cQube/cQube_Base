@@ -26,10 +26,10 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
 
         let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
         logger.info('--- crc all block wise api response sent ---');
-        res.send(crcResult)
+        res.status(200).send(crcResult);
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 
@@ -64,10 +64,10 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
 
         let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
         logger.info('--- crc block per district api response sent ---');
-        res.send(crcResult)
+        res.status(200).send(crcResult);
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 

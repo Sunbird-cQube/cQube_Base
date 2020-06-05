@@ -13,18 +13,18 @@ router.post('/clusterWise', auth.authController, function (req, res) {
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 logger.info('--- Attendance cluster wise api response sent ---');
-                res.send(data.Body);
+                res.status(200).send(data.Body);
             }
         });
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 });
 
@@ -41,7 +41,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
 
         var clusterDetails = [];
         if (allClusters.data['errMsg']) {
-            res.send({ errMsg: "Something went wrong" });
+            res.status(500).json({ errMsg: "Something went wrong" });
         } else {
             allClusters.data.forEach(clusters => {
                 if (blockId === clusters.block_id) {
@@ -63,11 +63,11 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
 
             });
             await logger.info('--- Attendance clusterPerBlock api response sent ---');
-            res.send(clusterDetails);
+            res.status(200).send(clusterDetails);
         }
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 });
 

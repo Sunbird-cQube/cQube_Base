@@ -10,10 +10,10 @@ router.post('/', auth.authController, async (req, res) => {
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send(err);
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
-                logger.info("Something went wrong or s3 file not found");
-                res.send("Something went wrong or s3 file not found");
+                logger.error("No data found in s3 file");
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 let dashboardData = data.Body.toString();
                 dashboardData = JSON.parse(dashboardData);
@@ -75,12 +75,12 @@ router.post('/', auth.authController, async (req, res) => {
                     }
                 }
                 logger.info('--- dashboard details api response sent ---');
-                res.send(dashboardResult);
+                res.status(200).send(dashboardResult);
             }
         })
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 

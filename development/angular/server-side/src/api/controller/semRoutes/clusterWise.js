@@ -11,10 +11,10 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 let clusterData = data.Body.toString();
                 clusterData = JSON.parse(clusterData);
@@ -82,12 +82,12 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                     sortedData
                 }
                 logger.info('--- semseter cluster wise api reponse sent ---');
-                res.send(resultObj)
+                res.status(200).send(resultObj);
             }
         })
     } catch (e) {
         logger.error(e);
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 
@@ -100,10 +100,10 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 let clusterData = data.Body.toString();
                 clusterData = JSON.parse(clusterData);
@@ -179,12 +179,12 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                     sortedData
                 }
                 logger.info('--- semseter cluster wise api reponse sent ---');
-                res.send(resultObj)
+                res.status(200).send(resultObj);
             }
         })
     } catch (e) {
         logger.error(e);
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 

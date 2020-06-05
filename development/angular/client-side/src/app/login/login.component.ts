@@ -25,32 +25,29 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.service.login(this.logData).subscribe(res => {
-      if (res['msg']) {
-        localStorage.clear();
-        localStorage.setItem('email', this.logData.email);
-        localStorage.setItem('token', res['token']);
-        localStorage.setItem('role', res['role']);
-        localStorage.setItem('user_id', res['user_id']);
-        this.role = res['role'];
+      localStorage.clear();
+      localStorage.setItem('email', this.logData.email);
+      localStorage.setItem('token', res['token']);
+      localStorage.setItem('role', res['role']);
+      localStorage.setItem('user_id', res['user_id']);
+      this.role = res['role'];
 
-        if (this.role == 1) {
-          this.router.navigate(['home/attendance-report']);
-        }
-        else if (this.role == 3) {
-          this.router.navigate(['home/attendance-report'])
-        }
-        else if (this.role == 5) {
-          this.router.navigate(['home/changePassword']);
-        }
-      } else if (res['errMsg']) {
-        this.email = this.logData.email;
-        this.err = res['errMsg'];
+      if (this.role == 1) {
+        this.router.navigate(['home/attendance-report']);
       }
-    });
+      else if (this.role == 3) {
+        this.router.navigate(['home/attendance-report'])
+      }
+      else if (this.role == 5) {
+        this.router.navigate(['home/changePassword']);
+      }
+    }, err => {
+      this.err = err.error.errMsg;
+    })
+
   }
 
   forgotPass(email) {
-    console.log(email.model);
   }
 
   ngOnInit() {

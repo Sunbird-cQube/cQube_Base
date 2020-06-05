@@ -28,14 +28,14 @@ router.post('/districtWise', auth.authController, async (req, res) => {
 
             let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
             logger.info('--- crc district wise api response sent ---');
-            res.send(crcResult)
+            res.status(200).send(crcResult);
         } else {
-            res.send({ errMsg: "Something went wrong" });
+            res.status(500).json({ errMsg: "Something went wrong" });
         }
 
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 

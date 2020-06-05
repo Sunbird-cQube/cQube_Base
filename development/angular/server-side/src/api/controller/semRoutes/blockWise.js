@@ -11,10 +11,10 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 let blockData = data.Body.toString();
                 blockData = JSON.parse(blockData);
@@ -27,7 +27,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                 // filterData = blockData.filter(obj => {
                 //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
                 // })
-        
+
                 blockData = blockData.filter(function (el) {
                     return el.x_value != null;
                 });
@@ -79,12 +79,12 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                     sortedData
                 }
                 logger.info('--- semester block wise api reponse sent ---');
-                res.send(resultObj)
+                res.status(200).send(resultObj);
             }
         })
     } catch (e) {
         console.log(e);
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 
@@ -96,10 +96,10 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 let blockData = data.Body.toString();
                 blockData = JSON.parse(blockData);
@@ -171,12 +171,12 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                     sortedData
                 }
                 logger.info('--- semester block wise api reponse sent ---');
-                res.send(resultObj)
+                res.status(200).send(resultObj);
             }
         })
     } catch (e) {
         logger.error(e);
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 

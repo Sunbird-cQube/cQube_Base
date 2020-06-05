@@ -13,18 +13,18 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 logger.info('--- Attendance block wise api response sent ---');
-                res.send(data.Body);
+                res.status(200).send(data.Body);
             }
         });
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 });
 
@@ -38,7 +38,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
         var year = req.body.data.year;
         var allBlocks = await axios.post(`${baseUrl}/attendance/blockWise`, { month: month, year: year }, { 'headers': { 'token': "Bearer" + token } });
         if (allBlocks.data['errMsg']) {
-            res.send({ errMsg: "Something went wrong" });
+            res.status(500).json({ errMsg: "Something went wrong" });
         } else {
             var blcokDetails = [];
             allBlocks.data.forEach(blocks => {
@@ -58,11 +58,11 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
                 }
             })
             logger.info('--- Attendance blockPerDist api response sent ---');
-            res.send(blcokDetails);
+            res.status(200).send(blcokDetails);
         }
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 });
 

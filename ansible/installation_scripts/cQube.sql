@@ -2,6 +2,21 @@
 
 CREATE EXTENSION IF NOT EXISTS tablefunc;
 
+/* manifest datasource */
+
+create table IF NOT EXISTS manifest_datasource(
+file_id int,
+emission_time text,
+folder_name text,
+is_zip boolean,
+total_files_in_zip_file int ,
+relative_file_path text,
+total_number_of_records_manifest int,
+total_number_of_columns int,
+total_number_of_records_csv int,
+primary key(emission_time)
+);
+
 /* nifi metadata table */
 
 CREATE TABLE IF NOT EXISTS zip_files_processing (
@@ -729,9 +744,9 @@ school_email_contact  varchar(50),
 school_website  varchar(50),
 school_lowest_class  int,
 school_highest_class  int,
-school_management_type_id int unique,
-school_category_id  int unique,
-school_medium_id  int unique,
+school_management_type_id int ,
+school_category_id  int ,
+school_medium_id  int ,
 created_on  TIMESTAMP without time zone NOT NULL,
 updated_on  TIMESTAMP without time zone NOT NULL
 );
@@ -1118,7 +1133,8 @@ total_present  int,
 total_working_days  int,
 students_count bigint,
 created_on  TIMESTAMP without time zone ,
-updated_on  TIMESTAMP without time zone
+updated_on  TIMESTAMP without time zone,
+primary key(school_id,month,year)
 );
 
 create index if not exists school_student_total_attendance_id on school_student_total_attendance(month,school_id,block_id,cluster_id);
@@ -1177,7 +1193,8 @@ missed_visit_count int,
 month int,
 year int,
 created_on  TIMESTAMP without time zone,
-updated_on  TIMESTAMP without time zone
+updated_on  TIMESTAMP without time zone,
+primary key(school_id,month,year)
 );
 
 create index if not exists crc_visits_frequency_id on crc_visits_frequency(school_id,block_id,cluster_id,district_id);
@@ -1226,7 +1243,8 @@ subject_8_marks_scored  int,
 subject_8_total_marks  int,
 students_count bigint,
 created_on  TIMESTAMP without time zone ,
-updated_on  TIMESTAMP without time zone
+updated_on  TIMESTAMP without time zone,
+primary key(school_id,semester,grade)
 );
 
 create index if not exists school_student_total_marks_id on school_student_subject_total_marks(semester,school_id,block_id,cluster_id);

@@ -5,16 +5,15 @@ const auth = require('../../middleware/check-auth');
 
 router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
-        var filterData = '';
         logger.info('--- semseter all school wise api ---');
         const_data['getParams']['Key'] = 'semester/school_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 let schoolData = data.Body.toString();
                 schoolData = JSON.parse(schoolData);
@@ -76,12 +75,12 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                     sortedData
                 }
                 logger.info('--- semseter all school wise api reponse sent ---');
-                res.send(resultObj)
+                res.status(200).send(resultObj);
             }
         })
     } catch (e) {
         logger.error(e);
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 
@@ -93,10 +92,10 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 let schoolData = data.Body.toString();
                 schoolData = JSON.parse(schoolData);
@@ -167,12 +166,12 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                     sortedData
                 }
                 logger.info('--- semseter school wise api reponse sent ---');
-                res.send(resultObj)
+                res.status(200).send(resultObj);
             }
         })
     } catch (e) {
         logger.error(e);
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 

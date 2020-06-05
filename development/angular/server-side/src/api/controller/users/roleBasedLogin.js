@@ -12,10 +12,10 @@ router.post('/', function (req, res) {
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
-                res.send({ errMsg: "Something went wrong" });
+                res.status(500).json({ errMsg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
-                res.send({ errMsg: "No such data found" });
+                res.status(403).json({ errMsg: "No such data found" });
             } else {
                 users = JSON.parse(data.Body.toString());
                 const user = users.find(u => u.user_email === req.body.email && u.password === req.body.cnfpass);
@@ -24,7 +24,7 @@ router.post('/', function (req, res) {
                         res.status(200).json({ msg: "Logged In", token: data, role: user.role_id, user_id: user.user_id });
                     })
                 } else {
-                    const roleUser = users.find(u => u.user_email === req.body.email);
+                    const roleUser = users.find(u => u.user_email === req.body.email && u.user_status === 1);
                     if (roleUser) {
                         if (roleUser.user_validity_end_date > `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)}`) {
                             bcrypt.compare(req.body.cnfpass, roleUser.password, function (err, result) {
@@ -35,21 +35,21 @@ router.post('/', function (req, res) {
                                         })
                                     }
                                 } else {
-                                    res.send({ errMsg: "Password is wrong" });
+                                    res.status(401).json({ errMsg: "Password is wrong" });
                                 }
                             });
                         } else {
-                            res.send({ errMsg: "User validity exceeded" });
+                            res.status(403).json({ errMsg: "User validity exceeded" });
                         }
                     } else {
-                        res.send({ errMsg: "User not found" })
+                        res.status(403).json({ errMsg: "User not found" });
                     }
                 }
             }
         });
     } catch (e) {
         logger.error(`Error :: ${e}`);
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" });
+        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 });
 
