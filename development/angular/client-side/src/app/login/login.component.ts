@@ -14,17 +14,19 @@ export class LoginComponent implements OnInit {
   modal = true;
   role: any;
   email: any;
-
+  result: any;
   emailRegex: any = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  constructor(private router: Router, private service: AppServiceComponent) { }
-
+  constructor(private router: Router, private service: AppServiceComponent) { };
   goto() {
     this.router.navigate(['/stdAttendance']);
   }
 
   onSubmit() {
+    document.getElementById('spinner').style.display = 'block';
     this.service.login(this.logData).subscribe(res => {
+      this.result = res;
+      document.getElementById('spinner').style.display = 'none';
       localStorage.clear();
       localStorage.setItem('email', this.logData.email);
       localStorage.setItem('token', res['token']);
@@ -43,11 +45,10 @@ export class LoginComponent implements OnInit {
       }
     }, err => {
       this.err = err.error.errMsg;
+      this.result = {};
+      document.getElementById('spinner').style.display = 'none';
     })
 
-  }
-
-  forgotPass(email) {
   }
 
   ngOnInit() {

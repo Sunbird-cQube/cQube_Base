@@ -8,10 +8,18 @@
         </div>
         <div class="col-sm-5">
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                     <p id="errMsg"
                         style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
                     </p>
+                </div>
+                <div class="col-sm-6">
+                    <i class="fa fa-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                        (click)="downloadRoport()"></i>
+                    <i class="fa fa-home" id="home" title="Home"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        alt="Home" (click)="districtWise()"></i>
                 </div>
             </div>
         </div>
@@ -86,7 +94,7 @@
     </div>
     <div class="row" style="margin-top: 5px; height: 80vh;">
         <div class="col-sm-6">
-            <canvas id="myChart" height="190vh"></canvas>
+            <canvas id="myChart" height="210vh"></canvas>
         </div>
         <div class="col-sm-6">
             <div class="myDiv">
