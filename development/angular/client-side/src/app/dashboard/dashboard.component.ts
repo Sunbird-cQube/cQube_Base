@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
         {
           title: this.cardsData.attendance.title,
           imgTitle: 'attendance.png',
-          // path: '../map-view',
+          // path: '../student-attendance',
           data: this.cardsData.attendance.data
         },
         {

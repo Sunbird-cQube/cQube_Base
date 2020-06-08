@@ -7,12 +7,12 @@ import { ExportToCsv } from 'export-to-csv';
 declare const $;
 
 @Component({
-  selector: 'app-bar-chart',
-  templateUrl: './bar-chart.component.html',
-  styleUrls: ['./bar-chart.component.css'],
+  selector: 'app-crc-report',
+  templateUrl: './crc-report.component.html',
+  styleUrls: ['./crc-report.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BarChartComponent implements OnInit {
+export class CrcReportComponent implements OnInit {
   dataTable: any;
   dtOptions: any;
   tableData: any = [];

@@ -8,7 +8,7 @@
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
             <h2 style="text-align: center; margin: 20px 0px 30px 0px; color: #284d8a;">cQube</h2>
-            <p class="validation-message">{{err}}</p>
+            <p id="err" class="validation-message">{{err}}</p>
             <form class="user" #formData="ngForm" (ngSubmit)="formData.valid && onSubmit()"
                 style="padding: 0px 25px 0px 25px;">
                 <div class="form-group">
@@ -40,10 +40,12 @@
                             4 characters</label>
                     </div>
                 </div>
-                <button style="background-color: #0549dd;" class="btn btn-primary btn-user btn-block" type="submit">
+                <button id="login" style="background-color: #0549dd;" class="btn btn-primary btn-user btn-block"
+                    type="submit">
                     Login
                 </button>
-                <a style="background-color: blue; font-weight: bold; line-height: 4em; color: white; text-decoration: none; border-radius: 5px; padding: 5px; margin-top: 50px;"
+                <a id="lnk"
+                    style="background-color: blue; font-weight: bold; line-height: 4em; color: white; text-decoration: none; border-radius: 5px; padding: 5px; margin-top: 50px;"
                     [routerLink]="['/user-view']">Click here
                 </a>
                 <span style="color: blue;">&nbsp; if you do not have login credentials</span>

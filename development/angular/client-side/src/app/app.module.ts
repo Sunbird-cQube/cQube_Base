@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
-import { MapViewComponent } from './map-view/map-view.component';
+import { StudengtAttendanceComponent } from './student-attendance/student-attendance.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,7 +16,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TeacherAttendanceComponent } from './teacher-attendance/teacher-attendance.component';
 import { SemViewComponent } from './sem-view/sem-view.component';
-import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { CrcReportComponent } from './crc-report/crc-report.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, MatSortModule } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
@@ -31,11 +31,11 @@ import { SchoolInfrastructureComponent } from './school-infrastructure/school-in
     AppComponent,
     LoginComponent,
     UserViewComponent,
-    MapViewComponent,
+    StudengtAttendanceComponent,
     HomeComponent,
     TeacherAttendanceComponent,
     SemViewComponent,
-    BarChartComponent,
+    CrcReportComponent,
     ChangePasswordComponent,
     CreateUserComponent,
     ComingSoonComponent,

@@ -2,19 +2,22 @@
     <div class="row">
         <div class="col-sm-7">
             <div *ngIf='skul'>
-                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                <p id="dist_level"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
-                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                <p id="block_level"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div>
             <div *ngIf="blok">
-                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                <p id="cluster_level"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
@@ -24,7 +27,8 @@
             </div>
 
             <div *ngIf="clust">
-                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                <p id="school_level"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
@@ -37,27 +41,16 @@
         <div class="col-sm-5">
             <div class="row">
                 <div class="col-sm-5">
-                    <div class="col-sm-12" id="spinner">
-                        <div class="spinner-border text-secondary"
-                            style="height: 20px; width: 20px; font-size: 21px; margin: 1% 5% 0% 0%; float: left; font-family: Arial;"
-                            role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                        <span
-                            style="color: green; float: left; font-size: 12px; margin-top: 0.6%;font-family: Arial;">Please
-                            Wait...</span>
-
-                    </div>
                     <p id="errMsg"
                         style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
                     </p>
                 </div>
                 <div class="col-sm-7">
                     <div *ngIf="skul; else ng_else" style="float: right; " id="select">
-                        <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
-                            style="cursor: pointer;height: 23px;width: 25px;float: right;margin: 5px 0px 0px 8px;"
-                            (click)="downloadReportofState(downloadType)">
-                        <select class="dwnld"
+                        <i class="fa fa-download" title="Download Report" id="download"
+                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                            (click)="downloadReportofState(downloadType)"></i>
+                        <select class="dwnld" id="downloader"
                             style="padding: 3px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                             [(ngModel)]="downloadType" name="downloadType">
                             <option [value]="downloadType" disabled selected="selected"> Download Report</option>
@@ -68,9 +61,12 @@
                     </div>
 
                     <ng-template #ng_else>
-                        <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
+                        <!-- <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
                             style="cursor: pointer;height: 23px;width: 25px;float: right;margin: 5px 0px 0px 8px;"
-                            (click)="downloadRoport()">
+                            (click)="downloadRoport()"> -->
+                        <i class="fa fa-download" title="Download Report" id="download"
+                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                            (click)="downloadRoport()"></i>
                     </ng-template>
                     <i class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
@@ -111,7 +107,7 @@
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-6">
-                    X-AXIS: <select
+                    X-AXIS: <select id="x_axis"
                         style="margin-right: 30px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
@@ -124,7 +120,7 @@
                     </select>
                 </div>
                 <div class="col-sm-6">
-                    Y-AXIS: <select
+                    Y-AXIS: <select id="y_axis"
                         style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
                         <option [value]="yAxis" disabled selected="selected">choose
@@ -139,7 +135,7 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <select
+            <select id="dist"
                 style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                 <option [value]="myDistrict" disabled selected="selected">Choose a District
@@ -150,7 +146,7 @@
                 </option>
             </select>
 
-            <select [hidden]="blockHidden"
+            <select [hidden]="blockHidden" id="block"
                 style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                 [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                 <option [value]="myBlock" disabled selected="selected">Choose a Block
@@ -160,7 +156,7 @@
                 </option>
             </select>
 
-            <select [hidden]="clusterHidden"
+            <select [hidden]="clusterHidden" id="cluster"
                 style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                 [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
                 <option [value]="myCluster" disabled selected="selected">Choose a Cluster
@@ -239,4 +235,7 @@
     </div>
     <!-- <div class="loader" id="loader"></div> -->
 
+</div>
+<div id="spinner">
+    <div id="loader" class="loading">Loading&#8230;</div>
 </div>
