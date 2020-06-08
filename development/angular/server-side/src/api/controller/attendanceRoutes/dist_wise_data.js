@@ -18,7 +18,24 @@ router.post('/distWise', auth.authController, function (req, res) {
                 res.status(403).json({ errMsg: "No such data found" });
             } else {
                 logger.info('--- Attendance dist wise api response sent ---');
-                res.status(200).send(data.Body);
+                var studentCount = 0;
+                var schoolCount = 0;
+                var distData = [];
+                JSON.parse(data.Body.toString()).map(item => {
+                    studentCount = studentCount + Number(item['students_count']);
+                    schoolCount = schoolCount + Number(item['total_schools']);
+                    var obj = {
+                        id: item['x_axis'],
+                        name: item['district_name'],
+                        label: item['x_value'],
+                        lat: item['y_value'],
+                        lng: item['z_value'],
+                        stdCount: (item['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        schCount: (item['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
+                    }
+                    distData.push(obj);
+                });
+                res.status(200).send({ distData: distData, studentCount: studentCount, schoolCount: schoolCount });
             }
         });
     } catch (e) {

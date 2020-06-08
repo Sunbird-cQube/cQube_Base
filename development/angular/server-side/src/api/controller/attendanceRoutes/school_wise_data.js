@@ -18,8 +18,26 @@ router.post('/schoolWise', auth.authController, function (req, res) {
                 logger.error("No data found in s3 file");
                 res.status(403).json({ errMsg: "No such data found" });
             } else {
+                var studentCount = 0;
+                var schoolData = [];
+                JSON.parse(data.Body.toString()).forEach(item => {
+                    studentCount = studentCount + Number(item['students_count']);
+                    var obj = {
+                        id: item['x_axis'],
+                        cluster: item['cluster_name'],
+                        clusterId: item['cluster_id'],
+                        dist: item['district_name'],
+                        block: item['block_name'],
+                        name: item['school_name'],
+                        label: item['x_value'],
+                        lat: item['y_value'],
+                        lng: item['z_value'],
+                        stdCount: (item['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                    }
+                    schoolData.push(obj);
+                });
                 logger.info('--- Attendance school wise api response sent ---');
-                res.status(200).send(data.Body);
+                res.status(200).send({ schoolData: schoolData, studentCount: studentCount });
             }
         });
     } catch (e) {
@@ -42,25 +60,27 @@ router.post('/schoolPerCluster', auth.authController, async (req, res) => {
         if (allSchools.data['errMsg']) {
             res.status(500).json({ errMsg: "Something went wrong" });
         } else {
+            var studentCount = 0;
             var schoolsDetails = [];
-            allSchools.data.forEach(schools => {
-                if (clusterId === schools.cluster_id) {
+            allSchools.data.schoolData.forEach(schools => {
+                if (clusterId === schools.clusterId) {
+                    studentCount = studentCount + Number(schools.stdCount.replace(/\,/g, ''));
                     obj = {
-                        x_axis: schools.x_axis,
-                        cluster: schools.cluster_name,
-                        distName: schools.district_name,
-                        blockName: schools.block_name,
-                        schoolName: schools.school_name,
-                        x_value: schools.x_value,
-                        y_value: schools.y_value,
-                        z_value: schools.z_value,
-                        students_count: schools.students_count,
+                        id: schools['id'],
+                        name: schools['name'],
+                        block: schools['block'],
+                        dist: schools['dist'],
+                        cluster: schools['cluster'],
+                        label: schools['label'],
+                        lat: schools['lat'],
+                        lng: schools['lng'],
+                        stdCount: schools['stdCount']
                     }
                     schoolsDetails.push(obj);
                 }
             });
             logger.info('--- Attendance schoolPerCluster api response sent ---');
-            res.status(200).send(schoolsDetails);
+            res.status(200).send({ schoolsDetails: schoolsDetails, studentCount: studentCount });
         }
     } catch (e) {
         logger.error(`Error :: ${e}`)

@@ -84,7 +84,7 @@ export class SemViewComponent implements OnInit {
   initMap() {
     const lat = 22.3660414123535;
     const lng = 71.48396301269531;
-    globalMap = L.map('map').setView([lat, lng], 7);
+    globalMap = L.map('map', { zoomControl: false }).setView([lat, lng], 7);
     applyCountryBorder(globalMap);
 
     function applyCountryBorder(map) {
@@ -229,7 +229,7 @@ export class SemViewComponent implements OnInit {
                 strokeWeight: 0.01
               }).addTo(globalMap);
 
-              const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b>Semester Performance: </b>" + "&nbsp;" + this.blockMarkers[i].assesmentPercentage + " %" +
                 "<br><b>District: </b>" + "&nbsp;" + this.blockMarkers[i].districtName +
                 "<br><b>Block: </b>" + "&nbsp;" + this.blockMarkers[i].blockName +
@@ -351,7 +351,7 @@ export class SemViewComponent implements OnInit {
                 strokeWeight: 0.01
               }).addTo(globalMap);
 
-              const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b>Semester Performance: </b>" + "&nbsp;" + this.clusterMarkers[i].assesmentPercentage + " %" +
                 "<br><b>District: </b>" + "&nbsp;" + this.clusterMarkers[i].districtName +
                 "<br><b>Block: </b>" + "&nbsp;" + this.clusterMarkers[i].blockName +
@@ -474,7 +474,7 @@ export class SemViewComponent implements OnInit {
                 strokeWeight: 0
               }).addTo(globalMap);
 
-              const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b>Semester Performance: </b>" + "&nbsp;" + this.schoolMarkers[i].assesmentPercentage + " %" +
                 "<br><b>District: </b>" + "&nbsp;" + this.schoolMarkers[i].districtName +
                 "<br><b>Block: </b>" + "&nbsp;" + this.schoolMarkers[i].blockName +
@@ -783,7 +783,7 @@ export class SemViewComponent implements OnInit {
 
         // data to show on the tooltip for the desired levels
         if (options.level == 'district') {
-          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Grade 3:</b>" + "&nbsp;" + this.markers[i].grade_3 + " %" +
@@ -819,7 +819,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
 
         } else if (options.level == 'block') {
-          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
@@ -856,7 +856,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
 
         } else if (options.level == 'cluster') {
-          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
@@ -896,7 +896,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
 
         } else if (options.level == 'school') {
-          const popup = R.responsivePopup({ hasTip: true, autoPan: false, offset: [15, 20] }).setContent(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +

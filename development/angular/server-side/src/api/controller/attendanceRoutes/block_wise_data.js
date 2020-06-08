@@ -18,8 +18,27 @@ router.post('/blockWise', auth.authController, async (req, res) => {
                 logger.error("No data found in s3 file");
                 res.status(403).json({ errMsg: "No such data found" });
             } else {
+                var studentCount = 0;
+                var schoolCount = 0;
+                var blockData = [];
+                JSON.parse(data.Body.toString()).forEach(item => {
+                    studentCount = studentCount + Number(item['students_count']);
+                    schoolCount = schoolCount + Number(item['total_schools']);
+                    var obj = {
+                        id: item['x_axis'],
+                        distId: item['district_id'],
+                        dist: item['district_name'],
+                        name: item['block_name'],
+                        label: item['x_value'],
+                        lat: item['y_value'],
+                        lng: item['z_value'],
+                        stdCount: (item['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        schCount: (item['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                    }
+                    blockData.push(obj);
+                });
                 logger.info('--- Attendance block wise api response sent ---');
-                res.status(200).send(data.Body);
+                res.status(200).send({ blockData: blockData, studentCount: studentCount, schoolCount: schoolCount });
             }
         });
     } catch (e) {
@@ -40,25 +59,28 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
         if (allBlocks.data['errMsg']) {
             res.status(500).json({ errMsg: "Something went wrong" });
         } else {
-            var blcokDetails = [];
-            allBlocks.data.forEach(blocks => {
-                if (distId === blocks.district_id) {
+            var studentCount = 0;
+            var schoolCount = 0;
+            var blockData = [];
+            allBlocks.data.blockData.forEach(blocks => {
+                if (distId === blocks.distId) {
+                    studentCount = studentCount + Number(blocks.stdCount.replace(/\,/g, ''));
+                    schoolCount = schoolCount + Number(blocks.schCount.replace(/\,/g, ''));
                     obj = {
-                        x_axis: blocks.x_axis,
-                        distId: blocks.district_id,
-                        distName: blocks.district_name,
-                        block_name: blocks.block_name,
-                        x_value: blocks.x_value,
-                        y_value: blocks.y_value,
-                        z_value: blocks.z_value,
-                        students_count: blocks.students_count,
-                        total_schools: blocks.total_schools
+                        id: blocks['id'],
+                        name: blocks['name'],
+                        dist: blocks['dist'],
+                        label: blocks['label'],
+                        lat: blocks['lat'],
+                        lng: blocks['lng'],
+                        stdCount: (blocks['stdCount']),
+                        schCount: (blocks['schCount']),
                     }
-                    blcokDetails.push(obj);
+                    blockData.push(obj);
                 }
             })
             logger.info('--- Attendance blockPerDist api response sent ---');
-            res.status(200).send(blcokDetails);
+            res.status(200).send({ blockData: blockData, studentCount: studentCount, schoolCount: schoolCount });
         }
     } catch (e) {
         logger.error(`Error :: ${e}`)

@@ -1,10 +1,10 @@
 <mat-toolbar color="primary" style="height: 35px;">
-  <button mat-icon-button (click)="sidenav.toggle() ">
+  <button mat-icon-button (click)="sidenav.toggle() " id="menu">
     <mat-icon>menu</mat-icon>
   </button>
   <h4>cQube - Dashboard </h4>
   <span style="flex: 1 1 auto;"></span>
-  <button mat-raised-button color="primary" style="padding: 1.5px;" (click)="logout()">Log Out</button>
+  <button id="logout" mat-raised-button color="primary" style="padding: 1.5px;" (click)="logout()">Log Out</button>
 </mat-toolbar>
 
 <mat-sidenav-container>
@@ -20,7 +20,7 @@
 
       </div>
       <div *ngIf="!showsideMenu">
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
+        <a id="SAR" mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
           [routerLink]="['attendance-report']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -29,7 +29,7 @@
             &nbsp;&nbsp; Student Attendance Report </td>
         </a>
 
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
+        <a id="crcr" mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
           [routerLink]="['crc-report']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -38,7 +38,7 @@
             &nbsp;&nbsp; CRC Report </td>
 
         </a>
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
+        <a id="tar" mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
           [routerLink]="['teacher-attendance']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -46,7 +46,7 @@
           <td>
             &nbsp;&nbsp;Teacher Attendance Report</td>
         </a>
-        <a mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
+        <a id="sr" mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
           [routerLink]="['semester-report']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -54,7 +54,7 @@
           <td>
             &nbsp;&nbsp;Semester Report</td>
         </a>
-        <a mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
+        <a id="si" mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
           [routerLink]="['school-infrastructure']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -73,16 +73,16 @@
           </td>
           <td>
             &nbsp;
-            <button mat-button mat-icon-button (click)="showSubmenu = !showSubmenu"> <span>User</span>
+            <button mat-button mat-icon-button id="usr" (click)="showSubmenu = !showSubmenu"> <span>User</span>
               <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}">expand_more</mat-icon>
             </button>
           </td>
         </mat-list-item>
         <div class="submenu" [ngClass]="{'expanded' : showSubmenu}">
-          <a *ngIf="showCreateUser" mat-list-item (click)="sidenav.toggle()" style="font-family: Arial;  
+          <a *ngIf="showCreateUser" mat-list-item (click)="sidenav.toggle()" id="crtUsr" style="font-family: Arial;  
           border-bottom: 1px solid lightgray;" [routerLink]="['addUser']"><span style="margin-left: 40px;">Create
               User</span> </a>
-          <a mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
+          <a mat-list-item (click)="sidenav.toggle()" id="chPass" style="font-family: Arial; border-bottom: 1px solid lightgray;"
             [routerLink]="['changePassword']"><span style="margin-left: 40px;">Change Password</span></a>
         </div>
       </mat-list>

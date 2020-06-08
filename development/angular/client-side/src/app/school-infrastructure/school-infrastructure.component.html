@@ -1,24 +1,14 @@
 <div class="container-fluid" style="font-family: Arial; width: 100%;">
     <div class="row">
         <div class="col-sm-7">
-                <p style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    School Infrastructure report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>           
+            <p id="dist_level"
+                style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                School Infrastructure report for: <span (click)="districtWise()"
+                    style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
         </div>
         <div class="col-sm-5">
             <div class="row">
                 <div class="col-sm-5">
-                    <div class="col-sm-12" id="spinner">
-                        <div class="spinner-border text-secondary"
-                            style="height: 20px; width: 20px; font-size: 21px; margin: 1% 5% 0% 0%; float: left; font-family: Arial;"
-                            role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                        <span
-                            style="color: green; float: left; font-size: 12px; margin-top: 0.6%;font-family: Arial;">Please
-                            Wait...</span>
-
-                    </div>
                     <p id="errMsg"
                         style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
                     </p>
@@ -29,6 +19,36 @@
 
     <!-- <div class="col-sm-12"> -->
     <div class="row" style="margin-top: 0.5%;">
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6">
+                    X-AXIS: <select id="x_axis"
+                        style="margin-right: 30px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                        [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
+                        <option [value]="xAxis" disabled selected="selected">choose
+                            x-axis
+                        </option>
+                        <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis.key"
+                            style="font-family: Arial; font-size: 11px;">
+                            {{xaxis.value}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    Y-AXIS: <select id="y_axis"
+                        style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                        [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
+                        <option [value]="yAxis" disabled selected="selected">choose
+                            y-axis
+                        </option>
+                        <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key"
+                            style="font-family: Arial; font-size: 11px;">
+                            {{yaxis.value}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <!-- <div class="col-sm-12">
             <select
                 style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
@@ -66,9 +86,7 @@
     </div>
     <div class="row" style="margin-top: 5px; height: 80vh;">
         <div class="col-sm-6">
-            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-                [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType" height="230vh">
-            </canvas>
+            <canvas id="myChart" height="190vh"></canvas>
         </div>
         <div class="col-sm-6">
             <div class="myDiv">
@@ -201,4 +219,7 @@
     <!-- </div> -->
     <!-- <div class="loader" id="loader"></div> -->
 
+</div>
+<div id="spinner" style="display: none;">
+    <div id="loader" class="loading">Loading&#8230;</div>
 </div>

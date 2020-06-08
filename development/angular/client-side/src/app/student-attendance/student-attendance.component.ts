@@ -7,17 +7,15 @@ import * as data from './../../assets/india.json';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 
-// declare let L;
-
 var globalMap;
 
 @Component({
-  selector: 'app-map-view',
-  templateUrl: './map-view.component.html',
-  styleUrls: ['./map-view.component.css'],
+  selector: 'app-student-attendance',
+  templateUrl: './student-attendance.component.html',
+  styleUrls: ['./student-attendance.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MapViewComponent implements OnInit {
+export class StudengtAttendanceComponent implements OnInit {
   public disabled = false;
   public title: string = '';
   public titleName: string = '';
@@ -117,7 +115,7 @@ export class MapViewComponent implements OnInit {
   initMap() {
     const lat = 22.3660414123535;
     const lng = 71.48396301269531;
-    globalMap = L.map('mapContainer').setView([lat, lng], 7);
+    globalMap = L.map('mapContainer', { zoomControl: false }).setView([lat, lng], 7);
     applyCountryBorder(globalMap);
     function applyCountryBorder(map) {
       L.geoJSON(data['features'][0], {
@@ -241,39 +239,22 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1);
+        this.mylatlngData = res['distData'];
+        var sorted = this.mylatlngData.sort((a, b) => (a.label > b.label) ? 1 : -1);
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         var distNames = [];
+        this.studentCount = res['studentCount'];
+        this.schoolCount = res['schoolCount'];
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
-
-        for (var i = 0; i < sorted.length; i++) {
-          this.districtsIds.push(sorted[i]['x_axis']);
-          distNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['district_name'] });
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: sorted[i]['district_name'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              // blok: this.blok,
-            });
-        }
+        this.markers = sorted;
         if (this.markers.length > 0) {
           for (var i = 0; i < this.markers.length; i++) {
+            this.districtsIds.push(this.markers[i]['id']);
+            distNames.push({ id: this.markers[i]['id'], name: this.markers[i]['name'] });
+
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
-
-
             const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
               "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
               "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
@@ -328,38 +309,21 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+        this.mylatlngData = res['blockData'];
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1);
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         var blockNames = [];
+        this.studentCount = res['studentCount'];
+        this.schoolCount = res['schoolCount'];
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
-
-        for (var i = 0; i < sorted.length; i++) {
-          this.blocksIds.push(sorted[i]['x_axis']);
-          blockNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'], distId: sorted[i]['district_id'] });
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              distId: sorted[i]['district_id'],
-              dist: sorted[i]['district_name'],
-              name: sorted[i]['block_name'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-
-            });
-        }
+        this.markers = sorted;
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
+            this.blocksIds.push(this.markers[i]['id']);
+            blockNames.push({ id: this.markers[i]['id'], name: this.markers[i]['name'], distId: this.markers[i]['dist'] });
+
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
             globalMap.setZoom(7);
@@ -417,38 +381,21 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
+        this.mylatlngData = res['schoolData'];
         this.lat = 22.3660414123535;
         this.lng = 71.48396301269531;
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
+        this.studentCount = res['studentCount'];
+        this.schoolCount = sorted.length;
 
-        for (var i = 0; i < sorted.length; i++) {
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.districtsIds.push(sorted[i]['x_axis']);
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              cluster: sorted[i]['cluster_name'],
-              dist: sorted[i]['district_name'],
-              block: sorted[i]['block_name'],
-              name: sorted[i]['school_name'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-            });
-        };
-
+        this.markers = sorted;
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
-
+            this.districtsIds.push(sorted[i]['id']);
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 0, 0, 0);
 
             const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
@@ -472,7 +419,6 @@ export class MapViewComponent implements OnInit {
             markerIcon.myJsonData = this.markers[i];
           }
           globalMap.setView(new L.LatLng(this.lat, this.lng), 7.3);
-          // var schStdCount = JSON.parse(localStorage.getItem('schStd'));
           this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.markers.forEach(school => {
@@ -515,52 +461,31 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.cluster_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
+        this.mylatlngData = res['clusterData'];
         this.lat = 22.3660414123535;
         this.lng = 71.48396301269531;
 
-        this.markers = [];
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         var clustNames = [];
         var blockNames = [];
+        this.studentCount = res['studentCount'];
+        this.schoolCount = res['schoolCount'];
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
 
-        for (var i = 0; i < sorted.length; i++) {
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.clusterIds.push(sorted[i]['x_axis']);
-          this.blocksIds.push(sorted[i]['block_id']);
-          if (sorted[i]['cluster_name'] !== null) {
-            clustNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
-          } else {
-            clustNames.push({ id: sorted[i]['x_axis'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
-          }
-          blockNames.push({ id: sorted[i]['block_id'], name: sorted[i]['block_name'], distId: sorted[i]['district_id'] });
-          this.cluster.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: (sorted[i]['cluster_name']),
-              distId: sorted[i]['district_id'],
-              dist: sorted[i]['district_name'],
-              blockId: sorted[i]['block_id'],
-              block: sorted[i]['block_name'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-            });
-        };
-        this.markers = this.cluster;
-
+        this.markers = sorted;
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
+            this.clusterIds.push(this.markers[i]['id']);
+            this.blocksIds.push(this.markers[i]['blockId']);
+            if (this.markers[i]['name'] !== null) {
+              clustNames.push({ id: this.markers[i]['id'], name: this.markers[i]['name'], blockId: this.markers[i]['blockId'] });
+            } else {
+              clustNames.push({ id: this.markers[i]['id'], name: 'NO NAME FOUND', blockId: this.markers[i]['blockId'] });
+            }
+            blockNames.push({ id: this.markers[i]['blockId'], name: this.markers[i]['block'], distId: this.markers[i]['distId'] });
             var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 1, 0.01, 0);
             const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
               "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
@@ -660,14 +585,12 @@ export class MapViewComponent implements OnInit {
     }
 
     if (this.clusterIds.includes(label.id)) {
-      // if (this.skul) {
       localStorage.setItem('dist', label.dist);
       localStorage.setItem('distId', label.distId);
       localStorage.setItem('block', label.block);
       localStorage.setItem('blockId', label.blockId);
       localStorage.setItem('cluster', label.name);
       localStorage.setItem('clusterId', label.id);
-      // }
       this.myClusterData(label.id);
     }
   };
@@ -738,37 +661,24 @@ export class MapViewComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        this.lat = Number(this.mylatlngData[0]['y_value']);
-        this.lng = Number(this.mylatlngData[0]['z_value']);
+        this.mylatlngData = res['blockData'];
+        this.lat = Number(this.mylatlngData[0]['lat']);
+        this.lng = Number(this.mylatlngData[0]['lng']);
 
         var blokName = [];
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
-        this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
+        this.markers = sorted;
+        this.studentCount = res['studentCount'];
+        this.schoolCount = res['schoolCount'];
 
-        for (var i = 0; i < sorted.length; i++) {
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.blocksIds.push(sorted[i]['x_axis']);
-          blokName.push({ id: sorted[i]['x_axis'], name: sorted[i]['block_name'] });
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: sorted[i]['block_name'],
-              dist: sorted[i]['distName'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              blok: this.blok,
-            });
+        for (var i = 0; i < this.markers.length; i++) {
+          this.blocksIds.push(this.markers[i]['id']);
+          blokName.push({ id: this.markers[i]['id'], name: this.markers[i]['name'] });
+
           var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
@@ -819,8 +729,6 @@ export class MapViewComponent implements OnInit {
     this.markers = [];
     this.reportData = [];
     this.errMsg();
-    this.studentCount = 0;
-    this.schoolCount = 0;
     this.markerData = null;
 
     this.dist = false;
@@ -838,8 +746,7 @@ export class MapViewComponent implements OnInit {
           blockNames.push(item);
         }
       });
-      // console.log(data);
-      // console.log(blockNames);
+
       if (blockNames.length > 1) {
         this.blocksNames = blockNames;
       }
@@ -860,50 +767,27 @@ export class MapViewComponent implements OnInit {
       }
       this.month_year['id'] = data;
       this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        if (this.mylatlngData[0]['y_value'] !== 0 && this.mylatlngData[0]['z_value']) {
-          this.lat = Number(this.mylatlngData[0]['y_value']);
-          this.lng = Number(this.mylatlngData[0]['z_value']);
-        }
+        this.mylatlngData = res['clusterDetails'];
+        this.lat = Number(this.mylatlngData[0]['lat']);
+        this.lng = Number(this.mylatlngData[0]['lng']);
         var clustNames = [];
 
-        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-          var object = previous.filter(object => object['x_axis'] === current['x_axis']);
-          if (object.length == 0) previous.push(current);
-          return previous;
-        }, []);
-
-        var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
+        this.studentCount = res['studentCount'];
+        this.schoolCount = res['schoolCount'];
         // sorted.pop();
+        this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.clusterIds.push(sorted[i]['x_axis']);
-          if (sorted[i]['cluster_name'] !== null) {
-            clustNames.push({ id: sorted[i]['x_axis'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
+          this.clusterIds.push(sorted[i]['id']);
+          if (sorted[i]['name'] !== null) {
+            clustNames.push({ id: sorted[i]['id'], name: sorted[i]['name'], blockId: sorted[i]['blockId'] });
           } else {
-            clustNames.push({ id: sorted[i]['x_axis'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
+            clustNames.push({ id: sorted[i]['id'], name: 'NO NAME FOUND', blockId: sorted[i]['blockId'] });
           }
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: sorted[i]['cluster_name'],
-              distId: sorted[i]['distId'],
-              dist: sorted[i]['distName'],
-              blockId: sorted[i]['blockId'],
-              block: sorted[i]['blockName'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-              schCount: (sorted[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-            });
           var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
@@ -918,8 +802,7 @@ export class MapViewComponent implements OnInit {
           this.popups(markerIcon, this.markers[i]);
 
         };
-        // console.log(this.markers);
-        // console.log(this.markers.length);
+
         clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         this.clusterNames = clustNames;
 
@@ -975,14 +858,12 @@ export class MapViewComponent implements OnInit {
 
       let obj = this.clusterNames.find(o => o.id == data);
       var blockNames = [];
-      // console.log(this.blocksNames);
       this.blocksNames.forEach(item => {
         if (item.distId && item.distId === Number(localStorage.getItem('distId'))) {
           blockNames.push(item);
         }
       });
-      // console.log(data);
-      // console.log(blockNames);
+
       if (blockNames.length > 1) {
         var uniqueData = blockNames.reduce(function (previous, current) {
           var object = previous.filter(object => object['id'] === current['id']);
@@ -998,8 +879,7 @@ export class MapViewComponent implements OnInit {
           clustName.push(item);
         }
       });
-      // console.log(data);
-      // console.log(clustName);
+
       if (clustName.length > 1) {
         var uniqueData = clustName.reduce(function (previous, current) {
           var object = previous.filter(object => object['id'] === current['id']);
@@ -1018,7 +898,6 @@ export class MapViewComponent implements OnInit {
       this.hierName = obj.name;
 
       this.myCluster = data;
-      // console.log(":::::::::::::::::::::", blockId, Number(localStorage.getItem('distId')));
       this.myBlock = blockId;
       this.myDistrict = Number(localStorage.getItem('distId'));
 
@@ -1028,41 +907,20 @@ export class MapViewComponent implements OnInit {
 
       this.month_year['id'] = data;
       this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
-        this.mylatlngData = res;
-        this.lat = Number(this.mylatlngData[0]['y_value']);
-        this.lng = Number(this.mylatlngData[0]['z_value']);
+        this.mylatlngData = res['schoolsDetails'];
+        this.lat = Number(this.mylatlngData[0]['lat']);
+        this.lng = Number(this.mylatlngData[0]['lng']);
 
-        this.clusterIds = [];
-        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-          var object = previous.filter(object => object['x_axis'] === current['x_axis']);
-          if (object.length == 0) previous.push(current);
-          return previous;
-        }, []);
-
-        var sorted = uniqueData.sort((a, b) => (parseInt(a.x_value) > parseInt(b.x_value)) ? 1 : -1)
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1)
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         this.markers = [];
-        this.studentCount = 0;
-        this.schoolCount = 0;
+        this.studentCount = res['studentCount'];
+        this.schoolCount = sorted.length;
 
+        this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
-          this.studentCount = this.studentCount + Number(sorted[i]['students_count']);
-          this.schoolCount = this.schoolCount + Number(sorted[i]['total_schools']);
-          this.markers.push(
-            {
-              id: sorted[i]['x_axis'],
-              name: sorted[i]['schoolName'],
-              block: sorted[i]['blockName'],
-              dist: sorted[i]['distName'],
-              cluster: sorted[i]['cluster'],
-              label: sorted[i]['x_value'],
-              lat: sorted[i]['y_value'],
-              lng: sorted[i]['z_value'],
-              stdCount: (sorted[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-            });
-
           var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
 
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
