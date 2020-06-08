@@ -62,8 +62,10 @@ export class SchoolInfrastructureComponent implements OnInit {
     { key: "cwsn_girls_toilet_percent", value: "CWSN Girl's Toilet (%)" },
     { key: "boys_urinals_percent", value: "Boy's Urinals (%)" },
     { key: "girls_urinals_percent", value: "Girl's Urinals (%)" }
-  ]
+  ];
 
+  public fileName;
+  public reportData;
   public myData;
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
@@ -74,6 +76,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.districtWise();
   }
   ngOnInit() {
+    this.createChart([], [], '', {});
     this.districtWise();
   }
 
@@ -104,11 +107,13 @@ export class SchoolInfrastructureComponent implements OnInit {
     }
     this.chartData = []
     this.tableHead = "District Name";
+    this.fileName = "Dist_level_report";
+    document.getElementById('home').style.display = 'none';
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = await this.service.infraDistWise().subscribe(async res => {
-      this.result = res;
+      this.reportData = this.result = res;
       var labels = [];
       for (var i = 0; i < this.result.length; i++) {
         labels.push(this.result[i].district_name);
@@ -212,5 +217,22 @@ export class SchoolInfrastructureComponent implements OnInit {
       }
     });
   };
+
+  downloadRoport() {
+    const options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true,
+      showTitle: false,
+      title: 'My Awesome CSV',
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true,
+      filename: this.fileName
+    };
+    const csvExporter = new ExportToCsv(options);
+    csvExporter.generateCsv(this.reportData);
+  }
 
 }

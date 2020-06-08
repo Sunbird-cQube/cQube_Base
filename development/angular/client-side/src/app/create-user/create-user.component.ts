@@ -54,11 +54,13 @@ export class CreateUserComponent implements OnInit {
   }
 
   onSubmit(formData: NgForm) {
+    document.getElementById('spinner').style.display = 'block';
     if (!this.minValidate && !this.maxValidate) {
       this.logData['createrId'] = localStorage.getItem('user_id');
       this.service.addUser(this.logData).subscribe(res => {
         document.getElementById('success').style.display = "Block";
         this.msg = res['msg'];
+        document.getElementById('spinner').style.display = 'none';
         this.err = '';
         setTimeout(() => {
           formData.resetForm();
@@ -66,6 +68,7 @@ export class CreateUserComponent implements OnInit {
         }, 2000);
       }, err => {
         this.err = err.error['msg'];
+        document.getElementById('spinner').style.display = 'none';
       });
     }
   }
