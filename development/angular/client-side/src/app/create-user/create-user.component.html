@@ -29,8 +29,6 @@
                                 class="form-control form-control-user" name="middlename"
                                 [ngClass]="{'invalid-textbox' :formData.submitted && !middlename.valid }">
                             <div *ngIf="formData.submitted && middlename?.errors">
-                                <!-- <label *ngIf="middlename.errors.required" class="validation-message">This
-                                    field is required</label> -->
                             </div>
                         </div>
 
@@ -41,8 +39,6 @@
                                 class="form-control form-control-user" name="lastname"
                                 [ngClass]="{'invalid-textbox' :formData.submitted && !lastname.valid }">
                             <div *ngIf="formData.submitted && lastname?.errors">
-                                <!-- <label *ngIf="lastname.errors.required" class="validation-message">This
-                                    field is required</label> -->
                             </div>
                         </div>
 
@@ -132,7 +128,7 @@
                         <div class="form-group" style="margin-bottom: 35px;">
                             <label for="date" style="color: blue; font-family: Arial;">Enter the
                                 user_validity_end_date</label>
-                            <input name="end_date" id="end_date" class="form-control form-control-user textbox-n"
+                            <input name="end_date" class="form-control form-control-user textbox-n"
                                 type="date" #end_date="ngModel" min="{{maxDate}}" [(ngModel)]="logData.end_date"
                                 required onkeydown="return false" id="endDate" (change)="maxDateValidator()"
                                 [ngClass]="{'invalid-textbox' :formData.submitted && !end_date.valid }">

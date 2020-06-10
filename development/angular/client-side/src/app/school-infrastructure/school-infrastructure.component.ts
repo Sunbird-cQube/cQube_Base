@@ -21,6 +21,32 @@ export class SchoolInfrastructureComponent implements OnInit {
   public yAxisFilter: any = [];
   public downloadLevel = '';
 
+  public districtsNames: any = [];
+
+  public SchoolInfrastructureDistrictsNames: any = [];
+  public SchoolInfrastructureBlocksNames;
+  public SchoolInfrastructureClusterNames;
+
+  public myDistrict: any;
+  public myBlock: any;
+  public myCluster: any;
+
+  public blockHidden;
+  public clusterHidden;
+
+  public dist: boolean = false;
+  public blok: boolean = false;
+  public clust: boolean = false;
+  public skul: boolean = false;
+
+  public title: string = '';
+  public titleName: string = '';
+
+  public hierName: any;
+  public distName: any;
+  public blockName: any;
+  public clustName: any;
+
   public fileName: any;
   public reportData: any;
   public myData;
@@ -29,9 +55,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     localStorage.removeItem('resData');
   }
 
-  selectAxis() {
-    this.districtWise();
-  }
   ngOnInit() {
     this.districtWise();
   }
@@ -66,13 +89,25 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.downloadLevel = 'dist';
     this.tableHead = "District Name";
     this.fileName = "Dist_level_report";
+    this.fileName = "Dist_level_Report";
+
+    this.myDistrict = '';
+
+    this.dist = false;
+    this.blok = false;
+    this.clust = false;
+    this.skul = true;
+
+    this.blockHidden = true;
+    this.clusterHidden = true;
+
     document.getElementById('home').style.display = 'none';
 
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service.infraDistWise().subscribe(res => {
-      this.reportData = this.result = res;
+      this.reportData = this.SchoolInfrastructureDistrictsNames = this.SchoolInfrastructureBlocksNames = this.result = res;
 
       // for download========
       this.funToDownload(this.reportData);
@@ -104,6 +139,8 @@ export class SchoolInfrastructureComponent implements OnInit {
         }
         this.chartData.push({ x: x, y: y });
         labels.push(this.result[i].district.value);
+        this.districtsNames.push({ id: i, name: this.result[i].district.value });
+
       }
 
       let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
@@ -127,6 +164,80 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.result = [];
       this.loaderAndErr();
     });
+  }
+
+  myDistData(data) {
+    this.dist = true;
+    this.blok = false;
+    this.clust = false;
+    this.skul = false;
+
+    this.myBlock = '';
+
+    this.distName = data;
+    this.hierName = this.distName;
+    localStorage.setItem('dist', this.hierName);
+
+    this.blockHidden = false;
+    this.clusterHidden = true;
+
+    document.getElementById('home').style.display = 'none';
+    console.log(data);
+  }
+
+  myBlockData(data) {
+    this.dist = false;
+    this.blok = true;
+    this.clust = false;
+    this.skul = false;
+
+    this.SchoolInfrastructureClusterNames = [{ name: 'abc' }, { name: 'pqr' }, { name: 'xyz' }];
+    this.myCluster = '';
+
+    this.titleName = localStorage.getItem('dist');
+    this.distName = this.titleName;
+    this.blockName = data;
+    localStorage.setItem('block', this.blockName);
+    this.hierName = this.blockName;
+
+    this.blockHidden = false;
+    this.clusterHidden = false;
+
+    document.getElementById('home').style.display = 'none';
+    console.log(data);
+  }
+
+  myClusterData(data) {
+    this.dist = false;
+    this.blok = false;
+    this.clust = true;
+    this.skul = false;
+
+    this.title = localStorage.getItem('block');
+    this.titleName = localStorage.getItem('dist');
+    this.distName = this.titleName;
+    this.blockName = this.title;
+    this.clustName = data;
+    this.hierName = this.clustName;
+    localStorage.setItem('cluster', data);
+
+    document.getElementById('home').style.display = 'none';
+    console.log(data);
+  }
+
+  selectAxis() {
+    if (this.skul) {
+      this.districtWise();
+    }
+    if (this.dist) {
+      this.myDistData(JSON.parse(localStorage.getItem('dist')));
+    }
+    if (this.blok) {
+      this.myBlockData(JSON.parse(localStorage.getItem('block')));
+    }
+    if (this.clust) {
+      this.myClusterData(JSON.parse(localStorage.getItem('cluster')));
+    }
   }
 
   createTable(dataSet) {

@@ -47,9 +47,9 @@
                 </div>
                 <div class="col-sm-7">
                     <div *ngIf="skul; else ng_else" style="float: right; " id="select">
-                        <i class="fa fa-download" title="Download Report" id="download"
+                        <em class="fa fa-download" title="Download Report" id="download"
                             style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
-                            (click)="downloadReportofState(downloadType)"></i>
+                            (click)="downloadReportofState(downloadType)"></em>
                         <select class="dwnld" id="downloader"
                             style="padding: 3px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                             [(ngModel)]="downloadType" name="downloadType">
@@ -61,30 +61,22 @@
                     </div>
 
                     <ng-template #ng_else>
-                        <!-- <img src="./../../assets//download.png" alt="Download Report" title="Download Report"
-                            style="cursor: pointer;height: 23px;width: 25px;float: right;margin: 5px 0px 0px 8px;"
-                            (click)="downloadRoport()"> -->
-                        <i class="fa fa-download" title="Download Report" id="download"
+                        <em class="fa fa-download" title="Download Report" id="download"
                             style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
-                            (click)="downloadRoport()"></i>
+                            (click)="downloadRoport()"></em>
                     </ng-template>
-                    <i class="fa fa-home" id="home" title="Home"
+                    <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
-                        alt="Home" (click)="districtWise()"></i>
+                        alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
         </div>
     </div>
-    <!-- <div class="row">
-        <div class="col-sm-9" style="font-family: Arial;">
-            
-        </div>
 
-    </div> -->
     <div class="row" style="margin-top: 2px;">
         <div class="col-sm-12">
             <p style="font-size: 11px; vertical-align:middle; line-height: 1.2em;text-align: justify;">
-                <b> NOTE:</b> The dashboard here provides insights using the CRC App data. We have derived several
+                <strong> NOTE:</strong> The dashboard here provides insights using the CRC App data. We have derived several
                 normalised
                 metrics
                 using the raw data and you can read more about them using the following link. A key feature of this
@@ -102,7 +94,6 @@
             </p>
         </div>
     </div>
-    <!-- <div class="col-sm-12"> -->
     <div class="row" style="margin-top: 0.5%;">
         <div class="col-sm-6">
             <div class="row">
@@ -172,7 +163,7 @@
     <div class="row" style="margin-top: 5px;">
         <div class="col-sm-6" style=" height:66.5vh;">
             <p style="font-size: 11px; vertical-align:middle;line-height: 1.2em;text-align: justify;">
-                <b> NOTE:</b> The scatter plot below provides information for the metrics selected in the
+                <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
                 dropdown
                 below. You
                 can
@@ -180,13 +171,6 @@
             </p>
 
             <div>
-                <!-- <div class="col-sm-12" id="spinner">
-                    <div class="spinner-border text-secondary"
-                        style="height: 40px; width: 40px; font-size: 10px; margin: 20% 5% 0% 45%; float: left; font-family: Arial;text-align: center;"
-                        role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div> -->
                 <div>
                     <canvas id="myChart" height="27vh" width="50vw"></canvas>
                 </div>
@@ -194,19 +178,12 @@
         </div>
         <div class="col-sm-6">
             <p style="font-size: 11px; vertical-align:middle;line-height: 1.2em;text-align: justify;">
-                <b> NOTE:</b> The scatter plot below provides information for the metrics selected in the
+                <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
                 dropdown
                 below. You
                 can
                 alter the metrics (calculated from the CRC App) to update the scatter plot.
             </p>
-            <!-- <div class="col-sm-12" id="spinner">
-                <div class="spinner-border text-secondary"
-                    style="height: 40px; width: 40px; font-size: 10px; margin: 20% 5% 0% 45%; float: left; font-family: Arial; text-align: center;"
-                    role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div> -->
             <div class="myDiv">
                 <table #dataTable id="table" class="display responsive cell-border" style="font-size: 11px;">
                 </table>
@@ -218,23 +195,18 @@
     <div class="row"
         style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; padding: 5px 0px 5px 0px;margin: 0px 0px 0px 0px;font-family: Arial;position: relative; bottom: 0; left: 0;">
         <div style="margin-right: 7%; margin-left: 1%;">
-            <span>Total Number of visits: {{visitCount}}</span>
+            <span id="visits">Total Number of visits: {{visitCount}}</span>
         </div>
         <div style="margin-right: 7%;">
-            <span style="text-align: center;">Total Number of schools: {{schoolCount}}</span>
+            <span id="schools" style="text-align: center;">Total Number of schools: {{schoolCount}}</span>
         </div>
         <div style="margin-right:7%;">
-            <span style="float: right;">Total schools visited: {{visitedSchools}}</span>
+            <span id="visited" style="float: right;">Total schools visited: {{visitedSchools}}</span>
         </div>
         <div style="margin-right: 7%;">
-            <span style="float: right;">Total schools not visited: {{notVisitedSchools}}</span>
+            <span id="visited" style="float: right;">Total schools not visited: {{notVisitedSchools}}</span>
         </div>
-        <!-- <div>
-            <span style="float: right;">Date range: {{dateRange}}</span>
-        </div> -->
     </div>
-    <!-- <div class="loader" id="loader"></div> -->
-
 </div>
 <div id="spinner">
     <div id="loader" class="loading">Loading&#8230;</div>

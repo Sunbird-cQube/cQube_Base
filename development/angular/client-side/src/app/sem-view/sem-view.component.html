@@ -2,12 +2,14 @@
     <div class="row">
         <div class="col-sm-8">
             <div *ngIf='skul'>
-                <p id="dist" style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                <p id="dist"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Semester report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
-                <p id="block" style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                <p id="block"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Semester report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
@@ -15,7 +17,8 @@
                         {{districtHierarchy.districtName}}</span> </p>
             </div>
             <div *ngIf="blok">
-                <p id="cluster" style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                <p id="cluster"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Semester report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
@@ -27,7 +30,8 @@
             </div>
 
             <div *ngIf="clust">
-                <p id="school" style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                <p id="school"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Semester report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
@@ -47,12 +51,12 @@
                     </p>
                 </div>
                 <div class="col-sm-5">
-                    <i class="fa fa-download" title="Download Report" id="download"
+                    <em class="fa fa-download" title="Download Report" id="download"
                         style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
-                        (click)="downloadReport()"></i>
-                    <i class="fa fa-home" id="home" title="Home"
+                        (click)="downloadReport()"></em>
+                    <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
-                        alt="Home" (click)="districtWise()"></i>
+                        alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
         </div>
@@ -61,13 +65,13 @@
         <div class="col-sm-3">
             <button class="btn btn-secondary" id="block"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px; padding: 2px;"
-                (click)="blockWise()">&nbsp;<b style="font-family: Arial;">Blocks</b> </button>
+                (click)="blockWise()">&nbsp;<strong style="font-family: Arial;">Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px;"
-                (click)="clusterWise()">&nbsp;<b style="font-family: Arial;">Clusters</b> </button>
+                (click)="clusterWise()">&nbsp;<strong style="font-family: Arial;">Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px;"
-                (click)="schoolWise()">&nbsp;<b style="font-family: Arial;">Schools</b> </button>
+                (click)="schoolWise()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
         </div>
         <div class="col-sm-7" style="font-family: Arial;">
             <select id="choose_dist"
@@ -112,10 +116,10 @@
     <div class="row"
         style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; padding: 5px 0px 5px 0px;position: relative; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-6">
-            <span>Number of students: {{studentCount}}</span>
+            <span id="students">Number of students: {{studentCount}}</span>
         </div>
         <div class="col-sm-6">
-            <span style="text-align: center;">Number of schools: {{schoolCount}}</span>
+            <span id="schools" style="text-align: center;">Number of schools: {{schoolCount}}</span>
         </div>
     </div>
 </div>

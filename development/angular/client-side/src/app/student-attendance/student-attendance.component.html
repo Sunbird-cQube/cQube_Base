@@ -47,12 +47,12 @@
                     </p>
                 </div>
                 <div class="col-sm-5">
-                    <i class="fa fa-download" title="Download Report" id="download"
+                    <em class="fa fa-download" title="Download Report" id="download"
                         style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
-                        (click)="downloadRoport()"></i>
-                    <i class="fa fa-home" id="home" title="Home"
+                        (click)="downloadRoport()"></em>
+                    <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
-                        alt="Home" (click)="districtWise()"></i>
+                        alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
         </div>
@@ -61,13 +61,13 @@
         <div class="col-sm-3">
             <button class="btn btn-secondary" id="block"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px; padding: 2px;"
-                (click)="blockWise()">&nbsp;<b style="font-family: Arial;">Blocks</b> </button>
+                (click)="blockWise()">&nbsp;<strong style="font-family: Arial;">Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px;"
-                (click)="clusterWise()">&nbsp;<b style="font-family: Arial;">Clusters</b> </button>
+                (click)="clusterWise()">&nbsp;<strong style="font-family: Arial;">Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px;"
-                (click)="schoolWise()">&nbsp;<b style="font-family: Arial;">Schools</b> </button>
+                (click)="schoolWise()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
         </div>
         <div class="col-sm-6" style="font-family: Arial;">
 
@@ -138,13 +138,13 @@
     <div class="row"
         style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial;padding: 5px 0px 5px 0px;position: relative; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-4">
-            <span>Number of students: {{studentCount}}</span>
+            <span id="students">Number of students: {{studentCount}}</span>
         </div>
         <div class="col-sm-4">
-            <span style="text-align: center;">Number of schools: {{schoolCount}}</span>
+            <span id="schools" style="text-align: center;">Number of schools: {{schoolCount}}</span>
         </div>
         <div class="col-sm-4">
-            <span style="float: right;">Date range: {{dateRange}}</span>
+            <span id="dateRange" style="float: right;">Date range: {{dateRange}}</span>
         </div>
     </div>
 </div>

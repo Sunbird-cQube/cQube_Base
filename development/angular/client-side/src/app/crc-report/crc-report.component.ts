@@ -21,39 +21,44 @@ export class CrcReportComponent implements OnInit {
 
   public title: string = '';
   public titleName: string = '';
+
   public districts: any;
   public blocks: any = [];
   public cluster: any = [];
   public schools: any = [];
-  public districtsIds: any = [];
-  public blocksIds: any = [];
-  public clusterIds: any = [];
-  public schoolsIds: any = [];
+
   public districtsNames: any = [];
   public blocksNames: any = [];
   public clusterNames: any = [];
   public schoolsNames: any = [];
-  public stylesFile = "../assets/mapStyles.json";
+
   public id: any = '';
+
   public blockHidden: boolean = true;
   public clusterHidden: boolean = true;
+
   public myDistrict: any;
   public myBlock: any;
   public myCluster: any;
+
   public colors: any;
+
   public studentCount: any;
   public schoolCount: any;
+
   public dateRange: any = '';
+
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
   public skul: boolean = false;
+
   public hierName: any;
   public distName: any;
   public blockName: any;
   public clustName: any;
-  public visitCount: any;
 
+  public visitCount: any;
   public visitedSchools: any;
   public notVisitedSchools: any;
 
@@ -128,7 +133,7 @@ export class CrcReportComponent implements OnInit {
   public chartData: any = [];
   public modes: any
 
-  async districtWise() {
+  districtWise() {
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
       $('#table').empty();
@@ -187,7 +192,7 @@ export class CrcReportComponent implements OnInit {
         yAxis: y_axis.value
       }
 
-      await this.createChart(labels, this.chartData, this.tableHead, obj);
+      this.createChart(labels, this.chartData, this.tableHead, obj);
 
       this.tableData = this.result;
       this.dtOptions = {
@@ -221,7 +226,7 @@ export class CrcReportComponent implements OnInit {
       };
       this.dataTable = $(this.table.nativeElement);
       this.dataTable.DataTable(this.dtOptions);
-      await this.loaderAndErr();
+      this.loaderAndErr();
       this.changeDetection.markForCheck();
     } else {
       this.schoolCount = 0;
@@ -494,7 +499,7 @@ export class CrcReportComponent implements OnInit {
     document.getElementById('home').style.display = 'block';;
   }
 
-  myBlockData(data) {
+  myBlockData(data: any) {
 
     this.scatterChart.destroy();
     this.modes = [];
@@ -603,7 +608,7 @@ export class CrcReportComponent implements OnInit {
     document.getElementById('home').style.display = 'block';;
   }
 
-  myClusterData(data) {
+  myClusterData(data: any) {
 
     this.scatterChart.destroy();
     this.modes = [];
@@ -781,7 +786,7 @@ export class CrcReportComponent implements OnInit {
     });
   };
 
-  public downloadType: String;
+  public downloadType: string;
   downloadReportofState(downloadType) {
     if (downloadType === 'Dist_Wise') {
       this.distWise();
