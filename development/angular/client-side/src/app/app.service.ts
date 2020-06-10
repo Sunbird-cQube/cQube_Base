@@ -151,7 +151,11 @@ export class AppServiceComponent {
     }
 
     //Infra
-    infraDistWise(){
+    infraDistWise() {
         return this.http.post(`${this.baseUrl}/infra/distWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraDownload(data) {
+        return this.http.post(`${this.baseUrl}/infra/download`, { level: data }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 }

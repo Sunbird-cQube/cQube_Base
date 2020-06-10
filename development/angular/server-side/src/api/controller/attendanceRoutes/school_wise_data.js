@@ -20,7 +20,7 @@ router.post('/schoolWise', auth.authController, function (req, res) {
             } else {
                 var studentCount = 0;
                 var schoolData = [];
-                JSON.parse(data.Body.toString()).forEach(item => {
+                JSON.parse(data.Body.toString()).map(item => {
                     studentCount = studentCount + Number(item['students_count']);
                     var obj = {
                         id: item['x_axis'],
@@ -62,7 +62,7 @@ router.post('/schoolPerCluster', auth.authController, async (req, res) => {
         } else {
             var studentCount = 0;
             var schoolsDetails = [];
-            allSchools.data.schoolData.forEach(schools => {
+            allSchools.data.schoolData.map(schools => {
                 if (clusterId === schools.clusterId) {
                     studentCount = studentCount + Number(schools.stdCount.replace(/\,/g, ''));
                     obj = {

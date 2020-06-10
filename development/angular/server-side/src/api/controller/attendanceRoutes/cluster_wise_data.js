@@ -21,7 +21,7 @@ router.post('/clusterWise', auth.authController, function (req, res) {
                 var studentCount = 0;
                 var schoolCount = 0;
                 var clusterData = [];
-                JSON.parse(data.Body.toString()).forEach(item => {
+                JSON.parse(data.Body.toString()).map(item => {
                     studentCount = studentCount + Number(item['students_count']);
                     schoolCount = schoolCount + Number(item['total_schools']);
                     var obj = {
@@ -66,7 +66,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
         } else {
             var studentCount = 0;
             var schoolCount = 0;
-            allClusters.data.clusterData.forEach(clusters => {
+            allClusters.data.clusterData.map(clusters => {
                 if (blockId === clusters.blockId) {
                     studentCount = studentCount + Number(clusters.stdCount.replace(/\,/g, ''));
                     schoolCount = schoolCount + Number(clusters.schCount.replace(/\,/g, ''));

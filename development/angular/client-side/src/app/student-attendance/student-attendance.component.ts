@@ -662,6 +662,12 @@ export class StudengtAttendanceComponent implements OnInit {
       }
       this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
         this.mylatlngData = res['blockData'];
+        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
+          var object = previous.filter(object => object['id'] === current['id']);
+          if (object.length == 0) previous.push(current);
+          return previous;
+        }, []);
+        this.mylatlngData = uniqueData;
         this.lat = Number(this.mylatlngData[0]['lat']);
         this.lng = Number(this.mylatlngData[0]['lng']);
 
@@ -768,6 +774,12 @@ export class StudengtAttendanceComponent implements OnInit {
       this.month_year['id'] = data;
       this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
         this.mylatlngData = res['clusterDetails'];
+        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
+          var object = previous.filter(object => object['id'] === current['id']);
+          if (object.length == 0) previous.push(current);
+          return previous;
+        }, []);
+        this.mylatlngData = uniqueData;
         this.lat = Number(this.mylatlngData[0]['lat']);
         this.lng = Number(this.mylatlngData[0]['lng']);
         var clustNames = [];
@@ -863,9 +875,9 @@ export class StudengtAttendanceComponent implements OnInit {
           blockNames.push(item);
         }
       });
-
+      var uniqueData
       if (blockNames.length > 1) {
-        var uniqueData = blockNames.reduce(function (previous, current) {
+        uniqueData = blockNames.reduce(function (previous, current) {
           var object = previous.filter(object => object['id'] === current['id']);
           if (object.length == 0) previous.push(current);
           return previous;
@@ -881,7 +893,7 @@ export class StudengtAttendanceComponent implements OnInit {
       });
 
       if (clustName.length > 1) {
-        var uniqueData = clustName.reduce(function (previous, current) {
+        uniqueData = clustName.reduce(function (previous, current) {
           var object = previous.filter(object => object['id'] === current['id']);
           if (object.length == 0) previous.push(current);
           return previous;
@@ -908,6 +920,12 @@ export class StudengtAttendanceComponent implements OnInit {
       this.month_year['id'] = data;
       this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
         this.mylatlngData = res['schoolsDetails'];
+        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
+          var object = previous.filter(object => object['id'] === current['id']);
+          if (object.length == 0) previous.push(current);
+          return previous;
+        }, []);
+        this.mylatlngData = uniqueData;
         this.lat = Number(this.mylatlngData[0]['lat']);
         this.lng = Number(this.mylatlngData[0]['lng']);
 
@@ -986,8 +1004,9 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   initMarkers(markers, color, radius, strokeWeight, weight) {
+    var markerIcon;
     if (this.levelWise !== "School") {
-      var markerIcon = L.circleMarker([markers.lat, markers.lng], {
+      markerIcon = L.circleMarker([markers.lat, markers.lng], {
         radius: radius,
         color: color,
         fillColor: color,
@@ -995,7 +1014,7 @@ export class StudengtAttendanceComponent implements OnInit {
         strokeWeight: strokeWeight,
       });
     } else {
-      var markerIcon = L.circleMarker([markers.lat, markers.lng], {
+      markerIcon = L.circleMarker([markers.lat, markers.lng], {
         radius: radius,
         color: color,
         fillColor: color,
@@ -1045,7 +1064,7 @@ export class StudengtAttendanceComponent implements OnInit {
       switch (interpolation) {
         case 'rgb':
           return colorsToGradientRgb(colorStart, colorEnd, total);
-        // case 'hsl':
+        case 'hsl':
         //   return colorsToGradientHsl(colorStart, colorEnd, total);
         default:
           return false;
