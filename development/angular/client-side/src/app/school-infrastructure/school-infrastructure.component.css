@@ -1,4 +1,4 @@
-tr th{
+/* tr th{
     border: 1px solid gray;
     border-collapse: collapse;
 }
@@ -9,7 +9,7 @@ tr td{
 
 th{
     border-bottom: 2px solid gray;
-}
+} */
 
 /* Absolute Center Spinner */
 .loading {

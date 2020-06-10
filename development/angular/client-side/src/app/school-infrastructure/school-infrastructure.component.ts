@@ -4,7 +4,6 @@ import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
 import { ExportToCsv } from 'export-to-csv';
-import { async } from '@angular/core/testing';
 declare const $;
 
 @Component({
@@ -17,55 +16,13 @@ export class SchoolInfrastructureComponent implements OnInit {
   public scatterChart: Chart;
   public result: any = [];
   public xAxis: any = "total_schools";
-  public yAxis: any = "total_schools_data received";
-  public xAxisFilter = [
-    { key: 'total_schools', value: "Total Schools" },
-    { key: 'total_schools_data received', value: "Total Schools Data Received" },
-    { key: 'average_percent', value: "Average on 19 parameters (%)" },
-    { key: 'handwash_percent', value: "Handwash (%)" },
-    { key: 'solar_panel_percent', value: "Solar Panel (%)" },
-    { key: "library_percent", value: "Library %" },
-    { key: "drining_water_percent", value: "Drinking Water %" },
-    { key: "tap_water_percent", value: "Tap Water %" },
-    { key: 'hand_pumps_percent', value: "Hand Pump (%)" },
-    { key: "playground_percent", value: "PlayGround (%)" },
-    { key: "news_paper_percent", value: "News Paper (%)" },
-    { key: "digital_board_percent", value: "Digital Board (%)" },
-    { key: 'electricity_percent', value: "Electricity (%)" },
-    { key: "toilet_percent", value: "Total Toilets (%)" },
-    { key: "boys_toilet_percent", value: "Boy's Toilet (%)" },
-    { key: "girls_toilet_percent", value: "Girl's Toilet (%)" },
-    { key: 'cwsn_boys_toilet_percent', value: "CWSN Boy's Toilet (%)" },
-    { key: "cwsn_girls_toilet_percent", value: "CWSN Girl's Toilet (%)" },
-    { key: "boys_urinals_percent", value: "Boy's Urinals (%)" },
-    { key: "girls_urinals_percent", value: "Girl's Urinals (%)" }
-  ]
+  public yAxis: any = "data_received";
+  public xAxisFilter: any = [];
+  public yAxisFilter: any = [];
+  public downloadLevel = '';
 
-  public yAxisFilter = [
-    { key: 'total_schools', value: "Total Schools" },
-    { key: 'total_schools_data received', value: "Total Schools Data Received" },
-    { key: 'average_percent', value: "Average on 19 parameters (%)" },
-    { key: 'handwash_percent', value: "Handwash (%)" },
-    { key: 'solar_panel_percent', value: "Solar Panel (%)" },
-    { key: "library_percent", value: "Library %" },
-    { key: "drining_water_percent", value: "Drinking Water %" },
-    { key: "tap_water_percent", value: "Tap Water %" },
-    { key: 'hand_pumps_percent', value: "Hand Pump (%)" },
-    { key: "playground_percent", value: "PlayGround (%)" },
-    { key: "news_paper_percent", value: "News Paper (%)" },
-    { key: "digital_board_percent", value: "Digital Board (%)" },
-    { key: 'electricity_percent', value: "Electricity (%)" },
-    { key: "toilet_percent", value: "Total Toilets (%)" },
-    { key: "boys_toilet_percent", value: "Boy's Toilet (%)" },
-    { key: "girls_toilet_percent", value: "Girl's Toilet (%)" },
-    { key: 'cwsn_boys_toilet_percent', value: "CWSN Boy's Toilet (%)" },
-    { key: "cwsn_girls_toilet_percent", value: "CWSN Girl's Toilet (%)" },
-    { key: "boys_urinals_percent", value: "Boy's Urinals (%)" },
-    { key: "girls_urinals_percent", value: "Girl's Urinals (%)" }
-  ];
-
-  public fileName;
-  public reportData;
+  public fileName: any;
+  public reportData: any;
   public myData;
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
@@ -76,7 +33,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.districtWise();
   }
   ngOnInit() {
-    this.createChart([], [], '', {});
     this.districtWise();
   }
 
@@ -101,46 +57,70 @@ export class SchoolInfrastructureComponent implements OnInit {
   public chartData: any = [];
   public modes: any
 
-  async districtWise() {
+  districtWise() {
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
     }
-    this.chartData = []
+    this.xAxisFilter = [];
+    this.yAxisFilter = [];
+    this.downloadLevel = 'dist';
     this.tableHead = "District Name";
     this.fileName = "Dist_level_report";
     document.getElementById('home').style.display = 'none';
+
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = await this.service.infraDistWise().subscribe(async res => {
+    this.myData = this.service.infraDistWise().subscribe(res => {
       this.reportData = this.result = res;
+
+      // for download========
+      this.funToDownload(this.reportData);
+      //for chart =============================================
+      for (i = 2; i < Object.keys(this.result[0]).length; i++) {
+        this.xAxisFilter.push({ key: Object.keys(this.result[0])[i], value: this.result[0][Object.keys(this.result[0])[i]].name });
+        this.yAxisFilter.push({ key: Object.keys(this.result[0])[i], value: this.result[0][Object.keys(this.result[0])[i]].name });
+      };
+
       var labels = [];
+      this.chartData = []
       for (var i = 0; i < this.result.length; i++) {
-        labels.push(this.result[i].district_name);
-        this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
+        var x = undefined, y = undefined;
+        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 2) {
+          x = Number(this.result[i][this.xAxis].value);
+          y = Number(this.result[i][this.yAxis].value);
+        }
+        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 3) {
+          x = Number(this.result[i][this.xAxis].value);
+          y = Number(this.result[i][this.yAxis].percent);
+        }
+        if (Object.keys(this.result[i][this.xAxis]).length === 3 && Object.keys(this.result[i][this.yAxis]).length === 2) {
+          x = Number(this.result[i][this.xAxis].percent);
+          y = Number(this.result[i][this.yAxis].value);
+        }
+        if (Object.keys(this.result[i][this.xAxis]).length === 3 && Object.keys(this.result[i][this.yAxis]).length === 3) {
+          x = Number(this.result[i][this.xAxis].percent);
+          y = Number(this.result[i][this.yAxis].percent);
+        }
+        this.chartData.push({ x: x, y: y });
+        labels.push(this.result[i].district.value);
       }
 
       let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
       let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
+
       let obj = {
         xAxis: x_axis.value,
         yAxis: y_axis.value
       }
+      this.createChart(labels, this.chartData, this.tableHead, obj);
+      //====================================
 
-      await this.createChart(labels, this.chartData, this.tableHead, obj);
+      // for table data
+      var dataSet = this.result;
+      this.createTable(dataSet);
+      //========================
 
-      $(document).ready(function () {
-        $('#table').DataTable(
-          {
-            destroy: true, bLengthChange: false, bInfo: false,
-            bPaginate: false, scrollY: "62vh", scrollX: true,
-            scrollCollapse: true, paging: false, searching: false,
-            fixedColumns: {
-              leftColumns: 1
-            }
-          }
-        );
-      });
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     }, err => {
@@ -149,10 +129,88 @@ export class SchoolInfrastructureComponent implements OnInit {
     });
   }
 
+  createTable(dataSet) {
+    var my_columns = [];
+    $.each(dataSet[0], function (key, value) {
+      var my_item = {};
+      my_item['data'] = key;
+      my_item['value'] = value;
+      my_columns.push(my_item);
+    });
+
+    $(document).ready(function () {
+      var headers = '<thead><tr>'
+      var subheader = '<tr>';
+      var body = '<tbody>';
+
+      my_columns.forEach((column, i) => {
+        headers += `<th ${(column.data == 'district'
+          || column.data == 'block'
+          || column.data == 'cluster'
+          || column.data == 'school'
+          || column.data == 'total_schools'
+          || column.data == 'data_received'
+          || column.data == 'infra_score') ? 'rowspan="2"' : 'colspan="2"'}>${column.value.name}</th>`
+        if (column.data != 'district'
+          && column.data != 'block'
+          && column.data != 'cluster'
+          && column.data != 'school'
+          && column.data != 'total_schools'
+          && column.data != 'data_received'
+          && column.data != 'infra_score') {
+          subheader += '<th>Yes</th><th>%.</th>'
+        }
+      });
+
+      let newArr = [];
+      $.each(dataSet, function (a, b) {
+        let temp = [];
+        $.each(b, function (key, value) {
+          var new_item = {};
+          new_item['data'] = key;
+          new_item['value'] = value;
+          temp.push(new_item);
+        })
+        newArr.push(temp)
+      });
+
+      newArr.forEach((columns) => {
+        body += '<tr>';
+        columns.forEach((column) => {
+          if (column.data != 'district'
+            && column.data != 'block'
+            && column.data != 'cluster'
+            && column.data != 'school'
+            && column.data != 'total_schools'
+            && column.data != 'data_received'
+            && column.data != 'infra_score') {
+            body += `<td>${column.value.value}</td><td>${column.value.percent}</td>`
+          } else {
+            body += `<td>${column.value.value}</td>`
+          }
+        })
+        body += '</tr>';
+      });
+
+      subheader += '</tr>'
+      headers += `</tr>${subheader}</thead>`
+      body += '</tr></tbody>';
+      $("#table").empty();
+      $("#table").append(headers);
+      $("#table").append(body);
+      $('#table').DataTable({
+        destroy: true, bLengthChange: false, bInfo: false,
+        bPaginate: false, scrollY: "58vh", scrollX: true,
+        scrollCollapse: true, paging: false, searching: false,
+        fixedColumns: {
+          leftColumns: 1
+        }
+      });
+    });
+
+  }
+
   createChart(labels, chartData, name, obj) {
-    var sortedX = this.chartData.sort((a, b) => (a.x > b.x) ? 1 : ((b.x > a.x) ? -1 : 0));
-    var sortedY = this.chartData.sort((a, b) => (a.y > b.y) ? 1 : ((b.y > a.y) ? -1 : 0));
-    console.log(sortedX);
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
       data: {
@@ -217,6 +275,28 @@ export class SchoolInfrastructureComponent implements OnInit {
       }
     });
   };
+
+  funToDownload(reportData) {
+    let newData = [];
+    $.each(reportData, function (key, value) {
+      let headers = Object.keys(value);
+      let newObj = {}
+      for (var i = 0; i < Object.keys(value).length; i++) {
+        if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'total_schools' && headers[i] != 'data_received' && headers[i] != 'infra_score') {
+          if (value[headers[i]].value) {
+            newObj[`${headers[i]}_value`] = value[headers[i]].value;
+          }
+          if (value[headers[i]].percent) {
+            newObj[`${headers[i]}_percent`] = value[headers[i]].percent;
+          }
+        } else {
+          newObj[headers[i]] = value[headers[i]].value;
+        }
+      }
+      newData.push(newObj);
+    })
+    this.reportData = newData
+  }
 
   downloadRoport() {
     const options = {

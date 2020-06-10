@@ -21,7 +21,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
                 var studentCount = 0;
                 var schoolCount = 0;
                 var blockData = [];
-                JSON.parse(data.Body.toString()).forEach(item => {
+                JSON.parse(data.Body.toString()).map(item => {
                     studentCount = studentCount + Number(item['students_count']);
                     schoolCount = schoolCount + Number(item['total_schools']);
                     var obj = {
@@ -62,7 +62,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
             var studentCount = 0;
             var schoolCount = 0;
             var blockData = [];
-            allBlocks.data.blockData.forEach(blocks => {
+            allBlocks.data.blockData.map(blocks => {
                 if (distId === blocks.distId) {
                     studentCount = studentCount + Number(blocks.stdCount.replace(/\,/g, ''));
                     schoolCount = schoolCount + Number(blocks.schCount.replace(/\,/g, ''));
