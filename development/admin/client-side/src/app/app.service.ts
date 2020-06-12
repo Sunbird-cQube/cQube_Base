@@ -19,4 +19,11 @@ export class AppService {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
+
+    changePassword(data) {
+        return this.http.post(`${this.baseUrl}/changePassword`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
 }

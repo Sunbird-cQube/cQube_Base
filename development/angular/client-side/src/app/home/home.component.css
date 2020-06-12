@@ -75,5 +75,12 @@ img{
   height: 0;
 }
 .submenu.expanded {
-  height: 97px;
+  height: 48px;
+}
+
+#logout :hover{
+  background-color: #ffffff;
+  padding: 7px 5px 7px 5px;
+  border-radius: 5px;
+  color: gray;
 }

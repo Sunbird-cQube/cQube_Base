@@ -138,12 +138,6 @@ export class AppServiceComponent {
         });
     }
 
-    addUser(data) {
-        return this.http.post(`${this.baseUrl}/addUser`, data, {
-            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-        });
-    }
-
     // dashboard data 
 
     dashboard() {
@@ -155,7 +149,7 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/infra/distWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    infraDownload(data) {
-        return this.http.post(`${this.baseUrl}/infra/download`, { level: data }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    infraBlockWise(data) {
+        return this.http.post(`${this.baseUrl}/infra/blockWise/${data}`, { }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 }

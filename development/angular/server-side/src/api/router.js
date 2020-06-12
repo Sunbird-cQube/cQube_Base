@@ -9,7 +9,7 @@ const dashboard = require('./controller/dashboardRoutes/dashboard');
 
 const roleLogin = require('./controller/users/roleBasedLogin');
 const changePasswd = require('./controller/users/changePassword');
-const addUser = require('./controller/users/addUser');
+
 // const crcData = require('./controller/users/crcData');
 // crc files
 const crcDistrictWise = require('../api/controller/crcRoutes/districtWise');
@@ -19,7 +19,7 @@ const crcSchoolWise = require('../api/controller/crcRoutes/schoolWise');
 
 //Infra
 const infraDistWise = require('../api/controller/Infra/infra-distWise');
-const infraDownload = require('../api/controller/Infra/downloadInfraData');
+const infraBlock = require('../api/controller/Infra/infra-blockWise');
 
 const semDistrictWise = require('../api/controller/semRoutes/districtWise');
 const semBlockWise = require('../api/controller/semRoutes/blockWise');
@@ -47,11 +47,10 @@ router.use('/attendance', getDateRange)
 // user details routes
 router.use('/roleBasedLogin', roleLogin);
 router.use('/changePassword', changePasswd);
-router.use('/addUser', addUser);
 router.use('/dashboard', dashboard);
 
 // Infra
 router.use('/infra', infraDistWise);
-router.use('/infra', infraDownload);
+router.use('/infra', infraBlock);
 
 module.exports = router;

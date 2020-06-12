@@ -95,7 +95,7 @@
                     [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                     <option [value]="myDistrict" disabled selected="selected">Choose a District
                     </option>
-                    <option *ngFor="let dist of SchoolInfrastructureDistrictsNames" [(ngValue)]="dist.district.value"
+                    <option *ngFor="let dist of SchoolInfrastructureDistrictsNames" [(ngValue)]="dist.district.id"
                         style="font-family: Arial; font-size: 11px;">
                         {{dist.district.value}}
                     </option>
@@ -106,8 +106,8 @@
                     [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                     <option [value]="myBlock" disabled selected="selected">Choose a Block
                     </option>
-                    <option *ngFor="let block of SchoolInfrastructureBlocksNames" [(ngValue)]="block.block.value">
-                        {{block.block.value}}
+                    <option *ngFor="let block of SchoolInfrastructureBlocksNames" [(ngValue)]="block.block.id">
+                        {{block.block.name}}
                     </option>
                 </select>
 

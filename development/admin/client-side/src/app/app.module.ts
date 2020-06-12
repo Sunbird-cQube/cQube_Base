@@ -13,12 +13,16 @@ import { AppComponent } from './app.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HomeComponent } from './home/home.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CreateUserComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent,
+    ChangePasswordComponent
   ],
   imports: [
     FormsModule,

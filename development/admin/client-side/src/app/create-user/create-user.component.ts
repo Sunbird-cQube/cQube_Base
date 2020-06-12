@@ -73,10 +73,4 @@ export class CreateUserComponent implements OnInit {
       });
     }
   }
-
-  logout() {
-    localStorage.clear();
-    this.router.navigate(['login']);
-  }
-
 }
