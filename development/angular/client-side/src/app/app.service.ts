@@ -154,19 +154,8 @@ export class AppServiceComponent {
     infraDistWise() {
         return this.http.post(`${this.baseUrl}/infra/distWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
-    infraAllBlockWise() {
-        return this.http.post(`${this.baseUrl}/infra/blockWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
 
-    infraBlockWise(distId) {
-        return this.http.post(`${this.baseUrl}/infra/blockWise/${distId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-
-    infraClusterWise(distId, blockId) {
-        return this.http.post(`${this.baseUrl}/infra/clusterWise/${distId}/${blockId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
-    }
-
-    infraSchoolWise(distId, blockId, clusterId) {
-        return this.http.post(`${this.baseUrl}/infra/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    infraDownload(data) {
+        return this.http.post(`${this.baseUrl}/infra/download`, { level: data }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 }
