@@ -19,9 +19,7 @@ const crcSchoolWise = require('../api/controller/crcRoutes/schoolWise');
 
 //Infra
 const infraDistWise = require('../api/controller/Infra/infra-distWise');
-const infraBlockWise = require('../api/controller/Infra/infra-blockWise');
-const infraClusterWise = require('../api/controller/Infra/infra-clusterWise');
-const infraSchoolWise = require('../api/controller/Infra/infra-schoolWise');
+const infraDownload = require('../api/controller/Infra/downloadInfraData');
 
 const semDistrictWise = require('../api/controller/semRoutes/districtWise');
 const semBlockWise = require('../api/controller/semRoutes/blockWise');
@@ -54,8 +52,6 @@ router.use('/dashboard', dashboard);
 
 // Infra
 router.use('/infra', infraDistWise);
-router.use('/infra', infraBlockWise);
-router.use('/infra', infraClusterWise);
-router.use('/infra', infraSchoolWise);
+router.use('/infra', infraDownload);
 
 module.exports = router;

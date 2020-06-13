@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, IterableDiffers } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -16,19 +16,16 @@ export class SchoolInfrastructureComponent implements OnInit {
   public scatterChart: Chart;
   public result: any = [];
   public xAxis: any = "total_schools";
-  public yAxis: any = "total_schools_data_received";
+  public yAxis: any = "data_received";
   public xAxisFilter: any = [];
   public yAxisFilter: any = [];
   public downloadLevel = '';
 
   public districtsNames: any = [];
-  public blockNames: any = [];
-  public clusterNames: any = [];
 
-  public SchoolInfrastructureDistrictsNames;
+  public SchoolInfrastructureDistrictsNames: any = [];
   public SchoolInfrastructureBlocksNames;
   public SchoolInfrastructureClusterNames;
-  public SchoolInfrastructureSchoolNames;
 
   public myDistrict: any;
   public myBlock: any;
@@ -87,10 +84,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
     }
-    if (this.result.length! > 0) {
-      $('#table').DataTable().destroy();
-      $('#table').empty();
-    }
     this.xAxisFilter = [];
     this.yAxisFilter = [];
     this.downloadLevel = 'dist';
@@ -104,7 +97,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.blok = false;
     this.clust = false;
     this.skul = true;
-    this.errMsg();
+
     this.blockHidden = true;
     this.clusterHidden = true;
 
@@ -114,39 +107,39 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.infraDistWise().subscribe(res => {
-      this.reportData = this.SchoolInfrastructureDistrictsNames = this.result = res;
+      this.reportData = this.SchoolInfrastructureDistrictsNames = this.SchoolInfrastructureBlocksNames = this.result = res;
+
       // for download========
       this.funToDownload(this.reportData);
       //for chart =============================================
-      for (i = 1; i < Object.keys(this.result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
+      for (i = 2; i < Object.keys(this.result[0]).length; i++) {
+        this.xAxisFilter.push({ key: Object.keys(this.result[0])[i], value: this.result[0][Object.keys(this.result[0])[i]].name });
+        this.yAxisFilter.push({ key: Object.keys(this.result[0])[i], value: this.result[0][Object.keys(this.result[0])[i]].name });
       };
 
       var labels = [];
       this.chartData = []
       for (var i = 0; i < this.result.length; i++) {
         var x = undefined, y = undefined;
-
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 1) {
+        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 2) {
           x = Number(this.result[i][this.xAxis].value);
           y = Number(this.result[i][this.yAxis].value);
         }
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 2) {
+        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 3) {
           x = Number(this.result[i][this.xAxis].value);
           y = Number(this.result[i][this.yAxis].percent);
         }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 1) {
+        if (Object.keys(this.result[i][this.xAxis]).length === 3 && Object.keys(this.result[i][this.yAxis]).length === 2) {
           x = Number(this.result[i][this.xAxis].percent);
           y = Number(this.result[i][this.yAxis].value);
         }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 2) {
+        if (Object.keys(this.result[i][this.xAxis]).length === 3 && Object.keys(this.result[i][this.yAxis]).length === 3) {
           x = Number(this.result[i][this.xAxis].percent);
           y = Number(this.result[i][this.yAxis].percent);
         }
         this.chartData.push({ x: x, y: y });
         labels.push(this.result[i].district.value);
-        this.districtsNames.push({ id: this.result[i].district.id, name: this.result[i].district.value });
+        this.districtsNames.push({ id: i, name: this.result[i].district.value });
 
       }
 
@@ -157,7 +150,6 @@ export class SchoolInfrastructureComponent implements OnInit {
         xAxis: x_axis.value,
         yAxis: y_axis.value
       }
-
       this.createChart(labels, this.chartData, this.tableHead, obj);
       //====================================
 
@@ -175,283 +167,62 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   myDistData(data) {
-    if (this.chartData.length !== 0) {
-      this.scatterChart.destroy();
-    }
-
-    this.xAxisFilter = [];
-    this.yAxisFilter = [];
-    this.downloadLevel = 'block';
-    this.tableHead = "Block Name";
-    this.fileName = "Blcok_level_report";
-
     this.dist = true;
     this.blok = false;
     this.clust = false;
     this.skul = false;
-    this.errMsg();
+
     this.myBlock = '';
 
     this.distName = data;
-    let obj = this.districtsNames.find(o => o.id == data);
-    this.hierName = obj.name;
-    localStorage.setItem('dist', obj.name);
-    localStorage.setItem('distId', data);
+    this.hierName = this.distName;
+    localStorage.setItem('dist', this.hierName);
 
     this.blockHidden = false;
     this.clusterHidden = true;
 
-    document.getElementById('home').style.display = 'block';
-    if (this.myData) {
-      this.myData.unsubscribe();
-    }
-    this.myData = this.service.infraBlockWise(data).subscribe(res => {
-      this.reportData = this.SchoolInfrastructureBlocksNames = this.result = res;
-      // for download========
-      this.funToDownload(this.reportData);
-      //for chart =============================================
-      for (i = 2; i < Object.keys(this.result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-      };
-
-      var labels = [];
-      this.chartData = []
-      for (var i = 0; i < this.result.length; i++) {
-        var x = undefined, y = undefined;
-
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 1) {
-          x = Number(this.result[i][this.xAxis].value);
-          y = Number(this.result[i][this.yAxis].value);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 2) {
-          x = Number(this.result[i][this.xAxis].value);
-          y = Number(this.result[i][this.yAxis].percent);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 1) {
-          x = Number(this.result[i][this.xAxis].percent);
-          y = Number(this.result[i][this.yAxis].value);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 2) {
-          x = Number(this.result[i][this.xAxis].percent);
-          y = Number(this.result[i][this.yAxis].percent);
-        }
-        this.chartData.push({ x: x, y: y });
-        labels.push(this.result[i].block.value);
-        this.blockNames.push({ id: this.result[i].block.id, name: this.result[i].block.value });
-      }
-
-      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-
-      let obj = {
-        xAxis: x_axis.value,
-        yAxis: y_axis.value
-      }
-
-      this.createChart(labels, this.chartData, this.tableHead, obj);
-      //====================================
-
-      // for table data
-      $('#table').DataTable().destroy();
-      $('#table').empty();
-      var dataSet = this.result;
-      this.createTable(dataSet);
-      //========================
-
-      this.loaderAndErr();
-      this.changeDetection.markForCheck();
-    }, err => {
-      this.result = [];
-      this.loaderAndErr();
-    });
+    document.getElementById('home').style.display = 'none';
+    console.log(data);
   }
 
   myBlockData(data) {
-    if (this.chartData.length !== 0) {
-      this.scatterChart.destroy();
-    }
-    this.xAxisFilter = [];
-    this.yAxisFilter = [];
-    this.downloadLevel = 'cluster';
-    this.tableHead = "Cluster Name";
-    this.fileName = "Cluster_level_report";
-    this.errMsg();
     this.dist = false;
     this.blok = true;
     this.clust = false;
     this.skul = false;
 
+    this.SchoolInfrastructureClusterNames = [{ name: 'abc' }, { name: 'pqr' }, { name: 'xyz' }];
     this.myCluster = '';
 
-    localStorage.setItem('blockId', data);
     this.titleName = localStorage.getItem('dist');
-    this.distName = JSON.parse(localStorage.getItem('distId'));
+    this.distName = this.titleName;
     this.blockName = data;
-    let obj = this.blockNames.find(o => o.id == data);
-    localStorage.setItem('block', JSON.stringify(obj.name));
-    this.hierName = obj.name;
+    localStorage.setItem('block', this.blockName);
+    this.hierName = this.blockName;
 
     this.blockHidden = false;
     this.clusterHidden = false;
 
-    document.getElementById('home').style.display = 'block';
-    if (this.myData) {
-      this.myData.unsubscribe();
-    }
-    this.myData = this.service.infraClusterWise(this.distName, data).subscribe(res => {
-      this.reportData = this.SchoolInfrastructureClusterNames = this.result = res;
-      // for download========
-      this.funToDownload(this.reportData);
-      //for chart =============================================
-      for (i = 3; i < Object.keys(this.result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-      };
-
-      var labels = [];
-      this.chartData = []
-      for (var i = 0; i < this.result.length; i++) {
-        var x = undefined, y = undefined;
-
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 1) {
-          x = Number(this.result[i][this.xAxis].value);
-          y = Number(this.result[i][this.yAxis].value);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 2) {
-          x = Number(this.result[i][this.xAxis].value);
-          y = Number(this.result[i][this.yAxis].percent);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 1) {
-          x = Number(this.result[i][this.xAxis].percent);
-          y = Number(this.result[i][this.yAxis].value);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 2) {
-          x = Number(this.result[i][this.xAxis].percent);
-          y = Number(this.result[i][this.yAxis].percent);
-        }
-        this.chartData.push({ x: x, y: y });
-        labels.push(this.result[i].cluster.value);
-        this.clusterNames.push({ id: this.result[i].cluster.id, name: this.result[i].cluster.value });
-      }
-
-      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-
-      let obj = {
-        xAxis: x_axis.value,
-        yAxis: y_axis.value
-      }
-
-      this.createChart(labels, this.chartData, this.tableHead, obj);
-      //====================================
-
-      // for table data
-      $('#table').DataTable().destroy();
-      $('#table').empty();
-      var dataSet = this.result;
-      this.createTable(dataSet);
-      //========================
-
-      this.loaderAndErr();
-      this.changeDetection.markForCheck();
-    }, err => {
-      this.result = [];
-      this.loaderAndErr();
-    });
+    document.getElementById('home').style.display = 'none';
+    console.log(data);
   }
 
   myClusterData(data) {
-    if (this.chartData.length !== 0) {
-      this.scatterChart.destroy();
-    }
-    this.xAxisFilter = [];
-    this.yAxisFilter = [];
-    this.downloadLevel = 'school';
-    this.tableHead = "School Name";
-    this.fileName = "School_level_report";
-
     this.dist = false;
     this.blok = false;
     this.clust = true;
     this.skul = false;
-    this.errMsg();
 
-    this.title = JSON.parse(localStorage.getItem('block'));
+    this.title = localStorage.getItem('block');
     this.titleName = localStorage.getItem('dist');
-    var distId = JSON.parse(localStorage.getItem('distId'));
-    var blockId = JSON.parse(localStorage.getItem('blockId'));
-    this.distName = JSON.parse(localStorage.getItem('distId'));
-    this.blockName = blockId;
+    this.distName = this.titleName;
+    this.blockName = this.title;
     this.clustName = data;
-    let obj = this.clusterNames.find(o => o.id == data);
-    this.hierName = obj.name;
-    localStorage.setItem('clusterId', data);
+    this.hierName = this.clustName;
+    localStorage.setItem('cluster', data);
 
-    document.getElementById('home').style.display = 'block';
-    if (this.myData) {
-      this.myData.unsubscribe();
-    }
-    this.myData = this.service.infraSchoolWise(distId, blockId, data).subscribe(res => {
-      this.reportData = this.SchoolInfrastructureSchoolNames = this.result = res;
-      // for download========
-      this.funToDownload(this.reportData);
-      //for chart =============================================
-      for (i = 4; i < Object.keys(this.result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-      };
-
-      var labels = [];
-      this.chartData = []
-      for (var i = 0; i < this.result.length; i++) {
-        var x = undefined, y = undefined;
-
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 1) {
-          x = Number(this.result[i][this.xAxis].value);
-          y = Number(this.result[i][this.yAxis].value);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 2) {
-          x = Number(this.result[i][this.xAxis].value);
-          y = Number(this.result[i][this.yAxis].percent);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 1) {
-          x = Number(this.result[i][this.xAxis].percent);
-          y = Number(this.result[i][this.yAxis].value);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 2) {
-          x = Number(this.result[i][this.xAxis].percent);
-          y = Number(this.result[i][this.yAxis].percent);
-        }
-        this.chartData.push({ x: x, y: y });
-        labels.push(this.result[i].school.value);
-        // this.blockNames.push({ id: this.result[i].block.id, name: this.result[i].block.value });
-      }
-
-      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-
-      let obj = {
-        xAxis: x_axis.value,
-        yAxis: y_axis.value
-      }
-
-      this.createChart(labels, this.chartData, this.tableHead, obj);
-      //====================================
-
-      // for table data
-      $('#table').DataTable().destroy();
-      // $('#table').empty();
-      var dataSet = this.result;
-      this.createTable(dataSet);
-      //========================
-
-      this.loaderAndErr();
-      this.changeDetection.markForCheck();
-    }, err => {
-      this.result = [];
-      this.loaderAndErr();
-    });
+    document.getElementById('home').style.display = 'none';
+    console.log(data);
   }
 
   selectAxis() {
@@ -459,13 +230,13 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.districtWise();
     }
     if (this.dist) {
-      this.myDistData(JSON.parse(localStorage.getItem('distId')));
+      this.myDistData(JSON.parse(localStorage.getItem('dist')));
     }
     if (this.blok) {
-      this.myBlockData(JSON.parse(localStorage.getItem('blockId')));
+      this.myBlockData(JSON.parse(localStorage.getItem('block')));
     }
     if (this.clust) {
-      this.myClusterData(JSON.parse(localStorage.getItem('clusterId')));
+      this.myClusterData(JSON.parse(localStorage.getItem('cluster')));
     }
   }
 
@@ -489,15 +260,15 @@ export class SchoolInfrastructureComponent implements OnInit {
           || column.data == 'cluster'
           || column.data == 'school'
           || column.data == 'total_schools'
-          || column.data == 'infra_score'
-          || column.data == 'total_schools_data_received') ? 'rowspan="2" style = "text-transform:capitalize;"' : 'colspan="2" style = "text-transform:capitalize;"'}>${column.data}</th>`
+          || column.data == 'data_received'
+          || column.data == 'infra_score') ? 'rowspan="2"' : 'colspan="2"'}>${column.value.name}</th>`
         if (column.data != 'district'
           && column.data != 'block'
           && column.data != 'cluster'
           && column.data != 'school'
           && column.data != 'total_schools'
-          && column.data != 'infra_score'
-          && column.data != 'total_schools_data_received') {
+          && column.data != 'data_received'
+          && column.data != 'infra_score') {
           subheader += '<th>Yes</th><th>%.</th>'
         }
       });
@@ -522,9 +293,8 @@ export class SchoolInfrastructureComponent implements OnInit {
             && column.data != 'cluster'
             && column.data != 'school'
             && column.data != 'total_schools'
-            && column.data != 'infra_score'
-            && column.data != 'total_schools_data_received'
-          ) {
+            && column.data != 'data_received'
+            && column.data != 'infra_score') {
             body += `<td>${column.value.value}</td><td>${column.value.percent}</td>`
           } else {
             body += `<td>${column.value.value}</td>`
@@ -623,7 +393,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       let headers = Object.keys(value);
       let newObj = {}
       for (var i = 0; i < Object.keys(value).length; i++) {
-        if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
+        if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'total_schools' && headers[i] != 'data_received' && headers[i] != 'infra_score') {
           if (value[headers[i]].value) {
             newObj[`${headers[i]}_value`] = value[headers[i]].value;
           }
