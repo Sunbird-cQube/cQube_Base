@@ -41,9 +41,9 @@ function createLogger() {
     info: 'green',
     debug: 'gray',
   };
-  const logger = new (winston.Logger)({ transports, levels, exitOnError: false });
+  const log = new (winston.Logger)({ transports, levels, exitOnError: false });
   winston.addColors(colors);
-  return logger;
+  return log;
 }
 
 const loggerWithoutEnv = createLogger();
@@ -53,7 +53,7 @@ const logger = {
     loggerWithoutEnv.error(`${Config.envName}: ${text}`);
   },
   info(text) {
-    loggerWithoutEnv.info(`${Config.envName}: ${text}`);
+    loggerWithoutEnv.info(`${Config.port}: ${text}`);
   },
 };
 
