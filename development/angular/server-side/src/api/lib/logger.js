@@ -41,7 +41,7 @@ function createLogger() {
     info: 'green',
     debug: 'gray',
   };
-  const logger = winston.createLogger({ transports, levels, exitOnError: false });
+  const logger = new (winston.Logger)({ transports, levels, exitOnError: false });
   winston.addColors(colors);
   return logger;
 }
