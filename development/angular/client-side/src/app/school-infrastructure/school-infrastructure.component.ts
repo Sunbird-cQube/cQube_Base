@@ -115,7 +115,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     }
     this.myData = this.service.infraDistWise().subscribe(res => {
       this.reportData = this.SchoolInfrastructureDistrictsNames = this.result = res;
-      console.log(res);
       // for download========
       this.funToDownload(this.reportData);
       //for chart =============================================
@@ -208,7 +207,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     }
     this.myData = this.service.infraBlockWise(data).subscribe(res => {
       this.reportData = this.SchoolInfrastructureBlocksNames = this.result = res;
-      console.log(res);
       // for download========
       this.funToDownload(this.reportData);
       //for chart =============================================
@@ -291,7 +289,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.distName = JSON.parse(localStorage.getItem('distId'));
     this.blockName = data;
     let obj = this.blockNames.find(o => o.id == data);
-    console.log(":::::;", obj);
     localStorage.setItem('block', JSON.stringify(obj.name));
     this.hierName = obj.name;
 
@@ -304,7 +301,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     }
     this.myData = this.service.infraClusterWise(this.distName, data).subscribe(res => {
       this.reportData = this.SchoolInfrastructureClusterNames = this.result = res;
-      console.log(res);
       // for download========
       this.funToDownload(this.reportData);
       //for chart =============================================
@@ -398,7 +394,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     }
     this.myData = this.service.infraSchoolWise(distId, blockId, data).subscribe(res => {
       this.reportData = this.SchoolInfrastructureSchoolNames = this.result = res;
-      console.log(res);
       // for download========
       this.funToDownload(this.reportData);
       //for chart =============================================
