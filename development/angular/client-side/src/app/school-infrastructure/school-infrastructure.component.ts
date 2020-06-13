@@ -402,7 +402,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       // for download========
       this.funToDownload(this.reportData);
       //for chart =============================================
-      for (i = 2; i < Object.keys(this.result[0]).length; i++) {
+      for (i = 4; i < Object.keys(this.result[0]).length; i++) {
         this.xAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
         this.yAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
       };
