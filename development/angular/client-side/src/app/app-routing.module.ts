@@ -12,6 +12,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { CreateUserComponent } from './create-user/create-user.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
+import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,9 @@ const routes: Routes = [
       },
       {
         path: 'addUser', component: CreateUserComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'school-infra-map', component: InfraMapVisualisationComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
