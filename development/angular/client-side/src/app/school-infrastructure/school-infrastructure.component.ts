@@ -224,7 +224,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    console.log(this.distName, data);
+    console.log(this.dist, data);
     this.myData = this.service.infraClusterWise(this.distName, data).subscribe(res => {
       console.log(res);
       this.reportData = this.SchoolInfrastructureClusterNames = this.result = res;

@@ -177,4 +177,15 @@ export class AppServiceComponent {
     infraAllSchoolWise() {
         return this.http.post(`${this.baseUrl}/infra/allSchoolWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
+    //infra map...
+    infraMapDistWise() {
+        return this.http.post(`${this.baseUrl}/infraMap/distWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    infraMapAllBlockWise() {
+        return this.http.post(`${this.baseUrl}/infraMap/allBlockWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraMapBlockWise(distId) {
+        return this.http.post(`${this.baseUrl}/infraMap/blockWise/${distId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
 }
