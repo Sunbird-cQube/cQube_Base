@@ -20,6 +20,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   public title: string = '';
   public titleName: string = '';
   public colors: any;
+  public setColor: any;
 
   // to assign the count of below values to show in the UI footer
   public studentCount: any;
@@ -69,6 +70,11 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   public myData;
   public infraFilter: any = [];
+
+  public myDistData: any = [];
+  public myBlockData: any = [];
+  public myClusterData: any = [];
+  public mySchoolData: any = [];
 
   constructor(
     public http: HttpClient,
@@ -144,15 +150,29 @@ export class InfraMapVisualisationComponent implements OnInit {
       // to show and hide the dropdowns
       this.blockHidden = true;
       this.clusterHidden = true;
-      this.infraFilter = [];
-      var myDistData: any = [];
+
       // api call to get all the districts data
-      if (myDistData.length > 0) {
-        for (var i = 6; i < Object.keys(myDistData[0]).length; i++) {
-          this.infraFilter.push({ key: Object.keys(myDistData[0])[i], value: Object.keys(myDistData[0])[i].toLocaleUpperCase() });
+      if (this.myDistData.length > 0) {
+        this.infraFilter = [];
+        this.data = this.myDistData;
+        for (var i = 10; i < Object.keys(this.data[0]).length; i++) {
+          let val = Object.keys(this.data[0])[i].replace(/_/g, ' ').toLocaleUpperCase();
+          val = val.replace('PERCENT', '(%)')
+          this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: val });
         }
+
+        var infraKey = this.infraFilter.filter(function (obj) {
+          return obj.key == 'infra_score';
+        });
+
+        this.infraFilter = this.infraFilter.filter(function (obj) {
+          return obj.key !== 'infra_score';
+        });
+
+        this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+        this.infraFilter.splice(0, 0, infraKey[0])
         // to show only in dropdowns
-        this.districtMarkers = myDistData;
+        this.districtMarkers = this.myDistData;
         // options to set for markers in the map
         let options = {
           radius: 5,
@@ -164,8 +184,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           level: 'district'
         }
         this.level = options.level;
-        this.genericFun(myDistData, options);
-
+        this.genericFun(this.myDistData, options);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
       } else {
@@ -173,12 +192,24 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.myData.unsubscribe();
         }
         this.myData = this.service.infraMapDistWise().subscribe(res => {
-          myDistData = this.data = res;
-          console.log(res);
-
-          for (var i = 6; i < Object.keys(this.data[0]).length; i++) {
-            this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: Object.keys(this.data[0])[i].toLocaleUpperCase() });
+          this.myDistData = this.data = res;
+          this.infraFilter = [];
+          for (var i = 10; i < Object.keys(this.data[0]).length; i++) {
+            let val = Object.keys(this.data[0])[i].replace(/_/g, ' ').toLocaleUpperCase();
+            val = val.replace('PERCENT', '(%)')
+            this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: val });
           }
+
+          var infraKey = this.infraFilter.filter(function (obj) {
+            return obj.key == 'infra_score';
+          });
+
+          this.infraFilter = this.infraFilter.filter(function (obj) {
+            return obj.key !== 'infra_score';
+          });
+
+          this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+          this.infraFilter.splice(0, 0, infraKey[0])
           // to show only in dropdowns
           this.districtMarkers = this.data;
 
@@ -238,11 +269,26 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.infraMapAllBlockWise().subscribe(res => {
-        this.data = res;
+        this.myBlockData = this.data = res;
+        //=================================
         this.infraFilter = [];
-        for (var i = 8; i < Object.keys(this.data[0]).length; i++) {
-          this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: Object.keys(this.data[0])[i].toLocaleUpperCase() });
+        for (var i = 12; i < Object.keys(this.data[0]).length; i++) {
+          let val = Object.keys(this.data[0])[i].replace(/_/g, ' ').toLocaleUpperCase();
+          val = val.replace('PERCENT', '(%)')
+          this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: val });
         }
+
+        var infraKey = this.infraFilter.filter(function (obj) {
+          return obj.key == 'infra_score';
+        });
+
+        this.infraFilter = this.infraFilter.filter(function (obj) {
+          return obj.key !== 'infra_score';
+        });
+
+        this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+        this.infraFilter.splice(0, 0, infraKey[0]);
+        //=================================
         let options = {
           mapZoom: 7,
           centerLat: 22.3660414123535,
@@ -252,9 +298,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         if (this.data.length > 0) {
           let result = this.data
           this.blockMarkers = [];
-          // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
+
           this.blockMarkers = result;
 
           this.blockMarkers.sort((a, b) => (`${a[this.infraData]}` > `${b[this.infraData]}`) ? 1 : ((`${b[this.infraData]}` > `${a[this.infraData]}`) ? -1 : 0));
@@ -262,32 +306,39 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.schoolCount = 0;
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
+              this.colorGredient(this.blockMarkers[i], this.infraData);
               this.schoolCount = this.schoolCount + this.blockMarkers[i].schCount;
               var markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
-
-                // renderer: myRenderer,
                 radius: 3.5,
-                color: this.colors[i],
-                fillColor: this.colors[i],
+                color: this.setColor,
+                fillColor: this.setColor,
                 fillOpacity: 1,
                 strokeWeight: 0.01
               }).addTo(globalMap);
 
               let colorText = `style='color:blue !important;'`;
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                "<b>District: </b>" + "&nbsp;" + this.blockMarkers[i].districtName +
+                "<b><u>Details</u></b>" +
+                "<br><b>District: </b>" + "&nbsp;" + this.blockMarkers[i].districtName +
                 "<br><b>Block: </b>" + "&nbsp;" + this.blockMarkers[i].blockName +
-                `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infra Score:</b>` + "&nbsp;" + this.blockMarkers[i].infra_score + " % </span>" +
-                `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Handwash: </b>` + "&nbsp;" + this.blockMarkers[i].hand_wash_percent + " %  </span > " +
-                `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.blockMarkers[i].solar_panel_percent + " % </span>" +
-                `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.blockMarkers[i].library_percent + " % </span>" +
-                `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.blockMarkers[i].drinking_water_percent + " % </span>" +
-                `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.blockMarkers[i].tap_water_percent + " % </span>" +
-                `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Handpump:</b>` + "&nbsp;" + this.blockMarkers[i].hand_pumps_percent + " % </span>" +
-                `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.blockMarkers[i].electricity_percent + " % </span>" +
-                `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.blockMarkers[i].toilet_percent + " % </span>" +
+                "<br><b>Total Schools: </b>" + "&nbsp;" + this.blockMarkers[i].schCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+                "<br><b>Total Students: </b>" + "&nbsp;" + this.blockMarkers[i].stdCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+                `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.blockMarkers[i].infra_score + "</span>" +
+                "<br><br><b><u>School Infrastructure Metrics (% schools)</u></b>" +
                 `<br><span ${this.infraData == 'boys_toilet_percent' ? colorText : ''}><b>Boys Toilet:</b>` + "&nbsp;" + this.blockMarkers[i].boys_toilet_percent + " % </span>" +
-                `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.blockMarkers[i].girls_toilet_percent + " % </span>"
+                `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.blockMarkers[i].drinking_water_percent + " % </span>" +
+                `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.blockMarkers[i].electricity_percent + " % </span>" +
+                `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.blockMarkers[i].girls_toilet_percent + " % </span>" +
+                `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Handwash: </b>` + "&nbsp;" + this.blockMarkers[i].hand_wash_percent + " %  </span > " +
+                `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Handpump:</b>` + "&nbsp;" + this.blockMarkers[i].hand_pumps_percent + " % </span>" +
+                `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.blockMarkers[i].library_percent + " % </span>" +
+                `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.blockMarkers[i].solar_panel_percent + " % </span>" +
+                `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.blockMarkers[i].tap_water_percent + " % </span>" +
+                `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.blockMarkers[i].toilet_percent + " % </span>" +
+                "<br><br><b><u>Other Metrics</u></b>" +
+                "<br><b>% of schools connected to Fibernet: </b>" + "&nbsp;" + this.blockMarkers[i].fibernet_percent + " %" +
+                "<br><b>Total Central funds received: </b>" + "&nbsp; ₹ " + this.blockMarkers[i].totalFundReceived +
+                "<br><b>Funds per School: </b>" + "&nbsp; ₹ " + this.blockMarkers[i].fundPerSchoolReceived
               );
               markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -304,19 +355,22 @@ export class InfraMapVisualisationComponent implements OnInit {
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
-
-            // this.schoolCount = this.data['totalValues'].totalSchools;
-            // this.studentCount = this.data['totalValues'].totalStudents;
+            this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             this.blockMarkers.forEach(schoolData => {
               this.fileName = "Block_wise_report"
-              let obj = {
-                DistrictId: schoolData.districtId,
-                DistrictName: schoolData.districtName,
-                BlockId: schoolData.blockId,
-                BlockName: schoolData.blockName,
+              if (this.infraData !== 'infra_score') {
+                let obj = {
+                  district_id: schoolData.districtId,
+                  district_name: schoolData.districtName,
+                  block_id: schoolData.blockId,
+                  block_name: schoolData.blockName,
+                  [this.infraData]: schoolData[this.infraData] + "%"
+                }
+                this.reportData.push(obj);
+              } else {
+                this.reportData = this.data
               }
-              this.reportData.push(obj);
             });
             this.loaderAndErr();
             this.changeDetection.markForCheck();
@@ -359,49 +413,74 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_cluster_sem_data().subscribe(res => {
+      this.myData = this.service.infraMapAllClusterWise().subscribe(res => {
         this.data = res
+        //=================================
+        this.infraFilter = [];
+        for (var i = 14; i < Object.keys(this.data[0]).length; i++) {
+          let val = Object.keys(this.data[0])[i].replace(/_/g, ' ').toLocaleUpperCase();
+          val = val.replace('PERCENT', '(%)')
+          this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: val });
+        }
+
+        var infraKey = this.infraFilter.filter(function (obj) {
+          return obj.key == 'infra_score';
+        });
+
+        this.infraFilter = this.infraFilter.filter(function (obj) {
+          return obj.key !== 'infra_score';
+        });
+
+        this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+        this.infraFilter.splice(0, 0, infraKey[0]);
+        //=================================
         let options = {
           mapZoom: 7,
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
         }
-        if (this.data['sortedData'].length > 0) {
-          let result = this.data['sortedData']
+        this.level = "cluster_wise"
+        if (this.data.length > 0) {
+          let result = this.data
           this.clusterMarkers = [];
-          // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
           this.clusterMarkers = result;
-
+          this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
+              this.colorGredient(this.clusterMarkers[i], this.infraData);
+              this.schoolCount = this.schoolCount + this.clusterMarkers[i].schCount;
               var markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
-                // renderer: myRenderer,
                 radius: 0,
-                color: this.colors[i],
-                fillColor: this.colors[i],
+                color: this.setColor,
+                fillColor: this.setColor,
                 fillOpacity: 1,
                 strokeWeight: 0.01
               }).addTo(globalMap);
 
+              let colorText = `style='color:blue !important;'`;
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                "<b>Semester Performance: </b>" + "&nbsp;" + this.clusterMarkers[i].assesmentPercentage + " %" +
+                "<b><u>Details</u></b>" +
                 "<br><b>District: </b>" + "&nbsp;" + this.clusterMarkers[i].districtName +
                 "<br><b>Block: </b>" + "&nbsp;" + this.clusterMarkers[i].blockName +
                 "<br><b>Cluster: </b>" + "&nbsp;" + this.clusterMarkers[i].clusterName +
-                "<br><b>Grade 3:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_3 + " %" +
-                "<br><b>Grade 4:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_4 + " %" +
-                "<br><b>Grade 5:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_5 + " %" +
-                "<br><b>Grade 6:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_6 + " %" +
-                "<br><b>Grade 7:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_7 + " %" +
-                "<br><b>Grade 8:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_8 + " %" +
-                "<br><b>Number of schools:</b>" + "&nbsp;" + this.clusterMarkers[i].schoolsCount +
-                "<br><b>Number of students:</b>" + "&nbsp;" + this.clusterMarkers[i].studentsCount +
-                "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_below_33 + " %" + ` (${this.clusterMarkers[i].value_below_33} out of ${this.clusterMarkers[i].schoolsCount})` +
-                "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_between_33_60 + " %" + ` (${this.clusterMarkers[i].value_between_33_60} out of ${this.clusterMarkers[i].schoolsCount})` +
-                "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_between_60_75 + " %" + ` (${this.clusterMarkers[i].value_between_60_75} out of ${this.clusterMarkers[i].schoolsCount})` +
-                "<br><b>% above 75%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_above_75 + " %" + ` (${this.clusterMarkers[i].value_above_75} out of ${this.clusterMarkers[i].schoolsCount})`
+                "<br><b>Total Schools: </b>" + "&nbsp;" + this.clusterMarkers[i].schCount +
+                "<br><b>Total Students: </b>" + "&nbsp;" + this.clusterMarkers[i].stdCount +
+                `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.clusterMarkers[i].infra_score + "</span>" +
+                "<br><br><b><u>School Infrastructure Metrics (% schools)</u></b>" +
+                `<br><span ${this.infraData == 'boys_toilet_percent' ? colorText : ''}><b>Boys Toilet:</b>` + "&nbsp;" + this.clusterMarkers[i].boys_toilet_percent + " % </span>" +
+                `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.clusterMarkers[i].drinking_water_percent + " % </span>" +
+                `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.clusterMarkers[i].electricity_percent + " % </span>" +
+                `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.clusterMarkers[i].girls_toilet_percent + " % </span>" +
+                `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Handwash: </b>` + "&nbsp;" + this.clusterMarkers[i].hand_wash_percent + " %  </span > " +
+                `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Handpump:</b>` + "&nbsp;" + this.clusterMarkers[i].hand_pumps_percent + " % </span>" +
+                `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.clusterMarkers[i].library_percent + " % </span>" +
+                `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.clusterMarkers[i].solar_panel_percent + " % </span>" +
+                `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.clusterMarkers[i].tap_water_percent + " % </span>" +
+                `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.clusterMarkers[i].toilet_percent + " % </span>" +
+                "<br><br><b><u>Other Metrics</u></b>" +
+                "<br><b>% of schools connected to Fibernet: </b>" + "&nbsp;" + this.clusterMarkers[i].fibernet_percent + " %" +
+                "<br><b>Total Central funds received: </b>" + "&nbsp; ₹ " + this.clusterMarkers[i].totalFundReceived +
+                "<br><b>Funds per School: </b>" + "&nbsp; ₹ " + this.clusterMarkers[i].fundPerSchoolReceived
               );
               markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -416,32 +495,29 @@ export class InfraMapVisualisationComponent implements OnInit {
               this.layerMarkers.addLayer(markerIcon);
               markerIcon.myJsonData = this.clusterMarkers[i];
             }
+            this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
-            this.schoolCount = this.data['totalValues'].totalSchools;
-            this.studentCount = this.data['totalValues'].totalStudents;
+            // this.schoolCount = this.data['totalValues'].totalSchools;
+            // this.studentCount = this.data['totalValues'].totalStudents;
 
             this.clusterMarkers.forEach(schoolData => {
               this.fileName = "Cluster_wise_report"
-              let obj = {
-                DistrictId: schoolData.districtId,
-                DistrictName: schoolData.districtName,
-                BlockId: schoolData.blockId,
-                BlockName: schoolData.blockName,
-                ClusterId: schoolData.clusterId,
-                ClusterName: schoolData.clusterName,
-                Semester_Performance: schoolData.assesmentPercentage + " %",
-                Grade3: schoolData.grade_3 + " %",
-                Grade4: schoolData.grade_4 + " %",
-                Grade5: schoolData.grade_5 + " %",
-                Grade6: schoolData.grade_6 + " %",
-                Grade7: schoolData.grade_7 + " %",
-                Grade8: schoolData.grade_8 + " %",
-                TotalSchools: Number(schoolData.schoolsCount.replace(/\,/g, '')),
-                TotalStudents: Number(schoolData.studentsCount.replace(/\,/g, ''))
+              if (this.infraData !== 'infra_score') {
+                let obj = {
+                  district_id: schoolData.districtId,
+                  district_name: schoolData.districtName,
+                  block_id: schoolData.blockId,
+                  block_name: schoolData.blockName,
+                  cluster_id: schoolData.clusterId,
+                  cluster_name: schoolData.clusterName,
+                  [this.infraData]: schoolData[this.infraData] + "%"
+                }
+                this.reportData.push(obj);
+              } else {
+                this.reportData = this.data
               }
-              this.reportData.push(obj);
             });
             this.loaderAndErr();
             this.changeDetection.markForCheck();
@@ -466,6 +542,10 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.layerMarkers.clearLayers();
       this.errMsg();
       this.reportData = [];
+      this.districtId = undefined;
+      this.blockId = undefined;
+      this.clusterId = undefined;
+
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -480,47 +560,75 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_school_sem_data().subscribe(res => {
+      this.myData = this.service.infraMapAllSchoolWise().subscribe(res => {
         this.data = res
+        //=================================
+        this.infraFilter = [];
+        for (var i = 16; i < Object.keys(this.data[0]).length; i++) {
+          let val = Object.keys(this.data[0])[i].replace(/_/g, ' ').toLocaleUpperCase();
+          val = val.replace('PERCENT', '(%)')
+          this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: val });
+        }
+
+        var infraKey = this.infraFilter.filter(function (obj) {
+          return obj.key == 'infra_score';
+        });
+
+        this.infraFilter = this.infraFilter.filter(function (obj) {
+          return obj.key !== 'infra_score';
+        });
+
+        this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+        this.infraFilter.splice(0, 0, infraKey[0]);
+        //=================================
         let options = {
           mapZoom: 7,
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
         }
+        this.level = 'school_wise'
         this.schoolMarkers = [];
-        if (this.data['sortedData'].length > 0) {
-          let result = this.data['sortedData']
-
-          // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
-
+        if (this.data.length > 0) {
+          let result = this.data
+          this.schoolCount = 0;
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
+              this.colorGredient(this.schoolMarkers[i], this.infraData);
+              this.schoolCount = this.schoolCount + this.schoolMarkers[i].schCount;
               var markerIcon = L.circleMarker([this.schoolMarkers[i].lat, this.schoolMarkers[i].lng], {
                 // renderer: myRenderer,
                 radius: 0,
-                color: this.colors[i],
-                fillColor: this.colors[i],
+                color: this.setColor,
+                fillColor: this.setColor,
                 fillOpacity: 1,
                 weight: 0,
                 strokeWeight: 0
               }).addTo(globalMap);
 
+              let colorText = `style='color:blue !important;'`;
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                "<b>Semester Performance: </b>" + "&nbsp;" + this.schoolMarkers[i].assesmentPercentage + " %" +
+                "<b><u>Details</u></b>" +
                 "<br><b>District: </b>" + "&nbsp;" + this.schoolMarkers[i].districtName +
                 "<br><b>Block: </b>" + "&nbsp;" + this.schoolMarkers[i].blockName +
                 "<br><b>Cluster: </b>" + "&nbsp;" + this.schoolMarkers[i].clusterName +
-                "<br><b>School: </b>" + "&nbsp;" + this.schoolMarkers[i].schoolName +
-                "<br><b>Grade 3:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_3 + " %" +
-                "<br><b>Grade 4:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_4 + " %" +
-                "<br><b>Grade 5:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_5 + " %" +
-                "<br><b>Grade 6:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_6 + " %" +
-                "<br><b>Grade 7:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_7 + " %" +
-                "<br><b>Grade 8:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_8 + " %" +
-                "<br><b>Number of students:</b>" + "&nbsp;" + this.schoolMarkers[i].studentsCount
+                "<br><b>Total Students: </b>" + "&nbsp;" + this.schoolMarkers[i].stdCount +
+                `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.schoolMarkers[i].infra_score + "</span>" +
+                "<br><br><b><u>School Infrastructure Metrics (% schools)</u></b>" +
+                `<br><span ${this.infraData == 'boys_toilet_percent' ? colorText : ''}><b>Boys Toilet:</b>` + "&nbsp;" + this.schoolMarkers[i].boys_toilet_percent + " % </span>" +
+                `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.schoolMarkers[i].drinking_water_percent + " % </span>" +
+                `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.schoolMarkers[i].electricity_percent + " % </span>" +
+                `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.schoolMarkers[i].girls_toilet_percent + " % </span>" +
+                `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Handwash: </b>` + "&nbsp;" + this.schoolMarkers[i].hand_wash_percent + " %  </span > " +
+                `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Handpump:</b>` + "&nbsp;" + this.schoolMarkers[i].hand_pumps_percent + " % </span>" +
+                `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.schoolMarkers[i].library_percent + " % </span>" +
+                `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.schoolMarkers[i].solar_panel_percent + " % </span>" +
+                `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.schoolMarkers[i].tap_water_percent + " % </span>" +
+                `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.schoolMarkers[i].toilet_percent + " % </span>" +
+                "<br><br><b><u>Other Metrics</u></b>" +
+                "<br><b>% of schools connected to Fibernet: </b>" + "&nbsp;" + this.schoolMarkers[i].fibernet_percent + " %" +
+                "<br><b>Total Central funds received: </b>" + "&nbsp; ₹ " + this.schoolMarkers[i].totalFundReceived +
+                "<br><b>Funds per School: </b>" + "&nbsp; ₹ " + this.schoolMarkers[i].fundPerSchoolReceived
               );
               markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -537,30 +645,26 @@ export class InfraMapVisualisationComponent implements OnInit {
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
-            this.schoolCount = this.data['totalValues'].totalSchools;
-            this.studentCount = this.data['totalValues'].totalStudents;
+            this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             this.schoolMarkers.forEach(schoolData => {
               this.fileName = "School_wise_report"
-              let obj = {
-                DistrictId: schoolData.districtId,
-                DistrictName: schoolData.districtName,
-                BlockId: schoolData.blockId,
-                BlockName: schoolData.blockName,
-                ClusterId: schoolData.clusterId,
-                ClusterName: schoolData.clusterName,
-                SchoolId: schoolData.schoolId,
-                SchoolName: schoolData.schoolName,
-                Semester_Performance: schoolData.assesmentPercentage + " %",
-                Grade3: schoolData.grade_3 + " %",
-                Grade4: schoolData.grade_4 + " %",
-                Grade5: schoolData.grade_5 + " %",
-                Grade6: schoolData.grade_6 + " %",
-                Grade7: schoolData.grade_7 + " %",
-                Grade8: schoolData.grade_8 + " %",
-                TotalStudents: Number(schoolData.studentsCount.replace(/\,/g, ''))
+              if (this.infraData !== 'infra_score') {
+                let obj = {
+                  district_id: schoolData.districtId,
+                  district_name: schoolData.districtName,
+                  block_id: schoolData.blockId,
+                  block_name: schoolData.blockName,
+                  cluster_id: schoolData.clusterId,
+                  cluster_name: schoolData.clusterName,
+                  school_id: schoolData.schoolId,
+                  school_name: schoolData.schoolName,
+                  [this.infraData]: schoolData[this.infraData] + "%"
+                }
+                this.reportData.push(obj);
+              } else {
+                this.reportData = this.data
               }
-              this.reportData.push(obj);
             });
             this.loaderAndErr();
             this.changeDetection.markForCheck();
@@ -596,10 +700,25 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
     this.myData = this.service.infraMapBlockWise(districtId).subscribe(res => {
       this.data = res;
+      //=================================
       this.infraFilter = [];
-      for (var i = 8; i < Object.keys(this.data[0]).length; i++) {
-        this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: Object.keys(this.data[0])[i].toLocaleUpperCase() });
+      for (var i = 12; i < Object.keys(this.data[0]).length; i++) {
+        let val = Object.keys(this.data[0])[i].replace(/_/g, ' ').toLocaleUpperCase();
+        val = val.replace('PERCENT', '(%)')
+        this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: val });
       }
+
+      var infraKey = this.infraFilter.filter(function (obj) {
+        return obj.key == 'infra_score';
+      });
+
+      this.infraFilter = this.infraFilter.filter(function (obj) {
+        return obj.key !== 'infra_score';
+      });
+
+      this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+      this.infraFilter.splice(0, 0, infraKey[0]);
+      //=================================
 
       this.blockMarkers = this.data;
       // set hierarchy values
@@ -655,9 +774,29 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.cluster_wise_sem_data(this.districtHierarchy.distId, blockId).subscribe(res => {
+    this.myData = this.service.infraMapClusterWise(this.districtHierarchy.distId, blockId).subscribe(res => {
       this.data = res;
-      this.clusterMarkers = this.data['sortedData'];
+      //=================================
+      this.infraFilter = [];
+      for (var i = 14; i < Object.keys(this.data[0]).length; i++) {
+        let val = Object.keys(this.data[0])[i].replace(/_/g, ' ').toLocaleUpperCase();
+        val = val.replace('PERCENT', '(%)')
+        this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: val });
+      }
+
+      var infraKey = this.infraFilter.filter(function (obj) {
+        return obj.key == 'infra_score';
+      });
+
+      this.infraFilter = this.infraFilter.filter(function (obj) {
+        return obj.key !== 'infra_score';
+      });
+
+      this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+      this.infraFilter.splice(0, 0, infraKey[0]);
+      //=================================
+
+      this.clusterMarkers = this.data;
       var myBlocks = [];
       this.blockMarkers.forEach(element => {
         if (element.districtId === this.districtHierarchy.distId) {
@@ -666,19 +805,14 @@ export class InfraMapVisualisationComponent implements OnInit {
       });
       this.blockMarkers = myBlocks;
 
-      this.clusterMarkers.forEach(element => {
-        // if (element.clusterName == null) {
-        //   element.clusterName = 'NO NAME FOUND';
-        // }
-      });
       // set hierarchy values
       this.blockHierarchy = {
-        distId: this.data['sortedData'][0].districtId,
-        districtName: this.data['sortedData'][0].districtName,
-        blockId: this.data['sortedData'][0].blockId,
-        blockName: this.data['sortedData'][0].blockName
+        distId: this.data[0].districtId,
+        districtName: this.data[0].districtName,
+        blockId: this.data[0].blockId,
+        blockName: this.data[0].blockName
       }
-      this.districtId = this.data['sortedData'][0].districtId;
+      this.districtId = this.data[0].districtId;
       this.blockId = blockId;
 
       // these are for showing the hierarchy names based on selection
@@ -693,10 +827,11 @@ export class InfraMapVisualisationComponent implements OnInit {
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: 10,
-        centerLat: this.data['sortedData'][0].lat,
-        centerLng: this.data['sortedData'][0].lng,
+        centerLat: this.data[0].lat,
+        centerLng: this.data[0].lng,
         level: 'cluster'
       }
+      this.level = options.level;
       this.genericFun(this.data, options);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
@@ -721,12 +856,31 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.all_block_sem_data().subscribe(result => {
-      this.myData = this.service.school_wise_sem_data(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
+    this.myData = this.service.infraMapAllBlockWise().subscribe((result: any) => {
+      this.myData = this.service.infraMapSchoolWise(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
         this.data = res;
-        this.schoolMarkers = this.data['sortedData'];
+        //=================================
+        this.infraFilter = [];
+        for (var i = 16; i < Object.keys(this.data[0]).length; i++) {
+          let val = Object.keys(this.data[0])[i].replace(/_/g, ' ').toLocaleUpperCase();
+          val = val.replace('PERCENT', '(%)')
+          this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: val });
+        }
 
-        var markers = result['sortedData'];
+        var infraKey = this.infraFilter.filter(function (obj) {
+          return obj.key == 'infra_score';
+        });
+
+        this.infraFilter = this.infraFilter.filter(function (obj) {
+          return obj.key !== 'infra_score';
+        });
+
+        this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+        this.infraFilter.splice(0, 0, infraKey[0]);
+        //=================================
+
+        this.schoolMarkers = this.data;
+        var markers = result;
         var myBlocks = [];
         markers.forEach(element => {
           if (element.districtId === this.blockHierarchy.distId) {
@@ -745,16 +899,16 @@ export class InfraMapVisualisationComponent implements OnInit {
 
         // set hierarchy values
         this.clusterHierarchy = {
-          distId: this.data['sortedData'][0].districtId,
-          districtName: this.data['sortedData'][0].districtName,
-          blockId: this.data['sortedData'][0].blockId,
-          blockName: this.data['sortedData'][0].blockName,
-          clusterId: this.data['sortedData'][0].clusterId,
-          clusterName: this.data['sortedData'][0].clusterName,
+          distId: this.data[0].districtId,
+          districtName: this.data[0].districtName,
+          blockId: this.data[0].blockId,
+          blockName: this.data[0].blockName,
+          clusterId: this.data[0].clusterId,
+          clusterName: this.data[0].clusterName,
         }
 
-        this.districtId = this.data['sortedData'][0].districtId;
-        this.blockId = this.data['sortedData'][0].blockId;
+        this.districtId = this.data[0].districtId;
+        this.blockId = this.data[0].blockId;
         this.clusterId = clusterId;
 
         // these are for showing the hierarchy names based on selection
@@ -773,6 +927,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           centerLng: this.data[0].lng,
           level: 'school'
         }
+        this.level = options.level;
         this.genericFun(this.data, options);
       }, err => {
         this.data = [];
@@ -792,21 +947,16 @@ export class InfraMapVisualisationComponent implements OnInit {
     this.schoolCount = 0;
     if (data.length > 0) {
       this.markers = data
-      this.markers.sort((a, b) => (`${a[this.infraData]}` > `${b[this.infraData]}`) ? 1 : ((`${b[this.infraData]}` > `${a[this.infraData]}`) ? -1 : 0));
-      console.log(this.markers);
-      // generate color gradient
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
-      this.colors = colors;
-
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-        // this.dateRange = this.markers[i]['data_from_date'] + " to " + this.markers[i]['data_upto_date'];
+        this.schoolCount = this.schoolCount + this.markers[i].schCount;
+        this.colorGredient(this.markers[i], this.infraData);
         var markerIcon: any;
         if (options.weight) {
           markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: options.radius,
-            color: this.colors[i],
-            fillColor: this.colors[i],
+            color: this.setColor,
+            fillColor: this.setColor,
             fillOpacity: options.fillOpacity,
             strokeWeight: options.strokeWeight,
             weight: options.weight
@@ -814,8 +964,8 @@ export class InfraMapVisualisationComponent implements OnInit {
         } else {
           markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: options.radius,
-            color: this.colors[i],
-            fillColor: this.colors[i],
+            color: this.setColor,
+            fillColor: this.setColor,
             fillOpacity: options.fillOpacity,
             strokeWeight: options.strokeWeight
           })
@@ -825,22 +975,28 @@ export class InfraMapVisualisationComponent implements OnInit {
 
         // data to show on the tooltip for the desired levels
         if (options.level == 'district') {
-          this.schoolCount = this.schoolCount + this.markers[i].schCount;
           let colorText = `style='color:blue !important;'`;
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
-            `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infra Score:</b>` + "&nbsp;" + this.markers[i].infra_score + " % </span>" +
-            `<br><span ${this.infraData == 'average_percent' ? colorText : ''}><b>Average: </b>` + "&nbsp;" + this.markers[i].average_percent + " %  </span > " +
-            `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Handwash: </b>` + "&nbsp;" + this.markers[i].hand_wash_percent + " %  </span > " +
-            `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.markers[i].solar_panel_percent + " % </span>" +
-            `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.markers[i].library_percent + " % </span>" +
-            `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.markers[i].drinking_water_percent + " % </span>" +
-            `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.markers[i].tap_water_percent + " % </span>" +
-            `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Handpump:</b>` + "&nbsp;" + this.markers[i].hand_pumps_percent + " % </span>" +
-            `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.markers[i].electricity_percent + " % </span>" +
-            `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.markers[i].toilet_percent + " % </span>" +
+            "<b><u>Details</u></b>" +
+            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
+            "<br><b>Total Schools: </b>" + "&nbsp;" + this.markers[i].schCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+            "<br><b>Total Students: </b>" + "&nbsp;" + this.markers[i].stdCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+            `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.markers[i].infra_score + "</span>" +
+            "<br><br><b><u>School Infrastructure Metrics (% schools)</u></b>" +
             `<br><span ${this.infraData == 'boys_toilet_percent' ? colorText : ''}><b>Boys Toilet:</b>` + "&nbsp;" + this.markers[i].boys_toilet_percent + " % </span>" +
-            `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.markers[i].girls_toilet_percent + " % </span>"
+            `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.markers[i].drinking_water_percent + " % </span>" +
+            `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.markers[i].electricity_percent + " % </span>" +
+            `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.markers[i].girls_toilet_percent + " % </span>" +
+            `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Handwash: </b>` + "&nbsp;" + this.markers[i].hand_wash_percent + " %  </span > " +
+            `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Handpump:</b>` + "&nbsp;" + this.markers[i].hand_pumps_percent + " % </span>" +
+            `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.markers[i].library_percent + " % </span>" +
+            `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.markers[i].solar_panel_percent + " % </span>" +
+            `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.markers[i].tap_water_percent + " % </span>" +
+            `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.markers[i].toilet_percent + " % </span>" +
+            "<br><br><b><u>Other Metrics</u></b>" +
+            "<br><b>% of schools connected to Fibernet: </b>" + "&nbsp;" + this.markers[i].fibernet_percent + " %" +
+            "<br><b>Total Central funds received: </b>" + "&nbsp; ₹ " + this.markers[i].totalFundReceived +
+            "<br><b>Funds per School: </b>" + "&nbsp; ₹ " + this.markers[i].fundPerSchoolReceived
           );
           markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -858,23 +1014,29 @@ export class InfraMapVisualisationComponent implements OnInit {
           }
 
         } else if (options.level == 'block') {
-          this.schoolCount = this.schoolCount + this.markers[i].schCount;
           let colorText = `style='color:blue !important;'`;
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
+            "<b><u>Details</u></b>" +
+            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
-            `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infra Score:</b>` + "&nbsp;" + this.markers[i].infra_score + " % </span>" +
-            `<br><span ${this.infraData == 'average_percent' ? colorText : ''}><b>Average: </b>` + "&nbsp;" + this.markers[i].average_percent + " %  </span > " +
-            `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Handwash: </b>` + "&nbsp;" + this.markers[i].hand_wash_percent + " %  </span > " +
-            `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.markers[i].solar_panel_percent + " % </span>" +
-            `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.markers[i].library_percent + " % </span>" +
-            `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.markers[i].drinking_water_percent + " % </span>" +
-            `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.markers[i].tap_water_percent + " % </span>" +
-            `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Handpump:</b>` + "&nbsp;" + this.markers[i].hand_pumps_percent + " % </span>" +
-            `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.markers[i].electricity_percent + " % </span>" +
-            `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.markers[i].toilet_percent + " % </span>" +
+            "<br><b>Total Schools: </b>" + "&nbsp;" + this.markers[i].schCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+            "<br><b>Total Students: </b>" + "&nbsp;" + this.markers[i].stdCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+            `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.markers[i].infra_score + "</span>" +
+            "<br><br><b><u>School Infrastructure Metrics (% schools)</u></b>" +
             `<br><span ${this.infraData == 'boys_toilet_percent' ? colorText : ''}><b>Boys Toilet:</b>` + "&nbsp;" + this.markers[i].boys_toilet_percent + " % </span>" +
-            `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.markers[i].girls_toilet_percent + " % </span>"
+            `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.markers[i].drinking_water_percent + " % </span>" +
+            `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.markers[i].electricity_percent + " % </span>" +
+            `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.markers[i].girls_toilet_percent + " % </span>" +
+            `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Handwash: </b>` + "&nbsp;" + this.markers[i].hand_wash_percent + " %  </span > " +
+            `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Handpump:</b>` + "&nbsp;" + this.markers[i].hand_pumps_percent + " % </span>" +
+            `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.markers[i].library_percent + " % </span>" +
+            `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.markers[i].solar_panel_percent + " % </span>" +
+            `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.markers[i].tap_water_percent + " % </span>" +
+            `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.markers[i].toilet_percent + " % </span>" +
+            "<br><br><b><u>Other Metrics</u></b>" +
+            "<br><b>% of schools connected to Fibernet: </b>" + "&nbsp;" + this.markers[i].fibernet_percent + " %" +
+            "<br><b>Total Central funds received: </b>" + "&nbsp; ₹ " + this.markers[i].totalFundReceived +
+            "<br><b>Funds per School: </b>" + "&nbsp; ₹ " + this.markers[i].fundPerSchoolReceived
           );
           markerIcon.addTo(globalMap).bindPopup(popup);
           this.fileName = "Block_Per_dist_report"
@@ -892,82 +1054,93 @@ export class InfraMapVisualisationComponent implements OnInit {
           }
 
         } else if (options.level == 'cluster') {
+          let colorText = `style='color:blue !important;'`;
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
+            "<b><u>Details</u></b>" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
             "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].clusterName +
-            "<br><b>Grade 3:</b>" + "&nbsp;" + this.markers[i].grade_3 + " %" +
-            "<br><b>Grade 4:</b>" + "&nbsp;" + this.markers[i].grade_4 + " %" +
-            "<br><b>Grade 5:</b>" + "&nbsp;" + this.markers[i].grade_5 + " %" +
-            "<br><b>Grade 6:</b>" + "&nbsp;" + this.markers[i].grade_6 + " %" +
-            "<br><b>Grade 7:</b>" + "&nbsp;" + this.markers[i].grade_7 + " %" +
-            "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
-            "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schoolsCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount +
-            "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.markers[i].percent_below_33 + " %" + ` (${this.markers[i].value_below_33} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.markers[i].percent_between_33_60 + " %" + ` (${this.markers[i].value_between_33_60} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
+            "<br><b>Total Schools: </b>" + "&nbsp;" + this.markers[i].schCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+            "<br><b>Total Students: </b>" + "&nbsp;" + this.markers[i].stdCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+            `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.markers[i].infra_score + "</span>" +
+            "<br><br><b><u>School Infrastructure Metrics (% schools)</u></b>" +
+            `<br><span ${this.infraData == 'boys_toilet_percent' ? colorText : ''}><b>Boys Toilet:</b>` + "&nbsp;" + this.markers[i].boys_toilet_percent + " % </span>" +
+            `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.markers[i].drinking_water_percent + " % </span>" +
+            `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.markers[i].electricity_percent + " % </span>" +
+            `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.markers[i].girls_toilet_percent + " % </span>" +
+            `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Handwash: </b>` + "&nbsp;" + this.markers[i].hand_wash_percent + " %  </span > " +
+            `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Handpump:</b>` + "&nbsp;" + this.markers[i].hand_pumps_percent + " % </span>" +
+            `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.markers[i].library_percent + " % </span>" +
+            `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.markers[i].solar_panel_percent + " % </span>" +
+            `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.markers[i].tap_water_percent + " % </span>" +
+            `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.markers[i].toilet_percent + " % </span>" +
+            "<br><br><b><u>Other Metrics</u></b>" +
+            "<br><b>% of schools connected to Fibernet: </b>" + "&nbsp;" + this.markers[i].fibernet_percent + " %" +
+            "<br><b>Total Central funds received: </b>" + "&nbsp; ₹ " + this.markers[i].totalFundReceived +
+            "<br><b>Funds per School: </b>" + "&nbsp; ₹ " + this.markers[i].fundPerSchoolReceived
           );
           markerIcon.addTo(globalMap).bindPopup(popup);
           this.fileName = "Cluster_per_block_report"
-          let obj = {
-            DistrictId: this.markers[i].districtId,
-            DistrictName: this.markers[i].districtName,
-            BlockId: this.markers[i].blockId,
-            BlockName: this.markers[i].blockName,
-            ClusterId: this.markers[i].clusterId,
-            ClusterName: this.markers[i].clusterName,
-            Semester_Performance: this.markers[i].assesmentPercentage + " %",
-            Grade3: this.markers[i].grade_3 + " %",
-            Grade4: this.markers[i].grade_4 + " %",
-            Grade5: this.markers[i].grade_5 + " %",
-            Grade6: this.markers[i].grade_6 + " %",
-            Grade7: this.markers[i].grade_7 + " %",
-            Grade8: this.markers[i].grade_8 + " %",
-            TotalSchools: Number(this.markers[i].schoolsCount.replace(/\,/g, '')),
-            TotalStudents: Number(this.markers[i].studentsCount.replace(/\,/g, ''))
+          if (this.infraData !== 'infra_score') {
+            let obj = {
+              district_id: this.markers[i].districtId,
+              district_name: this.markers[i].districtName,
+              block_id: this.markers[i].blockId,
+              block_name: this.markers[i].blockName,
+              cluster_id: this.markers[i].clusterId,
+              cluster_name: this.markers[i].clusterName,
+              [this.infraData]: this.markers[i][this.infraData] + "%"
+            }
+            this.reportData.push(obj);
+          } else {
+            this.reportData = this.data
           }
-          this.reportData.push(obj);
 
         } else if (options.level == 'school') {
+          let colorText = `style='color:blue !important;'`;
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
+            "<b><u>Details</u></b>" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
             "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].clusterName +
             "<br><b>School: </b>" + "&nbsp;" + this.markers[i].schoolName +
-            "<br><b>Grade 3:</b>" + "&nbsp;" + this.markers[i].grade_3 + " %" +
-            "<br><b>Grade 4:</b>" + "&nbsp;" + this.markers[i].grade_4 + " %" +
-            "<br><b>Grade 5:</b>" + "&nbsp;" + this.markers[i].grade_5 + " %" +
-            "<br><b>Grade 6:</b>" + "&nbsp;" + this.markers[i].grade_6 + " %" +
-            "<br><b>Grade 7:</b>" + "&nbsp;" + this.markers[i].grade_7 + " %" +
-            "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount
+            "<br><b>Total Students: </b>" + "&nbsp;" + this.markers[i].stdCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+            `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.markers[i].infra_score + "</span>" +
+            "<br><br><b><u>School Infrastructure Metrics (% schools)</u></b>" +
+            `<br><span ${this.infraData == 'boys_toilet_percent' ? colorText : ''}><b>Boys Toilet:</b>` + "&nbsp;" + this.markers[i].boys_toilet_percent + " % </span>" +
+            `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.markers[i].drinking_water_percent + " % </span>" +
+            `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.markers[i].electricity_percent + " % </span>" +
+            `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.markers[i].girls_toilet_percent + " % </span>" +
+            `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Handwash: </b>` + "&nbsp;" + this.markers[i].hand_wash_percent + " %  </span > " +
+            `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Handpump:</b>` + "&nbsp;" + this.markers[i].hand_pumps_percent + " % </span>" +
+            `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.markers[i].library_percent + " % </span>" +
+            `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.markers[i].solar_panel_percent + " % </span>" +
+            `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.markers[i].tap_water_percent + " % </span>" +
+            `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.markers[i].toilet_percent + " % </span>" +
+            "<br><br><b><u>Other Metrics</u></b>" +
+            "<br><b>% of schools connected to Fibernet: </b>" + "&nbsp;" + this.markers[i].fibernet_percent + " %" +
+            "<br><b>Total Central funds received: </b>" + "&nbsp; ₹ " + this.markers[i].totalFundReceived +
+            "<br><b>Funds per School: </b>" + "&nbsp; ₹ " + this.markers[i].fundPerSchoolReceived
           );
           markerIcon.addTo(globalMap).bindPopup(popup);
 
           this.fileName = "School_per_cluster_report"
-          let obj = {
-            DistrictId: this.markers[i].districtId,
-            DistrictName: this.markers[i].districtName,
-            BlockId: this.markers[i].blockId,
-            BlockName: this.markers[i].blockName,
-            ClusterId: this.markers[i].clusterId,
-            ClusterName: this.markers[i].clusterName,
-            SchoolId: this.markers[i].schoolId,
-            SchoolName: this.markers[i].schoolName,
-            Semester_Performance: this.markers[i].assesmentPercentage + " %",
-            Grade3: this.markers[i].grade_3 + " %",
-            Grade4: this.markers[i].grade_4 + " %",
-            Grade5: this.markers[i].grade_5 + " %",
-            Grade6: this.markers[i].grade_6 + " %",
-            Grade7: this.markers[i].grade_7 + " %",
-            Grade8: this.markers[i].grade_8 + " %",
-            TotalStudents: Number(this.markers[i].studentsCount.replace(/\,/g, ''))
+          if (this.infraData !== 'infra_score') {
+            let obj = {
+              district_id: this.markers[i].districtId,
+              district_name: this.markers[i].districtName,
+              block_id: this.markers[i].blockId,
+              block_name: this.markers[i].blockName,
+              cluster_id: this.markers[i].ClusterId,
+              cluster_name: this.markers[i].clusterName,
+              school_id: this.markers[i].schoolId,
+              school_name: this.markers[i].schoolName,
+              [this.infraData]: this.markers[i][this.infraData] + "%"
+            }
+            this.reportData.push(obj);
+          } else {
+            this.reportData = this.data
           }
-          this.reportData.push(obj);
         }
 
         this.popups(markerIcon, this.markers[i], options);
@@ -976,8 +1149,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     }
-    // this.schoolCount = this.data['totalValues'].totalSchools;
-    // this.studentCount = this.data['totalValues'].totalStudents;
+    this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
@@ -991,12 +1163,60 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.level == 'block_wise') {
       this.blockWise();
     }
+    if (this.level == 'cluster_wise') {
+      this.clusterWise();
+    }
+    if (this.level == 'school_wise') {
+      this.schoolWise();
+    }
 
     if (this.level == 'block') {
       this.onDistrictSelect(this.districtId);
     }
-
+    if (this.level == 'cluster') {
+      this.onBlockSelect(this.blockId);
+    }
+    if (this.level == 'school') {
+      this.onClusterSelect(this.clusterId);
+    }
   }
+
+  colorGredient(data, infraData) {
+    if (data[infraData] <= 10) {
+      this.setColor = '#a50026';
+    }
+    if (data[infraData] >= 11 && data[infraData] <= 20) {
+      this.setColor = '#d73027';
+    }
+    if (data[infraData] >= 21 && data[infraData] <= 30) {
+      this.setColor = '#f46d43';
+    }
+    if (data[infraData] >= 31 && data[infraData] <= 40) {
+      this.setColor = '#fdae61';
+    }
+    if (data[infraData] >= 41 && data[infraData] <= 50) {
+      this.setColor = '#ffff00';
+    }
+    if (data[infraData] >= 51 && data[infraData] <= 60) {
+      this.setColor = '#bbff33';
+    }
+    if (data[infraData] >= 61 && data[infraData] <= 70) {
+      this.setColor = '#4dff4d';
+    }
+    if (data[infraData] >= 71 && data[infraData] <= 80) {
+      this.setColor = '#66bd63';
+    }
+    if (data[infraData] >= 81 && data[infraData] <= 90) {
+      this.setColor = '#1a9850';
+    }
+    if (data[infraData] >= 91 && data[infraData] <= 99) {
+      this.setColor = '#00b300';
+    }
+    if (data[infraData] == 100) {
+      this.setColor = '#006600';
+    }
+  }
+
   popups(markerIcon, markers, options) {
     for (var i = 0; i < this.markers.length; i++) {
       markerIcon.on('mouseover', function (e) {
@@ -1007,7 +1227,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       });
 
       this.layerMarkers.addLayer(markerIcon);
-      if (options.level == 'district') {
+      if (options.level != 'school') {
         markerIcon.on('click', this.onClick_Marker, this);
       }
       markerIcon.myJsonData = markers;
@@ -1053,7 +1273,6 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   // to download the excel report
   downloadReport() {
-    console.log(this.reportData);
     const options = {
       fieldSeparator: ',',
       quoteStrings: '"',
@@ -1068,71 +1287,5 @@ export class InfraMapVisualisationComponent implements OnInit {
     };
     const csvExporter = new ExportToCsv(options);
     csvExporter.generateCsv(this.reportData);
-  }
-
-  // to generate the color gradient from red to green based on the attendance percentage values
-  color() {
-    // Converts a #ffffff hex string into an [r,g,b] array
-    function hex2rgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-      ] : null;
-    }
-
-    // Inverse of the above
-    function rgb2hex(rgb) {
-      return '#' + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
-    }
-
-    // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
-    // Taken from the awesome ROT.js roguelike dev library at
-    // https://github.com/ondras/rot.js
-    function _interpolateRgb(color1, color2, factor) {
-      if (arguments.length < 3) { factor = 0.5; }
-
-      let result = color1.slice();
-
-      for (let i = 0; i < 3; i++) {
-        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
-      }
-      return result;
-    }
-
-    function generateGradient(color1, color2, total, interpolation) {
-      const colorStart = typeof color1 === 'string' ? hex2rgb(color1) : color1;
-      const colorEnd = typeof color2 === 'string' ? hex2rgb(color2) : color2;
-
-      // will the gradient be via RGB or HSL
-      switch (interpolation) {
-        case 'rgb':
-          return colorsToGradientRgb(colorStart, colorEnd, total);
-        // case 'hsl':
-        //   return colorsToGradientHsl(colorStart, colorEnd, total);
-        default:
-          return false;
-      }
-    }
-
-    function colorsToGradientRgb(startColor, endColor, steps) {
-      // returns array of hex values for color, since rgb would be an array of arrays and not strings, easier to handle hex strings
-      let arrReturnColors = [];
-      let interimColorRGB;
-      let interimColorHex;
-      const totalColors = steps;
-      const factorStep = 1 / (totalColors - 1);
-
-      for (let idx = 0; idx < totalColors; idx++) {
-        interimColorRGB = _interpolateRgb(startColor, endColor, factorStep * idx);
-        interimColorHex = rgb2hex(interimColorRGB);
-        arrReturnColors.push(interimColorHex);
-      }
-      return arrReturnColors;
-    }
-    return {
-      generateGradient
-    };
   }
 }

@@ -188,4 +188,20 @@ export class AppServiceComponent {
     infraMapBlockWise(distId) {
         return this.http.post(`${this.baseUrl}/infraMap/blockWise/${distId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
+
+    infraMapAllClusterWise() {
+        return this.http.post(`${this.baseUrl}/infraMap/allClusterWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraMapClusterWise(distId, blockId) {
+        return this.http.post(`${this.baseUrl}/infraMap/clusterWise/${distId}/${blockId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraMapAllSchoolWise() {
+        return this.http.post(`${this.baseUrl}/infraMap/allSchoolWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraMapSchoolWise(distId, blockId, clusterId) {
+        return this.http.post(`${this.baseUrl}/infraMap/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
 }
