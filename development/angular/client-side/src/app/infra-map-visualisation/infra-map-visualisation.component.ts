@@ -614,7 +614,7 @@ export class InfraMapVisualisationComponent implements OnInit {
                 "<br><b>Cluster:</b>" + "&nbsp;" + this.schoolMarkers[i].clusterName +
                 "<br><b>Total Students:</b>" + "&nbsp;" + this.schoolMarkers[i].stdCount +
                 `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.schoolMarkers[i].infra_score + "</span>" +
-                "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
+                "<br><br><b><u>School Infrastructure Metrics</u></b>" +
                 `<br><span ${this.infraData == 'boys_toilet_percent' ? colorText : ''}><b>Boys Toilet:</b>` + "&nbsp;" + this.schoolMarkers[i].boys_toilet_percent + " % </span>" +
                 `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.schoolMarkers[i].drinking_water_percent + " % </span>" +
                 `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.schoolMarkers[i].electricity_percent + " % </span>" +
@@ -1106,7 +1106,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             "<br><b>School:</b>" + "&nbsp;" + this.markers[i].schoolName +
             "<br><b>Total Students:</b>" + "&nbsp;" + this.markers[i].stdCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
             `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.markers[i].infra_score + "</span>" +
-            "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
+            "<br><br><b><u>School Infrastructure Metrics</u></b>" +
             `<br><span ${this.infraData == 'boys_toilet_percent' ? colorText : ''}><b>Boys Toilet:</b>` + "&nbsp;" + this.markers[i].boys_toilet_percent + " % </span>" +
             `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.markers[i].drinking_water_percent + " % </span>" +
             `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.markers[i].electricity_percent + " % </span>" +
