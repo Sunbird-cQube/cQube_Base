@@ -3,7 +3,7 @@ var const_data = require('../../../lib/config'); // Log Variables
 const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 
-router.post('/allBlockWise', async (req, res) => {
+router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- all blocks infra api ---');
         const_data['getParams']['Key'] = 'infra/infra_block_map.json'
@@ -22,7 +22,11 @@ router.post('/allBlockWise', async (req, res) => {
                     var obj = {
                         lat: block.lat,
                         lng: block.long,
-                        schCount: block.total_schools,
+                        schCount: parseInt(block.total_schools_data_received),
+                        stdCount: parseInt(block.total_students),
+                        totalFundReceived: parseInt(block.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        fundPerSchoolReceived: parseInt(block.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        fibernet_percent: block.fibernet_percent,
                         districtId: block.district_id,
                         districtName: block.district_name,
                         blockId: block.block_id,
@@ -78,7 +82,11 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                     var obj = {
                         lat: block.lat,
                         lng: block.long,
-                        schCount: block.total_schools,
+                        schCount: parseInt(block.total_schools_data_received),
+                        stdCount: parseInt(block.total_students),
+                        totalFundReceived: parseInt(block.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        fundPerSchoolReceived: parseInt(block.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        fibernet_percent: block.fibernet_percent,
                         districtId: block.district_id,
                         districtName: block.district_name,
                         blockId: block.block_id,

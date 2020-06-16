@@ -125,7 +125,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================
-
+      // this.SchoolInfrastructureDistrictsNames.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     }, err => {

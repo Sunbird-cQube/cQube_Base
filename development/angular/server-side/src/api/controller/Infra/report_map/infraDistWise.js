@@ -3,7 +3,7 @@ var const_data = require('../../../lib/config');
 const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const fs = require('fs');
-router.post('/distWise', function (req, res) {
+router.post('/distWise',auth.authController, function (req, res) {
     try {
         logger.info('---Infra dist wise api ---');
         const_data['getParams']['Key'] = `infra/infra_district_map.json`;
@@ -16,12 +16,17 @@ router.post('/distWise', function (req, res) {
                 res.status(403).json({ errMsg: "No such data found" });
             } else {
                 logger.info('--- Infra dist wise api response sent ---');
+                // console.log(JSON.parse((data.Body).toString())[0])
                 var mydata = [];
                 JSON.parse((data.Body).toString()).forEach(dist => {
                     var obj = {
                         lat: dist.lat,
                         lng: dist.long,
-                        schCount: dist.total_schools,
+                        schCount: parseInt(dist.total_schools_data_received),
+                        stdCount: parseInt(dist.total_students),
+                        totalFundReceived: parseInt(dist.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        fundPerSchoolReceived: parseInt(dist.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        fibernet_percent: dist.fibernet_percent,
                         districtId: dist.district_id,
                         districtName: dist.district_name,
                         average_percent: dist.average_percent,
