@@ -71,17 +71,19 @@
           </td>
           <td>
             &nbsp;
-            <button mat-button mat-icon-button id="usr" (click)="showSubmenu1 = !showSubmenu1"> <span>School Infrastructure</span>
+            <button mat-button mat-icon-button id="usr" (click)="showSubmenu1 = !showSubmenu1"> <span>School
+                Infrastructure</span>
               <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu1}">expand_more</mat-icon>
             </button>
           </td>
         </mat-list-item>
         <div class="submenu" [ngClass]="{'expanded' : showSubmenu1}">
           <a *ngIf="showCreateUser" mat-list-item (click)="sidenav.toggle()" id="crtUsr" style="font-family: Arial;  
-          border-bottom: 1px solid lightgray;" [routerLink]="['school-infra-map']"><span style="margin-left: 40px;">Report(Map)</span> </a>
+          border-bottom: 1px solid lightgray;" [routerLink]="['school-infra-map']"><span style="margin-left: 40px;">Map
+              based Report</span> </a>
           <a mat-list-item (click)="sidenav.toggle()" id="chPass"
-            style="font-family: Arial; border-bottom: 1px solid lightgray;" [routerLink]="['school-infrastructure']"><span
-              style="margin-left: 40px;">Report</span></a>
+            style="font-family: Arial; border-bottom: 1px solid lightgray;"
+            [routerLink]="['school-infrastructure']"><span style="margin-left: 40px;">Report</span></a>
         </div>
       </mat-list>
       <mat-list>
