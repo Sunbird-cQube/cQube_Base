@@ -612,6 +612,7 @@ export class InfraMapVisualisationComponent implements OnInit {
                 "<br><b>District:</b>" + "&nbsp;" + this.schoolMarkers[i].districtName +
                 "<br><b>Block:</b>" + "&nbsp;" + this.schoolMarkers[i].blockName +
                 "<br><b>Cluster:</b>" + "&nbsp;" + this.schoolMarkers[i].clusterName +
+                "<br><b>School:</b>" + "&nbsp;" + this.schoolMarkers[i].schoolName +
                 "<br><b>Total Students:</b>" + "&nbsp;" + this.schoolMarkers[i].stdCount +
                 `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.schoolMarkers[i].infra_score + "</span>" +
                 "<br><br><b><u>School Infrastructure Metrics</u></b>" +
@@ -774,8 +775,10 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
+    console.log(this.districtHierarchy.distId, blockId);
     this.myData = this.service.infraMapClusterWise(this.districtHierarchy.distId, blockId).subscribe(res => {
       this.data = res;
+      console.log(res);
       //=================================
       this.infraFilter = [];
       for (var i = 14; i < Object.keys(this.data[0]).length; i++) {
@@ -905,6 +908,10 @@ export class InfraMapVisualisationComponent implements OnInit {
           blockName: this.data[0].blockName,
           clusterId: this.data[0].clusterId,
           clusterName: this.data[0].clusterName,
+        }
+
+        this.districtHierarchy = {
+          distId: this.data[0].districtId
         }
 
         this.districtId = this.data[0].districtId;
