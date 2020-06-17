@@ -713,6 +713,10 @@ export class SemViewComponent implements OnInit {
           clusterName: this.data['sortedData'][0].clusterName,
         }
 
+        this.districtHierarchy = {
+          distId: this.data['sortedData'][0].districtId
+        }
+
         this.districtId = this.data['sortedData'][0].districtId;
         this.blockId = this.data['sortedData'][0].blockId;
         this.clusterId = clusterId;
