@@ -24,6 +24,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
+import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { SchoolInfrastructureComponent } from './school-infrastructure/school-in
     ComingSoonComponent,
     DashboardComponent,
     SchoolInfrastructureComponent,
+    InfraMapVisualisationComponent,
   ],
   imports: [
     BrowserModule,

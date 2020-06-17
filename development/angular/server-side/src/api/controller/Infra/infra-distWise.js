@@ -3,7 +3,7 @@ var const_data = require('../../lib/config');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const fs = require('fs');
-router.post('/distWise', function (req, res) {
+router.post('/distWise',auth.authController, function (req, res) {
     try {
         logger.info('---Infra dist wise api ---');
         const_data['getParams']['Key'] = `infra/infra_district.json`;

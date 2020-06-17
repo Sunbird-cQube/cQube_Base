@@ -15,8 +15,8 @@ declare const $;
 export class SchoolInfrastructureComponent implements OnInit {
   public scatterChart: Chart;
   public result: any = [];
-  public xAxis: any = "total_schools";
-  public yAxis: any = "total_schools_data_received";
+  public xAxis: any = "infra_score";
+  public yAxis: any = "average";
   public xAxisFilter: any = [];
   public yAxisFilter: any = [];
   public downloadLevel = '';
@@ -25,9 +25,10 @@ export class SchoolInfrastructureComponent implements OnInit {
   public blockNames: any = [];
   public clusterNames: any = [];
 
-  public SchoolInfrastructureDistrictsNames: any = [];
+  public SchoolInfrastructureDistrictsNames;
   public SchoolInfrastructureBlocksNames;
   public SchoolInfrastructureClusterNames;
+  public SchoolInfrastructureSchoolNames;
 
   public myDistrict: any;
   public myBlock: any;
@@ -86,6 +87,10 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
     }
+    if (this.result.length! > 0) {
+      $('#table').DataTable().destroy();
+      $('#table').empty();
+    }
     this.xAxisFilter = [];
     this.yAxisFilter = [];
     this.downloadLevel = 'dist';
@@ -94,12 +99,14 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.fileName = "Dist_level_Report";
 
     this.myDistrict = '';
+    this.downloadType = '';
+    this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
 
     this.dist = false;
     this.blok = false;
     this.clust = false;
     this.skul = true;
-
+    this.errMsg();
     this.blockHidden = true;
     this.clusterHidden = true;
 
@@ -109,59 +116,16 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.infraDistWise().subscribe(res => {
-      this.reportData = this.SchoolInfrastructureDistrictsNames = this.result = res;
-
-      // for download========
-      this.funToDownload(this.reportData);
+      this.SchoolInfrastructureDistrictsNames = this.result = res;
       //for chart =============================================
-      for (i = 1; i < Object.keys(this.result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-      };
-
-      var labels = [];
-      this.chartData = []
-      for (var i = 0; i < this.result.length; i++) {
-        var x = undefined, y = undefined;
-
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 1) {
-          x = Number(this.result[i][this.xAxis].value);
-          y = Number(this.result[i][this.yAxis].value);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 2) {
-          x = Number(this.result[i][this.xAxis].value);
-          y = Number(this.result[i][this.yAxis].percent);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 1) {
-          x = Number(this.result[i][this.xAxis].percent);
-          y = Number(this.result[i][this.yAxis].value);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 2) {
-          x = Number(this.result[i][this.xAxis].percent);
-          y = Number(this.result[i][this.yAxis].percent);
-        }
-        this.chartData.push({ x: x, y: y });
-        labels.push(this.result[i].district.value);
-        this.districtsNames.push({ id: this.result[i].district.id, name: this.result[i].district.value });
-
-      }
-
-      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-
-      let obj = {
-        xAxis: x_axis.value,
-        yAxis: y_axis.value
-      }
-
-      this.createChart(labels, this.chartData, this.tableHead, obj);
+      this.showChart(this.result, this.downloadLevel);
       //====================================
 
       // for table data
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================
-
+      // this.SchoolInfrastructureDistrictsNames.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     }, err => {
@@ -178,14 +142,16 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'block';
     this.tableHead = "Block Name";
-    this.fileName = "Blcok_level_report";
+    this.fileName = "blockPerDistrict_report";
 
     this.dist = true;
     this.blok = false;
     this.clust = false;
     this.skul = false;
-
+    this.errMsg();
     this.myBlock = '';
+    this.downloadType = '';
+    this.modes = [];
 
     this.distName = data;
     let obj = this.districtsNames.find(o => o.id == data);
@@ -202,53 +168,15 @@ export class SchoolInfrastructureComponent implements OnInit {
     }
     this.myData = this.service.infraBlockWise(data).subscribe(res => {
       this.reportData = this.SchoolInfrastructureBlocksNames = this.result = res;
-      console.log(res);
       // for download========
       this.funToDownload(this.reportData);
       //for chart =============================================
-      for (i = 2; i < Object.keys(this.result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(this.result[0])[i], value: Object.keys(this.result[0])[i].toLocaleUpperCase() });
-      };
-
-      var labels = [];
-      this.chartData = []
-      for (var i = 0; i < this.result.length; i++) {
-        var x = undefined, y = undefined;
-
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 1) {
-          x = Number(this.result[i][this.xAxis].value);
-          y = Number(this.result[i][this.yAxis].value);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 1 && Object.keys(this.result[i][this.yAxis]).length === 2) {
-          x = Number(this.result[i][this.xAxis].value);
-          y = Number(this.result[i][this.yAxis].percent);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 1) {
-          x = Number(this.result[i][this.xAxis].percent);
-          y = Number(this.result[i][this.yAxis].value);
-        }
-        if (Object.keys(this.result[i][this.xAxis]).length === 2 && Object.keys(this.result[i][this.yAxis]).length === 2) {
-          x = Number(this.result[i][this.xAxis].percent);
-          y = Number(this.result[i][this.yAxis].percent);
-        }
-        this.chartData.push({ x: x, y: y });
-        labels.push(this.result[i].block.name);
-        this.blockNames.push({ id: this.result[i].block.id, name: this.result[i].block.name });
-      }
-
-      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-
-      let obj = {
-        xAxis: x_axis.value,
-        yAxis: y_axis.value
-      }
-
-      this.createChart(labels, this.chartData, this.tableHead, obj);
+      this.showChart(this.result, this.downloadLevel);
       //====================================
 
       // for table data
+      $('#table').DataTable().destroy();
+      $('#table').empty();
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================
@@ -262,47 +190,277 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   myBlockData(data) {
-    console.log(data);
+    if (this.chartData.length !== 0) {
+      this.scatterChart.destroy();
+    }
+    this.xAxisFilter = [];
+    this.yAxisFilter = [];
+    this.downloadLevel = 'cluster';
+    this.tableHead = "Cluster Name";
+    this.fileName = "clusterPerBlock_report";
+    this.errMsg();
     this.dist = false;
     this.blok = true;
     this.clust = false;
     this.skul = false;
 
-    this.SchoolInfrastructureClusterNames = [{ name: 'abc' }, { name: 'pqr' }, { name: 'xyz' }];
     this.myCluster = '';
+    this.downloadType = '';
+    this.modes = [];
 
     localStorage.setItem('blockId', data);
     this.titleName = localStorage.getItem('dist');
     this.distName = JSON.parse(localStorage.getItem('distId'));
     this.blockName = data;
     let obj = this.blockNames.find(o => o.id == data);
-    console.log(":::::;", obj);
     localStorage.setItem('block', JSON.stringify(obj.name));
     this.hierName = obj.name;
 
     this.blockHidden = false;
     this.clusterHidden = false;
 
-    document.getElementById('home').style.display = 'none';
-    console.log(data);
+    document.getElementById('home').style.display = 'block';
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.infraClusterWise(this.distName, data).subscribe(res => {
+      this.reportData = this.SchoolInfrastructureClusterNames = this.result = res;
+      // for download========
+      this.funToDownload(this.reportData);
+      //for chart =============================================
+      this.showChart(this.result, this.downloadLevel);
+      //====================================
+
+      // for table data
+      $('#table').DataTable().destroy();
+      $('#table').empty();
+      var dataSet = this.result;
+      this.createTable(dataSet);
+      //========================
+
+      this.loaderAndErr();
+      this.changeDetection.markForCheck();
+    }, err => {
+      this.result = [];
+      this.loaderAndErr();
+    });
   }
 
   myClusterData(data) {
+    if (this.chartData.length !== 0) {
+      this.scatterChart.destroy();
+    }
+    this.xAxisFilter = [];
+    this.yAxisFilter = [];
+    this.downloadLevel = 'school';
+    this.tableHead = "School Name";
+    this.fileName = "schoolPerCluster_report";
+
     this.dist = false;
     this.blok = false;
     this.clust = true;
     this.skul = false;
+    this.errMsg();
+    this.modes = [];
 
-    this.title = localStorage.getItem('block');
+    this.title = JSON.parse(localStorage.getItem('block'));
     this.titleName = localStorage.getItem('dist');
-    this.distName = this.titleName;
-    this.blockName = this.title;
+    var distId = JSON.parse(localStorage.getItem('distId'));
+    var blockId = JSON.parse(localStorage.getItem('blockId'));
+    this.distName = JSON.parse(localStorage.getItem('distId'));
+    this.blockName = blockId;
     this.clustName = data;
-    this.hierName = this.clustName;
-    localStorage.setItem('cluster', data);
+    let obj = this.clusterNames.find(o => o.id == data);
+    this.hierName = obj.name;
+    localStorage.setItem('clusterId', data);
 
-    document.getElementById('home').style.display = 'none';
-    console.log(data);
+    document.getElementById('home').style.display = 'block';
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.infraSchoolWise(distId, blockId, data).subscribe(res => {
+      this.reportData = this.SchoolInfrastructureSchoolNames = this.result = res;
+      // for download========
+      this.funToDownload(this.reportData);
+      //for chart =============================================
+      this.showChart(this.result, this.downloadLevel);
+      //====================================
+
+      // for table data
+      $('#table').DataTable().destroy();
+      // $('#table').empty();
+      var dataSet = this.result;
+      this.createTable(dataSet);
+      //========================
+
+      this.loaderAndErr();
+      this.changeDetection.markForCheck();
+    }, err => {
+      this.result = [];
+      this.loaderAndErr();
+    });
+  }
+
+  distWise() {
+    this.reportData = [];
+    this.errMsg();
+    var element1: any = document.getElementsByClassName('dwnld');
+    element1[0].disabled = true;
+    this.fileName = "Dist_level_Infra_Report";
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.infraDistWise().subscribe(res => {
+      this.reportData = res;
+      if (res !== null) {
+        document.getElementById('spinner').style.display = 'none';
+        element1[0].disabled = false;
+      }
+      this.funToDownload(this.reportData);
+      this.changeDetection.markForCheck();
+    }, err => {
+      this.chartData = [];
+      this.loaderAndErr();
+    });
+  }
+
+  blockWise() {
+    this.reportData = [];
+    this.errMsg();
+    var element1: any = document.getElementsByClassName('dwnld');
+    element1[0].disabled = true;
+    this.fileName = "Block_level_Infra_Report";
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.infraAllBlockWise().subscribe(res => {
+      this.reportData = res;
+      if (res !== null) {
+        document.getElementById('spinner').style.display = 'none';
+        element1[0].disabled = false;
+      }
+      this.funToDownload(this.reportData);
+      this.changeDetection.markForCheck();
+    }, err => {
+      this.chartData = [];
+      this.loaderAndErr();
+    });
+  }
+
+  clusterWise() {
+    this.reportData = [];
+    this.errMsg();
+    var element1: any = document.getElementsByClassName('dwnld');
+    element1[0].disabled = true;
+    this.fileName = "Cluster_level_Infra_Report";
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.infraAllClusterWise().subscribe(res => {
+      this.reportData = res;
+      if (res !== null) {
+        document.getElementById('spinner').style.display = 'none';
+        element1[0].disabled = false;
+      }
+      this.funToDownload(this.reportData);
+      this.changeDetection.markForCheck();
+    }, err => {
+      this.chartData = [];
+      this.loaderAndErr();
+    });
+  }
+
+  schoolWise() {
+    this.reportData = [];
+    this.errMsg();
+    var element1: any = document.getElementsByClassName('dwnld');
+    element1[0].disabled = true;
+    this.fileName = "School_level_Infra_Report";
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.infraAllSchoolWise().subscribe(res => {
+      this.reportData = res;
+      if (res !== null) {
+        document.getElementById('spinner').style.display = 'none';
+        element1[0].disabled = false;
+      }
+      this.funToDownload(this.reportData);
+      this.changeDetection.markForCheck();
+    }, err => {
+      this.chartData = [];
+      this.loaderAndErr();
+    });
+  }
+
+  showChart(result, downloadType) {
+    if (downloadType == "dist") {
+      for (i = 3; i < Object.keys(result[0]).length; i++) {
+        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+      }
+    } else if (downloadType == "block") {
+      for (i = 4; i < Object.keys(result[0]).length; i++) {
+        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+      }
+    } else if (downloadType == "cluster") {
+      for (i = 5; i < Object.keys(result[0]).length; i++) {
+        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+      }
+    } else if (downloadType == "school") {
+      for (i = 6; i < Object.keys(result[0]).length; i++) {
+        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+      }
+    }
+
+    var labels = [];
+    this.chartData = []
+    for (var i = 0; i < result.length; i++) {
+      var x = undefined, y = undefined;
+
+      if (Object.keys(result[i][this.xAxis]).length === 1 && Object.keys(result[i][this.yAxis]).length === 1) {
+        x = Number(result[i][this.xAxis].value);
+        y = Number(result[i][this.yAxis].value);
+      }
+      if (Object.keys(result[i][this.xAxis]).length === 1 && Object.keys(result[i][this.yAxis]).length === 2) {
+        x = Number(result[i][this.xAxis].value);
+        y = Number(result[i][this.yAxis].percent);
+      }
+      if (Object.keys(result[i][this.xAxis]).length === 2 && Object.keys(result[i][this.yAxis]).length === 1) {
+        x = Number(result[i][this.xAxis].percent);
+        y = Number(result[i][this.yAxis].value);
+      }
+      if (Object.keys(result[i][this.xAxis]).length === 2 && Object.keys(result[i][this.yAxis]).length === 2) {
+        x = Number(result[i][this.xAxis].percent);
+        y = Number(result[i][this.yAxis].percent);
+      }
+      this.chartData.push({ x: x, y: y });
+      if (downloadType == "dist") {
+        labels.push(result[i].district.value);
+        this.districtsNames.push({ id: this.result[i].district.id, name: this.result[i].district.value });
+      } else if (downloadType == "block") {
+        labels.push(result[i].block.value);
+        this.blockNames.push({ id: this.result[i].block.id, name: this.result[i].block.value });
+      } else if (downloadType == "cluster") {
+        labels.push(result[i].cluster.value);
+        this.clusterNames.push({ id: this.result[i].cluster.id, name: this.result[i].cluster.value });
+      } else if (downloadType == "school") {
+        labels.push(result[i].school.value);
+      }
+    }
+
+    let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+    let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
+
+    let obj = {
+      xAxis: x_axis.value,
+      yAxis: y_axis.value
+    }
+
+    this.createChart(labels, this.chartData, this.tableHead, obj);
   }
 
   selectAxis() {
@@ -316,7 +474,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.myBlockData(JSON.parse(localStorage.getItem('blockId')));
     }
     if (this.clust) {
-      this.myClusterData(JSON.parse(localStorage.getItem('cluster')));
+      this.myClusterData(JSON.parse(localStorage.getItem('clusterId')));
     }
   }
 
@@ -427,8 +585,8 @@ export class SchoolInfrastructureComponent implements OnInit {
             label: function (tooltipItem, data) {
               var label = data.labels[tooltipItem.index];
               var multistringText = [name + ": " + label];
-              multistringText.push(obj.xAxis + ": " + tooltipItem.xLabel);
-              multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
+              multistringText.push(obj.xAxis + ": " + tooltipItem.xLabel + " %");
+              multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel + " %");
               return multistringText;
             }
           }
@@ -440,7 +598,8 @@ export class SchoolInfrastructureComponent implements OnInit {
               color: "rgba(252, 239, 252)",
             },
             ticks: {
-              min: 0
+              min: 0,
+              max: 100
             },
             scaleLabel: {
               display: true,
@@ -454,7 +613,8 @@ export class SchoolInfrastructureComponent implements OnInit {
               color: "rgba(252, 239, 252)",
             },
             ticks: {
-              min: 0
+              min: 0,
+              max: 100
             },
             scaleLabel: {
               display: true,
@@ -466,7 +626,7 @@ export class SchoolInfrastructureComponent implements OnInit {
         }
       }
     });
-  };
+  }
 
   funToDownload(reportData) {
     let newData = [];
@@ -488,6 +648,25 @@ export class SchoolInfrastructureComponent implements OnInit {
       newData.push(newObj);
     })
     this.reportData = newData
+    if (this.downloadType === 'Dist_Wise' || this.downloadType === 'Block_Wise' || this.downloadType === 'Cluster_Wise' || this.downloadType === 'School_Wise') {
+      this.downloadRoport();
+    }
+  }
+
+  public downloadType: string;
+  downloadReportofState(downloadType) {
+    if (downloadType === 'Dist_Wise') {
+      this.distWise();
+    }
+    if (downloadType === 'Block_Wise') {
+      this.blockWise();
+    }
+    if (downloadType === 'Cluster_Wise') {
+      this.clusterWise();
+    }
+    if (downloadType === 'School_Wise') {
+      this.schoolWise();
+    }
   }
 
   downloadRoport() {
@@ -506,5 +685,4 @@ export class SchoolInfrastructureComponent implements OnInit {
     const csvExporter = new ExportToCsv(options);
     csvExporter.generateCsv(this.reportData);
   }
-
 }
