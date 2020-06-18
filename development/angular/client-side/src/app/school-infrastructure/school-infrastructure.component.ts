@@ -394,26 +394,19 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   showChart(result, downloadType) {
+    var l = undefined;
     if (downloadType == "dist") {
-      for (i = 3; i < Object.keys(result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-      }
+      l = 3;
     } else if (downloadType == "block") {
-      for (i = 4; i < Object.keys(result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-      }
+      l = 4;
     } else if (downloadType == "cluster") {
-      for (i = 5; i < Object.keys(result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-      }
+      l = 5;
     } else if (downloadType == "school") {
-      for (i = 6; i < Object.keys(result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-      }
+      l = 6;
+    }
+    for (i = l; i < Object.keys(result[0]).length; i++) {
+      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
     }
 
     var labels = [];

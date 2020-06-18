@@ -775,10 +775,8 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    console.log(this.districtHierarchy.distId, blockId);
     this.myData = this.service.infraMapClusterWise(this.districtHierarchy.distId, blockId).subscribe(res => {
       this.data = res;
-      console.log(res);
       //=================================
       this.infraFilter = [];
       for (var i = 14; i < Object.keys(this.data[0]).length; i++) {

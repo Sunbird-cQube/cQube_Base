@@ -20,22 +20,23 @@ router.post('/schoolWise', auth.authController, function (req, res) {
             } else {
                 var studentCount = 0;
                 var schoolData = [];
-                JSON.parse(data.Body.toString()).map(item => {
-                    studentCount = studentCount + Number(item['students_count']);
+                var myData = JSON.parse(data.Body.toString());
+                for (let i = 0; i < myData.length; i++) {
+                    studentCount = studentCount + Number(myData[i]['students_count']);
                     var obj = {
-                        id: item['x_axis'],
-                        cluster: item['cluster_name'],
-                        clusterId: item['cluster_id'],
-                        dist: item['district_name'],
-                        block: item['block_name'],
-                        name: item['school_name'],
-                        label: item['x_value'],
-                        lat: item['y_value'],
-                        lng: item['z_value'],
-                        stdCount: (item['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        id: myData[i]['x_axis'],
+                        cluster: myData[i]['cluster_name'],
+                        clusterId: myData[i]['cluster_id'],
+                        dist: myData[i]['district_name'],
+                        block: myData[i]['block_name'],
+                        name: myData[i]['school_name'],
+                        label: myData[i]['x_value'],
+                        lat: myData[i]['y_value'],
+                        lng: myData[i]['z_value'],
+                        stdCount: (myData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                     }
                     schoolData.push(obj);
-                });
+                };
                 logger.info('--- Attendance school wise api response sent ---');
                 res.status(200).send({ schoolData: schoolData, studentCount: studentCount });
             }
@@ -62,23 +63,25 @@ router.post('/schoolPerCluster', auth.authController, async (req, res) => {
         } else {
             var studentCount = 0;
             var schoolsDetails = [];
-            allSchools.data.schoolData.map(schools => {
-                if (clusterId === schools.clusterId) {
-                    studentCount = studentCount + Number(schools.stdCount.replace(/\,/g, ''));
-                    obj = {
-                        id: schools['id'],
-                        name: schools['name'],
-                        block: schools['block'],
-                        dist: schools['dist'],
-                        cluster: schools['cluster'],
-                        label: schools['label'],
-                        lat: schools['lat'],
-                        lng: schools['lng'],
-                        stdCount: schools['stdCount']
-                    }
-                    schoolsDetails.push(obj);
-                }
+            var filterData = allSchools.data.schoolData.filter(data => {
+                return (data.clusterId == clusterId)
             });
+            var myData = filterData;
+            for (let i = 0; i < myData.length; i++) {
+                studentCount = studentCount + Number(myData[i].stdCount.replace(/\,/g, ''));
+                var obj = {
+                    id: myData[i]['id'],
+                    name: myData[i]['name'],
+                    block: myData[i]['block'],
+                    dist: myData[i]['dist'],
+                    cluster: myData[i]['cluster'],
+                    label: myData[i]['label'],
+                    lat: myData[i]['lat'],
+                    lng: myData[i]['lng'],
+                    stdCount: myData[i]['stdCount']
+                }
+                schoolsDetails.push(obj);
+            };
             logger.info('--- Attendance schoolPerCluster api response sent ---');
             res.status(200).send({ schoolsDetails: schoolsDetails, studentCount: studentCount });
         }

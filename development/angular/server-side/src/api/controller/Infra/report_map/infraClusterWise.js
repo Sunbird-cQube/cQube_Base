@@ -3,7 +3,7 @@ var const_data = require('../../../lib/config');
 const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const fs = require('fs');
-router.post('/allClusterWise',auth.authController, function (req, res) {
+router.post('/allClusterWise', auth.authController, function (req, res) {
     try {
         logger.info('---Infra cluster wise api ---');
         const_data['getParams']['Key'] = `infra/infra_cluster_map.json`;
@@ -15,8 +15,7 @@ router.post('/allClusterWise',auth.authController, function (req, res) {
                 logger.error("No data found in s3 file");
                 res.status(403).json({ errMsg: "No such data found" });
             } else {
-                var mydata = [];
-                JSON.parse((data.Body).toString()).forEach(cluster => {
+                var mydata = JSON.parse((data.Body).toString()).map(cluster => {
                     var obj = {
                         lat: cluster.lat,
                         lng: cluster.long,
@@ -45,7 +44,7 @@ router.post('/allClusterWise',auth.authController, function (req, res) {
                         girls_toilet_percent: cluster.girls_toilet_percent
 
                     }
-                    mydata.push(obj);
+                    return obj;
                 });
                 logger.info('---Infra cluster wise api response sent---');
                 res.status(200).send(mydata);
@@ -57,7 +56,7 @@ router.post('/allClusterWise',auth.authController, function (req, res) {
     }
 });
 
-router.post('/clusterWise/:distId/:blockId',auth.authController, async (req, res) => {
+router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra clusterperBlock api ---');
         const_data['getParams']['Key'] = 'infra/infra_cluster_map.json'
@@ -78,9 +77,8 @@ router.post('/clusterWise/:distId/:blockId',auth.authController, async (req, res
                 let filterData = clusterData.filter(obj => {
                     return (obj.district_id == distId && obj.block_id == blockId)
                 })
-                
-                let mydata = [];
-                filterData.forEach(cluster => {
+
+                let mydata = filterData.map(cluster => {
                     var obj = {
                         lat: cluster.lat,
                         lng: cluster.long,
@@ -109,7 +107,7 @@ router.post('/clusterWise/:distId/:blockId',auth.authController, async (req, res
                         girls_toilet_percent: cluster.girls_toilet_percent
 
                     }
-                    mydata.push(obj);
+                    return obj;
                 });
                 logger.info('---Infra clusterperBlock api response sent---');
                 res.status(200).send(mydata);
