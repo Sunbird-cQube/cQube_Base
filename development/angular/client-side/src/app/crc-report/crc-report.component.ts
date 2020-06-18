@@ -735,6 +735,7 @@ export class CrcReportComponent implements OnInit {
         legend: {
           display: false
         },
+        responsive: true,
         tooltips: {
           custom: function (tooltip) {
             if (!tooltip) return;

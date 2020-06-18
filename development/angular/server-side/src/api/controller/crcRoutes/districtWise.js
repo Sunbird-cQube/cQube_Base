@@ -1,37 +1,25 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
-var groupArray = require('group-array');
-const crcHelper = require('./crcHelper');
 const auth = require('../../middleware/check-auth');
-const s3File = require('./s3File');
+var const_data = require('../../lib/config');
 
-router.post('/districtWise', auth.authController, async (req, res) => {
+router.post('/districtWise', async (req, res) => {
     try {
         logger.info('--- crc district wise api ---');
-
-        // to store the s3 file data to variables
-        let fullData = {}
-
-        fullData = {
-            frequencyData: await s3File.frequencyData(),
-            crcMetaData: await s3File.crcMetaData()
-        }
-
-        if (fullData.frequencyData.length > 0 && fullData.crcMetaData.length > 0) {
-            // crc meta data group by district id
-            let crcMetaDataGroupData = groupArray(fullData.crcMetaData, 'district_id');
-
-            // crc frequency data group by district_id
-            let crcFrequencyGroupData = groupArray(fullData.frequencyData, 'district_id');
-
-            let level = 'district';
-
-            let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-            logger.info('--- crc district wise api response sent ---');
-            res.status(200).send(crcResult);
-        } else {
-            res.status(500).json({ errMsg: "Something went wrong" });
-        }
+        const_data['getParams']['Key'] = `test/crc_district_test.json`;
+        const_data['s3'].getObject(const_data['getParams'], function (err, data) {
+            if (err) {
+                logger.error(err);
+                res.status(500).json({ errMsg: "Something went wrong" });
+            } else if (!data) {
+                logger.error("No data found in s3 file");
+                res.status(403).json({ errMsg: "No such data found" });
+            } else {
+                var myData = JSON.parse(data.Body.toString());
+                logger.info('--- crc district wise api response sent ---');
+                res.status(200).send(myData);
+            }
+        });
 
     } catch (e) {
         logger.error(`Error :: ${e}`)
