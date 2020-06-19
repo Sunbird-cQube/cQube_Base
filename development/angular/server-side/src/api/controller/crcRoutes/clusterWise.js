@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
 var const_data = require('../../lib/config');
+const auth = require('../../middleware/check-auth');
 var parquet = require('parquetjs-lite');
 
 router.post('/allClusterWise',auth.authController, async (req, res) => {
