@@ -128,7 +128,7 @@ export class StudengtAttendanceComponent implements OnInit {
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
       {
         token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
-        // id: 'mapbox.streets',
+        id: 'mapbox.streets',
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
         minZoom: 4,
         maxZoom: 18,
