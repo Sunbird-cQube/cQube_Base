@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['home/attendance-report']);
       }
       else if (this.role == 5) {
-        this.router.navigate(['home/changePassword']);
+        this.err = "Unauthorised User";
       }
     }, err => {
       this.err = err.error.errMsg;
