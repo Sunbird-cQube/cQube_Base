@@ -125,7 +125,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================
-      // this.SchoolInfrastructureDistrictsNames.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+      this.SchoolInfrastructureDistrictsNames.sort((a, b) => (a.district.value > b.district.value) ? 1 : ((b.district.value > a.district.value) ? -1 : 0));
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     }, err => {
@@ -173,7 +173,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
-
+      this.SchoolInfrastructureBlocksNames.sort((a, b) => (a.block.value > b.block.value) ? 1 : ((b.block.value > a.block.value) ? -1 : 0));
       // for table data
       $('#table').DataTable().destroy();
       $('#table').empty();
@@ -230,6 +230,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
+      this.SchoolInfrastructureClusterNames.sort((a, b) => (a.cluster.value > b.cluster.value) ? 1 : ((b.cluster.value > a.cluster.value) ? -1 : 0));
 
       // for table data
       $('#table').DataTable().destroy();

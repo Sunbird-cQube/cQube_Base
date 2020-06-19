@@ -50,10 +50,10 @@ const loggerWithoutEnv = createLogger();
 
 const logger = {
   error(text) {
-    loggerWithoutEnv.error(`${Config.envName}: ${text}`);
+    loggerWithoutEnv.error(`PORT: ${Config.port}: ${text}`);
   },
   info(text) {
-    loggerWithoutEnv.info(`${Config.port}: ${text}`);
+    loggerWithoutEnv.info(`PORT: ${Config.port}: ${text}`);
   },
 };
 

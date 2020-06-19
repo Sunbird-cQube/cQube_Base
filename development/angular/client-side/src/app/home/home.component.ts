@@ -16,12 +16,14 @@ export class HomeComponent implements OnInit {
   isExpanded = true;
   showSubmenu: boolean = false;
   isShowing = false;
-    
+  showUser: boolean = true;
+
   ngOnInit() {
     this.email = localStorage.getItem('email');
     this.role = localStorage.getItem('role');
     if (this.role == 1) {
       this.showsideMenu = false;
+      this.showUser = false;
     }
     if (this.role == 3) {
       this.showsideMenu = false;

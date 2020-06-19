@@ -763,9 +763,9 @@ export class SemViewComponent implements OnInit {
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         // this.dateRange = this.markers[i]['data_from_date'] + " to " + this.markers[i]['data_upto_date'];
-
+        var markerIcon;
         if (options.weight) {
-          var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
+          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: options.radius,
             color: this.colors[i],
             fillColor: this.colors[i],
@@ -774,7 +774,7 @@ export class SemViewComponent implements OnInit {
             weight: options.weight
           })
         } else {
-          var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
+          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: options.radius,
             color: this.colors[i],
             fillColor: this.colors[i],

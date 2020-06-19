@@ -64,14 +64,14 @@
               expand_more</mat-icon>
           </mat-list-item>
           <div class="submenu1" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['school-infra-map']" (click)="sidenav.toggle() "
+            <a mat-list-item [routerLink]="['school-infra-map']" (click)="sidenav.toggle() " id="mapReport"
               (click)="showSubmenu = !showSubmenu"><span style="margin-left: 50px;">Map
                 based Report</span></a>
             <a mat-list-item [routerLink]="['school-infrastructure']" (click)="sidenav.toggle()"
               (click)="showSubmenu = !showSubmenu"><span style="margin-left: 50px;">Report</span></a>
           </div>
         </mat-nav-list>
-        <mat-nav-list>
+        <mat-nav-list *ngIf="showUser">
           <mat-list-item (click)="showSubmenu1 = !showSubmenu1" class="abc1"
             style="font-family: Arial; border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
