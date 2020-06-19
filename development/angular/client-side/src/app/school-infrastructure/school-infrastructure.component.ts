@@ -568,6 +568,7 @@ export class SchoolInfrastructureComponent implements OnInit {
         legend: {
           display: false
         },
+        responsive: true,
         tooltips: {
           custom: function (tooltip) {
             if (!tooltip) return;
@@ -592,7 +593,7 @@ export class SchoolInfrastructureComponent implements OnInit {
             },
             ticks: {
               min: 0,
-              max: 100
+              // max: 100
             },
             scaleLabel: {
               display: true,
@@ -607,7 +608,7 @@ export class SchoolInfrastructureComponent implements OnInit {
             },
             ticks: {
               min: 0,
-              max: 100
+              // max: 100
             },
             scaleLabel: {
               display: true,

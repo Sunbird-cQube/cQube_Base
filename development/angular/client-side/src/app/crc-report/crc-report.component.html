@@ -76,7 +76,8 @@
     <div class="row" style="margin-top: 2px;">
         <div class="col-sm-12">
             <p style="font-size: 11px; vertical-align:middle; line-height: 1.2em;text-align: justify;">
-                <strong> NOTE:</strong> The dashboard here provides insights using the CRC App data. We have derived several
+                <strong> NOTE:</strong> The dashboard here provides insights using the CRC App data. We have derived
+                several
                 normalised
                 metrics
                 using the raw data and you can read more about them using the following link. A key feature of this
@@ -98,8 +99,8 @@
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-6">
-                    X-AXIS: <select id="x_axis"
-                        style="margin-right: 30px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                    X-AXIS:<select id="x_axis"
+                        style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
                             x-axis
@@ -111,7 +112,7 @@
                     </select>
                 </div>
                 <div class="col-sm-6">
-                    Y-AXIS: <select id="y_axis"
+                    Y-AXIS:<select id="y_axis"
                         style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
                         <option [value]="yAxis" disabled selected="selected">choose

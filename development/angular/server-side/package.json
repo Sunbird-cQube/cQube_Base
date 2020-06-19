@@ -24,6 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.1.2",
     "moment": "^2.25.3",
+    "parquetjs-lite": "^0.8.7",
     "winston": "^2.4.1"
   }
 }

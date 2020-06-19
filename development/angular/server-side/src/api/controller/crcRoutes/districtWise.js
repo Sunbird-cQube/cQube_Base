@@ -1,40 +1,33 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
-var groupArray = require('group-array');
-const crcHelper = require('./crcHelper');
 const auth = require('../../middleware/check-auth');
-const s3File = require('./s3File');
+var const_data = require('../../lib/config');
+var parquet = require('parquetjs-lite');
 
-router.post('/districtWise', auth.authController, async (req, res) => {
+router.post('/districtWise', async (req, res) => {
     try {
-        logger.info('--- crc district wise api ---');
+        logger.info('--- crc all district wise api ---');
 
-        // to store the s3 file data to variables
-        let fullData = {}
+        const_data['getParams']['Key'] = `test/crc_district_test.snappy`;
+        let reader = await parquet.ParquetReader.openS3(const_data['s3'], const_data['getParams']);
 
-        fullData = {
-            frequencyData: await s3File.frequencyData(),
-            crcMetaData: await s3File.crcMetaData()
+        let cursor = reader.getCursor();
+        let record = null;
+
+        while (record = await cursor.next()) {
+            for (let i = 0; i < record.visits.array.length; i++) {
+                record.visits.array[i]['totalSchools'] = parseInt(record.visits.array[i].totalSchools);
+                record.visits.array[i]['districtId'] = parseInt(record.visits.array[i].districtId);
+            }
+            record.schoolsVisitedCount['totalSchoolsVisited'] = parseInt(record.schoolsVisitedCount.totalSchoolsVisited);
+            record.schoolsVisitedCount['totalSchoolsNotVisited'] = parseInt(record.schoolsVisitedCount.totalSchoolsNotVisited);
+
+            logger.info('--- crc all district api response sent ---');
+            res.status(200).send({ visits: record.visits.array, schoolsVisitedCount: record.schoolsVisitedCount });
         }
-
-        if (fullData.frequencyData.length > 0 && fullData.crcMetaData.length > 0) {
-            // crc meta data group by district id
-            let crcMetaDataGroupData = groupArray(fullData.crcMetaData, 'district_id');
-
-            // crc frequency data group by district_id
-            let crcFrequencyGroupData = groupArray(fullData.frequencyData, 'district_id');
-
-            let level = 'district';
-
-            let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-            logger.info('--- crc district wise api response sent ---');
-            res.status(200).send(crcResult);
-        } else {
-            res.status(500).json({ errMsg: "Something went wrong" });
-        }
-
+        await reader.close();
     } catch (e) {
-        logger.error(`Error :: ${e}`)
+        logger.error(e);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
