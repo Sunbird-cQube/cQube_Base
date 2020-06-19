@@ -1,14 +1,13 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { AppServiceComponent } from '../app.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  @Output() closeModalEvent = new EventEmitter<boolean>();
   err: string = '';
   logData: any = {};
   modal = true;
@@ -34,11 +33,8 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('user_id', res['user_id']);
       this.role = res['role'];
 
-      if (this.role == 1) {
+      if (this.role == 1 || this.role == 3) {
         this.router.navigate(['home/attendance-report']);
-      }
-      else if (this.role == 3) {
-        this.router.navigate(['home/attendance-report'])
       }
       else if (this.role == 5) {
         this.router.navigate(['home/changePassword']);

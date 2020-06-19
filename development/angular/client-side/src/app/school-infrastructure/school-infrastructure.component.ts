@@ -125,7 +125,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================
-      // this.SchoolInfrastructureDistrictsNames.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+      this.SchoolInfrastructureDistrictsNames.sort((a, b) => (a.district.value > b.district.value) ? 1 : ((b.district.value > a.district.value) ? -1 : 0));
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     }, err => {
@@ -138,7 +138,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
     }
-
     this.xAxisFilter = [];
     this.yAxisFilter = [];
     this.downloadLevel = 'block';
@@ -174,7 +173,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
-
+      this.SchoolInfrastructureBlocksNames.sort((a, b) => (a.block.value > b.block.value) ? 1 : ((b.block.value > a.block.value) ? -1 : 0));
       // for table data
       $('#table').DataTable().destroy();
       $('#table').empty();
@@ -224,15 +223,14 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    console.log(this.dist, data);
     this.myData = this.service.infraClusterWise(this.distName, data).subscribe(res => {
-      console.log(res);
       this.reportData = this.SchoolInfrastructureClusterNames = this.result = res;
       // for download========
       this.funToDownload(this.reportData);
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
+      this.SchoolInfrastructureClusterNames.sort((a, b) => (a.cluster.value > b.cluster.value) ? 1 : ((b.cluster.value > a.cluster.value) ? -1 : 0));
 
       // for table data
       $('#table').DataTable().destroy();
@@ -397,27 +395,19 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   showChart(result, downloadType) {
+    var l = undefined;
     if (downloadType == "dist") {
-      for (i = 3; i < Object.keys(result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-      }
+      l = 3;
     } else if (downloadType == "block") {
-      for (i = 4; i < Object.keys(result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-      }
+      l = 4;
     } else if (downloadType == "cluster") {
-      console.log(result);
-      for (i = 5; i < Object.keys(result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-      }
+      l = 5;
     } else if (downloadType == "school") {
-      for (i = 6; i < Object.keys(result[0]).length; i++) {
-        this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-        this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-      }
+      l = 6;
+    }
+    for (i = l; i < Object.keys(result[0]).length; i++) {
+      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
     }
 
     var labels = [];

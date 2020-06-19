@@ -108,7 +108,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
 
                 filterData = blockData.filter(obj => {
                     return (obj.district_id == distId)
-                })
+                });
 
                 // input date range
                 // let startDate = req.body.startDate;

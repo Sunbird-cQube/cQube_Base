@@ -21,22 +21,23 @@ router.post('/blockWise', auth.authController, async (req, res) => {
                 var studentCount = 0;
                 var schoolCount = 0;
                 var blockData = [];
-                JSON.parse(data.Body.toString()).map(item => {
-                    studentCount = studentCount + Number(item['students_count']);
-                    schoolCount = schoolCount + Number(item['total_schools']);
+                var myData = JSON.parse(data.Body.toString());
+                for (let i = 0; i < myData.length; i++) {
+                    studentCount = studentCount + Number(myData[i]['students_count']);
+                    schoolCount = schoolCount + Number(myData[i]['total_schools']);
                     var obj = {
-                        id: item['x_axis'],
-                        distId: item['district_id'],
-                        dist: item['district_name'],
-                        name: item['block_name'],
-                        label: item['x_value'],
-                        lat: item['y_value'],
-                        lng: item['z_value'],
-                        stdCount: (item['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        schCount: (item['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        id: myData[i]['x_axis'],
+                        distId: myData[i]['district_id'],
+                        dist: myData[i]['district_name'],
+                        name: myData[i]['block_name'],
+                        label: myData[i]['x_value'],
+                        lat: myData[i]['y_value'],
+                        lng: myData[i]['z_value'],
+                        stdCount: (myData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        schCount: (myData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                     }
                     blockData.push(obj);
-                });
+                };
                 logger.info('--- Attendance block wise api response sent ---');
                 res.status(200).send({ blockData: blockData, studentCount: studentCount, schoolCount: schoolCount });
             }
@@ -62,23 +63,25 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
             var studentCount = 0;
             var schoolCount = 0;
             var blockData = [];
-            allBlocks.data.blockData.map(blocks => {
-                if (distId === blocks.distId) {
-                    studentCount = studentCount + Number(blocks.stdCount.replace(/\,/g, ''));
-                    schoolCount = schoolCount + Number(blocks.schCount.replace(/\,/g, ''));
-                    obj = {
-                        id: blocks['id'],
-                        name: blocks['name'],
-                        dist: blocks['dist'],
-                        label: blocks['label'],
-                        lat: blocks['lat'],
-                        lng: blocks['lng'],
-                        stdCount: (blocks['stdCount']),
-                        schCount: (blocks['schCount']),
-                    }
-                    blockData.push(obj);
+            var filterData = allBlocks.data.blockData.filter(data => {
+                return (data.distId == distId)
+            });
+            var myData = filterData;
+            for (let i = 0; i < myData.length; i++) {
+                studentCount = studentCount + Number(myData[i].stdCount.replace(/\,/g, ''));
+                schoolCount = schoolCount + Number(myData[i].schCount.replace(/\,/g, ''));
+                var obj = {
+                    id: myData[i]['id'],
+                    name: myData[i]['name'],
+                    dist: myData[i]['dist'],
+                    label: myData[i]['label'],
+                    lat: myData[i]['lat'],
+                    lng: myData[i]['lng'],
+                    stdCount: (myData[i]['stdCount']),
+                    schCount: (myData[i]['schCount']),
                 }
-            })
+                blockData.push(obj);
+            }
             logger.info('--- Attendance blockPerDist api response sent ---');
             res.status(200).send({ blockData: blockData, studentCount: studentCount, schoolCount: schoolCount });
         }

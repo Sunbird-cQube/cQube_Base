@@ -15,8 +15,7 @@ router.post('/allSchoolWise', auth.authController, function (req, res) {
                 logger.error("No data found in s3 file");
                 res.status(403).json({ errMsg: "No such data found" });
             } else {
-                var mydata = [];
-                JSON.parse((data.Body).toString()).forEach(school => {
+                var mydata = JSON.parse((data.Body).toString()).map(school => {
                     var obj = {
                         lat: school.lat,
                         lng: school.long,
@@ -47,7 +46,7 @@ router.post('/allSchoolWise', auth.authController, function (req, res) {
                         girls_toilet_percent: school.girls_toilet_percent
 
                     }
-                    mydata.push(obj);
+                    return obj;
                 });
                 logger.info('---Infra school wise api response sent---');
                 console.log(mydata.length);
@@ -83,8 +82,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                     return (obj.district_id == distId && obj.block_id == blockId && obj.cluster_id == clusterId)
                 })
 
-                let mydata = [];
-                filterData.forEach(school => {
+                let mydata = filterData.map(school => {
                     var obj = {
                         lat: school.lat,
                         lng: school.long,
@@ -115,7 +113,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                         girls_toilet_percent: school.girls_toilet_percent
 
                     }
-                    mydata.push(obj);
+                    return obj;
                 });
                 logger.info('---Infra schoolPerCluster api response sent---');
                 res.status(200).send(mydata);

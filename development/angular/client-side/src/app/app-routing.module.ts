@@ -9,8 +9,7 @@ import { SemViewComponent } from './sem-view/sem-view.component';
 import { CrcReportComponent } from './crc-report/crc-report.component';
 import { AuthGuard } from './auth.guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { CreateUserComponent } from './create-user/create-user.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+// import { DashboardComponent } from './dashboard/dashboard.component';
 import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
 import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 
@@ -43,9 +42,6 @@ const routes: Routes = [
       },
       {
         path: 'changePassword', component: ChangePasswordComponent, canActivateChild: [AuthGuard]
-      },
-      {
-        path: 'addUser', component: CreateUserComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'school-infra-map', component: InfraMapVisualisationComponent, canActivateChild: [AuthGuard]

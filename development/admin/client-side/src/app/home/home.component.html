@@ -1,0 +1,48 @@
+<mat-toolbar color="primary" style="height: 35px;">
+  <button mat-icon-button (click)="sidenav.toggle() " id="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h4>cQube - Dashboard </h4>
+  <span style="flex: 1 1 auto;"></span>
+  <span id="logout" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()">
+    <strong>Logout</strong>
+  </span>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list style="font-family: Arial;" class=sidenav>
+      <mat-toolbar style="height: 80px; background-color: white; border-bottom: 1px solid lightgray;">
+        <mat-toolbar-row style="color: rgb(84, 116, 223);">
+          <span class="span" style="font-size: 15px;"><b>Logged in as: </b><br>
+            <span>{{email}}</span></span>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <div *ngIf="!showsideMenu">
+        <a id="SAR" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['create-user']">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Create User </td>
+        </a>
+        <a id="SAR" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['change-password']">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Change Password </td>
+        </a>
+      </div>
+
+      <span class="toolbar-filler"></span>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="height: 93vh;">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -9,7 +9,7 @@ const dashboard = require('./controller/dashboardRoutes/dashboard');
 
 const roleLogin = require('./controller/users/roleBasedLogin');
 const changePasswd = require('./controller/users/changePassword');
-const addUser = require('./controller/users/addUser');
+
 // const crcData = require('./controller/users/crcData');
 // crc files
 const crcDistrictWise = require('../api/controller/crcRoutes/districtWise');
@@ -54,7 +54,6 @@ router.use('/attendance', getDateRange)
 // user details routes
 router.use('/roleBasedLogin', roleLogin);
 router.use('/changePassword', changePasswd);
-router.use('/addUser', addUser);
 router.use('/dashboard', dashboard);
 
 // Infra
