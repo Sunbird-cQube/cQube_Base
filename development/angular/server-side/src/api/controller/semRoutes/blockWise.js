@@ -5,7 +5,6 @@ const auth = require('../../middleware/check-auth');
 
 router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
-        var filterData = ''
         logger.info('--- all blocks sem api ---');
         const_data['getParams']['Key'] = 'semester/block_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
@@ -108,7 +107,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
 
                 filterData = blockData.filter(obj => {
                     return (obj.district_id == distId)
-                })
+                });
 
                 // input date range
                 // let startDate = req.body.startDate;

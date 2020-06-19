@@ -4,7 +4,7 @@ const auth = require('../../middleware/check-auth');
 var const_data = require('../../lib/config');
 var parquet = require('parquetjs-lite');
 
-router.post('/allSchoolWise', async (req, res) => {
+router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all school wise api ---');
 
@@ -31,7 +31,7 @@ router.post('/allSchoolWise', async (req, res) => {
     }
 })
 
-router.post('/schoolWise/:distId/:blockId/:clusterId', async (req, res) => {
+router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc school per cluster, per block and per district api ---');
         const_data['getParams']['Key'] = `test/crc_school_test.snappy`;
@@ -63,7 +63,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', async (req, res) => {
             logger.info('--- crc school per cluster, per block and per district api response sent ---');
             res.status(200).send({ visits: filterData, schoolsVisitedCount: schoolsVisitedCount });
         }
-        await reader.close();       
+        await reader.close();
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

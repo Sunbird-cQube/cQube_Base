@@ -9,15 +9,15 @@ router.post('/', auth.authController, async function (req, res) {
         logger.info('---Create user api ---');
 
         const_data['getParams']['Key'] = 'static/users.json'
-        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
-            if (err) {
-                logger.error(err);
+        const_data['s3'].getObject(const_data['getParams'], async function (error, data) {
+            if (error) {
+                logger.error(error);
                 res.status(500).json({ msg: "Something went wrong" });
             } else if (!data) {
                 logger.error("No data found in s3 file");
                 res.status(403).json({ msg: "No such data found" });
             } else {
-                users = JSON.parse(data.Body.toString());
+                let users = JSON.parse(data.Body.toString());
 
                 let sorted = users.sort((a, b) => (a.user_id > b.user_id) ? 1 : ((b.user_id > a.user_id) ? -1 : 0));
                 let user = users.find(u => u.user_email === req.body.email);
@@ -34,11 +34,7 @@ router.post('/', auth.authController, async function (req, res) {
                         req.body['lastname'] = null;
                     }
 
-                    // var startDate = new Date(req.body.start_date).valueOf();
-                    // var endDate = new Date(req.body.end_date).valueOf();
                     var createdOn = `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)} ${(new Date()).toLocaleTimeString('en-IN', { hour12: false })}`
-
-                    // console.log(startDate,endDate , createdOn);
 
                     const hashedPassword = await bcrypt.hash(req.body.cnfpass, 10);
 
@@ -68,7 +64,7 @@ router.post('/', auth.authController, async function (req, res) {
                         Key: "static/users.json",
                         Body: JSON.stringify(users)
                     };
-                    const_data['s3'].upload(params, function (err, data) {
+                    const_data['s3'].upload(params, function (err, result) {
                         if (err) {
                             console.log('ERROR MSG: ', err);
                         } else {

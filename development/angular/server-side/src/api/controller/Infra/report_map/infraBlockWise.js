@@ -17,8 +17,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
             } else {
                 let blockData = data.Body.toString();
                 blockData = JSON.parse(blockData);
-                var mydata = [];
-                blockData.forEach(block => {
+                var mydata = blockData.map(block => {
                     var obj = {
                         lat: block.lat,
                         lng: block.long,
@@ -45,7 +44,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                         girls_toilet_percent: block.girls_toilet_percent
 
                     }
-                    mydata.push(obj);
+                    return obj;
                 });
                 logger.info('--- blocks infra api response sent---');
                 res.status(200).send(mydata);
@@ -77,8 +76,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                 let filterData = blockData.filter(obj => {
                     return (obj.district_id == distId)
                 })
-                let mydata = [];
-                filterData.forEach(block => {
+                let mydata = filterData.map(block => {
                     var obj = {
                         lat: block.lat,
                         lng: block.long,
@@ -105,7 +103,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                         girls_toilet_percent: block.girls_toilet_percent
 
                     }
-                    mydata.push(obj);
+                    return obj;
                 });
                 logger.info('--- block per dist infra api response sent---');
                 res.status(200).send(mydata);

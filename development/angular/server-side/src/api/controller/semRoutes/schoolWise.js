@@ -64,7 +64,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 });
 
                 // sort the resultant data based on the attendance percentage to generate color gradients
-                sortedData = blockDetails.sort((a, b) => (parseFloat(a.assesmentPercentage) > parseFloat(b.assesmentPercentage)) ? 1 : -1)
+               var sortedData = blockDetails.sort((a, b) => (parseFloat(a.assesmentPercentage) > parseFloat(b.assesmentPercentage)) ? 1 : -1)
 
                 // final result object
                 let resultObj = {
@@ -155,7 +155,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 });
 
                 // sort the resultant data based on the attendance percentage to generate color gradients
-                sortedData = blockDetails.sort((a, b) => (parseFloat(a.assesmentPercentage) > parseFloat(b.assesmentPercentage)) ? 1 : -1)
+               var sortedData = blockDetails.sort((a, b) => (parseFloat(a.assesmentPercentage) > parseFloat(b.assesmentPercentage)) ? 1 : -1)
 
                 // final result object
                 let resultObj = {

@@ -138,12 +138,6 @@ export class AppServiceComponent {
         });
     }
 
-    addUser(data) {
-        return this.http.post(`${this.baseUrl}/addUser`, data, {
-            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-        });
-    }
-
     // dashboard data 
 
     dashboard() {

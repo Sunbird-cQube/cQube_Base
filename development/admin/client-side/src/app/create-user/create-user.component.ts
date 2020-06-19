@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppServiceComponent } from '../app.service';
+import { AppService } from '../app.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
@@ -23,7 +23,7 @@ export class CreateUserComponent implements OnInit {
   futureDate: any;
   maxDate;
 
-  constructor(private service: AppServiceComponent, private router: Router) {
+  constructor(private service: AppService, private router: Router) {
 
   }
 
@@ -32,12 +32,13 @@ export class CreateUserComponent implements OnInit {
   }
 
   dateCheck() {
+    var element
     this.minValidate = (this.minDate > this.logData.start_date);
     if (this.logData.start_date === undefined || this.minValidate) {
-      var element = <HTMLFormElement>document.getElementById('endDate');
+      element = <HTMLFormElement>document.getElementById('endDate');
       element.disabled = true;
     } else {
-      var element = <HTMLFormElement>document.getElementById('endDate');
+      element = <HTMLFormElement>document.getElementById('endDate');
       element.disabled = false;
       this.minValidate = (this.minDate > this.logData.start_date);
     }
@@ -72,5 +73,4 @@ export class CreateUserComponent implements OnInit {
       });
     }
   }
-
 }

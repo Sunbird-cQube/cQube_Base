@@ -21,24 +21,25 @@ router.post('/clusterWise', auth.authController, function (req, res) {
                 var studentCount = 0;
                 var schoolCount = 0;
                 var clusterData = [];
-                JSON.parse(data.Body.toString()).map(item => {
-                    studentCount = studentCount + Number(item['students_count']);
-                    schoolCount = schoolCount + Number(item['total_schools']);
+                var myData = JSON.parse(data.Body.toString());
+                for (let i = 0; i < myData.length; i++) {
+                    studentCount = studentCount + Number(myData[i]['students_count']);
+                    schoolCount = schoolCount + Number(myData[i]['total_schools']);
                     var obj = {
-                        id: item['x_axis'],
-                        name: item['cluster_name'],
-                        distId: item['district_id'],
-                        dist: item['district_name'],
-                        blockId: item['block_id'],
-                        block: item['block_name'],
-                        label: item['x_value'],
-                        lat: item['y_value'],
-                        lng: item['z_value'],
-                        stdCount: (item['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        schCount: (item['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        id: myData[i]['x_axis'],
+                        name: myData[i]['cluster_name'],
+                        distId: myData[i]['district_id'],
+                        dist: myData[i]['district_name'],
+                        blockId: myData[i]['block_id'],
+                        block: myData[i]['block_name'],
+                        label: myData[i]['x_value'],
+                        lat: myData[i]['y_value'],
+                        lng: myData[i]['z_value'],
+                        stdCount: (myData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        schCount: (myData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                     }
                     clusterData.push(obj);
-                });
+                };
                 logger.info('--- Attendance cluster wise api response sent ---');
                 res.status(200).send({ clusterData: clusterData, studentCount: studentCount, schoolCount: schoolCount });
             }
@@ -66,27 +67,28 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
         } else {
             var studentCount = 0;
             var schoolCount = 0;
-            allClusters.data.clusterData.map(clusters => {
-                if (blockId === clusters.blockId) {
-                    studentCount = studentCount + Number(clusters.stdCount.replace(/\,/g, ''));
-                    schoolCount = schoolCount + Number(clusters.schCount.replace(/\,/g, ''));
-                    obj = {
-                        id: clusters['id'],
-                        name: clusters['name'],
-                        distId: clusters['distId'],
-                        dist: clusters['dist'],
-                        blockId: clusters['blockId'],
-                        block: clusters['block'],
-                        label: clusters['label'],
-                        lat: clusters['lat'],
-                        lng: clusters['lng'],
-                        stdCount: (clusters['stdCount']),
-                        schCount: (clusters['schCount']),
-                    }
-                    clusterDetails.push(obj);
-                }
-
+            var filterData = allClusters.data.clusterData.filter(data => {
+                return (data.blockId == blockId)
             });
+            var myData = filterData;
+            for (let i = 0; i < myData.length; i++) {
+                studentCount = studentCount + Number(myData[i].stdCount.replace(/\,/g, ''));
+                schoolCount = schoolCount + Number(myData[i].schCount.replace(/\,/g, ''));
+                var obj = {
+                    id: myData[i]['id'],
+                    name: myData[i]['name'],
+                    distId: myData[i]['distId'],
+                    dist: myData[i]['dist'],
+                    blockId: myData[i]['blockId'],
+                    block: myData[i]['block'],
+                    label: myData[i]['label'],
+                    lat: myData[i]['lat'],
+                    lng: myData[i]['lng'],
+                    stdCount: (myData[i]['stdCount']),
+                    schCount: (myData[i]['schCount']),
+                }
+                clusterDetails.push(obj);
+            };
             await logger.info('--- Attendance clusterPerBlock api response sent ---');
             res.status(200).send({ clusterDetails: clusterDetails, studentCount: studentCount, schoolCount: schoolCount });
         }
