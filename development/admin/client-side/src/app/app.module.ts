@@ -15,7 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { AngularLogsComponent } from './angular-logs/angular-logs.component';
+import { AllLogsComponent } from './allLogs/allLogs.component';
 import { NodeLogsComponent } from './node-logs/node-logs.component';
 
 @NgModule({
@@ -25,7 +25,7 @@ import { NodeLogsComponent } from './node-logs/node-logs.component';
     LoginComponent,
     HomeComponent,
     ChangePasswordComponent,
-    AngularLogsComponent,
+    AllLogsComponent,
     NodeLogsComponent
   ],
   imports: [

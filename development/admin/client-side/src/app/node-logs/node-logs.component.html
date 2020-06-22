@@ -1,8 +1,14 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-7">
-            <h2>Node API Logs</h2>
+        <div class="col-sm-12">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <h2>Node API Logs <button class="btn btn-secondary" style="float: right; margin-top: 0.5%;"
+                    (click)="downloadNodeLog()">Download all logs</button></h2>
             <hr>
             <pre>{{logs}}</pre>
         </div>

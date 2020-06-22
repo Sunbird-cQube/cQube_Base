@@ -26,8 +26,20 @@ export class AppService {
         });
     }
 
-    nodeLogs() {
-        return this.http.get(`${this.baseUrl}/nodeLog`, {
+    nodeLogs(data) {
+        return this.http.post(`${this.baseUrl}/logs/nodeLog`, { data }, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    angularLogs(data) {
+        return this.http.post(`${this.baseUrl}/logs/angularLog`, { data }, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    nifiLogs(data) {
+        return this.http.post(`${this.baseUrl}/logs/nifiLog`, { data }, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }

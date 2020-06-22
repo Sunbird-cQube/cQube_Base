@@ -5,7 +5,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { AngularLogsComponent } from './angular-logs/angular-logs.component';
+import { AllLogsComponent } from './allLogs/allLogs.component';
 import { NodeLogsComponent } from './node-logs/node-logs.component';
 
 const routes: Routes = [
@@ -24,7 +24,7 @@ const routes: Routes = [
         path: 'change-password', component: ChangePasswordComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'angular-logs', component: AngularLogsComponent, canActivateChild: [AuthGuard]
+        path: 'all-logs', component: AllLogsComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'node-logs', component: NodeLogsComponent, canActivateChild: [AuthGuard]

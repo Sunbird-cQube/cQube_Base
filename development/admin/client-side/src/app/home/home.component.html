@@ -35,6 +35,7 @@
           <td>
             &nbsp;&nbsp; Change Password </td>
         </a>
+        
         <mat-nav-list *ngIf="showLogs">
           <mat-list-item (click)="showSubmenu1 = !showSubmenu1" class="abc1"
             style="font-family: Arial; border-bottom: 1px solid lightgray;">
@@ -44,8 +45,8 @@
               expand_more</mat-icon>
           </mat-list-item>
           <div class="submenu" [ngClass]="{'expanded' : showSubmenu1}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['angular-logs']" id="angLogs" (click)="sidenav.toggle()"
-              (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">Angular Logs</span></a>
+            <a mat-list-item [routerLink]="['all-logs']" id="angLogs" (click)="sidenav.toggle()"
+              (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">All Logs</span></a>
             <a mat-list-item [routerLink]="['node-logs']" id="nodeLogs" (click)="sidenav.toggle()"
               (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">NodeJS Logs</span></a>
           </div>
