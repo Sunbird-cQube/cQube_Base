@@ -234,7 +234,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.levelWise = "District";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `District_wise_report_${month.name}_${this.year}`;
+      this.fileName = `District_wise_report_${month.name.trim()}_${this.year}`;
       if (this.myData) {
         this.myData.unsubscribe();
       }
@@ -303,7 +303,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.levelWise = "Block";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Block_wise_report_${month.name}_${this.year}`
+      this.fileName = `Block_wise_report_${month.name.trim()}_${this.year}`
 
       if (this.myData) {
         this.myData.unsubscribe();
@@ -375,7 +375,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.levelWise = "School";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `School_wise_report_${month.name}_${this.year}`
+      this.fileName = `School_wise_report_${month.name.trim()}_${this.year}`
 
       if (this.myData) {
         this.myData.unsubscribe();
@@ -455,7 +455,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.levelWise = "Cluster";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Cluster_wise_report_${month.name}_${this.year}`
+      this.fileName = `Cluster_wise_report_${month.name.trim()}_${this.year}`
 
       if (this.myData) {
         this.myData.unsubscribe();
@@ -646,7 +646,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.hierName = '';
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Block_per_district_report_${month.name}_${this.year}`;
+      this.fileName = `Block_per_district_report_${month.name.trim()}_${this.year}`;
       this.distName = { id: data, name: obj.name };
       this.hierName = obj.name;
       localStorage.setItem('dist', obj.name);
@@ -745,7 +745,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.blockHidden = false;
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Cluster_per_block_report_${month.name}_${this.year}`;
+      this.fileName = `Cluster_per_block_report_${month.name.trim()}_${this.year}`;
       var blockNames = [];
       this.blocksNames.forEach(item => {
         if (item.distId && item.distId === Number(localStorage.getItem('distId'))) {
@@ -866,7 +866,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.blockHidden = false;
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Schools_per_cluster_report_${month.name}_${this.year}`;
+      this.fileName = `Schools_per_cluster_report_${month.name.trim()}_${this.year}`;
 
       let obj = this.clusterNames.find(o => o.id == data);
       var blockNames = [];
