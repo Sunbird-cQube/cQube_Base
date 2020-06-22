@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../src/environments/environment';
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AppService {
 
@@ -22,6 +22,12 @@ export class AppService {
 
     changePassword(data) {
         return this.http.post(`${this.baseUrl}/changePassword`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    nodeLogs() {
+        return this.http.get(`${this.baseUrl}/nodeLog`, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }

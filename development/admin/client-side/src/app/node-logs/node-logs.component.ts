@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-node-logs',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./node-logs.component.css']
 })
 export class NodeLogsComponent implements OnInit {
+  public logs;
+  constructor(private router: Router, private service: AppService) { }
 
-  constructor() { }
-
-  ngOnInit(): void {
+  ngOnInit() {
+    this.service.nodeLogs().subscribe(res => {
+      this.logs = res;
+    })
   }
 
 }
