@@ -7,6 +7,8 @@ import { AuthGuard } from './auth.guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AllLogsComponent } from './allLogs/allLogs.component';
 import { NodeLogsComponent } from './node-logs/node-logs.component';
+import { AngularLogsComponent } from './angular-logs/angular-logs.component';
+import { NifiLogsComponent } from './nifi-logs/nifi-logs.component';
 
 const routes: Routes = [
   {
@@ -28,6 +30,12 @@ const routes: Routes = [
       },
       {
         path: 'node-logs', component: NodeLogsComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'angular-logs', component: AngularLogsComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'nifi-logs', component: NifiLogsComponent, canActivateChild: [AuthGuard]
       }
     ]
   }

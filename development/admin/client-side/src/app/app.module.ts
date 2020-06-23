@@ -17,6 +17,8 @@ import { HomeComponent } from './home/home.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AllLogsComponent } from './allLogs/allLogs.component';
 import { NodeLogsComponent } from './node-logs/node-logs.component';
+import { AngularLogsComponent } from './angular-logs/angular-logs.component';
+import { NifiLogsComponent } from './nifi-logs/nifi-logs.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { NodeLogsComponent } from './node-logs/node-logs.component';
     HomeComponent,
     ChangePasswordComponent,
     AllLogsComponent,
-    NodeLogsComponent
+    NodeLogsComponent,
+    AngularLogsComponent,
+    NifiLogsComponent
   ],
   imports: [
     FormsModule,
