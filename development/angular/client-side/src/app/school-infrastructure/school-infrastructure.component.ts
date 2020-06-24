@@ -130,6 +130,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      $('#table').empty();
       this.loaderAndErr();
     });
   }
@@ -185,6 +186,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      $('#table').empty();
       this.loaderAndErr();
     });
   }
@@ -243,6 +245,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      $('#table').empty();
       this.loaderAndErr();
     });
   }
@@ -298,6 +301,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      $('#table').empty();
       this.loaderAndErr();
     });
   }

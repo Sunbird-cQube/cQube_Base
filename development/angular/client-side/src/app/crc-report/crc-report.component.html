@@ -95,7 +95,7 @@
             </p>
         </div>
     </div>
-    <div class="row" style="margin-top: 0.5%;">
+    <div class="row" style="margin-top: 5px; height: 76vh;">
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-6">
@@ -125,60 +125,51 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-6">
-            <select id="dist"
-                style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
-                <option [value]="myDistrict" disabled selected="selected">Choose a District
-                </option>
-                <option *ngFor="let dist of crcDistrictsNames" [(ngValue)]="dist.districtId"
-                    style="font-family: Arial; font-size: 11px;">
-                    {{dist.districtName}}
-                </option>
-            </select>
 
-            <select [hidden]="blockHidden" id="block"
-                style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
-                <option [value]="myBlock" disabled selected="selected">Choose a Block
-                </option>
-                <option *ngFor="let block of crcBlocksNames" [(ngValue)]="block.blockId">
-                    {{block.blockName}}
-                </option>
-            </select>
-
-            <select [hidden]="clusterHidden" id="cluster"
-                style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
-                <option [value]="myCluster" disabled selected="selected">Choose a Cluster
-                </option>
-                <option *ngFor="let cluster of crcClusterNames" [(ngValue)]="cluster.clusterId"
-                    style="font-family: Arial;font-size: 11px; "
-                    [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
-                    {{cluster.clusterName}}
-                </option>
-            </select>
-        </div>
-    </div>
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-sm-6" style=" height:66.5vh; width: 100%;">
-            <p style="font-size: 11px; vertical-align:middle;line-height: 1.2em;text-align: justify;">
+            <p style="font-size: 11px;vertical-align:middle;line-height: 1.2em;text-align: justify;">
                 <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
-                dropdown
-                below. You
-                can
-                alter the metrics (calculated from the CRC App) to update the scatter plot.
+                dropdown below. You can alter the metrics (calculated from the CRC App) to update the scatter plot.
             </p>
-
-            <div>
-                <div>
-                    <canvas id="myChart" width="50vw"></canvas>
-                </div>
+            <div class="row">
+                <canvas id="myChart" height="160vh"></canvas>
             </div>
         </div>
         <div class="col-sm-6">
-            <p style="font-size: 11px; vertical-align:middle;line-height: 1.2em;text-align: justify;">
+            <div class="row">
+                <select id="dist"
+                    style="margin-right: 10px;margin-left: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                    [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
+                    <option [value]="myDistrict" disabled selected="selected">Choose a District
+                    </option>
+                    <option *ngFor="let dist of crcDistrictsNames" [(ngValue)]="dist.districtId"
+                        style="font-family: Arial; font-size: 11px;">
+                        {{dist.districtName}}
+                    </option>
+                </select>
+
+                <select [hidden]="blockHidden" id="block"
+                    style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                    [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
+                    <option [value]="myBlock" disabled selected="selected">Choose a Block
+                    </option>
+                    <option *ngFor="let block of crcBlocksNames" [(ngValue)]="block.blockId">
+                        {{block.blockName}}
+                    </option>
+                </select>
+
+                <select [hidden]="clusterHidden" id="cluster"
+                    style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                    [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
+                    <option [value]="myCluster" disabled selected="selected">Choose a Cluster
+                    </option>
+                    <option *ngFor="let cluster of crcClusterNames" [(ngValue)]="cluster.clusterId"
+                        style="font-family: Arial;font-size: 11px; "
+                        [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
+                        {{cluster.clusterName}}
+                    </option>
+                </select>
+            </div>
+            <p style="font-size: 11px;margin-top: 0.5%; vertical-align:middle;line-height: 1.2em;text-align: justify;">
                 <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
                 dropdown
                 below. You
@@ -186,13 +177,12 @@
                 alter the metrics (calculated from the CRC App) to update the scatter plot.
             </p>
             <div class="myDiv">
-                <table #dataTable id="table" class="display responsive cell-border" style="font-size: 11px;">
+                <table #dataTable id="table" class="display responsive cell-border"
+                    style="font-size: 11px; text-align: center; width: 100%; border: 1px solid gray;">
                 </table>
             </div>
         </div>
-
     </div>
-
     <div class="row"
         style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; padding: 5px 0px 5px 0px;margin: 0px 0px 0px 0px;font-family: Arial;position: fixed; bottom: 0; left: 0;">
         <div style="margin-right: 7%; margin-left: 1%;">
