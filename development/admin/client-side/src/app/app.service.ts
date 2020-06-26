@@ -44,4 +44,33 @@ export class AppService {
         });
     }
 
+    allUsers() {
+        return this.http.post(`${this.baseUrl}/allUsers`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    changeStatus(id, updaterId) {
+        return this.http.post(`${this.baseUrl}/allUsers/changeStatus/${id}`, { updaterId: updaterId }, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    deleteUser(id) {
+        return this.http.post(`${this.baseUrl}/allUsers/deleteUser/${id}`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+    editUser(id, data) {
+        return this.http.post(`${this.baseUrl}/allUsers/editUser/${id}`, {data: data}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    getCurrentUser(id) {
+        return this.http.post(`${this.baseUrl}/allUsers/getUser/${id}`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
 }

@@ -19,9 +19,9 @@ export class AngularLogsComponent implements OnInit {
     })
   }
 
-  downloadNodeLog() {
+  downloadAngularLog() {
     this.service.angularLogs(true).subscribe(res => {
-      this.fileName = "nodeLogs"
+      this.fileName = "angular"
       this.dyanmicDownloadByHtmlTag({
         fileName: this.fileName,
         text: res.toString()

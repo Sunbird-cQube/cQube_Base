@@ -45,8 +45,8 @@
               expand_more</mat-icon>
           </mat-list-item>
           <div class="submenu" [ngClass]="{'expanded' : showSubmenu1}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['all-logs']" id="angLogs" (click)="sidenav.toggle()"
-              (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">All Logs</span></a>
+            <!-- <a mat-list-item [routerLink]="['all-logs']" id="angLogs" (click)="sidenav.toggle()"
+              (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">All Logs</span></a> -->
             <a mat-list-item [routerLink]="['node-logs']" id="nodeLogs" (click)="sidenav.toggle()"
               (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">NodeJS Logs</span></a>
             <a mat-list-item [routerLink]="['angular-logs']" id="nodeLogs" (click)="sidenav.toggle()"
@@ -55,6 +55,22 @@
               (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">Nifi Logs</span></a>
           </div>
         </mat-nav-list>
+        <a id="user" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['users']">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; All Users </td>
+        </a>
+        <a id="downloads" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['s3FileDownload']">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; S3 File Download </td>
+        </a>
       </div>
 
       <span class="toolbar-filler"></span>

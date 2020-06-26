@@ -551,7 +551,6 @@ export class SchoolInfrastructureComponent implements OnInit {
         }
       });
     });
-
   }
 
   createChart(labels, chartData, name, obj) {

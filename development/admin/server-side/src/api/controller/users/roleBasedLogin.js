@@ -24,22 +24,26 @@ router.post('/', function (req, res) {
                         res.status(200).json({ msg: "Logged In", token: data, role: user.role_id, user_id: user.user_id });
                     })
                 } else {
-                    const roleUser = users.find(u => u.user_email === req.body.email && u.user_status === 1);
+                    const roleUser = users.find(u => u.user_email === req.body.email && u.role_id === 1);
                     if (roleUser) {
-                        if (roleUser.user_validity_end_date > `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)}`) {
-                            bcrypt.compare(req.body.cnfpass, roleUser.password, function (err, result) {
-                                if (result == true) {
-                                    if (roleUser) {
-                                        jwt.sign(roleUser, 'secret', { expiresIn: '24h' }, (err, data) => {
-                                            res.status(200).json({ msg: "Logged In", email: roleUser.user_email, token: data, role: roleUser.role_id, user_id: roleUser.user_id });
-                                        })
+                        if (roleUser.user_status == 1) {
+                            if (roleUser.user_validity_end_date > `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)}`) {
+                                bcrypt.compare(req.body.cnfpass, roleUser.password, function (err, result) {
+                                    if (result == true) {
+                                        if (roleUser) {
+                                            jwt.sign(roleUser, 'secret', { expiresIn: '24h' }, (err, data) => {
+                                                res.status(200).json({ msg: "Logged In", email: roleUser.user_email, token: data, role: roleUser.role_id, user_id: roleUser.user_id });
+                                            })
+                                        }
+                                    } else {
+                                        res.status(401).json({ errMsg: "Password is wrong" });
                                     }
-                                } else {
-                                    res.status(401).json({ errMsg: "Password is wrong" });
-                                }
-                            });
+                                });
+                            } else {
+                                res.status(403).json({ errMsg: "User validity exceeded" });
+                            }
                         } else {
-                            res.status(403).json({ errMsg: "User validity exceeded" });
+                            res.status(403).json({ errMsg: "User deactivated" });
                         }
                     } else {
                         res.status(403).json({ errMsg: "User not found" });

@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>S3 Files Download: </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+
+            <select id="choose_dist"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="myDistrict" name="myDistrict" (change)="">
+                <option [value]="myDistrict" disabled selected="selected" style="color: white;">Choose a District
+                </option>
+                <option *ngFor="" [(ngValue)]=""
+                    style="font-family: Arial; font-size: 11px;">
+                    {{dist.name}}
+                </option>
+            </select>
+
+            <select [hidden]="blockHidden" id="choose_block"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
+                <option [value]="myBlock" disabled selected="selected" style="color: white;">Choose a Block
+                </option>
+                <option *ngFor="let block of blocksNames" [(ngValue)]="block.id"
+                    style="font-family: Arial;font-size: 11px;">
+                    {{block.name}}
+                </option>
+            </select>
+
+            <select [hidden]="clusterHidden" id="choose_cluster"
+                style="padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
+                <option [value]="myCluster" disabled selected="selected">Choose a cluster
+                </option>
+                <option *ngFor="let cluster of clusterNames" [(ngValue)]="cluster.id"
+                    style="font-family: Arial;font-size: 11px; "
+                    [ngStyle]="{'color': cluster.name !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
+                    {{cluster.name}}
+                </option>
+            </select>
+        </div>
+
+    </div>
+</div>

@@ -13,14 +13,14 @@ export class NifiLogsComponent implements OnInit {
   constructor(private router: Router, private service: AppService) { }
 
   ngOnInit() {
-    this.service.angularLogs(false).subscribe(res => {
+    this.service.nifiLogs(false).subscribe(res => {
       this.logs = res;
     })
   }
 
-  downloadNodeLog() {
-    this.service.angularLogs(true).subscribe(res => {
-      this.fileName = "nodeLogs"
+  downloadNifiLog() {
+    this.service.nifiLogs(true).subscribe(res => {
+      this.fileName = "nifiLogs"
       this.dyanmicDownloadByHtmlTag({
         fileName: this.fileName,
         text: res.toString()
