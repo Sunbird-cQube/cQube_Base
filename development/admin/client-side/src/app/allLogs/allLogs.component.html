@@ -1,0 +1,61 @@
+<div class="container">
+    <h2>All Logs</h2>
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" style="text-decoration: none; font-size: 16px;" href="#collapse1"
+                        (click)="showNodeLog()">NodeJs logs</a>
+                </h4>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <pre>{{nodeLogs}}</pre>
+                </div>
+                <div class="panel-footer" style="text-align: right; ">
+                    <button class="btn btn-primary" style="cursor: pointer;"
+                        (click)="downloadNodeLog()">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" style="text-decoration: none; font-size: 16px;" href="#collapse2"
+                        (click)="showAngularLog()">Angular
+                        logs</a>
+                </h4>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <pre>{{nodeLogs}}</pre>
+                </div>
+                <div class="panel-footer" style="text-align: right;">
+                    <button class="btn btn-primary" style="cursor: pointer;"
+                        (click)="downloadAngularLog()">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" style="text-decoration: none; font-size: 16px;" href="#collapse3"
+                        (click)="showNiFiLog()">Nifi logs</a>
+                </h4>
+            </div>
+            <div id="collapse3" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <pre>{{nodeLogs}}</pre>
+                </div>
+                <div class="panel-footer" style="text-align: right;">
+                    <button class="btn btn-primary" style="cursor: pointer;"
+                        (click)="downloadNiFiLog()">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

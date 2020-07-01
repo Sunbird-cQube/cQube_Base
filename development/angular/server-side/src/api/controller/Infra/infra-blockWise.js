@@ -45,10 +45,14 @@ router.post('/blockWise/:distId', auth.authController, function (req, res) {
                 let filterData = blockData.filter(obj => {
                     return (obj.district.id == distId)
                 });
+                if (filterData.length == 0) {
+                    res.status(404).json({ errMsg: "No data found" });
+                } else {
 
-                // map and extract required  values to show in the leaflet-map
-                logger.info('--- semester block wise api reponse sent ---');
-                res.status(200).send(filterData);
+                    // map and extract required  values to show in the leaflet-map
+                    logger.info('--- semester block wise api reponse sent ---');
+                    res.status(200).send(filterData);
+                }
             }
         });
     } catch (e) {

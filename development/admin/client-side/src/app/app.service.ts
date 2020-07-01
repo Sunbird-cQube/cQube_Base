@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../src/environments/environment';
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AppService {
 
@@ -22,6 +22,78 @@ export class AppService {
 
     changePassword(data) {
         return this.http.post(`${this.baseUrl}/changePassword`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    nodeLogs(data) {
+        return this.http.post(`${this.baseUrl}/logs/nodeLog`, { data }, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    angularLogs(data) {
+        return this.http.post(`${this.baseUrl}/logs/angularLog`, { data }, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    nifiLogs(data) {
+        return this.http.post(`${this.baseUrl}/logs/nifiLog`, { data }, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    allUsers() {
+        return this.http.post(`${this.baseUrl}/allUsers`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    changeStatus(id, updaterId) {
+        return this.http.post(`${this.baseUrl}/allUsers/changeStatus/${id}`, { updaterId: updaterId }, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    deleteUser(id) {
+        return this.http.post(`${this.baseUrl}/allUsers/deleteUser/${id}`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+    editUser(id, data) {
+        return this.http.post(`${this.baseUrl}/allUsers/editUser/${id}`, { data: data }, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    getCurrentUser(id) {
+        return this.http.post(`${this.baseUrl}/allUsers/getUser/${id}`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    //s3 downloads
+    listBuckets() {
+        return this.http.post(`${this.baseUrl}/s3Download/listBuckets`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    listFolders(bucketName) {
+        return this.http.post(`${this.baseUrl}/s3Download/listFolders/${bucketName}`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    listFiles(bucketName, folderName) {
+        return this.http.post(`${this.baseUrl}/s3Download/listFiles/${bucketName}/${folderName}`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    downloadFile(fileName, bucketName) {
+        return this.http.post(`${this.baseUrl}/s3Download/getDownloadUrl/`, { fileName: fileName, bucketName: bucketName }, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }

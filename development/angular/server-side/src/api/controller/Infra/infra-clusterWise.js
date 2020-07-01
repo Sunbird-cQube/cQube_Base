@@ -3,7 +3,7 @@ var const_data = require('../../lib/config');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 
-router.post('/allClusterWise',auth.authController, function (req, res) {
+router.post('/allClusterWise', auth.authController, function (req, res) {
     try {
         logger.info('---Infra all cluster wise api ---');
         // var month = req.body.month;
@@ -27,7 +27,7 @@ router.post('/allClusterWise',auth.authController, function (req, res) {
     }
 });
 
-router.post('/clusterWise/:distId/:blockId', auth.authController,function (req, res) {
+router.post('/clusterWise/:distId/:blockId', auth.authController, function (req, res) {
     try {
         logger.info('---Infra cluster wise api ---');
         var distId = req.params.distId;
@@ -44,11 +44,16 @@ router.post('/clusterWise/:distId/:blockId', auth.authController,function (req, 
                 logger.info('---Infra cluster wise response sent---');
                 let clusterData = data.Body.toString();
                 clusterData = JSON.parse(clusterData)
-                
+
                 let clusterFilterData = clusterData.filter(obj => {
                     return (obj.district.id == distId && obj.block.id == blockId)
                 })
-                res.status(200).send(clusterFilterData);
+
+                if (clusterFilterData.length == 0) {
+                    res.status(404).json({ errMsg: "No data found" });
+                } else {
+                    res.status(200).send(clusterFilterData);
+                }
             }
         });
     } catch (e) {

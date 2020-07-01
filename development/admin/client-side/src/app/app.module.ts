@@ -15,6 +15,12 @@ import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { AllLogsComponent } from './allLogs/allLogs.component';
+import { NodeLogsComponent } from './node-logs/node-logs.component';
+import { AngularLogsComponent } from './angular-logs/angular-logs.component';
+import { NifiLogsComponent } from './nifi-logs/nifi-logs.component';
+import { UsersComponent } from './users/users.component';
+import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +28,13 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     CreateUserComponent,
     LoginComponent,
     HomeComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    AllLogsComponent,
+    NodeLogsComponent,
+    AngularLogsComponent,
+    NifiLogsComponent,
+    UsersComponent,
+    S3FilesDownloadComponent
   ],
   imports: [
     FormsModule,
