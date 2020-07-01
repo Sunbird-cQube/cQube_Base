@@ -227,7 +227,7 @@ export class CrcReportComponent implements OnInit {
       this.dataTable = $(this.table.nativeElement);
       this.dataTable.DataTable(this.dtOptions);
       this.loaderAndErr();
-      this.changeDetection.markForCheck();
+      
     } else {
       this.schoolCount = 0;
       this.visitCount = 0;

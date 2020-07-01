@@ -216,7 +216,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   getYear() {
     var allMonths = [];
-    allMonths = this.getMonthYear[`${this.year} `];
+    allMonths = this.getMonthYear[`${this.year}`];
     this.months = [];
     allMonths.forEach(month => {
       var obj = {

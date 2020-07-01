@@ -1,27 +1,24 @@
 <div class="container">
-    <br>
-    <div *ngFor="let cardData of cardsDataLength">
-        <div class="row">
-            <div class="col-md-4" *ngFor="let record of cardData">
-                <div class="flipcard h">
-                    <div class="front">
-                        <img src="../../assets/{{record.imgTitle}}" class="center"
-                            style="width:120px;height: 80px; float: right; margin: 2% 2% 0% 0%;">
-                        <p class="card-title" style="margin-top: 36%;margin-left: 3%; float: left; font-size: 16px;">
-                            {{record.title}}</p>
-                    </div>
-                    <div class="back">
-                        <h5 id="text">
-                            <p *ngFor="let textData of record.data">
-                                {{textData.metric}} <br> {{textData.value}}
-                                <br>
-                            </p>
-                        </h5>
-                    </div>
-                </div>
-                <br><br>
-            </div>
+    <div class="row" style="margin-top: 10%;">
+        <div class="col-sm-4">
+            <a [routerLink]="['/home/attendance-report']">Student Attendance Report</a>
         </div>
-        <br>
+        <div class="col-sm-4">
+            <a [routerLink]="['/home/semester-report']">Semester Report</a>
+        </div>
+        <div class="col-sm-4">
+            <a [routerLink]="['/home/school-infrastructure']">Infra Chart Report</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <a [routerLink]="['/home/school-infra-map']">Infra Map Report</a>
+        </div>
+        <div class="col-sm-4">
+            <a [routerLink]="['/home/crc-report']">CRC Report</a>
+        </div>
+        <div class="col-sm-4">
+            <a [routerLink]="['/home/teacher-attendance']">Teacher Attendance Report</a>
+        </div>
     </div>
 </div>
