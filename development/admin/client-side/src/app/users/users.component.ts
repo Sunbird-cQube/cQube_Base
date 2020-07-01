@@ -27,10 +27,27 @@ export class UsersComponent implements OnInit {
       $('#table').DataTable().destroy();
     }
     this.service.allUsers().subscribe(res => {
-      this.tableData = this.result = res;
+      this.result = res;
       this.result.forEach(item => {
         this.user_status = item.user_status;
+        if (item.role_id == 1) {
+          item['role_name'] = "Admin";
+        }
+        if (item.role_id == 2) {
+          item['role_name'] = "Dashboard report creator";
+        }
+        if (item.role_id == 3) {
+          item['role_name'] = "Dashboard report viewer";
+        }
+        if (item.role_id == 4) {
+          item['role_name'] = "Adhoc analyst";
+        }
+        if (item.role_id == 5) {
+          item['role_name'] = "Data emission";
+        }
       });
+      this.tableData = this.result;
+
       $(document).ready(function () {
         $('#table').DataTable({
           destroy: false, bLengthChange: false, bInfo: false,

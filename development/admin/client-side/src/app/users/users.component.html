@@ -10,19 +10,17 @@
                 style="font-size: 11px; text-align: center;">
                 <thead>
                     <tr>
+                        <th>Name</th>
                         <th>Email</th>
-                        <th>User RoleId</th>
-                        <th>Validity Start Date</th>
-                        <th>Validity End Date</th>
+                        <th>User Role</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of tableData">
+                        <td>{{data.first_name + " "+  data.last_name}}</td>
                         <td> {{data.user_email}}</td>
-                        <td> {{data.role_id}}</td>
-                        <td> {{data.user_validity_start_date}}</td>
-                        <td> {{data.user_validity_end_date}}</td>
+                        <td> {{data.role_name}}</td>
                         <td style="display: block;"> <button class="btn btn-default"
                                 style="font-size: 11px; border: 1px solid gray;"
                                 (click)="changeUserStatus(data.user_id, data.user_status)"

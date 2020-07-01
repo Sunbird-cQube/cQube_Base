@@ -9,9 +9,9 @@ import { SemViewComponent } from './sem-view/sem-view.component';
 import { CrcReportComponent } from './crc-report/crc-report.component';
 import { AuthGuard } from './auth.guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-// import { DashboardComponent } from './dashboard/dashboard.component';
 import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
 import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -22,9 +22,9 @@ const routes: Routes = [
   },
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
-      // {
-      //   path: 'dashboard', component: DashboardComponent, canActivateChild: [AuthGuard]
-      // },
+      {
+        path: '', component: DashboardComponent, canActivateChild: [AuthGuard]
+      },
       {
         path: 'attendance-report', component: StudengtAttendanceComponent, canActivateChild: [AuthGuard]
       },

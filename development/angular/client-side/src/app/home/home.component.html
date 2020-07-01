@@ -20,6 +20,15 @@
       </mat-toolbar>
 
       <div *ngIf="!showsideMenu">
+        <a id="dash" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray;font-family: Arial;" [routerLink]="['/home']">
+          <td>
+            <img alt="home" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Home </td>
+        </a>
+
         <a id="SAR" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['attendance-report']">
           <td>
@@ -36,8 +45,8 @@
           </td>
           <td>
             &nbsp;&nbsp; CRC Report </td>
-
         </a>
+
         <a id="tar" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['teacher-attendance']">
           <td>
