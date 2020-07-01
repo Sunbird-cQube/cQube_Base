@@ -4,7 +4,7 @@ const auth = require('../../middleware/check-auth');
 var const_data = require('../../lib/config');
 var parquet = require('parquetjs-lite');
 
-router.post('/districtWise', async (req, res) => {
+router.post('/districtWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all district wise api ---');
 

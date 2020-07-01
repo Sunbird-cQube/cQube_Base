@@ -28,10 +28,6 @@ export class HomeComponent implements OnInit {
     if (this.role == 3) {
       this.showsideMenu = false;
     }
-    if (this.role == 5) {
-      this.showsideMenu = true;
-    }
-
   }
   logout() {
     localStorage.clear();

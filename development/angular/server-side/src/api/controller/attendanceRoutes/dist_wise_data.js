@@ -3,7 +3,7 @@ var const_data = require('../../lib/config');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 
-router.post('/distWise', function (req, res) {
+router.post('/distWise',auth.authController, function (req, res) {
     try {
         logger.info('---Attendance dist wise api ---');
         var month = req.body.month;

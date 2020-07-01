@@ -5,7 +5,6 @@ const auth = require('../../middleware/check-auth');
 
 router.post('/allClusterWise', auth.authController, async (req, res) => {
     try {
-        var filterData = ''
         logger.info('--- all cluster wise attendance api ---');
         const_data['getParams']['Key'] = 'semester/cluster_assesment_2.json'
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
@@ -71,7 +70,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 });
 
                 // sort the resultant data based on the attendance percentage to generate color gradients
-                sortedData = blockDetails.sort((a, b) => (parseFloat(a.assesmentPercentage) > parseFloat(b.assesmentPercentage)) ? 1 : -1)
+               var sortedData = blockDetails.sort((a, b) => (parseFloat(a.assesmentPercentage) > parseFloat(b.assesmentPercentage)) ? 1 : -1)
 
                 // final result object
                 let resultObj = {
@@ -168,7 +167,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                 });
 
                 // sort the resultant data based on the attendance percentage to generate color gradients
-                sortedData = blockDetails.sort((a, b) => (parseFloat(a.assesmentPercentage) > parseFloat(b.assesmentPercentage)) ? 1 : -1)
+              var  sortedData = blockDetails.sort((a, b) => (parseFloat(a.assesmentPercentage) > parseFloat(b.assesmentPercentage)) ? 1 : -1)
 
                 // final result object
                 let resultObj = {
