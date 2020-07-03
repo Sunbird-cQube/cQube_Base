@@ -4,7 +4,11 @@
   </button>
   <h4>cQube - Dashboard </h4>
   <span style="flex: 1 1 auto;"></span>
-  <span id="logout" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()">
+  <span id="homeBtn" class="headerBtn"
+    style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;display: none;" [routerLink]="['/home']">
+    <strong>Home</strong>
+  </span>
+  <span id="logout" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()">
     <strong>Logout</strong>
   </span>
 </mat-toolbar>
@@ -19,7 +23,7 @@
         </mat-toolbar-row>
       </mat-toolbar>
       <div *ngIf="!showsideMenu">
-        <a id="SAR" mat-list-item (click)="sidenav.toggle()"
+        <a id="crtUsr" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['create-user']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -27,7 +31,7 @@
           <td>
             &nbsp;&nbsp; Create User </td>
         </a>
-        <a id="SAR" mat-list-item (click)="sidenav.toggle()"
+        <a id="Chpass" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['change-password']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -36,23 +40,14 @@
             &nbsp;&nbsp; Change Password </td>
         </a>
 
-        <!-- <mat-nav-list *ngIf="showLogs">
-          <mat-list-item (click)="showSubmenu1 = !showSubmenu1" class="abc1"
-            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+        <a id="logs" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['all-logs']">
+          <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-            <span class="full-width" *ngIf="isExpanded || isShowing" id="logs" style=" margin-left: 4%;"> Logs </span>
-            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu1}" *ngIf="isExpanded || isShowing">
-              expand_more</mat-icon>
-          </mat-list-item>
-          <div class="submenu" [ngClass]="{'expanded' : showSubmenu1}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['node-logs']" id="nodeLogs" (click)="sidenav.toggle()"
-              (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">NodeJS Logs</span></a>
-            <a mat-list-item [routerLink]="['angular-logs']" id="nodeLogs" (click)="sidenav.toggle()"
-              (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">Angular Logs</span></a>
-            <a mat-list-item [routerLink]="['nifi-logs']" id="nodeLogs" (click)="sidenav.toggle()"
-              (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">Nifi Logs</span></a>
-          </div>
-        </mat-nav-list> -->
+          </td>
+          <td>
+            &nbsp;&nbsp; Logs </td>
+        </a>
         <a id="user" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['users']">
           <td>

@@ -105,13 +105,13 @@ img{
   height: 96px;
 }
 
-#logout :hover{
-  background-color: #ffffff;
-  padding: 7px 5px 7px 5px;
-  border-radius: 5px;
-  color: gray;
-}
-
 a{
   border-bottom: 1px solid lightgray;
+}
+
+.headerBtn:hover {
+  transition: transform .1s;
+  -ms-transform: scale(1.12);
+  -webkit-transform: scale(1.12);
+  transform: scale(1.12); 
 }
