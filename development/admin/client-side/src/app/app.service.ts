@@ -8,6 +8,8 @@ export class AppService {
 
     public baseUrl = environment.apiEndpoint;
 
+    public myData: any = {};
+
     constructor(public http: HttpClient) { }
 
     login(data) {
@@ -25,24 +27,27 @@ export class AppService {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
-
-    nodeLogs(data) {
-        return this.http.post(`${this.baseUrl}/logs/nodeLog`, { data }, {
+    //Logs========================
+    getLogMenu() {
+        return this.http.get(`${this.baseUrl}/logs/getMenus`, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
 
-    angularLogs(data) {
-        return this.http.post(`${this.baseUrl}/logs/angularLog`, { data }, {
+    showLogs(type) {
+        return this.http.post(`${this.baseUrl}/logs/logType/${type}`, {}, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
 
-    nifiLogs(data) {
-        return this.http.post(`${this.baseUrl}/logs/nifiLog`, { data }, {
+    getLogData(data) {
+        return this.http.post(`${this.baseUrl}/logs/showLogs`, { data: data }, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
+
+    //=========================================
+
 
     allUsers() {
         return this.http.post(`${this.baseUrl}/allUsers`, {}, {

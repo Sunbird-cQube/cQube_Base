@@ -18,26 +18,29 @@ export class S3FilesDownloadComponent implements OnInit {
   fileHidden: boolean = true;
   fileNames: any = [];
   list: any = [];
+  err;
   public selectedFile;
 
   constructor(private router: Router, private service: AppService) { }
 
   ngOnInit(): void {
-    // document.getElementById('spinner').style.display = 'block';
+    document.getElementById('spinner').style.display = 'block';
     this.bucketName = '';
     this.service.listBuckets().subscribe(res => {
-      var bucket = res['Buckets'];
-      bucket.forEach(element => {
-        if (element.Name == "cqube-gj-raw" || element.Name == "cqube-gj-input" || element.Name == "cqube-gj-output") {
-          this.listBucket.push(element);
-        }
-      });
-      // document.getElementById('spinner').style.display = 'none';
+      var bucket = res;
+      this.listBucket[0] = { Name: bucket['input'] };
+      this.listBucket[1] = { Name: bucket['output'] };
+      this.listBucket[2] = { Name: bucket['emission'] };
+
+      document.getElementById('spinner').style.display = 'none';
+    }, err => {
+      this.err = "No data founcd";
     });
+    document.getElementById('homeBtn').style.display = "Block";
   }
 
   listFolders() {
-    // document.getElementById('spinner').style.display = 'block';
+    document.getElementById('spinner').style.display = 'block';
     this.folderHidden = true;
     this.fileHidden = false;
     this.folderName = '';
@@ -62,7 +65,7 @@ export class S3FilesDownloadComponent implements OnInit {
       //     }
       //   });
       // });
-      // document.getElementById('spinner').style.display = 'none';
+      document.getElementById('spinner').style.display = 'none';
     })
   }
 
@@ -84,7 +87,7 @@ export class S3FilesDownloadComponent implements OnInit {
 
   onSubmit() {
     this.service.downloadFile(this.selectedFile, this.bucketName).subscribe(res => {
-      window.location.href = res['downloadUrl'];
+      window.open(`${res['downloadUrl']}`, "_blank");
     });
   }
 

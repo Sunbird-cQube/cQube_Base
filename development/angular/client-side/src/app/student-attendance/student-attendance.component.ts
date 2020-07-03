@@ -107,8 +107,8 @@ export class StudengtAttendanceComponent implements OnInit {
     this.skul = true;
     this.element = <HTMLFormElement>document.getElementById('month');
     this.element.disabled = false;
-    this.initMap()
-
+    this.initMap();
+    document.getElementById('homeBtn').style.display = "Block";
   }
 
   //Initialisation of Map  
