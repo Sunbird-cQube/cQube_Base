@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('./reads3File');
 
-router.post('/schoolWise', async function (req, res) {
+router.post('/schoolWise', auth.authController, async function (req, res) {
     try {
         logger.info('--- Attendance school wise api ---');
         var month = req.body.month;
@@ -38,7 +38,7 @@ router.post('/schoolWise', async function (req, res) {
     }
 });
 
-router.post('/schoolPerCluster', async (req, res) => {
+router.post('/schoolPerCluster', auth.authController, async (req, res) => {
     try {
         logger.info('--- Attendance schoolPerCluster api ---');
 

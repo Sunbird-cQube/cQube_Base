@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('./reads3File');
 
-router.post('/clusterWise', async (req, res) => {
+router.post('/clusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Attendance cluster wise api ---');
         var month = req.body.month;
@@ -36,10 +36,9 @@ router.post('/clusterWise', async (req, res) => {
     }
 });
 
-router.post('/clusterPerBlock', async (req, res) => {
+router.post('/clusterPerBlock', auth.authController, async (req, res) => {
     try {
         logger.info('---Attendance clusterPerDist api ---');
-        console.log(req.body);``
         var blockId = req.body.data.id;
         var month = req.body.data.month;
         var year = req.body.data.year;

@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('./reads3File');
 
-router.post('/distWise', async function (req, res) {
+router.post('/distWise', auth.authController, async function (req, res) {
     try {
         logger.info('---Attendance dist wise api ---');
         var month = req.body.month;
