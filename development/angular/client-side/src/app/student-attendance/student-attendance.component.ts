@@ -697,7 +697,6 @@ export class StudengtAttendanceComponent implements OnInit {
           markerIcon.addTo(globalMap).bindPopup(popup);
           this.popups(markerIcon, this.markers[i]);
         }
-
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         this.blocksNames = blokName;
 
@@ -710,8 +709,8 @@ export class StudengtAttendanceComponent implements OnInit {
             BlockName: block.name,
             DistrictName: block.dist,
             Attendance: block.label + " %",
-            TotalSchools: Number(block.schCount.replace(/\,/g, '')),
-            TotalStudents: Number(block.stdCount.replace(/\,/g, ''))
+            TotalSchools: block.schCount,
+            TotalStudents: block.stdCount
           }
           this.reportData.push(obj);
         });
@@ -828,8 +827,8 @@ export class StudengtAttendanceComponent implements OnInit {
             BlockName: cluster.block,
             DistrictName: cluster.dist,
             Attendance: cluster.label + " %",
-            TotalSchools: Number(cluster.schCount.replace(/\,/g, '')),
-            TotalStudents: Number(cluster.stdCount.replace(/\,/g, ''))
+            TotalSchools: cluster.schCount,
+            TotalStudents: cluster.stdCount
           }
           this.reportData.push(obj);
         });

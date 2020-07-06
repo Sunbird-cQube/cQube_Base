@@ -5,7 +5,7 @@ const auth = require('../../middleware/check-auth');
 var shell = require('shelljs');
 const fs = require("fs")
 
-router.get('/getMenus', async (req, res) => {
+router.get('/getMenus', auth.authController, async (req, res) => {
     try {
         logger.info('--- getMenus api ---');
         res.send(menus)
@@ -15,7 +15,7 @@ router.get('/getMenus', async (req, res) => {
     }
 })
 
-router.post('/logType/:logType', async (req, res) => {
+router.post('/logType/:logType', auth.authController, async (req, res) => {
     try {
         logger.info('--- log files api ---');
         res.send(filePaths[req.params.logType])
@@ -26,7 +26,7 @@ router.post('/logType/:logType', async (req, res) => {
 });
 
 
-router.post('/showLogs', (req, res) => {
+router.post('/showLogs', auth.authController, (req, res) => {
     try {
         logger.info('---logs api ---');
         var filePath = req.body.data.path;

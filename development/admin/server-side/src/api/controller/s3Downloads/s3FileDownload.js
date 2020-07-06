@@ -5,7 +5,7 @@ const axios = require('axios');
 var const_data = require('../../lib/config');
 
 const baseUrl = process.env.BASEURL;
-router.post('/listBuckets', async function (req, res) {
+router.post('/listBuckets', auth.authController, async function (req, res) {
     try {
         let apiresult = await axios.post(`${baseUrl}/auth`,
             {
@@ -47,7 +47,7 @@ router.post('/listFolders/:bucketName', auth.authController, async function (req
     }
 });
 
-router.post('/getDownloadUrl', async function (req, res) {
+router.post('/getDownloadUrl',auth.authController, async function (req, res) {
     try {
         logger.info(`---list s3 Files for bucket ${req.body.bucketName} and folder ${req.body.folderName} api ---`);
         console.log(req.body.fileName, req.body.bucketName);
