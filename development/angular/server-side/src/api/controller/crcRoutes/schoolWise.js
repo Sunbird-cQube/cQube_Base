@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allSchoolWise',auth.authController, async (req, res) => {
+router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all school wise api ---');
 
@@ -20,7 +20,7 @@ router.post('/allSchoolWise',auth.authController, async (req, res) => {
     }
 })
 
-router.post('/schoolWise/:distId/:blockId/:clusterId',auth.authController, async (req, res) => {
+router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc school per cluster, per block and per district api ---');
         let fileName = `crc/school_crc_opt_json.json`;
@@ -35,10 +35,12 @@ router.post('/schoolWise/:distId/:blockId/:clusterId',auth.authController, async
         let filterData = schoolData.data.filter(obj => {
             return (obj.districtId == distId && obj.blockId == blockId && obj.clusterId == clusterId);
         });
-
-        logger.info('--- crc school per cluster, per block and per district api response sent ---');
-        res.status(200).send({ visits: filterData, schoolsVisitedCount: schoolData.footer[`${clusterId}`] });
-
+        if (filterData.length > 0) {
+            logger.info('--- crc school per cluster, per block and per district api response sent ---');
+            res.status(200).send({ visits: filterData, schoolsVisitedCount: schoolData.footer[`${clusterId}`] });
+        } else {
+            res.status(403).json({ errMsg: "No matches found" });
+        }
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
