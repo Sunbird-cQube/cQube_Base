@@ -500,9 +500,6 @@ export class InfraMapVisualisationComponent implements OnInit {
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
-            // this.schoolCount = this.data['totalValues'].totalSchools;
-            // this.studentCount = this.data['totalValues'].totalStudents;
-
             this.clusterMarkers.forEach(schoolData => {
               this.fileName = "Cluster_wise_report"
               if (this.infraData !== 'infra_score') {

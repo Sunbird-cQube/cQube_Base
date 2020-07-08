@@ -1,5 +1,5 @@
-var const_data = require('../../lib/config');
-const { logger } = require('../../lib/logger');
+var const_data = require('./config');
+const { logger } = require('./logger');
 
 const readS3File = (s3Key) => {
     return new Promise((resolve, reject) => {

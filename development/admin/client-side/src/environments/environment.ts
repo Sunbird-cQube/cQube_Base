@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: "http://localhost:3001/api"
-  // apiEndpoint: "http://cqube.tibilprojects.com/api"
+  apiEndpoint: "http://localhost:3001/api",
+  // apiEndpoint: "http://cqube.tibilprojects.com/api",
+  grafanaEndPoint: "http://localhost:9000"
 };
 
 /*

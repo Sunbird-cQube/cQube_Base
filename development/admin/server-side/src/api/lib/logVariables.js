@@ -3,59 +3,59 @@ let logBaseDir = process.env.BASE_DIR
 var filePaths = {
     application_nodejs_info_log: {
         title: 'cQube web node js info logs (last 200 lines)',
-        path: `${logBaseDir}/cQube/logs/npm-out.log`,
+        path: `${logBaseDir}/cqube/logs/server_side-out.log`,
     },
     application_nodejs_error_log: {
         title: 'cQube web node js error logs (last 200 lines)',
-        path: `${logBaseDir}/cQube/logs/npm-error.log`
+        path: `${logBaseDir}/cqube/logs/server_side-error.log`
     },
     application_angular_info_log: {
         title: 'cQube web angular info logs (last 200 lines)',
-        path: `${logBaseDir}/cQube/logs/http-server-out.log`
+        path: `${logBaseDir}/cqube/logs/client_side-out.log`
     },
     application_angular_error_log: {
         title: 'cQube web angular error logs (last 200 lines)',
-        path: `${logBaseDir}/cQube/logs/http-server-error.log`
+        path: `${logBaseDir}/cqube/logs/client_side-error.log`
     },
-    // admin_nodejs_info_log: {
-    //     title: 'cQube admin node js info logs',
-    //     path: `${logBaseDir}/cQube/logs/`,
-    // },
-    // admin_nodejs_error_log: {
-    //     title: 'cQube admin node js error logs',
-    //     path: `${logBaseDir}/cQube/logs/`
-    // },
-    // admin_angular_info_log: {
-    //     title: 'cQube admin angular info logs',
-    //     path: `${logBaseDir}/cQube/logs/`
-    // },
-    // admin_angular_error_log: {
-    //     title: 'cQube admin angular error logs',
-    //     path: `${logBaseDir}/cQube/logs/`
-    // },
+    admin_nodejs_info_log: {
+        title: 'cQube admin node js info logs',
+        path: `${logBaseDir}/cqube/logs/admin_server_side-out.log`,
+    },
+    admin_nodejs_error_log: {
+        title: 'cQube admin node js error logs',
+        path: `${logBaseDir}/cqube/logs/admin_server_side-error.log`
+    },
+    admin_angular_info_log: {
+        title: 'cQube admin angular info logs',
+        path: `${logBaseDir}/cqube/logs/admin_client_side-out.log`
+    },
+    admin_angular_error_log: {
+        title: 'cQube admin angular error logs',
+        path: `${logBaseDir}/cqube/logs/admin_client_side-error.log`
+    },
     nifi_app_log: {
         title: 'cQube nifi app log (last 200 lines)',
-        path: `${logBaseDir}/cQube/logs/nifi-app.log`
+        path: `${logBaseDir}/cqube/logs/nifi-app.log`
     },
     nifi_bootstrap_log: {
         title: 'cQube nifi bootstrap log (last 200 lines)',
-        path: `${logBaseDir}/cQube/logs/nifi-bootstrap.log`
+        path: `${logBaseDir}/cqube/logs/nifi-bootstrap.log`
     },
     python_access_log: {
         title: 'cQube python access log (last 200 lines)',
-        path: `${logBaseDir}/cQube/logs/access.log`
+        path: `${logBaseDir}/cqube/logs/access.log`
     },
     python_error_log: {
         title: 'cQube python error log (last 200 lines)',
-        path: `${logBaseDir}/cQube/logs/error.log`
+        path: `${logBaseDir}/cqube/logs/error.log`
     },
     syslog_log: {
         title: 'cQube syslog log (last 200 lines)',
-        path: `/var/log/syslog`
+        path: `${logBaseDir}/cqube/logs/syslog`
     },
     postgresql_log: {
         title: 'cQube postgresql log (last 200 lines)',
-        path: `${logBaseDir}/cQube/logs/postgresql-10-main.log`
+        path: `${logBaseDir}/cqube/logs/postgresql-10-main.log`
     }
 }
 
@@ -79,27 +79,29 @@ var menus = [
                 name: 'Angular Error Logs',
                 key: 'application_angular_error_log'
             }
+        ],
+    },
+    {
+        name: "admin",
+        children: [
+            {
+                name: 'Node Info Logs',
+                key: 'admin_nodejs_info_log'
+            },
+            {
+                name: 'Node Error Logs',
+                key: 'admin_nodejs_error_log'
+            },
+            {
+                name: 'Angular Info Logs',
+                key: 'admin_angular_info_log'
+            },
+            {
+                name: 'Angular Error Logs',
+                key: 'admin_angular_error_log'
+            },
         ]
     },
-    // name: "admin",
-    //children: [
-    //     {
-    //         name: 'Node Info Logs',
-    //         key: 'admin_nodejs_info_log'
-    //     },
-    //     {
-    //         name: 'Node Error Logs',
-    //         key: 'admin_nodejs_error_log'
-    //     },
-    //     {
-    //         name: 'Angular Info Logs',
-    //         key: 'admin_angular_info_log'
-    //     },
-    //     {
-    //         name: 'Angular Error Logs',
-    //         key: 'admin_angular_error_log'
-    //     },
-    // ],
     {
         name: "Nifi",
         children: [

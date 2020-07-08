@@ -1,35 +1,26 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
-var const_data = require('../../lib/config');
-var parquet = require('parquetjs-lite');
+const s3File = require('../../lib/reads3File');
 
 router.post('/districtWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all district wise api ---');
 
-        const_data['getParams']['Key'] = `test/crc_district_test.snappy`;
-        let reader = await parquet.ParquetReader.openS3(const_data['s3'], const_data['getParams']);
+        let fileName = `crc/district_crc_opt_json.json`;
+        var jsonData = await s3File.readS3File(fileName);
+        var districtData = jsonData
 
-        let cursor = reader.getCursor();
-        let record = null;
+        districtData.allDistrictsFooter['totalNumberOfVisits'] = parseInt(districtData.allDistrictsFooter.totalNumberOfVisits);
+        districtData.allDistrictsFooter['totalNumberOfSchools'] = parseInt(districtData.allDistrictsFooter.totalNumberOfSchools);
+        districtData.allDistrictsFooter['totalSchoolsVisited'] = parseInt(districtData.allDistrictsFooter.totalSchoolsVisited);
+        districtData.allDistrictsFooter['totalSchoolsNotVisited'] = parseInt(districtData.allDistrictsFooter.totalSchoolsNotVisited);
 
-        while (record = await cursor.next()) {
-            for (let i = 0; i < record.visits.array.length; i++) {
-                record.visits.array[i]['totalSchools'] = parseInt(record.visits.array[i].totalSchools);
-                record.visits.array[i]['districtId'] = parseInt(record.visits.array[i].districtId);
-            }
-            record.schoolsVisitedCount['totalSchoolsVisited'] = parseInt(record.schoolsVisitedCount.totalSchoolsVisited);
-            record.schoolsVisitedCount['totalSchoolsNotVisited'] = parseInt(record.schoolsVisitedCount.totalSchoolsNotVisited);
-
-            logger.info('--- crc all district api response sent ---');
-            res.status(200).send({ visits: record.visits.array, schoolsVisitedCount: record.schoolsVisitedCount });
-        }
-        await reader.close();
+        logger.info('--- crc all district api response sent ---');
+        res.status(200).send({ visits: districtData.data, schoolsVisitedCount: districtData.allDistrictsFooter });
     } catch (e) {
         logger.error(e);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
-
 module.exports = router;
