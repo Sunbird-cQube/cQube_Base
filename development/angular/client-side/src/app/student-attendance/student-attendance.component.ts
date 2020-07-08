@@ -390,7 +390,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.colors = colors;
 
         this.studentCount = res['studentCount'];
-        this.schoolCount = sorted.length;
+        this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
         if (this.markers.length !== 0) {
@@ -934,7 +934,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
         this.markers = [];
         this.studentCount = res['studentCount'];
-        this.schoolCount = sorted.length;
+        this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
