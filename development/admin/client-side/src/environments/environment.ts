@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiEndpoint: "http://localhost:3001/api",
   // apiEndpoint: "http://cqube.tibilprojects.com/api",
-  grafanaEndPoint: "http://localhost:9000"
+  grafanaEndPoint: "http://172.31.25.50:9000"
 };
 
 /*
