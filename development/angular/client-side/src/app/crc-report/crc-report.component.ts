@@ -700,10 +700,10 @@ export class CrcReportComponent implements OnInit {
   }
 
   countVisitedAndNotVisited(a) {
-    this.visitCount = a.totalNumberOfVisits;
-    this.schoolCount = a.totalNumberOfSchools;
-    this.visitedSchools = a.totalSchoolsVisited;
-    this.notVisitedSchools = a.totalSchoolsNotVisited;
+    this.visitCount = a.totalNumberOfVisits.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    this.schoolCount = a.totalNumberOfSchools.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    this.visitedSchools = a.totalSchoolsVisited.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    this.notVisitedSchools = a.totalSchoolsNotVisited.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
   }
 
   createChart(labels, chartData, name, obj) {

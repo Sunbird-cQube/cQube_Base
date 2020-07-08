@@ -97,11 +97,7 @@ export class AllLogsComponent implements OnInit {
   downloadLogs() {
     this.service.getLogData({ path: this.filePath, download: !this.show_download }).subscribe(res => {
       this.fileName = this.filePath.split('/');
-      if (this.logTypeName == "System") {
-        this.fileName = this.fileName[3];
-      } else {
-        this.fileName = this.fileName[4];
-      }
+      this.fileName = this.fileName[4];
       this.dyanmicDownloadByHtmlTag({
         fileName: this.fileName,
         text: res.toString()

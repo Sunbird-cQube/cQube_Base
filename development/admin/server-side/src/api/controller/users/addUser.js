@@ -26,14 +26,6 @@ router.post('/', auth.authController, async function (req, res) {
                     res.status(409).json({ msg: "User already exist" });
                 } else {
                     let obj;
-                    if (req.body['middlename'] == '' || !req.body['middlename']) {
-                        req.body['middlename'] = null;
-                    }
-
-                    if (req.body['lastname'] == '' || !req.body['lastname']) {
-                        req.body['lastname'] = null;
-                    }
-
                     var createdOn = `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)} ${(new Date()).toLocaleTimeString('en-IN', { hour12: false })}`
 
                     const hashedPassword = await bcrypt.hash(req.body.cnfpass, 10);
