@@ -1,0 +1,260 @@
+- name: Creates directory
+  file: path=~/nifi state=directory
+
+- name: Installing curl
+  apt: name=curl
+
+- name: Download NiFi
+  get_url:
+    url: https://archive.apache.org/dist/nifi/1.11.4/nifi-1.11.4-bin.tar.gz
+    dest: ~/nifi
+
+- name: Check if nifi is present in /opt
+  stat: path=/opt/nifi
+  register: status
+
+- name: stop nifi if its running
+  shell: /opt/nifi/bin/nifi.sh stop
+  when: status.stat.exists == true
+
+- name: remove nifi directory if present
+  become: yes
+  shell: rm -rf /opt/nifi
+  ignore_errors: yes
+  args:
+    warn: false
+
+- name: Extract NiFi in the same folder
+  unarchive:
+    src: ~/nifi/nifi-1.11.4-bin.tar.gz
+    dest: /opt
+
+- name: Rename the extracted folder
+  shell: mv /opt/nifi* /opt/nifi
+
+- name: Creates directory
+  file: path=/opt/nifi/jars state=directory
+
+- name: Download Jar file
+  get_url:
+    url: https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.10/postgresql-42.2.10.jar
+    dest: /opt/nifi/jars/
+
+- name: configure the webserver in nifi.properties file
+  replace:
+    dest: /opt/nifi/conf/nifi.properties
+    regexp: 'nifi.web.http.host='
+    replace: 'nifi.web.http.host=0.0.0.0'
+
+- name: configure the webserver in nifi.properties file
+  replace:
+    dest: /opt/nifi/conf/nifi.properties
+    regexp: 'nifi.web.http.port=8080'
+    replace: 'nifi.web.http.port={{ nifi_port }}'
+
+- name: Increase nifi memory
+  replace:
+    dest: /opt/nifi/conf/bootstrap.conf
+    regexp: "java.arg.2=-Xms512m"
+    replace: "java.arg.2={{ java_arg_2 }}"
+
+- name: Add time zone to nifi
+  blockinfile:
+        path: /opt/nifi/conf/bootstrap.conf
+        block: |
+               java.arg.8=-Duser.timezone=Asia/Kolkata
+
+- name: Increase nifi memory
+  replace:
+    dest: /opt/nifi/conf/bootstrap.conf
+    regexp: "java.arg.3=-Xmx512m"
+    replace: "java.arg.3={{ java_arg_3 }}"
+
+- name: start NiFi
+  shell: /opt/nifi/bin/nifi.sh start
+- pause:
+    minutes: 3
+    prompt: "nifi is starting, kindly do not press any key"
+
+- name: Fetch nifi processor group id
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
+    method: GET
+  register: processor_id
+
+- name: fetch id
+  debug:
+    var: processor_id.json.id
+
+- name: upload template
+  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/cqube_dev1.1_latest.xml
+  register: xml_output
+  args:
+    warn: false
+
+- name: upload parameters
+  action: shell curl -d @nifi.json -H Content-Type:application/json -X POST http://localhost:{{ nifi_port }}/nifi-api/parameter-contexts
+  args:
+    warn: false
+
+- name: Get processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_id.json.id }}
+    method: GET
+  register: processor_group
+
+- name: Get template list
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/templates
+    method: GET
+  register: template_list
+
+
+- name: Instatiate template list
+  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ template_list.json.templates[0].id }}" }'   http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
+
+
+- name: Fetch nifi processor group id
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
+    method: GET
+  register: processor_id
+
+- name: Get processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_id.json.id }}
+    method: GET
+  register: processor_group 
+
+- name: Get Default Processor Group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/parameter-contexts
+    method: GET
+  register: pg 
+
+- name: Connection of Parameter context to processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+            "version": 0,
+            "lastModifier": "Ansible"
+        },"component":
+              {"id": "{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}","parameterContext":{"id": "{{ pg.json.parameterContexts[0].id }}"}}
+     }
+  no_log: True
+
+- name: Create DistributedMapCacheServer
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}/controller-services
+    method: POST
+    body_format: json
+    status_code: 201
+    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4557"}}}
+
+- name: Create DistributedMapCacheServer
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}/controller-services
+    method: POST
+    body_format: json
+    status_code: 201
+    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4558"}}}
+
+- name: Get controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}/controller-services
+    method: GET
+  register: controllers_list
+  no_log: True
+
+- name: Add s3 credentials parameters
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+             "version": "{{ item.revision.version }}",
+            "lastModifier": "Ansible"
+        },
+        "component": {"id": "{{ item.id }}", "name": "cQube-GA-S3-cred",
+        "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
+
+     }
+  loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'cQube-GA-S3-cred'
+  no_log: True
+    
+- name: Add postgre-source-pwd
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+             "version": "{{ item.revision.version }}",
+            "lastModifier": "Ansible"
+        },
+        "component": {"id": "{{ item.id }}", "name": "postgresql-CQube-Source",
+        "properties" : { "Password" : "#{db_password}"}}
+
+     }
+  loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'postgresql-CQube-Source'
+  no_log: True
+
+- name: Fetch nifi processor group id
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
+    method: GET
+  register: processor_id
+ 
+- name: Get processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_id.json.id }}
+    method: GET
+  register: processor_group
+
+- name: Get Default Processor Group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/parameter-contexts
+    method: GET
+  register: pg
+
+- name: Get controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_group.json.processGroupFlow.flow.processGroups[0].component.id }}/controller-services
+    method: GET
+  register: controllers_list 
+  no_log: True
+  
+- name: Start controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+            "version": "{{ item.revision.version }}",
+            "lastModifier": "Ansible"
+        },
+        "component":
+        {"id": "{{ item.id }}","state":"ENABLED"}
+        }
+  loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
+  when: item.component.state == 'DISABLED'
+  no_log: True
+
+- name: Start Processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_group.json.processGroupFlow.id }}
+    method: PUT
+    body_format: json
+    body: {"id":"{{ processor_group.json.processGroupFlow.id }}","state":"RUNNING"}
+  no_log: True
+
+- name: Get controllers to check status
+  debug:
+     msg: "{{ item.component.state }} and {{ item.component.name }}"
+  loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
+  register: contr_list
+  when: item.component.state == 'DISABLED'
+  no_log: True
