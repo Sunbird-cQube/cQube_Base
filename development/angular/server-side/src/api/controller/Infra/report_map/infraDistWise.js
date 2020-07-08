@@ -20,13 +20,13 @@ router.post('/distWise', auth.authController, function (req, res) {
                         lat: dist.lat,
                         lng: dist.long,
                         schCount: parseInt(dist.total_schools_data_received),
-                        stdCount: parseInt(dist.total_students),
-                        totalFundReceived: parseInt(dist.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fundPerSchoolReceived: parseInt(dist.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fibernet_percent: dist.fibernet_percent,
+                        // stdCount: parseInt(dist.total_students),
+                        // totalFundReceived: parseInt(dist.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fundPerSchoolReceived: parseInt(dist.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fibernet_percent: dist.fibernet_percent,
                         districtId: dist.district_id,
                         districtName: dist.district_name,
-                        average_percent: dist.average_percent,
+                        // average_percent: dist.average_percent,
                         infra_score: dist.infra_score,
                         hand_wash_percent: dist.hand_wash_percent,
                         solar_panel_percent: dist.solar_panel_percent,
@@ -37,12 +37,14 @@ router.post('/distWise', auth.authController, function (req, res) {
                         electricity_percent: dist.electricity_percent,
                         toilet_percent: dist.toilet_percent,
                         boys_toilet_percent: dist.boys_toilet_percent,
-                        girls_toilet_percent: dist.girls_toilet_percent
+                        girls_toilet_percent: dist.girls_toilet_percent,
+                        access_to_toilet_percent: dist.access_to_toilet_percent,
+                        access_to_water_percent: dist.access_to_water_percent
 
                     }
                     return obj;
                 });
-                
+
                 logger.info('--- Infra dist wise api response sent ---');
                 res.status(200).send(mydata);
             }

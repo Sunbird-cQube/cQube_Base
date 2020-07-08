@@ -20,17 +20,17 @@ router.post('/allClusterWise', auth.authController, function (req, res) {
                         lat: cluster.lat,
                         lng: cluster.long,
                         schCount: parseInt(cluster.total_schools_data_received),
-                        stdCount: parseInt(cluster.total_students),
-                        totalFundReceived: parseInt(cluster.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fundPerSchoolReceived: parseInt(cluster.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fibernet_percent: cluster.fibernet_percent,
+                        // stdCount: parseInt(cluster.total_students),
+                        // totalFundReceived: parseInt(cluster.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fundPerSchoolReceived: parseInt(cluster.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fibernet_percent: cluster.fibernet_percent,
                         districtId: cluster.district_id,
                         districtName: cluster.district_name,
                         blockId: cluster.block_id,
                         blockName: cluster.block_name,
                         clusterId: cluster.cluster_id,
                         clusterName: cluster.cluster_name,
-                        average_percent: cluster.average_percent,
+                        // average_percent: cluster.average_percent,
                         infra_score: cluster.infra_score,
                         hand_wash_percent: cluster.hand_wash_percent,
                         solar_panel_percent: cluster.solar_panel_percent,
@@ -41,7 +41,9 @@ router.post('/allClusterWise', auth.authController, function (req, res) {
                         electricity_percent: cluster.electricity_percent,
                         toilet_percent: cluster.toilet_percent,
                         boys_toilet_percent: cluster.boys_toilet_percent,
-                        girls_toilet_percent: cluster.girls_toilet_percent
+                        girls_toilet_percent: cluster.girls_toilet_percent,
+                        access_to_toilet_percent: cluster.access_to_toilet_percent,
+                        access_to_water_percent: cluster.access_to_water_percent
 
                     }
                     return obj;
@@ -83,17 +85,17 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                         lat: cluster.lat,
                         lng: cluster.long,
                         schCount: parseInt(cluster.total_schools_data_received),
-                        stdCount: parseInt(cluster.total_students),
-                        totalFundReceived: parseInt(cluster.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fundPerSchoolReceived: parseInt(cluster.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fibernet_percent: cluster.fibernet_percent,
+                        // stdCount: parseInt(cluster.total_students),
+                        // totalFundReceived: parseInt(cluster.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fundPerSchoolReceived: parseInt(cluster.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fibernet_percent: cluster.fibernet_percent,
                         districtId: cluster.district_id,
                         districtName: cluster.district_name,
                         blockId: cluster.block_id,
                         blockName: cluster.block_name,
                         clusterId: cluster.cluster_id,
                         clusterName: cluster.cluster_name,
-                        average_percent: cluster.average_percent,
+                        // average_percent: cluster.average_percent,
                         infra_score: cluster.infra_score,
                         hand_wash_percent: cluster.hand_wash_percent,
                         solar_panel_percent: cluster.solar_panel_percent,
@@ -104,7 +106,9 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                         electricity_percent: cluster.electricity_percent,
                         toilet_percent: cluster.toilet_percent,
                         boys_toilet_percent: cluster.boys_toilet_percent,
-                        girls_toilet_percent: cluster.girls_toilet_percent
+                        girls_toilet_percent: cluster.girls_toilet_percent,
+                        access_to_toilet_percent: cluster.access_to_toilet_percent,
+                        access_to_water_percent: cluster.access_to_water_percent
 
                     }
                     return obj;

@@ -22,15 +22,15 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                         lat: block.lat,
                         lng: block.long,
                         schCount: parseInt(block.total_schools_data_received),
-                        stdCount: parseInt(block.total_students),
-                        totalFundReceived: parseInt(block.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fundPerSchoolReceived: parseInt(block.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fibernet_percent: block.fibernet_percent,
+                        // stdCount: parseInt(block.total_students),
+                        // totalFundReceived: parseInt(block.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fundPerSchoolReceived: parseInt(block.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fibernet_percent: block.fibernet_percent,
                         districtId: block.district_id,
                         districtName: block.district_name,
                         blockId: block.block_id,
                         blockName: block.block_name,
-                        average_percent: block.average_percent,
+                        // average_percent: block.average_percent,
                         infra_score: block.infra_score,
                         hand_wash_percent: block.hand_wash_percent,
                         solar_panel_percent: block.solar_panel_percent,
@@ -41,7 +41,9 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                         electricity_percent: block.electricity_percent,
                         toilet_percent: block.toilet_percent,
                         boys_toilet_percent: block.boys_toilet_percent,
-                        girls_toilet_percent: block.girls_toilet_percent
+                        girls_toilet_percent: block.girls_toilet_percent,
+                        access_to_toilet_percent: block.access_to_toilet_percent,
+                        access_to_water_percent: block.access_to_water_percent
 
                     }
                     return obj;
@@ -81,15 +83,15 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                         lat: block.lat,
                         lng: block.long,
                         schCount: parseInt(block.total_schools_data_received),
-                        stdCount: parseInt(block.total_students),
-                        totalFundReceived: parseInt(block.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fundPerSchoolReceived: parseInt(block.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fibernet_percent: block.fibernet_percent,
+                        // stdCount: parseInt(block.total_students),
+                        // totalFundReceived: parseInt(block.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fundPerSchoolReceived: parseInt(block.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fibernet_percent: block.fibernet_percent,
                         districtId: block.district_id,
                         districtName: block.district_name,
                         blockId: block.block_id,
                         blockName: block.block_name,
-                        average_percent: block.average_percent,
+                        // average_percent: block.average_percent,
                         infra_score: block.infra_score,
                         hand_wash_percent: block.hand_wash_percent,
                         solar_panel_percent: block.solar_panel_percent,
@@ -100,7 +102,9 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                         electricity_percent: block.electricity_percent,
                         toilet_percent: block.toilet_percent,
                         boys_toilet_percent: block.boys_toilet_percent,
-                        girls_toilet_percent: block.girls_toilet_percent
+                        girls_toilet_percent: block.girls_toilet_percent,
+                        access_to_toilet_percent: block.access_to_toilet_percent,
+                        access_to_water_percent: block.access_to_water_percent
 
                     }
                     return obj;

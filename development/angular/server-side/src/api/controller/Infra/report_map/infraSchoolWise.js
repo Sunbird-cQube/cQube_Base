@@ -20,10 +20,10 @@ router.post('/allSchoolWise', auth.authController, function (req, res) {
                         lat: school.lat,
                         lng: school.long,
                         schCount: parseInt(school.total_schools_data_received),
-                        stdCount: parseInt(school.total_students),
-                        totalFundReceived: parseInt(school.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fundPerSchoolReceived: parseInt(school.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fibernet_percent: school.fibernet_percent,
+                        // stdCount: parseInt(school.total_students),
+                        // totalFundReceived: parseInt(school.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fundPerSchoolReceived: parseInt(school.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fibernet_percent: school.fibernet_percent,
                         districtId: school.district_id,
                         districtName: school.district_name,
                         blockId: school.block_id,
@@ -32,7 +32,7 @@ router.post('/allSchoolWise', auth.authController, function (req, res) {
                         clusterName: school.cluster_name,
                         schoolId: school.school_id,
                         schoolName: school.school_name,
-                        average_percent: school.average_percent,
+                        // average_percent: school.average_percent,
                         infra_score: school.infra_score,
                         hand_wash_percent: school.hand_wash_percent,
                         solar_panel_percent: school.solar_panel_percent,
@@ -43,7 +43,9 @@ router.post('/allSchoolWise', auth.authController, function (req, res) {
                         electricity_percent: school.electricity_percent,
                         toilet_percent: school.toilet_percent,
                         boys_toilet_percent: school.boys_toilet_percent,
-                        girls_toilet_percent: school.girls_toilet_percent
+                        girls_toilet_percent: school.girls_toilet_percent,
+                        access_to_toilet_percent: school.access_to_toilet_percent,
+                        access_to_water_percent: school.access_to_water_percent
 
                     }
                     return obj;
@@ -87,10 +89,10 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                         lat: school.lat,
                         lng: school.long,
                         schCount: parseInt(school.total_schools_data_received),
-                        stdCount: parseInt(school.total_students),
-                        totalFundReceived: parseInt(school.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fundPerSchoolReceived: parseInt(school.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                        fibernet_percent: school.fibernet_percent,
+                        // stdCount: parseInt(school.total_students),
+                        // totalFundReceived: parseInt(school.total_central_funds_received).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fundPerSchoolReceived: parseInt(school.funds_per_school).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                        // fibernet_percent: school.fibernet_percent,
                         districtId: school.district_id,
                         districtName: school.district_name,
                         blockId: school.block_id,
@@ -99,7 +101,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                         clusterName: school.cluster_name,
                         schoolId: school.school_id,
                         schoolName: school.school_name,
-                        average_percent: school.average_percent,
+                        // average_percent: school.average_percent,
                         infra_score: school.infra_score,
                         hand_wash_percent: school.hand_wash_percent,
                         solar_panel_percent: school.solar_panel_percent,
@@ -110,7 +112,9 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                         electricity_percent: school.electricity_percent,
                         toilet_percent: school.toilet_percent,
                         boys_toilet_percent: school.boys_toilet_percent,
-                        girls_toilet_percent: school.girls_toilet_percent
+                        girls_toilet_percent: school.girls_toilet_percent,
+                        access_to_toilet_percent: school.access_to_toilet_percent,
+                        access_to_water_percent: school.access_to_water_percent
 
                     }
                     return obj;
