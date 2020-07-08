@@ -110,6 +110,7 @@ export class CrcReportComponent implements OnInit {
   ngOnInit() {
     this.createChart(["clg"], [], '', {});
     this.districtWise();
+    document.getElementById('homeBtn').style.display = "Block";
   }
 
   loaderAndErr() {
@@ -227,7 +228,7 @@ export class CrcReportComponent implements OnInit {
       this.dataTable = $(this.table.nativeElement);
       this.dataTable.DataTable(this.dtOptions);
       this.loaderAndErr();
-      
+
     } else {
       this.schoolCount = 0;
       this.visitCount = 0;
@@ -434,8 +435,8 @@ export class CrcReportComponent implements OnInit {
       if (this.result.length > 0) {
         var labels = [];
         for (var i = 0; i < this.crcBlocksNames.length; i++) {
-          if (typeof (this.crcBlocksNames[i].totalSchools) === "number" && typeof (parseInt(this.crcBlocksNames[i].totalVisits)) === "number") {
-            this.schoolCount = this.schoolCount + this.crcBlocksNames[i].totalSchools;
+          if (typeof parseInt(this.crcBlocksNames[i].totalSchools) === "number" && typeof (parseInt(this.crcBlocksNames[i].totalVisits)) === "number") {
+            this.schoolCount = this.schoolCount + parseInt(this.crcBlocksNames[i].totalSchools);
             this.visitCount = this.visitCount + Number(this.crcBlocksNames[i].totalVisits);
           }
           this.blocksNames.push({ id: this.crcBlocksNames[i].blockId, name: this.crcBlocksNames[i].blockName });
@@ -544,8 +545,8 @@ export class CrcReportComponent implements OnInit {
 
       var labels = [];
       for (var i = 0; i < this.crcClusterNames.length; i++) {
-        if (typeof (this.crcClusterNames[i].totalSchools) === "number" && typeof (parseInt(this.crcClusterNames[i].totalVisits)) === "number") {
-          this.schoolCount = this.schoolCount + this.crcClusterNames[i].totalSchools;
+        if (typeof parseInt(this.crcClusterNames[i].totalSchools) === "number" && typeof (parseInt(this.crcClusterNames[i].totalVisits)) === "number") {
+          this.schoolCount = this.schoolCount + parseInt(this.crcClusterNames[i].totalSchools);
           this.visitCount = this.visitCount + Number(this.crcClusterNames[i].totalVisits);
         }
         this.clusterNames.push({ id: this.crcClusterNames[i].clusterId, name: this.crcClusterNames[i].clusterName });
@@ -651,8 +652,8 @@ export class CrcReportComponent implements OnInit {
 
       var labels = [];
       for (var i = 0; i < this.crcSchoolNames.length; i++) {
-        if (typeof (this.crcSchoolNames[i].totalSchools) === "number" && typeof (parseInt(this.crcSchoolNames[i].totalVisits)) === "number") {
-          this.schoolCount = this.schoolCount + this.crcSchoolNames[i].totalSchools;
+        if (typeof parseInt(this.crcSchoolNames[i].totalSchools) === "number" && typeof (parseInt(this.crcSchoolNames[i].totalVisits)) === "number") {
+          this.schoolCount = this.schoolCount + parseInt(this.crcSchoolNames[i].totalSchools);
           this.visitCount = this.visitCount + Number(this.crcSchoolNames[i].totalVisits);
         }
         labels.push(this.crcSchoolNames[i].schoolName);

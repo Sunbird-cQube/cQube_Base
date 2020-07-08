@@ -19,6 +19,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.showUsers();
+    document.getElementById('homeBtn').style.display = "Block";
   }
 
   showUsers() {
@@ -59,6 +60,8 @@ export class UsersComponent implements OnInit {
         });
       });
       document.getElementById('spinner').style.display = 'none';
+    }, err=>{
+      this.err = "No data found";
     })
   }
 

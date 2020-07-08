@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', res['token']);
       localStorage.setItem('role', res['role']);
       localStorage.setItem('user_id', res['user_id']);
-      this.router.navigate(['home/create-user']);
+      this.router.navigate(['/home']);
     }, err => {
       this.err = err.error.errMsg;
       this.result = {};

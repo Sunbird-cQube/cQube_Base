@@ -6,11 +6,9 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AllLogsComponent } from './allLogs/allLogs.component';
-import { NodeLogsComponent } from './node-logs/node-logs.component';
-import { AngularLogsComponent } from './angular-logs/angular-logs.component';
-import { NifiLogsComponent } from './nifi-logs/nifi-logs.component';
 import { UsersComponent } from './users/users.component';
 import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -22,6 +20,9 @@ const routes: Routes = [
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
       {
+        path: '', component: DashboardComponent, canActivateChild: [AuthGuard]
+      },
+      {
         path: 'create-user', component: CreateUserComponent, canActivateChild: [AuthGuard]
       },
       {
@@ -29,15 +30,6 @@ const routes: Routes = [
       },
       {
         path: 'all-logs', component: AllLogsComponent, canActivateChild: [AuthGuard]
-      },
-      {
-        path: 'node-logs', component: NodeLogsComponent, canActivateChild: [AuthGuard]
-      },
-      {
-        path: 'angular-logs', component: AngularLogsComponent, canActivateChild: [AuthGuard]
-      },
-      {
-        path: 'nifi-logs', component: NifiLogsComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'users', component: UsersComponent, canActivateChild: [AuthGuard]

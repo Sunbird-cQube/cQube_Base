@@ -20,6 +20,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('homeBtn').style.display = "Block";
   }
 
 
