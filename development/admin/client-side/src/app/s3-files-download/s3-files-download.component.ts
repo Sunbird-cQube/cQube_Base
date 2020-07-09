@@ -44,6 +44,8 @@ export class S3FilesDownloadComponent implements OnInit {
     this.folderHidden = true;
     this.fileHidden = false;
     this.folderName = '';
+    var element = <HTMLBodyElement>document.getElementById('btn');
+    element['disabled'] = true;
     this.service.listFolders(this.bucketName).subscribe((res: any) => {
 
       var files = []
@@ -55,16 +57,6 @@ export class S3FilesDownloadComponent implements OnInit {
       this.fileNames.forEach(element => {
         element['checked'] = false;
       });
-      // $(document).ready(function () {
-      //   $('#table').DataTable({
-      //     destroy: false, bLengthChange: false, bInfo: false,
-      //     bPaginate: false, scrollY: 420, scrollX: true,
-      //     scrollCollapse: true, paging: false, searching: false,
-      //     fixedColumns: {
-      //       leftColumns: 1
-      //     }
-      //   });
-      // });
       document.getElementById('spinner').style.display = 'none';
     })
   }
@@ -82,6 +74,9 @@ export class S3FilesDownloadComponent implements OnInit {
   }
 
   checkedList() {
+    var element = <HTMLBodyElement>document.getElementById('btn');
+    element['disabled'] = false;
+    console.log(element);
     this.list = this.fileNames.filter(item => item.checked);
   }
 

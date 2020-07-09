@@ -22,6 +22,7 @@ export class AllLogsComponent implements OnInit {
   fileHidden = true;
   logData;
   errMsg;
+  fileSize;
   showErr = true;
   constructor(private router: Router, private service: AppService) {
     this.showErr = false;
@@ -84,7 +85,8 @@ export class AllLogsComponent implements OnInit {
         this.errMsg = res['errMsg'];
         this.showErr = true;
       } else {
-        this.logData = res;
+        this.logData = res['data'];
+        this.fileSize = (res['fileSize'] + "B").replace(/\s/g, '');
         this.showErr = false;
       }
       setTimeout(() => {
@@ -95,6 +97,7 @@ export class AllLogsComponent implements OnInit {
 
 
   downloadLogs() {
+    document.getElementById('spinner').style.display = 'block';
     this.service.getLogData({ path: this.filePath, download: !this.show_download }).subscribe(res => {
       this.fileName = this.filePath.split('/');
       this.fileName = this.fileName[4];
@@ -102,6 +105,7 @@ export class AllLogsComponent implements OnInit {
         fileName: this.fileName,
         text: res.toString()
       });
+      document.getElementById('spinner').style.display = 'none';
     })
   }
 

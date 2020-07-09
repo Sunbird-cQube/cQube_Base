@@ -4,7 +4,7 @@ var const_data = require('../../lib/config');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allClusterWise',auth.authController, async (req, res) => {
+router.post('/allClusterWise', auth.authController, async (req, res) => {
   try {
     logger.info('--- crc all cluster wise api ---');
     let fileName = `crc/cluster_crc_opt_json.json`;
@@ -22,7 +22,7 @@ router.post('/allClusterWise',auth.authController, async (req, res) => {
   }
 })
 
-router.post('/clusterWise/:distId/:blockId',auth.authController, async (req, res) => {
+router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
   try {
     logger.info('--- crc cluster per block and per district api ---');
     let fileName = `crc/cluster_crc_opt_json.json`;
@@ -36,11 +36,13 @@ router.post('/clusterWise/:distId/:blockId',auth.authController, async (req, res
     let filterData = clusterData.data.filter(obj => {
       return (obj.districtId == distId && obj.blockId == blockId);
     });
-
-    logger.info('---  crc cluster per block and per district api response sent ---');
-    res.status(200).send({ visits: filterData, schoolsVisitedCount: clusterData.footer[`${blockId}`] });
-    // }
-    // await reader.close();
+    if (filterData.length > 0) {
+      logger.info('---  crc cluster per block and per district api response sent ---');
+      res.status(200).send({ visits: filterData, schoolsVisitedCount: clusterData.footer[`${blockId}`] });
+    }else{
+      res.status(403).json({errMsg: "No matches found"});
+    }
+   
   } catch (e) {
     logger.error(`Error :: ${e}`)
     res.status(500).json({ errMessage: "Internal error. Please try again!!" });

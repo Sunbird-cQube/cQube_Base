@@ -300,6 +300,8 @@ export class CrcReportComponent implements OnInit {
         }
       }, err => {
         this.chartData = [];
+        this.createChart(["clg"], [], '', {});
+        $('#table').empty();
         this.loaderAndErr();
       });
     }
@@ -483,6 +485,8 @@ export class CrcReportComponent implements OnInit {
       }
     }, err => {
       this.chartData = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
       this.loaderAndErr();
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -588,6 +592,8 @@ export class CrcReportComponent implements OnInit {
       this.loaderAndErr();
     }, err => {
       this.chartData = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
       this.loaderAndErr();
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -694,6 +700,8 @@ export class CrcReportComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
       this.loaderAndErr();
     });
     document.getElementById('home').style.display = 'block';

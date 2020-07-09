@@ -32,10 +32,12 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         let filterData = jsonData.data.filter(obj => {
             return (obj.districtId == distId);
         });
-
-        logger.info('--- crc block per district api response sent ---');
-        res.status(200).send({ visits: filterData, schoolsVisitedCount: blockData.footer[`${distId}`] });
-
+        if (filterData.length > 0) {
+            logger.info('--- crc block per district api response sent ---');
+            res.status(200).send({ visits: filterData, schoolsVisitedCount: blockData.footer[`${distId}`] });
+        } else {
+            res.status(403).json({ errMsg: "No matches found" });
+        }
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

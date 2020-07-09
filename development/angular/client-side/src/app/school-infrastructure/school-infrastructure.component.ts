@@ -131,6 +131,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      this.createChart(["clg"], [], '', {});
       $('#table').empty();
       this.loaderAndErr();
     });
@@ -187,6 +188,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      this.createChart(["clg"], [], '', {});
       $('#table').empty();
       this.loaderAndErr();
     });
@@ -246,6 +248,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      this.createChart(["clg"], [], '', {});
       $('#table').empty();
       this.loaderAndErr();
     });
@@ -302,6 +305,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      this.createChart(["clg"], [], '', {});
       $('#table').empty();
       this.loaderAndErr();
     });
