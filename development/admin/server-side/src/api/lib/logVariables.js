@@ -82,7 +82,7 @@ var menus = [
         ],
     },
     {
-        name: "admin",
+        name: "Admin",
         children: [
             {
                 name: 'Node Info Logs',
