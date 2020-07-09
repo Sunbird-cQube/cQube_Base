@@ -19,6 +19,7 @@ import { AllLogsComponent } from './allLogs/allLogs.component';
 import { UsersComponent } from './users/users.component';
 import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SummaryStatistictsComponent } from './summary-statisticts/summary-statisticts.component';
 
 
 
@@ -33,6 +34,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     UsersComponent,
     S3FilesDownloadComponent,
     DashboardComponent,
+    SummaryStatistictsComponent,
   ],
   imports: [
     FormsModule,

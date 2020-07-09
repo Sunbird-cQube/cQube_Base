@@ -102,5 +102,11 @@ export class AppService {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
+    //summary statistics
+    getSummary() {
+        return this.http.post(`${this.baseUrl}/summary`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
 
 }
