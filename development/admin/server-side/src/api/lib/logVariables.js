@@ -3,35 +3,35 @@ let logBaseDir = process.env.BASE_DIR
 var filePaths = {
     application_nodejs_info_log: {
         title: 'cQube web node js info logs (last 200 lines)',
-        path: `${logBaseDir}/cqube/logs/server_side-out.log`,
+        path: `${logBaseDir}/cqube/logs/server-side-out.log`,
     },
     application_nodejs_error_log: {
         title: 'cQube web node js error logs (last 200 lines)',
-        path: `${logBaseDir}/cqube/logs/server_side-error.log`
+        path: `${logBaseDir}/cqube/logs/server-side-error.log`
     },
     application_angular_info_log: {
         title: 'cQube web angular info logs (last 200 lines)',
-        path: `${logBaseDir}/cqube/logs/client_side-out.log`
+        path: `${logBaseDir}/cqube/logs/client-side-out.log`
     },
     application_angular_error_log: {
         title: 'cQube web angular error logs (last 200 lines)',
-        path: `${logBaseDir}/cqube/logs/client_side-error.log`
+        path: `${logBaseDir}/cqube/logs/client-side-error.log`
     },
     admin_nodejs_info_log: {
         title: 'cQube admin node js info logs',
-        path: `${logBaseDir}/cqube/logs/admin_server_side-out.log`,
+        path: `${logBaseDir}/cqube/logs/admin-server-side-out.log`,
     },
     admin_nodejs_error_log: {
         title: 'cQube admin node js error logs',
-        path: `${logBaseDir}/cqube/logs/admin_server_side-error.log`
+        path: `${logBaseDir}/cqube/logs/admin-server-side-error.log`
     },
     admin_angular_info_log: {
         title: 'cQube admin angular info logs',
-        path: `${logBaseDir}/cqube/logs/admin_client_side-out.log`
+        path: `${logBaseDir}/cqube/logs/admin-client-side-out.log`
     },
     admin_angular_error_log: {
         title: 'cQube admin angular error logs',
-        path: `${logBaseDir}/cqube/logs/admin_client_side-error.log`
+        path: `${logBaseDir}/cqube/logs/admin-client-side-error.log`
     },
     nifi_app_log: {
         title: 'cQube nifi app log (last 200 lines)',

@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 id="head" style=" color: #284d8a;;">Summary Statistics: </h2>
+            <p id="err">{{err}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table #DataTable id="table" class="display nowrap" width="100%"
+                style="font-size: 11px; text-align: center;">
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Blank Records</th>
+                        <th>Duplicate Records</th>
+                        <th>Process Start Time</th>
+                        <th>Process End Time</th>
+                        <th>Total Records</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of tableData">
+                        <td>{{data.filename}}</td>
+                        <td>{{data.blank_records}}</td>
+                        <td>{{data.duplicate_records}}</td>
+                        <td>{{data.process_start_time}}</td>
+                        <td>{{data.process_end_time}}</td>
+                        <td>{{data.total_records}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="spinner" style="display: none;">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>

@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div [routerLink]="['/home/create-user']" class="cards" id="crtUsr">
                 <img src="../../assets/addUser.png" alt="createUser" height="130" width="210"
                     style="margin: 5% 0% 3% 0%; "><br>
@@ -9,7 +9,7 @@
                 </strong>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div [routerLink]="['/home/change-password']" class="cards" id="chPass">
                 <img src="../../assets/changePassword.png" alt="changePasswd" height="130" width="230"
                     style="margin: 5% 0% 3% 0%; "><br>
@@ -18,7 +18,7 @@
                 </strong>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div [routerLink]="['/home/all-logs']" class="cards" id="logs">
                 <img src="../../assets/logs.png" alt="s3FileDownload" height="130" width="230"
                     style="margin: 5% 0% 3% 0%; "><br>
@@ -27,14 +27,23 @@
                 </strong>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div [routerLink]="['/home/users']" class="cards" id="listUsrs">
                 <img src="../../assets/allUsers.png" alt="users" height="130" width="230"
                     style="margin: 5% 0% 3% 0%; "><br>
                 <strong>
                     List All Users
+                </strong>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div [routerLink]="['/home/summary-statistics']" class="cards" id="summary">
+                <img src="../../assets/statistics.png" alt="statistics" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Summary Statistics
                 </strong>
             </div>
         </div>

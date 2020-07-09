@@ -38,7 +38,7 @@ router.post('/showLogs', auth.authController, (req, res) => {
                 res.status(200).json({ errMsg: "No such file or directory" });
             } else {
                 if (!varBool) {
-                    let a = shell.exec(`du -sh ${filePath}`);
+                    let a = shell.exec(`sudo du -sh ${filePath}`);
                     a = a.split('/')
                     data = shell.tail({ '-n': 200 }, filePath).stdout;
                     logger.info('--- logs show data api response sent---');

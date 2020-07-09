@@ -1,12 +1,19 @@
 const router = require('express').Router();
+// var jwtDecode = require('jwt-decode');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const axios = require('axios');
 var const_data = require('../../lib/config');
 
+
 const baseUrl = process.env.BASEURL;
 router.post('/listBuckets', auth.authController, async function (req, res) {
     try {
+        // const token = req.headers.token.split(" ")[1];
+        // var decoded = jwtDecode(token);
+        // var username = decoded.user_email;
+        // var password = decoded.password;
+
         let apiresult = await axios.post(`${baseUrl}/auth`,
             {
                 username: process.env.EMAIL,
