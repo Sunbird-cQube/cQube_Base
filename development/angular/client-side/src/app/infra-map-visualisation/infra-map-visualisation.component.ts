@@ -71,7 +71,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   public myData;
   public infraFilter: any = [];
 
-  public myDistData: any = [];
+  public myDistData: any;
   public myBlockData: any = [];
   public myClusterData: any = [];
   public mySchoolData: any = [];
@@ -86,6 +86,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   ngOnInit() {
     this.initMap();
     this.districtWise();
+    document.getElementById('homeBtn').style.display = "Block";
   }
 
   //Initialisation of Map  
@@ -150,11 +151,10 @@ export class InfraMapVisualisationComponent implements OnInit {
       // to show and hide the dropdowns
       this.blockHidden = true;
       this.clusterHidden = true;
-
       // api call to get all the districts data
-      if (this.myDistData.length > 0) {
+      if (this.myDistData != undefined) {
         this.infraFilter = [];
-        this.data = this.myDistData;
+        this.data = this.myDistData['data'];
         for (var i = 5; i < Object.keys(this.data[0]).length; i++) {
           let val = this.changeingStringCases(Object.keys(this.data[0])[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
@@ -174,7 +174,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
 
         // to show only in dropdowns
-        this.districtMarkers = this.myDistData;
+        this.districtMarkers = this.myDistData['data'];
         // options to set for markers in the map
         let options = {
           radius: 5,
@@ -189,14 +189,16 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.genericFun(this.myDistData, options);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
+
       } else {
         if (this.myData) {
           this.myData.unsubscribe();
         }
         this.myData = this.service.infraMapDistWise().subscribe(res => {
-          this.myDistData = this.data = res;
-          this.infraFilter = [];
 
+          this.myDistData = res;
+          this.infraFilter = [];
+          this.data = res['data'];
           for (var i = 5; i < Object.keys(this.data[0]).length; i++) {
             let val = this.changeingStringCases(Object.keys(this.data[0])[i].replace(/_/g, ' '));
             val = val.replace('Percent', '(%)')
@@ -228,10 +230,12 @@ export class InfraMapVisualisationComponent implements OnInit {
           }
           this.level = options.level;
           this.data.sort((a, b) => (`${a[this.infraData]}` > `${b[this.infraData]}`) ? 1 : ((`${b[this.infraData]}` > `${a[this.infraData]}`) ? -1 : 0));
-          this.genericFun(this.data, options);
+          this.genericFun(this.myDistData, options);
 
           // sort the districtname alphabetically
           this.districtMarkers.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
+
+
         }, err => {
           this.data = [];
           this.loaderAndErr();
@@ -272,7 +276,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.infraMapAllBlockWise().subscribe(res => {
-        this.myBlockData = this.data = res;
+        this.myBlockData = this.data = res['data'];
         //=================================
         this.infraFilter = [];
         for (var i = 7; i < Object.keys(this.data[0]).length; i++) {
@@ -310,7 +314,6 @@ export class InfraMapVisualisationComponent implements OnInit {
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               this.colorGredient(this.blockMarkers[i], this.infraData);
-              this.schoolCount = this.schoolCount + this.blockMarkers[i].schCount;
               var markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
                 radius: 3.5,
                 color: this.setColor,
@@ -361,6 +364,10 @@ export class InfraMapVisualisationComponent implements OnInit {
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+
+
+            //schoolCount
+            this.schoolCount = res['footer'];
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             this.blockMarkers.forEach(schoolData => {
@@ -420,7 +427,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.infraMapAllClusterWise().subscribe(res => {
-        this.data = res
+        this.data = res['data']
         //=================================
         this.infraFilter = [];
         for (var i = 9; i < Object.keys(this.data[0]).length; i++) {
@@ -454,7 +461,6 @@ export class InfraMapVisualisationComponent implements OnInit {
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               this.colorGredient(this.clusterMarkers[i], this.infraData);
-              this.schoolCount = this.schoolCount + this.clusterMarkers[i].schCount;
               var markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
                 radius: 0,
                 color: this.setColor,
@@ -503,12 +509,12 @@ export class InfraMapVisualisationComponent implements OnInit {
               this.layerMarkers.addLayer(markerIcon);
               markerIcon.myJsonData = this.clusterMarkers[i];
             }
+
+            //schoolCount
+            this.schoolCount = res['footer'];
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
-
-            // this.schoolCount = this.data['totalValues'].totalSchools;
-            // this.studentCount = this.data['totalValues'].totalStudents;
 
             this.clusterMarkers.forEach(schoolData => {
               this.fileName = "Cluster_wise_report"
@@ -569,7 +575,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.infraMapAllSchoolWise().subscribe(res => {
-        this.data = res
+        this.data = res['data']
         //=================================
         this.infraFilter = [];
         for (var i = 11; i < Object.keys(this.data[0]).length; i++) {
@@ -603,7 +609,6 @@ export class InfraMapVisualisationComponent implements OnInit {
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               this.colorGredient(this.schoolMarkers[i], this.infraData);
-              this.schoolCount = this.schoolCount + this.schoolMarkers[i].schCount;
               var markerIcon = L.circleMarker([this.schoolMarkers[i].lat, this.schoolMarkers[i].lng], {
                 // renderer: myRenderer,
                 radius: 0,
@@ -656,6 +661,8 @@ export class InfraMapVisualisationComponent implements OnInit {
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
+            //schoolCount
+            this.schoolCount = res['footer'];
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             this.schoolMarkers.forEach(schoolData => {
@@ -710,7 +717,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.infraMapBlockWise(districtId).subscribe(res => {
-      this.data = res;
+      this.data = res['data'];
       //=================================
       this.infraFilter = [];
       for (var i = 7; i < Object.keys(this.data[0]).length; i++) {
@@ -758,7 +765,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       }
       this.level = options.level;
       // this.data.sort((a, b) => (`${a[this.infraData]}` > `${b[this.infraData]}`) ? 1 : ((`${b[this.infraData]}` > `${a[this.infraData]}`) ? -1 : 0));
-      this.genericFun(this.data, options);
+      this.genericFun(res, options);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
     }, err => {
@@ -786,7 +793,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.infraMapClusterWise(this.districtHierarchy.distId, blockId).subscribe(res => {
-      this.data = res;
+      this.data = res['data'];
       //=================================
       this.infraFilter = [];
       for (var i = 9; i < Object.keys(this.data[0]).length; i++) {
@@ -843,7 +850,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         level: 'cluster'
       }
       this.level = options.level;
-      this.genericFun(this.data, options);
+      this.genericFun(res, options);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
     }, err => {
@@ -869,7 +876,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
     this.myData = this.service.infraMapAllBlockWise().subscribe((result: any) => {
       this.myData = this.service.infraMapSchoolWise(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
-        this.data = res;
+        this.data = res['data'];
         //=================================
         this.infraFilter = [];
         for (var i = 11; i < Object.keys(this.data[0]).length; i++) {
@@ -891,7 +898,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         //=================================
 
         this.schoolMarkers = this.data;
-        var markers = result;
+        var markers = result['data'];
         var myBlocks = [];
         markers.forEach(element => {
           if (element.districtId === this.blockHierarchy.distId) {
@@ -943,7 +950,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           level: 'school'
         }
         this.level = options.level;
-        this.genericFun(this.data, options);
+        this.genericFun(res, options);
       }, err => {
         this.data = [];
         this.loaderAndErr();
@@ -960,11 +967,11 @@ export class InfraMapVisualisationComponent implements OnInit {
   genericFun(data, options) {
     this.reportData = [];
     this.schoolCount = 0;
-    if (data.length > 0) {
-      this.markers = data
+    var myData = data['data'];
+    if (myData.length > 0) {
+      this.markers = myData;
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-        this.schoolCount = this.schoolCount + this.markers[i].schCount;
         this.colorGredient(this.markers[i], this.infraData);
         var markerIcon: any;
         if (options.weight) {
@@ -1172,7 +1179,10 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.loaderAndErr();
       this.changeDetection.markForCheck();
     }
+    //schoolCount
+    this.schoolCount = data['footer'];
     this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 

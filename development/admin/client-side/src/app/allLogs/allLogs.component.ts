@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppService } from '../app.service';
-import { Observable, of } from "rxjs";
 
 @Component({
   selector: 'app-allLogs',
@@ -10,61 +9,106 @@ import { Observable, of } from "rxjs";
 })
 export class AllLogsComponent implements OnInit {
   public nodeLogs;
-  node_show_download: boolean = false;
+  allLogsType: any = [];
+  logTypeName;
+  allLogs: any = [];
+  logName;
+  title;
+  logHide = true;
+  logPath;
+  show_download: boolean = false;
   fileName = '';
-  constructor(private router: Router, private service: AppService) { }
+  filePath;
+  fileHidden = true;
+  logData;
+  errMsg;
+  fileSize;
+  showErr = true;
+  constructor(private router: Router, private service: AppService) {
+    this.showErr = false;
+  }
 
   ngOnInit() {
-
+    document.getElementById('spinner').style.display = 'block';
+    this.logTypeName = '';
+    this.service.getLogMenu().subscribe((res: any) => {
+      res.forEach(element => {
+        this.allLogsType.push({ name: element.name })
+      });
+      setTimeout(() => {
+        document.getElementById('spinner').style.display = 'none';
+      }, 300);
+    })
+    document.getElementById('homeBtn').style.display = "Block";
   }
 
-  showNodeLog() {
-    this.service.nodeLogs(this.node_show_download).subscribe(res => {
-      this.nodeLogs = res;
+  listLogs(type) {
+    document.getElementById('spinner').style.display = 'Block';
+    this.title = '';
+    this.logName = '';
+    this.allLogs = [];
+    this.logHide = false;
+    this.fileHidden = true;
+    this.service.getLogMenu().subscribe((res: any) => {
+      res.forEach(element => {
+        if (element.name == type) {
+          element.children.forEach(item => {
+            this.allLogs.push({ name: item.name, key: item.key });
+          });
+        }
+      });
+      setTimeout(() => {
+        document.getElementById('spinner').style.display = 'none';
+      }, 300);
     })
   }
 
-  downloadNodeLog() {
-    this.service.nodeLogs(!this.node_show_download).subscribe(res => {
-      this.fileName = "nodeLogs"
+  getLogPath(type) {
+    document.getElementById('spinner').style.display = 'block';
+    this.fileHidden = false;
+    this.service.showLogs(type).subscribe(res => {
+      this.title = res['title'];
+      this.logPath = res['path'];
+      this.showLog(this.logPath);
+      setTimeout(() => {
+        document.getElementById('spinner').style.display = 'none';
+      }, 300);
+    })
+  }
+
+  showLog(path) {
+    document.getElementById('spinner').style.display = 'block';
+    this.filePath = path;
+    this.logData = "";
+    this.service.getLogData({ path: path, download: this.show_download }).subscribe(res => {
+      if (res['errMsg']) {
+        this.errMsg = res['errMsg'];
+        this.showErr = true;
+      } else {
+        this.logData = res['data'];
+        this.fileSize = (res['fileSize'] + "B").replace(/\s/g, '');
+        this.showErr = false;
+      }
+      setTimeout(() => {
+        document.getElementById('spinner').style.display = 'none';
+      }, 300);
+    })
+  }
+
+
+  downloadLogs() {
+    document.getElementById('spinner').style.display = 'block';
+    this.service.getLogData({ path: this.filePath, download: !this.show_download }).subscribe(res => {
+      this.fileName = this.filePath.split('/');
+      this.fileName = this.fileName[4];
       this.dyanmicDownloadByHtmlTag({
         fileName: this.fileName,
         text: res.toString()
       });
+      document.getElementById('spinner').style.display = 'none';
     })
   }
 
-  showAngularLog() {
-    this.service.angularLogs(this.node_show_download).subscribe(res => {
-      this.nodeLogs = res;
-    })
-  }
-
-  downloadAngularLog() {
-    this.service.angularLogs(!this.node_show_download).subscribe(res => {
-      this.fileName = "AngularLogs"
-      this.dyanmicDownloadByHtmlTag({
-        fileName: this.fileName,
-        text: res.toString()
-      });
-    })
-  }
-
-  showNiFiLog() {
-    this.service.nifiLogs(this.node_show_download).subscribe(res => {
-      this.nodeLogs = res;
-    })
-  }
-
-  downloadNiFiLog() {
-    this.service.nifiLogs(!this.node_show_download).subscribe(res => {
-      this.fileName = "NiFiLogs"
-      this.dyanmicDownloadByHtmlTag({
-        fileName: this.fileName,
-        text: res.toString()
-      });
-    })
-  }
 
   //for download txt file
 

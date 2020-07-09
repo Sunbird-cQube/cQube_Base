@@ -10,6 +10,7 @@ export class TeacherAttendanceComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    document.getElementById('homeBtn').style.display = "Block";
   }
 
 }

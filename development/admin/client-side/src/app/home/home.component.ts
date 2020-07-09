@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppService } from '../app.service';
+import { environment } from '../../environments/environment'
 
 @Component({
   selector: 'app-home',
@@ -7,8 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  public grafanaUrl = environment.grafanaEndPoint;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private service: AppService) { }
   email: any;
   role: any;
   showSubmenu1: any = false;
@@ -18,6 +21,15 @@ export class HomeComponent implements OnInit {
   isShowing = false;
   showLogs: boolean = true;
 
+  navItems: any = [
+    {
+      name: 'All Logs',
+      children: []
+    },
+  ];
+
+  logNames: any = [];
+
   ngOnInit() {
     this.email = localStorage.getItem('email');
     this.role = localStorage.getItem('role');
@@ -25,7 +37,14 @@ export class HomeComponent implements OnInit {
       this.showsideMenu = false;
       this.showLogs = true;
     }
-
+    this.service.getLogMenu().subscribe((res: any) => {
+      this.navItems[0].children = res;
+      this.navItems[0].children.forEach(element => {
+        element.children.forEach(item => {
+          item['route'] = "all-logs";
+        });
+      });
+    })
   }
   logout() {
     localStorage.clear();
@@ -43,6 +62,5 @@ export class HomeComponent implements OnInit {
       this.isShowing = false;
     }
   }
-
 
 }

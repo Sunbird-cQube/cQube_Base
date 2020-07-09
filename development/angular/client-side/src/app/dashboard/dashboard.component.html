@@ -1,24 +1,130 @@
-<div class="container">
-    <div class="row" style="margin-top: 10%;">
-        <div class="col-sm-4">
-            <a [routerLink]="['/home/attendance-report']">Student Attendance Report</a>
+<div class="container" *ngIf="!hiddenPass">
+    <div class="row">
+        <div class="col-sm-3">
+            <div [routerLink]="['/home/attendance-report']" class="cards" id="sar">
+                <img src="../../assets/stdAtt.png" alt="studentAttendance" height="130" width="210"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Student Attendance Report
+                </strong>
+            </div>
         </div>
-        <div class="col-sm-4">
-            <a [routerLink]="['/home/semester-report']">Semester Report</a>
+        <div class="col-sm-3">
+            <div [routerLink]="['/home/crc-report']" class="cards" id="crcr">
+                <img src="../../assets/crcReport.png" alt="crcReport" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    CRC Report
+                </strong>
+            </div>
         </div>
-        <div class="col-sm-4">
-            <a [routerLink]="['/home/school-infrastructure']">Infra Chart Report</a>
+        <div class="col-sm-3">
+            <div [routerLink]="['/home/semester-report']" class="cards" id="sr">
+                <img src="../../assets/semester.png" alt="semesterReport" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Semester Report
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div [routerLink]="['/home/teacher-attendance']" class="cards" id="tar">
+                <img src="../../assets/teacherAtt.png" alt="TeacherAttendance" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Teacher Attendance Report
+                </strong>
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <a [routerLink]="['/home/school-infra-map']">Infra Map Report</a>
+            <div [routerLink]="['/home/school-infra-map']" class="cards" id="imr">
+                <img src="../../assets/infraMap.png" alt="infraMap" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Infrastructure Map Report
+                </strong>
+            </div>
         </div>
         <div class="col-sm-4">
-            <a [routerLink]="['/home/crc-report']">CRC Report</a>
+            <div [routerLink]="['/home/school-infrastructure']" class="cards" id="icr">
+                <img src="../../assets/schoolInfra.png" alt="schoolInfra" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Infrastructure Chart Report
+                </strong>
+            </div>
         </div>
         <div class="col-sm-4">
-            <a [routerLink]="['/home/teacher-attendance']">Teacher Attendance Report</a>
+            <div [routerLink]="['/home/changePassword']" class="cards" id="cp">
+                <img src="../../assets/changePassword.png" alt="TeacherAttendance" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Change Password
+                </strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="hiddenPass">
+    <div class="row">
+        <div class="col-sm-4">
+            <div [routerLink]="['/home/attendance-report']" class="cards" id="sar">
+                <img src="../../assets/stdAtt.png" alt="studentAttendance" height="130" width="210"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Student Attendance Report Admin
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div [routerLink]="['/home/crc-report']" class="cards" id="crcr">
+                <img src="../../assets/crcReport.png" alt="crcReport" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    CRC Report
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div [routerLink]="['/home/semester-report']" class="cards" id="sr">
+                <img src="../../assets/semester.png" alt="semesterReport" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Semester Report
+                </strong>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div [routerLink]="['/home/teacher-attendance']" class="cards" id="tar">
+                <img src="../../assets/teacherAtt.png" alt="TeacherAttendance" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Teacher Attendance Report
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div [routerLink]="['/home/school-infra-map']" class="cards" id="imr">
+                <img src="../../assets/infraMap.png" alt="infraMap" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Infrastructure Map Report
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div [routerLink]="['/home/school-infrastructure']" class="cards" id="icr">
+                <img src="../../assets/schoolInfra.png" alt="schoolInfra" height="130" width="230"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Infrastructure Chart Report
+                </strong>
+            </div>
         </div>
     </div>
 </div>

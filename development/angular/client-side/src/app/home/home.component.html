@@ -4,9 +4,14 @@
   </button>
   <h4>cQube - Dashboard </h4>
   <span style="flex: 1 1 auto;"></span>
-  <span id="logout" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()">
+  <span id="homeBtn" class="headerBtn"
+    style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;display: none;" [routerLink]="['/home']">
+    <strong>Home</strong>
+  </span>
+  <span id="logout" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()">
     <strong>Logout</strong>
   </span>
+
 </mat-toolbar>
 
 <mat-sidenav-container>
@@ -20,15 +25,6 @@
       </mat-toolbar>
 
       <div *ngIf="!showsideMenu">
-        <a id="dash" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray;font-family: Arial;" [routerLink]="['/home']">
-          <td>
-            <img alt="home" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Home </td>
-        </a>
-
         <a id="SAR" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['attendance-report']">
           <td>

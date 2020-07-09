@@ -60,6 +60,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
   ngOnInit() {
     this.districtWise();
+    document.getElementById('homeBtn').style.display = "Block";
   }
 
   loaderAndErr() {
@@ -130,6 +131,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      $('#table').empty();
       this.loaderAndErr();
     });
   }
@@ -185,6 +187,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      $('#table').empty();
       this.loaderAndErr();
     });
   }
@@ -243,6 +246,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      $('#table').empty();
       this.loaderAndErr();
     });
   }
@@ -298,6 +302,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      $('#table').empty();
       this.loaderAndErr();
     });
   }

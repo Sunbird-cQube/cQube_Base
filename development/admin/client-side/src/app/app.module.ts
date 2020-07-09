@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,14 +12,15 @@ import { AppComponent } from './app.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AllLogsComponent } from './allLogs/allLogs.component';
-import { NodeLogsComponent } from './node-logs/node-logs.component';
-import { AngularLogsComponent } from './angular-logs/angular-logs.component';
-import { NifiLogsComponent } from './nifi-logs/nifi-logs.component';
 import { UsersComponent } from './users/users.component';
 import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
+
 
 @NgModule({
   declarations: [
@@ -30,11 +30,9 @@ import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.
     HomeComponent,
     ChangePasswordComponent,
     AllLogsComponent,
-    NodeLogsComponent,
-    AngularLogsComponent,
-    NifiLogsComponent,
     UsersComponent,
-    S3FilesDownloadComponent
+    S3FilesDownloadComponent,
+    DashboardComponent,
   ],
   imports: [
     FormsModule,
@@ -46,7 +44,8 @@ import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NoopAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   showSubmenu: boolean = false;
   isShowing = false;
   showUser: boolean = true;
+  currentURL;
 
   ngOnInit() {
     this.email = localStorage.getItem('email');
@@ -29,6 +30,8 @@ export class HomeComponent implements OnInit {
       this.showsideMenu = false;
     }
   }
+
+
   logout() {
     localStorage.clear();
     this.router.navigate(['/']);

@@ -21,6 +21,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('homeBtn').style.display = "Block";
     // $("#exampleInputEmail").attr("disabled", "disabled");
     // document.addEventListener('contextmenu', function (e) {
     //   e.preventDefault();

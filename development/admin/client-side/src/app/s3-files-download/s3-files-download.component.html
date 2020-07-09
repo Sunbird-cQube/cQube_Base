@@ -1,7 +1,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <h2>S3 Files Download: </h2>
+            <h2 style="float: left;" id="head">S3 Files Download: </h2>
+            <p style="float: right; margin-right: 2%;" id="err">{{err}}</p>
         </div>
     </div>
     <div class="row">
@@ -35,7 +36,7 @@
         <div class="col-sm-2"></div>
         <div class="col-sm-8" [hidden]="fileHidden">
             <div id="files" style="overflow-x:auto; height: 58vh; width: 100%; margin-top: 2%;">
-                <table class="table table-striped " id="table" style="text-align: center; ">
+                <table #DataTable class="table table-striped " id="table" style="text-align: center; ">
                     <thead>
                         <tr>
                             <th>Select</th>
@@ -51,11 +52,11 @@
                     </thead>
                 </table>
             </div>
-            <button type="submit" class="btn btn-primary" style="margin-top: 2%;float: right;"
+            <button type="submit" id="btn" class="btn btn-primary" disabled style="margin-top: 2%;float: right;"
                 (click)="onSubmit()">Download File</button>
         </div>
     </div>
 </div>
-<!-- <div id="spinner" style="display: none;">
+<div id="spinner" style="display: none;">
     <div id="loader" class="loading">Loading&#8230;</div>
-</div> -->
+</div>

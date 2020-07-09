@@ -1,69 +1,44 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
-var const_data = require('../../lib/config');
-var parquet = require('parquetjs-lite');
+const s3File = require('../../lib/reads3File');
 
-router.post('/allSchoolWise', auth.authController, async (req, res) => {
+router.post('/allSchoolWise',auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all school wise api ---');
 
-        const_data['getParams']['Key'] = `test/crc_school_test.snappy`;
-        let reader = await parquet.ParquetReader.openS3(const_data['s3'], const_data['getParams']);
+        let fileName = `crc/school_crc_opt_json.json`;
+        var jsonData = await s3File.readS3File(fileName);
 
-        let cursor = reader.getCursor();
-        let record = null;
+        var schoolData = jsonData.data;
+        logger.info('--- crc all school wise api response sent ---');
+        res.status(200).send({ visits: schoolData });
 
-        while (record = await cursor.next()) {
-            for (let i = 0; i < record.visits.array.length; i++) {
-                record.visits.array[i]['schoolId'] = parseInt(record.visits.array[i].schoolId);
-            }
-            record.schoolsVisitedCount['totalSchoolsVisited'] = parseInt(record.schoolsVisitedCount.totalSchoolsVisited);
-            record.schoolsVisitedCount['totalSchoolsNotVisited'] = parseInt(record.schoolsVisitedCount.totalSchoolsNotVisited);
-
-            logger.info('--- crc all school wise api response sent ---');
-            res.status(200).send({ visits: record.visits.array, schoolsVisitedCount: record.schoolsVisitedCount });
-        }
-        await reader.close();
     } catch (e) {
         logger.error(e);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 
-router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
+router.post('/schoolWise/:distId/:blockId/:clusterId',auth.authController, async (req, res) => {
     try {
         logger.info('--- crc school per cluster, per block and per district api ---');
-        const_data['getParams']['Key'] = `test/crc_school_test.snappy`;
-        let reader = await parquet.ParquetReader.openS3(const_data['s3'], const_data['getParams']);
+        let fileName = `crc/school_crc_opt_json.json`;
+        var jsonData = await s3File.readS3File(fileName);
 
-        let cursor = reader.getCursor();
-        let record = null;
+        var schoolData = jsonData
 
-        while (record = await cursor.next()) {
-            let distId = req.params.distId;
-            let blockId = req.params.blockId;
-            let clusterId = req.params.clusterId;
+        let distId = req.params.distId;
+        let blockId = req.params.blockId;
+        let clusterId = req.params.clusterId;
 
-            let filterData = record.visits.array.filter(obj => {
-                return (obj.districtId == distId && obj.blockId == blockId && obj.clusterId == clusterId);
-            });
+        let filterData = schoolData.data.filter(obj => {
+            return (obj.districtId == distId && obj.blockId == blockId && obj.clusterId == clusterId);
+        });
 
-            var totalSchoolsVisited = 0;
-            var totalSchoolsNotVisited = 0;
-            for (let i = 0; i < filterData.length; i++) {
-                filterData[i]['schoolId'] = parseInt(filterData[i].schoolId);
-                totalSchoolsVisited = totalSchoolsVisited + Number(filterData[i].visitedSchoolCount);
-                totalSchoolsNotVisited = totalSchoolsNotVisited + (filterData[i].totalSchools - Number(filterData[i].visitedSchoolCount));
-            }
-            var schoolsVisitedCount = {
-                "totalSchoolsVisited": totalSchoolsVisited,
-                "totalSchoolsNotVisited": totalSchoolsNotVisited
-            }
-            logger.info('--- crc school per cluster, per block and per district api response sent ---');
-            res.status(200).send({ visits: filterData, schoolsVisitedCount: schoolsVisitedCount });
-        }
-        await reader.close();
+        logger.info('--- crc school per cluster, per block and per district api response sent ---');
+        res.status(200).send({ visits: filterData, schoolsVisitedCount: schoolData.footer[`${clusterId}`] });
+
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
