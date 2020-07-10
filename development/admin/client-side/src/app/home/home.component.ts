@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppService } from '../app.service';
+import { environment } from '../../environments/environment'
 
 @Component({
   selector: 'app-home',
@@ -8,6 +9,8 @@ import { AppService } from '../app.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  public grafanaUrl = environment.grafanaEndPoint;
+
   constructor(private router: Router, private service: AppService) { }
   email: any;
   role: any;

@@ -64,6 +64,22 @@
           <td>
             &nbsp;&nbsp; S3 File Download </td>
         </a>
+        <a id="moniter" mat-list-item (click)="sidenav.toggle()" target=" "
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" href="{{grafanaUrl}}">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Monitering Details </td>
+        </a>
+        <a id="summary" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['summary-statistics']">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Summary Statistics </td>
+        </a>
       </div>
 
       <span class="toolbar-filler"></span>

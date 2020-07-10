@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
-const s3File = require('./reads3File');
+const s3File = require('../../lib/reads3File');
 
 router.post('/blockWise', auth.authController, async (req, res) => {
     try {
@@ -10,6 +10,8 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         var year = req.body.year;
         let fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`
         var jsonData = await s3File.readS3File(fileName);
+        console.log(jsonData.data[0]);
+        
         var blocksAttendanceData = jsonData.data
         var blockData = [];
         for (let i = 0; i < blocksAttendanceData.length; i++) {
