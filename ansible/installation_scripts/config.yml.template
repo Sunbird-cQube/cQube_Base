@@ -9,6 +9,7 @@
 #------------------------------------------------------#
 
 system_user_name:                          # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
+base_dir: /opt 							   # provide the absolute path where cqube needs to be installed and served. Eg. /opt  ( in this case cqube will be installed under /opt/cqube)
 
 #Database variables naming convention, the variable length should be between [3-63] characters and should contain upper/lower characters, it should start with _ or lower or upper characters.
 
@@ -51,4 +52,4 @@ db_driver_class_name: org.postgresql.Driver
 db_connection_url: jdbc:postgresql://localhost:5432/
 db_driver_dir: jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
 nifi_port: 8096
-nifi_error_dir: /opt/nifi/nifi_errors
+nifi_error_dir: "{{ base_dir }}/cqube/nifi/nifi_errors"

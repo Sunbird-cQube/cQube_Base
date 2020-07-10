@@ -1,7 +1,8 @@
----
-- include_tasks: install_angular.yml
+--- 
 - include_tasks: configure_angular.yml
 - include_tasks: run_angular.yml
 - include_tasks: configure_node.yml
 - include_tasks: run_node.yml
+- include_tasks: link_logs.yml
+- include_tasks: setup_prometheus.yml
 

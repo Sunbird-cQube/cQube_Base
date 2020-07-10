@@ -1,0 +1,8 @@
+---
+- name: Creating the Base Directory for the installation
+  file: 
+    path: {{ base_dir }}/cqube
+    owner: {{ system_user_name }}
+    group: {{ system_user_name }}
+    recurse: yes
+    state: directory

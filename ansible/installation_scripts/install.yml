@@ -6,10 +6,17 @@
     - config.yml
 
   roles:
+   - create_base_dir
    - java
    - python
    - s3_buckets
    - createdb
    - python_flask
    - angular
-   - nifi
+   - angular_admin
+   - nifi_install
+   - nifi_crc
+   - nifi_static
+   - nifi_attendance
+   - nifi_semester
+   - nifi_infra
