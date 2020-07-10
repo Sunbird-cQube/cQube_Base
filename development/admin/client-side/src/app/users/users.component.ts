@@ -52,7 +52,7 @@ export class UsersComponent implements OnInit {
       $(document).ready(function () {
         $('#table').DataTable({
           destroy: false, bLengthChange: false, bInfo: false,
-          bPaginate: false, scrollY: 420, scrollX: true,
+          bPaginate: false, scrollY: 380, scrollX: true,
           scrollCollapse: true, paging: false, searching: true,
           fixedColumns: {
             leftColumns: 1
