@@ -12,21 +12,25 @@
                 <thead>
                     <tr>
                         <th>Filename</th>
+                        <th>Total Records</th>
                         <th>Blank Records</th>
                         <th>Duplicate Records</th>
+                        <th>Records With Null Values</th>
+                        <th>Processed Records</th>
                         <th>Process Start Time</th>
                         <th>Process End Time</th>
-                        <th>Total Records</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of tableData">
                         <td>{{data.filename}}</td>
+                        <td>{{data.total_records}}</td>
                         <td>{{data.blank_records}}</td>
                         <td>{{data.duplicate_records}}</td>
+                        <td>{{data.records_with_null_value}}</td>
+                        <td>{{data.processed_records}}</td>
                         <td>{{data.process_start_time}}</td>
                         <td>{{data.process_end_time}}</td>
-                        <td>{{data.total_records}}</td>
                     </tr>
                 </tbody>
             </table>
