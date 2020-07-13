@@ -26,11 +26,11 @@ export class SummaryStatistictsComponent implements OnInit {
       this.createTable(this.tableData);
       document.getElementById('spinner').style.display = 'none';
     });
+    this.tableWithSubHeaders(this.dataSet);
 
   }
 
   createTable(dataSet) {
-
     var my_columns = [];
     $.each(dataSet[0], function (key, value) {
       var my_item = {};
@@ -89,4 +89,134 @@ export class SummaryStatistictsComponent implements OnInit {
     });
   }
 
+  public dataSet = [
+    {
+      "filename": "student_attendance_split_dup.csv",
+      "ff_uuid": "ceb2c15a-1274-4ce2-b33e-424c9279cacc",
+      "total_records": 110456,
+      "blank_records": 10,
+      "duplicate_records": 6,
+      "records_with_null_value": {
+        "district_id": 10,
+        "block_id": 10,
+        "cluster_id": 10,
+        "school_id": 10,
+        "lat": 10,
+        "lng": 10
+      },
+      "processed_records": 110428,
+      "Not_processed_records": 110494,
+      "process_start_time": "2020-07-08T17:08:25.004Z",
+      "process_end_time": "2020-07-08T17:08:25.004Z",
+    },
+    {
+      "filename": "student_attendance_split_dup.csv",
+      "ff_uuid": "e6b8e0b0-7baa-4be8-861a-4d8234e03d02",
+      "total_records": 110560,
+      "blank_records": 50,
+      "duplicate_records": 4,
+      "records_with_null_value": {
+        "district_id": 20,
+        "block_id": 20,
+        "cluster_id": 10,
+        "school_id": 20,
+        "lat": 20,
+        "lng": 20
+      },
+      "processed_records": 110494,
+      "Not_processed_records": 110494,
+      "process_start_time": "2020-07-08T17:34:38.208Z",
+      "process_end_time": "2020-07-08T17:34:38.208Z"
+    }
+  ]
+
+  tableWithSubHeaders(dataSet) {
+    var my_columns = [];
+    $.each(dataSet[0], function (key, value) {
+      var my_item = {};
+      my_item['data'] = key;
+      my_item['value'] = value;
+      my_columns.push(my_item);
+    });
+    var sub_column = []
+    $.each(my_columns[5].value, function (key, value) {
+      var my_item = {};
+      my_item['data'] = key;
+      my_item['value'] = value;
+      sub_column.push(my_item);
+    });
+
+    var colspanlength = sub_column.length;
+
+    $(document).ready(function () {
+      var headers = '<thead><tr>'
+      var subheader = '<tr>';
+      var body = '<tbody>';
+
+      my_columns.forEach((column, i) => {
+        if (column.data != 'ff_uuid') {
+          var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          });
+          headers += `<th ${(column.data != 'records_with_null_value') ? 'rowspan="2" style = "text-transform:capitalize;"' : `colspan= ${colspanlength}  style = 'text-transform:capitalize;'`}>${col}</th>`
+        }
+      });
+
+      sub_column.forEach((column, i) => {
+        var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+        subheader += `<th>${col}</th>`
+      });
+
+      let newArr = [];
+      $.each(dataSet, function (a, b) {
+        let temp = [];
+        $.each(b, function (key, value) {
+          if (key != "records_with_null_value") {
+            var new_item = {};
+            new_item['data'] = key;
+            new_item['value'] = value;
+            temp.push(new_item);
+          }
+          else {
+            if (typeof value == "object") {
+              $.each(value, function (key1, value1) {
+                var new_item = {};
+                new_item['data'] = key1;
+                new_item['value'] = value1;
+                temp.push(new_item);
+              })
+            }
+          }
+        });
+        newArr.push(temp)
+      });
+
+      newArr.forEach((columns) => {
+        body += '<tr>';
+        columns.forEach((column) => {
+          if (column.data != 'ff_uuid') {
+            body += `<td>${column.value}</td>`
+          }
+        });
+        body += '</tr>';
+      });
+
+      subheader += '</tr>'
+      headers += `</tr>${subheader}</thead>`
+      body += '</tr></tbody>';
+      $("#table1").empty();
+      $("#table1").append(headers);
+      $("#table1").append(body);
+      $('#table1').DataTable({
+        destroy: true, bLengthChange: false, bInfo: false,
+        bPaginate: false, scrollY: "58vh", scrollX: true,
+        scrollCollapse: true, paging: false, searching: false,
+        fixedColumns: {
+          leftColumns: 1
+        }
+      });
+    });
+  }
 }
