@@ -26,7 +26,9 @@ export class SummaryStatistictsComponent implements OnInit {
       this.createTable(this.tableData);
       document.getElementById('spinner').style.display = 'none';
     });
-    this.tableWithSubHeaders(this.dataSet);
+    this.tableWithSubHeaders(this.dataSetSAR, "table1");
+    this.tableWithSubHeaders(this.semData, "table2");
+    this.tableWithSubHeaders(this.crcData, "table3");
 
   }
 
@@ -89,7 +91,7 @@ export class SummaryStatistictsComponent implements OnInit {
     });
   }
 
-  public dataSet = [
+  public dataSetSAR = [
     {
       "filename": "student_attendance_split_dup.csv",
       "ff_uuid": "ceb2c15a-1274-4ce2-b33e-424c9279cacc",
@@ -130,7 +132,47 @@ export class SummaryStatistictsComponent implements OnInit {
     }
   ]
 
-  tableWithSubHeaders(dataSet) {
+  public semData = [
+    {
+      "filename": "sem2_pipe_split.csv",
+      "ff_uuid": "acb8c5dc-6ab1-4640-87a9-b623cb5a2c71",
+      "total_records": 9,
+      "blank_lines": 1,
+      "duplicate_records": 0,
+      "records_with_null_value": {
+        "student_id": 0,
+        "school_id": 0,
+        "semester": 0,
+        "grade": 0
+      },
+      "processed_records": 6,
+      "process_start_time": "2020-14-54 13:54:34",
+      "process_end_time": "2020-14-54 13:54:34"
+    }
+  ]
+
+  public crcData = [
+    {
+      "filename" : "user_location_master.csv",
+      "ff_uuid" : "7369e7b1-2eb8-44c0-a7e1-0cd297bf0f63",
+      "total_records" : 9,
+      "blank_lines" : 1,
+      "duplicate_records" : 0,
+      "records_with_null_value" : {
+        "school_id" : 0,
+        "inspection_id" : 0,
+        "in_school_location" : 7,
+        "created_on" : 0,
+        "latitude" : 0.0,
+        "longitude" : 0.0
+      },
+      "processed_records" : null,
+      "process_start_time" : "2020-07-14 17:28:20.032",
+      "process_end_time" : "2020-07-14 17:28:20.032"
+    }
+  ]
+
+  tableWithSubHeaders(dataSet, tablename) {
     var my_columns = [];
     $.each(dataSet[0], function (key, value) {
       var my_item = {};
@@ -206,10 +248,10 @@ export class SummaryStatistictsComponent implements OnInit {
       subheader += '</tr>'
       headers += `</tr>${subheader}</thead>`
       body += '</tr></tbody>';
-      $("#table1").empty();
-      $("#table1").append(headers);
-      $("#table1").append(body);
-      $('#table1').DataTable({
+      $(`#${tablename}`).empty();
+      $(`#${tablename}`).append(headers);
+      $(`#${tablename}`).append(body);
+      $(`#${tablename}`).DataTable({
         destroy: true, bLengthChange: false, bInfo: false,
         bPaginate: false, scrollY: "58vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: false,
