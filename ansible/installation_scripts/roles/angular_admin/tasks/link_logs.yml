@@ -1,6 +1,16 @@
 ---
+- name: Creating a Directory to store the log files
+  file: 
+    path: "{{ base_dir }}/cqube/logs"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+
 - name: Create a symbolic link
-  shell: ln -s "{{ item.src }}" "/{{ base_dir }}/cqube/logs/{{ item.dest }}"
+  shell: ln -s "{{ item.src }}" "{{ base_dir }}/cqube/logs/{{ item.dest }}"
+  args:
+    warn: false
   with_items:
     - { src: "{{base_dir}}/cqube/nifi/logs/nifi-app.log", dest: "nifi-app.log" }
     - { src: "{{base_dir}}/cqube/nifi/logs/nifi-bootstrap.log", dest: "nifi-bootstrap.log" }

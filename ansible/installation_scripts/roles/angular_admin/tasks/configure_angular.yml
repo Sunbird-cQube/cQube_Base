@@ -8,13 +8,13 @@
   lineinfile:
     path: ../../development/admin/client-side/src/environments/environment.ts
     regexp: "apiEndpoint"
-    line: "apiEndpoint: 'http://{{ local_ipv4_address }}:3001/api'"
+    line: "apiEndpoint: 'http://{{ local_ipv4_address }}:3001/api',"
 
-- api: Replacing endpoint value in environment.prod.ts
+- name: Replacing endpoint value in environment.prod.ts
   lineinfile:
     path: ../../development/admin/client-side/src/environments/environment.prod.ts
     regexp: "apiEndpoint"
-    line: "apiEndpoint: 'http://{{ local_ipv4_address }}:3001/api'"
+    line: "apiEndpoint: 'http://{{ local_ipv4_address }}:3001/api',"
 
 - name: Change to Angular directory
   shell: cd ../../development/admin/client-side

@@ -51,12 +51,13 @@ echo """1. Skip the Postgres installation (Will backup the data and stores in S3
           1 )
                 read -p "Enter the database name: " bk_db_name
                 read -p "Enter the Username: " bk_db_uname
-                pg_dump -h localhost -U $bk_db_uname -W -F t $bk_db_uname > `date +%Y%m%d%H%M`$bk_db_name.tar
+                pg_dump -h localhost -U $bk_db_uname -W -F t $bk_db_name > `date +%Y%m%d%H%M`$bk_db_name.tar
                 if [[ ! $? == 0 ]]; then
                     echo "There is a problem dumping the database"; tput sgr0 ; fail=1; break;
                 fi
                 echo "Backed up the database..."
                 echo "Backup file will be uploaded to S3 bucket, once the installation completes."
+		sudo sed -i "s/- createdb/#&/g" install.yml
         break
         ;;
             2 )
@@ -66,6 +67,7 @@ echo """1. Skip the Postgres installation (Will backup the data and stores in S3
                 sudo apt-get --purge remove postgresql postgresql-doc postgresql-common -y
                 sudo apt autoremove -y
                 echo "Done."
+	break	
         ;;
             3 )
                 tput setaf 1; echo "Please backup the database and rerun the installation"; tput sgr0 ; fail=1; break;
@@ -191,46 +193,12 @@ check_aws_key(){
     fi
 }
 check_s3_bucket(){
-check_length $2
-if [[ $? == 0 ]]; then
-  check_s3_bucket_naming $2
-  if [[ $? == 0 ]]; then
-    if [[ $aws_key_status == 0 ]]; then
+if [[ $aws_key_status == 0 ]]; then
         bucketstatus=`aws s3api head-bucket --bucket "${2}" 2>&1`
-        if [ $? == 0 ]
+        if [ ! $? == 0 ]
         then
-           tput setaf 3; echo "Warning: [ $1 ]:[ $2 ] Bucket owned and already exists"; tput sgr0
-            while true; do
-            read -p "Do you want to continue with same bucket name [$2] as [$1]? (yes/no): " answer
-            case $answer in
-                yes )
-                    break
-                    ;; 
-                no ) 
-                    tput setaf 3; echo "Please change the $1 value in config.yml."; tput sgr0
-                    fail=1
-                    break
-                    ;;
-                * )
-                    echo "Please enter yer or no ";;
-            esac
-            done
-            count=0
-        elif [[ $bucketstatus == *"Not Found"* ]]; then
-            echo "Bucket name $2 is available."
-        elif [[ "$bucketstatus" == *"Forbidden"* ]]; then
-            tput setaf 1; echo "Error: [ $1 : $2 ] Bucket already exists but not owned. Please change the bucket name in config.yml"; tput sgr0; fail=1
-        elif [[ "$bucketstatus" == *"Bad Request"* ]]; then
-            tput setaf 1; echo "Error: [ $1 : $2 ] Bucket name should be between 3 and 63 characters. Please change the bucket name in config.yml"; tput sgr0; fail=1
-        else
-            tput setaf 1; echo "Error: [ $1 : $2 ] $bucketstatus"; tput sgr0; fail=1
+            echo "Error: [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in config.yml"; fail=1
         fi
-    fi
-  else
-      echo "Error - $1 S3 Bucket name value is not as per naming convention. Please change the bucket name."; fail=1
-  fi
- else
-        echo "Error - Length of the value $1 is not correct. Provide the length between 3 and 63."; fail=1
 fi
 }
 
@@ -354,7 +322,8 @@ case $key in
           check_sys_user $key $value
        fi
        ;;
-   base_dir)
+   base_dir)	 
+       base_dir_temp=$value
        if [[ $value == "" ]]; then
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
@@ -474,9 +443,9 @@ case $key in
            check_mem_variables $shared_buffers $work_mem $java_arg_2 $java_arg_3
        fi
        ;;
-    nifi_error_dir)
-       if [[ ! "$value" =~ ^(/opt/nifi/nifi_errors)$ ]]; then
-          echo "Error - Valid values for $key is /opt/nifi/nifi_errors"; fail=1
+   nifi_error_dir)
+       if [[ ! "$value" ==  "\"{{base_dir}}/cqube/nifi/nifi_errors\"" ]]; then
+          echo "Error - Valid values for $key is $base_dir_temp/cqube/nifi/nifi_errors"; fail=1
        fi
        ;;
    aws_default_region)

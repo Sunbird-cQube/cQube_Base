@@ -1,0 +1,21 @@
+infrastructure,infrastructure_category,status
+Toilet,toilet,1
+Handwash,toilet,1
+Solar Panel,Energy resource,1
+library,study,1
+Drinking water,water,1
+Tap water,water,1
+Electricity,Energy resource,1
+Playground,play ground,0
+Digital board,study,0
+News paper,study,0
+hand pumps,water,1
+boys toilet,toilet,1
+girls toilet,toilet,1
+cwsn boys toilet,toilet,0
+cwsn girls toilet,toilet,0
+boys urinals,toilet,0
+girls urinals,toilet,0
+incinerator,recycling,0
+Protected well,water,0
+book bank,study,0

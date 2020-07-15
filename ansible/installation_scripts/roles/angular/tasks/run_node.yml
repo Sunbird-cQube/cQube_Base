@@ -3,4 +3,4 @@
   become: yes
   shell: pm2 start npm --name server_side -- start
   args:
-    chdir: {{ base_dir }}/cqube/dashboard/server_side
+    chdir: "{{ base_dir }}/cqube/dashboard/server_side"
