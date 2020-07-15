@@ -86,6 +86,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   ngOnInit() {
     this.initMap();
     this.districtWise();
+    document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
   }
 
@@ -427,6 +428,8 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.infraMapAllClusterWise().subscribe(res => {
+        console.log(res);
+        
         this.data = res['data']
         //=================================
         this.infraFilter = [];

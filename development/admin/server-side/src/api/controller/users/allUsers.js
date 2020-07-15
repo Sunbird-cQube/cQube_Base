@@ -79,6 +79,8 @@ router.post('/changeStatus/:id', auth.authController, async function (req, res) 
                         user.user_status = 1;
                     }
 
+                    console.log(user);
+
                     //updation date
                     user.updated_on = `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)} ${(new Date()).toLocaleTimeString('en-IN', { hour12: false })}`;
 

@@ -104,6 +104,7 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('backBtn').style.display = "none";
     this.skul = true;
     this.element = <HTMLFormElement>document.getElementById('month');
     this.element.disabled = false;

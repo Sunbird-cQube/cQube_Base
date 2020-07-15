@@ -8,7 +8,7 @@ router.post('/distWise', auth.authController, async function (req, res) {
         logger.info('---Attendance dist wise api ---');
         var month = req.body.month;
         var year = req.body.year;
-        let fileName = `attendance/district_attendance_opt_json_${year}_${month}.json`
+        let fileName = `attendance/district_attendance_opt_json_${year}_${month}.json`;
         var jsonData = await s3File.readS3File(fileName);
         var districtAttendanceData = jsonData.data
         var distData = [];
