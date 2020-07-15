@@ -13,7 +13,7 @@ export class KeycloakSecurityService {
   async init() {
     this.kc = new Keycloak({
       url: "http://localhost:8080/auth",
-      realm: "myApp",
+      realm: "cQube",
       clientId: "cQube_Application"
     });
     await this.kc.init({

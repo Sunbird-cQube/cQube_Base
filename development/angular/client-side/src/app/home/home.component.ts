@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   isShowing = false;
   showUser: boolean = true;
   currentURL;
+  public userType = localStorage.getItem('roleName') === "admin";
 
   ngOnInit() {
     this.email = localStorage.getItem('email');
