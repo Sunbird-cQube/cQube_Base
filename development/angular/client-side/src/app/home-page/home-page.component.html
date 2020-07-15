@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-10">
+            <img src="./assets/rsz_1rsz_cqube_solid_updated.png" alt="cQube logo" style="padding: 10px;">
+        </div>
+        <div class="col-sm-2">
+            <span class="btn" style="margin-top: 2%;color: #284d8a; float: right;" (click)="logout()"> Logout </span>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10%;">
+        <div class="col-sm-5"></div>
+        <div class="col-sm-2">
+            <div class="row">
+                <button class="btn btn-deafult" style="width: 100%; border: 1px solid gray; color: #284d8a"
+                    [routerLink]="['/home']">cQube Report</button>
+            </div>
+            <div class="row" style="margin-top: 10%;">
+                <a type="button" href="http://localhost:4201/#/home" class="btn btn-deafult"
+                    style="width: 100%;   border: 1px solid gray;color: #284d8a">
+                    Admin Console
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="spinner" style="display: none;">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>
