@@ -87,16 +87,16 @@ export class SemViewComponent implements OnInit {
     const lat = 22.3660414123535;
     const lng = 71.48396301269531;
     globalMap = L.map('map', { zoomControl: false }).setView([lat, lng], 7);
-    // applyCountryBorder(globalMap);
+    applyCountryBorder(globalMap);
 
-    // function applyCountryBorder(map) {
-    //   L.geoJSON(data['features'][0], {
-    //     color: "#a9a9a9",
-    //     weight: 2,
-    //     opacity: 1,
-    //     fillOpacity: 0.0
-    //   }).addTo(map);
-    // }
+    function applyCountryBorder(map) {
+      L.geoJSON(data['features'][0], {
+        color: "#a9a9a9",
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.0
+      }).addTo(map);
+    }
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
       {
         token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
