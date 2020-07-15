@@ -17,7 +17,8 @@ export class AppComponent implements OnInit {
     } else if (this.keyclockService.kc.tokenParsed.realm_access.roles[0] == "report_viewer") {
       this.router.navigate(['home']);
     } else {
-      this.router.navigate(['/homePage']);
+      alert("Invalid user");
+      this.keyclockService.kc.logout();
     }
   }
 }
