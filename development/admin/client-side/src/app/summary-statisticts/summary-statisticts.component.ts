@@ -14,7 +14,7 @@ export class SummaryStatistictsComponent implements OnInit {
   constructor(private router: Router, private service: AppService) { }
 
   ngOnInit(): void {
-    
+    document.getElementById('backBtn').style.display = "none";
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('homeBtn').style.display = "Block";
     this.service.getSummary().subscribe((res: any) => {

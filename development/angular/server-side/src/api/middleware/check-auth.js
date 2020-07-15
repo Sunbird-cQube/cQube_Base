@@ -1,8 +1,8 @@
 const request = require("request");
 
-const keycloakHost = 'localhost';
+const keycloakHost = '172.31.23.205';
 const keycloakPort = '8080';
-const realmName = 'cQube';
+const realmName = 'cQub';
 
 // check each request for a valid bearer token
 exports.authController = (req, res, next) => {

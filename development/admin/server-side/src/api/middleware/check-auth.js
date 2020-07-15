@@ -1,6 +1,6 @@
 const request = require("request");
 
-const keycloakHost = 'localhost';
+const keycloakHost = '172.31.23.205';
 const keycloakPort = '8080';
 const realmName = 'cQube';
 

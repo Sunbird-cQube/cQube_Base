@@ -27,7 +27,7 @@
         </mat-toolbar-row>
       </mat-toolbar>
       <div *ngIf="!showsideMenu">
-        <a id="crtUsr" mat-list-item (click)="sidenav.toggle()"
+        <!-- <a id="crtUsr" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['create-user']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -42,7 +42,7 @@
           </td>
           <td>
             &nbsp;&nbsp; Change Password </td>
-        </a>
+        </a> -->
 
         <a id="logs" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['all-logs']">
@@ -52,14 +52,14 @@
           <td>
             &nbsp;&nbsp; Logs </td>
         </a>
-        <a id="user" mat-list-item (click)="sidenav.toggle()"
+        <!-- <a id="user" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['users']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
           <td>
             &nbsp;&nbsp; All Users </td>
-        </a>
+        </a> -->
         <a id="downloads" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['s3FileDownload']">
           <td>
@@ -74,7 +74,7 @@
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
           <td>
-            &nbsp;&nbsp; Monitering Details </td>
+            &nbsp;&nbsp; Monitoring Details </td>
         </a>
         <a id="summary" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['summary-statistics']">

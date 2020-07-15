@@ -12,9 +12,10 @@ export class KeycloakSecurityService {
   }
   async init() {
     this.kc = new Keycloak({
-      url: "http://localhost:8080/auth",
+      url: "http://172.31.23.205:8080/auth",
       realm: "cQube",
-      clientId: "cQube_Admin"
+      clientId: "cQube_Admin",
+      credentials: { secret: '12522d38-9ec0-4e9d-a740-c19bc96bc1a9' }
     });
     await this.kc.init({
       onLoad: 'login-required'

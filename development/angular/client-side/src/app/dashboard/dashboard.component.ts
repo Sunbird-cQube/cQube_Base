@@ -8,11 +8,11 @@ import { AppServiceComponent } from '../app.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  hiddenPass: boolean;
+  // hiddenPass: boolean;
   constructor(private router: Router, private service: AppServiceComponent) {
-    if (Number(localStorage.getItem('role')) === 1) {
-      this.hiddenPass = true;
-    }
+    // if (Number(localStorage.getItem('role')) === 1) {
+    //   this.hiddenPass = true;
+    // }
   }
   ngOnInit() {
     document.getElementById('backBtn').style.display = "block";
