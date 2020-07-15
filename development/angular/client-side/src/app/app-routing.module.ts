@@ -14,12 +14,21 @@ import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
+// var redirect;
+// var roleName = localStorage.getItem('roleName');
+// console.log(roleName);
+// if (localStorage.getItem('roleName') == 'admin') {
+//   redirect = "homePage";
+// } else {
+//   redirect = "home";
+// }
+
 const routes: Routes = [
   {
-    path: '', redirectTo: '/homePage', pathMatch: 'full'
+    path: '', redirectTo: `/homePage`, pathMatch: 'full'
   },
   {
-    path: 'homePage', component: HomePageComponent
+    path: 'homePage', component: HomePageComponent, data: {roles:['admin']}, canActivate: [AuthGuard]
   },
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
