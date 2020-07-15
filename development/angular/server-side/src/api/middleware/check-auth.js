@@ -1,8 +1,11 @@
 const request = require("request");
+const dotenv = require('dotenv');
+const { log } = require("winston");
+dotenv.config();
 
-const keycloakHost = '172.31.23.205';
-const keycloakPort = '8080';
-const realmName = 'cQub';
+const keycloakHost = process.env.KEYCLOAK_HOST;
+const keycloakPort = process.env.KEYCLOAK_PORT;
+const realmName = process.env.KEYCLOAK_REALM;
 
 // check each request for a valid bearer token
 exports.authController = (req, res, next) => {

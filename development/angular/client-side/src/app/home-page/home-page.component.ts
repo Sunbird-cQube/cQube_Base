@@ -6,10 +6,11 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent implements OnInit {
-
+  // userRole: boolean;
   constructor(public keycloakService: KeycloakSecurityService) { }
 
   ngOnInit(): void {
+  //  this.userRole =  (localStorage.getItem('roleName') == "admin");
   }
 
   logout() {
