@@ -16,7 +16,7 @@ export class SummaryStatistictsComponent implements OnInit {
   ngOnInit(): void {
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('homeBtn').style.display = "Block";
-    this.service.getSummary().subscribe((res: any) => {
+    this.service.getAttendanceSummary().subscribe((res: any) => {
       this.tableData = res;
       this.tableData.forEach(element => {
         if (element.total_records == null) {
@@ -24,9 +24,17 @@ export class SummaryStatistictsComponent implements OnInit {
         }
       });
       this.tableWithSubHeaders(this.tableData, "table1");
+    });
+    this.service.getSemSummary().subscribe((res: any) => {
+      this.tableData = res;
+      this.tableData.forEach(element => {
+        if (element.total_records == null) {
+          element.total_records = 0;
+        }
+      });
+      this.tableWithSubHeaders(this.tableData, "table2");
       document.getElementById('spinner').style.display = 'none';
     });
-    this.tableWithSubHeaders(this.semData, "table2");
     this.tableWithSubHeaders(this.crcData, "table3");
 
   }

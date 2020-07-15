@@ -5,7 +5,6 @@ const auth = require('../../middleware/check-auth');
 const axios = require('axios');
 var const_data = require('../../lib/config');
 
-
 const baseUrl = process.env.BASEURL;
 router.post('/listBuckets', auth.authController, async function (req, res) {
     try {

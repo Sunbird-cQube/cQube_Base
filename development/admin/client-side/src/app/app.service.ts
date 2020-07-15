@@ -103,8 +103,13 @@ export class AppService {
         });
     }
     //summary statistics
-    getSummary() {
-        return this.http.post(`${this.baseUrl}/summary`, {}, {
+    getAttendanceSummary() {
+        return this.http.post(`${this.baseUrl}/summary/stdAttendance`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+    getSemSummary() {
+        return this.http.post(`${this.baseUrl}/summary/sem`, {}, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
