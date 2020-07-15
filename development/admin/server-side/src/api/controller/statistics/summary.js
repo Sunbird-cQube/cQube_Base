@@ -6,7 +6,7 @@ var const_data = require('../../lib/config');
 router.post('/', auth.authController, async (req, res) => {
     try {
         logger.info('---Summary api ---');
-        const_data['getParams']['Key'] = 'log_summary/log_summary.json';
+        const_data['getParams']['Key'] = 'log_summary/log_summary_student_attendance.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
