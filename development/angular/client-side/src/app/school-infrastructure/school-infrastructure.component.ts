@@ -60,6 +60,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
   ngOnInit() {
     this.districtWise();
+    document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
   }
 

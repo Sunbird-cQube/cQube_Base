@@ -1,39 +1,36 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-6">
-            <h2 id="head" style=" color: #284d8a;;">Summary Statistics: </h2>
+        <div class="col-sm-12">
+            <h1 id="head" style=" color: #284d8a;text-align: center;">Summary Statistics </h1>
             <p id="err">{{err}}</p>
+            <hr>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <table #DataTable id="table" class="display nowrap" width="100%"
-                style="font-size: 11px; text-align: center;">
-                <thead>
-                    <tr>
-                        <th>Filename</th>
-                        <th>Total Records</th>
-                        <th>Blank Records</th>
-                        <th>Duplicate Records</th>
-                        <th>Records With Null Values</th>
-                        <th>Processed Records</th>
-                        <th>Process Start Time</th>
-                        <th>Process End Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of tableData">
-                        <td>{{data.filename}}</td>
-                        <td>{{data.total_records}}</td>
-                        <td>{{data.blank_records}}</td>
-                        <td>{{data.duplicate_records}}</td>
-                        <td>{{data.records_with_null_value}}</td>
-                        <td>{{data.processed_records}}</td>
-                        <td>{{data.process_start_time}}</td>
-                        <td>{{data.process_end_time}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h2 style="color: #284d8a">Student Attendance Summary:</h2>
+            <div style="border: 1px solid gray">
+                <table #DataTable id="table1" class="display nowrap" width="100%"
+                    style="font-size: 11px; text-align: center;"></table>
+            </div>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 style="color: #284d8a">Semester Report Summary:</h2>
+            <div style="border: 1px solid gray">
+                <table #DataTable id="table2" class="display nowrap" width="100%"
+                    style="font-size: 11px; text-align: center;"></table>
+            </div>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 style="color: #284d8a">CRC Report Summary:</h2>
+            <div style="border: 1px solid gray">
+                <table #DataTable id="table3" class="display nowrap" width="100%"
+                    style="font-size: 11px; text-align: center;"></table>
+            </div>
         </div>
     </div>
 </div>
