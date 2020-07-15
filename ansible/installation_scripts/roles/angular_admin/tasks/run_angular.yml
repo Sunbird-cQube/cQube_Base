@@ -6,16 +6,16 @@
 
 - name: Making sure {{ base_dir }}/cqube/admin_dashboard/client_side directory is present
   file:
-    path: {{ base_dir }}/cqube/admin_dashboard/client_side
-    owner: {{ system_user_name }}
-    group: {{ system_user_name }}
+    path: "{{ base_dir }}/cqube/admin_dashboard/client_side"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
     recurse: yes
     state: directory
 
 - name: Copying built angular app into cqube directory
   copy:
     src: ../../development/admin/client-side/dist
-    dest: {{ base_dir }}/cqube/admin_dashboard/client_side
+    dest: "{{ base_dir }}/cqube/admin_dashboard/client_side"
 
 - name: checking process of pm2 admin_http_server
   become: yes
@@ -32,4 +32,4 @@
   become: yes
   shell: pm2 start /usr/bin/http-server --name admin_client_side -- -a {{ local_ipv4_address }} -p 4201
   args:
-    chdir: {{ base_dir }}/cqube/admin_dashboard/client_side/dist/client-side
+    chdir: "{{ base_dir }}/cqube/admin_dashboard/client_side/dist/client-side"

@@ -1,21 +1,21 @@
 ---
 - name: Making sure emission_app directory is present
   file:
-    path: {{ base_dir }}/cqube/emission_app
-    owner: {{ system_user_name }}
-    group: {{ system_user_name }}
+    path: "{{ base_dir }}/cqube/emission_app"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
     recurse: yes
     state: directory
 
 - name: create a virtual environment directory
   file:
-    path: {{ base_dir }}/cqube/emission_app/flaskenv
+    path: "{{ base_dir }}/cqube/emission_app/flaskenv"
     state: directory
 
 - name: Copy requirements.txt
   copy:
     src: requirements.txt
-    dest: {{ base_dir }}/cqube/emission_app/requirements.txt
+    dest: "{{ base_dir }}/cqube/emission_app/requirements.txt"
 
 - name: Manually create the initial virtualenv
   command:
@@ -25,8 +25,8 @@
 - name: Install requirements
   become: yes
   pip:
-    requirements: {{ base_dir }}/cqube/emission_app/requirements.txt
-    virtualenv: {{ base_dir }}/cqube/emission_app/flaskenv
+    requirements: "{{ base_dir }}/cqube/emission_app/requirements.txt"
+    virtualenv: "{{ base_dir }}/cqube/emission_app/flaskenv"
     virtualenv_python: /usr/bin/python3
 
 - name: Copying python files
@@ -34,26 +34,26 @@
 
 - name: Creating environmental variables
   file:
-    path: {{ base_dir }}/cqube/emission_app/python/env.py
+    path: "{{ base_dir }}/cqube/emission_app/python/env.py"
     state: touch
     mode: u+rw,g+rw,o+rw
 
 - name: Loading required data inside env.py file
   blockinfile:
-        path: {{ base_dir }}/cqube/emission_app/python/env.py
+        path: "{{ base_dir }}/cqube/emission_app/python/env.py"
         block: |
                DATABASE_URI = "postgresql://{{ db_user }}:{{ db_password }}@localhost:5432/{{ db_name }}"
                AWS_SECRET_KEY = "{{ s3_secret_key }}"
                AWS_ACCESS_KEY = "{{ s3_access_key }}"
                AWS_DEFAULT_REGION = "{{ aws_default_region }}"
-               EMISSION_BUCKET_NAME="{{ s3_emission_bucket }}"
-               INPUT_BUCKET_NAME="{{ s3_input_bucket }}"
-               OUTPUT_BUCKET_NAME="{{ s3_output_bucket }}"
-               BASE_DIR="{{ base_dir }}"
+               EMISSION_BUCKET_NAME= "{{ s3_emission_bucket }}"
+               INPUT_BUCKET_NAME= "{{ s3_input_bucket }}"
+               OUTPUT_BUCKET_NAME= "{{ s3_output_bucket }}"
+               BASE_DIR= "{{ base_dir }}"
 
 - name: starting flask app
   become: yes
   become_user: "{{ system_user_name }}"
-  shell: {{ base_dir }}/cqube/emission_app/flaskenv/bin/gunicorn -w 3 -b 0.0.0.0:5000 server:application &
+  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/gunicorn -w 3 -b 0.0.0.0:5000 server:application &"
   args:
-    chdir: {{ base_dir }}/cqube/emission_app/python
+    chdir: "{{ base_dir }}/cqube/emission_app/python"
