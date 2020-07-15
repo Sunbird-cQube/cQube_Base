@@ -33,6 +33,7 @@
     "export-to-csv": "^0.2.1",
     "hammerjs": "^2.0.8",
     "jquery": "^3.5.1",
+    "keycloak-js": "^10.0.2",
     "leaflet": "^1.6.0",
     "leaflet-responsive-popup": "^0.6.4",
     "ng2-charts": "^2.3.0",

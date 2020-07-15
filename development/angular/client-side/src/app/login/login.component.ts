@@ -26,11 +26,11 @@ export class LoginComponent implements OnInit {
     this.service.login(this.logData).subscribe(res => {
       this.result = res;
       document.getElementById('spinner').style.display = 'none';
-      localStorage.clear();
-      localStorage.setItem('email', this.logData.email);
-      localStorage.setItem('token', res['token']);
-      localStorage.setItem('role', res['role']);
-      localStorage.setItem('user_id', res['user_id']);
+      // localStorage.clear();
+      // localStorage.setItem('email', this.logData.email);
+      // localStorage.setItem('token', res['token']);
+      // localStorage.setItem('role', res['role']);
+      // localStorage.setItem('user_id', res['user_id']);
       this.role = res['role'];
 
       if (this.role == 1 || this.role == 3) {

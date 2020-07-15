@@ -21,6 +21,7 @@
     "jwt-decode": "^2.2.0",
     "moment": "^2.26.0",
     "node-cron": "^2.0.3",
+    "request": "^2.88.2",
     "shelljs": "^0.8.4",
     "winston": "^2.4.1"
   }

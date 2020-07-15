@@ -29,6 +29,7 @@ export class AllLogsComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('backBtn').style.display = "none";
     document.getElementById('spinner').style.display = 'block';
     this.logTypeName = '';
     this.service.getLogMenu().subscribe((res: any) => {

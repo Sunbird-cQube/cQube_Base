@@ -14,6 +14,7 @@ export class SummaryStatistictsComponent implements OnInit {
   constructor(private router: Router, private service: AppService) { }
 
   ngOnInit(): void {
+    document.getElementById('backBtn').style.display = "none";
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('homeBtn').style.display = "Block";
     this.service.getAttendanceSummary().subscribe((res: any) => {
@@ -98,63 +99,6 @@ export class SummaryStatistictsComponent implements OnInit {
   //   });
   // }
 
-  public dataSetSAR = [
-    {
-      "filename": "student_attendance_split_dup.csv",
-      "ff_uuid": "ceb2c15a-1274-4ce2-b33e-424c9279cacc",
-      "total_records": 110456,
-      "blank_records": 10,
-      "duplicate_records": 6,
-      "records_with_null_value": {
-        "district_id": 10,
-        "block_id": 10,
-        "cluster_id": 10,
-        "school_id": 10,
-        "lat": 10,
-        "lng": 10
-      },
-      "processed_records": 110428,
-      "process_start_time": "2020-07-08T17:08:25.004Z",
-      "process_end_time": "2020-07-08T17:08:25.004Z",
-    },
-    {
-      "filename": "student_attendance_split_dup.csv",
-      "ff_uuid": "e6b8e0b0-7baa-4be8-861a-4d8234e03d02",
-      "total_records": 110560,
-      "blank_records": 50,
-      "duplicate_records": 4,
-      "records_with_null_value": {
-        "district_id": 20,
-        "block_id": 20,
-        "cluster_id": 10,
-        "school_id": 20,
-        "lat": 20,
-        "lng": 20
-      },
-      "processed_records": 110494,
-      "process_start_time": "2020-07-08T17:34:38.208Z",
-      "process_end_time": "2020-07-08T17:34:38.208Z"
-    }
-  ]
-
-  public semData = [
-    {
-      "filename": "sem2_pipe_split.csv",
-      "ff_uuid": "acb8c5dc-6ab1-4640-87a9-b623cb5a2c71",
-      "total_records": 9,
-      "blank_lines": 1,
-      "duplicate_records": 0,
-      "records_with_null_value": {
-        "student_id": 0,
-        "school_id": 0,
-        "semester": 0,
-        "grade": 0
-      },
-      "processed_records": 6,
-      "process_start_time": "2020-14-54 13:54:34",
-      "process_end_time": "2020-14-54 13:54:34"
-    }
-  ]
 
   public crcData = [
     {

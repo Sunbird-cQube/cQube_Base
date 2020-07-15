@@ -10,6 +10,7 @@ export class ComingSoonComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    
   }
 
 }
