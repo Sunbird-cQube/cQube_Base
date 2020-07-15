@@ -108,6 +108,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('backBtn').style.display = "none";
     this.createChart(["clg"], [], '', {});
     this.districtWise();
     document.getElementById('homeBtn').style.display = "Block";

@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   ngOnInit() {
+    document.getElementById('backBtn').style.display = "block";
     document.getElementById('homeBtn').style.display = "None";
   }
 

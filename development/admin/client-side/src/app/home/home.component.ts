@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppService } from '../app.service';
 import { environment } from '../../environments/environment'
+import { KeycloakSecurityService } from '../keycloak-security.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { environment } from '../../environments/environment'
 export class HomeComponent implements OnInit {
   public grafanaUrl = environment.grafanaEndPoint;
 
-  constructor(private router: Router, private service: AppService) { }
+  constructor(private router: Router, private service: AppService, public keyCloakService: KeycloakSecurityService) { }
   email: any;
   role: any;
   showSubmenu1: any = false;
@@ -48,7 +49,7 @@ export class HomeComponent implements OnInit {
   }
   logout() {
     localStorage.clear();
-    this.router.navigate(['/']);
+    this.keyCloakService.kc.logout();
   }
 
   mouseenter() {

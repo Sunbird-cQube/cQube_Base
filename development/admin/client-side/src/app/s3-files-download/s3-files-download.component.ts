@@ -24,6 +24,7 @@ export class S3FilesDownloadComponent implements OnInit {
   constructor(private router: Router, private service: AppService) { }
 
   ngOnInit(): void {
+    document.getElementById('backBtn').style.display = "none";
     document.getElementById('spinner').style.display = 'block';
     this.bucketName = '';
     this.service.listBuckets().subscribe(res => {

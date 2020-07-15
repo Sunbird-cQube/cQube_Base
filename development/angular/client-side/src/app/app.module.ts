@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +25,12 @@ import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
 import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
+import { KeycloakSecurityService } from './keycloak-security.service';
+import { HomePageComponent } from './home-page/home-page.component';
+
+export function kcFactory(kcSecurity: KeycloakSecurityService) {
+  return () => kcSecurity.init();
+}
 
 @NgModule({
   declarations: [
@@ -41,6 +47,7 @@ import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-
     DashboardComponent,
     SchoolInfrastructureComponent,
     InfraMapVisualisationComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +70,14 @@ import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-
     MatPaginatorModule,
     MatSortModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      deps: [KeycloakSecurityService],
+      useFactory: kcFactory,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

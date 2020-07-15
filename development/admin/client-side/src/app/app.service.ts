@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../src/environments/environment';
+import { KeycloakSecurityService } from './keycloak-security.service';
 @Injectable({
     providedIn: 'root'
 })
@@ -9,8 +10,11 @@ export class AppService {
     public baseUrl = environment.apiEndpoint;
 
     public myData: any = {};
-
-    constructor(public http: HttpClient) { }
+    public token;
+    constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
+        this.token = keyCloakService.kc.token;
+        localStorage.setItem('token', this.token);
+    }
 
     login(data) {
         return this.http.post(`${this.baseUrl}/roleBasedLogin`, data);

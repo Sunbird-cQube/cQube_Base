@@ -12,9 +12,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.data = (localStorage.getItem('token') == null && window.location.href !== "http://localhost:4200/#/user-view");
+    // this.data = (localStorage.getItem('token') == null && window.location.href !== "http://localhost:4200/#/user-view");
     if (this.data) {
-      this.router.navigate(['/login']);
+      // this.router.navigate(['/login']);
       return false;
     } else {
       return true;
@@ -24,9 +24,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivateChild(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.data = (localStorage.getItem('token') == null && window.location.href !== "http://localhost:4200/#/user-view");
+    // this.data = (localStorage.getItem('token') == null && window.location.href !== "http://localhost:4200/#/user-view");
     if (!this.data) {
-      this.router.navigate(['/login']);
+      // this.router.navigate(['/login']);
       return false;
 
     } else {

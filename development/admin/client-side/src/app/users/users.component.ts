@@ -18,6 +18,7 @@ export class UsersComponent implements OnInit {
   constructor(private router: Router, private service: AppService) { }
 
   ngOnInit(): void {
+    document.getElementById('backBtn').style.display = "none";
     this.showUsers();
     document.getElementById('homeBtn').style.display = "Block";
   }
@@ -47,6 +48,7 @@ export class UsersComponent implements OnInit {
           item['role_name'] = "Data emission";
         }
       });
+      console.log(this.result[0]);
       this.tableData = this.result;
 
       $(document).ready(function () {

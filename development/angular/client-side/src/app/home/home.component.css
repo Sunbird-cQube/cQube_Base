@@ -114,4 +114,5 @@ a{
   -ms-transform: scale(1.12);
   -webkit-transform: scale(1.12);
   transform: scale(1.12); 
+  text-decoration: none;
 }
