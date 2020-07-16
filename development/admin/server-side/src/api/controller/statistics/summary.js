@@ -17,10 +17,7 @@ router.post('/stdAttendance', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                summaryData.forEach(data1 => {
-                    data1.process_start_time = new Date(parseInt(data1.process_start_time))
-                    data1.process_end_time = new Date(parseInt(data1.process_end_time))
-                });
+                console.log(summaryData);
                 logger.info('--- attendance summary api response sent---');
                 res.send(summaryData)
             }
@@ -45,10 +42,6 @@ router.post('/sem', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                summaryData.forEach(data1 => {
-                    data1.process_start_time = new Date(parseInt(data1.process_start_time))
-                    data1.process_end_time = new Date(parseInt(data1.process_end_time))
-                });
                 logger.info('--- attendance summary api response sent---');
                 res.send(summaryData)
             }
@@ -73,10 +66,6 @@ router.post('/crc', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                summaryData.forEach(data1 => {
-                    data1.process_start_time = new Date(parseInt(data1.process_start_time))
-                    data1.process_end_time = new Date(parseInt(data1.process_end_time))
-                });
                 logger.info('--- attendance summary api response sent---');
                 res.send(summaryData)
             }
@@ -101,10 +90,6 @@ router.post('/infra', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                summaryData.forEach(data1 => {
-                    data1.process_start_time = new Date(parseInt(data1.process_start_time))
-                    data1.process_end_time = new Date(parseInt(data1.process_end_time))
-                });
                 logger.info('--- attendance summary api response sent---');
                 res.send(summaryData)
             }
@@ -129,10 +114,6 @@ router.post('/inspec', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                summaryData.forEach(data1 => {
-                    data1.process_start_time = new Date(parseInt(data1.process_start_time))
-                    data1.process_end_time = new Date(parseInt(data1.process_end_time))
-                });
                 logger.info('--- attendance summary api response sent---');
                 res.send(summaryData)
             }
@@ -157,10 +138,6 @@ router.post('/stDist', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                summaryData.forEach(data1 => {
-                    data1.process_start_time = new Date(parseInt(data1.process_start_time))
-                    data1.process_end_time = new Date(parseInt(data1.process_end_time))
-                });
                 logger.info('--- attendance summary api response sent---');
                 res.send(summaryData)
             }
@@ -185,10 +162,6 @@ router.post('/stBlock', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                summaryData.forEach(data1 => {
-                    data1.process_start_time = new Date(parseInt(data1.process_start_time))
-                    data1.process_end_time = new Date(parseInt(data1.process_end_time))
-                });
                 logger.info('--- attendance summary api response sent---');
                 res.send(summaryData)
             }
@@ -213,10 +186,6 @@ router.post('/stCluster', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                summaryData.forEach(data1 => {
-                    data1.process_start_time = new Date(parseInt(data1.process_start_time))
-                    data1.process_end_time = new Date(parseInt(data1.process_end_time))
-                });
                 logger.info('--- attendance summary api response sent---');
                 res.send(summaryData)
             }
@@ -241,10 +210,6 @@ router.post('/stSchool', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                summaryData.forEach(data1 => {
-                    data1.process_start_time = new Date(parseInt(data1.process_start_time))
-                    data1.process_end_time = new Date(parseInt(data1.process_end_time))
-                });
                 logger.info('--- attendance summary api response sent---');
                 res.send(summaryData)
             }
