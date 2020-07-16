@@ -40,50 +40,49 @@ Configuration filled in `config.yml` will be validated first. If there is any er
 Once installation completed without any errors, you will be prompted the following message. 
 ```CQube installed successfully!!``` 
 
-
 <b>Post Installation </b>
-
 <b> Creating Users and authentication with Keycloak </b>
 
--Creating initial admin user
-Go to ```http://<host_name_or_ip>:8080/auth/admin/``` log in to the Keycloak Admin Console by creating an initial admin user
-
--Creating a New Realm:
-Before you can create your first realm, complete the installation of Keycloak and create the initial admin user.
+- Creating a New Realm:
 To create a new realm, complete the following steps,
 
-Go to http://localhost:8080/auth/admin/ and log in to the Keycloak Admin Console using the account you created in Install and Boot. 
-From the Master drop-down menu, click Add Realm. When you are logged in to the master realm this drop-down menu lists all existing realms. 
-Type demo in the Name field and click Create.
+1) Go to http://localhost:8080/auth/admin/ and log in to the Keycloak Admin Console using the username and password you created while installing cQube. 
+2) From the Master drop-down menu, click Add Realm. When you logged in to the master realm the drop-down menu lists all existing realms. 
+3) Type Name of the realm u need to create in name field and click Create.
+4) When the realm is created, the main admin console page opens. Notice the current realm is now set to the realm name you created. Switch between managing the master realm and the realm you just created by clicking entries in the Select realm drop-down menu.
 
-When the realm is created, the main admin console page opens. Notice the current realm is now set to demo. Switch between managing the master realm and the realm you just created by clicking entries in the Select realm drop-down menu.
+- Creation of client & configuration:
+
+1)Log in to the admin console with your admin account. 
+2)In the top left drop-down menu select and manage the realm which you created. 
+3)Click Clients in the left side menu to open the Clients page.
+4)On the right side, click Create.
+5)Complete the fields.
+6)Click Save to create the client application entry. 
+7)Click the Installation tab in the Keycloak admin console to obtain a configuration template. 
+8)Select Keycloak OIDC JBoss Subsystem XML to generate an XML template. 
+
+- Creating New roles:
 
 
-Creation of client & configuration:
-Log in to the admin console with your admin account. 
-In the top left drop-down menu select and manage the Demo realm. 
-Click Clients in the left side menu to open the Clients page.
-On the right side, click Create.
-Complete the fields.
-Click Save to create the client application entry. 
-Click the Installation tab in the Keycloak admin console to obtain a configuration template. 
-Select Keycloak OIDC JBoss Subsystem XML to generate an XML template. 
+Using above steps create 3 roles
+1) Admin
+2) report_viewer
+3) emission
 
+- Creating a New User:
+To create a new user in your created realm, along with a temporary password for that new user, complete the following steps,
 
+1) From the menu, click Users to open the user list page. 
+2) On the right side of the empty user list, click Add User to open the add user page. 
+3) Enter a name in the Username field and email id in email field.
+4) Assign appropriate role to the user. (roles as created in the previous step)
+5) Flip the Email Verified switch from Off to On and click Save to save the data and open the management page for the new user.
+6) Click the Credentials tab to set a temporary password for the new user. 
+7) Type a new password and confirm it. 
+8) Click Set Password to set the user password.
 
-Client configuration:
-
-Creating a New User:
-To create a new user in the demo realm, along with a temporary password for that new user, complete the following steps,
-
-From the menu, click Users to open the user list page. 
-On the right side of the empty user list, click Add User to open the add user page. 
-Enter a name in the Username field; this is the only required field. Flip the Email Verified switch from Off to On and click Save to save the data and open the management page for the new user.
- Click the Credentials tab to set a temporary password for the new user. 
-Type a new password and confirm it. 
-Click Set Password to set the user password.
-
-Creating User
+Using above steps create two users with emission role and report_viewer role respectively.
 
 <b>Uploading data to S3 Emission bucket</b>
 
