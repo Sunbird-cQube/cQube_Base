@@ -9,6 +9,7 @@ declare var Keycloak: any;
 })
 export class KeycloakSecurityService {
   public kc: KeycloakInstance;
+  
   constructor(public router: Router) {
 
   }
