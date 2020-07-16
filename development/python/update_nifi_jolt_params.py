@@ -1,6 +1,8 @@
 import requests
 import logging
+from nifi_env_db import nifi_port
 import get_jolt_spec_db as jolt_spec
+
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -31,7 +33,7 @@ def get_parameter_context(parameter_context):
     """
     Function will get the parameter context details
     """
-    res = requests.get('http://localhost:8096/nifi-api/flow/parameter-contexts')
+    res = requests.get('http://localhost:{}/nifi-api/flow/parameter-contexts'.format(nifi_port))
     if res.status_code == 200:
         for i in res.json()['parameterContexts']:
             if i['component']['name'] == parameter_context:
@@ -45,7 +47,7 @@ def update_parameters(nifi_parameters):
     '''
     Function will update parameter context 
     '''
-    update_pr = requests.post("http://localhost:8096/nifi-api/parameter-contexts/{}/update-requests".format(nifi_parameters['id']),json=nifi_parameters)
+    update_pr = requests.post("http://localhost:{}/nifi-api/parameter-contexts/{}/update-requests".format(nifi_port,nifi_parameters['id']),json=nifi_parameters)
     if update_pr.status_code == 200:
         return update_pr
     else:
