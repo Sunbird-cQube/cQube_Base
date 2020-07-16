@@ -8,7 +8,7 @@
     state: directory
     
 - name: copying server-side script
-  shell: "cp -R ../../development/angular/server-side {{base_dir}}/cqube/dashboard/server_side"
+  shell: "cp -R ../../development/angular/server-side {{base_dir}}/cqube/dashboard/"
 
 - name: Change to Node directory
   shell: "cd {{base_dir}}/cqube/dashboard/server_side"

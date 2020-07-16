@@ -7,14 +7,26 @@
 - name: Replacing endpoint value in environment.ts
   lineinfile:
     path: ../../development/admin/client-side/src/environments/environment.ts
-    regexp: "apiEndpoint"
+    regexp: "  apiEndpoint"
     line: "apiEndpoint: 'http://{{ local_ipv4_address }}:3001/api',"
+
+- name: Replacing endpoint value in environment.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.ts
+    regexp: "  grafanaEndPoint:"
+    line: "grafanaEndPoint: 'http://{{ local_ipv4_address }}:9000',"
 
 - name: Replacing endpoint value in environment.prod.ts
   lineinfile:
     path: ../../development/admin/client-side/src/environments/environment.prod.ts
     regexp: "apiEndpoint"
     line: "apiEndpoint: 'http://{{ local_ipv4_address }}:3001/api',"
+
+- name: Replacing endpoint value in environment.prod.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.prod.ts
+    regexp: "  grafanaEndPoint:"
+    line: "grafanaEndPoint: 'http://{{ local_ipv4_address }}:9000',"
 
 - name: Change to Angular directory
   shell: cd ../../development/admin/client-side

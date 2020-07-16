@@ -2,431 +2,8 @@
 <template encoding-version="1.3">
     <description></description>
     <groupId>281dc6f4-0173-1000-6ece-d7cd0acfb411</groupId>
-    <name>semester_transfomer</name>
+    <name>semester_transformer</name>
     <snippet>
-        <controllerServices>
-            <id>19f9ff3c-9f0e-3981-0000-000000000000</id>
-            <parentGroupId>d6ea3713-1d30-383b-0000-000000000000</parentGroupId>
-            <versionedComponentId>c96e7d53-d3b7-317f-a93e-771409353376</versionedComponentId>
-            <bundle>
-                <artifact>nifi-record-serialization-services-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.11.4</version>
-            </bundle>
-            <comments></comments>
-            <descriptors>
-                <entry>
-                    <key>Schema Write Strategy</key>
-                    <value>
-                        <name>Schema Write Strategy</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-cache</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
-                        <name>schema-cache</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-access-strategy</key>
-                    <value>
-                        <name>schema-access-strategy</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-registry</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
-                        <name>schema-registry</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-name</key>
-                    <value>
-                        <name>schema-name</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-version</key>
-                    <value>
-                        <name>schema-version</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-branch</key>
-                    <value>
-                        <name>schema-branch</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-text</key>
-                    <value>
-                        <name>schema-text</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Date Format</key>
-                    <value>
-                        <name>Date Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Time Format</key>
-                    <value>
-                        <name>Time Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Timestamp Format</key>
-                    <value>
-                        <name>Timestamp Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Pretty Print JSON</key>
-                    <value>
-                        <name>Pretty Print JSON</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>suppress-nulls</key>
-                    <value>
-                        <name>suppress-nulls</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>output-grouping</key>
-                    <value>
-                        <name>output-grouping</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>compression-format</key>
-                    <value>
-                        <name>compression-format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>compression-level</key>
-                    <value>
-                        <name>compression-level</name>
-                    </value>
-                </entry>
-            </descriptors>
-            <name>Json-writer-CQube</name>
-            <persistsState>false</persistsState>
-            <properties>
-                <entry>
-                    <key>Schema Write Strategy</key>
-                    <value>no-schema</value>
-                </entry>
-                <entry>
-                    <key>schema-cache</key>
-                </entry>
-                <entry>
-                    <key>schema-access-strategy</key>
-                    <value>inherit-record-schema</value>
-                </entry>
-                <entry>
-                    <key>schema-registry</key>
-                </entry>
-                <entry>
-                    <key>schema-name</key>
-                    <value>${schema.name}</value>
-                </entry>
-                <entry>
-                    <key>schema-version</key>
-                </entry>
-                <entry>
-                    <key>schema-branch</key>
-                </entry>
-                <entry>
-                    <key>schema-text</key>
-                    <value>${avro.schema}</value>
-                </entry>
-                <entry>
-                    <key>Date Format</key>
-                    <value>yyyy-MM-dd</value>
-                </entry>
-                <entry>
-                    <key>Time Format</key>
-                    <value>HH:mm:ss</value>
-                </entry>
-                <entry>
-                    <key>Timestamp Format</key>
-                    <value>yyyy-MM-dd HH:mm:ss.SSS</value>
-                </entry>
-                <entry>
-                    <key>Pretty Print JSON</key>
-                    <value>false</value>
-                </entry>
-                <entry>
-                    <key>suppress-nulls</key>
-                    <value>never-suppress</value>
-                </entry>
-                <entry>
-                    <key>output-grouping</key>
-                    <value>output-array</value>
-                </entry>
-                <entry>
-                    <key>compression-format</key>
-                    <value>none</value>
-                </entry>
-                <entry>
-                    <key>compression-level</key>
-                    <value>1</value>
-                </entry>
-            </properties>
-            <state>ENABLED</state>
-            <type>org.apache.nifi.json.JsonRecordSetWriter</type>
-        </controllerServices>
-        <controllerServices>
-            <id>341ea901-7ca7-3faa-0000-000000000000</id>
-            <parentGroupId>d6ea3713-1d30-383b-0000-000000000000</parentGroupId>
-            <versionedComponentId>1a28e826-b02d-36fc-b09a-8bd5c15d871b</versionedComponentId>
-            <bundle>
-                <artifact>nifi-record-serialization-services-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.11.4</version>
-            </bundle>
-            <comments></comments>
-            <descriptors>
-                <entry>
-                    <key>schema-access-strategy</key>
-                    <value>
-                        <name>schema-access-strategy</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-registry</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
-                        <name>schema-registry</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-name</key>
-                    <value>
-                        <name>schema-name</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-version</key>
-                    <value>
-                        <name>schema-version</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-branch</key>
-                    <value>
-                        <name>schema-branch</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-text</key>
-                    <value>
-                        <name>schema-text</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>schema-inference-cache</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
-                        <name>schema-inference-cache</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Date Format</key>
-                    <value>
-                        <name>Date Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Time Format</key>
-                    <value>
-                        <name>Time Format</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Timestamp Format</key>
-                    <value>
-                        <name>Timestamp Format</name>
-                    </value>
-                </entry>
-            </descriptors>
-            <name>JsonTreeReader-common</name>
-            <persistsState>false</persistsState>
-            <properties>
-                <entry>
-                    <key>schema-access-strategy</key>
-                    <value>infer-schema</value>
-                </entry>
-                <entry>
-                    <key>schema-registry</key>
-                </entry>
-                <entry>
-                    <key>schema-name</key>
-                    <value>${schema.name}</value>
-                </entry>
-                <entry>
-                    <key>schema-version</key>
-                </entry>
-                <entry>
-                    <key>schema-branch</key>
-                </entry>
-                <entry>
-                    <key>schema-text</key>
-                    <value>${avro.schema}</value>
-                </entry>
-                <entry>
-                    <key>schema-inference-cache</key>
-                </entry>
-                <entry>
-                    <key>Date Format</key>
-                </entry>
-                <entry>
-                    <key>Time Format</key>
-                    <value>HH:mm</value>
-                </entry>
-                <entry>
-                    <key>Timestamp Format</key>
-                    <value>yyyy-MM-dd HH:mm:ss.SSS</value>
-                </entry>
-            </properties>
-            <state>ENABLED</state>
-            <type>org.apache.nifi.json.JsonTreeReader</type>
-        </controllerServices>
-        <controllerServices>
-            <id>b46d7dbc-8957-37b1-0000-000000000000</id>
-            <parentGroupId>d6ea3713-1d30-383b-0000-000000000000</parentGroupId>
-            <versionedComponentId>7e809fc7-383f-38e1-bb9f-cc162017a71d</versionedComponentId>
-            <bundle>
-                <artifact>nifi-aws-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.11.4</version>
-            </bundle>
-            <comments></comments>
-            <descriptors>
-                <entry>
-                    <key>default-credentials</key>
-                    <value>
-                        <name>default-credentials</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Access Key</key>
-                    <value>
-                        <name>Access Key</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Secret Key</key>
-                    <value>
-                        <name>Secret Key</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Credentials File</key>
-                    <value>
-                        <name>Credentials File</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>profile-name</key>
-                    <value>
-                        <name>profile-name</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>anonymous-credentials</key>
-                    <value>
-                        <name>anonymous-credentials</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Assume Role ARN</key>
-                    <value>
-                        <name>Assume Role ARN</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Assume Role Session Name</key>
-                    <value>
-                        <name>Assume Role Session Name</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Session Time</key>
-                    <value>
-                        <name>Session Time</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>assume-role-external-id</key>
-                    <value>
-                        <name>assume-role-external-id</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>assume-role-proxy-host</key>
-                    <value>
-                        <name>assume-role-proxy-host</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>assume-role-proxy-port</key>
-                    <value>
-                        <name>assume-role-proxy-port</name>
-                    </value>
-                </entry>
-            </descriptors>
-            <name>cQube-GA-S3-cred</name>
-            <persistsState>false</persistsState>
-            <properties>
-                <entry>
-                    <key>default-credentials</key>
-                    <value>false</value>
-                </entry>
-                <entry>
-                    <key>Access Key</key>
-                </entry>
-                <entry>
-                    <key>Secret Key</key>
-                </entry>
-                <entry>
-                    <key>Credentials File</key>
-                </entry>
-                <entry>
-                    <key>profile-name</key>
-                </entry>
-                <entry>
-                    <key>anonymous-credentials</key>
-                    <value>false</value>
-                </entry>
-                <entry>
-                    <key>Assume Role ARN</key>
-                </entry>
-                <entry>
-                    <key>Assume Role Session Name</key>
-                </entry>
-                <entry>
-                    <key>Session Time</key>
-                    <value>3600</value>
-                </entry>
-                <entry>
-                    <key>assume-role-external-id</key>
-                </entry>
-                <entry>
-                    <key>assume-role-proxy-host</key>
-                </entry>
-                <entry>
-                    <key>assume-role-proxy-port</key>
-                </entry>
-            </properties>
-            <state>ENABLED</state>
-            <type>org.apache.nifi.processors.aws.credentials.provider.service.AWSCredentialsProviderControllerService</type>
-        </controllerServices>
         <processGroups>
             <id>c13023f5-69f7-39d5-0000-000000000000</id>
             <parentGroupId>d6ea3713-1d30-383b-0000-000000000000</parentGroupId>
@@ -4281,7 +3858,7 @@
     </value>
 </entry>
                             </descriptors>
-                            <name>cQube-s3-stud_att_src</name>
+                            <name>cQube_s3_sem_raw</name>
                             <persistsState>false</persistsState>
                             <properties>
 <entry>
@@ -4429,7 +4006,7 @@
     </value>
 </entry>
                             </descriptors>
-                            <name>postgres-DBCPConnectionPool-raw</name>
+                            <name>postgres_sem_raw</name>
                             <persistsState>false</persistsState>
                             <properties>
 <entry>
@@ -5012,7 +4589,7 @@
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.FetchS3Object</type>
                         </processors>
@@ -5194,7 +4771,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -5844,7 +5421,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -6190,7 +5767,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.DeleteS3Object</type>
                         </processors>
@@ -7730,7 +7307,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.FetchS3Object</type>
                         </processors>
@@ -8228,7 +7805,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -8758,7 +8335,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -9103,7 +8680,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.ListS3</type>
                         </processors>
@@ -10226,7 +9803,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -10696,7 +10273,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -11624,7 +11201,7 @@ where filename = '${filename}' and ff_uuid= '${files_uuid}';
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -12014,7 +11591,7 @@ where filename = '${filename}' and ff_uuid= '${files_uuid}';
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -12464,7 +12041,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -12598,7 +12175,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -12837,7 +12414,7 @@ VALUES
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -13097,31 +12674,6 @@ Datasource file:${filename} did not match with the filename or records count</va
 <id>2b628bd6-c06d-3cfc-0000-000000000000</id>
 <type>PROCESSOR</type>
 <versionedComponentId>02e6a127-1b7e-3e99-8a79-efba485442e7</versionedComponentId>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>0234b7b3-de37-3f1e-0000-000000000000</id>
-                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
-<id>12321455-9290-3e85-0000-000000000000</id>
-<type>FUNNEL</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>valid_columns</selectedRelationships>
-                            <source>
-<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
-<id>1ee49c4e-7d86-321b-0000-000000000000</id>
-<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -13497,6 +13049,40 @@ Datasource file:${filename} did not match with the filename or records count</va
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>1c921f02-f968-3fbd-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>3152.0</x>
+<y>1416.0</y>
+                            </bends>
+                            <bends>
+<x>3304.0</x>
+<y>2152.0</y>
+                            </bends>
+                            <destination>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>0f20dcb7-dc2d-34fe-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>a9136e87-e5c9-3429-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>06badee1-7736-3cec-816c-82de83890a71</versionedComponentId>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>1d02febc-bb80-36e8-0000-000000000000</id>
                             <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -13518,6 +13104,40 @@ Datasource file:${filename} did not match with the filename or records count</va
 <groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
 <id>9283963a-f873-31ee-0000-000000000000</id>
 <type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>220aeba8-72e5-3944-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>3128.0</x>
+<y>1224.0</y>
+                            </bends>
+                            <bends>
+<x>3192.0</x>
+<y>2216.0</y>
+                            </bends>
+                            <destination>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>5d1364ec-1bff-3551-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>b3f6600f-8649-36f6-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>992c8770-d921-3995-8934-3f9872554f94</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -13861,6 +13481,40 @@ Datasource file:${filename} did not match with the filename or records count</va
 <groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
 <id>8c9abdfa-ca23-3b49-0000-000000000000</id>
 <type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>3caeb325-49ea-3844-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>3040.0</x>
+<y>1096.0</y>
+                            </bends>
+                            <bends>
+<x>3168.0</x>
+<y>2448.0</y>
+                            </bends>
+                            <destination>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>7d942af7-13b7-3808-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>b86209ef-2d10-31b1-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>6cf10cd2-4cab-3476-9cc4-5366d298afe5</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -14535,6 +14189,31 @@ Datasource file:${filename} did not match with the filename or records count</va
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>67cf4ead-9270-3ef2-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>12321455-9290-3e85-0000-000000000000</id>
+<type>FUNNEL</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>valid</selectedRelationships>
+                            <source>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>4498400c-b693-39b9-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>6d7f5c87-fa40-3f84-0000-000000000000</id>
                             <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -14743,6 +14422,36 @@ Datasource file:${filename} did not match with the filename or records count</va
 <groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
 <id>2ee50971-7a0c-3156-0000-000000000000</id>
 <type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>7642b927-f863-348d-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>3240.0</x>
+<y>2760.0</y>
+                            </bends>
+                            <destination>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>1cff6c33-f55a-3496-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>ddd53a97-490e-3105-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>a5b6f531-ce8d-34ae-a243-265541aeb1af</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -15867,6 +15576,31 @@ Datasource file:${filename} did not match with the filename or records count</va
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>cf47f86f-c8fb-3d64-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>f3186318-cc5f-30cc-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>invalid</selectedRelationships>
+                            <source>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>4498400c-b693-39b9-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>d037e34d-fbac-331d-0000-000000000000</id>
                             <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -15912,6 +15646,31 @@ Datasource file:${filename} did not match with the filename or records count</va
                             <source>
 <groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
 <id>5e7d90d3-4c7e-3d4c-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>d419ed1a-ba48-39c7-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>4498400c-b693-39b9-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>valid_columns</selectedRelationships>
+                            <source>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>1ee49c4e-7d86-321b-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -16759,7 +16518,7 @@ Datasource file:${filename} did not match with the filename or records count</va
     </value>
 </entry>
                             </descriptors>
-                            <name>AWS-sem</name>
+                            <name>cQube_s3_sem</name>
                             <persistsState>false</persistsState>
                             <properties>
 <entry>
@@ -17703,7 +17462,7 @@ Datasource file:${filename} did not match with the filename or records count</va
     </value>
 </entry>
                             </descriptors>
-                            <name>postgres-sem</name>
+                            <name>postgres_sem</name>
                             <persistsState>false</persistsState>
                             <properties>
 <entry>
@@ -19231,7 +18990,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -19487,7 +19246,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
     </entry>
     <entry>
         <key>AWS Credentials Provider service</key>
-        <value>b46d7dbc-8957-37b1-0000-000000000000</value>
+        <value>0bbecee0-62a7-3fcf-0000-000000000000</value>
     </entry>
     <entry>
         <key>s3-object-tags-prefix</key>
@@ -19827,7 +19586,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -20507,8 +20266,8 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
         <key>putsql-sql-statement</key>
         <value>update log_summary
 SET school_id = sem_null_col.count_null_schoolid,
-semester = sem_null_col.count_null_studentid,
-gradde = stud_att_null_col.count_null_studyingclass,
+semester = sem_null_col.count_null_sem,
+grade = stud_att_null_col.count_null_studyingclass,
 where sem_null_col.ff_uuid = log_summary.ff_uuid</value>
     </entry>
     <entry>
@@ -21597,7 +21356,7 @@ over (partition by AadhaarUID,SchoolId,Sem) as rn from FLOWFILE) sq Where rn &gt
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -22116,6 +21875,109 @@ from flowfile)</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
+                        </processors>
+                        <processors>
+                            <id>4498400c-b693-39b9-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <position>
+<x>-6080.0</x>
+<y>968.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>validate-csv-schema</key>
+        <value>
+            <name>validate-csv-schema</name>
+        </value>
+    </entry>
+    <entry>
+        <key>validate-csv-header</key>
+        <value>
+            <name>validate-csv-header</name>
+        </value>
+    </entry>
+    <entry>
+        <key>validate-csv-delimiter</key>
+        <value>
+            <name>validate-csv-delimiter</name>
+        </value>
+    </entry>
+    <entry>
+        <key>validate-csv-quote</key>
+        <value>
+            <name>validate-csv-quote</name>
+        </value>
+    </entry>
+    <entry>
+        <key>validate-csv-eol</key>
+        <value>
+            <name>validate-csv-eol</name>
+        </value>
+    </entry>
+    <entry>
+        <key>validate-csv-strategy</key>
+        <value>
+            <name>validate-csv-strategy</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>validate-csv-schema</key>
+        <value>Optional(parseLong()),Optional(StrNotNullOrEmpty()),Optional(parseLong()),Optional(StrNotNullOrEmpty()),Optional(parseLong()),Optional(StrNotNullOrEmpty()),Optional(parseLong()),
+Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(parseLong()),Optional(parseInt()),Optional(ParseChar()),null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null</value>
+    </entry>
+    <entry>
+        <key>validate-csv-header</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>validate-csv-delimiter</key>
+        <value>|</value>
+    </entry>
+    <entry>
+        <key>validate-csv-quote</key>
+        <value>"</value>
+    </entry>
+    <entry>
+        <key>validate-csv-eol</key>
+        <value>\n</value>
+    </entry>
+    <entry>
+        <key>validate-csv-strategy</key>
+        <value>Line by line validation</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>data_type_check_sem</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>invalid</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>valid</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.ValidateCsv</type>
                         </processors>
                         <processors>
                             <id>485e548a-604a-3eb5-0000-000000000000</id>
@@ -24083,7 +23945,7 @@ english AS "subject_4",sanskrit AS "subject_8",num_of_times FROM flowfile </valu
 <properties>
     <entry>
         <key>Object Key</key>
-        <value>log_summay/log_summary_sem.json</value>
+        <value>log_summary/log_summary_sem.json</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -24496,7 +24358,7 @@ where filename = '${filename}' and ff_uuid= '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -25553,7 +25415,7 @@ subject_1_marks_scored=a.subject_1_marks_scored,subject_1_total_marks=a.subject_
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -26535,7 +26397,7 @@ on b.x_axis=c.x_axis</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -27488,7 +27350,7 @@ left join (select x_axis,
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -27696,7 +27558,7 @@ on a.x_axis=b.x_axis</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -29038,7 +28900,7 @@ where filename = '${filename}' and ff_uuid= '${files_uuid}'
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -29167,7 +29029,7 @@ where filename = '${filename}' and ff_uuid= '${files_uuid}'
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -29500,7 +29362,7 @@ on b.x_axis=c.x_axis</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -29548,11 +29410,11 @@ on b.x_axis=c.x_axis</value>
 <properties>
     <entry>
         <key>record-reader</key>
-        <value>341ea901-7ca7-3faa-0000-000000000000</value>
+        <value>77335790-bcee-3ea2-0000-000000000000</value>
     </entry>
     <entry>
         <key>record-writer</key>
-        <value>19f9ff3c-9f0e-3981-0000-000000000000</value>
+        <value>ef347bc1-c2d7-387e-0000-000000000000</value>
     </entry>
     <entry>
         <key>semester</key>
@@ -29802,7 +29664,7 @@ on b.x_axis=c.x_axis</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -30447,7 +30309,7 @@ same id data validation of file:${filename}, same id records not found </value>
         <value>update log_summary as b
 	set processed_records= a.processed_records
 	from (
-		select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records)-sum(school_id+in_school_location+grade))as processed_records 
+		select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records)-sum(student_id+school_id+semester+grade))as processed_records 
 		from log_summary group by ff_uuid) as a
 	where a.ff_uuid=b.ff_uuid</value>
     </entry>
@@ -30718,7 +30580,7 @@ same id data validation of file:${filename}, same id records not found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -30806,6 +30668,75 @@ same id data validation of file:${filename}, same id records not found </value>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
+                        <processors>
+                            <id>f3186318-cc5f-30cc-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <position>
+<x>-6072.0</x>
+<y>1136.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>log-level</key>
+        <value>
+            <name>log-level</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>
+            <name>log-prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>
+            <name>log-message</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>log-level</key>
+        <value>info</value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>---TRANSFORMATION---</value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>Data type validation, 
+file: ${filename} has invalid data type, pass the file with right datatype. </value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>LogMessage</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
                     </contents>
                     <name>student_assessment_processor</name>
                     <variables/>
@@ -30815,5 +30746,5 @@ same id data validation of file:${filename}, same id records not found </value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>07/15/2020 20:08:43 IST</timestamp>
+    <timestamp>07/16/2020 04:07:57 IST</timestamp>
 </template>

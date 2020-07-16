@@ -42,16 +42,17 @@
   blockinfile:
         path: "{{ base_dir }}/cqube/emission_app/python/env.py"
         block: |
-               DATABASE_URI = "postgresql://{{ db_user }}:{{ db_password }}@localhost:5432/{{ db_name }}"
-               AWS_SECRET_KEY = "{{ s3_secret_key }}"
-               AWS_ACCESS_KEY = "{{ s3_access_key }}"
-               AWS_DEFAULT_REGION = "{{ aws_default_region }}"
-               EMISSION_BUCKET_NAME= "{{ s3_emission_bucket }}"
-               INPUT_BUCKET_NAME= "{{ s3_input_bucket }}"
-               OUTPUT_BUCKET_NAME= "{{ s3_output_bucket }}"
-               BASE_DIR= "{{ base_dir }}"
-
-- name: starting flask app
+               AWS_SECRET_KEY="{{ s3_secret_key }}"
+               AWS_ACCESS_KEY="{{ s3_access_key }}"
+               AWS_DEFAULT_REGION="{{ aws_default_region }}"
+               EMISSION_BUCKET_NAME="{{ s3_emission_bucket }}"
+               INPUT_BUCKET_NAME="{{ s3_input_bucket }}"
+               OUTPUT_BUCKET_NAME="{{ s3_output_bucket }}"
+               BASE_DIR="{{ base_dir }}"
+               DOMAIN_NAME=
+               REALM_NAME=
+               CLIENT_ID=
+               CLIENT_SECRET=
   become: yes
   become_user: "{{ system_user_name }}"
   shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/gunicorn -w 3 -b 0.0.0.0:5000 server:application &"

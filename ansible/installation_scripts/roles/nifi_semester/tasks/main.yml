@@ -179,12 +179,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "cQube-GA-S3-cred",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_sem_raw",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube-GA-S3-cred'
+  when: item.component.name == 'cQube_s3_sem_raw'
   no_log: True
 
 - name: Add s3 credentials parameters
@@ -196,12 +196,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "AWS-sem",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_sem",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_assessment.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'AWS-sem'
+  when: item.component.name == 'cQube_s3_sem'
   no_log: True
   
 - name: Add postgre-source-pwd
@@ -213,12 +213,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgres-DBCPConnectionPool-sem",
+        "component": {"id": "{{ item.id }}", "name": "postgres_sem_raw",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres-DBCPConnectionPool-sem'
+  when: item.component.name == 'postgres_sem_raw'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -230,12 +230,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgres-sem",
+        "component": {"id": "{{ item.id }}", "name": "postgres_sem",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list_assessment.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres-sem'
+  when: item.component.name == 'postgres_sem'
   no_log: True
 
 - name: Get controllers raw updated

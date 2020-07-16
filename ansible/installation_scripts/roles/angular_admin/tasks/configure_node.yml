@@ -8,7 +8,7 @@
     state: directory
 
 - name: copying admin's server-side script
-  shell: "cp -R ../../development/admin/server-side {{base_dir}}/cqube/admin_dashboard/server_side"
+  shell: "cp -R ../../development/admin/server-side {{base_dir}}/cqube/admin_dashboard/"
 
 - name: Change to Node directory
   shell: "cd {{base_dir}}/cqube/admin_dashboard/server_side"
@@ -33,5 +33,7 @@
       OUTPUT_BUCKET = "{{ s3_output_bucket }}"
       BASE_DIR = "{{ base_dir }}"
       BASEURL = "http://{{ local_ipv4_address}}:5000"
+      EMAIL=
+      PASSWORD=
 
 
