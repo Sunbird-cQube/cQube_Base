@@ -603,7 +603,7 @@ export class SchoolInfrastructureComponent implements OnInit {
             },
             ticks: {
               min: 0,
-              // max: 100
+              max: 100
             },
             scaleLabel: {
               display: true,
@@ -618,7 +618,7 @@ export class SchoolInfrastructureComponent implements OnInit {
             },
             ticks: {
               min: 0,
-              // max: 100
+              max: 100
             },
             scaleLabel: {
               display: true,

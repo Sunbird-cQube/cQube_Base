@@ -124,4 +124,36 @@ export class AppService {
         });
     }
 
+    getInfraSummary() {
+        return this.http.post(`${this.baseUrl}/summary/infra`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+    getInspecSummary() {
+        return this.http.post(`${this.baseUrl}/summary/inspec`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    getstDistSummary() {
+        return this.http.post(`${this.baseUrl}/summary/stDist`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    getstBlockSummary() {
+        return this.http.post(`${this.baseUrl}/summary/stBlock`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+    getstClusterSummary() {
+        return this.http.post(`${this.baseUrl}/summary/stCluster`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+    getstSchoolSummary() {
+        return this.http.post(`${this.baseUrl}/summary/stSchool`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
 }
