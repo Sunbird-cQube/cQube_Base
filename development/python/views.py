@@ -1,11 +1,12 @@
+import json
+from config import *
+from flask import Flask, g
+from flask_oidc import OpenIDConnect
+from flask_restful import reqparse
+import requests
 from flask import abort, Response, request, send_from_directory
 from flask_restful import reqparse
 from werkzeug.utils import secure_filename
-from flask_jwt import JWT, jwt_required, current_identity
-from config import app
-from users import User
-from models import Users
-from config import bcrypt
 from env import *
 import logging
 from datetime import datetime
@@ -14,9 +15,29 @@ from botocore.exceptions import ClientError
 from boto3 import client
 from os.path import exists, join
 from os import path, walk
-from json import dumps, load
+from json import dumps
 import pandas as pd
-from io import BytesIO, StringIO
+from io import BytesIO
+
+app = Flask(__name__)
+app.config.update({
+    'SECRET_KEY': 'Itsnotsecretkey',
+    'OIDC_CLIENT_SECRETS': 'client_secrets.json',
+    'OIDC_ID_TOKEN_COOKIE_SECURE': False,
+    'OIDC_REQUIRE_VERIFIED_EMAIL': False,
+    'OIDC_USER_INFO_ENABLED': True,
+    'OIDC_OPENID_REALM': 'flask-app',
+    'OIDC_TOKEN_TYPE_HINT': 'access_token',
+    'OIDC_SCOPES': ['openid', 'email', 'profile'],
+    'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
+})
+app.logger.addHandler(file_handler)
+app.logger.addHandler(access_handler)
+app.debug=True
+
+
+oidc = OpenIDConnect(app)
+
 
 def get_s3_client():
     s3_signature = {
@@ -41,55 +62,26 @@ def create_presigned_post(bucket_name, object_name,
     except ClientError as e:
         logging.error(e)
         return None
-
     return response
 
-
-def get_user_id(user_id):
-    existing_person = Users.query.filter(Users.user_id == user_id).all()
-    if existing_person:
-        luser_id = [
-            {
-                "user_id": user.user_id,
-            } for user in existing_person
-        ]
-        return luser_id
-
-def active_user(username):
-    existing_person = Users.query \
-        .filter(Users.user_email == username) \
-        .filter(Users.user_status == 1) \
-        .filter((Users.role_id == 5) | (Users.role_id == 1)) \
-        .all()
-    if existing_person:
-        return existing_person
+@app.route('/auth', methods=['POST'])
+def api_login():
+    url=DOMAIN_NAME+"/auth/realms/"+REALM_NAME+"/protocol/openid-connect/token"
+    headers = { 'content-type': "application/x-www-form-urlencoded" }
+    parser = reqparse.RequestParser()
+    username = parser.add_argument("username")
+    password = parser.add_argument("password")
+    args = parser.parse_args()
+    if username and password:
+        payload= {"client_id" :"flask-app","grant_type":"password","client_secret":CLIENT_SERCET,"scope":"openid",
+        "username":args["username"],"password":args["password"]}
+        resp=requests.post(url,data=payload,headers=headers)
+        return resp.json()
     else:
         abort(401, f'User unauthorized')
-
-def authenticate(username, password):
-    user = active_user(username)[0]
-    users = [User(user.user_id,user.user_email,user.password)]
-    lusers = {u.username: u for u in users}
-    user = lusers.get(username, None)
-    if user and \
-            bcrypt.check_password_hash(user.password, password):
-        return user
-    else:
-        abort(401, f'User unauthorized')
-
-def identity(payload):
-    user_id = payload['identity']
-    return get_user_id(user_id)[0].get('user_id', None)
-
-jwt = JWT(app, authenticate, identity)
-
-@app.route('/protected')
-@jwt_required()
-def protected():
-    return '%s' % current_identity
 
 @app.route('/upload-url',methods=['POST'])
-@jwt_required()
+@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_upload_url():
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
@@ -100,7 +92,7 @@ def aws_upload_url():
         abort(400, f'Bad request, validate the payload')
 
 @app.route('/download_url',methods=['POST'])
-@jwt_required()
+@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_file_download():
     s3_client = get_s3_client()
     parser = reqparse.RequestParser()
@@ -122,7 +114,7 @@ def aws_file_download():
 
 
 @app.route('/download_uri',methods=['POST'])
-@jwt_required()
+@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_file_downloads():
     s3_client = get_s3_client()
     parser = reqparse.RequestParser()
@@ -141,7 +133,6 @@ def aws_file_downloads():
                                                          Params={'Bucket':bucket_name,'Key':file},
                                                          ExpiresIn=300)
             file_resp[file]=response
-            print(file_resp,file)
         except ClientError as e:
             logging.error(e)
             return None
@@ -179,7 +170,7 @@ def valid_path(filename):
         return abort(404, f'Bad request, validate the filename in payload')
 
 @app.route('/list_s3_files',methods=['POST'])
-@jwt_required()
+@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def list_s3_files():
     parser = reqparse.RequestParser()
     bucket = parser.add_argument("bucket")
@@ -189,7 +180,7 @@ def list_s3_files():
     return s3_client.list_objects(Bucket=bucket_name)
 
 @app.route('/download', methods=['POST'])
-@jwt_required()
+@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def index():
     s3 = get_s3_client()
     parser = reqparse.RequestParser()
@@ -209,12 +200,12 @@ def index():
         abort(400, f'Bad request, validate the filename in payload')
 
 @app.route('/list_s3_buckets',methods=['GET'])
-@jwt_required()
+@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def list_s3_buckets():
     return dumps({"input":INPUT_BUCKET_NAME,"output":OUTPUT_BUCKET_NAME,"emission":EMISSION_BUCKET_NAME})
 
 @app.route('/list_log_files',methods=['GET'])
-@jwt_required()
+@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def files_list(file_path=BASE_DIR):
     file_list=list()
     for root, dirs, files in walk(file_path):
@@ -222,7 +213,7 @@ def files_list(file_path=BASE_DIR):
     return dumps(file_list)
 
 @app.route('/log-download', methods=['POST'])
-@jwt_required()
+@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def log_download():
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
@@ -238,27 +229,27 @@ def validate_weights(wdf):
     try:
         infra_file=s3_client.get_object(Bucket=OUTPUT_BUCKET_NAME,
                              Key="infrastructure_score/infrastructure_score.csv")
-        df = pd.read_csv(BytesIO(infra_file['Body'].read()))
+        df = pd.read_csv(BytesIO(infra_file['Body'].read()),sep='|')
         if df["score"].sum() == 100:
             if list(df.columns) == list(wdf.columns):
                 return True
             else:
-                abort(400, f'Bad files, please check the file header')
+                abort(400, f'Bad file header, please check the file header')
         else:
             abort(400, f'Bad file, validate the score, score sum is not 100')
     except Exception as err:
         abort(400,err)
 
 @app.route('/infra_weights',methods=['POST'])
-@jwt_required()
+@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def upload_file():
     uploaded_file = request.files['file']
-    content_type = request.mimetype
+    content_type = 'application/json'
     filename = secure_filename(uploaded_file.filename)
     if filename:
         s3_client = get_s3_client()
         csv_buffer = uploaded_file.read()
-        wdf = pd.read_csv(BytesIO(csv_buffer))
+        wdf = pd.read_csv(BytesIO(csv_buffer),sep='|')
         validate_weights(wdf)
         resp = s3_client.put_object(Body=csv_buffer,
                           Bucket=EMISSION_BUCKET_NAME,

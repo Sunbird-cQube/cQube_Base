@@ -180,12 +180,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "cQube-GA-S3-cred",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_static_raw",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube-GA-S3-cred'
+  when: item.component.name == 'cQube_s3_static_raw'
   no_log: True
 
 - name: Add s3 credentials parameters
@@ -197,12 +197,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "AWSCredentialsProviderController-static",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_static",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_data.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'AWSCredentialsProviderController-static'
+  when: item.component.name == 'cQube_s3_static'
   no_log: True
 
 - name: Add postgre-source-pwd  
@@ -214,12 +214,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgresql-CQube-Source",
+        "component": {"id": "{{ item.id }}", "name": "postgres_static_raw",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgresql-CQube-Source'
+  when: item.component.name == 'postgres_static_raw'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -231,12 +231,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-       "component": {"id": "{{ item.id }}", "name": "postgresDBCPConnectionPool-static",
+       "component": {"id": "{{ item.id }}", "name": "postgres_static",
        "properties" : { "Password" : "#{db_password}"}}
 
     }
   loop: "{{ controllers_list_data.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgresDBCPConnectionPool-static'
+  when: item.component.name == 'postgres_static'
   no_log: True
 
 - name: Get controllers raw updated

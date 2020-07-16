@@ -178,12 +178,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "cQube-gj_s3_cred",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_crc_raw",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube-gj_s3_cred'
+  when: item.component.name == 'cQube_s3_crc_raw'
   no_log: True
 
 - name: Add s3 credentials parameters
@@ -195,12 +195,12 @@
             "version": "{{ item.revision.version }}",
            "lastModifier": "Ansible"
        },
-       "component": {"id": "{{ item.id }}", "name": "cQube-gj_s3_cred",
+       "component": {"id": "{{ item.id }}", "name": "cQube_s3_crc",
        "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
     }
   loop: "{{ controllers_list_crc.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube-gj_s3_cred'
+  when: item.component.name == 'cQube_s3_crc'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -212,12 +212,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgresql-CQube-raw",
+        "component": {"id": "{{ item.id }}", "name": "postgres_crc_raw",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgresql-CQube-raw'
+  when: item.component.name == 'postgres_crc_raw'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -229,12 +229,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-       "component": {"id": "{{ item.id }}", "name": "postgresql-CQube-crc",
+       "component": {"id": "{{ item.id }}", "name": "postgres_crc",
        "properties" : { "Password" : "#{db_password}"}}
 
     }
   loop: "{{ controllers_list_crc.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgresql-CQube-crc'
+  when: item.component.name == 'postgres_crc'
   no_log: True
 
 - name: Get updated raw controllers

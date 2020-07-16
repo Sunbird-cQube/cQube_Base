@@ -178,12 +178,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "AWS-infra",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_infra_raw",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'AWS-infra'
+  when: item.component.name == 'cQube_s3_infra_raw'
   no_log: True
 
 - name: Add s3 credentials parameters
@@ -195,12 +195,12 @@
             "version": "{{ item.revision.version }}",
            "lastModifier": "Ansible"
        },
-       "component": {"id": "{{ item.id }}", "name": "AWS-infra",
+       "component": {"id": "{{ item.id }}", "name": "cQube_s3_infra",
        "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
     }
   loop: "{{ controllers_list_infra.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'AWS-infra'
+  when: item.component.name == 'cQube_s3_infra'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -212,12 +212,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgres-DBCPConnectionPool-raw",
+        "component": {"id": "{{ item.id }}", "name": "postgres_infra_raw",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres-DBCPConnectionPool-raw'
+  when: item.component.name == 'postgres_infra_raw'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -229,12 +229,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-       "component": {"id": "{{ item.id }}", "name": "potgres-infra",
+       "component": {"id": "{{ item.id }}", "name": "postgres_infra",
        "properties" : { "Password" : "#{db_password}"}}
 
     }
   loop: "{{ controllers_list_infra.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'potgres-infra'
+  when: item.component.name == 'postgres_infra'
   no_log: True
 
 - name: Get updated raw controllers

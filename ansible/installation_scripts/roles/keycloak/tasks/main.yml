@@ -4,6 +4,11 @@
     url: "{{ keycloak_url }}"
     dest: /tmp
 
+- name: Removing existing keycloak files, if any
+  file:
+    path: "{{ keycloak_dir }}/keycloak"
+    state: absent
+
 - name: unpacking keycloak
   unarchive: 
     src: "/tmp/{{keycloak_archive}}"
@@ -29,7 +34,7 @@
     state: started
 
 - name: add-user-keycloak
-  shell: ./add-user-keycloak -u {{ keycload_adm_user }} -p {{ keycloak_adm_passwd }}
+  shell: ./add-user-keycloak.sh -u {{ keycloak_adm_user }} -p {{ keycloak_adm_passwd }}
   args:
     chdir: "{{ base_dir }}/cqube/keycloak/bin/"
 

@@ -1,5 +1,10 @@
 ---
 - name: Creating a Directory to store the log files
+  file:
+    path: "{{ base_dir }}/cqube/logs"
+    state: absent
+
+- name: Creating a Directory to store the log files
   file: 
     path: "{{ base_dir }}/cqube/logs"
     owner: "{{ system_user_name }}"

@@ -1,7 +1,7 @@
 --- 
 keycloak_version: 10.0.2
-keycload_adm_user: 
-keycload_adm_passwd: 
+keycloak_adm_user: admin 
+keycloak_adm_passwd: admin123
 keycloak_dir: "{{ base_dir }}/cqube"
 keycloak_archive: keycloak-{{ keycloak_version }}.tar.gz
 keycloak_url: https://downloads.jboss.org/keycloak/{{ keycloak_version }}/{{keycloak_archive }}

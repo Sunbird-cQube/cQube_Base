@@ -182,12 +182,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "cQube-GA-S3-cred-static",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_stud_att_raw",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube-GA-S3-cred-static'
+  when: item.component.name == 'cQube_s3_stud_att_raw'
   no_log: True
 
 - name: Add s3 credentials parameters
@@ -199,12 +199,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "aws-attendance",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_stud_att",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_attendance.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'aws-attendance'
+  when: item.component.name == 'cQube_s3_stud_att'
   no_log: True
 
     
@@ -217,12 +217,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgres-DBCPConnectionPool-raw",
+        "component": {"id": "{{ item.id }}", "name": "postgres_stud_att_raw",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres-DBCPConnectionPool-raw'
+  when: item.component.name == 'postgres_stud_att_raw'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -234,12 +234,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgres-attendance",
+        "component": {"id": "{{ item.id }}", "name": "postgres_stud_att",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list_attendance.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres-attendance'
+  when: item.component.name == 'postgres_stud_att'
   no_log: True
 
 - name: Get controllers raw updated
