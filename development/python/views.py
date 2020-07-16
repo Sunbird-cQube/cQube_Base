@@ -42,7 +42,7 @@ app.config.update({
     'OIDC_ID_TOKEN_COOKIE_SECURE': False,
     'OIDC_REQUIRE_VERIFIED_EMAIL': False,
     'OIDC_USER_INFO_ENABLED': True,
-    'OIDC_OPENID_REALM': 'flask-app',
+    'OIDC_OPENID_REALM': REALM_NAME,
     'OIDC_TOKEN_TYPE_HINT': 'access_token',
     'OIDC_SCOPES': ['openid', 'email', 'profile'],
     'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
@@ -50,7 +50,7 @@ app.config.update({
 
 app.logger.addHandler(file_handler)
 app.logger.addHandler(access_handler)
-app.debug=True
+app.debug=False
 
 
 oidc = OpenIDConnect(app)
@@ -90,16 +90,27 @@ def api_login():
     password = parser.add_argument("password")
     args = parser.parse_args()
     if username and password:
-        payload= {"client_id" :"flask-app","grant_type":"password","client_secret":CLIENT_SERCET,"scope":"openid",
-        "username":args["username"],"password":args["password"]}
-        resp=requests.post(url,data=payload,headers=headers)
-        return resp.json()
+        try:
+            payload= {"client_id" :CLIENT_ID,"grant_type":"password","client_secret":CLIENT_SERCET,"scope":"openid",
+            "username":args["username"],"password":args["password"]}
+            resp=requests.post(url,data=payload,headers=headers)
+            return resp.json()
+        except Exception as err:
+            logging.error(err)
     else:
         abort(401, f'User unauthorized')
+
+def validate_role(token):
+    user_role = token.get("realm_access")
+    if "admin" in user_role["roles"] or "emission" in user_role["roles"]:
+        return "Valid role"
+    else:
+        abort(401, f'Invalid user roles to access api')
 
 @app.route('/upload-url',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_upload_url():
+    validate_role(g.oidc_token_info)
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
     args = parser.parse_args()
@@ -111,6 +122,7 @@ def aws_upload_url():
 @app.route('/download_url',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_file_download():
+    validate_role(g.oidc_token_info)
     s3_client = get_s3_client()
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
@@ -126,13 +138,13 @@ def aws_file_download():
     except ClientError as e:
         logging.error(e)
         return None
-
     return response
 
 
 @app.route('/download_uri',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_file_downloads():
+    validate_role(g.oidc_token_info)
     s3_client = get_s3_client()
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename", action='append')
@@ -189,6 +201,7 @@ def valid_path(filename):
 @app.route('/list_s3_files',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def list_s3_files():
+    validate_role(g.oidc_token_info)
     parser = reqparse.RequestParser()
     bucket = parser.add_argument("bucket")
     args = parser.parse_args()
@@ -199,6 +212,7 @@ def list_s3_files():
 @app.route('/download', methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def index():
+    validate_role(g.oidc_token_info)
     s3 = get_s3_client()
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
@@ -219,11 +233,13 @@ def index():
 @app.route('/list_s3_buckets',methods=['GET'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def list_s3_buckets():
+    validate_role(g.oidc_token_info)
     return dumps({"input":INPUT_BUCKET_NAME,"output":OUTPUT_BUCKET_NAME,"emission":EMISSION_BUCKET_NAME})
 
 @app.route('/list_log_files',methods=['GET'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def files_list(file_path=BASE_DIR):
+    validate_role(g.oidc_token_info)
     file_list=list()
     for root, dirs, files in walk(file_path):
         file_list.append({"path": path.relpath(root, file_path), "directories": dirs, "files": files})
@@ -232,6 +248,7 @@ def files_list(file_path=BASE_DIR):
 @app.route('/log-download', methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def log_download():
+    validate_role(g.oidc_token_info)
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
     args = parser.parse_args()
@@ -260,6 +277,7 @@ def validate_weights(wdf):
 @app.route('/infra_weights',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def upload_file():
+    validate_role(g.oidc_token_info)
     uploaded_file = request.files['file']
     content_type = 'application/json'
     filename = secure_filename(uploaded_file.filename)

@@ -13309,7 +13309,7 @@ Datasource file:${filename} did not match with the filename or records count</va
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
-<id>3aa5d44f-1a46-39df-0000-000000000000</id>
+<id>12e9b2b5-9a3e-351c-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -14452,6 +14452,31 @@ Datasource file:${filename} did not match with the filename or records count</va
 <id>ddd53a97-490e-3105-0000-000000000000</id>
 <type>PROCESSOR</type>
 <versionedComponentId>a5b6f531-ce8d-34ae-a243-265541aeb1af</versionedComponentId>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>776f3cb3-c798-39ec-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>3aa5d44f-1a46-39df-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>check_empty_file</selectedRelationships>
+                            <source>
+<groupId>7a098e48-9c12-3175-0000-000000000000</groupId>
+<id>12e9b2b5-9a3e-351c-0000-000000000000</id>
+<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -18771,6 +18796,68 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
+                            <id>12e9b2b5-9a3e-351c-0000-000000000000</id>
+                            <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
+                            <position>
+<x>-224.0</x>
+<y>1968.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>
+            <name>Routing Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>check_empty_file</key>
+        <value>
+            <name>check_empty_file</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>Route to Property name</value>
+    </entry>
+    <entry>
+        <key>check_empty_file</key>
+        <value>${record.count:gt(0)}</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>RouteOnAttribute</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>check_empty_file</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
+                        </processors>
+                        <processors>
                             <id>16604187-cca5-3fd2-0000-000000000000</id>
                             <parentGroupId>7a098e48-9c12-3175-0000-000000000000</parentGroupId>
                             <position>
@@ -21060,7 +21147,7 @@ Mirror data validation of file:${filename} started</value>
 <properties>
     <entry>
         <key>Directory</key>
-        <value>#{nifi_error_dir}assessment/</value>
+        <value>#{base_dir}#{nifi_error_dir}assessment/</value>
     </entry>
     <entry>
         <key>Conflict Resolution Strategy</key>
@@ -21356,7 +21443,7 @@ over (partition by AadhaarUID,SchoolId,Sem) as rn from FLOWFILE) sq Where rn &gt
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -23241,7 +23328,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>DISABLED</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -26397,7 +26484,7 @@ on b.x_axis=c.x_axis</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -27350,7 +27437,7 @@ left join (select x_axis,
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -27558,7 +27645,7 @@ on a.x_axis=b.x_axis</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -29362,7 +29449,7 @@ on b.x_axis=c.x_axis</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -30746,5 +30833,5 @@ file: ${filename} has invalid data type, pass the file with right datatype. </va
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>07/16/2020 04:07:57 IST</timestamp>
+    <timestamp>07/16/2020 18:48:18 IST</timestamp>
 </template>

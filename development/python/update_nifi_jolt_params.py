@@ -49,6 +49,7 @@ def update_parameters(nifi_parameters):
     '''
     update_pr = requests.post("http://localhost:{}/nifi-api/parameter-contexts/{}/update-requests".format(nifi_port,nifi_parameters['id']),json=nifi_parameters)
     if update_pr.status_code == 200:
+        print("Successfully updated  the dynamic Jolt spec for infrastructure report!!")
         return update_pr
     else:
         logging.error("Error updating  parameter context details")
@@ -84,7 +85,7 @@ if __name__ == "__main__":
     # update infra district jolt spec parameters
     update_parameter_context('infra_district_table',infra_district_table)
     update_parameter_context('infra_district_map',infra_district_map)
-    print("Successfully updated district wise  dynamic Jolt spec for infrastructure reports")
+   
     
     # 2
     # infra block jolt spec
@@ -94,7 +95,7 @@ if __name__ == "__main__":
     # update infra block jolt spec parameters
     update_parameter_context('infra_block_table',infra_block_table)
     update_parameter_context('infra_block_map',infra_block_map)
-    print("Successfully updated block wise  dynamic Jolt spec for infrastructure reports")
+    
 
     # 3
     # infra cluster jolt spec
@@ -104,7 +105,7 @@ if __name__ == "__main__":
     # update infra cluster jolt spec parameters
     update_parameter_context('infra_cluster_table',infra_cluster_table)
     update_parameter_context('infra_cluster_map',infra_cluster_map)
-    print("Successfully updated cluster wise  dynamic Jolt spec for infrastructure reports")
+    
     
     # 4
     # infra school jolt spec
@@ -114,8 +115,8 @@ if __name__ == "__main__":
     # update infra school jolt spec parameters
     update_parameter_context('infra_school_table',infra_school_table)
     update_parameter_context('infra_school_map',infra_school_map)
-    print("Successfully updated school wise  dynamic Jolt spec for infrastructure reports")
-    print("Successfully updated all the dynamic Jolt spec for infrastructure reports!!")
+    
+    
 
 
     
