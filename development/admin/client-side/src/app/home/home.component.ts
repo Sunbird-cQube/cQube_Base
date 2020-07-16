@@ -12,7 +12,8 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
 export class HomeComponent implements OnInit {
   public grafanaUrl = environment.grafanaEndPoint;
 
-  constructor(private router: Router, private service: AppService, public keyCloakService: KeycloakSecurityService) { }
+  constructor(private router: Router, private service: AppService, public keyCloakService: KeycloakSecurityService) { 
+  }
   email: any;
   role: any;
   showSubmenu1: any = false;
