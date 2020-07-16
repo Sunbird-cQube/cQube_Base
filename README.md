@@ -27,7 +27,7 @@ git checkout cQube-release-new
 - Edit using `nano config.yml`
 - Save and Close the file
 
-  Initialization of infrastructure fileds
+  <b>Initialization of infrastructure fileds:</b>
 - Fill the Infrastructure details like infrastructure name, infrastructure category and status based on the 
   active infrastructure fields to be processed in `infrastructure_master.csv`
 - Edit using `nano infrastructure_master.csv`
@@ -47,9 +47,9 @@ Configuration filled in `config.yml` will be validated first. If there is any er
 Once installation completed without any errors, you will be prompted the following message. 
 ```CQube installed successfully!!``` 
 
-<b>Post Installation </b>
+<b>Post Installation:</b>
 
-<b> Creating Users and authentication with Keycloak </b>
+<b> Creating Users and authentication with Keycloak:</b>
 
 - Creating a New Realm:
 To create a new realm, complete the following steps,
@@ -75,7 +75,7 @@ Note : the below steps should be done by selecting the realm which you created
 1) In the left side menu select Roles. After selecting Roles ,It will be directed to Realm roles
 2) In Realm roles you can add the roles by selecting Add Role button and providing the name of the role
 
-  Using above steps create 3 roles
+   Using above steps create 3 roles
 1) admin
 2) report_viewer
 3) emission
@@ -92,9 +92,9 @@ To create a new user in your created realm, along with a temporary password for 
 7) Type a new password and confirm it. 
 8) Click Set Password to set the user password.
 
-  Using above steps create two users with emission role and report_viewer role respectively.
+   Using above steps create two users with emission role and report_viewer role respectively.
 
-<b>Uploading data to S3 Emission bucket</b>
+<b>Uploading data to S3 Emission bucket:</b>
 
 Create `cqube_emission` directory and place the data files as shown in file structure below inside the cqube_emission folder.
 
