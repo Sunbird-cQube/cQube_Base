@@ -43,6 +43,71 @@ export class SummaryStatistictsComponent implements OnInit {
         }
       });
       this.tableWithSubHeaders(this.tableData, "table3");
+
+    });
+
+    this.service.getInfraSummary().subscribe((res: any) => {
+      this.tableData = res;
+      this.tableData.forEach(element => {
+        if (element.total_records == null) {
+          element.total_records = 0;
+        }
+      });
+      this.tableWithSubHeaders(this.tableData, "table4");
+    });
+
+    this.service.getInspecSummary().subscribe((res: any) => {
+      this.tableData = res;
+      this.tableData.forEach(element => {
+        if (element.total_records == null) {
+          element.total_records = 0;
+        }
+      });
+      this.tableWithSubHeaders(this.tableData, "table5");
+    });
+
+    this.service.getstDistSummary().subscribe((res: any) => {
+      this.tableData = res;
+      this.tableData.forEach(element => {
+        if (element.total_records == null) {
+          element.total_records = 0;
+        }
+      });
+      this.tableWithSubHeaders(this.tableData, "table6");
+    });
+    this.service.getstBlockSummary().subscribe((res: any) => {
+      this.tableData = res;
+      this.tableData.forEach(element => {
+        if (element.total_records == null) {
+          element.total_records = 0;
+        }
+      });
+      this.tableWithSubHeaders(this.tableData, "table7");
+    });
+    this.service.getstClusterSummary().subscribe((res: any) => {
+      this.tableData = res;
+      this.tableData.forEach(element => {
+        if (element.total_records == null) {
+          element.total_records = 0;
+        }
+        if (element.category == null) {
+          element.category = 0;
+        }
+        if (element.processed_records == null) {
+          element.processed_records = 0;
+        }
+      });
+      console.log(this.tableData);
+      this.tableWithSubHeaders(this.tableData, "table8");
+    });
+    this.service.getstSchoolSummary().subscribe((res: any) => {
+      this.tableData = res;
+      this.tableData.forEach(element => {
+        if (element.total_records == null) {
+          element.total_records = 0;
+        }
+      });
+      this.tableWithSubHeaders(this.tableData, "table9");
       document.getElementById('spinner').style.display = 'none';
     });
 
@@ -108,26 +173,6 @@ export class SummaryStatistictsComponent implements OnInit {
   // }
 
 
-  public crcData = [
-    {
-      "filename": "user_location_master.csv",
-      "ff_uuid": "7369e7b1-2eb8-44c0-a7e1-0cd297bf0f63",
-      "total_records": 9,
-      "blank_lines": 1,
-      "duplicate_records": 0,
-      "records_with_null_value": {
-        "school_id": 0,
-        "inspection_id": 0,
-        "in_school_location": 7,
-        "created_on": 0,
-        "latitude": 0.0,
-        "longitude": 0.0
-      },
-      "processed_records": null,
-      "process_start_time": "2020-07-14 17:28:20.032",
-      "process_end_time": "2020-07-14 17:28:20.032"
-    }
-  ]
 
   tableWithSubHeaders(dataSet, tablename) {
     var my_columns = [];
