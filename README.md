@@ -54,14 +54,14 @@ To create a new realm, complete the following steps,
 
 - Creation of client & configuration:
 
-1)Log in to the admin console with your admin account. 
-2)In the top left drop-down menu select and manage the realm which you created. 
-3)Click Clients in the left side menu to open the Clients page.
-4)On the right side, click Create.
-5)Complete the fields.
-6)Click Save to create the client application entry. 
-7)Click the Installation tab in the Keycloak admin console to obtain a configuration template. 
-8)Select Keycloak OIDC JBoss Subsystem XML to generate an XML template. 
+1) Log in to the admin console with your admin account. 
+2) In the top left drop-down menu select and manage the realm which you created. 
+3) Click Clients in the left side menu to open the Clients page.
+4) On the right side, click Create.
+5) Complete the fields.
+6) Click Save to create the client application entry. 
+7) Click the Installation tab in the Keycloak admin console to obtain a configuration template. 
+8) Select Keycloak OIDC JBoss Subsystem XML to generate an XML template. 
 
 - Creating New roles:
 
