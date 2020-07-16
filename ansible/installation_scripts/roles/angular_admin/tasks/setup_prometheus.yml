@@ -7,10 +7,20 @@
     url: https://github.com/prometheus/prometheus/releases/download/v2.19.2/prometheus-2.19.2.linux-amd64.tar.gz
     dest: /tmp
 
+- name: Creating Directory
+  file:
+    path: "{{ base_dir }}/cqube/admin_dashboard/"
+    state: directory 
+
 - name: Extract prometheus 
   unarchive:
     src: "/tmp/prometheus-2.19.2.linux-amd64.tar.gz"
     dest: "{{ base_dir }}/cqube/admin_dashboard/"
+
+- name: Remove prometheus directory, if exists
+  file: 
+    path: "{{ base_dir }}/cqube/admin_dashboard/prometheus"
+    state: absent
 
 - name: Rename the extracted folder
   shell: mv {{ base_dir }}/cqube/admin_dashboard/prometheus* {{ base_dir }}/cqube/admin_dashboard/prometheus
@@ -34,6 +44,11 @@
   unarchive:
     src: "/tmp/node_exporter-1.0.1.linux-amd64.tar.gz"
     dest: "{{ base_dir }}/cqube/admin_dashboard/"
+
+- name: Remove node_exported directory, if exists
+  file:
+    path: "{{ base_dir }}/cqube/admin_dashboard/node_exporter"
+    state: absent
 
 - name: Rename the extracted folder
   shell: mv {{ base_dir }}/cqube/admin_dashboard/node_exporter* {{ base_dir }}/cqube/admin_dashboard/node_exporter

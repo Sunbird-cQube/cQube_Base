@@ -41,7 +41,7 @@ if [ $temp == 0 ]; then
     then
         echo "WARNING: Postgres found."
         echo "Please select any option."
-echo """1. Skip the Postgres installation (Will backup the data and stores in S3 bucket which mentioned in config.yml file for future reference)
+echo """1. Skip the Postgres installation (Will backup the data locally for future reference)
 2. Re-install the Postgres (current database will not be backed-up )
 3. Exit the installation
         """
@@ -57,7 +57,7 @@ echo """1. Skip the Postgres installation (Will backup the data and stores in S3
                 fi
                 echo "Backed up the database..."
                 echo "Backup file will be uploaded to S3 bucket, once the installation completes."
-		sudo sed -i "s/- createdb/#&/g" install.yml
+		sudo sed -i "s/- include_tasks: install_postgress.yml/#&/g" roles/createdb/tasks/main.yml
         break
         ;;
             2 )
@@ -288,7 +288,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 # An array of mandatory values
 declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "nifi_port" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" "shared_buffers" "work_mem" "java_arg_2" "java_arg_3" \
-		"aws_default_region" "local_ipv4_address" "api_endpoint" "db_connection_url" "db_driver_dir" \
+		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "db_connection_url" "db_driver_dir" \
 		"db_driver_class_name" "nifi_error_dir") 
 
 # Create and empty array which will store the key and value pair from config file
@@ -323,7 +323,6 @@ case $key in
        fi
        ;;
    base_dir)	 
-       base_dir_temp=$value
        if [[ $value == "" ]]; then
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
@@ -392,6 +391,20 @@ case $key in
           check_db_naming $key $value
        fi
        ;;
+   keycloak_adm_user)
+       if [[ $value == "" ]]; then
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+       else
+          check_db_naming $key $value
+       fi
+       ;;
+   keycloak_adm_passwd)
+       if [[ $value == "" ]]; then
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+       else
+          check_db_password $key $value
+       fi
+       ;;
    db_password)
        if [[ $value == "" ]]; then
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
@@ -444,8 +457,8 @@ case $key in
        fi
        ;;
    nifi_error_dir)
-       if [[ ! "$value" ==  "\"{{base_dir}}/cqube/nifi/nifi_errors\"" ]]; then
-          echo "Error - Valid values for $key is $base_dir_temp/cqube/nifi/nifi_errors"; fail=1
+       if [[ ! "$value" =~ ^(/cqube/nifi/nifi_errors)$ ]]; then
+          echo "Error - Valid values for $key is /cqube/nifi/nifi_errors"; fail=1
        fi
        ;;
    aws_default_region)
