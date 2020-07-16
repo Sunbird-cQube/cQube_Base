@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,7 +19,12 @@ import { AllLogsComponent } from './allLogs/allLogs.component';
 import { UsersComponent } from './users/users.component';
 import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SummaryStatistictsComponent } from './summary-statisticts/summary-statisticts.component';
+import { KeycloakSecurityService } from './keycloak-security.service';
 
+export function kcFactory(kcSecurity: KeycloakSecurityService) {
+  return () => kcSecurity.init();
+}
 
 
 @NgModule({
@@ -33,6 +38,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     UsersComponent,
     S3FilesDownloadComponent,
     DashboardComponent,
+    SummaryStatistictsComponent,
   ],
   imports: [
     FormsModule,
@@ -47,7 +53,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     BrowserAnimationsModule,
     NoopAnimationsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      deps: [KeycloakSecurityService],
+      useFactory: kcFactory,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

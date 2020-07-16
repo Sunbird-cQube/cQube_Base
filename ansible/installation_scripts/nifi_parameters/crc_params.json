@@ -14,12 +14,6 @@
                             }
             },
 	    {
-                "parameter":{"name":"s3_output_bucket1",
-                        "value":""
-                            }
-            },
-
-	    {
                 "parameter":{"name":"db_user",
                         "value":""
                             }
@@ -41,6 +35,11 @@
             },
 	    {
                 "parameter":{"name":"db_connection_url",
+                        "value":""
+                            }
+            },
+	    {
+                "parameter":{"name":"nifi_error_dir",
                         "value":""
                             }
             },

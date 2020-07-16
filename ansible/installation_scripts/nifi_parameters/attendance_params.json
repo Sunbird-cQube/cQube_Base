@@ -9,11 +9,6 @@
 
         "parameters":[
             {
-                "parameter":{"name":"db_name",
-                        "value":""
-                            }
-            },
-            {
                 "parameter":{"name":"nifi_error_dir",
                         "value":""
                             }
@@ -63,11 +58,6 @@
             {
                 "parameter":{"name":"db_password",
                 "sensitive": true,
-                        "value":""
-                            }
-            },
-            {
-                "parameter":{"name":"s3_output_bucket_attendance",
                         "value":""
                             }
             }

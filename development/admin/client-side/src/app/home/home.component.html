@@ -4,12 +4,16 @@
   </button>
   <h4>cQube - Dashboard </h4>
   <span style="flex: 1 1 auto;"></span>
+  <span id="backBtn" class="headerBtn"
+    style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;display: none;">
+    <strong><a href="{{appUrl}}/#/homePage" style="text-decoration: none; color: white;">Back</a></strong>
+  </span>
   <span id="homeBtn" class="headerBtn"
     style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;display: none;" [routerLink]="['/home']">
     <strong>Home</strong>
   </span>
   <span id="logout" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()">
-    <strong>Logout</strong>
+    <strong><a href="{{appUrl}}/#/homePage" style="text-decoration: none; color: white;">Logout</a> </strong>
   </span>
 </mat-toolbar>
 
@@ -18,12 +22,12 @@
     <mat-nav-list style="font-family: Arial;" class=sidenav>
       <mat-toolbar style="height: 80px; background-color: white; border-bottom: 1px solid lightgray;">
         <mat-toolbar-row style="color: rgb(84, 116, 223);">
-          <span class="span" style="font-size: 15px;"><b>Logged in as: </b><br>
+          <span class="span" style="font-size: 15px;"><strong>Logged in as: </strong><br>
             <span>{{email}}</span></span>
         </mat-toolbar-row>
       </mat-toolbar>
       <div *ngIf="!showsideMenu">
-        <a id="crtUsr" mat-list-item (click)="sidenav.toggle()"
+        <!-- <a id="crtUsr" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['create-user']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -38,7 +42,7 @@
           </td>
           <td>
             &nbsp;&nbsp; Change Password </td>
-        </a>
+        </a> -->
 
         <a id="logs" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['all-logs']">
@@ -48,14 +52,14 @@
           <td>
             &nbsp;&nbsp; Logs </td>
         </a>
-        <a id="user" mat-list-item (click)="sidenav.toggle()"
+        <!-- <a id="user" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['users']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
           <td>
             &nbsp;&nbsp; All Users </td>
-        </a>
+        </a> -->
         <a id="downloads" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['s3FileDownload']">
           <td>
@@ -64,10 +68,29 @@
           <td>
             &nbsp;&nbsp; S3 File Download </td>
         </a>
+        <a id="moniter" mat-list-item (click)="sidenav.toggle()" target=" "
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" href="{{grafanaUrl}}">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Monitoring Details </td>
+        </a>
+        <a id="summary" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['summary-statistics']">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Summary Statistics </td>
+        </a>
       </div>
 
       <span class="toolbar-filler"></span>
     </mat-nav-list>
+    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.1 </span>
+    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 16/07/2020</span>
+
   </mat-sidenav>
   <mat-sidenav-content>
     <div style="height: 93vh;">

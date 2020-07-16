@@ -76,6 +76,7 @@ export class SemViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    document.getElementById('backBtn').style.display = "none";
     this.initMap();
     this.districtWise();
     document.getElementById('homeBtn').style.display = "Block";

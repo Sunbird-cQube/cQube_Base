@@ -1,50 +1,43 @@
 <div class="container">
     <div class="row">
-        <div class="col-sm-4">
-            <div [routerLink]="['/home/create-user']" class="cards" id="crtUsr">
-                <img src="../../assets/addUser.png" alt="createUser" height="130" width="210"
-                    style="margin: 5% 0% 3% 0%; "><br>
-                <strong>
-                    Create New User
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div [routerLink]="['/home/change-password']" class="cards" id="chPass">
-                <img src="../../assets/changePassword.png" alt="changePasswd" height="130" width="230"
-                    style="margin: 5% 0% 3% 0%; "><br>
-                <strong>
-                    Change Password
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <div [routerLink]="['/home/all-logs']" class="cards" id="logs">
                 <img src="../../assets/logs.png" alt="s3FileDownload" height="130" width="230"
-                    style="margin: 5% 0% 3% 0%; "><br>
+                    style="margin: 2% 0% 3% 0%; "><br>
                 <strong>
                     Logs
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div [routerLink]="['/home/summary-statistics']" class="cards" id="summary">
+                <img src="../../assets/statistics.png" alt="statistics" height="130" width="230"
+                    style="margin: 2% 0% 3% 0%; "><br>
+                <strong>
+                    Summary Statistics
                 </strong>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <div [routerLink]="['/home/users']" class="cards" id="listUsrs">
-                <img src="../../assets/allUsers.png" alt="users" height="130" width="230"
-                    style="margin: 5% 0% 3% 0%; "><br>
+            <div [routerLink]="['/home/s3FileDownload']" class="cards" id="s3dwn">
+                <img src="../../assets/downloadFile.png" alt="s3FileDownload" height="130" width="230"
+                    style="margin: 2% 0% 3% 0%; "><br>
                 <strong>
-                    List All Users
+                    Download S3 Files
                 </strong>
             </div>
         </div>
         <div class="col-sm-6">
-            <div [routerLink]="['/home/s3FileDownload']" class="cards" id="s3dwn">
-                <img src="../../assets/downloadFile.png" alt="s3FileDownload" height="130" width="230"
-                    style="margin: 5% 0% 3% 0%; "><br>
-                <strong>
-                    Download S3 Files
-                </strong>
+            <div class="cards" id="moniter">
+                <a href="{{grafanaUrl}}" target=" " style="text-decoration: none; color: #284d8a;">
+                    <img src="../../assets/monitering.png" alt="s3FileDownload" height="130" width="230"
+                        style="margin: 2% 0% 3% 0%; "><br>
+                    <strong>
+                        Monitoring Details
+                    </strong>
+                </a>
             </div>
         </div>
     </div>

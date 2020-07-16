@@ -21,6 +21,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
   }
 

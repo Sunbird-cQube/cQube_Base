@@ -5,7 +5,7 @@
   register: processor_id
 
 - name: Upload template
-  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/crc_processor.xml
+  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/crc_transformer.xml
   register: xml_output
   args:
     warn: false
@@ -33,7 +33,7 @@
 - name: Instatiate template list
   action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }'   http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
   loop: "{{ template_list.json | json_query('templates[*]') }}"
-  when: item.template.name == 'crc_processor'
+  when: item.template.name == 'crc_transformer'
   no_log: True
   args:
     warn: false
@@ -55,12 +55,12 @@
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
     method: GET
   loop: "{{ processor_group_temp.json | json_query('processGroupFlow.flow.processGroups[*]') }}"
-  when: item.component.name == 'crc_processor'
+  when: item.component.name == 'crc_transformer'
   register: processor_group_template
   no_log: True
 
 - set_fact:
-    tagExists: "{{  processor_group_template | json_query('results[?item.component.name == `crc_processor`]') }}"
+    tagExists: "{{  processor_group_template | json_query('results[?item.component.name == `crc_transformer`]') }}"
 
 - name: Get multi processor group
   uri:
@@ -178,12 +178,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "cQube-gj_s3_cred",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_crc_raw",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube-gj_s3_cred'
+  when: item.component.name == 'cQube_s3_crc_raw'
   no_log: True
 
 - name: Add s3 credentials parameters
@@ -195,12 +195,12 @@
             "version": "{{ item.revision.version }}",
            "lastModifier": "Ansible"
        },
-       "component": {"id": "{{ item.id }}", "name": "cQube-gj_s3_cred",
+       "component": {"id": "{{ item.id }}", "name": "cQube_s3_crc",
        "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
     }
   loop: "{{ controllers_list_crc.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube-gj_s3_cred'
+  when: item.component.name == 'cQube_s3_crc'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -212,12 +212,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgresql-CQube-raw",
+        "component": {"id": "{{ item.id }}", "name": "postgres_crc_raw",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgresql-CQube-raw'
+  when: item.component.name == 'postgres_crc_raw'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -229,12 +229,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-       "component": {"id": "{{ item.id }}", "name": "postgresql-CQube-crc",
+       "component": {"id": "{{ item.id }}", "name": "postgres_crc",
        "properties" : { "Password" : "#{db_password}"}}
 
     }
   loop: "{{ controllers_list_crc.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgresql-CQube-crc'
+  when: item.component.name == 'postgres_crc'
   no_log: True
 
 - name: Get updated raw controllers

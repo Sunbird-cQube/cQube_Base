@@ -1,12 +1,19 @@
 const router = require('express').Router();
+// var jwtDecode = require('jwt-decode');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const axios = require('axios');
 var const_data = require('../../lib/config');
 
 const baseUrl = process.env.BASEURL;
+
 router.post('/listBuckets', auth.authController, async function (req, res) {
     try {
+        // const token = req.headers.token.split(" ")[1];
+        // var decoded = jwtDecode(token);
+        // var username = decoded.user_email;
+        // var password = decoded.password;
+
         let apiresult = await axios.post(`${baseUrl}/auth`,
             {
                 username: process.env.EMAIL,
@@ -14,7 +21,7 @@ router.post('/listBuckets', auth.authController, async function (req, res) {
             });
 
         let listBuckets = await axios.get(`${baseUrl}/list_s3_buckets`,
-            { headers: { 'Authorization': `JWT ${apiresult.data.access_token}` } });
+            { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
 
         res.send(listBuckets.data);
 
@@ -34,11 +41,8 @@ router.post('/listFolders/:bucketName', auth.authController, async function (req
 
         let listFIles = await axios.post(`${baseUrl}/list_s3_files`,
             { "bucket": req.params.bucketName },
-            { headers: { 'Authorization': `JWT ${apiresult.data.access_token}` } });
+            { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
 
-        // listFIles.data.Contents.forEach(item => {
-        //     console.log(item.Key.split("/", 1));
-        // });
         res.send(listFIles.data.Contents);
 
     } catch (e) {
@@ -47,10 +51,9 @@ router.post('/listFolders/:bucketName', auth.authController, async function (req
     }
 });
 
-router.post('/getDownloadUrl',auth.authController, async function (req, res) {
+router.post('/getDownloadUrl', auth.authController, async function (req, res) {
     try {
         logger.info(`---list s3 Files for bucket ${req.body.bucketName} and folder ${req.body.folderName} api ---`);
-        console.log(req.body.fileName, req.body.bucketName);
         let apiresult = await axios.post(`${baseUrl}/auth`,
             {
                 username: process.env.EMAIL,
@@ -62,7 +65,7 @@ router.post('/getDownloadUrl',auth.authController, async function (req, res) {
                 filename: req.body.fileName,
                 bucket: req.body.bucketName
             },
-            { headers: { 'Authorization': `JWT ${apiresult.data.access_token}` } });
+            { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
         res.send({ "downloadUrl": downloadUrl.data });
 
     } catch (e) {
@@ -86,6 +89,7 @@ router.post('/listFiles/:bucketName/:folderName', async function (req, res) {
             else {
                 let keys = []
                 data.Contents.forEach(file => {
+
                     keys.push({ fileName: file.Key });
                 })
                 res.send(keys)

@@ -14,7 +14,7 @@
                             }
             },
 	    {
-                "parameter":{"name":"s3_emission_bucket1",
+                "parameter":{"name":"nifi_error_dir",
                         "value":""
                             }
             },
@@ -24,12 +24,6 @@
                         "value":""
                             }
             },
-	    {
-                "parameter":{"name":"s3_input_bucket1",
-                        "value":""
-                            }
-            },
-
 	    {
                 "parameter":{"name":"db_user",
                         "value":""
@@ -72,34 +66,7 @@
                 "sensitive": true,
                         "value":""
                             }
-            },
-	    {
-                "parameter":{"name":"s3_emission_bucket_static",
-                        "value":""
-                            }
-            },
-	    {
-                "parameter":{"name":"s3_emission_bucket_attendance",
-                        "value":""
-                            }
-            },
-	    {
-                "parameter":{"name":"s3_emission_bucket_sem",
-                        "value":""
-                            }
-            },
-	    {
-                "parameter":{"name":"s3_input_bucket_static",
-                        "value":""
-                            }
-            },
-	    {
-                "parameter":{"name":"s3_input_bucket_attendance",
-                        "value":""
-                            }
             }
-
-
 
         ]
 

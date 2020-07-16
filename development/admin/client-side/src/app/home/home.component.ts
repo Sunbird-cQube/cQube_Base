@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppService } from '../app.service';
+import { environment } from '../../environments/environment'
+import { KeycloakSecurityService } from '../keycloak-security.service';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +10,10 @@ import { AppService } from '../app.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  constructor(private router: Router, private service: AppService) { }
+  public grafanaUrl = environment.grafanaEndPoint;
+
+  constructor(private router: Router, private service: AppService, public keyCloakService: KeycloakSecurityService) { 
+  }
   email: any;
   role: any;
   showSubmenu1: any = false;
@@ -17,7 +22,7 @@ export class HomeComponent implements OnInit {
   showSubmenu: boolean = false;
   isShowing = false;
   showLogs: boolean = true;
-
+  appUrl;
   navItems: any = [
     {
       name: 'All Logs',
@@ -28,6 +33,7 @@ export class HomeComponent implements OnInit {
   logNames: any = [];
 
   ngOnInit() {
+    this.appUrl = environment.appUrl;
     this.email = localStorage.getItem('email');
     this.role = localStorage.getItem('role');
     if (this.role == 1) {
@@ -45,7 +51,7 @@ export class HomeComponent implements OnInit {
   }
   logout() {
     localStorage.clear();
-    this.router.navigate(['/']);
+    this.keyCloakService.kc.logout();
   }
 
   mouseenter() {

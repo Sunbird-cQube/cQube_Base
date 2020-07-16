@@ -1,0 +1,33 @@
+---
+- name: altering postgres from 1.0 to 1.1 release
+  hosts: 127.0.0.1
+  gather_facts: false
+
+  tasks:
+    - name: ansible create directory with mode setting example
+      file:
+        path: /tmp/postgres
+        state: directory
+        mode: "u=rw,g=wx,o=rwx"
+
+    - name: copy csv to /tmp/postgres
+      copy:
+        src: infrastructure_master.csv
+        dest: /tmp/postgres
+
+    - name: Run queries from SQL script
+      become: true
+      become_user: postgres
+      postgresql_query:
+        db: "{{ db_name }}"
+        path_to_script: cQube.sql
+
+    - name: test
+      shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy infrastructure_staging_init(infrastructure_name,infrastructure_category,status) from '/tmp/postgres/infrastructure_master.csv' delimiter ',' csv header;"
+
+    - name: Run queries from SQL script
+      become: true
+      become_user: postgres
+      postgresql_query:
+        db: "{{ db_name }}"
+        path_to_script: config.sql

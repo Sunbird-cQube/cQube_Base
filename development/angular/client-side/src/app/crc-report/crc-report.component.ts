@@ -108,6 +108,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('backBtn').style.display = "none";
     this.createChart(["clg"], [], '', {});
     this.districtWise();
     document.getElementById('homeBtn').style.display = "Block";
@@ -170,14 +171,11 @@ export class CrcReportComponent implements OnInit {
       // console.log(this.result);
       let a = this.result.schoolsVisitedCount
       this.result = this.result.visits;
+
       this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
 
       this.reportData = this.crcDistrictsNames = this.result;
       for (var i = 0; i < this.result.length; i++) {
-        if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
-          this.schoolCount = this.schoolCount + this.result[i].totalSchools;
-          this.visitCount = this.visitCount + parseInt(this.result[i].totalVisits);
-        }
         this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
         labels.push(this.result[i].districtName);
         this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
@@ -249,10 +247,6 @@ export class CrcReportComponent implements OnInit {
           var labels = [];
           this.reportData = this.crcDistrictsNames = this.result;
           for (var i = 0; i < this.result.length; i++) {
-            if (typeof (this.result[i].totalSchools) === "number" && typeof (parseInt(this.result[i].totalVisits)) === "number") {
-              this.schoolCount = this.schoolCount + this.result[i].totalSchools;
-              this.visitCount = this.visitCount + Number(this.result[i].totalVisits);
-            }
             this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
             labels.push(this.result[i].districtName);
             this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
@@ -307,6 +301,8 @@ export class CrcReportComponent implements OnInit {
         }
       }, err => {
         this.chartData = [];
+        this.createChart(["clg"], [], '', {});
+        $('#table').empty();
         this.loaderAndErr();
       });
     }
@@ -435,10 +431,6 @@ export class CrcReportComponent implements OnInit {
       if (this.result.length > 0) {
         var labels = [];
         for (var i = 0; i < this.crcBlocksNames.length; i++) {
-          if (typeof parseInt(this.crcBlocksNames[i].totalSchools) === "number" && typeof (parseInt(this.crcBlocksNames[i].totalVisits)) === "number") {
-            this.schoolCount = this.schoolCount + parseInt(this.crcBlocksNames[i].totalSchools);
-            this.visitCount = this.visitCount + Number(this.crcBlocksNames[i].totalVisits);
-          }
           this.blocksNames.push({ id: this.crcBlocksNames[i].blockId, name: this.crcBlocksNames[i].blockName });
           labels.push(this.crcBlocksNames[i].blockName);
           this.chartData.push({ x: Number(this.crcBlocksNames[i][this.xAxis]), y: Number(this.crcBlocksNames[i][this.yAxis]) });
@@ -494,6 +486,8 @@ export class CrcReportComponent implements OnInit {
       }
     }, err => {
       this.chartData = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
       this.loaderAndErr();
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -545,10 +539,6 @@ export class CrcReportComponent implements OnInit {
 
       var labels = [];
       for (var i = 0; i < this.crcClusterNames.length; i++) {
-        if (typeof parseInt(this.crcClusterNames[i].totalSchools) === "number" && typeof (parseInt(this.crcClusterNames[i].totalVisits)) === "number") {
-          this.schoolCount = this.schoolCount + parseInt(this.crcClusterNames[i].totalSchools);
-          this.visitCount = this.visitCount + Number(this.crcClusterNames[i].totalVisits);
-        }
         this.clusterNames.push({ id: this.crcClusterNames[i].clusterId, name: this.crcClusterNames[i].clusterName });
         labels.push(this.crcClusterNames[i].clusterName);
         this.chartData.push({ x: Number(this.crcClusterNames[i][this.xAxis]), y: Number(this.crcClusterNames[i][this.yAxis]) });
@@ -603,6 +593,8 @@ export class CrcReportComponent implements OnInit {
       this.loaderAndErr();
     }, err => {
       this.chartData = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
       this.loaderAndErr();
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -709,16 +701,18 @@ export class CrcReportComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
       this.loaderAndErr();
     });
     document.getElementById('home').style.display = 'block';
   }
 
-  countVisitedAndNotVisited(data) {
-    this.visitedSchools = 0;
-    this.notVisitedSchools = 0;
-    this.visitedSchools = data.totalSchoolsVisited;
-    this.notVisitedSchools = data.totalSchoolsNotVisited;
+  countVisitedAndNotVisited(a) {
+    this.visitCount = a.totalNumberOfVisits.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    this.schoolCount = a.totalNumberOfSchools.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    this.visitedSchools = a.totalSchoolsVisited.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    this.notVisitedSchools = a.totalSchoolsNotVisited.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
   }
 
   createChart(labels, chartData, name, obj) {

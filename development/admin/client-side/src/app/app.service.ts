@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../src/environments/environment';
+import { KeycloakSecurityService } from './keycloak-security.service';
 @Injectable({
     providedIn: 'root'
 })
@@ -9,8 +10,11 @@ export class AppService {
     public baseUrl = environment.apiEndpoint;
 
     public myData: any = {};
-
-    constructor(public http: HttpClient) { }
+    public token;
+    constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
+        this.token = keyCloakService.kc.token;
+        localStorage.setItem('token', this.token);
+    }
 
     login(data) {
         return this.http.post(`${this.baseUrl}/roleBasedLogin`, data);
@@ -102,5 +106,54 @@ export class AppService {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
+    //summary statistics
+    getAttendanceSummary() {
+        return this.http.post(`${this.baseUrl}/summary/stdAttendance`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+    getSemSummary() {
+        return this.http.post(`${this.baseUrl}/summary/sem`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
 
+    getCrcSummary() {
+        return this.http.post(`${this.baseUrl}/summary/crc`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    getInfraSummary() {
+        return this.http.post(`${this.baseUrl}/summary/infra`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+    getInspecSummary() {
+        return this.http.post(`${this.baseUrl}/summary/inspec`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    getstDistSummary() {
+        return this.http.post(`${this.baseUrl}/summary/stDist`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    getstBlockSummary() {
+        return this.http.post(`${this.baseUrl}/summary/stBlock`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+    getstClusterSummary() {
+        return this.http.post(`${this.baseUrl}/summary/stCluster`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+    getstSchoolSummary() {
+        return this.http.post(`${this.baseUrl}/summary/stSchool`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
 }

@@ -60,6 +60,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
   ngOnInit() {
     this.districtWise();
+    document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
   }
 
@@ -131,6 +132,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      this.createChart(["clg"], [], '', {});
       $('#table').empty();
       this.loaderAndErr();
     });
@@ -187,6 +189,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      this.createChart(["clg"], [], '', {});
       $('#table').empty();
       this.loaderAndErr();
     });
@@ -246,6 +249,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      this.createChart(["clg"], [], '', {});
       $('#table').empty();
       this.loaderAndErr();
     });
@@ -302,6 +306,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
+      this.createChart(["clg"], [], '', {});
       $('#table').empty();
       this.loaderAndErr();
     });
@@ -598,7 +603,7 @@ export class SchoolInfrastructureComponent implements OnInit {
             },
             ticks: {
               min: 0,
-              // max: 100
+              max: 100
             },
             scaleLabel: {
               display: true,
@@ -613,7 +618,7 @@ export class SchoolInfrastructureComponent implements OnInit {
             },
             ticks: {
               min: 0,
-              // max: 100
+              max: 100
             },
             scaleLabel: {
               display: true,

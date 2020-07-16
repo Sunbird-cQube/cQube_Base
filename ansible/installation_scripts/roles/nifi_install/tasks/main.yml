@@ -6,72 +6,86 @@
 
 - name: Download NiFi
   get_url:
-    url: https://archive.apache.org/dist/nifi/1.10.0/nifi-1.10.0-bin.tar.gz
+    url: https://archive.apache.org/dist/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.tar.gz
     dest: ~/nifi
 
-- name: Check if nifi is present in /opt
-  stat: path=/opt/nifi
+- name: Check if nifi is present in destination
+  stat: path={{ base_dir }}/cqube/nifi
   register: status
 
 - name: stop nifi if its running
-  shell: /opt/nifi/bin/nifi.sh stop
+  shell: "{{ base_dir }}/cqube/nifi/bin/nifi.sh stop"
   when: status.stat.exists == true
 
 - name: remove nifi directory if present
   become: yes
-  shell: rm -rf /opt/nifi
+  shell: rm -rf {{ base_dir }}/cqube/nifi
   ignore_errors: yes
   args:
     warn: false
 
 - name: Extract NiFi in the same folder
   unarchive:
-    src: ~/nifi/nifi-1.10.0-bin.tar.gz
-    dest: /opt
+    src: ~/nifi/nifi-{{ nifi_version }}-bin.tar.gz
+    dest: "{{ base_dir }}/cqube"
 
 - name: Rename the extracted folder
-  shell: mv /opt/nifi* /opt/nifi
+  shell: mv {{ base_dir }}/cqube/nifi* {{ base_dir }}/cqube/nifi
 
 - name: Creates directory
-  file: path=/opt/nifi/jars state=directory
+  file: path={{ base_dir }}/cqube/nifi/jars state=directory
 
 - name: Download Jar file
   get_url:
     url: https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.10/postgresql-42.2.10.jar
-    dest: /opt/nifi/jars/
+    dest: "{{ base_dir }}/cqube/nifi/jars"
+
+- name: Touch a file
+  file:
+    path: ../../development/python/nifi_env_db.py
+    state: touch
+    mode: u=rw,g=r,o=r
+    
+- name: Loading required data inside nifi_env_db.py file
+  blockinfile:
+        path: ../../development/python/nifi_env_db.py
+        block: |
+               db_name = "{{ db_name }}"
+               db_user = "{{ db_user }}"
+               db_pwd = "{{ db_password }}"
 
 - name: configure the webserver in nifi.properties file
   replace:
-    dest: /opt/nifi/conf/nifi.properties
+    dest: "{{ base_dir }}/cqube/nifi/conf/nifi.properties"
     regexp: 'nifi.web.http.host='
     replace: 'nifi.web.http.host=0.0.0.0'
 
 - name: configure the webserver in nifi.properties file
   replace:
-    dest: /opt/nifi/conf/nifi.properties
+    dest: "{{ base_dir }}/cqube/nifi/conf/nifi.properties"
     regexp: 'nifi.web.http.port=8080'
     replace: 'nifi.web.http.port={{ nifi_port }}'
 
 - name: Increase nifi memory
   replace:
-    dest: /opt/nifi/conf/bootstrap.conf
+    dest: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
     regexp: "java.arg.2=-Xms512m"
     replace: "java.arg.2={{ java_arg_2 }}"
 
 - name: Add time zone to nifi
   blockinfile:
-        path: /opt/nifi/conf/bootstrap.conf
+        path: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
         block: |
                java.arg.8=-Duser.timezone=Asia/Kolkata
 
 - name: Increase nifi memory
   replace:
-    dest: /opt/nifi/conf/bootstrap.conf
+    dest: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
     regexp: "java.arg.3=-Xmx512m"
     replace: "java.arg.3={{ java_arg_3 }}"
 
 - name: start NiFi
-  shell: /opt/nifi/bin/nifi.sh start
+  shell: "{{ base_dir }}/cqube/nifi/bin/nifi.sh start"
 - pause:
     minutes: 3
     prompt: "nifi is starting, kindly do not press any key"
@@ -88,3 +102,20 @@
     method: PUT
     body_format: json
     body: {"revision":{"version":"{{ nifi_config.json.revision.version }}"},"component":{"maxTimerDrivenThreadCount":"100","maxEventDrivenThreadCount":"100"}}
+
+- name: Create the prometheus task
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller/reporting-tasks
+    method: POST
+    body_format: json
+    status_code: 201
+    body: {"revision":{"clientId":"","version":0},"disconnectedNodeAcknowledged":false,"component":{"type":"org.apache.nifi.reporting.prometheus.PrometheusReportingTask","bundle":{"group":"org.apache.nifi","artifact":"nifi-prometheus-nar","version":"1.11.4"}}}
+  register: output
+
+- name: Start the prometheus task
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/reporting-tasks/{{ output.json.component.id }}/run-status
+    method: PUT
+    body_format: json
+    body: {"revision":{"clientId":"","version":1},"disconnectedNodeAcknowledged":false,"state":"RUNNING"}
+
