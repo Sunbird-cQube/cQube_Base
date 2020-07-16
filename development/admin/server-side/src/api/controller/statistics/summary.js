@@ -17,7 +17,6 @@ router.post('/stdAttendance', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                console.log(summaryData);
                 logger.info('--- attendance summary api response sent---');
                 res.send(summaryData)
             }
