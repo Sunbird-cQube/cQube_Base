@@ -4,7 +4,6 @@ const { log } = require("winston");
 dotenv.config();
 
 const keycloakHost = process.env.KEYCLOAK_HOST;
-const keycloakPort = process.env.KEYCLOAK_PORT;
 const realmName = process.env.KEYCLOAK_REALM;
 
 // check each request for a valid bearer token
@@ -14,7 +13,7 @@ exports.authController = (req, res, next) => {
         // configure the request to your keycloak server
         const options = {
             method: 'GET',
-            url: `http://${keycloakHost}:${keycloakPort}/auth/realms/${realmName}/protocol/openid-connect/userinfo`,
+            url: `${keycloakHost}/auth/realms/${realmName}/protocol/openid-connect/userinfo`,
             headers: {
                 // add the token you received to the userinfo request, sent to keycloak
                 Authorization: req.headers.token
