@@ -46,7 +46,7 @@ Once installation completed without any errors, you will be prompted the followi
 - Creating a New Realm:
 To create a new realm, complete the following steps,
 
-1) Go to http://localhost:8080/auth/admin/ and log in to the Keycloak Admin Console using the username and password you created while installing cQube. 
+1) Go to ```http://<host_name_or_ip>:8080/auth/admin/``` and log in to the Keycloak Admin Console using the username and password you created while installing cQube. 
 2) From the Master drop-down menu, click Add Realm. When you logged in to the master realm the drop-down menu lists all existing realms. 
 3) Type Name of the realm u need to create in name field and click Create.
 4) When the realm is created, the main admin console page opens. Notice the current realm is now set to the realm name you created. Switch between managing the master realm and the realm you just created by clicking entries in the Select realm drop-down menu.
