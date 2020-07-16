@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   showSubmenu: boolean = false;
   isShowing = false;
   showLogs: boolean = true;
-
+  appUrl;
   navItems: any = [
     {
       name: 'All Logs',
@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   logNames: any = [];
 
   ngOnInit() {
+    this.appUrl = environment.appUrl;
     this.email = localStorage.getItem('email');
     this.role = localStorage.getItem('role');
     if (this.role == 1) {
@@ -49,7 +50,6 @@ export class HomeComponent implements OnInit {
   }
   logout() {
     localStorage.clear();
-    window.location.replace("http://172.31.23.205:4200");
     this.keyCloakService.kc.logout();
   }
 
