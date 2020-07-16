@@ -20,7 +20,7 @@ router.post('/listBuckets', auth.authController, async function (req, res) {
             });
 
         let listBuckets = await axios.get(`${baseUrl}/list_s3_buckets`,
-            { headers: { 'Authorization': `JWT ${apiresult.data.access_token}` } });
+            { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
 
         res.send(listBuckets.data);
 
@@ -40,7 +40,7 @@ router.post('/listFolders/:bucketName', auth.authController, async function (req
 
         let listFIles = await axios.post(`${baseUrl}/list_s3_files`,
             { "bucket": req.params.bucketName },
-            { headers: { 'Authorization': `JWT ${apiresult.data.access_token}` } });
+            { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
 
         res.send(listFIles.data.Contents);
 
@@ -64,7 +64,7 @@ router.post('/getDownloadUrl', auth.authController, async function (req, res) {
                 filename: req.body.fileName,
                 bucket: req.body.bucketName
             },
-            { headers: { 'Authorization': `JWT ${apiresult.data.access_token}` } });
+            { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
         res.send({ "downloadUrl": downloadUrl.data });
 
     } catch (e) {

@@ -118,4 +118,10 @@ export class AppService {
         });
     }
 
+    getCrcSummary() {
+        return this.http.post(`${this.baseUrl}/summary/crc`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
 }

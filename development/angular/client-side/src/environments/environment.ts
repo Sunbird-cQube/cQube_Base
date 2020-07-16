@@ -4,8 +4,12 @@
 
 export const environment = {
   production: false,
-  // apiEndpoint: "http://localhost:3000/api"
-  apiEndpoint: "https://cqube.tibilprojects.com/api"
+  apiEndpoint: "http://localhost:3000/api",
+  adminUrl: "http://localhost:4201",
+  keycloakUrl: "http://localhost:8080/auth",
+  realm: "cQube",
+  clientId: "cQube_Application",
+  credentials: { secret: 'c45d54f7-b0aa-43c9-a6bb-9b77a47c73a2' }
 };
 
 /*
