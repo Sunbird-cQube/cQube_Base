@@ -1,0 +1,501 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1594754718839,4113,Login,200,OK,Student Attendance Users 1-17,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4113,0,4006
+1594754719082,4054,Login,200,OK,Student Attendance Users 1-108,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4054,0,3947
+1594754719654,3700,Login,200,OK,Student Attendance Users 1-250,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,3700,0,3537
+1594754719345,4010,Login,200,OK,Student Attendance Users 1-173,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4010,0,3845
+1594754719627,3729,Login,200,OK,Student Attendance Users 1-244,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,3729,0,3564
+1594754719540,3044,Login,200,OK,Student Attendance Users 1-222,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,3044,0,2938
+1594754718962,4441,Login,200,OK,Student Attendance Users 1-76,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4283,0,4162
+1594754719349,3279,Login,200,OK,Student Attendance Users 1-174,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,3279,0,3168
+1594754718973,4378,Login,200,OK,Student Attendance Users 1-80,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4373,0,4133
+1594754718910,3722,Login,200,OK,Student Attendance Users 1-61,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,3722,0,3608
+1594754718860,4578,Login,200,OK,Student Attendance Users 1-52,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4578,0,4331
+1594754719294,4146,Login,200,OK,Student Attendance Users 1-161,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4146,0,3896
+1594754718946,3501,Login,200,OK,Student Attendance Users 1-73,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,3499,0,3329
+1594754719568,3785,Login,200,OK,Student Attendance Users 1-228,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,3785,0,3623
+1594754718832,4284,Login,200,OK,Student Attendance Users 1-7,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4284,0,4174
+1594754718844,4386,Login,200,OK,Student Attendance Users 1-47,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4386,0,3838
+1594754718946,4222,Login,200,OK,Student Attendance Users 1-72,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4222,0,4100
+1594754718819,4528,Login,200,OK,Student Attendance Users 1-42,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4528,0,4266
+1594754719262,4492,Login,200,OK,Student Attendance Users 1-153,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4492,0,3968
+1594754719222,4533,Login,200,OK,Student Attendance Users 1-140,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4533,0,4012
+1594754719384,4372,Login,200,OK,Student Attendance Users 1-183,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4372,0,3847
+1594754719454,4302,Login,200,OK,Student Attendance Users 1-199,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4302,0,3780
+1594754719502,4255,Login,200,OK,Student Attendance Users 1-213,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4255,0,3729
+1594754718850,4906,Login,200,OK,Student Attendance Users 1-9,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4906,0,4391
+1594754718862,4896,Login,200,OK,Student Attendance Users 1-51,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4896,0,4380
+1594754719226,4532,Login,200,OK,Student Attendance Users 1-144,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4532,0,4011
+1594754719439,4481,Login,200,OK,Student Attendance Users 1-193,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4480,0,3807
+1594754718808,5111,Login,200,OK,Student Attendance Users 1-14,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5111,0,4433
+1594754718887,5033,Login,200,OK,Student Attendance Users 1-59,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5033,0,4359
+1594754719477,4444,Login,200,OK,Student Attendance Users 1-206,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4444,0,3770
+1594754718823,5098,Login,200,OK,Student Attendance Users 1-43,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5098,0,4430
+1594754719616,4361,Login,200,OK,Student Attendance Users 1-238,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4361,0,3638
+1594754719216,4762,Login,200,OK,Student Attendance Users 1-134,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4762,0,4038
+1594754719415,4563,Login,200,OK,Student Attendance Users 1-186,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4563,0,3838
+1594754718825,5232,Login,200,OK,Student Attendance Users 1-16,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5232,0,4428
+1594754718845,5213,Login,200,OK,Student Attendance Users 1-2,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5213,0,4415
+1594754719293,4767,Login,200,OK,Student Attendance Users 1-160,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4766,0,3975
+1594754719270,4790,Login,200,OK,Student Attendance Users 1-155,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4788,0,3991
+1594754719322,4793,Login,200,OK,Student Attendance Users 1-167,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4793,0,3946
+1594754718868,5247,Login,200,OK,Student Attendance Users 1-54,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5247,0,4400
+1594754719487,4629,Login,200,OK,Student Attendance Users 1-209,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4629,0,3781
+1594754718832,5449,Login,200,OK,Student Attendance Users 1-32,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5449,0,4448
+1594754718839,5442,Login,200,OK,Student Attendance Users 1-27,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5442,0,4438
+1594754719434,4847,Login,200,OK,Student Attendance Users 1-194,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4847,0,3854
+1594754718825,5457,Login,200,OK,Student Attendance Users 1-5,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5457,0,4455
+1594754719363,4920,Login,200,OK,Student Attendance Users 1-178,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4920,0,3925
+1594754718813,5470,Login,200,OK,Student Attendance Users 1-40,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5470,0,4475
+1594754719227,5354,Login,200,OK,Student Attendance Users 1-141,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5354,0,4063
+1594754719374,5208,Login,200,OK,Student Attendance Users 1-181,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5208,0,3917
+1594754718849,5732,Login,200,OK,Student Attendance Users 1-15,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5732,0,4510
+1594754719334,5248,Login,200,OK,Student Attendance Users 1-171,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5247,0,3957
+1594754719191,5392,Login,200,OK,Student Attendance Users 1-135,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5392,0,4169
+1594754718848,5739,Login,200,OK,Student Attendance Users 1-1,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5739,0,4512
+1594754719132,5457,Login,200,OK,Student Attendance Users 1-120,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5457,0,4229
+1594754718848,5745,Login,200,OK,Student Attendance Users 1-34,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5745,0,4514
+1594754719011,5583,Login,200,OK,Student Attendance Users 1-90,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5583,0,4351
+1594754719608,4986,Login,200,OK,Student Attendance Users 1-237,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,4986,0,3754
+1594754719118,5477,Login,200,OK,Student Attendance Users 1-117,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5477,0,4240
+1594754719008,5587,Login,200,OK,Student Attendance Users 1-87,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5587,0,4354
+1594754718847,6076,Login,200,OK,Student Attendance Users 1-48,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6076,0,4516
+1594754719258,5666,Login,200,OK,Student Attendance Users 1-151,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5666,0,4105
+1594754718930,5994,Login,200,OK,Student Attendance Users 1-70,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5994,0,4433
+1594754719135,5790,Login,200,OK,Student Attendance Users 1-121,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5790,0,4228
+1594754719411,5514,Login,200,OK,Student Attendance Users 1-188,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5514,0,3952
+1594754719518,5407,Login,200,OK,Student Attendance Users 1-217,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5407,0,3845
+1594754719514,5412,Login,200,OK,Student Attendance Users 1-215,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5412,0,3854
+1594754719214,5713,Login,200,OK,Student Attendance Users 1-139,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5713,0,4155
+1594754719054,5874,Login,200,OK,Student Attendance Users 1-101,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5874,0,4315
+1594754719470,5458,Login,200,OK,Student Attendance Users 1-205,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5458,0,3900
+1594754719438,5490,Login,200,OK,Student Attendance Users 1-197,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5490,0,3931
+1594754718877,6053,Login,200,OK,Student Attendance Users 1-56,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6053,0,4493
+1594754719315,5954,Login,200,OK,Student Attendance Users 1-165,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5954,0,4056
+1594754719079,6219,Login,200,OK,Student Attendance Users 1-107,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6218,0,4292
+1594754719046,6252,Login,200,OK,Student Attendance Users 1-99,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6252,0,4326
+1594754718819,6479,Login,200,OK,Student Attendance Users 1-4,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6479,0,4552
+1594754719351,5949,Login,200,OK,Student Attendance Users 1-175,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5949,0,4022
+1594754718927,6373,Login,200,OK,Student Attendance Users 1-69,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6373,0,4445
+1594754718848,6453,Login,200,OK,Student Attendance Users 1-29,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6453,0,4526
+1594754719605,5696,Login,200,OK,Student Attendance Users 1-236,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5696,0,3769
+1594754719467,5834,Login,200,OK,Student Attendance Users 1-204,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5834,0,3908
+1594754719199,6102,Login,200,OK,Student Attendance Users 1-133,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6102,0,4174
+1594754719287,6015,Login,200,OK,Student Attendance Users 1-158,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6015,0,4087
+1594754719403,5899,Login,200,OK,Student Attendance Users 1-187,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5899,0,3889
+1594754719642,5661,Login,200,OK,Student Attendance Users 1-248,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,5661,0,3650
+1594754719211,6430,Login,200,OK,Student Attendance Users 1-138,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6430,0,4165
+1594754718831,6811,Login,200,OK,Student Attendance Users 1-23,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6811,0,4544
+1594754719247,6395,Login,200,OK,Student Attendance Users 1-149,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6395,0,4129
+1594754719222,6421,Login,200,OK,Student Attendance Users 1-142,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6421,0,4154
+1594754719610,6033,Login,200,OK,Student Attendance Users 1-240,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6033,0,3767
+1594754718959,6682,Login,200,OK,Student Attendance Users 1-75,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6682,0,4417
+1594754719431,6214,Login,200,OK,Student Attendance Users 1-195,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6214,0,3947
+1594754718839,6806,Login,200,OK,Student Attendance Users 1-46,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6806,0,4539
+1594754719530,6115,Login,200,OK,Student Attendance Users 1-220,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6115,0,3848
+1594754719420,6226,Login,200,OK,Student Attendance Users 1-192,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6226,0,3958
+1594754718850,6795,Login,200,OK,Student Attendance Users 1-20,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6795,0,4528
+1594754719574,6072,Login,200,OK,Student Attendance Users 1-231,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6072,0,3806
+1594754719376,6272,Login,200,OK,Student Attendance Users 1-180,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6272,0,3917
+1594754718820,6827,Login,200,OK,Student Attendance Users 1-19,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6827,0,4472
+1594754719591,6057,Login,200,OK,Student Attendance Users 1-233,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6057,0,3789
+1594754719382,6538,Login,200,OK,Student Attendance Users 1-182,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6538,0,3910
+1594754719618,6302,Login,200,OK,Student Attendance Users 1-242,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6302,0,3674
+1594754719498,6423,Login,200,OK,Student Attendance Users 1-212,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6423,0,3793
+1594754719244,6678,Login,200,OK,Student Attendance Users 1-147,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6678,0,4047
+1594754718832,7092,Login,200,OK,Student Attendance Users 1-26,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,7092,0,4459
+1594754719637,6287,Login,200,OK,Student Attendance Users 1-246,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6287,0,3745
+1594754718880,7046,Login,200,OK,Student Attendance Users 1-57,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,7046,0,4411
+1594754718820,7106,Login,200,OK,Student Attendance Users 1-38,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,7106,0,4468
+1594754718826,7101,Login,200,OK,Student Attendance Users 1-31,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,7101,0,4556
+1594754719389,6538,Login,200,OK,Student Attendance Users 1-184,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6538,0,3994
+1594754719566,6362,Login,200,OK,Student Attendance Users 1-229,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6362,0,3722
+1594754719391,6537,Login,200,OK,Student Attendance Users 1-185,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6537,0,3992
+1594754719546,6691,Login,200,OK,Student Attendance Users 1-224,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6691,0,3732
+1594754718840,7396,Login,200,OK,Student Attendance Users 1-11,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,7396,0,4542
+1594754719230,7008,Login,200,OK,Student Attendance Users 1-145,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,7008,0,4048
+1594754719410,6828,Login,200,OK,Student Attendance Users 1-190,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6828,0,3974
+1594754719298,6940,Login,200,OK,Student Attendance Users 1-162,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6940,0,3979
+1594754718829,7409,Login,200,OK,Student Attendance Users 1-3,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,7409,0,4554
+1594754718850,7390,Login,200,OK,Student Attendance Users 1-37,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,7390,0,4534
+1594754719408,6832,Login,200,OK,Student Attendance Users 1-189,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6832,0,3940
+1594754719251,6989,Login,200,OK,Student Attendance Users 1-150,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6989,0,4098
+1594754719355,6886,Login,200,OK,Student Attendance Users 1-176,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6886,0,3937
+1594754719464,6777,Login,200,OK,Student Attendance Users 1-203,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6777,0,3839
+1594754718853,7389,Login,200,OK,Student Attendance Users 1-28,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,7389,0,4530
+1594754719369,6873,Login,200,OK,Student Attendance Users 1-179,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6873,0,4023
+1594754719558,6685,Login,200,OK,Student Attendance Users 1-227,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,6685,0,3700
+1594754718838,10586,Login,200,OK,Student Attendance Users 1-39,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10586,0,4419
+1594754718847,10578,Login,200,OK,Student Attendance Users 1-36,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10578,0,4551
+1594754719235,10190,Login,200,OK,Student Attendance Users 1-143,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10190,0,4163
+1594754719263,10163,Login,200,OK,Student Attendance Users 1-152,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10163,0,4134
+1594754718964,10462,Login,200,OK,Student Attendance Users 1-78,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10462,0,4436
+1594754718830,10597,Login,200,OK,Student Attendance Users 1-45,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10597,0,4570
+1594754719573,9854,Login,200,OK,Student Attendance Users 1-230,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9854,0,3828
+1594754718827,10600,Login,200,OK,Student Attendance Users 1-44,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10600,0,4572
+1594754719578,9850,Login,200,OK,Student Attendance Users 1-232,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9850,0,3676
+1594754719526,9902,Login,200,OK,Student Attendance Users 1-219,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9902,0,3875
+1594754719306,10123,Login,200,OK,Student Attendance Users 1-164,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10123,0,3945
+1594754719331,10098,Login,200,OK,Student Attendance Users 1-169,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10098,0,4070
+1594754719243,10186,Login,200,OK,Student Attendance Users 1-148,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10186,0,4159
+1594754718830,10598,Login,200,OK,Student Attendance Users 1-21,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10598,0,4420
+1594754719323,10107,Login,200,OK,Student Attendance Users 1-168,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10107,0,3928
+1594754718825,10604,Login,200,OK,Student Attendance Users 1-12,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10604,0,4425
+1594754719456,9974,Login,200,OK,Student Attendance Users 1-201,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9974,0,3789
+1594754718829,10600,Login,200,OK,Student Attendance Users 1-13,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10600,0,4417
+1594754719203,10228,Login,200,OK,Student Attendance Users 1-136,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10228,0,4043
+1594754719197,10234,Login,200,OK,Student Attendance Users 1-132,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10234,0,4207
+1594754719330,10101,Login,200,OK,Student Attendance Users 1-170,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10101,0,3907
+1594754719245,10188,Login,200,OK,Student Attendance Users 1-146,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10187,0,4159
+1594754719515,9918,Login,200,OK,Student Attendance Users 1-216,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9918,0,3895
+1594754719286,10147,Login,200,OK,Student Attendance Users 1-159,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10147,0,4124
+1594754719099,10335,Login,200,OK,Student Attendance Users 1-111,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10335,0,4310
+1594754719155,10280,Login,200,OK,Student Attendance Users 1-126,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10280,0,4255
+1594754719542,9893,Login,200,OK,Student Attendance Users 1-223,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9893,0,3870
+1594754719099,10336,Login,200,OK,Student Attendance Users 1-110,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10336,0,4311
+1594754718971,10464,Login,200,OK,Student Attendance Users 1-79,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10464,0,4440
+1594754719164,10272,Login,200,OK,Student Attendance Users 1-127,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10272,0,4247
+1594754719022,10414,Login,200,OK,Student Attendance Users 1-93,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10414,0,4389
+1594754719007,10429,Login,200,OK,Student Attendance Users 1-86,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10429,0,4405
+1594754718913,10524,Login,200,OK,Student Attendance Users 1-64,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10524,0,4436
+1594754719553,9884,Login,200,OK,Student Attendance Users 1-225,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9884,0,3859
+1594754718841,10597,Login,200,OK,Student Attendance Users 1-33,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10597,0,4394
+1594754719113,10325,Login,200,OK,Student Attendance Users 1-113,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10325,0,4299
+1594754718983,10455,Login,200,OK,Student Attendance Users 1-83,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10455,0,4367
+1594754719521,9918,Login,200,OK,Student Attendance Users 1-218,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9918,0,3833
+1594754719442,9998,Login,200,OK,Student Attendance Users 1-198,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9998,0,3910
+1594754718820,10619,Login,200,OK,Student Attendance Users 1-8,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10619,0,4529
+1594754719535,9905,Login,200,OK,Student Attendance Users 1-221,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9905,0,3878
+1594754718962,10479,Login,200,OK,Student Attendance Users 1-74,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10478,0,4452
+1594754719081,10360,Login,200,OK,Student Attendance Users 1-106,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10360,0,4270
+1594754718851,10590,Login,200,OK,Student Attendance Users 1-50,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10590,0,4562
+1594754719019,10423,Login,200,OK,Student Attendance Users 1-92,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10423,0,4396
+1594754719167,10275,Login,200,OK,Student Attendance Users 1-129,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10275,0,4248
+1594754718979,10463,Login,200,OK,Student Attendance Users 1-82,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10463,0,4434
+1594754719059,10383,Login,200,OK,Student Attendance Users 1-102,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10383,0,4356
+1594754719592,9850,Login,200,OK,Student Attendance Users 1-234,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9850,0,3822
+1594754719028,10415,Login,200,OK,Student Attendance Users 1-94,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10415,0,4387
+1594754719116,10327,Login,200,OK,Student Attendance Users 1-114,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10327,0,4297
+1594754718883,10554,Login,200,OK,Student Attendance Users 1-58,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10554,0,4467
+1594754719162,10282,Login,200,OK,Student Attendance Users 1-128,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10282,0,4255
+1594754718991,10452,Login,200,OK,Student Attendance Users 1-85,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10452,0,4425
+1594754719638,9807,Login,200,OK,Student Attendance Users 1-247,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9807,0,3776
+1594754719453,9992,Login,200,OK,Student Attendance Users 1-200,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9992,0,3965
+1594754719593,9853,Login,200,OK,Student Attendance Users 1-235,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9853,0,3826
+1594754719051,10395,Login,200,OK,Student Attendance Users 1-100,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10395,0,4363
+1594754719508,9938,Login,200,OK,Student Attendance Users 1-214,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9938,0,3912
+1594754719614,9833,Login,200,OK,Student Attendance Users 1-241,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9833,0,3805
+1594754718845,10601,Login,200,OK,Student Attendance Users 1-18,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10601,0,4570
+1594754719495,9953,Login,200,OK,Student Attendance Users 1-211,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9953,0,3925
+1594754718832,10616,Login,200,OK,Student Attendance Users 1-24,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10616,0,4590
+1594754718831,10617,Login,200,OK,Student Attendance Users 1-22,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10617,0,4590
+1594754718871,10578,Login,200,OK,Student Attendance Users 1-55,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10578,0,4552
+1594754719043,10406,Login,200,OK,Student Attendance Users 1-98,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10406,0,4374
+1594754718907,10542,Login,200,OK,Student Attendance Users 1-60,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10542,0,4516
+1594754719113,10337,Login,200,OK,Student Attendance Users 1-115,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10337,0,4311
+1594754718820,10629,Login,200,OK,Student Attendance Users 1-10,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10629,0,4602
+1594754719009,10441,Login,200,OK,Student Attendance Users 1-89,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10441,0,4408
+1594754719362,10088,Login,200,OK,Student Attendance Users 1-177,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10088,0,4061
+1594754718916,10535,Login,200,OK,Student Attendance Users 1-65,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10535,0,4509
+1594754719151,10300,Login,200,OK,Student Attendance Users 1-125,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10300,0,4273
+1594754718911,10540,Login,200,OK,Student Attendance Users 1-62,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10540,0,4513
+1594754719492,9959,Login,200,OK,Student Attendance Users 1-210,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,9959,0,3925
+1594754719031,10421,Login,200,OK,Student Attendance Users 1-95,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10421,0,4397
+1594754718915,10537,Login,200,OK,Student Attendance Users 1-66,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10537,0,4510
+1594754719062,10390,Login,200,OK,Student Attendance Users 1-103,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10390,0,4365
+1594754718975,10477,Login,200,OK,Student Attendance Users 1-81,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10477,0,4443
+1594754719278,10175,Login,200,OK,Student Attendance Users 1-156,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10175,0,4153
+1594754719280,10172,Login,200,OK,Student Attendance Users 1-157,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10172,0,4144
+1594754718849,10814,Login,200,OK,Student Attendance Users 1-35,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10814,0,4510
+1594754718934,10730,Login,200,OK,Student Attendance Users 1-71,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10730,0,4542
+1594754718863,10802,Login,200,OK,Student Attendance Users 1-53,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10802,0,4613
+1594754718959,10706,Login,200,OK,Student Attendance Users 1-77,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10706,0,4517
+1594754718834,10829,Login,200,OK,Student Attendance Users 1-25,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10829,0,4630
+1594754719434,10232,Login,200,OK,Student Attendance Users 1-196,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10232,0,4043
+1594754719555,10111,Login,200,OK,Student Attendance Users 1-226,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10111,0,3799
+1594754718818,10849,Login,200,OK,Student Attendance Users 1-41,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10849,0,4659
+1594754719463,10206,Login,200,OK,Student Attendance Users 1-202,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10206,0,4014
+1594754719207,10462,Login,200,OK,Student Attendance Users 1-137,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10462,0,4221
+1594754719484,10186,Login,200,OK,Student Attendance Users 1-207,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10186,0,3940
+1594754719625,10046,Login,200,OK,Student Attendance Users 1-243,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10046,0,3851
+1594754719038,10635,Login,200,OK,Student Attendance Users 1-97,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10634,0,4438
+1594754719035,10639,Login,200,OK,Student Attendance Users 1-96,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10639,0,4440
+1594754719127,10547,Login,200,OK,Student Attendance Users 1-118,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10547,0,4348
+1594754718919,10755,Login,200,OK,Student Attendance Users 1-67,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10755,0,4553
+1594754719067,10609,Login,200,OK,Student Attendance Users 1-104,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10609,0,4405
+1594754719175,10501,Login,200,OK,Student Attendance Users 1-131,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10501,0,4296
+1594754719302,10375,Login,200,OK,Student Attendance Users 1-163,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10375,0,4169
+1594754719314,10365,Login,200,OK,Student Attendance Users 1-166,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10364,0,4157
+1594754719423,10257,Login,200,OK,Student Attendance Users 1-191,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10257,0,4039
+1594754718838,10841,Login,200,OK,Student Attendance Users 1-6,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10841,0,4618
+1594754719078,10603,Login,200,OK,Student Attendance Users 1-105,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10603,0,4392
+1594754719619,10063,Login,200,OK,Student Attendance Users 1-239,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10063,0,3851
+1594754719155,10527,Login,200,OK,Student Attendance Users 1-123,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10527,0,4315
+1594754719154,10528,Login,200,OK,Student Attendance Users 1-124,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10528,0,4308
+1594754718903,10780,Login,200,OK,Student Attendance Users 1-63,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10780,0,4567
+1594754719170,10513,Login,200,OK,Student Attendance Users 1-130,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10513,0,4296
+1594754719119,10566,Login,200,OK,Student Attendance Users 1-112,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10566,0,4347
+1594754719484,10201,Login,200,OK,Student Attendance Users 1-208,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10201,0,3948
+1594754719014,10671,Login,200,OK,Student Attendance Users 1-91,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10671,0,4449
+1594754718987,10699,Login,200,OK,Student Attendance Users 1-84,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10699,0,4475
+1594754719130,10556,Login,200,OK,Student Attendance Users 1-119,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10556,0,4333
+1594754718853,10833,Login,200,OK,Student Attendance Users 1-49,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10833,0,4606
+1594754719143,10545,Login,200,OK,Student Attendance Users 1-122,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10545,0,4291
+1594754718923,10530,Login,200,OK,Student Attendance Users 1-68,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10530,0,4505
+1594754719115,10338,Login,200,OK,Student Attendance Users 1-116,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10338,0,4303
+1594754719648,10044,Login,200,OK,Student Attendance Users 1-249,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10044,0,3783
+1594754719009,10706,Login,200,OK,Student Attendance Users 1-88,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10706,0,4425
+1594754718848,10883,Login,200,OK,Student Attendance Users 1-30,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10883,0,4509
+1594754719091,10642,Login,200,OK,Student Attendance Users 1-109,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10642,0,4258
+1594754719630,10106,Login,200,OK,Student Attendance Users 1-245,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10106,0,3728
+1594754719266,10472,Login,200,OK,Student Attendance Users 1-154,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10472,0,4157
+1594754719338,10401,Login,200,OK,Student Attendance Users 1-172,text,true,,1105,249,250,250,https://cqube.tibilprojects.com/api/roleBasedLogin,10401,0,4081
+1594754723439,15946,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-52,text,true,,4863375,992,250,250,https://cqube.tibilprojects.com/api/attendance/schoolWise,3198,0,13
+1594754723443,16277,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-7,text,true,,4863375,992,249,249,https://cqube.tibilprojects.com/api/attendance/schoolWise,5921,0,21
+1594754723435,16354,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-76,text,true,,4863375,992,248,248,https://cqube.tibilprojects.com/api/attendance/schoolWise,4983,0,23
+1594754723436,16440,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-61,text,true,,4863375,992,247,247,https://cqube.tibilprojects.com/api/attendance/schoolWise,9378,0,14
+1594754723442,16588,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-228,text,true,,4863375,992,246,246,https://cqube.tibilprojects.com/api/attendance/schoolWise,4596,0,15
+1594754723433,16721,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-173,text,true,,4863375,992,245,245,https://cqube.tibilprojects.com/api/attendance/schoolWise,4265,0,23
+1594754723433,16777,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-250,text,true,,4863375,992,244,244,https://cqube.tibilprojects.com/api/attendance/schoolWise,3883,0,22
+1594754723445,17952,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-72,text,true,,4863375,992,243,243,https://cqube.tibilprojects.com/api/attendance/schoolWise,3579,0,9
+1594754723436,19571,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-80,text,true,,4863375,992,242,242,https://cqube.tibilprojects.com/api/attendance/schoolWise,5268,0,23
+1594754723431,22638,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-108,text,true,,4863375,992,241,241,https://cqube.tibilprojects.com/api/attendance/schoolWise,6725,0,25
+1594754723434,22653,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-244,text,true,,4863375,992,240,240,https://cqube.tibilprojects.com/api/attendance/schoolWise,5708,0,26
+1594754723441,22642,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-73,text,true,,4863375,992,241,241,https://cqube.tibilprojects.com/api/attendance/schoolWise,7090,0,16
+1594754723440,22625,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-161,text,true,,4863375,992,240,240,https://cqube.tibilprojects.com/api/attendance/schoolWise,5487,0,19
+1594754723435,22675,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-174,text,true,,4863375,992,237,237,https://cqube.tibilprojects.com/api/attendance/schoolWise,6251,0,16
+1594754723755,22370,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-153,text,true,,4863375,992,236,236,https://cqube.tibilprojects.com/api/attendance/schoolWise,7207,0,6
+1594754723430,22702,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-17,text,true,,4863375,992,235,235,https://cqube.tibilprojects.com/api/attendance/schoolWise,6914,0,48
+1594754723920,22224,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-14,text,true,,4863375,992,234,234,https://cqube.tibilprojects.com/api/attendance/schoolWise,8454,0,9
+1594754723925,22288,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-43,text,true,,4863375,992,233,233,https://cqube.tibilprojects.com/api/attendance/schoolWise,8258,0,4
+1594754723435,24850,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-222,text,true,,4863375,992,232,232,https://cqube.tibilprojects.com/api/attendance/schoolWise,7325,0,24
+1594754723921,24395,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-59,text,true,,4863375,992,231,231,https://cqube.tibilprojects.com/api/attendance/schoolWise,9622,0,5
+1594754723759,25053,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-51,text,true,,4863375,992,230,230,https://cqube.tibilprojects.com/api/attendance/schoolWise,9370,0,3
+1594754723757,25800,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-199,text,true,,4863375,992,229,229,https://cqube.tibilprojects.com/api/attendance/schoolWise,9566,0,5
+1594754723759,25805,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-144,text,true,,4863375,992,228,228,https://cqube.tibilprojects.com/api/attendance/schoolWise,10180,0,4
+1594754723920,26224,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-193,text,true,,4863375,992,227,227,https://cqube.tibilprojects.com/api/attendance/schoolWise,8035,0,5
+1594754723758,26445,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-9,text,true,,4863375,992,226,226,https://cqube.tibilprojects.com/api/attendance/schoolWise,8003,0,5
+1594754723922,26351,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-206,text,true,,4863375,992,225,225,https://cqube.tibilprojects.com/api/attendance/schoolWise,9831,0,4
+1594754723757,26558,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-183,text,true,,4863375,992,224,224,https://cqube.tibilprojects.com/api/attendance/schoolWise,7804,0,5
+1594754724595,26186,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-237,text,true,,4863375,992,223,223,https://cqube.tibilprojects.com/api/attendance/schoolWise,12043,0,4
+1594754724926,26253,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-121,text,true,,4863375,992,222,222,https://cqube.tibilprojects.com/api/attendance/schoolWise,11911,0,3
+1594754724595,26587,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-117,text,true,,4863375,992,221,221,https://cqube.tibilprojects.com/api/attendance/schoolWise,11627,0,4
+1594754724583,26600,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-171,text,true,,4863375,992,221,221,https://cqube.tibilprojects.com/api/attendance/schoolWise,10414,0,4
+1594754724596,26589,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-87,text,true,,4863375,992,219,219,https://cqube.tibilprojects.com/api/attendance/schoolWise,11849,0,3
+1594754724583,26604,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-15,text,true,,4863375,992,218,218,https://cqube.tibilprojects.com/api/attendance/schoolWise,10620,0,8
+1594754723443,27853,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-47,text,true,,4863375,992,217,217,https://cqube.tibilprojects.com/api/attendance/schoolWise,6487,0,10
+1594754724594,26784,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-34,text,true,,4863375,992,216,216,https://cqube.tibilprojects.com/api/attendance/schoolWise,11409,0,4
+1594754723757,27712,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-213,text,true,,4863375,992,215,215,https://cqube.tibilprojects.com/api/attendance/schoolWise,7610,0,5
+1594754723756,27878,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-140,text,true,,4863375,992,214,214,https://cqube.tibilprojects.com/api/attendance/schoolWise,7415,0,5
+1594754723458,28176,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-42,text,true,,4863375,992,214,214,https://cqube.tibilprojects.com/api/attendance/schoolWise,9100,0,15
+1594754724927,33051,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-215,text,true,,4863375,992,212,212,https://cqube.tibilprojects.com/api/attendance/schoolWise,14081,0,7
+1594754724929,33064,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-188,text,true,,4863375,992,211,211,https://cqube.tibilprojects.com/api/attendance/schoolWise,12841,0,4
+1594754724925,33086,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-70,text,true,,4863375,992,210,210,https://cqube.tibilprojects.com/api/attendance/schoolWise,13892,0,9
+1594754724924,34088,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-151,text,true,,4863375,992,209,209,https://cqube.tibilprojects.com/api/attendance/schoolWise,12209,0,6
+1594754724928,34086,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-101,text,true,,4863375,992,208,208,https://cqube.tibilprojects.com/api/attendance/schoolWise,13064,0,5
+1594754724929,34092,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-197,text,true,,4863375,992,207,207,https://cqube.tibilprojects.com/api/attendance/schoolWise,12648,0,4
+1594754724928,34104,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-205,text,true,,4863375,992,206,206,https://cqube.tibilprojects.com/api/attendance/schoolWise,13487,0,6
+1594754724927,34327,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-139,text,true,,4863375,992,205,205,https://cqube.tibilprojects.com/api/attendance/schoolWise,13693,0,7
+1594754724924,34358,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-48,text,true,,4863375,992,204,204,https://cqube.tibilprojects.com/api/attendance/schoolWise,12427,0,6
+1594754724590,35252,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-120,text,true,,4863375,992,203,203,https://cqube.tibilprojects.com/api/attendance/schoolWise,10834,0,2
+1594754724930,34932,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-56,text,true,,4863375,992,202,202,https://cqube.tibilprojects.com/api/attendance/schoolWise,13269,0,3
+1594754724595,35600,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-90,text,true,,4863375,992,201,201,https://cqube.tibilprojects.com/api/attendance/schoolWise,11230,0,3
+1594754724588,35901,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-1,text,true,,4863375,992,200,200,https://cqube.tibilprojects.com/api/attendance/schoolWise,11028,0,5
+1594754723979,37124,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-134,text,true,,4863375,992,199,199,https://cqube.tibilprojects.com/api/attendance/schoolWise,16441,0,3
+1594754724582,36524,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-141,text,true,,4863375,992,199,199,https://cqube.tibilprojects.com/api/attendance/schoolWise,16672,0,5
+1594754724282,37468,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-194,text,true,,4863375,992,197,197,https://cqube.tibilprojects.com/api/attendance/schoolWise,16773,0,7
+1594754724282,37918,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-27,text,true,,4863375,992,196,196,https://cqube.tibilprojects.com/api/attendance/schoolWise,17748,0,9
+1594754724281,37934,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-32,text,true,,4863375,992,195,195,https://cqube.tibilprojects.com/api/attendance/schoolWise,16574,0,5
+1594754724584,37642,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-135,text,true,,4863375,992,194,194,https://cqube.tibilprojects.com/api/attendance/schoolWise,18065,0,3
+1594754724283,37956,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-178,text,true,,4863375,992,193,193,https://cqube.tibilprojects.com/api/attendance/schoolWise,18638,0,6
+1594754723978,38263,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-238,text,true,,4863375,992,192,192,https://cqube.tibilprojects.com/api/attendance/schoolWise,17595,0,4
+1594754724060,38220,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-160,text,true,,4863375,992,191,191,https://cqube.tibilprojects.com/api/attendance/schoolWise,16571,0,4
+1594754724116,38227,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-54,text,true,,4863375,992,190,190,https://cqube.tibilprojects.com/api/attendance/schoolWise,17670,0,5
+1594754724116,38242,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-209,text,true,,4863375,992,189,189,https://cqube.tibilprojects.com/api/attendance/schoolWise,18121,0,5
+1594754724583,37790,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-181,text,true,,4863375,992,188,188,https://cqube.tibilprojects.com/api/attendance/schoolWise,17854,0,4
+1594754725642,38755,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-23,text,true,,4863375,992,187,187,https://cqube.tibilprojects.com/api/attendance/schoolWise,17925,0,11
+1594754725645,38755,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-46,text,true,,4863375,992,186,186,https://cqube.tibilprojects.com/api/attendance/schoolWise,20227,0,6
+1594754725642,38759,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-138,text,true,,4863375,992,186,186,https://cqube.tibilprojects.com/api/attendance/schoolWise,18510,0,13
+1594754725644,38794,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-240,text,true,,4863375,992,184,184,https://cqube.tibilprojects.com/api/attendance/schoolWise,17497,0,8
+1594754723979,40463,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-186,text,true,,4863375,992,183,183,https://cqube.tibilprojects.com/api/attendance/schoolWise,21654,0,5
+1594754724061,40434,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-155,text,true,,4863375,992,182,182,https://cqube.tibilprojects.com/api/attendance/schoolWise,20919,0,4
+1594754725921,38628,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-242,text,true,,4863375,992,181,181,https://cqube.tibilprojects.com/api/attendance/schoolWise,18430,0,3
+1594754724117,40434,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-167,text,true,,4863375,992,180,180,https://cqube.tibilprojects.com/api/attendance/schoolWise,21297,0,4
+1594754725929,41846,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-26,text,true,,4863375,992,179,179,https://cqube.tibilprojects.com/api/attendance/schoolWise,20670,0,3
+1594754724284,43495,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-40,text,true,,4863375,992,178,178,https://cqube.tibilprojects.com/api/attendance/schoolWise,24422,0,6
+1594754726239,41565,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-224,text,true,,4863375,992,177,177,https://cqube.tibilprojects.com/api/attendance/schoolWise,21351,0,4
+1594754725645,42210,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-195,text,true,,4863375,992,176,176,https://cqube.tibilprojects.com/api/attendance/schoolWise,22845,0,9
+1594754725928,41938,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-184,text,true,,4863375,992,175,175,https://cqube.tibilprojects.com/api/attendance/schoolWise,20224,0,3
+1594754725648,42232,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-233,text,true,,4863375,992,174,174,https://cqube.tibilprojects.com/api/attendance/schoolWise,22613,0,4
+1594754725921,42079,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-182,text,true,,4863375,992,173,173,https://cqube.tibilprojects.com/api/attendance/schoolWise,18634,0,4
+1594754725304,42698,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-248,text,true,,4863375,992,172,172,https://cqube.tibilprojects.com/api/attendance/schoolWise,22577,0,3
+1594754725647,42360,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-231,text,true,,4863375,992,171,171,https://cqube.tibilprojects.com/api/attendance/schoolWise,18107,0,6
+1594754725925,42084,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-246,text,true,,4863375,992,170,170,https://cqube.tibilprojects.com/api/attendance/schoolWise,21066,0,8
+1594754725926,42084,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-57,text,true,,4863375,992,170,170,https://cqube.tibilprojects.com/api/attendance/schoolWise,21268,0,7
+1594754725931,42094,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-185,text,true,,4863375,992,168,168,https://cqube.tibilprojects.com/api/attendance/schoolWise,21459,0,3
+1594754725301,42763,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-236,text,true,,4863375,992,167,167,https://cqube.tibilprojects.com/api/attendance/schoolWise,22755,0,7
+1594754725922,42273,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-147,text,true,,4863375,992,166,166,https://cqube.tibilprojects.com/api/attendance/schoolWise,20871,0,10
+1594754725648,42762,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-19,text,true,,4863375,992,166,166,https://cqube.tibilprojects.com/api/attendance/schoolWise,17726,0,4
+1594754725921,42489,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-212,text,true,,4863375,992,166,166,https://cqube.tibilprojects.com/api/attendance/schoolWise,18854,0,5
+1594754725927,42588,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-38,text,true,,4863375,992,163,163,https://cqube.tibilprojects.com/api/attendance/schoolWise,20458,0,4
+1594754724283,44297,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-5,text,true,,4863375,992,162,162,https://cqube.tibilprojects.com/api/attendance/schoolWise,20904,0,3
+1594754725647,42949,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-192,text,true,,4863375,992,161,161,https://cqube.tibilprojects.com/api/attendance/schoolWise,18297,0,7
+1594754725929,43396,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-229,text,true,,4863375,992,160,160,https://cqube.tibilprojects.com/api/attendance/schoolWise,23801,0,4
+1594754725928,43400,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-31,text,true,,4863375,992,159,159,https://cqube.tibilprojects.com/api/attendance/schoolWise,23997,0,6
+1594754724059,45288,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-16,text,true,,4863375,992,158,158,https://cqube.tibilprojects.com/api/attendance/schoolWise,26886,0,5
+1594754725644,43708,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-142,text,true,,4863375,992,157,157,https://cqube.tibilprojects.com/api/attendance/schoolWise,25067,0,8
+1594754725648,43705,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-180,text,true,,4863375,992,157,157,https://cqube.tibilprojects.com/api/attendance/schoolWise,23703,0,4
+1594754725299,44066,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-4,text,true,,4863375,992,155,155,https://cqube.tibilprojects.com/api/attendance/schoolWise,25207,0,9
+1594754725300,44068,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-175,text,true,,4863375,992,154,154,https://cqube.tibilprojects.com/api/attendance/schoolWise,23830,0,7
+1594754725643,43731,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-149,text,true,,4863375,992,153,153,https://cqube.tibilprojects.com/api/attendance/schoolWise,23897,0,9
+1594754724059,45860,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-2,text,true,,4863375,992,152,152,https://cqube.tibilprojects.com/api/attendance/schoolWise,26072,0,5
+1594754729664,40809,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-157,text,true,,4863375,992,151,151,https://cqube.tibilprojects.com/api/attendance/schoolWise,28208,0,6
+1594754725647,45038,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-20,text,true,,4863375,992,150,150,https://cqube.tibilprojects.com/api/attendance/schoolWise,25921,0,4
+1594754726238,44548,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-11,text,true,,4863375,992,149,149,https://cqube.tibilprojects.com/api/attendance/schoolWise,26017,0,6
+1594754726239,44599,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-162,text,true,,4863375,992,148,148,https://cqube.tibilprojects.com/api/attendance/schoolWise,25609,0,5
+1594754726241,45658,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-150,text,true,,4863375,992,147,147,https://cqube.tibilprojects.com/api/attendance/schoolWise,25826,0,3
+1594754726242,45681,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-203,text,true,,4863375,992,146,146,https://cqube.tibilprojects.com/api/attendance/schoolWise,26741,0,4
+1594754726239,45799,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-3,text,true,,4863375,992,145,145,https://cqube.tibilprojects.com/api/attendance/schoolWise,27675,0,8
+1594754726242,45810,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-28,text,true,,4863375,992,144,144,https://cqube.tibilprojects.com/api/attendance/schoolWise,27456,0,5
+1594754726244,45846,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-227,text,true,,4863375,992,143,143,https://cqube.tibilprojects.com/api/attendance/schoolWise,27235,0,3
+1594754726240,45873,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-189,text,true,,4863375,992,142,142,https://cqube.tibilprojects.com/api/attendance/schoolWise,26419,0,6
+1594754725644,46494,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-75,text,true,,4863375,992,141,141,https://cqube.tibilprojects.com/api/attendance/schoolWise,28956,0,8
+1594754725298,49045,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-107,text,true,,4863375,992,140,140,https://cqube.tibilprojects.com/api/attendance/schoolWise,31357,0,12
+1594754725302,49044,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-187,text,true,,4863375,992,139,139,https://cqube.tibilprojects.com/api/attendance/schoolWise,29954,0,4
+1594754726240,48126,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-37,text,true,,4863375,992,138,138,https://cqube.tibilprojects.com/api/attendance/schoolWise,27014,0,7
+1594754724926,49444,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-217,text,true,,4863375,992,137,137,https://cqube.tibilprojects.com/api/attendance/schoolWise,31310,0,9
+1594754725301,49076,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-204,text,true,,4863375,992,136,136,https://cqube.tibilprojects.com/api/attendance/schoolWise,31599,0,10
+1594754725302,49082,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-133,text,true,,4863375,992,135,135,https://cqube.tibilprojects.com/api/attendance/schoolWise,31128,0,7
+1594754726238,48166,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-145,text,true,,4863375,992,134,134,https://cqube.tibilprojects.com/api/attendance/schoolWise,26227,0,7
+1594754729427,44990,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-78,text,true,,4863375,992,133,133,https://cqube.tibilprojects.com/api/attendance/schoolWise,27697,0,14
+1594754725301,49146,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-29,text,true,,4863375,992,132,132,https://cqube.tibilprojects.com/api/attendance/schoolWise,30752,0,7
+1594754729441,45012,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-74,text,true,,4863375,992,131,131,https://cqube.tibilprojects.com/api/attendance/schoolWise,27900,0,226
+1594754729452,45007,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-95,text,true,,4863375,992,131,131,https://cqube.tibilprojects.com/api/attendance/schoolWise,28110,0,217
+1594754729430,47965,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-21,text,true,,4863375,992,129,129,https://cqube.tibilprojects.com/api/attendance/schoolWise,28643,0,240
+1594754726241,51249,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-176,text,true,,4863375,992,128,128,https://cqube.tibilprojects.com/api/attendance/schoolWise,28118,0,7
+1594754725299,52252,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-99,text,true,,4863375,992,127,127,https://cqube.tibilprojects.com/api/attendance/schoolWise,30164,0,7
+1594754726239,51338,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-190,text,true,,4863375,992,126,126,https://cqube.tibilprojects.com/api/attendance/schoolWise,27883,0,9
+1594754725300,52300,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-69,text,true,,4863375,992,125,125,https://cqube.tibilprojects.com/api/attendance/schoolWise,30538,0,6
+1594754726242,52187,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-179,text,true,,4863375,992,124,124,https://cqube.tibilprojects.com/api/attendance/schoolWise,28606,0,7
+1594754725302,53297,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-158,text,true,,4863375,992,123,123,https://cqube.tibilprojects.com/api/attendance/schoolWise,30348,0,5
+1594754725270,54401,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-165,text,true,,4863375,992,122,122,https://cqube.tibilprojects.com/api/attendance/schoolWise,29777,0,3
+1594754729691,50025,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-116,text,true,,4863375,992,121,121,https://cqube.tibilprojects.com/api/attendance/schoolWise,29863,0,3
+1594754729685,50058,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-112,text,true,,4863375,992,120,120,https://cqube.tibilprojects.com/api/attendance/schoolWise,29676,0,8
+1594754729675,50133,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-96,text,true,,4863375,992,119,119,https://cqube.tibilprojects.com/api/attendance/schoolWise,32307,0,8
+1594754729680,50975,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-6,text,true,,4863375,992,118,118,https://cqube.tibilprojects.com/api/attendance/schoolWise,29028,0,6
+1594754729684,51236,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-130,text,true,,4863375,992,117,117,https://cqube.tibilprojects.com/api/attendance/schoolWise,30581,0,10
+1594754729688,51296,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-122,text,true,,4863375,992,116,116,https://cqube.tibilprojects.com/api/attendance/schoolWise,31712,0,9
+1594754729682,51317,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-239,text,true,,4863375,992,115,115,https://cqube.tibilprojects.com/api/attendance/schoolWise,29230,0,7
+1594754729430,52310,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-148,text,true,,4863375,992,114,114,https://cqube.tibilprojects.com/api/attendance/schoolWise,32959,0,269
+1594754729686,52071,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-84,text,true,,4863375,992,113,113,https://cqube.tibilprojects.com/api/attendance/schoolWise,31523,0,5
+1594754729426,52357,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-143,text,true,,4863375,992,112,112,https://cqube.tibilprojects.com/api/attendance/schoolWise,34028,0,281
+1594754729672,52113,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-243,text,true,,4863375,992,111,111,https://cqube.tibilprojects.com/api/attendance/schoolWise,34166,0,8
+1594754729676,52114,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-104,text,true,,4863375,992,110,110,https://cqube.tibilprojects.com/api/attendance/schoolWise,34377,0,5
+1594754729683,52108,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-123,text,true,,4863375,992,110,110,https://cqube.tibilprojects.com/api/attendance/schoolWise,33127,0,18
+1594754729438,52356,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-225,text,true,,4863375,992,108,108,https://cqube.tibilprojects.com/api/attendance/schoolWise,31378,0,258
+1594754729443,52375,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-94,text,true,,4863375,992,107,107,https://cqube.tibilprojects.com/api/attendance/schoolWise,33800,0,262
+1594754729677,54515,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-131,text,true,,4863375,992,106,106,https://cqube.tibilprojects.com/api/attendance/schoolWise,31989,0,3
+1594754729693,54832,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-249,text,true,,4863375,992,105,105,https://cqube.tibilprojects.com/api/attendance/schoolWise,31331,0,4
+1594754729439,55091,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-218,text,true,,4863375,992,104,104,https://cqube.tibilprojects.com/api/attendance/schoolWise,33574,0,264
+1594754729664,54876,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-35,text,true,,4863375,992,103,103,https://cqube.tibilprojects.com/api/attendance/schoolWise,37397,0,17
+1594754729428,55112,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-232,text,true,,4863375,992,103,103,https://cqube.tibilprojects.com/api/attendance/schoolWise,38018,0,264
+1594754729670,55005,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-137,text,true,,4863375,992,101,101,https://cqube.tibilprojects.com/api/attendance/schoolWise,33977,0,10
+1594754729675,55010,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-118,text,true,,4863375,992,100,100,https://cqube.tibilprojects.com/api/attendance/schoolWise,36760,0,4
+1594754729666,55031,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-25,text,true,,4863375,992,99,99,https://cqube.tibilprojects.com/api/attendance/schoolWise,32958,0,33
+1594754729449,55415,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-55,text,true,,4863375,992,98,98,https://cqube.tibilprojects.com/api/attendance/schoolWise,36323,0,263
+1594754729451,55415,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-125,text,true,,4863375,992,97,97,https://cqube.tibilprojects.com/api/attendance/schoolWise,35866,0,258
+1594754729667,55289,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-226,text,true,,4863375,992,96,96,https://cqube.tibilprojects.com/api/attendance/schoolWise,36341,0,13
+1594754729687,56354,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-49,text,true,,4863375,992,95,95,https://cqube.tibilprojects.com/api/attendance/schoolWise,30928,0,8
+1594754729668,56465,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-41,text,true,,4863375,992,94,94,https://cqube.tibilprojects.com/api/attendance/schoolWise,32545,0,11
+1594754729679,56510,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-166,text,true,,4863375,992,93,93,https://cqube.tibilprojects.com/api/attendance/schoolWise,38363,0,3
+1594754729675,56537,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-67,text,true,,4863375,992,92,92,https://cqube.tibilprojects.com/api/attendance/schoolWise,36967,0,6
+1594754729431,56811,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-201,text,true,,4863375,992,91,91,https://cqube.tibilprojects.com/api/attendance/schoolWise,36103,0,279
+1594754729442,56856,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-92,text,true,,4863375,992,90,90,https://cqube.tibilprojects.com/api/attendance/schoolWise,35665,0,266
+1594754729678,56779,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-163,text,true,,4863375,992,89,89,https://cqube.tibilprojects.com/api/attendance/schoolWise,36547,0,4
+1594754729680,56800,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-191,text,true,,4863375,992,88,88,https://cqube.tibilprojects.com/api/attendance/schoolWise,37160,0,3
+1594754729436,57054,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-127,text,true,,4863375,992,87,87,https://cqube.tibilprojects.com/api/attendance/schoolWise,35294,0,272
+1594754729435,57362,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-223,text,true,,4863375,992,86,86,https://cqube.tibilprojects.com/api/attendance/schoolWise,34957,0,272
+1594754729685,57136,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-91,text,true,,4863375,992,85,85,https://cqube.tibilprojects.com/api/attendance/schoolWise,37560,0,6
+1594754729440,57385,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-221,text,true,,4863375,992,84,84,https://cqube.tibilprojects.com/api/attendance/schoolWise,35091,0,268
+1594754729433,57788,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-216,text,true,,4863375,992,83,83,https://cqube.tibilprojects.com/api/attendance/schoolWise,35487,0,276
+1594754729443,57937,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-82,text,true,,4863375,992,82,82,https://cqube.tibilprojects.com/api/attendance/schoolWise,39364,0,274
+1594754729683,57821,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-124,text,true,,4863375,992,81,81,https://cqube.tibilprojects.com/api/attendance/schoolWise,38738,0,8
+1594754729428,58702,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-230,text,true,,4863375,992,80,80,https://cqube.tibilprojects.com/api/attendance/schoolWise,40138,0,293
+1594754729447,58812,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-214,text,true,,4863375,992,79,79,https://cqube.tibilprojects.com/api/attendance/schoolWise,41919,0,276
+1594754729439,58827,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-83,text,true,,4863375,992,78,78,https://cqube.tibilprojects.com/api/attendance/schoolWise,39942,0,281
+1594754729449,59278,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-98,text,true,,4863375,992,77,77,https://cqube.tibilprojects.com/api/attendance/schoolWise,41368,0,273
+1594754729426,59710,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-36,text,true,,4863375,992,76,76,https://cqube.tibilprojects.com/api/attendance/schoolWise,43726,0,301
+1594754729431,60034,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-136,text,true,,4863375,992,75,75,https://cqube.tibilprojects.com/api/attendance/schoolWise,39101,0,263
+1594754729445,60023,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-247,text,true,,4863375,992,75,75,https://cqube.tibilprojects.com/api/attendance/schoolWise,43516,0,282
+1594754729437,60066,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-64,text,true,,4863375,992,73,73,https://cqube.tibilprojects.com/api/attendance/schoolWise,41168,0,284
+1594754729438,60101,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-33,text,true,,4863375,992,72,72,https://cqube.tibilprojects.com/api/attendance/schoolWise,42152,0,286
+1594754729434,60158,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-159,text,true,,4863375,992,71,71,https://cqube.tibilprojects.com/api/attendance/schoolWise,44299,0,294
+1594754729430,60170,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-168,text,true,,4863375,992,70,70,https://cqube.tibilprojects.com/api/attendance/schoolWise,39571,0,288
+1594754729440,60226,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-8,text,true,,4863375,992,69,69,https://cqube.tibilprojects.com/api/attendance/schoolWise,42522,0,284
+1594754729436,60273,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-79,text,true,,4863375,992,68,68,https://cqube.tibilprojects.com/api/attendance/schoolWise,45187,0,294
+1594754729446,60269,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-100,text,true,,4863375,992,67,67,https://cqube.tibilprojects.com/api/attendance/schoolWise,41718,0,276
+1594754729432,60411,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-170,text,true,,4863375,992,66,66,https://cqube.tibilprojects.com/api/attendance/schoolWise,46524,0,304
+1594754729445,60439,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-200,text,true,,4863375,992,65,65,https://cqube.tibilprojects.com/api/attendance/schoolWise,45391,0,285
+1594754729451,60440,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-177,text,true,,4863375,992,64,64,https://cqube.tibilprojects.com/api/attendance/schoolWise,46084,0,282
+1594754729439,60524,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-113,text,true,,4863375,992,63,63,https://cqube.tibilprojects.com/api/attendance/schoolWise,40800,0,282
+1594754729453,60550,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-103,text,true,,4863375,992,62,62,https://cqube.tibilprojects.com/api/attendance/schoolWise,47282,0,287
+1594754729431,60581,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-132,text,true,,4863375,992,61,61,https://cqube.tibilprojects.com/api/attendance/schoolWise,46889,0,308
+1594754729428,60586,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-44,text,true,,4863375,992,60,60,https://cqube.tibilprojects.com/api/attendance/schoolWise,43325,0,298
+1594754729448,60576,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-211,text,true,,4863375,992,59,59,https://cqube.tibilprojects.com/api/attendance/schoolWise,42695,0,276
+1594754729740,60305,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-172,text,true,,4863375,992,58,58,https://cqube.tibilprojects.com/api/attendance/schoolWise,48928,0,3
+1594754729448,60718,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-18,text,true,,4863375,992,57,57,https://cqube.tibilprojects.com/api/attendance/schoolWise,48960,0,269
+1594754729435,60736,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-110,text,true,,4863375,992,56,56,https://cqube.tibilprojects.com/api/attendance/schoolWise,45597,0,296
+1594754729427,60744,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-45,text,true,,4863375,992,56,56,https://cqube.tibilprojects.com/api/attendance/schoolWise,47699,0,287
+1594754729433,60741,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-146,text,true,,4863375,992,54,54,https://cqube.tibilprojects.com/api/attendance/schoolWise,43909,0,295
+1594754729430,60752,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-12,text,true,,4863375,992,53,53,https://cqube.tibilprojects.com/api/attendance/schoolWise,47501,0,284
+1594754729451,60822,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-65,text,true,,4863375,992,52,52,https://cqube.tibilprojects.com/api/attendance/schoolWise,44093,0,277
+1594754729437,60876,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-86,text,true,,4863375,992,51,51,https://cqube.tibilprojects.com/api/attendance/schoolWise,48550,0,277
+1594754729734,60670,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-109,text,true,,4863375,992,50,50,https://cqube.tibilprojects.com/api/attendance/schoolWise,46405,0,3
+1594754729716,60754,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-88,text,true,,4863375,992,49,49,https://cqube.tibilprojects.com/api/attendance/schoolWise,45597,0,17
+1594754729434,61126,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-111,text,true,,4863375,992,48,48,https://cqube.tibilprojects.com/api/attendance/schoolWise,47107,0,305
+1594754729442,61137,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-129,text,true,,4863375,992,47,47,https://cqube.tibilprojects.com/api/attendance/schoolWise,49734,0,274
+1594754729441,61171,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-106,text,true,,4863375,992,46,46,https://cqube.tibilprojects.com/api/attendance/schoolWise,44490,0,288
+1594754729685,60972,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-208,text,true,,4863375,992,45,45,https://cqube.tibilprojects.com/api/attendance/schoolWise,38230,0,8
+1594754729738,61147,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-154,text,true,,4863375,992,44,44,https://cqube.tibilprojects.com/api/attendance/schoolWise,47867,0,3
+1594754729686,61231,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-119,text,true,,4863375,992,43,43,https://cqube.tibilprojects.com/api/attendance/schoolWise,51536,0,4
+1594754729443,61541,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-102,text,true,,4863375,992,42,42,https://cqube.tibilprojects.com/api/attendance/schoolWise,48351,0,299
+1594754729452,61866,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-62,text,true,,4863375,992,41,41,https://cqube.tibilprojects.com/api/attendance/schoolWise,56565,0,220
+1594754729453,61865,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-81,text,true,,4863375,992,41,41,https://cqube.tibilprojects.com/api/attendance/schoolWise,54250,0,279
+1594754729450,61873,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-115,text,true,,4863375,992,39,39,https://cqube.tibilprojects.com/api/attendance/schoolWise,56363,0,291
+1594754729681,61642,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-105,text,true,,4863375,992,39,39,https://cqube.tibilprojects.com/api/attendance/schoolWise,52093,0,9
+1594754729450,61879,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-10,text,true,,4863375,992,37,37,https://cqube.tibilprojects.com/api/attendance/schoolWise,52703,0,260
+1594754729673,61659,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-97,text,true,,4863375,992,37,37,https://cqube.tibilprojects.com/api/attendance/schoolWise,50819,0,4
+1594754729431,61907,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-13,text,true,,4863375,992,35,35,https://cqube.tibilprojects.com/api/attendance/schoolWise,53086,0,280
+1594754729448,61890,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-241,text,true,,4863375,992,35,35,https://cqube.tibilprojects.com/api/attendance/schoolWise,50217,0,269
+1594754729732,61609,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-30,text,true,,4863375,992,34,34,https://cqube.tibilprojects.com/api/attendance/schoolWise,54367,0,11
+1594754729684,61657,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-63,text,true,,4863375,992,34,34,https://cqube.tibilprojects.com/api/attendance/schoolWise,51769,0,7
+1594754729446,61898,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-235,text,true,,4863375,992,32,32,https://cqube.tibilprojects.com/api/attendance/schoolWise,42908,0,278
+1594754729425,61925,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-39,text,true,,4863375,992,30,30,https://cqube.tibilprojects.com/api/attendance/schoolWise,53468,0,290
+1594754729440,61914,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-198,text,true,,4863375,992,29,29,https://cqube.tibilprojects.com/api/attendance/schoolWise,45009,0,289
+1594754729436,61924,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-93,text,true,,4863375,992,28,28,https://cqube.tibilprojects.com/api/attendance/schoolWise,46306,0,300
+1594754729690,61676,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-68,text,true,,4863375,992,27,27,https://cqube.tibilprojects.com/api/attendance/schoolWise,52264,0,3
+1594754729435,61933,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-126,text,true,,4863375,992,26,26,https://cqube.tibilprojects.com/api/attendance/schoolWise,53880,0,278
+1594754729444,61926,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-58,text,true,,4863375,992,25,25,https://cqube.tibilprojects.com/api/attendance/schoolWise,53259,0,268
+1594754729667,61720,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-196,text,true,,4863375,992,24,24,https://cqube.tibilprojects.com/api/attendance/schoolWise,51373,0,17
+1594754729429,61965,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-164,text,true,,4863375,992,23,23,https://cqube.tibilprojects.com/api/attendance/schoolWise,53698,0,287
+1594754729429,62002,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-169,text,true,,4863375,992,22,22,https://cqube.tibilprojects.com/api/attendance/schoolWise,54952,0,303
+1594754729451,62007,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-89,text,true,,4863375,992,21,21,https://cqube.tibilprojects.com/api/attendance/schoolWise,55315,0,281
+1594754729669,61792,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-156,text,true,,4863375,992,20,20,https://cqube.tibilprojects.com/api/attendance/schoolWise,51063,0,9
+1594754729444,62020,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-128,text,true,,4863375,992,19,19,https://cqube.tibilprojects.com/api/attendance/schoolWise,56817,0,297
+1594754729441,62042,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-50,text,true,,4863375,992,18,18,https://cqube.tibilprojects.com/api/attendance/schoolWise,48770,0,276
+1594754729665,61820,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-71,text,true,,4863375,992,17,17,https://cqube.tibilprojects.com/api/attendance/schoolWise,50570,0,11
+1594754729427,62059,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-152,text,true,,4863375,992,17,17,https://cqube.tibilprojects.com/api/attendance/schoolWise,49539,0,287
+1594754729445,62042,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-85,text,true,,4863375,992,15,15,https://cqube.tibilprojects.com/api/attendance/schoolWise,55799,0,226
+1594754729671,61829,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-207,text,true,,4863375,992,14,14,https://cqube.tibilprojects.com/api/attendance/schoolWise,57037,0,5
+1594754729429,62071,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-219,text,true,,4863375,992,14,14,https://cqube.tibilprojects.com/api/attendance/schoolWise,52906,0,282
+1594754729443,62069,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-234,text,true,,4863375,992,12,12,https://cqube.tibilprojects.com/api/attendance/schoolWise,43114,0,282
+1594754729444,62071,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-114,text,true,,4863375,992,11,11,https://cqube.tibilprojects.com/api/attendance/schoolWise,41528,0,279
+1594754729669,61849,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-202,text,true,,4863375,992,10,10,https://cqube.tibilprojects.com/api/attendance/schoolWise,55770,0,4
+1594754729449,62072,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-60,text,true,,4863375,992,9,9,https://cqube.tibilprojects.com/api/attendance/schoolWise,44800,0,280
+1594754729666,61859,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-77,text,true,,4863375,992,8,8,https://cqube.tibilprojects.com/api/attendance/schoolWise,57241,0,8
+1594754729452,62076,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-210,text,true,,4863375,992,7,7,https://cqube.tibilprojects.com/api/attendance/schoolWise,56164,0,222
+1594754725645,65889,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-220,text,true,,4863375,992,6,6,https://cqube.tibilprojects.com/api/attendance/schoolWise,59312,0,6
+1594754729452,62096,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-66,text,true,,4863375,992,5,5,https://cqube.tibilprojects.com/api/attendance/schoolWise,56996,0,221
+1594754729736,61816,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-245,text,true,,4863375,992,4,4,https://cqube.tibilprojects.com/api/attendance/schoolWise,54161,0,5
+1594754729665,61892,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-53,text,true,,4863375,992,3,3,https://cqube.tibilprojects.com/api/attendance/schoolWise,51206,0,14
+1594754729448,62115,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-24,text,true,,4863375,992,2,2,https://cqube.tibilprojects.com/api/attendance/schoolWise,54058,0,264
+1594754729449,62137,Student Attendance SchoolWise,200,OK,Student Attendance Users 1-22,text,true,,4863375,992,1,1,https://cqube.tibilprojects.com/api/attendance/schoolWise,55286,0,292

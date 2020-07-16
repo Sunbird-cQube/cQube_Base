@@ -1,0 +1,401 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1594320196293,2865,Login,200,OK,Semester Users 1-126,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,2846,0,2621
+1594320196424,2730,Login,200,OK,Semester Users 1-152,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,2727,0,2488
+1594320195881,3286,Login,200,OK,Semester Users 1-45,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3247,0,3038
+1594320195869,3289,Login,200,OK,Semester Users 1-21,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3272,0,3047
+1594320196346,2908,Login,200,OK,Semester Users 1-138,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,2908,0,2574
+1594320196560,2694,Login,200,OK,Semester Users 1-181,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,2694,0,2364
+1594320195871,3382,Login,200,OK,Semester Users 1-9,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3382,0,3045
+1594320196624,2632,Login,200,OK,Semester Users 1-194,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,2632,0,2283
+1594320195975,3284,Login,200,OK,Semester Users 1-57,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3284,0,2948
+1594320196519,2740,Login,200,OK,Semester Users 1-173,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,2740,0,2391
+1594320196469,2791,Login,200,OK,Semester Users 1-159,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,2791,0,2457
+1594320196186,3473,Login,200,OK,Semester Users 1-105,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3473,0,2813
+1594320195976,3684,Login,200,OK,Semester Users 1-62,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3684,0,3023
+1594320196293,3368,Login,200,OK,Semester Users 1-127,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3368,0,2706
+1594320196244,3417,Login,200,OK,Semester Users 1-116,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3417,0,2757
+1594320196549,3152,Login,200,OK,Semester Users 1-179,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3152,0,2454
+1594320195876,3825,Login,200,OK,Semester Users 1-24,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3825,0,3128
+1594320196058,3644,Login,200,OK,Semester Users 1-80,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3644,0,2944
+1594320196052,3650,Login,200,OK,Semester Users 1-79,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3650,0,2953
+1594320196444,3499,Login,200,OK,Semester Users 1-156,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3499,0,2561
+1594320195877,4065,Login,200,OK,Semester Users 1-4,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4065,0,3129
+1594320196618,3326,Login,200,OK,Semester Users 1-193,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3326,0,2389
+1594320196334,3611,Login,200,OK,Semester Users 1-134,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3611,0,2674
+1594320196459,3486,Login,200,OK,Semester Users 1-161,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3486,0,2550
+1594320195968,3979,Login,200,OK,Semester Users 1-60,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3975,0,3038
+1594320195920,4026,Login,200,OK,Semester Users 1-53,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4026,0,3088
+1594320196084,3865,Login,200,OK,Semester Users 1-86,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3864,0,2923
+1594320195869,4168,Login,200,OK,Semester Users 1-41,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4167,0,3141
+1594320195919,4118,Login,200,OK,Semester Users 1-51,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4117,0,3090
+1594320196219,3824,Login,200,OK,Semester Users 1-113,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3824,0,2791
+1594320196605,3439,Login,200,OK,Semester Users 1-190,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3438,0,2406
+1594320196488,3642,Login,200,OK,Semester Users 1-167,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3642,0,2525
+1594320196031,4099,Login,200,OK,Semester Users 1-75,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4099,0,2981
+1594320195877,4253,Login,200,OK,Semester Users 1-20,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4253,0,3136
+1594320195877,4255,Login,200,OK,Semester Users 1-30,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4255,0,3135
+1594320195869,4397,Login,200,OK,Semester Users 1-23,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4397,0,3145
+1594320196242,4024,Login,200,OK,Semester Users 1-115,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4024,0,2774
+1594320196215,4052,Login,200,OK,Semester Users 1-111,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4052,0,2801
+1594320196354,3914,Login,200,OK,Semester Users 1-139,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3914,0,2661
+1594320195876,4478,Login,200,OK,Semester Users 1-7,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4477,0,3141
+1594320195999,4356,Login,200,OK,Semester Users 1-69,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4356,0,3019
+1594320196247,4108,Login,200,OK,Semester Users 1-118,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4108,0,2771
+1594320195889,4469,Login,200,OK,Semester Users 1-47,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4469,0,3130
+1594320196484,4876,Login,200,OK,Semester Users 1-166,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4876,0,2602
+1594320195874,5487,Login,200,OK,Semester Users 1-44,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5487,0,3213
+1594320196609,4752,Login,200,OK,Semester Users 1-191,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4752,0,2479
+1594320195876,5485,Login,200,OK,Semester Users 1-42,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5485,0,3213
+1594320195872,5489,Login,200,OK,Semester Users 1-19,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5489,0,3140
+1594320195995,5367,Login,200,OK,Semester Users 1-68,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5367,0,3091
+1594320195874,5487,Login,200,OK,Semester Users 1-1,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5487,0,3142
+1594320195925,5439,Login,200,OK,Semester Users 1-54,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5439,0,3170
+1594320195876,5488,Login,200,OK,Semester Users 1-32,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5488,0,3237
+1594320196382,4982,Login,200,OK,Semester Users 1-142,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4982,0,2731
+1594320196603,4762,Login,200,OK,Semester Users 1-188,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4762,0,2511
+1594320196538,4827,Login,200,OK,Semester Users 1-177,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4827,0,2576
+1594320195869,5497,Login,200,OK,Semester Users 1-29,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5497,0,3246
+1594320195969,5398,Login,200,OK,Semester Users 1-63,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5398,0,3151
+1594320196037,5330,Login,200,OK,Semester Users 1-76,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5330,0,3084
+1594320196199,5169,Login,200,OK,Semester Users 1-109,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5169,0,2922
+1594320195869,5499,Login,200,OK,Semester Users 1-10,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5499,0,3252
+1594320195876,5493,Login,200,OK,Semester Users 1-37,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5493,0,3247
+1594320196317,5052,Login,200,OK,Semester Users 1-129,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5052,0,2805
+1594320196588,4782,Login,200,OK,Semester Users 1-187,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4782,0,2536
+1594320196278,5088,Login,200,OK,Semester Users 1-123,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5088,0,2842
+1594320196350,5021,Login,200,OK,Semester Users 1-133,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5021,0,2773
+1594320196064,5307,Login,200,OK,Semester Users 1-82,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5307,0,3059
+1594320195900,5472,Login,200,OK,Semester Users 1-49,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5472,0,3225
+1594320196529,4843,Login,200,OK,Semester Users 1-175,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4843,0,2597
+1594320196475,4897,Login,200,OK,Semester Users 1-164,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4897,0,2650
+1594320195936,5437,Login,200,OK,Semester Users 1-56,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5436,0,3189
+1594320195875,5498,Login,200,OK,Semester Users 1-31,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5498,0,3252
+1594320196494,4879,Login,200,OK,Semester Users 1-168,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4879,0,2633
+1594320196543,4831,Login,200,OK,Semester Users 1-178,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4831,0,2583
+1594320196144,5230,Login,200,OK,Semester Users 1-98,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5230,0,2982
+1594320196613,4762,Login,200,OK,Semester Users 1-192,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4762,0,2515
+1594320196039,5337,Login,200,OK,Semester Users 1-77,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5337,0,3088
+1594320196183,5193,Login,200,OK,Semester Users 1-106,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5193,0,2946
+1594320195868,5507,Login,200,OK,Semester Users 1-5,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5507,0,3259
+1594320196023,5354,Login,200,OK,Semester Users 1-73,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5354,0,3107
+1594320196422,4955,Login,200,OK,Semester Users 1-150,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4955,0,2707
+1594320196408,4969,Login,200,OK,Semester Users 1-151,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4969,0,2722
+1594320195876,5500,Login,200,OK,Semester Users 1-15,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5500,0,3252
+1594320196648,4730,Login,200,OK,Semester Users 1-199,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4730,0,2483
+1594320195870,5509,Login,200,OK,Semester Users 1-40,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5509,0,3259
+1594320196574,4805,Login,200,OK,Semester Users 1-184,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4805,0,2556
+1594320196387,4979,Login,200,OK,Semester Users 1-144,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4979,0,2731
+1594320196203,5177,Login,200,OK,Semester Users 1-110,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5177,0,2927
+1594320196100,5266,Login,200,OK,Semester Users 1-89,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5266,0,3019
+1594320196638,4731,Login,200,OK,Semester Users 1-197,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4731,0,2484
+1594320195931,5439,Login,200,OK,Semester Users 1-55,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5439,0,3192
+1594320195943,7935,Login,200,OK,Semester Users 1-58,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7935,0,3188
+1594320196009,7869,Login,200,OK,Semester Users 1-71,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7869,0,3123
+1594320196384,7494,Login,200,OK,Semester Users 1-145,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7494,0,2747
+1594320195875,8003,Login,200,OK,Semester Users 1-14,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8003,0,3256
+1594320196463,7416,Login,200,OK,Semester Users 1-162,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7416,0,2669
+1594320196424,7456,Login,200,OK,Semester Users 1-154,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7456,0,2709
+1594320196478,7403,Login,200,OK,Semester Users 1-165,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7403,0,2656
+1594320196359,7522,Login,200,OK,Semester Users 1-140,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7522,0,2774
+1594320196499,7382,Login,200,OK,Semester Users 1-169,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7382,0,2637
+1594320195868,8013,Login,200,OK,Semester Users 1-6,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8013,0,3267
+1594320196130,7752,Login,200,OK,Semester Users 1-95,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7752,0,3006
+1594320195976,7906,Login,200,OK,Semester Users 1-64,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7906,0,3159
+1594320196653,7231,Login,200,OK,Semester Users 1-200,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7231,0,2485
+1594320195877,8007,Login,200,OK,Semester Users 1-39,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8007,0,3260
+1594320195872,8012,Login,200,OK,Semester Users 1-17,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8012,0,3267
+1594320195869,8016,Login,200,OK,Semester Users 1-34,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8016,0,3270
+1594320196190,7695,Login,200,OK,Semester Users 1-107,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7695,0,2948
+1594320196075,7812,Login,200,OK,Semester Users 1-84,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7812,0,3065
+1594320196254,7633,Login,200,OK,Semester Users 1-119,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7633,0,2886
+1594320195870,8017,Login,200,OK,Semester Users 1-2,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8017,0,3270
+1594320196163,7725,Login,200,OK,Semester Users 1-102,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7725,0,2981
+1594320196457,7433,Login,200,OK,Semester Users 1-160,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7433,0,2689
+1594320196431,7459,Login,200,OK,Semester Users 1-155,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7459,0,2713
+1594320195969,7922,Login,200,OK,Semester Users 1-59,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7922,0,3188
+1594320196079,7812,Login,200,OK,Semester Users 1-85,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7812,0,3077
+1594320195868,8022,Login,200,OK,Semester Users 1-16,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8022,0,3246
+1594320196383,7509,Login,200,OK,Semester Users 1-141,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7508,0,2763
+1594320196060,7833,Login,200,OK,Semester Users 1-81,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7833,0,3075
+1594320195876,8017,Login,200,OK,Semester Users 1-26,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8017,0,3240
+1594320195868,8025,Login,200,OK,Semester Users 1-33,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8025,0,3279
+1594320195984,7909,Login,200,OK,Semester Users 1-66,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7909,0,3134
+1594320195876,8017,Login,200,OK,Semester Users 1-12,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8017,0,3293
+1594320196282,7612,Login,200,OK,Semester Users 1-124,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7612,0,2852
+1594320195873,8021,Login,200,OK,Semester Users 1-25,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8021,0,3274
+1594320196631,7264,Login,200,OK,Semester Users 1-195,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7264,0,2538
+1594320195870,8025,Login,200,OK,Semester Users 1-3,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8025,0,3278
+1594320195884,8012,Login,200,OK,Semester Users 1-46,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8012,0,3286
+1594320195873,8022,Login,200,OK,Semester Users 1-18,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8022,0,3243
+1594320196448,7448,Login,200,OK,Semester Users 1-158,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7448,0,2722
+1594320196138,7759,Login,200,OK,Semester Users 1-97,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7759,0,3012
+1594320196098,7799,Login,200,OK,Semester Users 1-88,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7799,0,3073
+1594320195876,8021,Login,200,OK,Semester Users 1-8,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8021,0,3294
+1594320195979,7919,Login,200,OK,Semester Users 1-65,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7919,0,3172
+1594320196389,7510,Login,200,OK,Semester Users 1-147,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7510,0,2783
+1594320196159,7740,Login,200,OK,Semester Users 1-101,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7740,0,2993
+1594320196159,7741,Login,200,OK,Semester Users 1-99,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7741,0,3006
+1594320196125,7775,Login,200,OK,Semester Users 1-94,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7775,0,3054
+1594320196511,7390,Login,200,OK,Semester Users 1-171,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7390,0,2642
+1594320196468,7434,Login,200,OK,Semester Users 1-163,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7434,0,2709
+1594320196340,7562,Login,200,OK,Semester Users 1-136,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7562,0,2838
+1594320196114,7788,Login,200,OK,Semester Users 1-92,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7788,0,3040
+1594320196516,7387,Login,200,OK,Semester Users 1-172,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7387,0,2639
+1594320196134,7769,Login,200,OK,Semester Users 1-96,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7769,0,3046
+1594320196272,7631,Login,200,OK,Semester Users 1-122,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7631,0,2908
+1594320195914,7991,Login,200,OK,Semester Users 1-52,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7991,0,3221
+1594320196303,7602,Login,200,OK,Semester Users 1-128,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7602,0,2877
+1594320195877,8027,Login,200,OK,Semester Users 1-13,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8027,0,3304
+1594320196096,7810,Login,200,OK,Semester Users 1-87,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7810,0,3072
+1594320196394,7512,Login,200,OK,Semester Users 1-148,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7512,0,2788
+1594320196339,7568,Login,200,OK,Semester Users 1-137,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7567,0,2820
+1594320196578,7329,Login,200,OK,Semester Users 1-185,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7329,0,2588
+1594320196156,7752,Login,200,OK,Semester Users 1-100,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7752,0,3013
+1594320196398,7510,Login,200,OK,Semester Users 1-149,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7510,0,2785
+1594320196217,7691,Login,200,OK,Semester Users 1-112,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7691,0,2941
+1594320196331,7577,Login,200,OK,Semester Users 1-131,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7577,0,2832
+1594320196563,7346,Login,200,OK,Semester Users 1-182,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7346,0,2620
+1594320196445,7464,Login,200,OK,Semester Users 1-157,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7464,0,2727
+1594320196124,7785,Login,200,OK,Semester Users 1-93,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7785,0,3034
+1594320196170,7739,Login,200,OK,Semester Users 1-103,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7739,0,2997
+1594320196317,7593,Login,200,OK,Semester Users 1-130,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7593,0,2798
+1594320196253,7657,Login,200,OK,Semester Users 1-120,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7657,0,2920
+1594320195878,8032,Login,200,OK,Semester Users 1-28,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8032,0,3279
+1594320195989,7922,Login,200,OK,Semester Users 1-67,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7922,0,3173
+1594320195869,8042,Login,200,OK,Semester Users 1-43,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8042,0,3321
+1594320196505,7406,Login,200,OK,Semester Users 1-170,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7406,0,2668
+1594320196044,7868,Login,200,OK,Semester Users 1-78,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7868,0,3147
+1594320195870,8041,Login,200,OK,Semester Users 1-11,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8041,0,3320
+1594320195876,8037,Login,200,OK,Semester Users 1-22,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8037,0,3298
+1594320196569,7344,Login,200,OK,Semester Users 1-183,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7344,0,2625
+1594320196382,7531,Login,200,OK,Semester Users 1-143,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7531,0,2809
+1594320196238,7675,Login,200,OK,Semester Users 1-114,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7675,0,2954
+1594320195875,8039,Login,200,OK,Semester Users 1-27,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8039,0,3321
+1594320195908,8006,Login,200,OK,Semester Users 1-50,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8006,0,3267
+1594320196027,7887,Login,200,OK,Semester Users 1-74,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7887,0,3164
+1594320196332,7584,Login,200,OK,Semester Users 1-135,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7584,0,2852
+1594320196386,7530,Login,200,OK,Semester Users 1-146,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7530,0,2790
+1594320196017,7899,Login,200,OK,Semester Users 1-72,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7899,0,3175
+1594320196104,7812,Login,200,OK,Semester Users 1-90,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7812,0,3084
+1594320196109,7808,Login,200,OK,Semester Users 1-91,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7808,0,3081
+1594320196295,7622,Login,200,OK,Semester Users 1-125,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7622,0,2898
+1594320196659,7258,Login,200,OK,Semester Users 1-198,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7258,0,2518
+1594320196068,7854,Login,200,OK,Semester Users 1-83,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7854,0,3119
+1594320196535,7388,Login,200,OK,Semester Users 1-176,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7388,0,2654
+1594320196004,7886,Login,200,OK,Semester Users 1-70,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7886,0,3139
+1594320196429,7493,Login,200,OK,Semester Users 1-153,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7493,0,2760
+1594320196175,7750,Login,200,OK,Semester Users 1-104,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7750,0,3014
+1594320196583,7339,Login,200,OK,Semester Users 1-186,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7339,0,2614
+1594320196608,7313,Login,200,OK,Semester Users 1-189,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7313,0,2584
+1594320196524,7397,Login,200,OK,Semester Users 1-174,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7397,0,2669
+1594320195894,8024,Login,200,OK,Semester Users 1-48,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8024,0,3289
+1594320195877,8044,Login,200,OK,Semester Users 1-38,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8043,0,3279
+1594320196246,7675,Login,200,OK,Semester Users 1-117,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7674,0,2950
+1594320196258,7662,Login,200,OK,Semester Users 1-121,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7662,0,2909
+1594320195869,8051,Login,200,OK,Semester Users 1-35,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8051,0,3327
+1594320196194,7725,Login,200,OK,Semester Users 1-108,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7725,0,2973
+1594320196636,7283,Login,200,OK,Semester Users 1-196,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7283,0,2559
+1594320196359,7560,Login,200,OK,Semester Users 1-132,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7560,0,2836
+1594320195871,8048,Login,200,OK,Semester Users 1-36,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8048,0,3291
+1594320196553,7366,Login,200,OK,Semester Users 1-180,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7366,0,2608
+1594320195966,7952,Login,200,OK,Semester Users 1-61,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7952,0,3215
+1594320199244,7642,Semester SchoolWise,200,OK,Semester Users 1-21,text,true,,7328667,961,200,200,https://cqube.tibilprojects.com/api/sem/allSchoolWise,4204,0,7
+1594320199244,7875,Semester SchoolWise,200,OK,Semester Users 1-152,text,true,,7328667,961,199,199,https://cqube.tibilprojects.com/api/sem/allSchoolWise,2502,0,21
+1594320199255,7871,Semester SchoolWise,200,OK,Semester Users 1-9,text,true,,7328667,961,198,198,https://cqube.tibilprojects.com/api/sem/allSchoolWise,1710,0,7
+1594320199260,8485,Semester SchoolWise,200,OK,Semester Users 1-57,text,true,,7328667,961,197,197,https://cqube.tibilprojects.com/api/sem/allSchoolWise,3252,0,7
+1594320199257,13587,Semester SchoolWise,200,OK,Semester Users 1-194,text,true,,7328667,961,196,196,https://cqube.tibilprojects.com/api/sem/allSchoolWise,2093,0,5
+1594320199255,15964,Semester SchoolWise,200,OK,Semester Users 1-138,text,true,,7328667,961,195,195,https://cqube.tibilprojects.com/api/sem/allSchoolWise,2886,0,7
+1594320199260,34581,Semester SchoolWise,200,OK,Semester Users 1-173,text,true,,7328667,961,194,194,https://cqube.tibilprojects.com/api/sem/allSchoolWise,3713,0,7
+1594320201368,33234,Semester SchoolWise,200,OK,Semester Users 1-109,text,true,,7328667,961,193,193,https://cqube.tibilprojects.com/api/sem/allSchoolWise,4631,0,28
+1594320199243,36037,Semester SchoolWise,200,OK,Semester Users 1-126,text,true,,7328667,961,192,192,https://cqube.tibilprojects.com/api/sem/allSchoolWise,5044,0,15
+1594320199255,36117,Semester SchoolWise,200,OK,Semester Users 1-181,text,true,,7328667,961,191,191,https://cqube.tibilprojects.com/api/sem/allSchoolWise,4612,0,8
+1594320199243,36593,Semester SchoolWise,200,OK,Semester Users 1-45,text,true,,7328667,961,190,190,https://cqube.tibilprojects.com/api/sem/allSchoolWise,5317,0,20
+1594320201378,41302,Semester SchoolWise,200,OK,Semester Users 1-15,text,true,,7328667,961,189,189,https://cqube.tibilprojects.com/api/sem/allSchoolWise,13799,0,10
+1594320199261,45970,Semester SchoolWise,200,OK,Semester Users 1-159,text,true,,7328667,961,188,188,https://cqube.tibilprojects.com/api/sem/allSchoolWise,5609,0,6
+1594320201363,53262,Semester SchoolWise,200,OK,Semester Users 1-42,text,true,,7328667,961,187,187,https://cqube.tibilprojects.com/api/sem/allSchoolWise,4931,0,33
+1594320200359,57056,Semester SchoolWise,200,OK,Semester Users 1-47,text,true,,7328667,961,186,186,https://cqube.tibilprojects.com/api/sem/allSchoolWise,18202,0,4
+1594320199946,59073,Semester SchoolWise,200,OK,Semester Users 1-134,text,true,,7328667,961,185,185,https://cqube.tibilprojects.com/api/sem/allSchoolWise,13511,0,9
+1594320201373,60033,Semester SchoolWise,504,Gateway Time-out,Semester Users 1-56,text,false,No Response ,363,961,184,184,https://cqube.tibilprojects.com/api/sem/allSchoolWise,60033,0,29
+1594320201376,60030,Semester SchoolWise,504,Gateway Time-out,Semester Users 1-77,text,false,No Response ,363,961,184,184,https://cqube.tibilprojects.com/api/sem/allSchoolWise,60030,0,26
+1594320201362,60045,Semester SchoolWise,504,Gateway Time-out,Semester Users 1-191,text,false,No Response ,363,961,184,184,https://cqube.tibilprojects.com/api/sem/allSchoolWise,60045,0,40
+1594320201388,60018,Semester SchoolWise,504,Gateway Time-out,Semester Users 1-55,text,false,No Response ,363,961,182,182,https://cqube.tibilprojects.com/api/sem/allSchoolWise,60018,0,16
+1594320200132,62283,Semester SchoolWise,200,OK,Semester Users 1-30,text,true,,7328667,961,180,180,https://cqube.tibilprojects.com/api/sem/allSchoolWise,13903,0,4
+1594320201364,61168,Semester SchoolWise,200,OK,Semester Users 1-54,text,true,,7328667,961,179,179,https://cqube.tibilprojects.com/api/sem/allSchoolWise,5477,0,32
+1594320201375,61232,Semester SchoolWise,200,OK,Semester Users 1-178,text,true,,7328667,961,178,178,https://cqube.tibilprojects.com/api/sem/allSchoolWise,25576,0,25
+1594320200131,63169,Semester SchoolWise,200,OK,Semester Users 1-75,text,true,,7328667,961,177,177,https://cqube.tibilprojects.com/api/sem/allSchoolWise,12565,0,6
+1594320199944,63418,Semester SchoolWise,200,OK,Semester Users 1-4,text,true,,7328667,961,176,176,https://cqube.tibilprojects.com/api/sem/allSchoolWise,13223,0,8
+1594320200132,63519,Semester SchoolWise,200,OK,Semester Users 1-20,text,true,,7328667,961,175,175,https://cqube.tibilprojects.com/api/sem/allSchoolWise,12292,0,3
+1594320200355,63316,Semester SchoolWise,200,OK,Semester Users 1-118,text,true,,7328667,961,174,174,https://cqube.tibilprojects.com/api/sem/allSchoolWise,19070,0,5
+1594320203908,60068,Semester SchoolWise,504,Gateway Time-out,Semester Users 1-131,text,false,No Response ,363,961,173,173,https://cqube.tibilprojects.com/api/sem/allSchoolWise,60068,0,56
+1594320203895,60085,Semester SchoolWise,504,Gateway Time-out,Semester Users 1-124,text,false,No Response ,363,961,172,172,https://cqube.tibilprojects.com/api/sem/allSchoolWise,60084,0,70
+1594320203916,60067,Semester SchoolWise,504,Gateway Time-out,Semester Users 1-135,text,false,No Response ,363,961,171,171,https://cqube.tibilprojects.com/api/sem/allSchoolWise,60067,0,54
+1594320203930,60056,Semester SchoolWise,504,Gateway Time-out,Semester Users 1-117,text,false,No Response ,363,961,170,170,https://cqube.tibilprojects.com/api/sem/allSchoolWise,60056,0,43
+1594320203883,60103,Semester SchoolWise,504,Gateway Time-out,Semester Users 1-6,text,false,No Response ,363,961,170,170,https://cqube.tibilprojects.com/api/sem/allSchoolWise,60103,0,92
+1594320199702,64872,Semester SchoolWise,200,OK,Semester Users 1-24,text,true,,7328667,961,168,168,https://cqube.tibilprojects.com/api/sem/allSchoolWise,9356,0,5
+1594320199660,65032,Semester SchoolWise,200,OK,Semester Users 1-62,text,true,,7328667,961,167,167,https://cqube.tibilprojects.com/api/sem/allSchoolWise,9135,0,9
+1594320199945,64896,Semester SchoolWise,200,OK,Semester Users 1-193,text,true,,7328667,961,166,166,https://cqube.tibilprojects.com/api/sem/allSchoolWise,10765,0,9
+1594320199660,65206,Semester SchoolWise,200,OK,Semester Users 1-105,text,true,,7328667,961,165,165,https://cqube.tibilprojects.com/api/sem/allSchoolWise,8863,0,9
+1594320199661,65247,Semester SchoolWise,200,OK,Semester Users 1-127,text,true,,7328667,961,164,164,https://cqube.tibilprojects.com/api/sem/allSchoolWise,8573,0,7
+1594320200267,64751,Semester SchoolWise,200,OK,Semester Users 1-111,text,true,,7328667,961,163,163,https://cqube.tibilprojects.com/api/sem/allSchoolWise,14325,0,5
+1594320199949,65109,Semester SchoolWise,200,OK,Semester Users 1-86,text,true,,7328667,961,162,162,https://cqube.tibilprojects.com/api/sem/allSchoolWise,11037,0,5
+1594320199946,65231,Semester SchoolWise,200,OK,Semester Users 1-161,text,true,,7328667,961,161,161,https://cqube.tibilprojects.com/api/sem/allSchoolWise,10225,0,5
+1594320199944,65261,Semester SchoolWise,200,OK,Semester Users 1-156,text,true,,7328667,961,160,160,https://cqube.tibilprojects.com/api/sem/allSchoolWise,10497,0,7
+1594320199662,65648,Semester SchoolWise,200,OK,Semester Users 1-116,text,true,,7328667,961,159,159,https://cqube.tibilprojects.com/api/sem/allSchoolWise,8303,0,5
+1594320201379,64040,Semester SchoolWise,200,OK,Semester Users 1-40,text,true,,7328667,961,158,158,https://cqube.tibilprojects.com/api/sem/allSchoolWise,16911,0,8
+1594320201381,64255,Semester SchoolWise,200,OK,Semester Users 1-110,text,true,,7328667,961,157,157,https://cqube.tibilprojects.com/api/sem/allSchoolWise,15950,0,14
+1594320200037,65788,Semester SchoolWise,200,OK,Semester Users 1-51,text,true,,7328667,961,156,156,https://cqube.tibilprojects.com/api/sem/allSchoolWise,11499,0,5
+1594320199947,65984,Semester SchoolWise,200,OK,Semester Users 1-60,text,true,,7328667,961,155,155,https://cqube.tibilprojects.com/api/sem/allSchoolWise,13790,0,8
+1594320200267,65721,Semester SchoolWise,200,OK,Semester Users 1-23,text,true,,7328667,961,154,154,https://cqube.tibilprojects.com/api/sem/allSchoolWise,14636,0,6
+1594320199703,66288,Semester SchoolWise,200,OK,Semester Users 1-80,text,true,,7328667,961,153,153,https://cqube.tibilprojects.com/api/sem/allSchoolWise,10157,0,9
+1594320199703,66318,Semester SchoolWise,200,OK,Semester Users 1-79,text,true,,7328667,961,152,152,https://cqube.tibilprojects.com/api/sem/allSchoolWise,9627,0,5
+1594320200044,66048,Semester SchoolWise,200,OK,Semester Users 1-190,text,true,,7328667,961,151,151,https://cqube.tibilprojects.com/api/sem/allSchoolWise,11772,0,3
+1594320199947,66458,Semester SchoolWise,200,OK,Semester Users 1-53,text,true,,7328667,961,150,150,https://cqube.tibilprojects.com/api/sem/allSchoolWise,11308,0,8
+1594320201365,65161,Semester SchoolWise,200,OK,Semester Users 1-32,text,true,,7328667,961,149,149,https://cqube.tibilprojects.com/api/sem/allSchoolWise,15691,0,29
+1594320200131,66422,Semester SchoolWise,200,OK,Semester Users 1-167,text,true,,7328667,961,148,148,https://cqube.tibilprojects.com/api/sem/allSchoolWise,11958,0,4
+1594320201379,65250,Semester SchoolWise,200,OK,Semester Users 1-199,text,true,,7328667,961,147,147,https://cqube.tibilprojects.com/api/sem/allSchoolWise,15114,0,12
+1594320201374,65334,Semester SchoolWise,200,OK,Semester Users 1-168,text,true,,7328667,961,146,146,https://cqube.tibilprojects.com/api/sem/allSchoolWise,15387,0,19
+1594320199703,67104,Semester SchoolWise,200,OK,Semester Users 1-179,text,true,,7328667,961,145,145,https://cqube.tibilprojects.com/api/sem/allSchoolWise,9883,0,9
+1594320200355,66512,Semester SchoolWise,200,OK,Semester Users 1-7,text,true,,7328667,961,144,144,https://cqube.tibilprojects.com/api/sem/allSchoolWise,15585,0,4
+1594320200044,66832,Semester SchoolWise,200,OK,Semester Users 1-113,text,true,,7328667,961,143,143,https://cqube.tibilprojects.com/api/sem/allSchoolWise,15642,0,3
+1594320200268,66803,Semester SchoolWise,200,OK,Semester Users 1-139,text,true,,7328667,961,142,142,https://cqube.tibilprojects.com/api/sem/allSchoolWise,14050,0,4
+1594320201365,66078,Semester SchoolWise,200,OK,Semester Users 1-188,text,true,,7328667,961,141,141,https://cqube.tibilprojects.com/api/sem/allSchoolWise,14856,0,24
+1594320200355,67090,Semester SchoolWise,200,OK,Semester Users 1-69,text,true,,7328667,961,140,140,https://cqube.tibilprojects.com/api/sem/allSchoolWise,17671,0,7
+1594320201382,66065,Semester SchoolWise,200,OK,Semester Users 1-197,text,true,,7328667,961,140,140,https://cqube.tibilprojects.com/api/sem/allSchoolWise,18312,0,11
+1594320200267,67181,Semester SchoolWise,200,OK,Semester Users 1-115,text,true,,7328667,961,139,139,https://cqube.tibilprojects.com/api/sem/allSchoolWise,18842,0,3
+1594320201378,66072,Semester SchoolWise,200,OK,Semester Users 1-151,text,true,,7328667,961,138,138,https://cqube.tibilprojects.com/api/sem/allSchoolWise,16217,0,8
+1594320201373,66079,Semester SchoolWise,200,OK,Semester Users 1-164,text,true,,7328667,961,137,137,https://cqube.tibilprojects.com/api/sem/allSchoolWise,17455,0,19
+1594320201365,66088,Semester SchoolWise,200,OK,Semester Users 1-142,text,true,,7328667,961,137,137,https://cqube.tibilprojects.com/api/sem/allSchoolWise,19440,0,32
+1594320201363,66051,Semester SchoolWise,200,OK,Semester Users 1-1,text,true,,7328667,961,135,135,https://cqube.tibilprojects.com/api/sem/allSchoolWise,20741,0,34
+1594320201372,66101,Semester SchoolWise,200,OK,Semester Users 1-175,text,true,,7328667,961,133,133,https://cqube.tibilprojects.com/api/sem/allSchoolWise,19838,0,17
+1594320201361,66869,Semester SchoolWise,200,OK,Semester Users 1-44,text,true,,7328667,961,132,132,https://cqube.tibilprojects.com/api/sem/allSchoolWise,18605,0,32
+1594320201381,66896,Semester SchoolWise,200,OK,Semester Users 1-89,text,true,,7328667,961,131,131,https://cqube.tibilprojects.com/api/sem/allSchoolWise,20442,0,15
+1594320201370,67028,Semester SchoolWise,200,OK,Semester Users 1-37,text,true,,7328667,961,130,130,https://cqube.tibilprojects.com/api/sem/allSchoolWise,20148,0,21
+1594320201376,67035,Semester SchoolWise,200,OK,Semester Users 1-5,text,true,,7328667,961,129,129,https://cqube.tibilprojects.com/api/sem/allSchoolWise,27186,0,27
+1594320200038,69398,Semester SchoolWise,200,OK,Semester Users 1-41,text,true,,7328667,961,128,128,https://cqube.tibilprojects.com/api/sem/allSchoolWise,22454,0,7
+1594320201362,68076,Semester SchoolWise,200,OK,Semester Users 1-19,text,true,,7328667,961,127,127,https://cqube.tibilprojects.com/api/sem/allSchoolWise,18882,0,33
+1594320201372,68173,Semester SchoolWise,200,OK,Semester Users 1-49,text,true,,7328667,961,126,126,https://cqube.tibilprojects.com/api/sem/allSchoolWise,23384,0,26
+1594320201371,68299,Semester SchoolWise,200,OK,Semester Users 1-123,text,true,,7328667,961,125,125,https://cqube.tibilprojects.com/api/sem/allSchoolWise,22268,0,27
+1594320201377,68468,Semester SchoolWise,200,OK,Semester Users 1-73,text,true,,7328667,961,124,124,https://cqube.tibilprojects.com/api/sem/allSchoolWise,19164,0,20
+1594320201366,68620,Semester SchoolWise,200,OK,Semester Users 1-177,text,true,,7328667,961,123,123,https://cqube.tibilprojects.com/api/sem/allSchoolWise,23659,0,33
+1594320201376,68957,Semester SchoolWise,200,OK,Semester Users 1-106,text,true,,7328667,961,122,122,https://cqube.tibilprojects.com/api/sem/allSchoolWise,24198,0,23
+1594320201367,69023,Semester SchoolWise,200,OK,Semester Users 1-63,text,true,,7328667,961,121,121,https://cqube.tibilprojects.com/api/sem/allSchoolWise,22012,0,30
+1594320201367,69169,Semester SchoolWise,200,OK,Semester Users 1-29,text,true,,7328667,961,120,120,https://cqube.tibilprojects.com/api/sem/allSchoolWise,25320,0,33
+1594320203886,66758,Semester SchoolWise,200,OK,Semester Users 1-34,text,true,,7328667,961,119,119,https://cqube.tibilprojects.com/api/sem/allSchoolWise,25163,0,66
+1594320201375,69299,Semester SchoolWise,200,OK,Semester Users 1-98,text,true,,7328667,961,118,118,https://cqube.tibilprojects.com/api/sem/allSchoolWise,25857,0,26
+1594320201361,69625,Semester SchoolWise,200,OK,Semester Users 1-166,text,true,,7328667,961,117,117,https://cqube.tibilprojects.com/api/sem/allSchoolWise,23119,0,37
+1594320203894,67420,Semester SchoolWise,200,OK,Semester Users 1-66,text,true,,7328667,961,116,116,https://cqube.tibilprojects.com/api/sem/allSchoolWise,29977,0,65
+1594320203923,70512,Semester SchoolWise,200,OK,Semester Users 1-83,text,true,,7328667,961,115,115,https://cqube.tibilprojects.com/api/sem/allSchoolWise,28609,0,34
+1594320203907,70547,Semester SchoolWise,200,OK,Semester Users 1-137,text,true,,7328667,961,114,114,https://cqube.tibilprojects.com/api/sem/allSchoolWise,25973,0,47
+1594320201363,73092,Semester SchoolWise,200,OK,Semester Users 1-68,text,true,,7328667,961,114,114,https://cqube.tibilprojects.com/api/sem/allSchoolWise,22550,0,35
+1594320201368,73089,Semester SchoolWise,200,OK,Semester Users 1-76,text,true,,7328667,961,113,113,https://cqube.tibilprojects.com/api/sem/allSchoolWise,25053,0,32
+1594320203898,70800,Semester SchoolWise,200,OK,Semester Users 1-88,text,true,,7328667,961,113,113,https://cqube.tibilprojects.com/api/sem/allSchoolWise,28089,0,59
+1594320203880,70864,Semester SchoolWise,200,OK,Semester Users 1-162,text,true,,7328667,961,112,112,https://cqube.tibilprojects.com/api/sem/allSchoolWise,44706,0,96
+1594320203880,70826,Semester SchoolWise,200,OK,Semester Users 1-154,text,true,,7328667,961,111,111,https://cqube.tibilprojects.com/api/sem/allSchoolWise,36193,0,7
+1594320203878,70869,Semester SchoolWise,200,OK,Semester Users 1-58,text,true,,7328667,961,111,111,https://cqube.tibilprojects.com/api/sem/allSchoolWise,35048,0,9
+1594320203932,70817,Semester SchoolWise,200,OK,Semester Users 1-108,text,true,,7328667,961,110,110,https://cqube.tibilprojects.com/api/sem/allSchoolWise,34147,0,31
+1594320203908,70866,Semester SchoolWise,200,OK,Semester Users 1-100,text,true,,7328667,961,110,110,https://cqube.tibilprojects.com/api/sem/allSchoolWise,26801,0,47
+1594320201378,73423,Semester SchoolWise,200,OK,Semester Users 1-150,text,true,,7328667,961,109,109,https://cqube.tibilprojects.com/api/sem/allSchoolWise,24471,0,21
+1594320203902,70895,Semester SchoolWise,200,OK,Semester Users 1-163,text,true,,7328667,961,108,108,https://cqube.tibilprojects.com/api/sem/allSchoolWise,29461,0,56
+1594320201370,73440,Semester SchoolWise,200,OK,Semester Users 1-10,text,true,,7328667,961,107,107,https://cqube.tibilprojects.com/api/sem/allSchoolWise,23936,0,29
+1594320203918,70902,Semester SchoolWise,200,OK,Semester Users 1-91,text,true,,7328667,961,104,104,https://cqube.tibilprojects.com/api/sem/allSchoolWise,26519,0,37
+1594320203898,70931,Semester SchoolWise,200,OK,Semester Users 1-65,text,true,,7328667,961,103,103,https://cqube.tibilprojects.com/api/sem/allSchoolWise,29196,0,60
+1594320201379,73457,Semester SchoolWise,200,OK,Semester Users 1-184,text,true,,7328667,961,103,103,https://cqube.tibilprojects.com/api/sem/allSchoolWise,26127,0,22
+1594320203916,70925,Semester SchoolWise,200,OK,Semester Users 1-146,text,true,,7328667,961,102,102,https://cqube.tibilprojects.com/api/sem/allSchoolWise,34719,0,48
+1594320201370,73476,Semester SchoolWise,200,OK,Semester Users 1-129,text,true,,7328667,961,101,101,https://cqube.tibilprojects.com/api/sem/allSchoolWise,26676,0,32
+1594320201376,73433,Semester SchoolWise,200,OK,Semester Users 1-192,text,true,,7328667,961,98,98,https://cqube.tibilprojects.com/api/sem/allSchoolWise,22837,0,22
+1594320203885,70971,Semester SchoolWise,200,OK,Semester Users 1-17,text,true,,7328667,961,96,96,https://cqube.tibilprojects.com/api/sem/allSchoolWise,33347,0,77
+1594320203934,70935,Semester SchoolWise,200,OK,Semester Users 1-132,text,true,,7328667,961,95,95,https://cqube.tibilprojects.com/api/sem/allSchoolWise,40067,0,25
+1594320203884,70988,Semester SchoolWise,200,OK,Semester Users 1-200,text,true,,7328667,961,94,94,https://cqube.tibilprojects.com/api/sem/allSchoolWise,44974,0,92
+1594320203936,71079,Semester SchoolWise,200,OK,Semester Users 1-61,text,true,,7328667,961,93,93,https://cqube.tibilprojects.com/api/sem/allSchoolWise,27766,0,20
+1594320203911,71122,Semester SchoolWise,200,OK,Semester Users 1-67,text,true,,7328667,961,92,92,https://cqube.tibilprojects.com/api/sem/allSchoolWise,25401,0,42
+1594320203903,71265,Semester SchoolWise,200,OK,Semester Users 1-92,text,true,,7328667,961,91,91,https://cqube.tibilprojects.com/api/sem/allSchoolWise,25694,0,50
+1594320203929,71301,Semester SchoolWise,200,OK,Semester Users 1-97,text,true,,7328667,961,90,90,https://cqube.tibilprojects.com/api/sem/allSchoolWise,28876,0,28
+1594320203917,71383,Semester SchoolWise,200,OK,Semester Users 1-90,text,true,,7328667,961,89,89,https://cqube.tibilprojects.com/api/sem/allSchoolWise,34429,0,47
+1594320201371,73941,Semester SchoolWise,200,OK,Semester Users 1-187,text,true,,7328667,961,88,88,https://cqube.tibilprojects.com/api/sem/allSchoolWise,24776,0,28
+1594320203931,71382,Semester SchoolWise,200,OK,Semester Users 1-35,text,true,,7328667,961,87,87,https://cqube.tibilprojects.com/api/sem/allSchoolWise,32758,0,31
+1594320203916,71532,Semester SchoolWise,200,OK,Semester Users 1-72,text,true,,7328667,961,86,86,https://cqube.tibilprojects.com/api/sem/allSchoolWise,37379,0,49
+1594320201374,74092,Semester SchoolWise,200,OK,Semester Users 1-31,text,true,,7328667,961,85,85,https://cqube.tibilprojects.com/api/sem/allSchoolWise,26396,0,27
+1594320203889,71631,Semester SchoolWise,200,OK,Semester Users 1-102,text,true,,7328667,961,84,84,https://cqube.tibilprojects.com/api/sem/allSchoolWise,27535,0,67
+1594320203908,71730,Semester SchoolWise,200,OK,Semester Users 1-112,text,true,,7328667,961,83,83,https://cqube.tibilprojects.com/api/sem/allSchoolWise,30485,0,52
+1594320203922,71762,Semester SchoolWise,200,OK,Semester Users 1-198,text,true,,7328667,961,82,82,https://cqube.tibilprojects.com/api/sem/allSchoolWise,33583,0,41
+1594320203888,71967,Semester SchoolWise,200,OK,Semester Users 1-169,text,true,,7328667,961,81,81,https://cqube.tibilprojects.com/api/sem/allSchoolWise,31996,0,73
+1594320203918,71994,Semester SchoolWise,200,OK,Semester Users 1-125,text,true,,7328667,961,80,80,https://cqube.tibilprojects.com/api/sem/allSchoolWise,28335,0,39
+1594320203901,72057,Semester SchoolWise,200,OK,Semester Users 1-94,text,true,,7328667,961,79,79,https://cqube.tibilprojects.com/api/sem/allSchoolWise,30884,0,60
+1594320203905,72242,Semester SchoolWise,200,OK,Semester Users 1-52,text,true,,7328667,961,78,78,https://cqube.tibilprojects.com/api/sem/allSchoolWise,35858,0,46
+1594320203905,72267,Semester SchoolWise,200,OK,Semester Users 1-128,text,true,,7328667,961,77,77,https://cqube.tibilprojects.com/api/sem/allSchoolWise,26276,0,50
+1594320203892,72368,Semester SchoolWise,200,OK,Semester Users 1-59,text,true,,7328667,961,76,76,https://cqube.tibilprojects.com/api/sem/allSchoolWise,38253,0,77
+1594320203904,72432,Semester SchoolWise,200,OK,Semester Users 1-96,text,true,,7328667,961,75,75,https://cqube.tibilprojects.com/api/sem/allSchoolWise,44362,0,71
+1594320203928,72470,Semester SchoolWise,200,OK,Semester Users 1-174,text,true,,7328667,961,74,74,https://cqube.tibilprojects.com/api/sem/allSchoolWise,30195,0,31
+1594320203881,72567,Semester SchoolWise,200,OK,Semester Users 1-165,text,true,,7328667,961,73,73,https://cqube.tibilprojects.com/api/sem/allSchoolWise,32545,0,80
+1594320203912,72864,Semester SchoolWise,200,OK,Semester Users 1-78,text,true,,7328667,961,72,72,https://cqube.tibilprojects.com/api/sem/allSchoolWise,31652,0,37
+1594320203904,72929,Semester SchoolWise,200,OK,Semester Users 1-122,text,true,,7328667,961,71,71,https://cqube.tibilprojects.com/api/sem/allSchoolWise,32248,0,57
+1594320203893,72955,Semester SchoolWise,200,OK,Semester Users 1-33,text,true,,7328667,961,70,70,https://cqube.tibilprojects.com/api/sem/allSchoolWise,48538,0,74
+1594320203891,72991,Semester SchoolWise,200,OK,Semester Users 1-155,text,true,,7328667,961,69,69,https://cqube.tibilprojects.com/api/sem/allSchoolWise,40404,0,69
+1594320203884,73013,Semester SchoolWise,200,OK,Semester Users 1-39,text,true,,7328667,961,68,68,https://cqube.tibilprojects.com/api/sem/allSchoolWise,37688,0,83
+1594320203907,73157,Semester SchoolWise,200,OK,Semester Users 1-185,text,true,,7328667,961,67,67,https://cqube.tibilprojects.com/api/sem/allSchoolWise,27067,0,49
+1594320203896,73197,Semester SchoolWise,200,OK,Semester Users 1-18,text,true,,7328667,961,66,66,https://cqube.tibilprojects.com/api/sem/allSchoolWise,38782,0,64
+1594320203886,73228,Semester SchoolWise,200,OK,Semester Users 1-107,text,true,,7328667,961,65,65,https://cqube.tibilprojects.com/api/sem/allSchoolWise,36671,0,70
+1594320203893,73281,Semester SchoolWise,200,OK,Semester Users 1-26,text,true,,7328667,961,64,64,https://cqube.tibilprojects.com/api/sem/allSchoolWise,47988,0,72
+1594320203889,73543,Semester SchoolWise,200,OK,Semester Users 1-2,text,true,,7328667,961,63,63,https://cqube.tibilprojects.com/api/sem/allSchoolWise,33923,0,74
+1594320203909,73711,Semester SchoolWise,200,OK,Semester Users 1-157,text,true,,7328667,961,62,62,https://cqube.tibilprojects.com/api/sem/allSchoolWise,39080,0,52
+1594320203912,73728,Semester SchoolWise,200,OK,Semester Users 1-43,text,true,,7328667,961,61,61,https://cqube.tibilprojects.com/api/sem/allSchoolWise,35302,0,38
+1594320203910,73734,Semester SchoolWise,200,OK,Semester Users 1-130,text,true,,7328667,961,60,60,https://cqube.tibilprojects.com/api/sem/allSchoolWise,42445,0,63
+1594320203915,73754,Semester SchoolWise,200,OK,Semester Users 1-103,text,true,,7328667,961,59,59,https://cqube.tibilprojects.com/api/sem/allSchoolWise,51536,0,46
+1594320203893,73815,Semester SchoolWise,200,OK,Semester Users 1-81,text,true,,7328667,961,58,58,https://cqube.tibilprojects.com/api/sem/allSchoolWise,45787,0,73
+1594320203883,73939,Semester SchoolWise,200,OK,Semester Users 1-95,text,true,,7328667,961,57,57,https://cqube.tibilprojects.com/api/sem/allSchoolWise,39843,0,89
+1594320203881,74075,Semester SchoolWise,200,OK,Semester Users 1-140,text,true,,7328667,961,56,56,https://cqube.tibilprojects.com/api/sem/allSchoolWise,52684,0,89
+1594320203934,74040,Semester SchoolWise,200,OK,Semester Users 1-36,text,true,,7328667,961,55,55,https://cqube.tibilprojects.com/api/sem/allSchoolWise,38447,0,35
+1594320203879,74107,Semester SchoolWise,200,OK,Semester Users 1-71,text,true,,7328667,961,54,54,https://cqube.tibilprojects.com/api/sem/allSchoolWise,39595,0,92
+1594320203895,74125,Semester SchoolWise,200,OK,Semester Users 1-12,text,true,,7328667,961,53,53,https://cqube.tibilprojects.com/api/sem/allSchoolWise,44101,0,79
+1594320203924,74144,Semester SchoolWise,200,OK,Semester Users 1-176,text,true,,7328667,961,52,52,https://cqube.tibilprojects.com/api/sem/allSchoolWise,53873,0,47
+1594320203897,74192,Semester SchoolWise,200,OK,Semester Users 1-158,text,true,,7328667,961,51,51,https://cqube.tibilprojects.com/api/sem/allSchoolWise,52400,0,74
+1594320203926,74173,Semester SchoolWise,200,OK,Semester Users 1-153,text,true,,7328667,961,50,50,https://cqube.tibilprojects.com/api/sem/allSchoolWise,45470,0,51
+1594320203914,74233,Semester SchoolWise,200,OK,Semester Users 1-114,text,true,,7328667,961,49,49,https://cqube.tibilprojects.com/api/sem/allSchoolWise,49869,0,54
+1594320203915,74322,Semester SchoolWise,200,OK,Semester Users 1-74,text,true,,7328667,961,48,48,https://cqube.tibilprojects.com/api/sem/allSchoolWise,43540,0,59
+1594320203928,74337,Semester SchoolWise,200,OK,Semester Users 1-48,text,true,,7328667,961,47,47,https://cqube.tibilprojects.com/api/sem/allSchoolWise,37078,0,38
+1594320203890,74383,Semester SchoolWise,200,OK,Semester Users 1-160,text,true,,7328667,961,46,46,https://cqube.tibilprojects.com/api/sem/allSchoolWise,41776,0,82
+1594320203901,74386,Semester SchoolWise,200,OK,Semester Users 1-99,text,true,,7328667,961,45,45,https://cqube.tibilprojects.com/api/sem/allSchoolWise,45222,0,75
+1594320203902,74406,Semester SchoolWise,200,OK,Semester Users 1-171,text,true,,7328667,961,44,44,https://cqube.tibilprojects.com/api/sem/allSchoolWise,43277,0,71
+1594320203911,74425,Semester SchoolWise,200,OK,Semester Users 1-120,text,true,,7328667,961,43,43,https://cqube.tibilprojects.com/api/sem/allSchoolWise,46600,0,55
+1594320203896,74447,Semester SchoolWise,200,OK,Semester Users 1-3,text,true,,7328667,961,42,42,https://cqube.tibilprojects.com/api/sem/allSchoolWise,48257,0,69
+1594320203908,74443,Semester SchoolWise,200,OK,Semester Users 1-149,text,true,,7328667,961,41,41,https://cqube.tibilprojects.com/api/sem/allSchoolWise,54377,0,58
+1594320203926,74439,Semester SchoolWise,200,OK,Semester Users 1-104,text,true,,7328667,961,40,40,https://cqube.tibilprojects.com/api/sem/allSchoolWise,42168,0,47
+1594320203929,74440,Semester SchoolWise,200,OK,Semester Users 1-38,text,true,,7328667,961,39,39,https://cqube.tibilprojects.com/api/sem/allSchoolWise,50574,0,41
+1594320203896,74519,Semester SchoolWise,200,OK,Semester Users 1-46,text,true,,7328667,961,38,38,https://cqube.tibilprojects.com/api/sem/allSchoolWise,47191,0,70
+1594320203880,74539,Semester SchoolWise,200,OK,Semester Users 1-14,text,true,,7328667,961,37,37,https://cqube.tibilprojects.com/api/sem/allSchoolWise,52146,0,89
+1594320203925,74550,Semester SchoolWise,200,OK,Semester Users 1-70,text,true,,7328667,961,36,36,https://cqube.tibilprojects.com/api/sem/allSchoolWise,46040,0,43
+1594320203904,74595,Semester SchoolWise,200,OK,Semester Users 1-172,text,true,,7328667,961,35,35,https://cqube.tibilprojects.com/api/sem/allSchoolWise,55916,0,64
+1594320203909,74593,Semester SchoolWise,200,OK,Semester Users 1-93,text,true,,7328667,961,35,35,https://cqube.tibilprojects.com/api/sem/allSchoolWise,48810,0,59
+1594320203933,74573,Semester SchoolWise,200,OK,Semester Users 1-196,text,true,,7328667,961,33,33,https://cqube.tibilprojects.com/api/sem/allSchoolWise,46302,0,37
+1594320203915,74601,Semester SchoolWise,200,OK,Semester Users 1-27,text,true,,7328667,961,32,32,https://cqube.tibilprojects.com/api/sem/allSchoolWise,42691,0,57
+1594320203899,74684,Semester SchoolWise,200,OK,Semester Users 1-147,text,true,,7328667,961,31,31,https://cqube.tibilprojects.com/api/sem/allSchoolWise,53650,0,65
+1594320203898,74705,Semester SchoolWise,200,OK,Semester Users 1-8,text,true,,7328667,961,30,30,https://cqube.tibilprojects.com/api/sem/allSchoolWise,52935,0,73
+1594320203917,74688,Semester SchoolWise,200,OK,Semester Users 1-145,text,true,,7328667,961,29,29,https://cqube.tibilprojects.com/api/sem/allSchoolWise,47702,0,47
+1594320201371,77239,Semester SchoolWise,200,OK,Semester Users 1-133,text,true,,7328667,961,28,28,https://cqube.tibilprojects.com/api/sem/allSchoolWise,51861,0,32
+1594320201380,77232,Semester SchoolWise,200,OK,Semester Users 1-144,text,true,,7328667,961,27,27,https://cqube.tibilprojects.com/api/sem/allSchoolWise,52096,0,22
+1594320203913,74713,Semester SchoolWise,200,OK,Semester Users 1-22,text,true,,7328667,961,26,26,https://cqube.tibilprojects.com/api/sem/allSchoolWise,42990,0,60
+1594320203913,74722,Semester SchoolWise,200,OK,Semester Users 1-183,text,true,,7328667,961,25,25,https://cqube.tibilprojects.com/api/sem/allSchoolWise,50342,0,58
+1594320203909,74737,Semester SchoolWise,200,OK,Semester Users 1-182,text,true,,7328667,961,24,24,https://cqube.tibilprojects.com/api/sem/allSchoolWise,33050,0,53
+1594320203892,74768,Semester SchoolWise,200,OK,Semester Users 1-16,text,true,,7328667,961,23,23,https://cqube.tibilprojects.com/api/sem/allSchoolWise,51839,0,70
+1594320203892,74780,Semester SchoolWise,200,OK,Semester Users 1-85,text,true,,7328667,961,22,22,https://cqube.tibilprojects.com/api/sem/allSchoolWise,59613,0,66
+1594320203911,74773,Semester SchoolWise,200,OK,Semester Users 1-28,text,true,,7328667,961,21,21,https://cqube.tibilprojects.com/api/sem/allSchoolWise,56391,0,58
+1594320203887,74797,Semester SchoolWise,200,OK,Semester Users 1-84,text,true,,7328667,961,21,21,https://cqube.tibilprojects.com/api/sem/allSchoolWise,53352,0,77
+1594320203895,74810,Semester SchoolWise,200,OK,Semester Users 1-25,text,true,,7328667,961,19,19,https://cqube.tibilprojects.com/api/sem/allSchoolWise,58260,0,68
+1594320203902,74821,Semester SchoolWise,200,OK,Semester Users 1-136,text,true,,7328667,961,18,18,https://cqube.tibilprojects.com/api/sem/allSchoolWise,56648,0,68
+1594320203907,74827,Semester SchoolWise,200,OK,Semester Users 1-87,text,true,,7328667,961,17,17,https://cqube.tibilprojects.com/api/sem/allSchoolWise,51265,0,52
+1594320203900,74862,Semester SchoolWise,200,OK,Semester Users 1-101,text,true,,7328667,961,16,16,https://cqube.tibilprojects.com/api/sem/allSchoolWise,46922,0,66
+1594320203913,74850,Semester SchoolWise,200,OK,Semester Users 1-11,text,true,,7328667,961,16,16,https://cqube.tibilprojects.com/api/sem/allSchoolWise,56900,0,57
+1594320203887,74882,Semester SchoolWise,200,OK,Semester Users 1-119,text,true,,7328667,961,14,14,https://cqube.tibilprojects.com/api/sem/allSchoolWise,51052,0,72
+1594320203915,74874,Semester SchoolWise,200,OK,Semester Users 1-50,text,true,,7328667,961,13,13,https://cqube.tibilprojects.com/api/sem/allSchoolWise,55078,0,52
+1594320203895,74899,Semester SchoolWise,200,OK,Semester Users 1-195,text,true,,7328667,961,12,12,https://cqube.tibilprojects.com/api/sem/allSchoolWise,55483,0,72
+1594320201371,77422,Semester SchoolWise,200,OK,Semester Users 1-82,text,true,,7328667,961,11,11,https://cqube.tibilprojects.com/api/sem/allSchoolWise,59976,0,33
+1594320203907,74892,Semester SchoolWise,200,OK,Semester Users 1-148,text,true,,7328667,961,10,10,https://cqube.tibilprojects.com/api/sem/allSchoolWise,56157,0,61
+1594320203912,74901,Semester SchoolWise,200,OK,Semester Users 1-170,text,true,,7328667,961,9,9,https://cqube.tibilprojects.com/api/sem/allSchoolWise,35572,0,39
+1594320203927,74891,Semester SchoolWise,200,OK,Semester Users 1-189,text,true,,7328667,961,8,8,https://cqube.tibilprojects.com/api/sem/allSchoolWise,54993,0,39
+1594320203930,74894,Semester SchoolWise,200,OK,Semester Users 1-121,text,true,,7328667,961,7,7,https://cqube.tibilprojects.com/api/sem/allSchoolWise,57154,0,42
+1594320203906,74927,Semester SchoolWise,200,OK,Semester Users 1-13,text,true,,7328667,961,6,6,https://cqube.tibilprojects.com/api/sem/allSchoolWise,43817,0,68
+1594320203935,74901,Semester SchoolWise,200,OK,Semester Users 1-180,text,true,,7328667,961,5,5,https://cqube.tibilprojects.com/api/sem/allSchoolWise,59297,0,28
+1594320203913,74926,Semester SchoolWise,200,OK,Semester Users 1-143,text,true,,7328667,961,4,4,https://cqube.tibilprojects.com/api/sem/allSchoolWise,40895,0,59
+1594320203892,74947,Semester SchoolWise,200,OK,Semester Users 1-141,text,true,,7328667,961,4,4,https://cqube.tibilprojects.com/api/sem/allSchoolWise,60053,0,72
+1594320203926,74915,Semester SchoolWise,200,OK,Semester Users 1-186,text,true,,7328667,961,2,2,https://cqube.tibilprojects.com/api/sem/allSchoolWise,47433,0,39
+1594320203883,74960,Semester SchoolWise,200,OK,Semester Users 1-64,text,true,,7328667,961,1,1,https://cqube.tibilprojects.com/api/sem/allSchoolWise,55725,0,84
