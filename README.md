@@ -49,8 +49,10 @@ To create a new realm, complete the following steps,
 
 1) Go to ```http://<host_name_or_ip>:8080/auth/admin/``` and log in to the Keycloak Admin Console using the username and password you created while installing cQube. 
 2) From the Master drop-down menu, click Add Realm. When you logged in to the master realm the drop-down menu lists all existing realms. 
-3) Type Name of the realm u need to create in name field and click Create.
+3) Type Name of the realm you need to create in the name field and click Create.
 4) When the realm is created, the main admin console page opens. Notice the current realm is now set to the realm name you created. Switch between managing the master realm and the realm you just created by clicking entries in the Select realm drop-down menu.
+
+Note : the below steps should be done by selecting the realm which you created
 
 - Creation of client & configuration:
 
@@ -59,15 +61,15 @@ To create a new realm, complete the following steps,
 3) Click Clients in the left side menu to open the Clients page.
 4) On the right side, click Create.
 5) Complete the fields.
-6) Click Save to create the client application entry. 
-7) Click the Installation tab in the Keycloak admin console to obtain a configuration template. 
-8) Select Keycloak OIDC JBoss Subsystem XML to generate an XML template. 
+6) Click Save to create the client. 
 
 - Creating New roles:
 
+1) In the left side menu select Roles. After selecting Roles ,It will be directed to Realm roles
+2) In Realm roles you can add the roles by selecting Add Role button and providing the name of the role
 
   Using above steps create 3 roles
-1) Admin
+1) admin
 2) report_viewer
 3) emission
 
