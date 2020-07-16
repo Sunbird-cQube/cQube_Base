@@ -26,6 +26,13 @@ git checkout cQube-release-new
 - Fill the configuration details for above mentioned list in `config.yml` (* all values are mandatory)
 - Edit using `nano config.yml`
 - Save and Close the file
+
+  Initialization of infrastructure fileds
+- Fill the Infrastructure details like infrastructure name, infrastructure category and status based on the 
+  active infrastructure fields to be processed in `infrastructure_master.csv`
+- Edit using `nano infrastructure_master.csv`
+- Save and Close the file
+
 - Give the permission to install.sh file
 ```
 chmod u+x install.sh
@@ -110,8 +117,10 @@ cqube_emission
 |── inspection_master
 |   └── inspection_master.zip
 ├── student_attendance
-    └── student_attendance.zip
-
+|   └── student_attendance.zip
+|── infra_trans
+    └── infra_trans.zip
+    
 ```
 - After creating the emission user, Update below mentioned emission user details in `cQube/development/python/client/config.py`.
   - emission username 
