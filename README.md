@@ -66,7 +66,7 @@ To create a new realm, complete the following steps,
 - Creating New roles:
 
 
-Using above steps create 3 roles
+  Using above steps create 3 roles
 1) Admin
 2) report_viewer
 3) emission
@@ -83,7 +83,7 @@ To create a new user in your created realm, along with a temporary password for 
 7) Type a new password and confirm it. 
 8) Click Set Password to set the user password.
 
-Using above steps create two users with emission role and report_viewer role respectively.
+  Using above steps create two users with emission role and report_viewer role respectively.
 
 <b>Uploading data to S3 Emission bucket</b>
 
