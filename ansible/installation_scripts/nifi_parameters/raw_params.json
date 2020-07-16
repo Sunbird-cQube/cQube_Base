@@ -13,12 +13,6 @@
                         "value":""
                             }
             },
-	    {
-                "parameter":{"name":"nifi_error_dir",
-                        "value":""
-                            }
-            },
-
             {
                 "parameter":{"name":"s3_input_bucket",
                         "value":""

@@ -42,17 +42,18 @@
 
 - name: Touch a file
   file:
-    path: ../../development/python/nifi_env_db.py
+    path: "{{ base_dir }}/cqube/emission_app/python/nifi_env_db.py"
     state: touch
-    mode: u=rw,g=r,o=r
-    
+    mode: u+rw,g+rw,o+rw
+
 - name: Loading required data inside nifi_env_db.py file
   blockinfile:
-        path: ../../development/python/nifi_env_db.py
+        path: "{{ base_dir }}/cqube/emission_app/python/nifi_env_db.py"
         block: |
-               db_name = "{{ db_name }}"
-               db_user = "{{ db_user }}"
-               db_pwd = "{{ db_password }}"
+               db_name= "{{ db_name }}"
+               db_user= "{{ db_user }}"
+               db_pwd= "{{ db_password }}"
+               nifi_port= "{{ nifi_port }}" 
 
 - name: configure the webserver in nifi.properties file
   replace:
@@ -119,3 +120,5 @@
     body_format: json
     body: {"revision":{"clientId":"","version":1},"disconnectedNodeAcknowledged":false,"state":"RUNNING"}
 
+#- name: Run python code
+#  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_jolt_params.py"

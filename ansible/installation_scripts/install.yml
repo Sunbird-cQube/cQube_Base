@@ -11,6 +11,7 @@
      - python
      - createdb
      - keycloak
+     - grafana
      - python_flask
      - angular
      - angular_admin

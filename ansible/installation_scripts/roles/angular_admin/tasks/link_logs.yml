@@ -31,3 +31,5 @@
     - { src: "/home/{{system_user_name}}/.pm2/logs/admin_server_side-error.log", dest: "admin_server_side-error.log"}
     - { src: "/home/{{system_user_name}}/.pm2/logs/admin_server_side-out.log", dest: "admin_server_side-out.log"}
     - { src: "/var/log/syslog", dest: "syslog"}
+    - { src: "{{base_dir}}/cqube/keycloak/standalone/log/server.log", dest: "server.log"}
+    - { src: "{{base_dir}}/cqube/keycloak/standalone/log/audit.log", dest: "audit.log"}
