@@ -41,6 +41,7 @@ Once installation completed without any errors, you will be prompted the followi
 ```CQube installed successfully!!``` 
 
 <b>Post Installation </b>
+
 <b> Creating Users and authentication with Keycloak </b>
 
 - Creating a New Realm:
