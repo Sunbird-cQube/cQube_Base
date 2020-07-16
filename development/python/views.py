@@ -19,9 +19,25 @@ from json import dumps
 import pandas as pd
 from io import BytesIO
 
+def update_client_secrets():
+    KEYCLOAK_URL="{DOMAIN_NAME}/auth/realms/{REALM_NAME}".format(DOMAIN_NAME=DOMAIN_NAME,REALM_NAME=REALM_NAME)
+    issuer=KEYCLOAK_URL
+    auth_uri="{KEYCLOAK_URL}/protocol/openid-connect/auth".format(KEYCLOAK_URL=KEYCLOAK_URL)
+    client_id=CLIENT_ID
+    client_secret=CLIENT_SERCET
+    redirect_uris="{EMISSION_URL}/*".format(EMISSION_URL=EMISSION_URL)
+    userinfo_uri="{KEYCLOAK_URL}/protocol/openid-connect/userinfo".format(KEYCLOAK_URL=KEYCLOAK_URL)
+    token_uri="{KEYCLOAK_URL}/protocol/openid-connect/token".format(KEYCLOAK_URL=KEYCLOAK_URL)
+    token_introspection_uri="{KEYCLOAK_URL}/protocol/openid-connect/token/introspect".format(KEYCLOAK_URL=KEYCLOAK_URL)
+    clientsecret={ "web": { "issuer": KEYCLOAK_URL, "auth_uri": auth_uri, "client_id": CLIENT_ID, "client_secret": CLIENT_SERCET, "redirect_uris": [ redirect_uris ], "userinfo_uri": userinfo_uri, "token_uri": token_uri, "token_introspection_uri": token_introspection_uri, "OIDC-SCOPES": ["openid"] } }
+    client_secrets=json.dumps(clientsecret)
+    with open("client_secrets.json","w") as fd:
+        fd.write(client_secrets)
+update_client_secrets()
+
 app = Flask(__name__)
 app.config.update({
-    'SECRET_KEY': 'Itsnotsecretkey',
+    'SECRET_KEY': 'secret_key',
     'OIDC_CLIENT_SECRETS': 'client_secrets.json',
     'OIDC_ID_TOKEN_COOKIE_SECURE': False,
     'OIDC_REQUIRE_VERIFIED_EMAIL': False,
@@ -31,6 +47,7 @@ app.config.update({
     'OIDC_SCOPES': ['openid', 'email', 'profile'],
     'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
 })
+
 app.logger.addHandler(file_handler)
 app.logger.addHandler(access_handler)
 app.debug=True
