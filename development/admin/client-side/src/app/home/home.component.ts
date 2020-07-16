@@ -12,7 +12,8 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
 export class HomeComponent implements OnInit {
   public grafanaUrl = environment.grafanaEndPoint;
 
-  constructor(private router: Router, private service: AppService, public keyCloakService: KeycloakSecurityService) { }
+  constructor(private router: Router, private service: AppService, public keyCloakService: KeycloakSecurityService) { 
+  }
   email: any;
   role: any;
   showSubmenu1: any = false;
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit {
   showSubmenu: boolean = false;
   isShowing = false;
   showLogs: boolean = true;
-
+  appUrl;
   navItems: any = [
     {
       name: 'All Logs',
@@ -32,6 +33,7 @@ export class HomeComponent implements OnInit {
   logNames: any = [];
 
   ngOnInit() {
+    this.appUrl = environment.appUrl;
     this.email = localStorage.getItem('email');
     this.role = localStorage.getItem('role');
     if (this.role == 1) {
@@ -49,7 +51,6 @@ export class HomeComponent implements OnInit {
   }
   logout() {
     localStorage.clear();
-    window.location.replace("http://localhost:4200");
     this.keyCloakService.kc.logout();
   }
 

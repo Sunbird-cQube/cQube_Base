@@ -84,22 +84,22 @@ export class SummaryStatistictsComponent implements OnInit {
       });
       this.tableWithSubHeaders(this.tableData, "table7");
     });
-    this.service.getstClusterSummary().subscribe((res: any) => {
-      this.tableData = res;
-      this.tableData.forEach(element => {
-        if (element.total_records == null) {
-          element.total_records = 0;
-        }
-        if (element.category == null) {
-          element.category = 0;
-        }
-        if (element.processed_records == null) {
-          element.processed_records = 0;
-        }
-      });
-      console.log(this.tableData);
-      this.tableWithSubHeaders(this.tableData, "table8");
-    });
+    // this.service.getstClusterSummary().subscribe((res: any) => {
+    //   this.tableData = res;
+    //   this.tableData.forEach(element => {
+    //     if (element.total_records == null) {
+    //       element.total_records = 0;
+    //     }
+    //     if (element.category == null) {
+    //       element.category = 0;
+    //     }
+    //     if (element.processed_records == null) {
+    //       element.processed_records = 0;
+    //     }
+    //   });
+    //   console.log(this.tableData);
+    //   this.tableWithSubHeaders(this.tableData, "table8");
+    // });
     this.service.getstSchoolSummary().subscribe((res: any) => {
       this.tableData = res;
       this.tableData.forEach(element => {
