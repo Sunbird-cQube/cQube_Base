@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit {
   }
   logout() {
     localStorage.clear();
+    window.location.replace("http://172.31.23.205:4200");
     this.keyCloakService.kc.logout();
   }
 

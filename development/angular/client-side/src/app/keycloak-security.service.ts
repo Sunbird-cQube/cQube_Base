@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router'
 import { KeycloakInstance } from 'keycloak-js';
+import { environment } from '../../src/environments/environment';
 declare var Keycloak: any;
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,10 @@ export class KeycloakSecurityService {
   }
   async init() {
     this.kc = new Keycloak({
-      url: "http://172.31.23.205:8080/auth",
-      realm: "cQube",
-      clientId: "cQube_Application",
-      credentials: { secret: 'c45d54f7-b0aa-43c9-a6bb-9b77a47c73a2' }
+      url: environment.keycloakUrl,
+      realm: environment.realm,
+      clientId: environment.clientId,
+      credentials: environment.credentials
     });
     await this.kc.init({
       onLoad: 'login-required'
