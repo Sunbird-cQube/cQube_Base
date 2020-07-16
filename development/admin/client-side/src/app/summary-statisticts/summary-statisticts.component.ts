@@ -34,9 +34,17 @@ export class SummaryStatistictsComponent implements OnInit {
         }
       });
       this.tableWithSubHeaders(this.tableData, "table2");
+    });
+    this.service.getCrcSummary().subscribe((res: any) => {
+      this.tableData = res;
+      this.tableData.forEach(element => {
+        if (element.total_records == null) {
+          element.total_records = 0;
+        }
+      });
+      this.tableWithSubHeaders(this.tableData, "table3");
       document.getElementById('spinner').style.display = 'none';
     });
-    this.tableWithSubHeaders(this.crcData, "table3");
 
   }
 
