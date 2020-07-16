@@ -1,5 +1,5 @@
-import views
-from config import app as application
+from views import *
+from config import *
 
 if __name__=="__main__":
-    application.run(host='0.0.0.0')
+    app.run(host='0.0.0.0')
