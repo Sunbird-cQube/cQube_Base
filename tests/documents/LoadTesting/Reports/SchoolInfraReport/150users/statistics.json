@@ -1,0 +1,47 @@
+{
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 300,
+    "errorCount" : 38,
+    "errorPct" : 12.666667,
+    "meanResTime" : 43304.59000000002,
+    "minResTime" : 1289.0,
+    "maxResTime" : 94716.0,
+    "pct1ResTime" : 93475.9,
+    "pct2ResTime" : 93807.3,
+    "pct3ResTime" : 94687.45,
+    "throughput" : 3.040930930322136,
+    "receivedKBytesPerSec" : 16325.616350768849,
+    "sentKBytesPerSec" : 1.7996134216554829
+  },
+  "Login" : {
+    "transaction" : "Login",
+    "sampleCount" : 150,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 3457.4866666666676,
+    "minResTime" : 1289.0,
+    "maxResTime" : 5299.0,
+    "pct1ResTime" : 4850.0,
+    "pct2ResTime" : 5111.2,
+    "pct3ResTime" : 5275.030000000001,
+    "throughput" : 27.726432532347506,
+    "receivedKBytesPerSec" : 29.919636668207023,
+    "sentKBytesPerSec" : 6.742071973197782
+  },
+  "School Infra SchoolWise" : {
+    "transaction" : "School Infra SchoolWise",
+    "sampleCount" : 150,
+    "errorCount" : 38,
+    "errorPct" : 25.333334,
+    "meanResTime" : 83151.6933333333,
+    "minResTime" : 54540.0,
+    "maxResTime" : 94716.0,
+    "pct1ResTime" : 93805.6,
+    "pct2ResTime" : 94193.2,
+    "pct3ResTime" : 94715.49,
+    "throughput" : 1.557777985481509,
+    "receivedKBytesPerSec" : 16724.56917296918,
+    "sentKBytesPerSec" : 1.4649806640807552
+  }
+}

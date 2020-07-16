@@ -1,0 +1,47 @@
+{
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 340,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 32410.58823529411,
+    "minResTime" : 3730.0,
+    "maxResTime" : 64018.0,
+    "pct1ResTime" : 62344.5,
+    "pct2ResTime" : 62621.25,
+    "pct3ResTime" : 63385.53999999999,
+    "throughput" : 4.867015946634602,
+    "receivedKBytesPerSec" : 17419.002543552633,
+    "sentKBytesPerSec" : 2.8755318825331386
+  },
+  "Semester SchoolWise" : {
+    "transaction" : "Semester SchoolWise",
+    "sampleCount" : 170,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 59221.52352941176,
+    "minResTime" : 38437.0,
+    "maxResTime" : 64018.0,
+    "pct1ResTime" : 62620.5,
+    "pct2ResTime" : 62900.65,
+    "pct3ResTime" : 63968.3,
+    "throughput" : 2.5910289433174314,
+    "receivedKBytesPerSec" : 18543.738586850908,
+    "sentKBytesPerSec" : 2.43161993606255
+  },
+  "Login" : {
+    "transaction" : "Login",
+    "sampleCount" : 170,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 5599.652941176471,
+    "minResTime" : 3730.0,
+    "maxResTime" : 7785.0,
+    "pct1ResTime" : 7079.7,
+    "pct2ResTime" : 7348.649999999999,
+    "pct3ResTime" : 7693.409999999999,
+    "throughput" : 21.82004877422667,
+    "receivedKBytesPerSec" : 23.54604872609421,
+    "sentKBytesPerSec" : 5.305851703889102
+  }
+}
