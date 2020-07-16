@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description></description>
+    <description>version-1.1</description>
     <groupId>281dc6f4-0173-1000-6ece-d7cd0acfb411</groupId>
     <name>static_data_transformer</name>
     <snippet>
@@ -2362,8 +2362,8 @@
 <y>944.0</y>
                             </bends>
                             <bends>
-<x>2392.0</x>
-<y>936.0</y>
+<x>2416.0</x>
+<y>912.0</y>
                             </bends>
                             <bends>
 <x>2328.0</x>
@@ -13760,7 +13760,7 @@ over (partition by schoolid) as rn from FLOWFILE) sq Where rn =1
 <properties>
     <entry>
         <key>Directory</key>
-        <value>#{nifi_error_dir}</value>
+        <value>#{base_dir}#{nifi_error_dir}/static</value>
     </entry>
     <entry>
         <key>Conflict Resolution Strategy</key>
@@ -13801,7 +13801,7 @@ over (partition by schoolid) as rn from FLOWFILE) sq Where rn =1
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutFile</type>
                         </processors>
@@ -20331,7 +20331,7 @@ file: ${filename} has invalid data type, pass the file with right datatype.</val
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1000 days</schedulingPeriod>
+<schedulingPeriod>10000 days</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -20341,7 +20341,7 @@ file: ${filename} has invalid data type, pass the file with right datatype.</val
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
                         </processors>
@@ -30122,7 +30122,7 @@ over (partition by ClusterId) as rn from FLOWFILE) sq Where rn &gt;1) group by  
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -48945,5 +48945,5 @@ VALUES
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>07/16/2020 04:08:22 IST</timestamp>
+    <timestamp>07/16/2020 12:54:30 IST</timestamp>
 </template>
