@@ -427,9 +427,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.infraMapAllClusterWise().subscribe(res => {
-        console.log(res);
-        
+      this.myData = this.service.infraMapAllClusterWise().subscribe(res => {        
         this.data = res['data']
         //=================================
         this.infraFilter = [];

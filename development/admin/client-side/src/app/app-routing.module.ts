@@ -20,18 +20,18 @@ const routes: Routes = [
       {
         path: '', component: DashboardComponent, canActivateChild: [AuthGuard]
       },
-      {
-        path: 'create-user', component: CreateUserComponent, canActivateChild: [AuthGuard]
-      },
-      {
-        path: 'change-password', component: ChangePasswordComponent, canActivateChild: [AuthGuard]
-      },
+      // {
+      //   path: 'create-user', component: CreateUserComponent, canActivateChild: [AuthGuard]
+      // },
+      // {
+      //   path: 'change-password', component: ChangePasswordComponent, canActivateChild: [AuthGuard]
+      // },
       {
         path: 'all-logs', component: AllLogsComponent, canActivateChild: [AuthGuard]
       },
-      {
-        path: 'users', component: UsersComponent, canActivateChild: [AuthGuard]
-      },
+      // {
+      //   path: 'users', component: UsersComponent, canActivateChild: [AuthGuard]
+      // },
       {
         path: 's3FileDownload', component: S3FilesDownloadComponent, canActivateChild: [AuthGuard]
       },

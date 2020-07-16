@@ -16,12 +16,11 @@ export class KeycloakSecurityService {
       url: environment.keycloakUrl,
       realm: environment.realm,
       clientId: environment.clientId,
-      credentials: environment.credentials
+      // credentials: environment.credentials
     });
     await this.kc.init({
       onLoad: 'login-required'
     });
-
     localStorage.setItem('email', this.kc.tokenParsed['email']);
   }
 }
