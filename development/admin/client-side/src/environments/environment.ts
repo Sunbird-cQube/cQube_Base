@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: "http://localhost:3001/api",
+  apiEndpoint: "http://172.31.23.205:3001/api",
   // apiEndpoint: "http://cqube.tibilprojects.com/api",
   grafanaEndPoint: "http://172.31.25.50:9000",
   keycloakUrl: "http://localhost:8080/auth",
