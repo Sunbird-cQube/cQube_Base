@@ -35,13 +35,55 @@ chmod u+x install.sh
 ```
 sudo ./install.sh
 ```
-Configuration filled in `config.yml` will be validated first. If there is any error while validation, the installation will be aborted. In such case, solve the errors and restart the installation `sudo  ./insatll.sh`
+Configuration filled in `config.yml` will be validated first. If there is any error while validation, the installation will be aborted. In such case, solve the errors and restart the installation `sudo  ./install.sh`
 
 Once installation completed without any errors, you will be prompted the following message. 
 ```CQube installed successfully!!``` 
 
 
 <b>Post Installation </b>
+
+<b> Creating Users and authentication with Keycloak </b>
+
+-Creating initial admin user
+Go to ```http://<host_name_or_ip>:8080/auth/admin/``` log in to the Keycloak Admin Console by creating an initial admin user
+
+-Creating a New Realm:
+Before you can create your first realm, complete the installation of Keycloak and create the initial admin user.
+To create a new realm, complete the following steps,
+
+Go to http://localhost:8080/auth/admin/ and log in to the Keycloak Admin Console using the account you created in Install and Boot. 
+From the Master drop-down menu, click Add Realm. When you are logged in to the master realm this drop-down menu lists all existing realms. 
+Type demo in the Name field and click Create.
+
+When the realm is created, the main admin console page opens. Notice the current realm is now set to demo. Switch between managing the master realm and the realm you just created by clicking entries in the Select realm drop-down menu.
+
+
+Creation of client & configuration:
+Log in to the admin console with your admin account. 
+In the top left drop-down menu select and manage the Demo realm. 
+Click Clients in the left side menu to open the Clients page.
+On the right side, click Create.
+Complete the fields.
+Click Save to create the client application entry. 
+Click the Installation tab in the Keycloak admin console to obtain a configuration template. 
+Select Keycloak OIDC JBoss Subsystem XML to generate an XML template. 
+
+
+
+Client configuration:
+
+Creating a New User:
+To create a new user in the demo realm, along with a temporary password for that new user, complete the following steps,
+
+From the menu, click Users to open the user list page. 
+On the right side of the empty user list, click Add User to open the add user page. 
+Enter a name in the Username field; this is the only required field. Flip the Email Verified switch from Off to On and click Save to save the data and open the management page for the new user.
+ Click the Credentials tab to set a temporary password for the new user. 
+Type a new password and confirm it. 
+Click Set Password to set the user password.
+
+Creating User
 
 <b>Uploading data to S3 Emission bucket</b>
 
@@ -50,27 +92,30 @@ Create `cqube_emission` directory and place the data files as shown in file stru
 ```
 cqube_emission
 .
-├── roles_master
-│   └── roles.zip
-├── static
-│   ├── block_master
-│   │   └── block_mst.zip
-│   ├── cluster_master
-│   │   └── cluster_mst.zip
-│   ├── district_master
-│   │   └── district_mst.zip
-│   └── school_master
-│       └── school_mst.zip
+├── block_master
+│   └── block_mst.zip
+├── cluster_master
+│   └── cluster_mst.zip
+|── district_master
+|   └── district_mst.zip
+├── school_master
+│   └── school_mst.zip
+|
+|── semester
+|   └── semester.zip
+├── user_location_master
+│   └── user_location_master.zip
+|── inspection_master
+|   └── inspection_master.zip
 ├── student_attendance
-│   └── StudentAttenadance_8.zip
-└── users_master
-    └── users.zip
+    └── student_attendance.zip
+
 ```
-- Login to the cQube dashboard and create emission user
-- After adding the user, Update below mentioned emission user details in `cQube/development/python/client/config.py`.
+- After creating the emission user, Update below mentioned emission user details in `cQube/development/python/client/config.py`.
   - emission username 
   - emission password
-  - location of the cqube_emission directory where the files are placed. Example: `/home/ubuntu/cqube_emission/`
+  - location of the cqube_emission directory where the files are placed as below. Example: `/home/ubuntu/cqube_emission/`
+
 - After completing the configuration. Save and close the file.
 - Execute the client.py file located in `cQube/development/python/client/` directory, as mentioned below to emit the data files to s3_emission bucket. 
 ```
