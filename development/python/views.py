@@ -264,7 +264,7 @@ def validate_weights(wdf):
         infra_file=s3_client.get_object(Bucket=OUTPUT_BUCKET_NAME,
                              Key="infrastructure_score/infrastructure_score.csv")
         df = pd.read_csv(BytesIO(infra_file['Body'].read()),sep='|')
-        if df["score"].sum() == 100:
+        if wdf["score"].sum() == 100:
             if list(df.columns) == list(wdf.columns):
                 return True
             else:
