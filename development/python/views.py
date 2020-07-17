@@ -24,12 +24,12 @@ def update_client_secrets():
     issuer=KEYCLOAK_URL
     auth_uri="{KEYCLOAK_URL}/protocol/openid-connect/auth".format(KEYCLOAK_URL=KEYCLOAK_URL)
     client_id=CLIENT_ID
-    client_secret=CLIENT_SERCET
+    client_secret=CLIENT_SECRET
     redirect_uris="{EMISSION_URL}/*".format(EMISSION_URL=EMISSION_URL)
     userinfo_uri="{KEYCLOAK_URL}/protocol/openid-connect/userinfo".format(KEYCLOAK_URL=KEYCLOAK_URL)
     token_uri="{KEYCLOAK_URL}/protocol/openid-connect/token".format(KEYCLOAK_URL=KEYCLOAK_URL)
     token_introspection_uri="{KEYCLOAK_URL}/protocol/openid-connect/token/introspect".format(KEYCLOAK_URL=KEYCLOAK_URL)
-    clientsecret={ "web": { "issuer": KEYCLOAK_URL, "auth_uri": auth_uri, "client_id": CLIENT_ID, "client_secret": CLIENT_SERCET, "redirect_uris": [ redirect_uris ], "userinfo_uri": userinfo_uri, "token_uri": token_uri, "token_introspection_uri": token_introspection_uri, "OIDC-SCOPES": ["openid"] } }
+    clientsecret={ "web": { "issuer": KEYCLOAK_URL, "auth_uri": auth_uri, "client_id": CLIENT_ID, "client_secret": CLIENT_SECRET, "redirect_uris": [ redirect_uris ], "userinfo_uri": userinfo_uri, "token_uri": token_uri, "token_introspection_uri": token_introspection_uri, "OIDC-SCOPES": ["openid"] } }
     client_secrets=json.dumps(clientsecret)
     with open("client_secrets.json","w") as fd:
         fd.write(client_secrets)
@@ -91,7 +91,7 @@ def api_login():
     args = parser.parse_args()
     if username and password:
         try:
-            payload= {"client_id" :CLIENT_ID,"grant_type":"password","client_secret":CLIENT_SERCET,"scope":"openid",
+            payload= {"client_id" :CLIENT_ID,"grant_type":"password","client_secret":CLIENT_SECRET,"scope":"openid",
             "username":args["username"],"password":args["password"]}
             resp=requests.post(url,data=payload,headers=headers)
             return resp.json()
