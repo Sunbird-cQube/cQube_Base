@@ -97,11 +97,12 @@ def api_login():
             return resp.json()
         except Exception as err:
             logging.error(err)
+            abort(404, f'Unable to login')
     else:
         abort(401, f'User unauthorized')
 
 def validate_role(token):
-    user_role = token.get("realm_access")
+    user_role = token.get("realm_access") 
     if "admin" in user_role["roles"] or "emission" in user_role["roles"]:
         return "Valid role"
     else:
@@ -140,7 +141,6 @@ def aws_file_download():
         return None
     return response
 
-
 @app.route('/download_uri',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_file_downloads():
@@ -156,7 +156,6 @@ def aws_file_downloads():
     file_resp=dict()
     files=args["filename"]
     for file in files:
-        print(file)
         try:
             response = s3_client.generate_presigned_url('get_object',
                                                          Params={'Bucket':bucket_name,'Key':file},
@@ -191,12 +190,12 @@ def get_bucket_name(bucket):
     if bucket==INPUT_BUCKET_NAME or bucket==OUTPUT_BUCKET_NAME or bucket==EMISSION_BUCKET_NAME:
         return bucket
     else:
-        abort(400, f'Bad request, validate the bucket name')
+        abort(400, f'Bad request, not cqube bucket - validate the bucket name')
 
 def valid_path(filename):
     full_path = join(BASE_DIR, filename)
     if not exists(full_path):
-        return abort(404, f'Bad request, validate the filename in payload')
+        return abort(404, f'Bad request, unable to find the file - validate the filename in payload')
 
 @app.route('/list_s3_files',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
@@ -227,7 +226,6 @@ def index():
             headers={"Content-Disposition": "attachment;filename={}".format(args["filename"].split('/')[-1])}
         )
     else:
-        print(args["filename"])
         abort(400, f'Bad request, validate the filename in payload')
 
 @app.route('/list_s3_buckets',methods=['GET'])
@@ -270,7 +268,7 @@ def validate_weights(wdf):
             else:
                 abort(400, f'Bad file header, please check the file header')
         else:
-            abort(400, f'Bad file, validate the score, score sum is not 100')
+            abort(400, f'Bad file, validate the score, infrastructure total score sum is not 100')
     except Exception as err:
         abort(400,err)
 
