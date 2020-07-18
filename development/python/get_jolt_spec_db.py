@@ -11,10 +11,12 @@ def remove_special_characters(data):
     """
     data = str(data)
     data = data.replace("\\n","")
+    data = data.replace("\\t","")
     data = data.replace("('","")
     data = data.replace("',)","")
     data = data.replace(" ","")
     return data
+
 
 
 def get_jolt_spec(spec_type):

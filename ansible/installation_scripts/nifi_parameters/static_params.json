@@ -57,6 +57,11 @@
                             }
             },
 	    {
+                "parameter":{"name":"base_dir",
+                        "value":""
+                            }
+            },
+	    {
                 "parameter":{"name":"nifi_error_dir",
                         "value":""
                             }

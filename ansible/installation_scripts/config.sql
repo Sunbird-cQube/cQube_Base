@@ -538,7 +538,7 @@ END;
 $$LANGUAGE plpgsql;
 
 /* JOLT spec dynamic */
--- old and current jolt structure
+/* old and current jolt structure */
 
 create or replace function Infra_jolt_spec(category_1 text,category_2 text)
     RETURNS text AS
@@ -958,3 +958,5 @@ return 0;
 END;
 $$
 LANGUAGE plpgsql;
+
+select Infra_jolt_spec('water','toilet');

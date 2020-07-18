@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>version-1.1</description>
+    <description></description>
     <groupId>281dc6f4-0173-1000-6ece-d7cd0acfb411</groupId>
     <name>infra_transformer</name>
     <snippet>
@@ -2045,6 +2045,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>62b74561-5d90-3100-0000-000000000000</id>
+                            <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
+<id>55e36b7a-6b47-3722-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>check_empty_file</selectedRelationships>
+                            <source>
+<groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
+<id>51509155-6d52-3a23-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>62cfee51-edd7-3e44-0000-000000000000</id>
                             <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -2379,31 +2404,6 @@
                             <source>
 <groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
 <id>a92f7a70-e40a-386d-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>808bb15d-26bc-3600-0000-000000000000</id>
-                            <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
-<id>745180d3-32e1-3c05-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>output stream</selectedRelationships>
-                            <source>
-<groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
-<id>fd025fca-e76b-3129-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -3787,31 +3787,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>c63fd1ff-b5b4-3ba7-0000-000000000000</id>
-                            <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
-<id>e6841029-47cc-3b24-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
-<id>f8069c06-72fb-3141-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>c673cf48-93dd-3d78-0000-000000000000</id>
                             <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -3847,7 +3822,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
-<id>55e36b7a-6b47-3722-0000-000000000000</id>
+<id>51509155-6d52-3a23-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -4844,31 +4819,6 @@
                             <source>
 <groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
 <id>5a038123-c4cc-3645-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>fa6af621-257d-3cec-0000-000000000000</id>
-                            <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
-<id>fd025fca-e76b-3129-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>abf32e2b-5dbf-3d74-0000-000000000000</groupId>
-<id>e6841029-47cc-3b24-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -6482,23 +6432,6 @@
 </entry>
                             </style>
                             <width>536.0</width>
-                        </labels>
-                        <labels>
-                            <id>4ed87466-297f-3e0f-0000-000000000000</id>
-                            <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
-                            <position>
-<x>6568.0</x>
-<y>-1168.0</y>
-                            </position>
-                            <height>48.0</height>
-                            <label>update infrastructure jolt spec NiFi parameters</label>
-                            <style>
-<entry>
-    <key>font-size</key>
-    <value>24px</value>
-</entry>
-                            </style>
-                            <width>608.0</width>
                         </labels>
                         <labels>
                             <id>d1dd7681-5aab-3d21-0000-000000000000</id>
@@ -9319,7 +9252,7 @@ from flowfile WHERE has_records = non_empty_records</value>
     </entry>
     <entry>
         <key>dbf-user-logical-types</key>
-        <value>false</value>
+        <value>true</value>
     </entry>
     <entry>
         <key>esql-max-rows</key>
@@ -9349,7 +9282,7 @@ from flowfile WHERE has_records = non_empty_records</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -11445,6 +11378,68 @@ Optional(parseInt()),Optional(parseInt()),Optional(parseInt()),Optional(parseInt
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
                         <processors>
+                            <id>51509155-6d52-3a23-0000-000000000000</id>
+                            <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2960.0</x>
+<y>928.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>
+            <name>Routing Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>check_empty_file</key>
+        <value>
+            <name>check_empty_file</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>Route to Property name</value>
+    </entry>
+    <entry>
+        <key>check_empty_file</key>
+        <value>${record.count:gt(0)}</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>RouteOnAttribute</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>check_empty_file</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
+                        </processors>
+                        <processors>
                             <id>53033f41-835f-3911-0000-000000000000</id>
                             <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
                             <position>
@@ -11601,8 +11596,8 @@ Optional(parseInt()),Optional(parseInt()),Optional(parseInt()),Optional(parseInt
                             <id>55e36b7a-6b47-3722-0000-000000000000</id>
                             <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
                             <position>
-<x>-3464.0</x>
-<y>976.0</y>
+<x>-3336.0</x>
+<y>1080.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -13990,74 +13985,6 @@ file: ${filename} has invalid data type, pass the file with right datatype.</val
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
-                        </processors>
-                        <processors>
-                            <id>745180d3-32e1-3c05-0000-000000000000</id>
-                            <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
-                            <position>
-<x>7040.0</x>
-<y>-1080.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>log-level</key>
-        <value>
-            <name>log-level</name>
-        </value>
-    </entry>
-    <entry>
-        <key>log-prefix</key>
-        <value>
-            <name>log-prefix</name>
-        </value>
-    </entry>
-    <entry>
-        <key>log-message</key>
-        <value>
-            <name>log-message</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>log-level</key>
-        <value>info</value>
-    </entry>
-    <entry>
-        <key>log-prefix</key>
-        <value>---------INFRASTRUCTURE, JOLT-----------------</value>
-    </entry>
-    <entry>
-        <key>log-message</key>
-        <value>Successfully updated all the Jolt specs for infrastructure reports!!</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>LogMessage</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
                             <id>756df482-aa36-3ad4-0000-000000000000</id>
@@ -21100,8 +21027,8 @@ where filename = '${filename}' and ff_uuid= '${files_uuid}'</value>
                             <id>dc5c82fb-a191-39f5-0000-000000000000</id>
                             <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
                             <position>
-<x>-3296.0</x>
-<y>792.0</y>
+<x>-3328.0</x>
+<y>744.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -21645,74 +21572,6 @@ where school_id IS NULL)</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
-                        </processors>
-                        <processors>
-                            <id>e6841029-47cc-3b24-0000-000000000000</id>
-                            <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
-                            <position>
-<x>6048.0</x>
-<y>-1072.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>log-level</key>
-        <value>
-            <name>log-level</name>
-        </value>
-    </entry>
-    <entry>
-        <key>log-prefix</key>
-        <value>
-            <name>log-prefix</name>
-        </value>
-    </entry>
-    <entry>
-        <key>log-message</key>
-        <value>
-            <name>log-message</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>log-level</key>
-        <value>info</value>
-    </entry>
-    <entry>
-        <key>log-prefix</key>
-        <value>---------INFRASTRUCTURE, JOLT-----------------</value>
-    </entry>
-    <entry>
-        <key>log-message</key>
-        <value>Adding the  Jolt specs for infrastructure reports.</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>10000 days</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>LogMessage</name>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>RUNNING</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
                             <id>e7e84b44-f092-30ec-0000-000000000000</id>
@@ -23129,103 +22988,6 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
                         <processors>
-                            <id>f8069c06-72fb-3141-0000-000000000000</id>
-                            <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
-                            <position>
-<x>5552.0</x>
-<y>-1072.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>File Size</key>
-        <value>
-            <name>File Size</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Batch Size</key>
-        <value>
-            <name>Batch Size</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Data Format</key>
-        <value>
-            <name>Data Format</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Unique FlowFiles</key>
-        <value>
-            <name>Unique FlowFiles</name>
-        </value>
-    </entry>
-    <entry>
-        <key>generate-ff-custom-text</key>
-        <value>
-            <name>generate-ff-custom-text</name>
-        </value>
-    </entry>
-    <entry>
-        <key>character-set</key>
-        <value>
-            <name>character-set</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>File Size</key>
-        <value>0B</value>
-    </entry>
-    <entry>
-        <key>Batch Size</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>Data Format</key>
-        <value>Text</value>
-    </entry>
-    <entry>
-        <key>Unique FlowFiles</key>
-        <value>false</value>
-    </entry>
-    <entry>
-        <key>generate-ff-custom-text</key>
-    </entry>
-    <entry>
-        <key>character-set</key>
-        <value>UTF-8</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>10000 days</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>GenerateFlowFile</name>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>RUNNING</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
-                        </processors>
-                        <processors>
                             <id>f9308d8e-628e-3137-0000-000000000000</id>
                             <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
                             <position>
@@ -23352,7 +23114,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -23441,131 +23203,6 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
                             <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
-                        </processors>
-                        <processors>
-                            <id>fd025fca-e76b-3129-0000-000000000000</id>
-                            <parentGroupId>abf32e2b-5dbf-3d74-0000-000000000000</parentGroupId>
-                            <position>
-<x>6488.0</x>
-<y>-1088.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>argumentsStrategy</key>
-        <value>
-            <name>argumentsStrategy</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Command Arguments</key>
-        <value>
-            <name>Command Arguments</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Command Path</key>
-        <value>
-            <name>Command Path</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Ignore STDIN</key>
-        <value>
-            <name>Ignore STDIN</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Working Directory</key>
-        <value>
-            <name>Working Directory</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Argument Delimiter</key>
-        <value>
-            <name>Argument Delimiter</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Output Destination Attribute</key>
-        <value>
-            <name>Output Destination Attribute</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Max Attribute Length</key>
-        <value>
-            <name>Max Attribute Length</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>argumentsStrategy</key>
-        <value>Command Arguments Property</value>
-    </entry>
-    <entry>
-        <key>Command Arguments</key>
-        <value>update_nifi_jolt_params.py</value>
-    </entry>
-    <entry>
-        <key>Command Path</key>
-        <value>#{base_dir}/cqube/emission_app/flaskenv/bin/python</value>
-    </entry>
-    <entry>
-        <key>Ignore STDIN</key>
-        <value>true</value>
-    </entry>
-    <entry>
-        <key>Working Directory</key>
-        <value>#{base_dir}/cqube/emission_app/python</value>
-    </entry>
-    <entry>
-        <key>Argument Delimiter</key>
-        <value>;</value>
-    </entry>
-    <entry>
-        <key>Output Destination Attribute</key>
-    </entry>
-    <entry>
-        <key>Max Attribute Length</key>
-        <value>256</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>update_infra_jolt_spec_parameters</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>nonzero status</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>original</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>output stream</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.ExecuteStreamCommand</type>
                         </processors>
                         <processors>
                             <id>fe348aac-c9ef-3cc3-0000-000000000000</id>
@@ -33680,5 +33317,5 @@ VALUES
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>07/16/2020 12:54:01 IST</timestamp>
+    <timestamp>07/16/2020 18:48:50 IST</timestamp>
 </template>

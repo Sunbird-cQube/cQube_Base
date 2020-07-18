@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>version-1.1</description>
+    <description></description>
     <groupId>281dc6f4-0173-1000-6ece-d7cd0acfb411</groupId>
     <name>student_attendance_transformer</name>
     <snippet>
@@ -835,7 +835,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>0aac7eba-1e8b-33e8-0000-000000000000</groupId>
-<id>4190f1f5-8296-3fc6-0000-000000000000</id>
+<id>f3788b5e-e3cc-34f1-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -2161,6 +2161,31 @@
                             <source>
 <groupId>0aac7eba-1e8b-33e8-0000-000000000000</groupId>
 <id>5cf7fec0-4651-3abb-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>920d85a6-e1be-3d9b-0000-000000000000</id>
+                            <parentGroupId>0aac7eba-1e8b-33e8-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>0aac7eba-1e8b-33e8-0000-000000000000</groupId>
+<id>4190f1f5-8296-3fc6-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>check_empty_file</selectedRelationships>
+                            <source>
+<groupId>0aac7eba-1e8b-33e8-0000-000000000000</groupId>
+<id>f3788b5e-e3cc-34f1-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -5965,7 +5990,7 @@
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -8179,7 +8204,7 @@ GROUP BY district_id,district_latitude,district_longitude,district_name ,year,mo
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -8401,8 +8426,8 @@ same id data validation of file:${filename} started</value>
                             <id>4190f1f5-8296-3fc6-0000-000000000000</id>
                             <parentGroupId>0aac7eba-1e8b-33e8-0000-000000000000</parentGroupId>
                             <position>
-<x>-2848.0</x>
-<y>648.0</y>
+<x>-2864.0</x>
+<y>704.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -8498,7 +8523,7 @@ from flowfile)</value>
 <autoTerminate>false</autoTerminate>
 <name>same_id_student_att_db</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -11665,7 +11690,7 @@ GROUP BY cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,blo
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -11821,7 +11846,7 @@ GROUP BY cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,blo
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -13004,7 +13029,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -13322,7 +13347,7 @@ null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -15165,7 +15190,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -15468,8 +15493,8 @@ from flowfile WHERE blank_records = 0
                             <id>dfc718db-35d1-326b-0000-000000000000</id>
                             <parentGroupId>0aac7eba-1e8b-33e8-0000-000000000000</parentGroupId>
                             <position>
-<x>-2680.0</x>
-<y>464.0</y>
+<x>-2704.0</x>
+<y>376.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -16906,6 +16931,68 @@ OR "Month" IS NULL)</value>
                             <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
+                        </processors>
+                        <processors>
+                            <id>f3788b5e-e3cc-34f1-0000-000000000000</id>
+                            <parentGroupId>0aac7eba-1e8b-33e8-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2552.0</x>
+<y>536.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>
+            <name>Routing Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>check_empty_file</key>
+        <value>
+            <name>check_empty_file</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>Route to Property name</value>
+    </entry>
+    <entry>
+        <key>check_empty_file</key>
+        <value>${record.count:gt(0)}</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>RouteOnAttribute</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>check_empty_file</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
                         <processors>
                             <id>f61b821b-1e89-3365-0000-000000000000</id>
@@ -29472,5 +29559,5 @@ Datasource file:${filename} did not match with the filename or records count</va
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>07/16/2020 12:55:56 IST</timestamp>
+    <timestamp>07/16/2020 18:48:03 IST</timestamp>
 </template>

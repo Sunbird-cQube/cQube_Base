@@ -702,7 +702,7 @@ $$  LANGUAGE plpgsql;
 /* temperory table */
 ----------------------------------------------
 create table if not exists cluster_tmp
-	(
+  (
 cluster_id  bigint primary key not null,
 cluster_name varchar(250),
 block_id  bigint,
@@ -712,7 +712,7 @@ updated_on  TIMESTAMP without time zone
 );
 
 create table if not exists block_tmp
-	(
+  (
 block_id  bigint primary key not null,
 block_name varchar(250),
 district_id  bigint,
@@ -721,7 +721,7 @@ updated_on  TIMESTAMP without time zone
 );
 
 create table if not exists district_tmp
-	(
+  (
 district_id  bigint primary key not null,
 district_name varchar(250),
 created_on  TIMESTAMP without time zone ,
@@ -729,7 +729,7 @@ updated_on  TIMESTAMP without time zone
 );
 
 create table if not exists school_tmp
-	(
+  (
 school_id  bigint primary key not null,
 school_name varchar(250),
 school_address  varchar(250),
@@ -756,7 +756,7 @@ updated_on  TIMESTAMP without time zone NOT NULL
 /* mst tables */
 
 create table if not exists cluster_mst
-	(
+  (
 cluster_id  bigint primary key not null,
 cluster_name varchar(250),
 block_id  bigint,
@@ -766,7 +766,7 @@ updated_on  TIMESTAMP without time zone
 );
 
 create table if not exists block_mst
-	(
+  (
 block_id  bigint primary key not null,
 block_name varchar(250),
 district_id  bigint,
@@ -775,7 +775,7 @@ updated_on  TIMESTAMP without time zone
 );
 
 create table if not exists district_mst
-	(
+  (
 district_id  bigint primary key not null,
 district_name varchar(250),
 created_on  TIMESTAMP without time zone ,
@@ -785,7 +785,7 @@ updated_on  TIMESTAMP without time zone
 /*school_master*/
 
 create table if not exists school_master
-	(
+  (
 school_id  bigint primary key not null,
 school_name varchar(250),
 school_address  varchar(250),
@@ -805,7 +805,7 @@ updated_on  TIMESTAMP without time zone NOT NULL
 /*school_management_master*/
 
 create table if not exists school_management_master
-	(
+  (
 school_management_type_id int primary key not null,
 school_management_type varchar(100),
 created_on  TIMESTAMP without time zone NOT NULL,
@@ -816,7 +816,7 @@ updated_on  TIMESTAMP without time zone NOT NULL
 /*school_category_master*/
 
 create table if not exists school_category_master
-	(
+  (
 school_category_id int primary key not null,
 school_category varchar(100),
 created_on  TIMESTAMP without time zone NOT NULL,
@@ -827,7 +827,7 @@ updated_on  TIMESTAMP without time zone NOT NULL
 /*school_medium_master*/
 
 create table if not exists school_medium_master
-	(
+  (
 school_medium_id int primary key not null,
 medium_of_school varchar(100),
 created_on  TIMESTAMP without time zone NOT NULL,
@@ -854,7 +854,7 @@ cluster_longitude  double precision,
 created_on  TIMESTAMP without time zone ,
 updated_on  TIMESTAMP without time zone 
 -- ,foreign key (school_id) references school_master(school_id)
-);	
+);  
 
 /* subject_master */
 
@@ -874,57 +874,57 @@ updated_on  TIMESTAMP without time zone
 /* school_hierarchy_details */
 
 create table if not exists school_hierarchy_details
-	(
-		school_id bigint primary key not null,
-		year int,
-		school_name varchar(300),
-		board_id bigint,
-		board_name varchar(200),
-		block_id bigint,
-		block_name varchar(100),
-		brc_name varchar(100),
-		district_id bigint,
-		district_name varchar(100),
-		cluster_id bigint,
-		cluster_name varchar(100),
-		crc_name varchar(100),
-		created_on TIMESTAMP without time zone,
-		updated_on TIMESTAMP without time zone
-		-- ,foreign key (school_id) references school_geo_master(school_id)
-		);
+  (
+    school_id bigint primary key not null,
+    year int,
+    school_name varchar(300),
+    board_id bigint,
+    board_name varchar(200),
+    block_id bigint,
+    block_name varchar(100),
+    brc_name varchar(100),
+    district_id bigint,
+    district_name varchar(100),
+    cluster_id bigint,
+    cluster_name varchar(100),
+    crc_name varchar(100),
+    created_on TIMESTAMP without time zone,
+    updated_on TIMESTAMP without time zone
+    -- ,foreign key (school_id) references school_geo_master(school_id)
+    );
 
 create index if not exists school_hierarchy_details_id on school_hierarchy_details(block_id,district_id,cluster_id);
 
 /* student_hierarchy_details */
 
 create table if not exists student_hierarchy_details
-	(
-		student_id bigint primary key not null,
-		school_id bigint,
-		year int,
-		student_class int,
-		stream_of_student varchar(50),
-		created_on TIMESTAMP without time zone,
-		updated_on TIMESTAMP without time zone
-		-- ,foreign key (school_id) references school_hierarchy_details(school_id)
-		);
+  (
+    student_id bigint primary key not null,
+    school_id bigint,
+    year int,
+    student_class int,
+    stream_of_student varchar(50),
+    created_on TIMESTAMP without time zone,
+    updated_on TIMESTAMP without time zone
+    -- ,foreign key (school_id) references school_hierarchy_details(school_id)
+    );
 
 create index if not exists student_hierarchy_details_id on student_hierarchy_details(school_id,student_class,stream_of_student);
 
 /* teacher_hierarchy_details */
 
 create table if not exists teacher_hierarchy_details
-	(
-		teacher_id bigint primary key not null,
-		school_id bigint,
-		year int,
-		teacher_designation varchar(100),
-		nature_of_employment varchar(50),
-		date_of_joining date,
-		created_on TIMESTAMP without time zone,
-		updated_on TIMESTAMP without time zone
-		-- ,foreign key (school_id) references school_hierarchy_details(school_id)
-		);
+  (
+    teacher_id bigint primary key not null,
+    school_id bigint,
+    year int,
+    teacher_designation varchar(100),
+    nature_of_employment varchar(50),
+    date_of_joining date,
+    created_on TIMESTAMP without time zone,
+    updated_on TIMESTAMP without time zone
+    -- ,foreign key (school_id) references school_hierarchy_details(school_id)
+    );
 
 create index if not exists teacher_hierarchy_details_id on teacher_hierarchy_details(school_id,nature_of_employment);
 
@@ -1350,3 +1350,115 @@ create table if not exists infrastructure_master
    updated_on timestamp,
 primary key(infrastructure_name,infrastructure_id)
 ); 
+
+/* Table name:log_summary */
+
+create table if not exists log_summary(
+filename varchar(200),
+ff_uuid varchar(200),
+total_records bigint,
+blank_lines int,
+duplicate_records int,
+attendance_id bigint,
+student_id bigint,
+school_id bigint,
+year bigint,
+month int,
+semester int,
+grade int,
+inspection_id bigint,
+in_school_location bigint,
+created_on bigint,
+school_name bigint,
+cluster_name bigint,
+block_name bigint,
+district_name bigint,
+cluster_id bigint,
+block_id bigint,
+district_id bigint,
+latitude int,
+longitude int,
+process_start_time timestamp ,
+process_end_time timestamp
+);
+
+/* Table name :    stud_att_null_col */
+
+create table if not exists stud_att_null_col( filename    varchar(200),
+ ff_uuid    varchar(200),         
+ count_null_studentattid  int,
+ count_null_studentid  int,
+ count_null_schoolid int,
+ count_null_aadhaaruid int,
+ count_null_academicyear int, 
+count_null_month  int
+ );
+
+/* Table name: sem_null_col */
+
+create table if not exists sem_null_col
+(filename  varchar(200),  
+ ff_uuid  varchar(200), 
+ count_null_schoolid int,
+ count_null_sem int,
+ count_null_studyingclass int);
+
+/* Table name: crc_loc_null_col */
+
+create table if not exists crc_loc_null_col (filename varchar(200),
+     ff_uuid varchar(200),            
+     count_null_schoolid  int, 
+      count_null_inspectionid int,
+      inschoolloc int,
+       count_null_createdon int,
+      count_latitude int,
+       count_longitude int);
+
+/* Table name: crc_inspec_null_col */
+
+create table if not exists crc_inspec_null_col(filename varchar(200),
+ff_uuid varchar(200),
+count_null_schoolid int,
+ count_null_inspectionid int,
+ count_null_createdon int);
+
+/* Table name : dist_null_col */
+
+create table if not exists dist_null_col( filename varchar(200),
+ ff_uuid varchar(200),
+ count_null_districtid int,
+  Count_null_district  int);
+
+/*Table name: cluster_null_col*/
+
+create table if not exists cluster_null_col( filename varchar(200),
+ ff_uuid varchar(200),
+count_null_clusterid int,
+count_null_cluster int,
+ count_null_districtid int,
+ count_null_block int,
+ count_null_blockid  int);
+
+/*Table name: block_null_col*/
+
+create table if not exists block_null_col( filename varchar(200),
+ ff_uuid varchar(200),
+count_null_districtid int,
+count_null_block int,
+ count_null_blockid int);
+
+/*Table name: school_null_col*/
+
+create table if not exists school_null_col( filename varchar(200),
+ ff_uuid varchar(200),
+count_null_school int,
+count_null_latitude int,
+count_null_longitude int);
+
+/*Table name: infra_null_col*/
+
+create table if not exists infra_null_col( filename varchar(200),
+ ff_uuid varchar(200),
+count_null_schoolid int);
+
+

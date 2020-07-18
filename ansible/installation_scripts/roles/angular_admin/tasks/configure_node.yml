@@ -33,7 +33,9 @@
       OUTPUT_BUCKET = "{{ s3_output_bucket }}"
       BASE_DIR = "{{ base_dir }}"
       BASEURL = "http://{{ local_ipv4_address}}:5000"
-      EMAIL=
-      PASSWORD=
+      EMAIL= "{{ keycloak_adm_user }}@cqube.com"
+      PASSWORD= "{{ keycloak_adm_passwd }}"
+      KEYCLOAK_HOST = "http://{{ host_ip.stdout }}:8080"
+      KEYCLOAK_REALM = "cQube"
 
 
