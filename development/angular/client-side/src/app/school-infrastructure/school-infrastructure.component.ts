@@ -589,8 +589,16 @@ export class SchoolInfrastructureComponent implements OnInit {
             label: function (tooltipItem, data) {
               var label = data.labels[tooltipItem.index];
               var multistringText = [name + ": " + label];
-              multistringText.push(obj.xAxis + ": " + tooltipItem.xLabel + " %");
-              multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel + " %");
+              if (obj.xAxis == "INFRA_SCORE") {
+                multistringText.push(obj.xAxis + ": " + tooltipItem.xLabel);
+              } else {
+                multistringText.push(obj.xAxis + ": " + tooltipItem.xLabel + " %");
+              }
+              if (obj.yAxis == "INFRA_SCORE") {
+                multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
+              } else {
+                multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel + " %");
+              }
               return multistringText;
             }
           }
