@@ -930,6 +930,55 @@ create index if not exists teacher_hierarchy_details_id on teacher_hierarchy_det
 
 /*student_attendance_temp*/
 
+create table if not exists student_attendance_staging
+(
+attendance_id  bigint primary key not null,
+student_id  bigint,
+school_id  bigint,
+year  int,
+month  int,
+day_1  smallint,
+day_2  smallint,
+day_3  smallint,
+day_4  smallint,
+day_5  smallint,
+day_6  smallint,
+day_7  smallint,
+day_8  smallint,
+day_9  smallint,
+day_10  smallint,
+day_11  smallint,
+day_12  smallint,
+day_13  smallint,
+day_14  smallint,
+day_15  smallint,
+day_16  smallint,
+day_17  smallint,
+day_18  smallint,
+day_19  smallint,
+day_20  smallint,
+day_21  smallint,
+day_22  smallint,
+day_23  smallint,
+day_24  smallint,
+day_25  smallint,
+day_26  smallint,
+day_27  smallint,
+day_28  smallint,
+day_29  smallint,
+day_30  smallint,
+day_31  smallint,
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone
+--foreign key (school_id) references school_hierarchy_details(school_id),
+-- foreign key (student_id) references student_hierarchy_details(student_id)
+);
+
+create index if not exists student_attendance_staging_id on student_attendance_staging(school_id,month,student_id);
+
+
+/*student_attendance_temp*/
+
 create table if not exists student_attendance_temp
 (
 attendance_id  bigint primary key not null,
@@ -975,6 +1024,9 @@ updated_on  TIMESTAMP without time zone
 );
 
 create index if not exists student_attendance_temp_id on student_attendance_temp(school_id,month,student_id);
+
+
+
 
 /*student_attendance_trans*/
 
@@ -1378,6 +1430,7 @@ block_id bigint,
 district_id bigint,
 latitude int,
 longitude int,
+processed_records int,
 process_start_time timestamp ,
 process_end_time timestamp
 );
@@ -1461,4 +1514,169 @@ create table if not exists infra_null_col( filename varchar(200),
  ff_uuid varchar(200),
 count_null_schoolid int);
 
+/* Duplicate records tables */
+
+create table if not exists student_attendance_dup
+(
+attendance_id  bigint  not null,
+student_id  bigint,
+school_id  bigint,
+year  int,
+month  int,
+day_1  smallint,
+day_2  smallint,
+day_3  smallint,
+day_4  smallint,
+day_5  smallint,
+day_6  smallint,
+day_7  smallint,
+day_8  smallint,
+day_9  smallint,
+day_10  smallint,
+day_11  smallint,
+day_12  smallint,
+day_13  smallint,
+day_14  smallint,
+day_15  smallint,
+day_16  smallint,
+day_17  smallint,
+day_18  smallint,
+day_19  smallint,
+day_20  smallint,
+day_21  smallint,
+day_22  smallint,
+day_23  smallint,
+day_24  smallint,
+day_25  smallint,
+day_26  smallint,
+day_27  smallint,
+day_28  smallint,
+day_29  smallint,
+day_30  smallint,
+day_31  smallint,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process timestamp default current_timestamp
+);
+
+create table if not exists student_semester_dup
+(
+student_uid bigint,
+school_id  bigint,
+semester  int ,
+grade  int,
+subject_1  int,
+subject_2  int,
+subject_3 int,
+subject_4 int,
+subject_5 int,
+subject_6 int,
+subject_7 int,
+subject_8 int,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process timestamp default current_timestamp
+);
+
+create table if not exists crc_location_dup
+(
+crc_location_id bigint  not null,
+crc_id bigint,
+inspection_id  bigint,
+school_id  bigint ,
+latitude  double precision,
+longitude  double precision,
+in_school_location  boolean,
+num_of_times int,
+ff_uuid varchar(255),
+created_on  TIMESTAMP without time zone  ,
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists crc_inspection_dup
+(
+crc_inspection_id bigint  not null,
+crc_id bigint,
+crc_name varchar(100),
+school_id  bigint,
+lowest_class smallint,
+highest_class smallint,
+visit_start_time TIME without time zone,
+visit_end_time TIME without time zone,
+total_class_rooms smallint,
+actual_class_rooms smallint,
+total_suggestion_last_month smallint,
+resolved_from_that smallint,
+is_inspection smallint,
+reason_type varchar(100),
+reason_desc text,
+total_score double precision,
+score double precision,
+is_offline boolean,
+created_on  TIMESTAMP without time zone, /* created_on field will come from source data*/
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists district_dup
+  (
+district_id  bigint  not null,
+district_name varchar(250),
+created_on  TIMESTAMP without time zone ,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists block_dup
+  (
+block_id  bigint  not null,
+block_name varchar(250),
+district_id  bigint,
+num_of_times int,
+ff_uuid varchar(255),
+created_on  TIMESTAMP without time zone ,
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+
+);
+
+
+create table if not exists cluster_dup
+  (
+cluster_id  bigint  not null,
+cluster_name varchar(250),
+block_id  bigint,
+district_id  bigint,
+num_of_times int,
+ff_uuid varchar(255),
+created_on  TIMESTAMP without time zone ,
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+
+create table if not exists school_dup
+  (
+school_id  bigint  not null,
+school_name varchar(250),
+school_address  varchar(250),
+school_zipcode  int,
+school_contact_number  bigint,
+school_email_contact  varchar(50),
+school_website  varchar(50),
+school_lowest_class  int,
+school_highest_class  int,
+school_management_type_id int ,
+school_category_id  int ,
+school_medium_id  int ,
+school_latitude  double precision,
+school_longitude  double precision,
+district_id  bigint,
+block_id bigint,
+cluster_id bigint,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+
+);
 
