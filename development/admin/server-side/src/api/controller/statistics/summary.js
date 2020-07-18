@@ -29,8 +29,8 @@ router.post('/stdAttendance', auth.authController, async (req, res) => {
 
 router.post('/sem', auth.authController, async (req, res) => {
     try {
-        logger.info('---attendance summary api ---');
-        const_data['getParams']['Key'] = 'log_summay/log_summary_sem.json';
+        logger.info('---Semester summary api ---');
+        const_data['getParams']['Key'] = 'log_summary/log_summary_sem.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);
@@ -41,7 +41,7 @@ router.post('/sem', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                logger.info('--- attendance summary api response sent---');
+                logger.info('--- Semester summary api response sent---');
                 res.send(summaryData)
             }
         });
@@ -53,7 +53,7 @@ router.post('/sem', auth.authController, async (req, res) => {
 
 router.post('/crc', auth.authController, async (req, res) => {
     try {
-        logger.info('---attendance summary api ---');
+        logger.info('---crc summary api ---');
         const_data['getParams']['Key'] = 'log_summary/log_summary_crc_loc.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
@@ -65,7 +65,7 @@ router.post('/crc', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                logger.info('--- attendance summary api response sent---');
+                logger.info('--- crc summary api response sent---');
                 res.send(summaryData)
             }
         });
@@ -77,7 +77,7 @@ router.post('/crc', auth.authController, async (req, res) => {
 
 router.post('/infra', auth.authController, async (req, res) => {
     try {
-        logger.info('---attendance summary api ---');
+        logger.info('---infra summary api ---');
         const_data['getParams']['Key'] = 'log_summary/log_summary_infra.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
@@ -89,7 +89,7 @@ router.post('/infra', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                logger.info('--- attendance summary api response sent---');
+                logger.info('--- infra summary api response sent---');
                 res.send(summaryData)
             }
         });
@@ -101,7 +101,7 @@ router.post('/infra', auth.authController, async (req, res) => {
 
 router.post('/inspec', auth.authController, async (req, res) => {
     try {
-        logger.info('---attendance summary api ---');
+        logger.info('---inspection summary api ---');
         const_data['getParams']['Key'] = 'log_summary/log_summary_inspec.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
@@ -113,7 +113,7 @@ router.post('/inspec', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                logger.info('--- attendance summary api response sent---');
+                logger.info('--- inspection summary api response sent---');
                 res.send(summaryData)
             }
         });
@@ -125,7 +125,7 @@ router.post('/inspec', auth.authController, async (req, res) => {
 
 router.post('/stDist', auth.authController, async (req, res) => {
     try {
-        logger.info('---attendance summary api ---');
+        logger.info('---district static summary api ---');
         const_data['getParams']['Key'] = 'log_summary/staic/log_summary_district.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
@@ -137,7 +137,7 @@ router.post('/stDist', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                logger.info('--- attendance summary api response sent---');
+                logger.info('--- district static summary api response sent---');
                 res.send(summaryData)
             }
         });
@@ -149,7 +149,7 @@ router.post('/stDist', auth.authController, async (req, res) => {
 
 router.post('/stBlock', auth.authController, async (req, res) => {
     try {
-        logger.info('---attendance summary api ---');
+        logger.info('---block static summary api ---');
         const_data['getParams']['Key'] = 'log_summary/static/log_summary_block.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
@@ -161,7 +161,7 @@ router.post('/stBlock', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                logger.info('--- attendance summary api response sent---');
+                logger.info('--- block static summary api response sent---');
                 res.send(summaryData)
             }
         });
@@ -173,7 +173,7 @@ router.post('/stBlock', auth.authController, async (req, res) => {
 
 router.post('/stCluster', auth.authController, async (req, res) => {
     try {
-        logger.info('---attendance summary api ---');
+        logger.info('---cluster static summary api ---');
         const_data['getParams']['Key'] = 'log_summary/static/log_summary_cluster.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
@@ -185,7 +185,7 @@ router.post('/stCluster', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                logger.info('--- attendance summary api response sent---');
+                logger.info('--- cluster static summary api response sent---');
                 res.send(summaryData)
             }
         });
@@ -197,7 +197,7 @@ router.post('/stCluster', auth.authController, async (req, res) => {
 
 router.post('/stSchool', auth.authController, async (req, res) => {
     try {
-        logger.info('---attendance summary api ---');
+        logger.info('---school static summary api ---');
         const_data['getParams']['Key'] = 'log_summary/static/log_summary_school.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
@@ -209,7 +209,7 @@ router.post('/stSchool', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                logger.info('--- attendance summary api response sent---');
+                logger.info('--- school static summary api response sent---');
                 res.send(summaryData)
             }
         });

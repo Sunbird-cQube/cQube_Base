@@ -156,18 +156,20 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myDistData != undefined) {
         this.infraFilter = [];
         this.data = this.myDistData['data'];
-        for (var i = 5; i < Object.keys(this.data[0]).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0])[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
         }
 
+        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score %" });
+
         var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infra_score';
+          return obj.key == 'infrastructure_score';
         });
 
         this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infra_score';
+          return obj.key !== 'infrastructure_score';
         });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
@@ -200,22 +202,25 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.myDistData = res;
           this.infraFilter = [];
           this.data = res['data'];
-          for (var i = 5; i < Object.keys(this.data[0]).length; i++) {
-            let val = this.changeingStringCases(Object.keys(this.data[0])[i].replace(/_/g, ' '));
+          for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
+            let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
             val = val.replace('Percent', '(%)')
-            this.infraFilter.push({ key: Object.keys(this.data[0])[i], value: val });
+            this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
           }
 
+          this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score %" });
+
           var infraKey = this.infraFilter.filter(function (obj) {
-            return obj.key == 'infra_score';
+            return obj.key == 'infrastructure_score';
           });
 
           this.infraFilter = this.infraFilter.filter(function (obj) {
-            return obj.key !== 'infra_score';
+            return obj.key !== 'infrastructure_score';
           });
 
           this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
           this.infraFilter.splice(0, 0, infraKey[0]);
+
           // to show only in dropdowns
           this.districtMarkers = this.data;
 
@@ -427,7 +432,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.infraMapAllClusterWise().subscribe(res => {        
+      this.myData = this.service.infraMapAllClusterWise().subscribe(res => {
         this.data = res['data']
         //=================================
         this.infraFilter = [];
@@ -976,7 +981,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.colorGredient(this.markers[i], this.infraData);
         var markerIcon: any;
         if (options.weight) {
-          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
+          markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
             radius: options.radius,
             color: this.setColor,
             fillColor: this.setColor,
@@ -985,7 +990,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             weight: options.weight
           })
         } else {
-          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
+          markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
             radius: options.radius,
             color: this.setColor,
             fillColor: this.setColor,
@@ -998,31 +1003,39 @@ export class InfraMapVisualisationComponent implements OnInit {
 
         // data to show on the tooltip for the desired levels
         if (options.level == 'district') {
+          var infraName = this.infraData;
           let colorText = `style='color:blue !important;'`;
+          var yourData = getInfoFrom(this.markers[i].metrics).join(" <br>");
+
+          // var yourData1 = getInfoFrom(this.markers[i].details).join(" <br>");
+
+          function getInfoFrom(object) {
+            var popupFood = [];
+            for (var key in object) {
+              if (object.hasOwnProperty(key)) {
+                if (key != "longitude") {
+                  var stringLine = `<span ${infraName == key ? colorText : ''}>` + "<b>" +
+                    key.replace(
+                      /\w\S*/g,
+                      function (txt) {
+                        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                      })
+                    + "</b>" + ": " + object[key] + " % </span>";
+                }
+                popupFood.push(stringLine);
+              }
+            }
+            return popupFood;
+          }
+
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b><u>Details</u></b>" +
-            "<br><b>District:</b>" + "&nbsp;" + this.markers[i].districtName +
-            "<br><b>Total Schools:</b>" + "&nbsp;" + this.markers[i].schCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
-            // "<br><b>Total Students:</b>" + "&nbsp;" + this.markers[i].stdCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
-            `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.markers[i].infra_score + "</span>" +
+            "<br><b>District:</b>" + "&nbsp;" + this.markers[i].details.district_name +
+            "<br><b>Total Schools:</b>" + "&nbsp;" + this.markers[i].details.total_schools_data_received.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+            // // "<br><b>Total Students:</b>" + "&nbsp;" + this.markers[i].stdCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") +
+            `<br><span ${this.infraData == 'infra_score' ? colorText : ''}><b>Infrastructure Score:</b>` + "&nbsp;" + this.markers[i].details.infrastructure_score + "</span>" +
             "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
-            `<br><span ${this.infraData == 'boys_toilet_percent' ? colorText : ''}><b>Boys Toilet:</b>` + "&nbsp;" + this.markers[i].boys_toilet_percent + " % </span>" +
-            `<br><span ${this.infraData == 'drinking_water_percent' ? colorText : ''}><b>Drinking Water:</b>` + "&nbsp;" + this.markers[i].drinking_water_percent + " % </span>" +
-            `<br><span ${this.infraData == 'electricity_percent' ? colorText : ''}><b>Electricity:</b>` + "&nbsp;" + this.markers[i].electricity_percent + " % </span>" +
-            `<br><span ${this.infraData == 'girls_toilet_percent' ? colorText : ''}><b>Girls Toilet:</b>` + "&nbsp;" + this.markers[i].girls_toilet_percent + " % </span>" +
-            `<br><span ${this.infraData == 'hand_wash_percent' ? colorText : ''}><b>Hand Wash:</b>` + "&nbsp;" + this.markers[i].hand_wash_percent + " %  </span > " +
-            `<br><span ${this.infraData == 'hand_pumps_percent' ? colorText : ''}><b>Hand Pump:</b>` + "&nbsp;" + this.markers[i].hand_pumps_percent + " % </span>" +
-            `<br><span ${this.infraData == 'library_percent' ? colorText : ''}><b>Library:</b>` + "&nbsp;" + this.markers[i].library_percent + " % </span>" +
-            `<br><span ${this.infraData == 'solar_panel_percent' ? colorText : ''}><b>Solar Panel:</b>` + "&nbsp;" + this.markers[i].solar_panel_percent + " % </span>" +
-            `<br><span ${this.infraData == 'tap_water_percent' ? colorText : ''}><b>Tap Water:</b>` + "&nbsp;" + this.markers[i].tap_water_percent + " % </span>" +
-            `<br><span ${this.infraData == 'toilet_percent' ? colorText : ''}><b>Toilet:</b>` + "&nbsp;" + this.markers[i].toilet_percent + " % </span>" +
-            `<br><span ${this.infraData == 'access_to_toilet_percent' ? colorText : ''}><b>Access To Toilet:</b>` + "&nbsp;" + this.markers[i].access_to_toilet_percent + " % </span>" +
-            `<br><span ${this.infraData == 'access_to_water_percent' ? colorText : ''}><b>Access To Water:</b>` + "&nbsp;" + this.markers[i].access_to_water_percent + " % </span>"
-            // "<br><br><b><u>Other Metrics</u></b>" +
-            // "<br><b>% of schools connected to Fibernet:</b>" + "&nbsp;" + this.markers[i].fibernet_percent + " %" +
-            // "<br><b>Total Central funds received:</b>" + "&nbsp; ₹ " + this.markers[i].totalFundReceived +
-            // "<br><b>Funds per School:</b>" + "&nbsp; ₹ " + this.markers[i].fundPerSchoolReceived
-          );
+            "<br>" + yourData);
           markerIcon.addTo(globalMap).bindPopup(popup);
 
           // to download the report
@@ -1216,6 +1229,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   }
 
   colorGredient(data, infraData) {
+    console.log(data);
     if (data[infraData] <= 10) {
       this.setColor = '#a50026';
     }
