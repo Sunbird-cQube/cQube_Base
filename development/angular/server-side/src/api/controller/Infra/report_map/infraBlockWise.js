@@ -10,12 +10,11 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         let fileName = `infra/infra_block_map_new.json`
         var blockData = await s3File.readS3File(fileName);
         var mydata = blockData.data;
-        console.log(mydata);
         logger.info('--- blocks infra api response sent---');
         res.status(200).send({ data: mydata, footer: blockData.allBlocksFooter.totalSchools });
 
     } catch (e) {
-        console.log(e);
+        logger.error(`Error :: ${e}`);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
@@ -29,7 +28,6 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         let distId = req.params.distId
 
         let filterData = blockData.data.filter(obj => {
-            console.log(obj);
             return (obj.details.district_id == distId)
         })
         let mydata = filterData;
