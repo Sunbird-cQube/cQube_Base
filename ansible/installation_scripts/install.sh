@@ -15,6 +15,8 @@ if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 sudo apt update -y
 sudo apt install python -y
 sudo apt-get install python-apt -y
+sudo apt-get install python3-pip -y
+sudo pip3 install glob2
 chmod u+x validate.sh
 sudo apt install unzip -y
 

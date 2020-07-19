@@ -1,44 +1,68 @@
+---
+- name: Making sure emission_app directory is present
+  file:
+    path: "{{ base_dir }}/cqube/emission_app"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+
 - name: create a virtual environment directory
   file:
-    path: /opt/emission_server/flaskenv
+    path: "{{ base_dir }}/cqube/emission_app/flaskenv"
     state: directory
 
 - name: Copy requirements.txt
   copy:
     src: requirements.txt
-    dest: /opt/emission_server/requirements.txt
+    dest: "{{ base_dir }}/cqube/emission_app/requirements.txt"
 
 - name: Manually create the initial virtualenv
   command:
-    cmd: virtualenv /opt/emission_server/flaskenv -p python3
-    creates: "/opt/emission_server/flaskenv"
+    cmd: virtualenv {{ base_dir }}/cqube/emission_app/flaskenv -p python3
+    creates: "{{ base_dir }}/cqube/emission_app/flaskenv"
 
 - name: Install requirements
   become: yes
   pip:
-    requirements: /opt/emission_server/requirements.txt
-    virtualenv: /opt/emission_server/flaskenv
+    requirements: "{{ base_dir }}/cqube/emission_app/requirements.txt"
+    virtualenv: "{{ base_dir }}/cqube/emission_app/flaskenv"
     virtualenv_python: /usr/bin/python3
+
+- name: Copying python files
+  shell: cp -R ../../development/python {{ base_dir }}/cqube/emission_app/
 
 - name: Creating environmental variables
   file:
-    path: ../../development/python/env.py
+    path: "{{ base_dir }}/cqube/emission_app/python/env.py"
     state: touch
     mode: u+rw,g+rw,o+rw
 
 - name: Loading required data inside env.py file
   blockinfile:
-        path: ../../development/python/env.py
+        path: "{{ base_dir }}/cqube/emission_app/python/env.py"
         block: |
-               DATABASE_URI = "postgresql://{{ db_user }}:{{ db_password }}@localhost:5432/{{ db_name }}"
-               AWS_SECRET_KEY = "{{ s3_secret_key }}"
-               AWS_ACCESS_KEY = "{{ s3_access_key }}"
-               BUCKET_NAME = "{{ s3_emission_bucket }}"
-               AWS_DEFAULT_REGION = "{{ aws_default_region }}"
+               AWS_SECRET_KEY= "{{ s3_secret_key }}"
+               AWS_ACCESS_KEY= "{{ s3_access_key }}"
+               AWS_DEFAULT_REGION= "{{ aws_default_region }}"
+               EMISSION_BUCKET_NAME= "{{ s3_emission_bucket }}"
+               INPUT_BUCKET_NAME= "{{ s3_input_bucket }}"
+               OUTPUT_BUCKET_NAME= "{{ s3_output_bucket }}"
+               BASE_DIR= "{{ base_dir }}"
+               DOMAIN_NAME= "http://{{ local_ipv4_address }}:8080"
+               REALM_NAME= "cQube"
+               CLIENT_ID= "cqube_flask"
+               CLIENT_SECRET= ""
+               EMISSION_URL= ""
 
-- name: starting flask app
-  become: yes
-  become_user: "{{ system_user_name }}"
-  shell: /opt/emission_server/flaskenv/bin/gunicorn -w 3 -b 0.0.0.0:5000 server:application &
+- name: Making sure emission_app directory is present
+  file:
+    path: "{{ base_dir }}/cqube/emission_app"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+               
+- name: Starting the flask app
+  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/gunicorn -w 3 -b 0.0.0.0:5000 server:application &"
   args:
-    chdir: ../../development/python
+    chdir: "{{ base_dir }}/cqube/emission_app/python"

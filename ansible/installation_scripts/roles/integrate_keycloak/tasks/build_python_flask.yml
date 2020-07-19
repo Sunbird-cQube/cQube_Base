@@ -1,0 +1,19 @@
+---
+- name: Stop the flask app
+  become: yes
+  shell: killall gunicorn
+
+- name: Delete env.py
+  file:
+    path: "{{ base_dir }}/cqube/emission_app/python/env.py"
+    state: absent
+
+- name: Updating env.py
+  template:
+    src: env.py.j2
+    dest: "{{ base_dir }}/cqube/emission_app/python/env.py" 
+
+- name: Starting the flask app
+  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/gunicorn -w 3 -b 0.0.0.0:5000 --reload server:application &"
+  args:
+    chdir: "{{ base_dir }}/cqube/emission_app/python"

@@ -1,0 +1,15 @@
+---
+#Fill the details to integrate keycloak with the cQube
+
+#Provide the realm name
+realm_name:     
+
+#Provide the client id for angular application (normal user)
+angular_app_client_id: 
+
+#Provide the client id for angular application (admin user)        
+admin_app_client_id: 
+
+#Provide the client id and secret for emission application        
+emission_app_client_id:
+emission_app_secret: 

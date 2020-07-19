@@ -1,32 +1,19 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
-var groupArray = require('group-array');
-const crcHelper = require('./crcHelper');
 const auth = require('../../middleware/check-auth');
-const s3File = require('./s3File');
+const s3File = require('../../lib/reads3File');
+
 
 router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all block wise api ---');
+        let fileName = `crc/block_crc_opt_json.json`;
+        var jsonData = await s3File.readS3File(fileName);
 
-        // to store the s3 file data to variables
-        let fullData = {}
-        fullData = {
-            frequencyData: await s3File.frequencyData(),
-            crcMetaData: await s3File.crcMetaData()
-        }
+        var blockData = jsonData.data;
+        logger.info('--- crc all blocks api response sent ---');
+        res.status(200).send({ visits: blockData });
 
-        // crc meta data group by block id
-        let crcMetaDataGroupData = groupArray(fullData.crcMetaData, 'block_id');
-
-        // crc frequency data group by block
-        let crcFrequencyGroupData = groupArray(fullData.frequencyData, 'block_id');
-
-        let level = 'block';
-
-        let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-        logger.info('--- crc all block wise api response sent ---');
-        res.status(200).send(crcResult);
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -37,34 +24,20 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc block per district api ---');
 
-        // to store the s3 file data to variables
-        let fullData = {}
-        fullData = {
-            frequencyData: await s3File.frequencyData(),
-            crcMetaData: await s3File.crcMetaData()
+        let distId = req.params.distId;
+        let fileName = `crc/block_crc_opt_json.json`;
+        var jsonData = await s3File.readS3File(fileName);
+
+        var blockData = jsonData
+        let filterData = jsonData.data.filter(obj => {
+            return (obj.districtId == distId);
+        });
+        if (filterData.length > 0) {
+            logger.info('--- crc block per district api response sent ---');
+            res.status(200).send({ visits: filterData, schoolsVisitedCount: blockData.footer[`${distId}`] });
+        } else {
+            res.status(403).json({ errMsg: "No matches found" });
         }
-
-        // filter crc meta data by district id
-        let filterMetaData = fullData.crcMetaData.filter(obj => {
-            return obj.district_id == req.params.distId
-        })
-
-        // crc meta data group by district id
-        let crcMetaDataGroupData = groupArray(filterMetaData, 'block_id');
-
-        // filter crc frequency data by district id
-        let filterFrequencyData = fullData.frequencyData.filter(obj => {
-            return obj.district_id == req.params.distId
-        })
-
-        // crc frequency data group by district_id
-        let crcFrequencyGroupData = groupArray(filterFrequencyData, 'block_id');
-
-        let level = 'block';
-
-        let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-        logger.info('--- crc block per district api response sent ---');
-        res.status(200).send(crcResult);
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

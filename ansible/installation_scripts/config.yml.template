@@ -9,6 +9,7 @@
 #------------------------------------------------------#
 
 system_user_name:                          # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
+base_dir: /opt                            # provide the absolute path where cqube needs to be installed and served. Eg. /opt  ( in this case cqube will be installed under /opt/cqube)
 
 #Database variables naming convention, the variable length should be between [3-63] characters and should contain upper/lower characters, it should start with _ or lower or upper characters.
 
@@ -37,8 +38,10 @@ aws_default_region: 'ap-south-1'            # aws default region for creation of
 # Node server will be running on 3000 port using local ip.
 # If you are using reverse proxy and using SSL certificate, please enter the right api endpoint url.
 
-api_endpoint:                               # https://domain.com/api ( `http://<public_ip>:3000/api` Example: http://13.234.239.17:3000/api )
+api_endpoint:                               # enter domain.com ( Example: cqubeprojects.com )
 local_ipv4_address:                         # enter the private ip of this server. To find the ip address. Use `ip addr` or `ifconfig`
+keycloak_adm_user:                          # enter the keycloak admin user to be created 
+keycloak_adm_passwd:                        # enter the keycloak admin password
 
 #Please change the below parameters based on your system requirements
 shared_buffers: 2GB                         # Postgres buffer memory. Minimum usage: use 2GB for 16GB RAM system memory
@@ -51,4 +54,4 @@ db_driver_class_name: org.postgresql.Driver
 db_connection_url: jdbc:postgresql://localhost:5432/
 db_driver_dir: jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
 nifi_port: 8096
-nifi_error_dir: /opt/nifi/nifi_errors
+nifi_error_dir: /cqube/nifi/nifi_errors    # This location will be prefixed with base_dir ( Example: in this case /opt/cqube/nifi/nifi_errors )

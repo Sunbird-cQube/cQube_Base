@@ -1,32 +1,19 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
-var groupArray = require('group-array');
-const crcHelper = require('./crcHelper');
 const auth = require('../../middleware/check-auth');
-const s3File = require('./s3File');
+const s3File = require('../../lib/reads3File');
 
 router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all school wise api ---');
 
-        // to store the s3 file data to variables
-        let fullData = {}
-        fullData = {
-            frequencyData: await s3File.frequencyData(),
-            crcMetaData: await s3File.crcMetaData()
-        }
+        let fileName = `crc/school_crc_opt_json.json`;
+        var jsonData = await s3File.readS3File(fileName);
 
-        // crc meta data group by school id
-        let crcMetaDataGroupData = groupArray(fullData.crcMetaData, 'school_id');
+        var schoolData = jsonData.data;
+        logger.info('--- crc all school wise api response sent ---');
+        res.status(200).send({ visits: schoolData });
 
-        // crc frequency data group by school
-        let crcFrequencyGroupData = groupArray(fullData.frequencyData, 'school_id');
-
-        let level = 'school';
-
-        let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-        logger.info('--- crc all school wise api reponse sent ---');
-        res.status(200).send(crcResult);
     } catch (e) {
         logger.error(e);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -36,35 +23,24 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc school per cluster, per block and per district api ---');
+        let fileName = `crc/school_crc_opt_json.json`;
+        var jsonData = await s3File.readS3File(fileName);
 
-        // to store the s3 file data to variables
-        let fullData = {}
-        fullData = {
-            frequencyData: await s3File.frequencyData(),
-            crcMetaData: await s3File.crcMetaData()
+        var schoolData = jsonData
+
+        let distId = req.params.distId;
+        let blockId = req.params.blockId;
+        let clusterId = req.params.clusterId;
+
+        let filterData = schoolData.data.filter(obj => {
+            return (obj.districtId == distId && obj.blockId == blockId && obj.clusterId == clusterId);
+        });
+        if (filterData.length > 0) {
+            logger.info('--- crc school per cluster, per block and per district api response sent ---');
+            res.status(200).send({ visits: filterData, schoolsVisitedCount: schoolData.footer[`${clusterId}`] });
+        } else {
+            res.status(403).json({ errMsg: "No matches found" });
         }
-
-        // filter crc meta data by district id & block id
-        let filterMetaData = fullData.crcMetaData.filter(obj => {
-            return (obj.district_id == req.params.distId && obj.block_id == req.params.blockId && obj.cluster_id == req.params.clusterId)
-        })
-
-        // crc meta data group by cluster id
-        let crcMetaDataGroupData = groupArray(filterMetaData, 'school_id');
-
-        // filter crc frequency data by district id & block id
-        let filterFrequencyData = fullData.frequencyData.filter(obj => {
-            return (obj.district_id == req.params.distId && obj.block_id == req.params.blockId && obj.cluster_id == req.params.clusterId)
-        })
-
-        // crc frequency data group by blocki_id
-        let crcFrequencyGroupData = groupArray(filterFrequencyData, 'school_id');
-
-        let level = 'school';
-
-        let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-        logger.info('--- crc school per cluster, per block and per district api sent ---');
-        res.status(200).send(crcResult);
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

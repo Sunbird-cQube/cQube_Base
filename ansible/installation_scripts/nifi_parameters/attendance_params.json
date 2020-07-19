@@ -1,0 +1,72 @@
+{
+        "revision": {
+            "clientId": "value",
+            "version": 0,
+            "lastModifier": "Admin"
+        },
+        "component":{
+                "name":"student_attendance_parameters",
+
+        "parameters":[
+            {
+                "parameter":{"name":"base_dir",
+                        "value":""
+                            }
+            },
+            {
+                "parameter":{"name":"nifi_error_dir",
+                        "value":""
+                            }
+            },
+            {
+                "parameter":{"name":"s3_output_bucket",
+                        "value":""
+                            }
+            },
+	    {
+                "parameter":{"name":"db_user",
+                        "value":""
+                            }
+            },
+            {
+                "parameter":{"name":"db_name",
+                        "value":""
+                            }
+            },
+            {
+                "parameter":{"name":"db_driver_dir",
+                        "value":""
+                            }
+            },
+            {
+                "parameter":{"name":"db_driver_class_name",
+                        "value":""
+                            }
+            },
+            {
+                "parameter":{"name":"db_connection_url",
+                        "value":""
+                            }
+            },
+	    {
+                "parameter":{"name":"s3_access_key",
+                "sensitive": true,
+                        "value":""
+                            }
+            },
+            {
+                "parameter":{"name":"s3_secret_key",
+                "sensitive": true,
+                        "value":""
+                            }
+            },
+            {
+                "parameter":{"name":"db_password",
+                "sensitive": true,
+                        "value":""
+                            }
+            }
+        ]
+
+}
+}

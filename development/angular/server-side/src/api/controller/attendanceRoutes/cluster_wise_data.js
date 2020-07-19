@@ -1,27 +1,35 @@
 const router = require('express').Router();
-var const_data = require('../../lib/config');
 const { logger } = require('../../lib/logger');
-const axios = require('axios');
 const auth = require('../../middleware/check-auth');
+const s3File = require('../../lib/reads3File');
 
-router.post('/clusterWise', auth.authController, function (req, res) {
+router.post('/clusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Attendance cluster wise api ---');
         var month = req.body.month;
         var year = req.body.year;
-        const_data['getParams']['Key'] = `attendance/cluster_attendance_${year}_${month}.json`;
-        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
-            if (err) {
-                logger.error(err);
-                res.status(500).json({ errMsg: "Something went wrong" });
-            } else if (!data) {
-                logger.error("No data found in s3 file");
-                res.status(403).json({ errMsg: "No such data found" });
-            } else {
-                logger.info('--- Attendance cluster wise api response sent ---');
-                res.status(200).send(data.Body);
+        let fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`
+        var jsonData = await s3File.readS3File(fileName);
+        var clustersAttendanceData = jsonData.data
+        var clusterData = [];
+        for (let i = 0; i < clustersAttendanceData.length; i++) {
+            var obj = {
+                id: clustersAttendanceData[i]['x_axis'],
+                name: clustersAttendanceData[i]['cluster_name'],
+                distId: clustersAttendanceData[i]['district_id'],
+                dist: clustersAttendanceData[i]['district_name'],
+                blockId: clustersAttendanceData[i]['block_id'],
+                block: clustersAttendanceData[i]['block_name'],
+                label: clustersAttendanceData[i]['x_value'],
+                lat: clustersAttendanceData[i]['y_value'],
+                lng: clustersAttendanceData[i]['z_value'],
+                stdCount: (clustersAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                schCount: (clustersAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             }
-        });
+            clusterData.push(obj);
+        }
+        logger.info('--- Attendance cluster wise api response sent ---');
+        res.status(200).send({ clusterData: clusterData, studentCount: jsonData.allClustersFooter.students, schoolCount: jsonData.allClustersFooter.schools });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -30,41 +38,35 @@ router.post('/clusterWise', auth.authController, function (req, res) {
 
 router.post('/clusterPerBlock', auth.authController, async (req, res) => {
     try {
-        logger.info('---Attendance clusterPerBlock api ---');
+        logger.info('---Attendance clusterPerDist api ---');
         var blockId = req.body.data.id;
-        var baseUrl = req.body.baseUrl;
-        var token = req.headers.token;
         var month = req.body.data.month;
         var year = req.body.data.year;
-
-        var allClusters = await axios.post(`${baseUrl}/attendance/clusterWise`, { month: month, year: year }, { 'headers': { 'token': "Bearer" + token } });
-
-        var clusterDetails = [];
-        if (allClusters.data['errMsg']) {
-            res.status(500).json({ errMsg: "Something went wrong" });
-        } else {
-            allClusters.data.forEach(clusters => {
-                if (blockId === clusters.block_id) {
-                    obj = {
-                        x_axis: clusters.x_axis,
-                        blockId: clusters.block_id,
-                        blockName: clusters.block_name,
-                        distId: clusters.district_id,
-                        distName: clusters.district_name,
-                        cluster_name: clusters.cluster_name,
-                        x_value: clusters.x_value,
-                        y_value: clusters.y_value,
-                        z_value: clusters.z_value,
-                        students_count: clusters.students_count,
-                        total_schools: clusters.total_schools
-                    }
-                    clusterDetails.push(obj);
-                }
-
-            });
-            await logger.info('--- Attendance clusterPerBlock api response sent ---');
-            res.status(200).send(clusterDetails);
+        let fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`
+        var jsonData = await s3File.readS3File(fileName);
+        var clusterData = [];
+        var filterData = jsonData.data.filter(data => {
+            return (data.block_id == blockId)
+        });
+        var myData = filterData;
+        for (let i = 0; i < myData.length; i++) {
+            var obj = {
+                id: myData[i]['x_axis'],
+                name: myData[i]['cluster_name'],
+                distId: myData[i]['district_id'],
+                dist: myData[i]['district_name'],
+                blockId: myData[i]['block_id'],
+                block: myData[i]['block_name'],
+                label: myData[i]['x_value'],
+                lat: myData[i]['y_value'],
+                lng: myData[i]['z_value'],
+                stdCount: (myData[i]['students_count']),
+                schCount: (myData[i]['total_schools']),
+            }
+            clusterData.push(obj);
         }
+        logger.info('--- Attendance clusterPerDist api response sent ---');
+        res.status(200).send({ clusterDetails: clusterData, studentCount: jsonData.footer[blockId].students, schoolCount: jsonData.footer[blockId].schools });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

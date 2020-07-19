@@ -11,6 +11,12 @@ check_length(){
     fi
 }
 
+check_base_dir(){
+if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
+  echo "Error - Please enter the absolute path or make sure the directory is present."; fail=1
+fi
+}
+
 check_s3_bucket_naming()
 {
 s3_bucket_naming_status=0
@@ -26,26 +32,48 @@ fi
 }
 
 check_postgres(){
-    temp=$(psql -V > /dev/null 2>&1; echo $?)
+echo "Checking for Postgres ..."
+temp=$(psql -V > /dev/null 2>&1; echo $?)
 
 if [ $temp == 0 ]; then
     version=`psql -V | head -n1 | cut -d" " -f3`
     if [ $version>=10.12 ]
     then
-	while true; do
-    	read -p "Warning - Postgres is already present in this machine. Do you want to re-install it? (yes/no) " answer
-    	case $answer in
-     	    yes )
-		    sudo apt-get --purge remove postgresql -y
-		    dpkg -l | grep postgres
-		    sudo apt-get --purge remove postgresql postgresql-doc postgresql-common -y
-		    sudo apt autoremove -y
-		    break
-		    ;;
-            no )
-	    	    tput setaf 1; echo "Please uninstall postgres and rerun the installation"; tput sgr0 ; fail=1; break;
-		    ;;
-	    * )     ;;
+        echo "WARNING: Postgres found."
+        echo "Please select any option."
+echo """1. Skip the Postgres installation (Will backup the data locally for future reference)
+2. Re-install the Postgres (current database will not be backed-up )
+3. Exit the installation
+        """
+  while true; do
+      read -p "Enter the option: " answer
+      case $answer in
+          1 )
+                read -p "Enter the database name: " bk_db_name
+                read -p "Enter the Username: " bk_db_uname
+                pg_dump -h localhost -U $bk_db_uname -W -F t $bk_db_name > `date +%Y%m%d%H%M`$bk_db_name.tar
+                if [[ ! $? == 0 ]]; then
+                    echo "There is a problem dumping the database"; tput sgr0 ; fail=1; break;
+                fi
+                echo "Backed up the database..."
+                echo "Backup file will be uploaded to S3 bucket, once the installation completes."
+		sudo sed -i "s/- include_tasks: install_postgress.yml/#&/g" roles/createdb/tasks/main.yml
+        break
+        ;;
+            2 )
+                echo "Removing Postgres..."
+                sudo apt-get --purge remove postgresql -y
+                dpkg -l | grep postgres
+                sudo apt-get --purge remove postgresql postgresql-doc postgresql-common -y
+                sudo apt autoremove -y
+                echo "Done."
+	break	
+        ;;
+            3 )
+                tput setaf 1; echo "Please backup the database and rerun the installation"; tput sgr0 ; fail=1; break;
+                exit;
+            ;;
+      * )     ;;
         esac
         done
      fi
@@ -165,46 +193,12 @@ check_aws_key(){
     fi
 }
 check_s3_bucket(){
-check_length $2
-if [[ $? == 0 ]]; then
-  check_s3_bucket_naming $2
-  if [[ $? == 0 ]]; then
-    if [[ $aws_key_status == 0 ]]; then
+if [[ $aws_key_status == 0 ]]; then
         bucketstatus=`aws s3api head-bucket --bucket "${2}" 2>&1`
-        if [ $? == 0 ]
+        if [ ! $? == 0 ]
         then
-           tput setaf 3; echo "Warning: [ $1 ]:[ $2 ] Bucket owned and already exists"; tput sgr0
-            while true; do
-            read -p "Do you want to continue with same bucket name [$2] as [$1]? (yes/no): " answer
-            case $answer in
-                yes )
-                    break
-                    ;; 
-                no ) 
-                    tput setaf 3; echo "Please change the $1 value in config.yml."; tput sgr0
-                    fail=1
-                    break
-                    ;;
-                * )
-                    echo "Please enter yer or no ";;
-            esac
-            done
-            count=0
-        elif [[ $bucketstatus == *"Not Found"* ]]; then
-            echo "Bucket name $2 is available."
-        elif [[ "$bucketstatus" == *"Forbidden"* ]]; then
-            tput setaf 1; echo "Error: [ $1 : $2 ] Bucket already exists but not owned. Please change the bucket name in config.yml"; tput sgr0; fail=1
-        elif [[ "$bucketstatus" == *"Bad Request"* ]]; then
-            tput setaf 1; echo "Error: [ $1 : $2 ] Bucket name should be between 3 and 63 characters. Please change the bucket name in config.yml"; tput sgr0; fail=1
-        else
-            tput setaf 1; echo "Error: [ $1 : $2 ] $bucketstatus"; tput sgr0; fail=1
+            echo "Error: [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in config.yml"; fail=1
         fi
-    fi
-  else
-      echo "Error - $1 S3 Bucket name value is not as per naming convention. Please change the bucket name."; fail=1
-  fi
- else
-        echo "Error - Length of the value $1 is not correct. Provide the length between 3 and 63."; fail=1
 fi
 }
 
@@ -239,29 +233,20 @@ check_db_password(){
 }
 
 check_api_endpoint(){
-if [[ ! $2 =~ ^https?://[0-9] ]]; then
-
-   if [[ $2 =~ ^https?://[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
-        temp_fqdn=`echo $1 | sed -E 's/http:\/\/|https:\/\///g'`
-        if ! [[ ${#temp_fqdn} -le 255 ]]; then
-         echo "Error - FQDN exceeding 255 characters. Please provide the proper api url for $1"; fail=1
+if [[ ! $2 =~ ^[0-9] ]]; then
+        if [[ (( $2 =~ \-{2,} ))  ||  (( $2 =~ \.{2,} )) ]]; then
+          echo "Error - Please provide the proper api endpoint for $1"; fail=1
+  else
+   if [[ $2 =~ ^[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
+        if ! [[ ${#2} -le 255 ]]; then
+         echo "Error - FQDN exceeding 255 characters. Please provide the proper api endpoint for $1"; fail=1
         fi
     else
-        echo "Error - Please provide the proper api url for $1"; fail=1
+        echo "Error - Please provide the proper api point for $1"; fail=1
     fi
-
-else
-    ip_api=$(echo "$2" | grep -o -P '(?<=//).*(?=:)')
-    public_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-    if [[ ! "$ip_api" =~ ^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))$ ]]; then
-        echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
-        else
-          if [[ ! $ip_api == $public_ip ]] ; then
-            echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
-          fi
     fi
-
 fi
+
 }
 
 check_aws_default_region(){
@@ -292,9 +277,9 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "db_user" "db_name" "db_password" "nifi_port" "s3_access_key" "s3_secret_key" \
+declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "nifi_port" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" "shared_buffers" "work_mem" "java_arg_2" "java_arg_3" \
-		"aws_default_region" "local_ipv4_address" "api_endpoint" "db_connection_url" "db_driver_dir" \
+		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "db_connection_url" "db_driver_dir" \
 		"db_driver_class_name" "nifi_error_dir") 
 
 # Create and empty array which will store the key and value pair from config file
@@ -326,6 +311,13 @@ case $key in
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_sys_user $key $value
+       fi
+       ;;
+   base_dir)	 
+       if [[ $value == "" ]]; then
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+       else
+          check_base_dir $key $value
        fi
        ;;
    s3_access_key)
@@ -390,6 +382,20 @@ case $key in
           check_db_naming $key $value
        fi
        ;;
+   keycloak_adm_user)
+       if [[ $value == "" ]]; then
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+       else
+          check_db_naming $key $value
+       fi
+       ;;
+   keycloak_adm_passwd)
+       if [[ $value == "" ]]; then
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+       else
+          check_db_password $key $value
+       fi
+       ;;
    db_password)
        if [[ $value == "" ]]; then
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
@@ -441,9 +447,9 @@ case $key in
            check_mem_variables $shared_buffers $work_mem $java_arg_2 $java_arg_3
        fi
        ;;
-    nifi_error_dir)
-       if [[ ! "$value" =~ ^(/opt/nifi/nifi_errors)$ ]]; then
-          echo "Error - Valid values for $key is /opt/nifi/nifi_errors"; fail=1
+   nifi_error_dir)
+       if [[ ! "$value" =~ ^(/cqube/nifi/nifi_errors)$ ]]; then
+          echo "Error - Valid values for $key is /cqube/nifi/nifi_errors"; fail=1
        fi
        ;;
    aws_default_region)

@@ -5,17 +5,26 @@ const cluster_wise_data = require('./controller/attendanceRoutes/cluster_wise_da
 const school_wise_data = require('./controller/attendanceRoutes/school_wise_data');
 const getDateRange = require('./controller/attendanceRoutes/getDateRange');
 
-const dashboard = require('./controller/dashboardRoutes/dashboard');
-
 const roleLogin = require('./controller/users/roleBasedLogin');
 const changePasswd = require('./controller/users/changePassword');
-const addUser = require('./controller/users/addUser');
+
 // const crcData = require('./controller/users/crcData');
 // crc files
 const crcDistrictWise = require('../api/controller/crcRoutes/districtWise');
 const crcBlockWise = require('../api/controller/crcRoutes/blockWise');
 const crcClusterWise = require('../api/controller/crcRoutes/clusterWise');
 const crcSchoolWise = require('../api/controller/crcRoutes/schoolWise');
+
+//Infra
+const infraDistWise = require('../api/controller/Infra/infra-distWise');
+const infraBlockWise = require('../api/controller/Infra/infra-blockWise');
+const infraClusterWise = require('../api/controller/Infra/infra-clusterWise');
+const infraSchoolWise = require('../api/controller/Infra/infra-schoolWise');
+
+const infraMapDistWise = require('../api/controller/Infra/report_map/infraDistWise');
+const infraMapBlockWise = require('../api/controller/Infra/report_map/infraBlockWise');
+const infraMapClusterWise = require('../api/controller/Infra/report_map/infraClusterWise');
+const infraMapSchoolWise = require('../api/controller/Infra/report_map/infraSchoolWise');
 
 const semDistrictWise = require('../api/controller/semRoutes/districtWise');
 const semBlockWise = require('../api/controller/semRoutes/blockWise');
@@ -43,7 +52,16 @@ router.use('/attendance', getDateRange)
 // user details routes
 router.use('/roleBasedLogin', roleLogin);
 router.use('/changePassword', changePasswd);
-router.use('/addUser', addUser);
-router.use('/dashboard', dashboard);
+
+// Infra
+router.use('/infra', infraDistWise);
+router.use('/infra', infraBlockWise);
+router.use('/infra', infraClusterWise);
+router.use('/infra', infraSchoolWise);
+
+router.use('/infraMap', infraMapDistWise);
+router.use('/infraMap', infraMapBlockWise);
+router.use('/infraMap', infraMapClusterWise);
+router.use('/infraMap', infraMapSchoolWise);
 
 module.exports = router;

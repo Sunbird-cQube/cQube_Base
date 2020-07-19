@@ -1,42 +1,26 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
-var groupArray = require('group-array');
-const crcHelper = require('./crcHelper');
 const auth = require('../../middleware/check-auth');
-const s3File = require('./s3File');
+const s3File = require('../../lib/reads3File');
 
 router.post('/districtWise', auth.authController, async (req, res) => {
     try {
-        logger.info('--- crc district wise api ---');
+        logger.info('--- crc all district wise api ---');
 
-        // to store the s3 file data to variables
-        let fullData = {}
+        let fileName = `crc/district_crc_opt_json.json`;
+        var jsonData = await s3File.readS3File(fileName);
+        var districtData = jsonData
 
-        fullData = {
-            frequencyData: await s3File.frequencyData(),
-            crcMetaData: await s3File.crcMetaData()
-        }
+        districtData.allDistrictsFooter['totalNumberOfVisits'] = parseInt(districtData.allDistrictsFooter.totalNumberOfVisits);
+        districtData.allDistrictsFooter['totalNumberOfSchools'] = parseInt(districtData.allDistrictsFooter.totalNumberOfSchools);
+        districtData.allDistrictsFooter['totalSchoolsVisited'] = parseInt(districtData.allDistrictsFooter.totalSchoolsVisited);
+        districtData.allDistrictsFooter['totalSchoolsNotVisited'] = parseInt(districtData.allDistrictsFooter.totalSchoolsNotVisited);
 
-        if (fullData.frequencyData.length > 0 && fullData.crcMetaData.length > 0) {
-            // crc meta data group by district id
-            let crcMetaDataGroupData = groupArray(fullData.crcMetaData, 'district_id');
-
-            // crc frequency data group by district_id
-            let crcFrequencyGroupData = groupArray(fullData.frequencyData, 'district_id');
-
-            let level = 'district';
-
-            let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-            logger.info('--- crc district wise api response sent ---');
-            res.status(200).send(crcResult);
-        } else {
-            res.status(500).json({ errMsg: "Something went wrong" });
-        }
-
+        logger.info('--- crc all district api response sent ---');
+        res.status(200).send({ visits: districtData.data, schoolsVisitedCount: districtData.allDistrictsFooter });
     } catch (e) {
-        logger.error(`Error :: ${e}`)
+        logger.error(e);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
-
 module.exports = router;

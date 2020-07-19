@@ -1,0 +1,22 @@
+---
+- name: Change permission
+  file:
+    path: ../../development/angular
+    mode: '1755'
+    
+- name: Configure the environment.ts
+  template:
+    src: environment.ts.j2
+    dest: ../../development/angular/client-side/src/environments/environment.ts
+
+- name: Configure the environment.prod.ts
+  template:
+    src: environment.prod.ts.j2
+    dest: ../../development/angular/client-side/src/environments/environment.prod.ts
+
+- name: Change to Angular directory
+  shell: cd ../../development/angular/client-side
+
+- name: Install Angular packages based on package.json.
+  npm:
+    path: ../../development/angular/client-side

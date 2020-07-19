@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 declare const $;
 
 @Component({
@@ -20,6 +21,8 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('backBtn').style.display = "none";
+    document.getElementById('homeBtn').style.display = "Block";
     // $("#exampleInputEmail").attr("disabled", "disabled");
     // document.addEventListener('contextmenu', function (e) {
     //   e.preventDefault();
@@ -31,28 +34,34 @@ export class ChangePasswordComponent implements OnInit {
     // });
   }
 
-  onSubmit() {
+  onSubmit(formData: NgForm) {
+    document.getElementById('spinner').style.display = 'block';
     this.isDisabled = false;
     if (this.changePasswdData.email === localStorage.getItem('email')) {
       if (this.changePasswdData.newPasswd != this.changePasswdData.cnfpass) {
         this.err = "Password not matched";
+        document.getElementById('spinner').style.display = 'none';
       } else {
         this.changePasswdData['updaterId'] = localStorage.getItem('user_id');
         this.service.changePassword(this.changePasswdData).subscribe(res => {
           document.getElementById('success').style.display = "Block";
           this.err = '';
           this.successMsg = res['msg'] + "\n" + " please login aging...";
+          document.getElementById('spinner').style.display = 'none';
           this.isDisabled = true;
+          formData.resetForm();
           setTimeout(() => {
             localStorage.clear();
             this.router.navigate(['/']);
           }, 2000);
         }, err => {
           this.err = "Something went wrong"
+          document.getElementById('spinner').style.display = 'none';
         })
       }
     } else {
       this.err = "Invalid email";
+      document.getElementById('spinner').style.display = 'none';
     }
   }
 
