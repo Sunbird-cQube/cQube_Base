@@ -102,7 +102,7 @@ create table IF NOT EXISTS student_attendance_meta
 day_1 boolean,day_2 boolean,day_3 boolean,day_4 boolean,day_5 boolean,day_6 boolean,day_7 boolean,day_8 boolean,day_9 boolean,day_10 boolean,
 day_11 boolean,day_12 boolean,day_13 boolean,day_14 boolean,day_15 boolean,day_16 boolean,day_17 boolean,day_18 boolean,day_19 boolean,day_20 boolean,
 day_21 boolean,day_22 boolean,day_23 boolean,day_24 boolean,day_25 boolean,day_26 boolean,day_27 boolean,day_28 boolean,day_29 boolean,day_30 boolean,
-day_31 boolean,month int,year int
+day_31 boolean,month int,year int,primary key(month,year)
 );
 
 CREATE OR REPLACE FUNCTION student_attendance_refresh(year int,month int)
@@ -354,8 +354,9 @@ u_query:='UPDATE student_attendance_meta sam
     False
     ELSE (select day_31 from student_attendance_meta_stg where month='||month||' and year='||year||')
   END
-   ,month = '||month||'
-   ,year = '||year;
+  where 
+   month = '||month||' and
+   year = '||year;
 
 EXECUTE u_query;
 EXECUTE _col_sql into _column;
@@ -686,8 +687,9 @@ us_query := 'UPDATE student_attendance_meta sam
    False
    ELSE sam.day_31
   END
-   ,month = '||month||'
-   ,year = '||year;
+  where 
+   month = '||month||' and
+   year = '||year;
 
    IF _column <> '' THEN  
  EXECUTE _sql;
