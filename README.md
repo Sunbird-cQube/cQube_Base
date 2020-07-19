@@ -15,10 +15,14 @@
 ```
 cd cQube/ansible/installation_scripts/
 <<<<<<< HEAD
+<<<<<<< HEAD
 git checkout cQube-release-new
 =======
 git checkout cQube-release-0.12
 >>>>>>> upstream/cQube-release-0.12
+=======
+git checkout release-1.0
+>>>>>>> upstream/release-1.0
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
@@ -57,7 +61,11 @@ Goto the URL ```http://< host_name or host_ip >```
 Note: URL depends upon the server configured in firewall (which includes SSL and reverse proxy)
 
 - Login using the default username and password which are ```admin@cqube.com``` and ```admin123```
+<<<<<<< HEAD
 - Change your default password by navigating to top left corner menu and clicking on User -> Change Password
+=======
+- Change your default password by navigating to top left cornor menu and clicking on User -> Change Password
+>>>>>>> upstream/release-1.0
 - Login again with changed password
 - Create emission user by navigating to top left cornor menu and clicking on User -> Create User
 - Fill required fields and select the 'Select the role' as 'Data emission' and hit 'Create User' button
@@ -73,6 +81,7 @@ cqube_emission
 |
 ├── block_master
 │   └── block_mst.zip
+<<<<<<< HEAD
 │       └── block_mst.csv
 │       └── manifest_datasource_block_mst.csv
 ├── cluster_master
@@ -87,6 +96,16 @@ cqube_emission
 │   └── school_mst.zip
 │       └── school_mst.csv
 │       └── manifest_datasource_school_mst.csv
+=======
+├── cluster_master
+│   └── cluster_mst.zip
+├── district_master
+│   └── district_mst.zip
+├── inspection_master
+│   └── inspectionmaster.zip
+├── school_master
+│   └── school_mst.zip
+>>>>>>> upstream/release-1.0
 ```
 
 Transactional Files:
@@ -95,6 +114,7 @@ cqube_emission
 |
 ├── semester
 │   └── semester.zip
+<<<<<<< HEAD
 │       └── semester.csv
 │       └── manifest_datasource_semester.csv
 ├── student_attendance
@@ -109,6 +129,12 @@ cqube_emission
 │   └── inspectionmaster.zip
 │       └── inspectionmaster.csv
 │       └── manifest_datasource_inspectionmaster.csv
+=======
+├── student_attendance
+│   └── StudentAttendance.zip
+└── user_location_master
+	└── UserLocationMaster.zip
+>>>>>>> upstream/release-1.0
 ```
 
 - Update below mentioned emission user details in `cQube/development/python/client/config.py`.

@@ -1353,6 +1353,7 @@ primary key(school_id,semester,grade)
 
 create index if not exists school_student_total_marks_id on school_student_subject_total_marks(semester,school_id,block_id,cluster_id);
 
+<<<<<<< HEAD
 /* Infra tables*/
 
 /* infrastructure_staging_init */
@@ -1779,3 +1780,5 @@ end;
 $$ language plpgsql;
 >>>>>>> upstream/cQube-release-0.12
 
+=======
+>>>>>>> upstream/release-1.0
