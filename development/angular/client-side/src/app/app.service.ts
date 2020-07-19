@@ -16,6 +16,7 @@ export class AppServiceComponent {
 
     login(data) {
         return this.http.post(`${this.baseUrl}/roleBasedLogin`, data);
+<<<<<<< HEAD
     }
 
 
@@ -111,6 +112,8 @@ export class AppServiceComponent {
             // 'startDate': '01-08-2019',
             // 'endDate': '31-10-2019'
         });
+=======
+>>>>>>> upstream/cQube-release-0.12
     }
 
     cluster_wise_sem_data(distId, blockId) {
@@ -203,4 +206,21 @@ export class AppServiceComponent {
     infraMapSchoolWise(distId, blockId, clusterId) {
         return this.http.post(`${this.baseUrl}/infraMap/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
+
+    districtWiseCRC() {
+        return this.http.get(`${this.baseUrl}/crcData/crcDistrictWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    blockWiseCRC() {
+        return this.http.get(`${this.baseUrl}/crcData/crcBlockWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    clusterWiseCRC() {
+        return this.http.get(`${this.baseUrl}/crcData/crcClusterWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    schoolWiseCRC() {
+        return this.http.get(`${this.baseUrl}/crcData/crcSchoolWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
 }

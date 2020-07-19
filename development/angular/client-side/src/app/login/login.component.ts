@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     document.getElementById('spinner').style.display = 'block';
     this.service.login(this.logData).subscribe(res => {
+<<<<<<< HEAD
       this.result = res;
       document.getElementById('spinner').style.display = 'none';
       // localStorage.clear();
@@ -35,6 +36,14 @@ export class LoginComponent implements OnInit {
 
       if (this.role == 1 || this.role == 3) {
         this.router.navigate(['home/']);
+=======
+      if (res['msg']) {
+        localStorage.setItem('token', res['token']);
+        // this.router.navigate(['/admin-view']);
+        this.router.navigate(['/map-view'])
+      } else if (res['errMsg']) {
+        this.err = res['errMsg'];
+>>>>>>> upstream/cQube-release-0.12
       }
       else {
         this.err = "Unauthorised User";

@@ -19,8 +19,11 @@
     "csvtojson": "^2.0.10",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+<<<<<<< HEAD
     "group-array": "^1.0.0",
     "i": "^0.3.6",
+=======
+>>>>>>> upstream/cQube-release-0.12
     "json2csv": "^5.0.0",
     "jsonwebtoken": "^8.5.1",
     "keycloak-backend": "^2.0.0",

@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
+<<<<<<< HEAD
 import { StudengtAttendanceComponent } from './student-attendance/student-attendance.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,12 +32,18 @@ import { HomePageComponent } from './home-page/home-page.component';
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
 }
+=======
+import { MapViewComponent } from './map-view/map-view.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { ChartViewComponent } from './chart-view/chart-view.component';
+>>>>>>> upstream/cQube-release-0.12
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UserViewComponent,
+<<<<<<< HEAD
     StudengtAttendanceComponent,
     HomeComponent,
     TeacherAttendanceComponent,
@@ -48,6 +55,10 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     SchoolInfrastructureComponent,
     InfraMapVisualisationComponent,
     HomePageComponent
+=======
+    MapViewComponent,
+    ChartViewComponent,
+>>>>>>> upstream/cQube-release-0.12
   ],
   imports: [
     BrowserModule,
@@ -62,7 +73,9 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     MatPaginatorModule,
     MatSortModule,
     HttpClientModule,
+    LeafletModule.forRoot(),
     FormsModule,
+<<<<<<< HEAD
     BrowserAnimationsModule
   ],
   exports: [
@@ -77,6 +90,12 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
       useFactory: kcFactory,
       multi: true
     }
+=======
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCbRPhVlxgVwBC0bBOgyB-Dn_K8ONrxb_g' + '&libraries=visualization'
+    }),
+    AgmDirectionModule
+>>>>>>> upstream/cQube-release-0.12
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

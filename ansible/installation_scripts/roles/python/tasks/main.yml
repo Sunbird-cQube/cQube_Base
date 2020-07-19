@@ -6,6 +6,7 @@
   apt: name=python-pip
 - pip:
     name: boto3
+<<<<<<< HEAD
  
 - name: Install required packages
   apt:
@@ -16,3 +17,6 @@
     - libffi-dev
     - virtualenv
     - python3-setuptools 
+=======
+
+>>>>>>> upstream/cQube-release-0.12

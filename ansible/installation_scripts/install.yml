@@ -3,6 +3,7 @@
   hosts: localhost
   remote_user: root
   vars_files:
+<<<<<<< HEAD
     - config.yml
 
   roles:
@@ -21,3 +22,15 @@
      - nifi_attendance
      - nifi_semester
      - nifi_infra
+=======
+    - vars/main.yml
+
+  roles:
+  - java
+  - python
+  - s3_buckets
+  - sftp
+  - createdb
+  - angular
+  - nifi
+>>>>>>> upstream/cQube-release-0.12

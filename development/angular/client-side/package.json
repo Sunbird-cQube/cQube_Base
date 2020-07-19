@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+<<<<<<< HEAD
     "@angular/animations": "~9.1.7",
     "@angular/cdk": "~8.2.3",
     "@angular/common": "~9.1.7",
@@ -42,6 +43,30 @@
     "tslib": "^1.10.0",
     "xlsx": "^0.15.6",
     "zone.js": "~0.10.2"
+=======
+    "@agm/core": "^1.1.0",
+    "@angular/animations": "~8.2.14",
+    "@angular/common": "~8.2.14",
+    "@angular/compiler": "~8.2.14",
+    "@angular/core": "~8.2.14",
+    "@angular/forms": "~8.2.14",
+    "@angular/platform-browser": "~8.2.14",
+    "@angular/platform-browser-dynamic": "~8.2.14",
+    "@angular/router": "~8.2.14",
+    "@asymmetrik/ngx-leaflet": "^5.0.2",
+    "@types/google-maps": "^3.2.2",
+    "agm-direction": "^0.7.9",
+    "chart.js": "^2.9.3",
+    "export-to-csv": "^0.2.1",
+    "file-saver": "^2.0.2",
+    "jquery": "^3.4.1",
+    "leaflet": "^1.6.0",
+    "papaparse": "^5.2.0",
+    "rxjs": "~6.4.0",
+    "tslib": "^1.10.0",
+    "xlsx": "^0.15.6",
+    "zone.js": "~0.9.1"
+>>>>>>> upstream/cQube-release-0.12
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.6",
@@ -51,8 +76,14 @@
     "@types/googlemaps": "^3.39.3",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
+<<<<<<< HEAD
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+=======
+    "@types/leaflet": "^1.5.12",
+    "@types/node": "~8.9.4",
+    "codelyzer": "^5.0.0",
+>>>>>>> upstream/cQube-release-0.12
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^5.0.5",

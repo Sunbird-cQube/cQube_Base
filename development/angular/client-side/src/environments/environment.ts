@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+<<<<<<< HEAD
   apiEndpoint: "http://localhost:3000/api",
   adminUrl: "http://localhost:4201",
   keycloakUrl: "http://localhost:8080/auth",
@@ -12,6 +13,12 @@ export const environment = {
   credentials: { secret: 'c45d54f7-b0aa-43c9-a6bb-9b77a47c73a2' }
 };
 
+=======
+  apiEndpoint: "https://cqube.tibilprojects.com/api"
+};
+
+// https://cqube.tibilprojects.com
+>>>>>>> upstream/cQube-release-0.12
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

@@ -1,0 +1,121 @@
+{
+	"revision": {
+	    "clientId": "value",
+	    "version": 0,
+	    "lastModifier": "Admin"
+	},
+	"component":{
+		"name":"ENVIRONMENT VARIABLES",
+	 
+	"parameters":[
+	    {
+		"parameter":{"name":"s3_input_bucket",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"s3_output_bucket",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"s3_access_key",
+		"sensitive": true,
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"s3_secret_key",
+		"sensitive": true,
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"sftp_hostname",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"sftp_input",
+			"value":""
+		            }
+	    },
+            {
+		"parameter":{"name":"sftp_port",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"sftp_user",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"sftp_key_path",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"postgre_driver_dir",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"postgre_driver_class_name",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"postgre_connection_url",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"postgre_source_db",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"postgre_dtn_db",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"postgre_db_user",
+			"value":""
+		            }
+	    },
+	    {
+		"parameter":{"name":"postgre_pwd",
+		"sensitive": true,
+			"value":""
+			
+		            }
+	    },
+	    {
+                "parameter":{"name":"sftp_school_master",
+                        "value":""
+                            }
+            },
+	    {
+                "parameter":{"name":"sftp_lat_long",
+                        "value":""
+                            }
+            },
+	    {
+                "parameter":{"name":"s3_school_master_lat_long",
+                        "value":""
+                            }
+            },
+            {
+                "parameter":{"name":"sftp_school_hierarchy",
+                        "value":""
+                            }
+            }
+
+
+
+	]
+}
+}
+
