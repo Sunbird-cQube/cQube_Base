@@ -261,10 +261,16 @@ def validate_weights(wdf):
     try:
         infra_file=s3_client.get_object(Bucket=OUTPUT_BUCKET_NAME,
                              Key="infrastructure_score/infrastructure_score.csv")
-        df = pd.read_csv(BytesIO(infra_file['Body'].read()),sep='|')
+        if infra_file:
+            df = pd.read_csv(BytesIO(infra_file['Body'].read()),sep='|')
+        else:
+            abort(400, f'Output bucket is not having infrastructure_score/infrastructure_score.csv key')
         if wdf["score"].sum() == 100:
             if list(df.columns) == list(wdf.columns):
-                return True
+                if len(df[['infrastructure_name','infrastructure_category']].merge(wdf[['infrastructure_name','infrastructure_category']]).drop_duplicates())==len(df):
+                    return True
+                else:
+                    abort(400, f'Bad data in file, please validate the data in infrastructure_name and infrastructure_category')
             else:
                 abort(400, f'Bad file header, please check the file header')
         else:
