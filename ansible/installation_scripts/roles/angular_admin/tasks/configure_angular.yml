@@ -1,0 +1,90 @@
+---
+- name: Change permission
+  file:
+    path: ../../development/admin
+    mode: '1755'
+
+- name: Fetch public ip or domain name
+  shell: echo "{{ api_endpoint }}" | grep -o -P '(?<=//).*(?=[\/|:])'
+  register: host_ip
+
+- name: Replacing endpoint value in environment.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.ts
+    regexp: "  apiEndpoint"
+    line: "apiEndpoint: 'http://{{ local_ipv4_address }}:3001/api',"
+
+- name: Replacing endpoint value in environment.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.ts
+    regexp: "  appUrl"
+    line: "appUrl: 'http://{{ host_ip.stdout }}:4200',"
+
+- name: Replacing endpoint value in environment.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.ts
+    regexp: "  grafanaEndPoint:"
+    line: "grafanaEndPoint: 'http://{{ local_ipv4_address }}:9000',"
+
+- name: Replacing endpoint value in environment.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.ts
+    regexp: "  keycloakUrl"
+    line: "keycloakUrl: 'http://{{ host_ip.stdout }}:8080/auth',"
+
+- name: Replacing endpoint value in environment.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.ts
+    regexp: "realm"
+    line: "realm: 'cQube',"
+
+- name: Replacing endpoint value in environment.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.ts
+    regexp: "clientId"
+    line: "clientId: 'cqube_admin'"
+    
+
+- name: Replacing endpoint value in environment.prod.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.prod.ts
+    regexp: "apiEndpoint"
+    line: "apiEndpoint: 'http://{{ local_ipv4_address }}:3001/api',"
+
+- name: Replacing endpoint value in environment.prod.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.prod.ts
+    
+    regexp: "  appUrl"
+    line: "appUrl: 'http://{{ host_ip.stdout }}:4200',"
+
+- name: Replacing endpoint value in environment.prod.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.prod.ts
+    regexp: "  grafanaEndPoint:"
+    line: "grafanaEndPoint: 'http://{{ local_ipv4_address }}:9000',"
+
+- name: Replacing endpoint value in environment.prod.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.prod.ts
+    regexp: "  keycloakUrl"
+    line: "keycloakUrl: 'http://{{ host_ip.stdout }}:8080/auth',"
+
+- name: Replacing endpoint value in environment.prod.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.prod.ts
+    regexp: "realm"
+    line: "realm: 'cQube',"
+
+- name: Replacing endpoint value in environment.prod.ts
+  lineinfile:
+    path: ../../development/admin/client-side/src/environments/environment.prod.ts
+    regexp: "clientId"
+    line: "clientId: 'cqube_admin'"
+    
+- name: Change to Angular directory
+  shell: cd ../../development/admin/client-side
+
+- name: Install Angular packages based on package.json.
+  npm:
+    path: ../../development/admin/client-side

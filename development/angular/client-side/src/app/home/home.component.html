@@ -1,68 +1,37 @@
 <mat-toolbar color="primary" style="height: 35px;">
-  <button mat-icon-button (click)="sidenav.toggle() ">
+  <button mat-icon-button (click)="sidenav.toggle()" id="menu">
     <mat-icon>menu</mat-icon>
   </button>
   <h4>cQube - Dashboard </h4>
   <span style="flex: 1 1 auto;"></span>
-  <button mat-raised-button color="primary" style="padding: 1.5px;" (click)="logout()">Log Out</button>
+  <span id="backBtn" class="headerBtn"
+    style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;display: none;"
+    [routerLink]="['/homePage']">
+    <strong *ngIf="userType">Back</strong>
+  </span>
+  <span id="homeBtn" class="headerBtn"
+    style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;display: none;" [routerLink]="['/home']">
+    <strong>Home</strong>
+  </span>
+  <span id="logout" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()">
+    <strong> Logout</strong>
+  </span>
+
 </mat-toolbar>
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
     <mat-nav-list style="font-family: Arial;" class=sidenav>
       <mat-toolbar style="height: 80px; background-color: white; border-bottom: 1px solid lightgray;">
-
-        <!-- <img mat-card-image src="../../assets/person_Icon.png" alt="Photo" class="img-circle profile"
-          style="height: 50%;"> -->
-
         <mat-toolbar-row style="color: rgb(84, 116, 223);">
-          <span class="span" style="font-size: 15px;"><b>Logged in as: </b><br>
+          <span class="span" style="font-size: 15px;"><strong>Logged in as: </strong><br>
             <span>{{email}}</span></span>
         </mat-toolbar-row>
       </mat-toolbar>
-      <div *ngIf="showsideMenu">
-        <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
-          [routerLink]="['dashboard']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp;Dashboard</td>
 
-        </a> -->
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
-          [routerLink]="['teacher-attendance']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp;Teacher Attendance Report</td>
-
-
-        </a>
-
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
-          [routerLink]="['crc-report']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; CRC Report </td>
-
-        </a>
-      </div>
       <div *ngIf="!showsideMenu">
-        <!-- <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
-          [routerLink]="['dashboard']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp;Dashboard</td>
-
-        </a> -->
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
-          [routerLink]="['attendance-report']">
+        <a id="SAR" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['attendance-report']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
@@ -70,58 +39,69 @@
             &nbsp;&nbsp; Student Attendance Report </td>
         </a>
 
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
-          [routerLink]="['crc-report']">
+        <a id="crcr" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray;font-family: Arial;" [routerLink]="['crc-report']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
           <td>
             &nbsp;&nbsp; CRC Report </td>
-
         </a>
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray; font-family: Arial;"
-          [routerLink]="['teacher-attendance']">
+
+        <a id="tar" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['teacher-attendance']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
           <td>
             &nbsp;&nbsp;Teacher Attendance Report</td>
         </a>
-        <a mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
-          [routerLink]="['semester-report']">
+        <a id="sr" mat-list-item (click)="sidenav.toggle()"
+          style="font-family: Arial; border-bottom: 1px solid lightgray;" [routerLink]="['semester-report']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
           <td>
             &nbsp;&nbsp;Semester Report</td>
         </a>
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu = !showSubmenu" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+            <span class="full-width" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; "> School
+              Infrastructure</span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu1" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['school-infra-map']" (click)="sidenav.toggle() " id="mapReport"
+              (click)="showSubmenu = !showSubmenu"><span style="margin-left: 50px;">Map
+                based Report</span></a>
+            <a mat-list-item [routerLink]="['school-infrastructure']" (click)="sidenav.toggle()" id="tblReport"
+              (click)="showSubmenu = !showSubmenu"><span style="margin-left: 50px;">Report</span></a>
+          </div>
+        </mat-nav-list>
+        <mat-nav-list *ngIf="showUser">
+          <mat-list-item (click)="showSubmenu1 = !showSubmenu1" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+            <span class="full-width" *ngIf="isExpanded || isShowing" id="usr" style=" margin-left: 4%;"> User </span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu1}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu" [ngClass]="{'expanded' : showSubmenu1}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['changePassword']" id="chPass" (click)="sidenav.toggle()"
+              (click)="showSubmenu1 = !showSubmenu1"><span style="margin-left: 50px;">Change
+                Password</span></a>
+          </div>
+        </mat-nav-list>
       </div>
 
-      <span class="toolbar-filler"></span>
-      <mat-list>
-        <mat-list-item class="abc">
-
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp; &nbsp;User</td>
-          <button mat-button mat-icon-button (click)="showSubmenu = !showSubmenu">
-            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}">expand_more</mat-icon>
-          </button>
-        </mat-list-item>
-        <div class="submenu" [ngClass]="{'expanded' : showSubmenu}">
-          <a *ngIf="!showsideMenu" mat-list-item (click)="sidenav.toggle()" style="font-family: Arial;  
-          border-bottom: 1px solid lightgray;" [routerLink]="['addUser']"><span style="margin-left: 40px;">Create
-              User</span> </a>
-          <a mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
-            [routerLink]="['changePassword']"><span style="margin-left: 40px;">Change Password</span></a>
-          <!-- <a mat-list-item (click)="sidenav.toggle()" style="font-family: Arial; border-bottom: 1px solid lightgray;"
-          [routerLink]="['teacher-attendance']" >Submenu Item 3</a> -->
-        </div>
-      </mat-list>
     </mat-nav-list>
+    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.1 </span>
+    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 16/07/2020</span>
   </mat-sidenav>
+
   <mat-sidenav-content>
     <div style="height: 93vh;">
       <router-outlet></router-outlet>

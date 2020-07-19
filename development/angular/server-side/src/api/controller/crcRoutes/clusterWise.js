@@ -1,73 +1,52 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
-var groupArray = require('group-array');
-const crcHelper = require('./crcHelper');
+var const_data = require('../../lib/config');
 const auth = require('../../middleware/check-auth');
-const s3File = require('./s3File');
+const s3File = require('../../lib/reads3File');
 
 router.post('/allClusterWise', auth.authController, async (req, res) => {
-    try {
-        logger.info('--- crc all cluster wise api ---');
+  try {
+    logger.info('--- crc all cluster wise api ---');
+    let fileName = `crc/cluster_crc_opt_json.json`;
+    var jsonData = await s3File.readS3File(fileName);
 
-        // to store the s3 file data to variables
-        let fullData = {}
-        fullData = {
-            frequencyData: await s3File.frequencyData(),
-            crcMetaData: await s3File.crcMetaData()
-        }
+    var clusterData = jsonData.data;
 
-        // crc meta data group by cluster id
-        let crcMetaDataGroupData = groupArray(fullData.crcMetaData, 'cluster_id');
-
-        // crc frequency data group by cluster
-        let crcFrequencyGroupData = groupArray(fullData.frequencyData, 'cluster_id');
-
-        let level = 'cluster';
-
-        let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-        logger.info('--- crc all cluster wise api response sent ---');
-        res.send(crcResult)
-    } catch (e) {
-        logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
-    }
+    logger.info('--- crc all cluster wise api response sent ---');
+    res.status(200).send({ visits: clusterData });
+    // }
+    // await reader.close();
+  } catch (e) {
+    logger.error(`Error :: ${e}`)
+    res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+  }
 })
 
 router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
-    try {
-        logger.info('--- crc cluster per block and per district api ---');
+  try {
+    logger.info('--- crc cluster per block and per district api ---');
+    let fileName = `crc/cluster_crc_opt_json.json`;
+    var jsonData = await s3File.readS3File(fileName);
 
-        // to store the s3 file data to variables
-        let fullData = {}
-        fullData = {
-            frequencyData: await s3File.frequencyData(),
-            crcMetaData: await s3File.crcMetaData()
-        }
+    var clusterData = jsonData
 
-        // filter crc meta data by district id & block id
-        let filterMetaData = fullData.crcMetaData.filter(obj => {
-            return (obj.district_id == req.params.distId && obj.block_id == req.params.blockId)
-        })
+    let distId = req.params.distId;
+    let blockId = req.params.blockId;
 
-        // crc meta data group by cluster id
-        let crcMetaDataGroupData = groupArray(filterMetaData, 'cluster_id');
-        // res.send(crcMetaDataGroupData)
-        // filter crc frequency data by district id & block id
-        let filterFrequencyData = fullData.frequencyData.filter(obj => {
-            return (obj.district_id == req.params.distId && obj.block_id == req.params.blockId)
-        })
-
-        // crc frequency data group by cluster_id
-        let crcFrequencyGroupData = groupArray(filterFrequencyData, 'cluster_id');
-        let level = 'cluster';
-
-        let crcResult = await crcHelper.percentageCalculation(crcMetaDataGroupData, crcFrequencyGroupData, level);
-        logger.info('--- crc cluster per block and per district api response sent ---');
-        res.send(crcResult)
-    } catch (e) {
-        logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
+    let filterData = clusterData.data.filter(obj => {
+      return (obj.districtId == distId && obj.blockId == blockId);
+    });
+    if (filterData.length > 0) {
+      logger.info('---  crc cluster per block and per district api response sent ---');
+      res.status(200).send({ visits: filterData, schoolsVisitedCount: clusterData.footer[`${blockId}`] });
+    }else{
+      res.status(403).json({errMsg: "No matches found"});
     }
+   
+  } catch (e) {
+    logger.error(`Error :: ${e}`)
+    res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+  }
 })
 
 module.exports = router;

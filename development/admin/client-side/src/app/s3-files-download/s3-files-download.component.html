@@ -1,0 +1,62 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 style="float: left;" id="head">S3 Files Download: </h2>
+            <p style="float: right; margin-right: 2%;" id="err">{{err}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+
+            <select id="choose_dist"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="bucketName" name="bucketName" (change)="listFolders()">
+                <option [value]="bucketName" disabled selected="selected" style="color: white;">Choose a bucket
+                </option>
+                <option *ngFor="let bucket of listBucket" [(ngValue)]="bucket.Name"
+                    style="font-family: Arial; font-size: 11px;">
+                    {{bucket.Name}}
+                </option>
+            </select>
+
+            <select [hidden]="folderHidden" id="choose_block"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="folderName" name="folderName" (change)="listFiles()">
+                <option [value]="folderName" disabled selected="selected" style="color: white;">Choose a Block
+                </option>
+                <option *ngFor="let folder of listFolder" [(ngValue)]="folder.Prefix"
+                    style="font-family: Arial;font-size: 11px;">
+                    {{folder.Prefix}}
+                </option>
+            </select>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8" [hidden]="fileHidden">
+            <div id="files" style="overflow-x:auto; height: 58vh; width: 100%; margin-top: 2%;">
+                <table #DataTable class="table table-striped " id="table" style="text-align: center; ">
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>File Names</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr *ngFor="let file of fileNames; let i = index">
+                            <td><input type="radio" [(ngModel)]="selectedFile" value="{{file.fileName}}"
+                                    (change)="checkedList()"></td>
+                            <td>{{file.fileName}}</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <button type="submit" id="btn" class="btn btn-primary" disabled style="margin-top: 2%;float: right;"
+                (click)="onSubmit()">Download File</button>
+        </div>
+    </div>
+</div>
+<div id="spinner" style="display: none;">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>

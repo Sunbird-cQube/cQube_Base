@@ -2,30 +2,32 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
-import { MapViewComponent } from './map-view/map-view.component';
+import { StudengtAttendanceComponent } from './student-attendance/student-attendance.component';
 import { HomeComponent } from './home/home.component';
 import { TeacherAttendanceComponent } from './teacher-attendance/teacher-attendance.component';
 import { SemViewComponent } from './sem-view/sem-view.component';
-import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { CrcReportComponent } from './crc-report/crc-report.component';
 import { AuthGuard } from './auth.guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { CreateUserComponent } from './create-user/create-user.component';
+import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
+import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 const routes: Routes = [
   {
-    path: '', redirectTo: '/login', pathMatch: 'full'
+    path: '', redirectTo: `/homePage`, pathMatch: 'full'
   },
   {
-    path: 'login', component: LoginComponent
+    path: 'homePage', component: HomePageComponent,
   },
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
-      // {
-      //   path: 'dashboard', component: DashboardComponent, canActivateChild: [AuthGuard]
-      // },
       {
-        path: 'attendance-report', component: MapViewComponent, canActivateChild: [AuthGuard]
+        path: '', component: DashboardComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'attendance-report', component: StudengtAttendanceComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'teacher-attendance', component: TeacherAttendanceComponent, canActivateChild: [AuthGuard]
@@ -34,13 +36,16 @@ const routes: Routes = [
         path: 'semester-report', component: SemViewComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'crc-report', component: BarChartComponent, canActivateChild: [AuthGuard]
+        path: 'school-infrastructure', component: SchoolInfrastructureComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'crc-report', component: CrcReportComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'changePassword', component: ChangePasswordComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'addUser', component: CreateUserComponent, canActivateChild: [AuthGuard]
+        path: 'school-infra-map', component: InfraMapVisualisationComponent, canActivateChild: [AuthGuard]
       }
     ]
   }

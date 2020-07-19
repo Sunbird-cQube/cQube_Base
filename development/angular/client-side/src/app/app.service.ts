@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../src/environments/environment';
+import { KeycloakSecurityService } from './keycloak-security.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AppServiceComponent {
     public baseUrl = environment.apiEndpoint;
-
-    constructor(public http: HttpClient) { };
+    public token;
+    constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
+        this.token = keyCloakService.kc.token;
+        localStorage.setItem('token', this.token);
+    };
 
     login(data) {
         return this.http.post(`${this.baseUrl}/roleBasedLogin`, data);
     }
+
 
     //Attendance report
     dist_wise_data(data) {
@@ -42,6 +47,10 @@ export class AppServiceComponent {
 
     schoolsPerCluster(data) {
         return this.http.post(`${this.baseUrl}/attendance/schoolPerCluster`, { data: data, baseUrl: this.baseUrl }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    getDateRange() {
+        return this.http.get(`${this.baseUrl}/attendance/getDateRange`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     // crc new apis
@@ -134,16 +143,64 @@ export class AppServiceComponent {
         });
     }
 
-    addUser(data) {
-        console.log(data);
-        return this.http.post(`${this.baseUrl}/addUser`, data, {
-            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-        });
-    }
-
     // dashboard data 
 
     dashboard() {
         return this.http.post(`${this.baseUrl}/dashboard`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    //Infra
+    infraDistWise() {
+        return this.http.post(`${this.baseUrl}/infra/distWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    infraAllBlockWise() {
+        return this.http.post(`${this.baseUrl}/infra/blockWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraBlockWise(distId) {
+        return this.http.post(`${this.baseUrl}/infra/blockWise/${distId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraClusterWise(distId, blockId) {
+        return this.http.post(`${this.baseUrl}/infra/clusterWise/${distId}/${blockId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraAllClusterWise() {
+        return this.http.post(`${this.baseUrl}/infra/allClusterWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraSchoolWise(distId, blockId, clusterId) {
+        return this.http.post(`${this.baseUrl}/infra/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraAllSchoolWise() {
+        return this.http.post(`${this.baseUrl}/infra/allSchoolWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    //infra map...
+    infraMapDistWise() {
+        return this.http.post(`${this.baseUrl}/infraMap/distWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    infraMapAllBlockWise() {
+        return this.http.post(`${this.baseUrl}/infraMap/allBlockWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraMapBlockWise(distId) {
+        return this.http.post(`${this.baseUrl}/infraMap/blockWise/${distId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraMapAllClusterWise() {
+        return this.http.post(`${this.baseUrl}/infraMap/allClusterWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraMapClusterWise(distId, blockId) {
+        return this.http.post(`${this.baseUrl}/infraMap/clusterWise/${distId}/${blockId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraMapAllSchoolWise() {
+        return this.http.post(`${this.baseUrl}/infraMap/allSchoolWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    infraMapSchoolWise(distId, blockId, clusterId) {
+        return this.http.post(`${this.baseUrl}/infraMap/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 }

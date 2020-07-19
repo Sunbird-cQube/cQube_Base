@@ -1,0 +1,1081 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1594309895139,3737,Login,200,OK,School Infra Map 1-204,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,3737,0,3433
+1594309895204,3666,Login,200,OK,School Infra Map 1-223,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,3666,0,3351
+1594309894756,4121,Login,200,OK,School Infra Map 1-51,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4107,0,3795
+1594309894824,4051,Login,200,OK,School Infra Map 1-101,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4042,0,3727
+1594309894745,4130,Login,200,OK,School Infra Map 1-14,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4117,0,3809
+1594309894726,4142,Login,200,OK,School Infra Map 1-68,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4140,0,3830
+1594309895120,4116,Login,200,OK,School Infra Map 1-200,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4116,0,3466
+1594309895045,4192,Login,200,OK,School Infra Map 1-170,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4192,0,3590
+1594309894870,4367,Login,200,OK,School Infra Map 1-112,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4367,0,3716
+1594309895177,4181,Login,200,OK,School Infra Map 1-219,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4181,0,3418
+1594309894742,4616,Login,200,OK,School Infra Map 1-40,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4616,0,3893
+1594309894840,4518,Login,200,OK,School Infra Map 1-106,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4518,0,3748
+1594309895549,3810,Login,200,OK,School Infra Map 1-276,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,3810,0,3040
+1594309894746,4667,Login,200,OK,School Infra Map 1-75,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4667,0,3859
+1594309894710,4703,Login,200,OK,School Infra Map 1-62,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4703,0,3895
+1594309894712,4702,Login,200,OK,School Infra Map 1-32,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4702,0,3883
+1594309894740,4675,Login,200,OK,School Infra Map 1-73,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4675,0,3866
+1594309895210,4341,Login,200,OK,School Infra Map 1-225,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4341,0,3397
+1594309894838,4713,Login,200,OK,School Infra Map 1-98,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4713,0,3768
+1594309894789,4762,Login,200,OK,School Infra Map 1-24,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4762,0,3818
+1594309894813,4739,Login,200,OK,School Infra Map 1-12,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4739,0,3795
+1594309895880,3738,Login,200,OK,School Infra Map 1-280,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,3738,0,2729
+1594309895157,4461,Login,200,OK,School Infra Map 1-208,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4461,0,3451
+1594309895192,4428,Login,200,OK,School Infra Map 1-222,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4428,0,3417
+1594309894710,4910,Login,200,OK,School Infra Map 1-21,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4910,0,3904
+1594309897551,2217,Login,200,OK,School Infra Map 1-294,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,2217,0,1064
+1594309894806,4962,Login,200,OK,School Infra Map 1-95,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4962,0,3811
+1594309895214,4556,Login,200,OK,School Infra Map 1-231,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4556,0,3407
+1594309895102,4670,Login,200,OK,School Infra Map 1-194,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4670,0,3518
+1594309895245,4529,Login,200,OK,School Infra Map 1-241,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4528,0,3374
+1594309895053,4716,Login,200,OK,School Infra Map 1-177,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4716,0,3566
+1594309894890,4891,Login,200,OK,School Infra Map 1-113,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4891,0,3732
+1594309894821,5070,Login,200,OK,School Infra Map 1-54,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5070,0,3801
+1594309894881,5010,Login,200,OK,School Infra Map 1-118,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5010,0,3745
+1594309895034,4857,Login,200,OK,School Infra Map 1-169,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4857,0,3593
+1594309894820,5072,Login,200,OK,School Infra Map 1-25,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5072,0,3806
+1594309895202,4691,Login,200,OK,School Infra Map 1-224,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4691,0,3426
+1594309895209,4764,Login,200,OK,School Infra Map 1-229,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4764,0,3419
+1594309895559,4414,Login,200,OK,School Infra Map 1-263,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4414,0,3069
+1594309894794,5180,Login,200,OK,School Infra Map 1-22,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5180,0,3835
+1594309894822,5252,Login,200,OK,School Infra Map 1-27,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5252,0,3807
+1594309895027,5047,Login,200,OK,School Infra Map 1-168,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5047,0,3602
+1594309895561,4514,Login,200,OK,School Infra Map 1-261,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4514,0,3069
+1594309894808,5271,Login,200,OK,School Infra Map 1-94,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5271,0,3821
+1594309894886,5262,Login,200,OK,School Infra Map 1-121,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5262,0,3744
+1594309894842,5306,Login,200,OK,School Infra Map 1-107,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5306,0,3789
+1594309894818,5332,Login,200,OK,School Infra Map 1-97,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5332,0,3812
+1594309895204,5045,Login,200,OK,School Infra Map 1-227,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5045,0,3427
+1594309894717,5532,Login,200,OK,School Infra Map 1-36,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5532,0,3914
+1594309895156,5093,Login,200,OK,School Infra Map 1-207,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5093,0,3476
+1594309895569,4681,Login,200,OK,School Infra Map 1-251,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4681,0,3063
+1594309894970,5342,Login,200,OK,School Infra Map 1-150,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5342,0,3662
+1594309895150,5162,Login,200,OK,School Infra Map 1-210,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5162,0,3483
+1594309894750,5562,Login,200,OK,School Infra Map 1-76,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5562,0,3883
+1594309895239,6957,Login,200,OK,School Infra Map 1-239,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6957,0,3394
+1594309894816,7382,Login,200,OK,School Infra Map 1-60,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7382,0,3818
+1594309894757,7441,Login,200,OK,School Infra Map 1-8,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7441,0,3876
+1594309894833,7365,Login,200,OK,School Infra Map 1-104,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7365,0,3802
+1594309894925,7272,Login,200,OK,School Infra Map 1-135,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7272,0,3709
+1594309894747,7452,Login,200,OK,School Infra Map 1-15,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7452,0,3889
+1594309894952,7250,Login,200,OK,School Infra Map 1-144,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7250,0,3684
+1594309895090,7114,Login,200,OK,School Infra Map 1-189,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7114,0,3546
+1594309894949,7258,Login,200,OK,School Infra Map 1-143,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7258,0,3687
+1594309895225,6983,Login,200,OK,School Infra Map 1-235,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6983,0,3415
+1594309895093,7116,Login,200,OK,School Infra Map 1-191,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7116,0,3547
+1594309894732,7477,Login,200,OK,School Infra Map 1-41,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7477,0,3908
+1594309894828,7382,Login,200,OK,School Infra Map 1-102,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7382,0,3813
+1594309894819,7392,Login,200,OK,School Infra Map 1-58,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7392,0,3823
+1594309895548,6665,Login,200,OK,School Infra Map 1-273,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6665,0,3096
+1594309894977,7236,Login,200,OK,School Infra Map 1-152,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7236,0,3666
+1594309894866,7348,Login,200,OK,School Infra Map 1-115,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7348,0,3791
+1594309894784,7430,Login,200,OK,School Infra Map 1-88,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7430,0,3858
+1594309894961,7253,Login,200,OK,School Infra Map 1-147,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7253,0,3682
+1594309895171,7043,Login,200,OK,School Infra Map 1-217,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7043,0,3499
+1594309894794,7421,Login,200,OK,School Infra Map 1-50,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7421,0,3849
+1594309895036,7179,Login,200,OK,School Infra Map 1-171,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7179,0,3643
+1594309896931,5285,Login,200,OK,School Infra Map 1-289,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5285,0,1713
+1594309895544,6672,Login,200,OK,School Infra Map 1-270,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6672,0,3127
+1594309894814,7403,Login,200,OK,School Infra Map 1-3,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7403,0,3831
+1594309895123,7094,Login,200,OK,School Infra Map 1-201,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7094,0,3557
+1594309894875,7342,Login,200,OK,School Infra Map 1-117,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7342,0,3797
+1594309894746,7472,Login,200,OK,School Infra Map 1-4,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7472,0,3934
+1594309894788,7432,Login,200,OK,School Infra Map 1-31,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7432,0,3892
+1594309895092,7129,Login,200,OK,School Infra Map 1-190,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7128,0,3604
+1594309895071,7150,Login,200,OK,School Infra Map 1-183,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7149,0,3629
+1594309894787,7434,Login,200,OK,School Infra Map 1-2,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7434,0,3894
+1594309894888,7334,Login,200,OK,School Infra Map 1-122,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7334,0,3813
+1594309895009,7213,Login,200,OK,School Infra Map 1-163,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7213,0,3673
+1594309895570,6653,Login,200,OK,School Infra Map 1-252,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6653,0,3150
+1594309894744,7479,Login,200,OK,School Infra Map 1-23,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7479,0,3958
+1594309894756,7468,Login,200,OK,School Infra Map 1-39,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7468,0,3926
+1594309894822,7403,Login,200,OK,School Infra Map 1-55,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7403,0,3899
+1594309894869,7356,Login,200,OK,School Infra Map 1-116,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7356,0,3833
+1594309894849,7376,Login,200,OK,School Infra Map 1-109,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7376,0,3834
+1594309895875,6350,Login,200,OK,School Infra Map 1-278,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6350,0,2847
+1594309895004,7222,Login,200,OK,School Infra Map 1-161,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7222,0,3699
+1594309894776,7450,Login,200,OK,School Infra Map 1-85,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7450,0,3908
+1594309895021,7206,Login,200,OK,School Infra Map 1-167,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7206,0,3701
+1594309894812,7416,Login,200,OK,School Infra Map 1-18,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7416,0,3872
+1594309894956,7272,Login,200,OK,School Infra Map 1-145,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7272,0,3747
+1594309894816,7413,Login,200,OK,School Infra Map 1-35,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7413,0,3889
+1594309898584,3645,Login,200,OK,School Infra Map 1-299,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,3645,0,151
+1594309894986,7243,Login,200,OK,School Infra Map 1-155,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7243,0,3768
+1594309895562,6668,Login,200,OK,School Infra Map 1-260,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6668,0,3200
+1594309894793,7438,Login,200,OK,School Infra Map 1-47,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7438,0,3969
+1594309895080,7151,Login,200,OK,School Infra Map 1-185,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7151,0,3625
+1594309895015,7216,Login,200,OK,School Infra Map 1-165,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7216,0,3736
+1594309894795,7437,Login,200,OK,School Infra Map 1-91,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7437,0,3968
+1594309895119,7113,Login,200,OK,School Infra Map 1-199,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7113,0,3652
+1594309895126,7106,Login,200,OK,School Infra Map 1-202,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7106,0,3595
+1594309894897,7334,Login,200,OK,School Infra Map 1-125,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7334,0,3849
+1594309897091,5142,Login,200,OK,School Infra Map 1-290,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,5142,0,1680
+1594309894918,7316,Login,200,OK,School Infra Map 1-130,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7315,0,3854
+1594309895013,7221,Login,200,OK,School Infra Map 1-164,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7221,0,3735
+1594309894734,7500,Login,200,OK,School Infra Map 1-44,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7500,0,4037
+1594309894724,7511,Login,200,OK,School Infra Map 1-67,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7511,0,4049
+1594309895066,7169,Login,200,OK,School Infra Map 1-182,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7169,0,3682
+1594309895082,7150,Login,200,OK,School Infra Map 1-186,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7150,0,3638
+1594309895108,7128,Login,200,OK,School Infra Map 1-196,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7128,0,3667
+1594309894746,7491,Login,200,OK,School Infra Map 1-48,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7491,0,4003
+1594309895555,6682,Login,200,OK,School Infra Map 1-265,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6682,0,3220
+1594309895213,7024,Login,200,OK,School Infra Map 1-226,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7024,0,3560
+1594309894790,7448,Login,200,OK,School Infra Map 1-33,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7448,0,3986
+1594309895094,7144,Login,200,OK,School Infra Map 1-188,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7144,0,3656
+1594309895179,7059,Login,200,OK,School Infra Map 1-218,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7059,0,3595
+1594309895875,6364,Login,200,OK,School Infra Map 1-279,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6364,0,2828
+1594309895571,6668,Login,200,OK,School Infra Map 1-248,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6668,0,3205
+1594309895240,6999,Login,200,OK,School Infra Map 1-240,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6999,0,3520
+1594309895057,7184,Login,200,OK,School Infra Map 1-178,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7184,0,3660
+1594309895038,7203,Login,200,OK,School Infra Map 1-172,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7203,0,3729
+1594309894752,7490,Login,200,OK,School Infra Map 1-77,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7490,0,3958
+1594309894742,7500,Login,200,OK,School Infra Map 1-28,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7500,0,4025
+1594309895921,6323,Login,200,OK,School Infra Map 1-283,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6323,0,2850
+1594309895099,7145,Login,200,OK,School Infra Map 1-193,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7145,0,3612
+1594309895234,7011,Login,200,OK,School Infra Map 1-238,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7011,0,3539
+1594309894975,7272,Login,200,OK,School Infra Map 1-151,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7272,0,3800
+1594309895096,7152,Login,200,OK,School Infra Map 1-192,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7152,0,3608
+1594309897591,4923,Login,200,OK,School Infra Map 1-295,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,4923,0,1126
+1594309894914,7600,Login,200,OK,School Infra Map 1-129,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7600,0,3803
+1594309894743,7774,Login,200,OK,School Infra Map 1-49,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7774,0,3961
+1594309897143,6423,Login,200,OK,School Infra Map 1-291,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6423,0,1576
+1594309895161,8406,Login,200,OK,School Infra Map 1-212,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8406,0,3557
+1594309895564,8003,Login,200,OK,School Infra Map 1-256,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8003,0,3155
+1594309895040,8528,Login,200,OK,School Infra Map 1-173,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8528,0,3739
+1594309895566,8003,Login,200,OK,School Infra Map 1-255,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8003,0,3213
+1594309895205,8364,Login,200,OK,School Infra Map 1-228,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8364,0,3575
+1594309894782,8788,Login,200,OK,School Infra Map 1-87,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8788,0,3997
+1594309894931,8639,Login,200,OK,School Infra Map 1-137,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8639,0,3849
+1594309895188,8384,Login,200,OK,School Infra Map 1-221,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8383,0,3593
+1594309894924,8648,Login,200,OK,School Infra Map 1-133,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8647,0,3857
+1594309894717,8856,Login,200,OK,School Infra Map 1-38,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8856,0,4034
+1594309894718,8855,Login,200,OK,School Infra Map 1-52,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8855,0,4062
+1594309894772,8801,Login,200,OK,School Infra Map 1-84,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8801,0,4011
+1594309897335,6239,Login,200,OK,School Infra Map 1-292,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,6239,0,1446
+1594309896155,7419,Login,200,OK,School Infra Map 1-285,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7419,0,2628
+1594309895557,8017,Login,200,OK,School Infra Map 1-258,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8017,0,3227
+1594309894881,8693,Login,200,OK,School Infra Map 1-120,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8693,0,3902
+1594309894815,8761,Login,200,OK,School Infra Map 1-29,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8761,0,3970
+1594309894791,8785,Login,200,OK,School Infra Map 1-10,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8785,0,3991
+1594309894811,8765,Login,200,OK,School Infra Map 1-30,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8765,0,3972
+1594309894919,8658,Login,200,OK,School Infra Map 1-132,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8658,0,3867
+1594309894775,8802,Login,200,OK,School Infra Map 1-82,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8802,0,4007
+1594309895233,8345,Login,200,OK,School Infra Map 1-236,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8345,0,3553
+1594309895168,8411,Login,200,OK,School Infra Map 1-216,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8411,0,3619
+1594309894929,8650,Login,200,OK,School Infra Map 1-136,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8650,0,3855
+1594309895553,8026,Login,200,OK,School Infra Map 1-264,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8026,0,3236
+1594309894717,8863,Login,200,OK,School Infra Map 1-34,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8863,0,4073
+1594309894815,8765,Login,200,OK,School Infra Map 1-1,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8765,0,3972
+1594309894879,8702,Login,200,OK,School Infra Map 1-119,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8702,0,3906
+1594309894920,8662,Login,200,OK,School Infra Map 1-131,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8662,0,3870
+1594309894788,8794,Login,200,OK,School Infra Map 1-89,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8794,0,4000
+1594309895220,8362,Login,200,OK,School Infra Map 1-233,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8362,0,3565
+1594309895144,8439,Login,200,OK,School Infra Map 1-205,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8439,0,3647
+1594309894714,8869,Login,200,OK,School Infra Map 1-5,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8869,0,4077
+1594309894958,8625,Login,200,OK,School Infra Map 1-146,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8625,0,3830
+1594309894820,8765,Login,200,OK,School Infra Map 1-26,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8764,0,3972
+1594309894947,8638,Login,200,OK,School Infra Map 1-142,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8637,0,3844
+1594309895550,8035,Login,200,OK,School Infra Map 1-269,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8035,0,3238
+1594309895561,8024,Login,200,OK,School Infra Map 1-262,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8024,0,3216
+1594309895111,8475,Login,200,OK,School Infra Map 1-197,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8475,0,3681
+1594309895084,8502,Login,200,OK,School Infra Map 1-184,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8502,0,3692
+1594309894937,8649,Login,200,OK,School Infra Map 1-139,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8649,0,3852
+1594309895106,8481,Login,200,OK,School Infra Map 1-195,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8481,0,3737
+1594309895115,8472,Login,200,OK,School Infra Map 1-198,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8472,0,3729
+1594309895564,8023,Login,200,OK,School Infra Map 1-253,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8023,0,3226
+1594309894778,8811,Login,200,OK,School Infra Map 1-86,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8811,0,4066
+1594309894893,8696,Login,200,OK,School Infra Map 1-123,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8696,0,3897
+1594309894917,8672,Login,200,OK,School Infra Map 1-127,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8672,0,3929
+1594309895212,8378,Login,200,OK,School Infra Map 1-230,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8378,0,3635
+1594309895545,8045,Login,200,OK,School Infra Map 1-242,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8045,0,3301
+1594309894727,8863,Login,200,OK,School Infra Map 1-37,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8863,0,4051
+1594309894822,8769,Login,200,OK,School Infra Map 1-20,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8769,0,4026
+1594309894867,8724,Login,200,OK,School Infra Map 1-111,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8724,0,3980
+1594309894967,8625,Login,200,OK,School Infra Map 1-149,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8625,0,3808
+1594309894925,8668,Login,200,OK,School Infra Map 1-134,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8668,0,3924
+1594309894835,8758,Login,200,OK,School Infra Map 1-105,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8758,0,4013
+1594309894935,8658,Login,200,OK,School Infra Map 1-138,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8658,0,3914
+1594309894791,8802,Login,200,OK,School Infra Map 1-42,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8802,0,4054
+1594309894813,8781,Login,200,OK,School Infra Map 1-92,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8781,0,4035
+1594309895055,8539,Login,200,OK,School Infra Map 1-174,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8539,0,3796
+1594309894944,8650,Login,200,OK,School Infra Map 1-141,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8650,0,3901
+1594309894865,8730,Login,200,OK,School Infra Map 1-110,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8730,0,3984
+1594309894997,8599,Login,200,OK,School Infra Map 1-159,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8599,0,3849
+1594309895232,8365,Login,200,OK,School Infra Map 1-237,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8365,0,3615
+1594309895165,8506,Login,200,OK,School Infra Map 1-214,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8506,0,3686
+1594309895161,8510,Login,200,OK,School Infra Map 1-213,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8510,0,3691
+1594309895189,8483,Login,200,OK,School Infra Map 1-215,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8483,0,3663
+1594309895552,8121,Login,200,OK,School Infra Map 1-266,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8121,0,3300
+1594309894731,8942,Login,200,OK,School Infra Map 1-70,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8942,0,4122
+1594309895573,8101,Login,200,OK,School Infra Map 1-244,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8101,0,3277
+1594309895051,8624,Login,200,OK,School Infra Map 1-176,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8623,0,3799
+1594309895927,7998,Login,200,OK,School Infra Map 1-284,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7998,0,2923
+1594309895547,8380,Login,200,OK,School Infra Map 1-271,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8380,0,3320
+1594309894916,9011,Login,200,OK,School Infra Map 1-128,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9011,0,3952
+1594309895552,8376,Login,200,OK,School Infra Map 1-267,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8376,0,3297
+1594309895546,8382,Login,200,OK,School Infra Map 1-274,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8382,0,3320
+1594309895913,8016,Login,200,OK,School Infra Map 1-282,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8016,0,2954
+1594309895573,8356,Login,200,OK,School Infra Map 1-245,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8356,0,3297
+1594309895563,8367,Login,200,OK,School Infra Map 1-259,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8367,0,3305
+1594309894813,9117,Login,200,OK,School Infra Map 1-56,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9117,0,4057
+1594309894791,9140,Login,200,OK,School Infra Map 1-90,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9140,0,4077
+1594309895570,8386,Login,200,OK,School Infra Map 1-247,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8386,0,3301
+1594309894750,9206,Login,200,OK,School Infra Map 1-43,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9206,0,4121
+1594309895545,8452,Login,200,OK,School Infra Map 1-275,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8452,0,3326
+1594309894803,9238,Login,200,OK,School Infra Map 1-93,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9238,0,4070
+1594309895548,8494,Login,200,OK,School Infra Map 1-272,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8494,0,3325
+1594309895551,8492,Login,200,OK,School Infra Map 1-268,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8492,0,3322
+1594309895568,8521,Login,200,OK,School Infra Map 1-249,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8521,0,3306
+1594309894809,9290,Login,200,OK,School Infra Map 1-96,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9290,0,3983
+1594309895560,8541,Login,200,OK,School Infra Map 1-257,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8541,0,3314
+1594309895567,8541,Login,200,OK,School Infra Map 1-246,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8541,0,3226
+1594309894748,9423,Login,200,OK,School Infra Map 1-72,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9422,0,4045
+1594309895022,9161,Login,200,OK,School Infra Map 1-166,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9161,0,3816
+1594309895227,8960,Login,200,OK,School Infra Map 1-234,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8960,0,3616
+1594309896619,7576,Login,200,OK,School Infra Map 1-286,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7576,0,2222
+1594309895565,8691,Login,200,OK,School Infra Map 1-254,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8691,0,3278
+1594309896867,7405,Login,200,OK,School Infra Map 1-288,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7405,0,2007
+1594309895904,8373,Login,200,OK,School Infra Map 1-281,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8373,0,2971
+1594309894824,9458,Login,200,OK,School Infra Map 1-99,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9458,0,4051
+1594309894900,9440,Login,200,OK,School Infra Map 1-126,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9440,0,3975
+1594309896691,7661,Login,200,OK,School Infra Map 1-287,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,7660,0,2185
+1594309895152,9208,Login,200,OK,School Infra Map 1-209,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9208,0,3725
+1594309895219,9146,Login,200,OK,School Infra Map 1-232,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9146,0,3658
+1594309894895,9530,Login,200,OK,School Infra Map 1-124,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9530,0,3982
+1594309895060,9378,Login,200,OK,School Infra Map 1-175,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9378,0,3819
+1594309895572,8875,Login,200,OK,School Infra Map 1-243,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,8874,0,3307
+1594309894756,9697,Login,200,OK,School Infra Map 1-46,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9697,0,4124
+1594309894728,9785,Login,200,OK,School Infra Map 1-69,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9785,0,4152
+1594309894786,9741,Login,200,OK,School Infra Map 1-80,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9741,0,4095
+1594309895006,9524,Login,200,OK,School Infra Map 1-162,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9524,0,3875
+1594309894710,9831,Login,200,OK,School Infra Map 1-61,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9831,0,4174
+1594309895142,9458,Login,200,OK,School Infra Map 1-206,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9458,0,3742
+1594309894964,9649,Login,200,OK,School Infra Map 1-148,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9649,0,3921
+1594309895000,9617,Login,200,OK,School Infra Map 1-160,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9617,0,3886
+1594309895062,9566,Login,200,OK,School Infra Map 1-180,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9566,0,3824
+1594309894787,9900,Login,200,OK,School Infra Map 1-9,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9899,0,4099
+1594309894895,9802,Login,200,OK,School Infra Map 1-114,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9802,0,3991
+1594309894819,9881,Login,200,OK,School Infra Map 1-59,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9881,0,4068
+1594309894941,9767,Login,200,OK,School Infra Map 1-140,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,9767,0,3947
+1594309894714,10056,Login,200,OK,School Infra Map 1-16,text,true,,1105,249,300,300,https://cqube.tibilprojects.com/api/roleBasedLogin,10056,0,4174
+1594309899238,5534,School Infra Map SchoolWise,200,OK,School Infra Map 1-112,text,true,,12015464,966,300,300,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,4328,0,5
+1594309894829,9960,Login,200,OK,School Infra Map 1-103,text,true,,1105,249,299,299,https://cqube.tibilprojects.com/api/roleBasedLogin,9960,0,4059
+1594309895058,9733,Login,200,OK,School Infra Map 1-179,text,true,,1105,249,299,299,https://cqube.tibilprojects.com/api/roleBasedLogin,9733,0,3830
+1594309894745,10051,Login,200,OK,School Infra Map 1-74,text,true,,1105,249,299,299,https://cqube.tibilprojects.com/api/roleBasedLogin,10051,0,4144
+1594309899237,5570,School Infra Map SchoolWise,200,OK,School Infra Map 1-170,text,true,,12015464,966,299,299,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,2960,0,7
+1594309898945,5958,School Infra Map SchoolWise,200,OK,School Infra Map 1-101,text,true,,12015464,966,298,298,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,1847,0,13
+1594309898941,5953,School Infra Map SchoolWise,200,OK,School Infra Map 1-204,text,true,,12015464,966,298,298,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,3000,0,24
+1594309898435,6458,Login,200,OK,School Infra Map 1-298,text,true,,1105,249,298,298,https://cqube.tibilprojects.com/api/roleBasedLogin,6458,0,455
+1594309895093,9800,Login,200,OK,School Infra Map 1-187,text,true,,1105,249,298,298,https://cqube.tibilprojects.com/api/roleBasedLogin,9800,0,3796
+1594309894777,10115,Login,200,OK,School Infra Map 1-81,text,true,,1105,249,298,298,https://cqube.tibilprojects.com/api/roleBasedLogin,10115,0,4113
+1594309894822,10084,Login,200,OK,School Infra Map 1-11,text,true,,1105,249,296,296,https://cqube.tibilprojects.com/api/roleBasedLogin,10070,0,4069
+1594309898944,5993,School Infra Map SchoolWise,200,OK,School Infra Map 1-51,text,true,,12015464,966,296,296,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,3814,0,17
+1594309894995,9944,Login,200,OK,School Infra Map 1-158,text,true,,1105,249,296,296,https://cqube.tibilprojects.com/api/roleBasedLogin,9944,0,3896
+1594309894987,9963,Login,200,OK,School Infra Map 1-154,text,true,,1105,249,295,295,https://cqube.tibilprojects.com/api/roleBasedLogin,9963,0,3904
+1594309895159,9793,Login,200,OK,School Infra Map 1-211,text,true,,1105,249,295,295,https://cqube.tibilprojects.com/api/roleBasedLogin,9793,0,3734
+1594309894814,10147,Login,200,OK,School Infra Map 1-19,text,true,,1105,249,295,295,https://cqube.tibilprojects.com/api/roleBasedLogin,10147,0,4079
+1594309898945,6042,School Infra Map SchoolWise,200,OK,School Infra Map 1-14,text,true,,12015464,966,295,295,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,2705,0,13
+1594309894991,10033,Login,200,OK,School Infra Map 1-157,text,true,,1105,249,294,294,https://cqube.tibilprojects.com/api/roleBasedLogin,10033,0,3904
+1594309899237,5791,School Infra Map SchoolWise,200,OK,School Infra Map 1-200,text,true,,12015464,966,294,294,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,3866,0,5
+1594309895129,9903,Login,200,OK,School Infra Map 1-203,text,true,,1105,249,293,293,https://cqube.tibilprojects.com/api/roleBasedLogin,9903,0,3766
+1594309898945,6092,School Infra Map SchoolWise,200,OK,School Infra Map 1-68,text,true,,12015464,966,293,293,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,2279,0,13
+1594309894792,10246,Login,200,OK,School Infra Map 1-7,text,true,,1105,249,293,293,https://cqube.tibilprojects.com/api/roleBasedLogin,10246,0,4103
+1594309897391,7653,Login,200,OK,School Infra Map 1-293,text,true,,1105,249,292,292,https://cqube.tibilprojects.com/api/roleBasedLogin,7653,0,1505
+1594309898942,6128,School Infra Map SchoolWise,200,OK,School Infra Map 1-223,text,true,,12015464,966,292,292,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,3580,0,17
+1594309894818,10305,Login,200,OK,School Infra Map 1-57,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10305,0,4078
+1594309894989,10135,Login,200,OK,School Infra Map 1-156,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10135,0,3910
+1594309894846,10299,Login,200,OK,School Infra Map 1-108,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10298,0,4053
+1594309894758,10387,Login,200,OK,School Infra Map 1-79,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10387,0,4142
+1594309894790,10410,Login,200,OK,School Infra Map 1-17,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10410,0,4110
+1594309894793,10407,Login,200,OK,School Infra Map 1-13,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10407,0,4108
+1594309894713,10879,Login,200,OK,School Infra Map 1-63,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10879,0,4194
+1594309894720,10872,Login,200,OK,School Infra Map 1-66,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10872,0,4185
+1594309895183,10409,Login,200,OK,School Infra Map 1-220,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10409,0,3727
+1594309894714,10879,Login,200,OK,School Infra Map 1-6,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10879,0,4199
+1594309897663,7930,Login,200,OK,School Infra Map 1-296,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,7930,0,1255
+1594309894979,10614,Login,200,OK,School Infra Map 1-153,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10614,0,3941
+1594309898585,7009,Login,200,OK,School Infra Map 1-300,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,7009,0,343
+1594309898166,7429,Login,200,OK,School Infra Map 1-277,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,7429,0,778
+1594309894745,10850,Login,200,OK,School Infra Map 1-45,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10850,0,4147
+1594309895063,10533,Login,200,OK,School Infra Map 1-181,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10533,0,3817
+1594309897988,7608,Login,200,OK,School Infra Map 1-297,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,7608,0,958
+1594309894720,10877,Login,200,OK,School Infra Map 1-65,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10877,0,4178
+1594309894815,10782,Login,200,OK,School Infra Map 1-53,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10782,0,4078
+1594309894717,10881,Login,200,OK,School Infra Map 1-64,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10881,0,4180
+1594309895567,10031,Login,200,OK,School Infra Map 1-250,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10031,0,3330
+1594309894755,10844,Login,200,OK,School Infra Map 1-78,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10844,0,4143
+1594309894826,10773,Login,200,OK,School Infra Map 1-100,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10773,0,4072
+1594309894774,10826,Login,200,OK,School Infra Map 1-83,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10826,0,4125
+1594309894734,10917,Login,200,OK,School Infra Map 1-71,text,true,,1105,249,291,291,https://cqube.tibilprojects.com/api/roleBasedLogin,10917,0,4165
+1594309899359,8780,School Infra Map SchoolWise,200,OK,School Infra Map 1-219,text,true,,12015464,966,291,291,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,6228,0,4
+1594309902199,48277,School Infra Map SchoolWise,200,OK,School Infra Map 1-104,text,true,,12015464,966,290,290,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,4613,0,7
+1594309902217,60310,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,289,289,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60309,0,301
+1594309902222,60304,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,289,289,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60304,0,295
+1594309902234,60292,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-164,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,289,289,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60292,0,278
+1594309902227,60299,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-85,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,289,289,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60299,0,289
+1594309902224,60302,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-23,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,286,286,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60302,0,288
+1594309902221,60309,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-183,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,286,286,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60309,0,298
+1594309902236,60294,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-67,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,286,286,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60294,0,271
+1594309902231,60299,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-47,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,286,286,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60299,0,288
+1594309902222,60308,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-122,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,286,286,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60308,0,288
+1594309902244,60287,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-193,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,284,284,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60287,0,265
+1594309902237,60294,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-265,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,284,284,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60294,0,270
+1594309902246,60285,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-238,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,284,284,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60285,0,262
+1594309902204,60338,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-189,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,282,282,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60338,0,320
+1594309902220,60324,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-31,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,282,282,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60324,0,283
+1594309902240,60304,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-279,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,282,282,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60304,0,266
+1594309902234,60311,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-130,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,282,282,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60311,0,288
+1594309902247,60298,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-151,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,282,282,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60298,0,260
+1594309902224,60302,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-252,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,282,282,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60302,0,288
+1594309902232,60315,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-91,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,282,282,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60315,0,279
+1594309902230,60296,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-299,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,289,289,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60296,0,286
+1594309902221,60305,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-190,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,289,289,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60305,0,290
+1594309902238,60310,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-188,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,277,277,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60310,0,279
+1594309902219,60332,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,276,276,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60332,0,287
+1594309902225,60327,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-109,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,276,276,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60327,0,277
+1594309902216,60338,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-50,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,276,276,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60338,0,286
+1594309903592,60033,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-111,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,264,264,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60032,0,24
+1594309903596,60040,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-159,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,263,263,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60040,0,28
+1594309903567,60069,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-291,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,263,263,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60069,0,59
+1594309903591,60045,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-37,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,263,263,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60045,0,34
+1594309903594,60043,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-174,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,263,263,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60043,0,30
+1594309903567,60074,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-212,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,259,259,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60074,0,62
+1594309903589,60052,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-123,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,259,259,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60052,0,40
+1594309903580,60071,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-216,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,257,257,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60071,0,44
+1594309903590,60062,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-230,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,256,256,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60062,0,38
+1594309903672,60028,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-214,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,255,255,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60028,0,11
+1594309903675,60025,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-176,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,255,255,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60025,0,11
+1594309903672,60028,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-215,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,255,255,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60028,0,12
+1594309903674,60030,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-70,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,252,252,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60030,0,13
+1594309903672,60034,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-213,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,251,251,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60034,0,12
+1594309903674,60045,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-244,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,250,250,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60045,0,14
+1594309903673,60048,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-266,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,249,249,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60048,0,15
+1594309903931,60046,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-56,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,248,248,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60045,0,20
+1594309903931,60047,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-259,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,247,247,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60047,0,21
+1594309903957,60040,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-247,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,246,246,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60040,0,18
+1594309903998,60078,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-275,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,245,245,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60078,0,59
+1594309904043,60041,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-272,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,244,244,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60041,0,20
+1594309904041,60044,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-93,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,243,243,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60044,0,23
+1594309904044,60048,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-268,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,242,242,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60047,0,29
+1594309904090,60033,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-249,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,241,241,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60033,0,15
+1594309904273,60025,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-288,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,240,240,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60025,0,16
+1594309904709,60029,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-140,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,239,239,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60029,0,11
+1594309904772,60025,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-16,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,238,238,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60025,0,12
+1594309904791,60017,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-179,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,237,237,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60017,0,8
+1594309904790,60023,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-103,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,236,236,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60023,0,10
+1594309905045,60012,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-293,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,235,235,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60012,0,2
+1594309905124,60011,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-57,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,234,234,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60011,0,3
+1594309905145,60011,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-108,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,233,233,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60011,0,4
+1594309905145,60026,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-79,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,232,232,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60026,0,3
+1594309905200,60011,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-13,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,231,231,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60011,0,4
+1594309905200,60012,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-17,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,230,230,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60012,0,4
+1594309905125,60242,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-156,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,229,229,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60242,0,2
+1594309905593,60011,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-220,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,228,228,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60011,0,3
+1594309905596,60012,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-181,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,227,227,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60012,0,3
+1594309905593,60015,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,227,227,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60015,0,7
+1594309905593,60016,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-296,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,227,227,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60016,0,8
+1594309905592,60017,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-63,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,227,227,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60017,0,9
+1594309905599,60010,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-78,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,225,225,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60010,0,4
+1594309905594,60016,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-153,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,222,222,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60015,0,8
+1594309905597,60013,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-53,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,222,222,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60013,0,4
+1594309905594,60016,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-300,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,220,220,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60016,0,6
+1594309905598,60014,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-64,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,219,219,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60014,0,5
+1594309905601,60013,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-83,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,218,218,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60013,0,4
+1594309905597,60017,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-65,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,218,218,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60017,0,10
+1594309905592,60022,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-66,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,218,218,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60022,0,9
+1594309905595,60022,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-277,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,215,215,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60022,0,12
+1594309905596,60021,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-297,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,215,215,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60021,0,12
+1594309905598,60019,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-250,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,215,215,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60019,0,10
+1594309905595,60023,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-45,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,215,215,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60023,0,13
+1594309905599,60019,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-100,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,215,215,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60019,0,9
+1594309905652,60013,School Infra Map SchoolWise,504,Gateway Time-out,School Infra Map 1-71,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[504]]]
+
+****** comparison: [[[200]]]
+
+/",363,966,210,210,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60013,0,3
+1594309899893,70308,School Infra Map SchoolWise,200,OK,School Infra Map 1-25,text,true,,12015464,966,209,209,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,8807,0,7
+1594309899619,71584,School Infra Map SchoolWise,200,OK,School Infra Map 1-208,text,true,,12015464,966,208,208,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,13774,0,4
+1594309899774,81842,School Infra Map SchoolWise,200,OK,School Infra Map 1-241,text,true,,12015464,966,207,207,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,8683,0,5
+1594309900080,81629,School Infra Map SchoolWise,200,OK,School Infra Map 1-94,text,true,,12015464,966,206,206,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,8903,0,4
+1594309899892,81987,School Infra Map SchoolWise,200,OK,School Infra Map 1-169,text,true,,12015464,966,205,205,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,11187,0,9
+1594309899552,82904,School Infra Map SchoolWise,200,OK,School Infra Map 1-24,text,true,,12015464,966,204,204,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,10617,0,4
+1594309899360,83565,School Infra Map SchoolWise,200,OK,School Infra Map 1-276,text,true,,12015464,966,203,203,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,10570,0,4
+1594309900075,84273,School Infra Map SchoolWise,200,OK,School Infra Map 1-168,text,true,,12015464,966,202,202,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,11871,0,4
+1594309899974,85556,School Infra Map SchoolWise,200,OK,School Infra Map 1-229,text,true,,12015464,966,201,201,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,11543,0,11
+1594309899773,85925,School Infra Map SchoolWise,200,OK,School Infra Map 1-95,text,true,,12015464,966,200,200,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,10637,0,6
+1594309900075,85660,School Infra Map SchoolWise,200,OK,School Infra Map 1-27,text,true,,12015464,966,199,199,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,11659,0,3
+1594309899773,86459,School Infra Map SchoolWise,200,OK,School Infra Map 1-194,text,true,,12015464,966,198,198,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,10854,0,7
+1594309899782,86732,School Infra Map SchoolWise,200,OK,School Infra Map 1-113,text,true,,12015464,966,197,197,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,14518,0,4
+1594309900250,86599,School Infra Map SchoolWise,200,OK,School Infra Map 1-251,text,true,,12015464,966,196,196,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,8967,0,5
+1594309899892,87359,School Infra Map SchoolWise,200,OK,School Infra Map 1-118,text,true,,12015464,966,195,195,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,11401,0,9
+1594309899621,87896,School Infra Map SchoolWise,200,OK,School Infra Map 1-21,text,true,,12015464,966,194,194,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,14206,0,5
+1594309899359,88524,School Infra Map SchoolWise,200,OK,School Infra Map 1-40,text,true,,12015464,966,193,193,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,10353,0,3
+1594309899359,88812,School Infra Map SchoolWise,200,OK,School Infra Map 1-106,text,true,,12015464,966,192,192,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,17608,0,4
+1594309899771,88564,School Infra Map SchoolWise,200,OK,School Infra Map 1-231,text,true,,12015464,966,191,191,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,11084,0,10
+1594309900149,88563,School Infra Map SchoolWise,200,OK,School Infra Map 1-121,text,true,,12015464,966,190,190,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,15222,0,4
+1594309900250,88681,School Infra Map SchoolWise,200,OK,School Infra Map 1-227,text,true,,12015464,966,189,189,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,15551,0,5
+1594309902199,86951,School Infra Map SchoolWise,200,OK,School Infra Map 1-60,text,true,,12015464,966,188,188,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,7248,0,4
+1594309899894,89911,School Infra Map SchoolWise,200,OK,School Infra Map 1-54,text,true,,12015464,966,187,187,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,14619,0,5
+1594309900250,89556,School Infra Map SchoolWise,200,OK,School Infra Map 1-207,text,true,,12015464,966,187,187,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,11937,0,6
+1594309902203,88361,School Infra Map SchoolWise,200,OK,School Infra Map 1-144,text,true,,12015464,966,185,185,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,17439,0,4
+1594309902208,92358,School Infra Map SchoolWise,200,OK,School Infra Map 1-143,text,true,,12015464,966,184,184,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,24236,0,307
+1594309902200,92381,School Infra Map SchoolWise,200,OK,School Infra Map 1-15,text,true,,12015464,966,183,183,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,14501,0,6
+1594309900151,94460,School Infra Map SchoolWise,200,OK,School Infra Map 1-97,text,true,,12015464,966,183,183,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,15436,0,3
+1594309902234,92392,School Infra Map SchoolWise,200,OK,School Infra Map 1-290,text,true,,12015464,966,182,182,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,28182,0,275
+1594309899620,95276,School Infra Map SchoolWise,200,OK,School Infra Map 1-222,text,true,,12015464,966,180,180,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,13986,0,3
+1594309902243,92836,School Infra Map SchoolWise,200,OK,School Infra Map 1-77,text,true,,12015464,966,179,179,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,21818,0,255
+1594309903582,91506,School Infra Map SchoolWise,200,OK,School Infra Map 1-233,text,true,,12015464,966,178,178,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,34552,0,32
+1594309900149,95028,School Infra Map SchoolWise,200,OK,School Infra Map 1-107,text,true,,12015464,966,177,177,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,21808,0,4
+1594309899414,95841,School Infra Map SchoolWise,200,OK,School Infra Map 1-75,text,true,,12015464,966,176,176,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,13312,0,6
+1594309900312,95082,School Infra Map SchoolWise,200,OK,School Infra Map 1-150,text,true,,12015464,966,175,175,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,15950,0,15
+1594309899414,95987,School Infra Map SchoolWise,200,OK,School Infra Map 1-62,text,true,,12015464,966,174,174,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,17987,0,7
+1594309902199,93208,School Infra Map SchoolWise,200,OK,School Infra Map 1-8,text,true,,12015464,966,173,173,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,16170,0,7
+1594309899770,95640,School Infra Map SchoolWise,200,OK,School Infra Map 1-294,text,true,,12015464,966,172,172,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,14265,0,8
+1594309900250,95482,School Infra Map SchoolWise,200,OK,School Infra Map 1-36,text,true,,12015464,966,171,171,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,15801,0,7
+1594309899415,96501,School Infra Map SchoolWise,200,OK,School Infra Map 1-32,text,true,,12015464,966,170,170,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,17781,0,5
+1594309902233,93766,School Infra Map SchoolWise,200,OK,School Infra Map 1-125,text,true,,12015464,966,169,169,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,23999,0,281
+1594309902216,94085,School Infra Map SchoolWise,200,OK,School Infra Map 1-289,text,true,,12015464,966,168,168,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,23107,0,298
+1594309899975,96411,School Infra Map SchoolWise,200,OK,School Infra Map 1-22,text,true,,12015464,966,167,167,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,14751,0,5
+1594309899974,96876,School Infra Map SchoolWise,200,OK,School Infra Map 1-263,text,true,,12015464,966,166,166,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,14951,0,9
+1594309902231,95056,School Infra Map SchoolWise,200,OK,School Infra Map 1-185,text,true,,12015464,966,165,165,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,22856,0,283
+1594309903587,94132,School Infra Map SchoolWise,200,OK,School Infra Map 1-139,text,true,,12015464,966,164,164,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,43016,0,37
+1594309902241,95775,School Infra Map SchoolWise,200,OK,School Infra Map 1-172,text,true,,12015464,966,163,163,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,23307,0,273
+1594309902209,95952,School Infra Map SchoolWise,200,OK,School Infra Map 1-235,text,true,,12015464,966,162,162,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,18835,0,37
+1594309903584,94810,School Infra Map SchoolWise,200,OK,School Infra Map 1-205,text,true,,12015464,966,161,161,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,33736,0,28
+1594309903575,94999,School Infra Map SchoolWise,200,OK,School Infra Map 1-120,text,true,,12015464,966,160,160,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,32043,0,21
+1594309899894,98850,School Infra Map SchoolWise,200,OK,School Infra Map 1-224,text,true,,12015464,966,159,159,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,19503,0,4
+1594309902235,96536,School Infra Map SchoolWise,200,OK,School Infra Map 1-44,text,true,,12015464,966,158,158,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,19059,0,12
+1594309899415,99377,School Infra Map SchoolWise,200,OK,School Infra Map 1-73,text,true,,12015464,966,157,157,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,13082,0,5
+1594309902197,96644,School Infra Map SchoolWise,200,OK,School Infra Map 1-239,text,true,,12015464,966,156,156,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,17774,0,7
+1594309903584,96582,School Infra Map SchoolWise,200,OK,School Infra Map 1-5,text,true,,12015464,966,155,155,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,33517,0,27
+1594309899619,100556,School Infra Map SchoolWise,200,OK,School Infra Map 1-280,text,true,,12015464,966,154,154,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,18260,0,7
+1594309902228,97960,School Infra Map SchoolWise,200,OK,School Infra Map 1-145,text,true,,12015464,966,153,153,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,32232,0,275
+1594309902215,98233,School Infra Map SchoolWise,200,OK,School Infra Map 1-88,text,true,,12015464,966,152,152,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,21195,0,276
+1594309902237,98239,School Infra Map SchoolWise,200,OK,School Infra Map 1-48,text,true,,12015464,966,151,151,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,22268,0,276
+1594309903571,97246,School Infra Map SchoolWise,200,OK,School Infra Map 1-87,text,true,,12015464,966,150,150,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,38197,0,48
+1594309902227,98717,School Infra Map SchoolWise,200,OK,School Infra Map 1-167,text,true,,12015464,966,149,149,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,23542,0,286
+1594309900075,100917,School Infra Map SchoolWise,200,OK,School Infra Map 1-261,text,true,,12015464,966,148,148,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,15082,0,5
+1594309902232,98948,School Infra Map SchoolWise,200,OK,School Infra Map 1-165,text,true,,12015464,966,147,147,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,20734,0,257
+1594309903588,97607,School Infra Map SchoolWise,200,OK,School Infra Map 1-198,text,true,,12015464,966,146,146,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,33311,0,21
+1594309899781,101471,School Infra Map SchoolWise,200,OK,School Infra Map 1-177,text,true,,12015464,966,145,145,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,18318,0,4
+1594309902241,99164,School Infra Map SchoolWise,200,OK,School Infra Map 1-178,text,true,,12015464,966,144,144,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,31485,0,289
+1594309904278,97506,School Infra Map SchoolWise,200,OK,School Infra Map 1-281,text,true,,12015464,966,143,143,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,56313,0,45
+1594309899553,102259,School Infra Map SchoolWise,200,OK,School Infra Map 1-98,text,true,,12015464,966,142,142,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,13618,0,3
+1594309902230,99635,School Infra Map SchoolWise,200,OK,School Infra Map 1-155,text,true,,12015464,966,141,141,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,26365,0,275
+1594309902244,99622,School Infra Map SchoolWise,200,OK,School Infra Map 1-283,text,true,,12015464,966,140,140,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,29514,0,266
+1594309902236,99771,School Infra Map SchoolWise,200,OK,School Infra Map 1-182,text,true,,12015464,966,139,139,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,22033,0,262
+1594309902243,99768,School Infra Map SchoolWise,200,OK,School Infra Map 1-28,text,true,,12015464,966,138,138,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,30804,0,282
+1594309903586,98604,School Infra Map SchoolWise,200,OK,School Infra Map 1-197,text,true,,12015464,966,137,137,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,31581,0,8
+1594309899553,102643,School Infra Map SchoolWise,200,OK,School Infra Map 1-12,text,true,,12015464,966,136,136,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,18099,0,4
+1594309902224,99991,School Infra Map SchoolWise,200,OK,School Infra Map 1-39,text,true,,12015464,966,135,135,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,21617,0,289
+1594309902212,100010,School Infra Map SchoolWise,200,OK,School Infra Map 1-58,text,true,,12015464,966,134,134,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,30289,0,292
+1594309903581,98643,School Infra Map SchoolWise,200,OK,School Infra Map 1-34,text,true,,12015464,966,133,133,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,33100,0,18
+1594309902209,100106,School Infra Map SchoolWise,200,OK,School Infra Map 1-191,text,true,,12015464,966,132,132,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,20303,0,5
+1594309900313,102073,School Infra Map SchoolWise,200,OK,School Infra Map 1-76,text,true,,12015464,966,131,131,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,18443,0,11
+1594309902233,100199,School Infra Map SchoolWise,200,OK,School Infra Map 1-202,text,true,,12015464,966,130,130,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,23787,0,280
+1594309902237,100540,School Infra Map SchoolWise,200,OK,School Infra Map 1-196,text,true,,12015464,966,129,129,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,20968,0,253
+1594309899551,103367,School Infra Map SchoolWise,200,OK,School Infra Map 1-225,text,true,,12015464,966,128,128,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,13395,0,5
+1594309902230,100978,School Infra Map SchoolWise,200,OK,School Infra Map 1-35,text,true,,12015464,966,127,127,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,27746,0,278
+1594309902216,101090,School Infra Map SchoolWise,200,OK,School Infra Map 1-171,text,true,,12015464,966,126,126,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,27518,0,293
+1594309902515,100828,School Infra Map SchoolWise,200,OK,School Infra Map 1-129,text,true,,12015464,966,125,125,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,26761,0,4
+1594309902211,101205,School Infra Map SchoolWise,200,OK,School Infra Map 1-102,text,true,,12015464,966,124,124,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,20530,0,277
+1594309903573,100003,School Infra Map SchoolWise,200,OK,School Infra Map 1-52,text,true,,12015464,966,123,123,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,35682,0,44
+1594309900313,103419,School Infra Map SchoolWise,200,OK,School Infra Map 1-210,text,true,,12015464,966,122,122,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,18859,0,3
+1594309903568,100184,School Infra Map SchoolWise,200,OK,School Infra Map 1-256,text,true,,12015464,966,121,121,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,43832,0,49
+1594309903590,100251,School Infra Map SchoolWise,200,OK,School Infra Map 1-127,text,true,,12015464,966,120,120,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,37777,0,28
+1594309903572,101028,School Infra Map SchoolWise,200,OK,School Infra Map 1-221,text,true,,12015464,966,119,119,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,41123,0,50
+1594309902226,102382,School Infra Map SchoolWise,200,OK,School Infra Map 1-278,text,true,,12015464,966,118,118,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,28898,0,278
+1594309902236,102376,School Infra Map SchoolWise,200,OK,School Infra Map 1-186,text,true,,12015464,966,117,117,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,20062,0,13
+1594309902228,102389,School Infra Map SchoolWise,200,OK,School Infra Map 1-18,text,true,,12015464,966,116,116,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,30601,0,297
+1594309903593,101043,School Infra Map SchoolWise,200,OK,School Infra Map 1-134,text,true,,12015464,966,115,115,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,41531,0,29
+1594309904697,99953,School Infra Map SchoolWise,200,OK,School Infra Map 1-114,text,true,,12015464,966,114,114,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,55128,0,9
+1594309903588,101073,School Infra Map SchoolWise,200,OK,School Infra Map 1-195,text,true,,12015464,966,113,113,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,34765,0,27
+1594309902217,102701,School Infra Map SchoolWise,200,OK,School Infra Map 1-201,text,true,,12015464,966,112,112,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,31288,0,310
+1594309902215,102905,School Infra Map SchoolWise,200,OK,School Infra Map 1-217,text,true,,12015464,966,111,111,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,29813,0,306
+1594309902210,102936,School Infra Map SchoolWise,200,OK,School Infra Map 1-41,text,true,,12015464,966,110,110,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,18618,0,3
+1594309904797,100398,School Infra Map SchoolWise,200,OK,School Infra Map 1-74,text,true,,12015464,966,109,109,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,56764,0,8
+1594309902215,103027,School Infra Map SchoolWise,200,OK,School Infra Map 1-147,text,true,,12015464,966,108,108,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,31994,0,294
+1594309902239,103023,School Infra Map SchoolWise,200,OK,School Infra Map 1-218,text,true,,12015464,966,107,107,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,22487,0,274
+1594309904701,100610,School Infra Map SchoolWise,200,OK,School Infra Map 1-59,text,true,,12015464,966,106,106,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,55335,0,10
+1594309902216,103103,School Infra Map SchoolWise,200,OK,School Infra Map 1-270,text,true,,12015464,966,105,105,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,28665,0,288
+1594309903573,101911,School Infra Map SchoolWise,200,OK,School Infra Map 1-38,text,true,,12015464,966,104,104,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,32252,0,23
+1594309903580,102180,School Infra Map SchoolWise,200,OK,School Infra Map 1-136,text,true,,12015464,966,103,103,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,32459,0,17
+1594309902199,103585,School Infra Map SchoolWise,200,OK,School Infra Map 1-135,text,true,,12015464,966,102,102,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,14286,0,4
+1594309903571,102450,School Infra Map SchoolWise,200,OK,School Infra Map 1-137,text,true,,12015464,966,101,101,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,41946,0,52
+1594309902213,103863,School Infra Map SchoolWise,200,OK,School Infra Map 1-273,text,true,,12015464,966,100,100,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,37806,0,311
+1594309903578,102507,School Infra Map SchoolWise,200,OK,School Infra Map 1-82,text,true,,12015464,966,99,99,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,40617,0,44
+1594309902237,104112,School Infra Map SchoolWise,200,OK,School Infra Map 1-226,text,true,,12015464,966,98,98,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,31722,0,266
+1594309902232,104305,School Infra Map SchoolWise,200,OK,School Infra Map 1-199,text,true,,12015464,966,97,97,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,26823,0,288
+1594309903585,103227,School Infra Map SchoolWise,200,OK,School Infra Map 1-269,text,true,,12015464,966,96,96,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,35223,0,30
+1594309903596,103448,School Infra Map SchoolWise,200,OK,School Infra Map 1-110,text,true,,12015464,966,95,95,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,35426,0,20
+1594309903585,103466,School Infra Map SchoolWise,200,OK,School Infra Map 1-262,text,true,,12015464,966,94,94,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,31368,0,7
+1594309904629,102431,School Infra Map SchoolWise,200,OK,School Infra Map 1-180,text,true,,12015464,966,93,93,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,54790,0,46
+1594309902240,104823,School Infra Map SchoolWise,200,OK,School Infra Map 1-248,text,true,,12015464,966,92,92,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,35407,0,263
+1594309902518,104792,School Infra Map SchoolWise,200,OK,School Infra Map 1-49,text,true,,12015464,966,91,91,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,30767,0,7
+1594309903588,103743,School Infra Map SchoolWise,200,OK,School Infra Map 1-253,text,true,,12015464,966,90,90,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,38661,0,32
+1594309904905,102570,School Infra Map SchoolWise,200,OK,School Infra Map 1-298,text,true,,12015464,966,89,89,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,57248,0,6
+1594309904688,102814,School Infra Map SchoolWise,200,OK,School Infra Map 1-9,text,true,,12015464,966,88,88,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,54939,0,11
+1594309903593,103933,School Infra Map SchoolWise,200,OK,School Infra Map 1-138,text,true,,12015464,966,87,87,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,39606,0,28
+1594309903576,103976,School Infra Map SchoolWise,200,OK,School Infra Map 1-30,text,true,,12015464,966,86,86,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,45576,0,49
+1594309903585,104066,School Infra Map SchoolWise,200,OK,School Infra Map 1-142,text,true,,12015464,966,85,85,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,38437,0,35
+1594309903575,104289,School Infra Map SchoolWise,200,OK,School Infra Map 1-285,text,true,,12015464,966,84,84,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,46630,0,50
+1594309902225,105953,School Infra Map SchoolWise,200,OK,School Infra Map 1-116,text,true,,12015464,966,83,83,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,26597,0,295
+1594309903934,104250,School Infra Map SchoolWise,200,OK,School Infra Map 1-90,text,true,,12015464,966,82,82,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,46075,0,17
+1594309904196,103996,School Infra Map SchoolWise,200,OK,School Infra Map 1-286,text,true,,12015464,966,81,81,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,49918,0,16
+1594309902240,105955,School Infra Map SchoolWise,200,OK,School Infra Map 1-240,text,true,,12015464,966,80,80,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,28410,0,278
+1594309903585,104615,School Infra Map SchoolWise,200,OK,School Infra Map 1-26,text,true,,12015464,966,79,79,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,41327,0,37
+1594309902231,105976,School Infra Map SchoolWise,200,OK,School Infra Map 1-260,text,true,,12015464,966,78,78,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,27276,0,289
+1594309904257,104034,School Infra Map SchoolWise,200,OK,School Infra Map 1-254,text,true,,12015464,966,77,77,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,56102,0,17
+1594309903594,104719,School Infra Map SchoolWise,200,OK,School Infra Map 1-42,text,true,,12015464,966,76,76,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,43563,0,34
+1594309903589,104761,School Infra Map SchoolWise,200,OK,School Infra Map 1-86,text,true,,12015464,966,75,75,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,40867,0,33
+1594309903575,104824,School Infra Map SchoolWise,200,OK,School Infra Map 1-258,text,true,,12015464,966,74,74,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,42383,0,48
+1594309903569,104835,School Infra Map SchoolWise,200,OK,School Infra Map 1-255,text,true,,12015464,966,73,73,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,35030,0,46
+1594309902225,106182,School Infra Map SchoolWise,200,OK,School Infra Map 1-55,text,true,,12015464,966,72,72,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,29332,0,295
+1594309905038,103467,School Infra Map SchoolWise,200,OK,School Infra Map 1-7,text,true,,12015464,966,71,71,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60005,0,3
+1594309902218,106332,School Infra Map SchoolWise,200,OK,School Infra Map 1-117,text,true,,12015464,966,70,70,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,21408,0,273
+1594309903581,105076,School Infra Map SchoolWise,200,OK,School Infra Map 1-1,text,true,,12015464,966,69,69,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,32680,0,18
+1594309903580,105091,School Infra Map SchoolWise,200,OK,School Infra Map 1-264,text,true,,12015464,966,68,68,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,39397,0,41
+1594309904906,103784,School Infra Map SchoolWise,200,OK,School Infra Map 1-11,text,true,,12015464,966,67,67,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,58042,0,11
+1594309903586,105192,School Infra Map SchoolWise,200,OK,School Infra Map 1-184,text,true,,12015464,966,66,66,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,31815,0,9
+1594309903592,105185,School Infra Map SchoolWise,200,OK,School Infra Map 1-149,text,true,,12015464,966,66,66,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,42794,0,31
+1594309903581,105219,School Infra Map SchoolWise,200,OK,School Infra Map 1-119,text,true,,12015464,966,64,64,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,39840,0,40
+1594309903573,105419,School Infra Map SchoolWise,200,OK,School Infra Map 1-84,text,true,,12015464,966,63,63,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,40067,0,48
+1594309903576,105456,School Infra Map SchoolWise,200,OK,School Infra Map 1-29,text,true,,12015464,966,62,62,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,32898,0,22
+1594309903569,105531,School Infra Map SchoolWise,200,OK,School Infra Map 1-228,text,true,,12015464,966,61,61,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,38259,0,50
+1594309903572,105586,School Infra Map SchoolWise,200,OK,School Infra Map 1-133,text,true,,12015464,966,60,60,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,40284,0,49
+1594309902213,106953,School Infra Map SchoolWise,200,OK,School Infra Map 1-152,text,true,,12015464,966,59,59,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,27977,0,295
+1594309903578,105608,School Infra Map SchoolWise,200,OK,School Infra Map 1-236,text,true,,12015464,966,58,58,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,48633,0,49
+1594309904905,104320,School Infra Map SchoolWise,200,OK,School Infra Map 1-187,text,true,,12015464,966,57,57,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,57779,0,11
+1594309903582,105689,School Infra Map SchoolWise,200,OK,School Infra Map 1-89,text,true,,12015464,966,56,56,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,34361,0,31
+1594309904341,104967,School Infra Map SchoolWise,200,OK,School Infra Map 1-126,text,true,,12015464,966,55,55,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,48895,0,14
+1594309903594,105763,School Infra Map SchoolWise,200,OK,School Infra Map 1-92,text,true,,12015464,966,54,54,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,47003,0,33
+1594309904184,105188,School Infra Map SchoolWise,200,OK,School Infra Map 1-166,text,true,,12015464,966,53,53,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,52563,0,15
+1594309902249,107227,School Infra Map SchoolWise,200,OK,School Infra Map 1-192,text,true,,12015464,966,52,52,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,32423,0,255
+1594309903591,105941,School Infra Map SchoolWise,200,OK,School Infra Map 1-242,text,true,,12015464,966,51,51,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,42587,0,33
+1594309903928,105608,School Infra Map SchoolWise,200,OK,School Infra Map 1-267,text,true,,12015464,966,50,50,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,47184,0,16
+1594309903595,106030,School Infra Map SchoolWise,200,OK,School Infra Map 1-141,text,true,,12015464,966,49,49,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,38885,0,25
+1594309904426,105207,School Infra Map SchoolWise,200,OK,School Infra Map 1-124,text,true,,12015464,966,48,48,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,49917,0,11
+1594309903957,105761,School Infra Map SchoolWise,200,OK,School Infra Map 1-43,text,true,,12015464,966,47,47,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,52297,0,224
+1594309902215,107505,School Infra Map SchoolWise,200,OK,School Infra Map 1-115,text,true,,12015464,966,47,47,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,30049,0,288
+1594309904531,105204,School Infra Map SchoolWise,200,OK,School Infra Map 1-162,text,true,,12015464,966,45,45,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,51159,0,11
+1594309904100,105658,School Infra Map SchoolWise,200,OK,School Infra Map 1-96,text,true,,12015464,966,44,44,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,52381,0,13
+1594309902227,107560,School Infra Map SchoolWise,200,OK,School Infra Map 1-161,text,true,,12015464,966,43,43,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,19505,0,22
+1594309904361,105446,School Infra Map SchoolWise,200,OK,School Infra Map 1-209,text,true,,12015464,966,42,42,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,49310,0,13
+1594309903576,106288,School Infra Map SchoolWise,200,OK,School Infra Map 1-10,text,true,,12015464,966,41,41,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,42185,0,47
+1594309903575,106310,School Infra Map SchoolWise,200,OK,School Infra Map 1-292,text,true,,12015464,966,40,40,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,54407,0,54
+1594309903582,106318,School Infra Map SchoolWise,200,OK,School Infra Map 1-131,text,true,,12015464,966,39,39,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,39140,0,38
+1594309904447,105475,School Infra Map SchoolWise,200,OK,School Infra Map 1-243,text,true,,12015464,966,38,38,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,50361,0,11
+1594309904951,104998,School Infra Map SchoolWise,200,OK,School Infra Map 1-154,text,true,,12015464,966,37,37,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,58463,0,5
+1594309904171,105781,School Infra Map SchoolWise,200,OK,School Infra Map 1-72,text,true,,12015464,966,36,36,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,54325,0,14
+1594309904439,105538,School Infra Map SchoolWise,200,OK,School Infra Map 1-175,text,true,,12015464,966,35,35,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,50153,0,10
+1594309904453,105580,School Infra Map SchoolWise,200,OK,School Infra Map 1-46,text,true,,12015464,966,34,34,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,50565,0,11
+1594309904188,105904,School Infra Map SchoolWise,200,OK,School Infra Map 1-234,text,true,,12015464,966,33,33,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,51821,0,14
+1594309904528,105594,School Infra Map SchoolWise,200,OK,School Infra Map 1-80,text,true,,12015464,966,32,32,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,50932,0,11
+1594309904613,105540,School Infra Map SchoolWise,200,OK,School Infra Map 1-148,text,true,,12015464,966,31,31,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,53144,0,13
+1594309903931,106229,School Infra Map SchoolWise,200,OK,School Infra Map 1-245,text,true,,12015464,966,30,30,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,47826,0,16
+1594309904109,106070,School Infra Map SchoolWise,200,OK,School Infra Map 1-246,text,true,,12015464,966,29,29,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,54176,0,14
+1594309903569,106642,School Infra Map SchoolWise,200,OK,School Infra Map 1-173,text,true,,12015464,966,28,28,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,46178,0,58
+1594309903578,106634,School Infra Map SchoolWise,200,OK,School Infra Map 1-132,text,true,,12015464,966,27,27,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,55621,0,52
+1594309902515,107706,School Infra Map SchoolWise,200,OK,School Infra Map 1-295,text,true,,12015464,966,26,26,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,37974,0,9
+1594309905025,105270,School Infra Map SchoolWise,200,OK,School Infra Map 1-157,text,true,,12015464,966,25,25,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,59275,0,5
+1594309905033,105264,School Infra Map SchoolWise,200,OK,School Infra Map 1-203,text,true,,12015464,966,24,24,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,59484,0,4
+1594309904601,105703,School Infra Map SchoolWise,200,OK,School Infra Map 1-206,text,true,,12015464,966,24,24,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,52731,0,12
+1594309904907,105409,School Infra Map SchoolWise,200,OK,School Infra Map 1-81,text,true,,12015464,966,22,22,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,57453,0,4
+1594309904352,105972,School Infra Map SchoolWise,200,OK,School Infra Map 1-287,text,true,,12015464,966,21,21,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,49105,0,14
+1594309904962,105364,School Infra Map SchoolWise,200,OK,School Infra Map 1-19,text,true,,12015464,966,20,20,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,58906,0,4
+1594309903584,106744,School Infra Map SchoolWise,200,OK,School Infra Map 1-146,text,true,,12015464,966,19,19,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,49083,0,42
+1594309904514,105823,School Infra Map SchoolWise,200,OK,School Infra Map 1-69,text,true,,12015464,966,18,18,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,50726,0,12
+1594309903593,106758,School Infra Map SchoolWise,200,OK,School Infra Map 1-105,text,true,,12015464,966,17,17,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,55590,0,37
+1594309902223,108132,School Infra Map SchoolWise,200,OK,School Infra Map 1-163,text,true,,12015464,966,16,16,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,37382,0,279
+1594309904618,105740,School Infra Map SchoolWise,200,OK,School Infra Map 1-160,text,true,,12015464,966,15,15,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,52938,0,13
+1594309904283,106075,School Infra Map SchoolWise,200,OK,School Infra Map 1-99,text,true,,12015464,966,15,15,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,44216,0,51
+1594309903929,106441,School Infra Map SchoolWise,200,OK,School Infra Map 1-282,text,true,,12015464,966,13,13,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,47612,0,16
+1594309903929,106460,School Infra Map SchoolWise,200,OK,School Infra Map 1-274,text,true,,12015464,966,12,12,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,46913,0,15
+1594309903598,106793,School Infra Map SchoolWise,200,OK,School Infra Map 1-237,text,true,,12015464,966,11,11,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,45922,0,26
+1594309903928,106474,School Infra Map SchoolWise,200,OK,School Infra Map 1-128,text,true,,12015464,966,10,10,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,48961,0,17
+1594309903592,106813,School Infra Map SchoolWise,200,OK,School Infra Map 1-20,text,true,,12015464,966,9,9,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,48850,0,34
+1594309904102,106308,School Infra Map SchoolWise,200,OK,School Infra Map 1-257,text,true,,12015464,966,8,8,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,54597,0,11
+1594309904940,105516,School Infra Map SchoolWise,200,OK,School Infra Map 1-158,text,true,,12015464,966,7,7,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,58139,0,4
+1594309904542,105925,School Infra Map SchoolWise,200,OK,School Infra Map 1-61,text,true,,12015464,966,6,6,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,52534,0,14
+1594309903927,106541,School Infra Map SchoolWise,200,OK,School Infra Map 1-271,text,true,,12015464,966,5,5,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,47409,0,18
+1594309904953,105523,School Infra Map SchoolWise,200,OK,School Infra Map 1-211,text,true,,12015464,966,4,4,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,58697,0,4
+1594309904366,106118,School Infra Map SchoolWise,200,OK,School Infra Map 1-232,text,true,,12015464,966,3,3,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,49525,0,15
+1594309902238,108255,School Infra Map SchoolWise,200,OK,School Infra Map 1-33,text,true,,12015464,966,2,2,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,19278,0,10
+1594309903926,106572,School Infra Map SchoolWise,200,OK,School Infra Map 1-284,text,true,,12015464,966,1,1,https://cqube.tibilprojects.com/api/infraMap/allSchoolWise,60159,0,22

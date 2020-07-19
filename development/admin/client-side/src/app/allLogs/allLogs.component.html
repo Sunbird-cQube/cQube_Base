@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 style="color: #284d8a;" id="head">Logs: <span *ngIf="!showErr">{{title}}</span></h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <select id="choose_dist"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(165, 163, 163)"
+                [(ngModel)]="logTypeName" name="logTypeName" (change)="listLogs(logTypeName)">
+                <option [value]="logTypeName" disabled selected="selected" style="color: white">Choose log type
+                </option>
+                <option *ngFor="let logType of allLogsType" [(ngValue)]="logType.name"
+                    style="font-family: Arial; font-size: 11px;">
+                    {{logType.name}}
+                </option>
+            </select>
+
+            <select id="choose_block" [hidden]="logHide"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(165, 163, 163)"
+                [(ngModel)]="logName" name="logName" (change)="getLogPath(logName)">
+                <option [value]="logName" disabled selected="selected" style="color: white;">Choose log name
+                </option>
+                <option *ngFor="let logs of allLogs" [(ngValue)]="logs.key" style="font-family: Arial;font-size: 11px;">
+                    {{logs.name}}
+                </option>
+            </select>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8" [hidden]="fileHidden">
+            <div id="files"
+                style="overflow-x:auto; height: 58vh; width: 100%; margin-top: 2%; background-color: rgb(238, 238, 238);">
+                <pre *ngIf="!showErr" style="padding: 2%">{{logData}}</pre>
+                <h1 *ngIf="showErr" style="color: red; text-align: center; margin-top: 15%;">{{errMsg}}</h1>
+            </div>
+            <!-- <p *ngIf="!showErr" style="float: left; margin-top: 2%; color: #284d8a; font-size: 16px;">File Size:
+                {{fileSize}}</p> -->
+            <button *ngIf="!showErr" id="downld" type="submit" class="btn btn-primary"
+                style="margin-top: 2%;float: right;" (click)="downloadLogs()">Download Full Log</button>
+        </div>
+    </div>
+</div>
+<div id="spinner" style="display: none;">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>

@@ -8,13 +8,16 @@ import { Observable } from 'rxjs';
 export class AuthGuard implements CanActivate, CanActivateChild {
   data: boolean;
   constructor(private router: Router) { }
-
+  public role = localStorage.getItem('roleName');
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.data = (localStorage.getItem('token') == null && window.location.href !== "http://localhost:4200/#/user-view");
+    // this.data = (localStorage.getItem('token') == null && window.location.href !== "http://localhost:4200/#/user-view");
+    // let expectedRoleArray = next.data.roles[0];
+      // console.log(expectedRoleArray);
+      
     if (this.data) {
-      this.router.navigate(['/login']);
+      // this.router.navigate(['/homePage']);
       return false;
     } else {
       return true;
@@ -24,9 +27,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivateChild(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.data = (localStorage.getItem('token') == null && window.location.href !== "http://localhost:4200/#/user-view");
+    // this.data = (localStorage.getItem('token') == null && window.location.href !== "http://localhost:4200/#/user-view");
     if (!this.data) {
-      this.router.navigate(['/login']);
+      // this.router.navigate(['/login']);
       return false;
 
     } else {

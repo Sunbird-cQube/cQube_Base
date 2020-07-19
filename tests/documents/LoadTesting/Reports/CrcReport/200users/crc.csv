@@ -1,0 +1,401 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1594305866450,4297,Login,200,OK,Crc Users 1-96,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4295,0,3766
+1594305866184,4563,Login,200,OK,Crc Users 1-8,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4560,0,4033
+1594305866144,4603,Login,200,OK,Crc Users 1-22,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4600,0,4073
+1594305866254,4493,Login,200,OK,Crc Users 1-54,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4490,0,3960
+1594305866649,4196,Login,200,OK,Crc Users 1-135,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4196,0,3567
+1594305866735,4110,Login,200,OK,Crc Users 1-152,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4110,0,3483
+1594305866191,4654,Login,200,OK,Crc Users 1-44,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4654,0,4027
+1594305866198,4649,Login,200,OK,Crc Users 1-45,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4649,0,4042
+1594305866446,4491,Login,200,OK,Crc Users 1-95,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4491,0,3794
+1594305867095,3843,Login,200,OK,Crc Users 1-159,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3843,0,3146
+1594305866502,4436,Login,200,OK,Crc Users 1-102,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4436,0,3739
+1594305867082,3859,Login,200,OK,Crc Users 1-174,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3859,0,3160
+1594305866237,4748,Login,200,OK,Crc Users 1-53,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4748,0,4005
+1594305866361,4624,Login,200,OK,Crc Users 1-78,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4624,0,3881
+1594305866166,4820,Login,200,OK,Crc Users 1-10,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4820,0,4047
+1594305867092,3915,Login,200,OK,Crc Users 1-162,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,3915,0,3127
+1594305866158,4885,Login,200,OK,Crc Users 1-34,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4885,0,4061
+1594305866167,4880,Login,200,OK,Crc Users 1-1,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4880,0,4048
+1594305866405,4658,Login,200,OK,Crc Users 1-84,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4658,0,3815
+1594305866211,4870,Login,200,OK,Crc Users 1-46,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4870,0,4010
+1594305866147,4983,Login,200,OK,Crc Users 1-15,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4983,0,4074
+1594305866427,4705,Login,200,OK,Crc Users 1-91,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4705,0,3788
+1594305866759,4387,Login,200,OK,Crc Users 1-153,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4387,0,3463
+1594305867075,4092,Login,200,OK,Crc Users 1-190,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4092,0,3140
+1594305866679,4532,Login,200,OK,Crc Users 1-141,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4532,0,3544
+1594305867066,4151,Login,200,OK,Crc Users 1-194,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4151,0,3157
+1594305867081,4149,Login,200,OK,Crc Users 1-177,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4149,0,3143
+1594305866638,4611,Login,200,OK,Crc Users 1-131,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4611,0,3587
+1594305867078,4217,Login,200,OK,Crc Users 1-181,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4217,0,3147
+1594305867076,4225,Login,200,OK,Crc Users 1-183,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4225,0,3137
+1594305866635,4677,Login,200,OK,Crc Users 1-133,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4677,0,3591
+1594305866611,4731,Login,200,OK,Crc Users 1-125,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4731,0,3616
+1594305867088,4294,Login,200,OK,Crc Users 1-167,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4294,0,3139
+1594305866160,5229,Login,200,OK,Crc Users 1-36,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5229,0,4068
+1594305866182,5219,Login,200,OK,Crc Users 1-18,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5219,0,4046
+1594305866543,4879,Login,200,OK,Crc Users 1-114,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4879,0,3687
+1594305866272,5194,Login,200,OK,Crc Users 1-55,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5194,0,3958
+1594305867094,4377,Login,200,OK,Crc Users 1-160,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4377,0,3136
+1594305867064,4420,Login,200,OK,Crc Users 1-157,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4420,0,3167
+1594305866534,4970,Login,200,OK,Crc Users 1-112,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4970,0,3697
+1594305866206,5343,Login,200,OK,Crc Users 1-47,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5343,0,4026
+1594305866179,5375,Login,200,OK,Crc Users 1-20,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5375,0,4053
+1594305867079,4489,Login,200,OK,Crc Users 1-180,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4489,0,3154
+1594305866401,5186,Login,200,OK,Crc Users 1-85,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5186,0,3832
+1594305866228,5403,Login,200,OK,Crc Users 1-51,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5403,0,4005
+1594305866233,5408,Login,200,OK,Crc Users 1-52,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5408,0,4000
+1594305867084,4570,Login,200,OK,Crc Users 1-171,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4570,0,3141
+1594305866294,5378,Login,200,OK,Crc Users 1-64,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5378,0,3931
+1594305867073,4644,Login,200,OK,Crc Users 1-187,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4644,0,3161
+1594305866147,5576,Login,200,OK,Crc Users 1-7,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5575,0,4088
+1594305866149,5591,Login,200,OK,Crc Users 1-21,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5591,0,4087
+1594305867700,4054,Login,200,OK,Crc Users 1-200,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4054,0,2537
+1594305866510,5295,Login,200,OK,Crc Users 1-108,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5295,0,3728
+1594305866188,5620,Login,200,OK,Crc Users 1-43,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5620,0,4028
+1594305866287,5537,Login,200,OK,Crc Users 1-63,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5536,0,3956
+1594305866147,5692,Login,200,OK,Crc Users 1-19,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5692,0,4097
+1594305866217,5670,Login,200,OK,Crc Users 1-49,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5670,0,4027
+1594305866171,5722,Login,200,OK,Crc Users 1-40,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5722,0,4073
+1594305866559,5348,Login,200,OK,Crc Users 1-117,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5348,0,3687
+1594305866311,5611,Login,200,OK,Crc Users 1-68,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5611,0,3935
+1594305866535,5434,Login,200,OK,Crc Users 1-104,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5434,0,3711
+1594305867087,4891,Login,200,OK,Crc Users 1-168,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4891,0,3160
+1594305866185,5806,Login,200,OK,Crc Users 1-26,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5806,0,4062
+1594305867070,4937,Login,200,OK,Crc Users 1-186,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,4937,0,3178
+1594305866351,5703,Login,200,OK,Crc Users 1-76,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5703,0,3897
+1594305866520,5542,Login,200,OK,Crc Users 1-110,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5542,0,3729
+1594305866260,5817,Login,200,OK,Crc Users 1-56,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5817,0,3989
+1594305866334,5756,Login,200,OK,Crc Users 1-72,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5756,0,3915
+1594305866356,5783,Login,200,OK,Crc Users 1-77,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5783,0,3893
+1594305866162,5986,Login,200,OK,Crc Users 1-11,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5986,0,4088
+1594305866430,5731,Login,200,OK,Crc Users 1-90,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5731,0,3821
+1594305866162,6011,Login,200,OK,Crc Users 1-5,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6011,0,4089
+1594305866384,5836,Login,200,OK,Crc Users 1-81,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5836,0,3867
+1594305866752,5481,Login,200,OK,Crc Users 1-154,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5480,0,3500
+1594305867066,5178,Login,200,OK,Crc Users 1-196,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5178,0,3186
+1594305866444,5813,Login,200,OK,Crc Users 1-94,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5813,0,3809
+1594305866147,6160,Login,200,OK,Crc Users 1-29,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6160,0,4106
+1594305866514,5804,Login,200,OK,Crc Users 1-105,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5804,0,3740
+1594305867091,5237,Login,200,OK,Crc Users 1-164,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5237,0,3163
+1594305867077,5263,Login,200,OK,Crc Users 1-182,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5263,0,3177
+1594305866347,6041,Login,200,OK,Crc Users 1-73,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6041,0,3907
+1594305867093,5309,Login,200,OK,Crc Users 1-158,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5309,0,3162
+1594305867090,5323,Login,200,OK,Crc Users 1-165,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5323,0,3165
+1594305866365,6059,Login,200,OK,Crc Users 1-79,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6059,0,3891
+1594305866211,6261,Login,200,OK,Crc Users 1-48,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6261,0,4045
+1594305866179,6307,Login,200,OK,Crc Users 1-25,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6307,0,4078
+1594305867083,5414,Login,200,OK,Crc Users 1-172,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5414,0,3175
+1594305866163,6344,Login,200,OK,Crc Users 1-24,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6344,0,4082
+1594305866417,6140,Login,200,OK,Crc Users 1-89,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6140,0,3818
+1594305866322,6246,Login,200,OK,Crc Users 1-69,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6246,0,3935
+1594305867075,5506,Login,200,OK,Crc Users 1-189,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5506,0,3225
+1594305866269,6321,Login,200,OK,Crc Users 1-59,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6321,0,4032
+1594305866548,6092,Login,200,OK,Crc Users 1-115,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6092,0,3753
+1594305867611,5041,Login,200,OK,Crc Users 1-199,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5041,0,2691
+1594305866350,6315,Login,200,OK,Crc Users 1-74,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6315,0,3952
+1594305866586,6087,Login,200,OK,Crc Users 1-123,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6087,0,3717
+1594305866147,6577,Login,200,OK,Crc Users 1-12,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6577,0,4091
+1594305867080,5657,Login,200,OK,Crc Users 1-178,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5657,0,3225
+1594305867088,5660,Login,200,OK,Crc Users 1-166,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5660,0,3218
+1594305866385,6373,Login,200,OK,Crc Users 1-83,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6373,0,3921
+1594305866275,6532,Login,200,OK,Crc Users 1-60,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6532,0,4031
+1594305867067,5753,Login,200,OK,Crc Users 1-195,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5753,0,3240
+1594305866332,6499,Login,200,OK,Crc Users 1-70,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6499,0,3975
+1594305866371,6472,Login,200,OK,Crc Users 1-80,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6472,0,3937
+1594305866641,6250,Login,200,OK,Crc Users 1-134,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6250,0,3668
+1594305866414,6489,Login,200,OK,Crc Users 1-88,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6489,0,3895
+1594305866758,6156,Login,200,OK,Crc Users 1-156,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6155,0,3552
+1594305866161,6765,Login,200,OK,Crc Users 1-13,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6765,0,4149
+1594305866456,6519,Login,200,OK,Crc Users 1-97,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6519,0,3854
+1594305866403,6585,Login,200,OK,Crc Users 1-86,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6585,0,3908
+1594305866380,6617,Login,200,OK,Crc Users 1-82,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6617,0,3932
+1594305866671,6339,Login,200,OK,Crc Users 1-140,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6339,0,3641
+1594305866157,6903,Login,200,OK,Crc Users 1-37,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6903,0,4156
+1594305866516,6559,Login,200,OK,Crc Users 1-109,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6559,0,3797
+1594305866506,6577,Login,200,OK,Crc Users 1-107,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6577,0,3807
+1594305866179,6914,Login,200,OK,Crc Users 1-9,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6914,0,4135
+1594305866264,6878,Login,200,OK,Crc Users 1-58,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6878,0,4050
+1594305866147,7014,Login,200,OK,Crc Users 1-2,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7014,0,4168
+1594305866158,7008,Login,200,OK,Crc Users 1-17,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7008,0,4157
+1594305867085,6091,Login,200,OK,Crc Users 1-170,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6091,0,3230
+1594305866162,7064,Login,200,OK,Crc Users 1-16,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7064,0,4153
+1594305867079,6163,Login,200,OK,Crc Users 1-179,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6162,0,3237
+1594305866570,6678,Login,200,OK,Crc Users 1-120,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6678,0,3746
+1594305866267,7007,Login,200,OK,Crc Users 1-57,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7007,0,4049
+1594305867086,6224,Login,200,OK,Crc Users 1-169,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6224,0,3231
+1594305866565,6758,Login,200,OK,Crc Users 1-119,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6758,0,3752
+1594305867082,6249,Login,200,OK,Crc Users 1-176,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6249,0,3235
+1594305866754,6593,Login,200,OK,Crc Users 1-155,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6593,0,3564
+1594305866738,6656,Login,200,OK,Crc Users 1-151,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6656,0,3580
+1594305866684,6723,Login,200,OK,Crc Users 1-136,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6723,0,3635
+1594305866185,7226,Login,200,OK,Crc Users 1-4,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7225,0,4134
+1594305866732,6699,Login,200,OK,Crc Users 1-150,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6699,0,3587
+1594305866627,6852,Login,200,OK,Crc Users 1-129,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6852,0,3692
+1594305866595,6896,Login,200,OK,Crc Users 1-124,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6896,0,3725
+1594305867071,6422,Login,200,OK,Crc Users 1-184,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6422,0,3249
+1594305867678,5837,Login,200,OK,Crc Users 1-197,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5837,0,2642
+1594305866147,7415,Login,200,OK,Crc Users 1-30,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7415,0,4174
+1594305867607,5966,Login,200,OK,Crc Users 1-198,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,5966,0,2696
+1594305866691,6886,Login,200,OK,Crc Users 1-144,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6886,0,3612
+1594305866711,6888,Login,200,OK,Crc Users 1-148,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6888,0,3594
+1594305866464,7184,Login,200,OK,Crc Users 1-98,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7184,0,3775
+1594305866145,7512,Login,200,OK,Crc Users 1-35,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7512,0,4159
+1594305866617,7042,Login,200,OK,Crc Users 1-126,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7042,0,3684
+1594305866562,7120,Login,200,OK,Crc Users 1-118,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7119,0,3760
+1594305867072,6659,Login,200,OK,Crc Users 1-191,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6659,0,3250
+1594305866305,7434,Login,200,OK,Crc Users 1-66,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7434,0,4018
+1594305866703,7042,Login,200,OK,Crc Users 1-146,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7042,0,3620
+1594305866161,7604,Login,200,OK,Crc Users 1-32,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7604,0,4162
+1594305866493,7321,Login,200,OK,Crc Users 1-100,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7321,0,3830
+1594305866281,7542,Login,200,OK,Crc Users 1-62,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7542,0,4042
+1594305866149,7678,Login,200,OK,Crc Users 1-28,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7678,0,4175
+1594305866279,7570,Login,200,OK,Crc Users 1-61,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7570,0,4045
+1594305866578,7319,Login,200,OK,Crc Users 1-121,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7319,0,3746
+1594305866666,7240,Login,200,OK,Crc Users 1-137,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7240,0,3658
+1594305866706,7202,Login,200,OK,Crc Users 1-147,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7202,0,3619
+1594305866525,7409,Login,200,OK,Crc Users 1-111,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7409,0,3800
+1594305867069,6913,Login,200,OK,Crc Users 1-193,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6913,0,3256
+1594305866626,7364,Login,200,OK,Crc Users 1-130,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7364,0,3699
+1594305866184,7807,Login,200,OK,Crc Users 1-6,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7807,0,4141
+1594305866669,7349,Login,200,OK,Crc Users 1-139,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7349,0,3657
+1594305867093,6974,Login,200,OK,Crc Users 1-161,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,6974,0,3233
+1594305866680,7395,Login,200,OK,Crc Users 1-142,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7395,0,3646
+1594305866181,7895,Login,200,OK,Crc Users 1-23,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7895,0,4146
+1594305866665,7435,Login,200,OK,Crc Users 1-138,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7435,0,3662
+1594305867068,7082,Login,200,OK,Crc Users 1-192,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7082,0,3259
+1594305866616,7543,Login,200,OK,Crc Users 1-127,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7543,0,3711
+1594305866306,7854,Login,200,OK,Crc Users 1-67,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7854,0,4014
+1594305867083,7099,Login,200,OK,Crc Users 1-173,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7099,0,3245
+1594305866550,7681,Login,200,OK,Crc Users 1-116,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7681,0,3778
+1594305867089,7153,Login,200,OK,Crc Users 1-163,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7153,0,3239
+1594305866183,8060,Login,200,OK,Crc Users 1-27,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8060,0,4145
+1594305866506,7758,Login,200,OK,Crc Users 1-103,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7758,0,3822
+1594305866686,7630,Login,200,OK,Crc Users 1-143,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7630,0,3643
+1594305867070,7255,Login,200,OK,Crc Users 1-185,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7255,0,3259
+1594305866162,8165,Login,200,OK,Crc Users 1-33,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8165,0,4167
+1594305866222,8126,Login,200,OK,Crc Users 1-50,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8126,0,4108
+1594305866696,7702,Login,200,OK,Crc Users 1-145,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7702,0,3634
+1594305866407,8000,Login,200,OK,Crc Users 1-87,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8000,0,3923
+1594305866169,8241,Login,200,OK,Crc Users 1-39,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8241,0,4162
+1594305866715,7716,Login,200,OK,Crc Users 1-149,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7716,0,3616
+1594305866436,8044,Login,200,OK,Crc Users 1-93,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8044,0,3895
+1594305866328,8162,Login,200,OK,Crc Users 1-71,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8162,0,4004
+1594305866497,7998,Login,200,OK,Crc Users 1-101,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7998,0,3825
+1594305866306,8208,Login,200,OK,Crc Users 1-65,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8208,0,4015
+1594305866176,8407,Login,200,OK,Crc Users 1-41,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8407,0,4146
+1594305867081,7502,Login,200,OK,Crc Users 1-175,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7502,0,3158
+1594305866161,8434,Login,200,OK,Crc Users 1-38,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8434,0,4172
+1594305866583,8023,Login,200,OK,Crc Users 1-122,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8023,0,3750
+1594305866644,8414,Login,200,OK,Crc Users 1-132,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8414,0,3689
+1594305866362,8697,Login,200,OK,Crc Users 1-75,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8697,0,3972
+1594305867074,7986,Login,200,OK,Crc Users 1-188,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,7986,0,3260
+1594305866184,8876,Login,200,OK,Crc Users 1-31,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8876,0,4149
+1594305866440,8621,Login,200,OK,Crc Users 1-92,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8621,0,3892
+1594305866537,8523,Login,200,OK,Crc Users 1-113,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8523,0,3797
+1594305866469,8593,Login,200,OK,Crc Users 1-99,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8593,0,3863
+1594305866161,8901,Login,200,OK,Crc Users 1-14,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8901,0,4172
+1594305866181,8882,Login,200,OK,Crc Users 1-42,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8882,0,4151
+1594305866146,8918,Login,200,OK,Crc Users 1-3,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8918,0,4184
+1594305866502,8563,Login,200,OK,Crc Users 1-106,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8563,0,3830
+1594305866623,8443,Login,200,OK,Crc Users 1-128,text,true,,1105,249,200,200,https://cqube.tibilprojects.com/api/roleBasedLogin,8442,0,3708
+1594305870786,6409,Crc SchoolWise,200,OK,Crc Users 1-22,text,true,,14310000,961,200,200,https://cqube.tibilprojects.com/api/crc/allSchoolWise,4261,0,12
+1594305872138,60008,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-77,text,false,No Response ,363,961,199,199,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,3
+1594305872147,60006,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-11,text,false,No Response ,363,961,198,198,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60006,0,3
+1594305872173,60051,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-5,text,false,No Response ,363,961,197,197,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60051,0,2
+1594305872161,60064,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-90,text,false,No Response ,363,961,196,196,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60064,0,3
+1594305872219,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-81,text,false,No Response ,363,961,195,195,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,3
+1594305872232,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-154,text,false,No Response ,363,961,194,194,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,3
+1594305872244,60005,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-196,text,false,No Response ,363,961,193,193,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60004,0,2
+1594305872257,60010,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-94,text,false,No Response ,363,961,192,192,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60010,0,4
+1594305872306,60024,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-29,text,false,No Response ,363,961,191,191,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60024,0,3
+1594305872486,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-25,text,false,No Response ,363,961,190,190,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,2
+1594305872497,60009,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-172,text,false,No Response ,363,961,189,189,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60009,0,3
+1594305872507,60009,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-24,text,false,No Response ,363,961,188,188,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60008,0,3
+1594305872556,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-89,text,false,No Response ,363,961,187,187,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,3
+1594305872567,60009,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-69,text,false,No Response ,363,961,186,186,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60009,0,3
+1594305872580,60006,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-189,text,false,No Response ,363,961,185,185,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60006,0,3
+1594305872590,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-59,text,false,No Response ,363,961,184,184,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60006,0,2
+1594305872640,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-115,text,false,No Response ,363,961,183,183,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,3
+1594305872652,60006,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-199,text,false,No Response ,363,961,182,182,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60006,0,2
+1594305872891,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-134,text,false,No Response ,363,961,181,181,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,3
+1594305872903,60009,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-88,text,false,No Response ,363,961,180,180,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60009,0,2
+1594305872913,60005,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-156,text,false,No Response ,363,961,179,179,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60005,0,2
+1594305872975,60006,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-97,text,false,No Response ,363,961,178,178,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60006,0,3
+1594305871739,61332,Crc SchoolWise,200,OK,Crc Users 1-21,text,true,,14310000,961,177,177,https://cqube.tibilprojects.com/api/crc/allSchoolWise,4649,0,3
+1594305873083,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-107,text,false,No Response ,363,961,176,176,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,2
+1594305873160,60010,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-2,text,false,No Response ,363,961,175,175,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60010,0,3
+1594305873765,60005,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-32,text,false,No Response ,363,961,174,174,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60005,0,2
+1594305874158,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-127,text,false,No Response ,363,961,173,173,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,3
+1594305874494,60032,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-101,text,false,No Response ,363,961,172,172,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60031,0,3
+1594305874514,60012,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-65,text,false,No Response ,363,961,172,172,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60011,0,3
+1594305874490,60037,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-71,text,false,No Response ,363,961,170,170,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60037,0,2
+1594305874409,60128,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-39,text,false,No Response ,363,961,169,169,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60128,0,3
+1594305874407,60131,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-87,text,false,No Response ,363,961,168,168,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60131,0,2
+1594305874398,60140,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-145,text,false,No Response ,363,961,168,168,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60140,0,2
+1594305874326,60212,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-33,text,false,No Response ,363,961,168,168,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60212,0,3
+1594305874263,60276,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-103,text,false,No Response ,363,961,167,167,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60276,0,3
+1594305874242,60326,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-27,text,false,No Response ,363,961,167,167,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60326,0,3
+1594305874583,60008,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-175,text,false,No Response ,363,961,163,163,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60008,0,3
+1594305874583,60010,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-41,text,false,No Response ,363,961,162,162,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60010,0,2
+1594305874595,60006,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-38,text,false,No Response ,363,961,161,161,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60005,0,2
+1594305874605,60008,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-122,text,false,No Response ,363,961,160,160,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60008,0,3
+1594305875059,60004,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-75,text,false,No Response ,363,961,159,159,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60004,0,3
+1594305875060,60004,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-31,text,false,No Response ,363,961,158,158,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60004,0,3
+1594305875062,60003,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-14,text,false,No Response ,363,961,157,157,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60003,0,4
+1594305875062,60003,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-99,text,false,No Response ,363,961,157,157,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60003,0,5
+1594305875060,60005,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-92,text,false,No Response ,363,961,157,157,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60005,0,6
+1594305875058,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-132,text,false,No Response ,363,961,157,157,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,6
+1594305875059,60006,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-188,text,false,No Response ,363,961,153,153,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60006,0,4
+1594305875065,60006,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-128,text,false,No Response ,363,961,152,152,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60006,0,3
+1594305875063,60008,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-42,text,false,No Response ,363,961,152,152,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60008,0,5
+1594305875060,60011,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-113,text,false,No Response ,363,961,152,152,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60011,0,9
+1594305875064,60007,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-3,text,false,No Response ,363,961,152,152,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60007,0,4
+1594305875065,60006,Crc SchoolWise,504,Gateway Time-out,Crc Users 1-106,text,false,No Response ,363,961,152,152,https://cqube.tibilprojects.com/api/crc/allSchoolWise,60006,0,4
+1594305870787,86586,Crc SchoolWise,200,OK,Crc Users 1-8,text,true,,14310000,961,147,147,https://cqube.tibilprojects.com/api/crc/allSchoolWise,7549,0,13
+1594305870848,87096,Crc SchoolWise,200,OK,Crc Users 1-45,text,true,,14310000,961,146,146,https://cqube.tibilprojects.com/api/crc/allSchoolWise,8149,0,14
+1594305870938,88122,Crc SchoolWise,200,OK,Crc Users 1-95,text,true,,14310000,961,145,145,https://cqube.tibilprojects.com/api/crc/allSchoolWise,10743,0,13
+1594305871230,87907,Crc SchoolWise,200,OK,Crc Users 1-177,text,true,,14310000,961,144,144,https://cqube.tibilprojects.com/api/crc/allSchoolWise,9381,0,4
+1594305871081,88430,Crc SchoolWise,200,OK,Crc Users 1-46,text,true,,14310000,961,143,143,https://cqube.tibilprojects.com/api/crc/allSchoolWise,8571,0,4
+1594305870793,88924,Crc SchoolWise,200,OK,Crc Users 1-54,text,true,,14310000,961,142,142,https://cqube.tibilprojects.com/api/crc/allSchoolWise,7879,0,9
+1594305871342,88678,Crc SchoolWise,200,OK,Crc Users 1-125,text,true,,14310000,961,141,141,https://cqube.tibilprojects.com/api/crc/allSchoolWise,14771,0,5
+1594305870786,89732,Crc SchoolWise,200,OK,Crc Users 1-96,text,true,,14310000,961,140,140,https://cqube.tibilprojects.com/api/crc/allSchoolWise,10246,0,11
+1594305871167,90227,Crc SchoolWise,200,OK,Crc Users 1-190,text,true,,14310000,961,139,139,https://cqube.tibilprojects.com/api/crc/allSchoolWise,9109,0,4
+1594305871653,90087,Crc SchoolWise,200,OK,Crc Users 1-171,text,true,,14310000,961,138,138,https://cqube.tibilprojects.com/api/crc/allSchoolWise,20309,0,3
+1594305871211,90730,Crc SchoolWise,200,OK,Crc Users 1-141,text,true,,14310000,961,137,137,https://cqube.tibilprojects.com/api/crc/allSchoolWise,12078,0,3
+1594305870845,91107,Crc SchoolWise,200,OK,Crc Users 1-135,text,true,,14310000,961,136,136,https://cqube.tibilprojects.com/api/crc/allSchoolWise,8474,0,17
+1594305871248,90835,Crc SchoolWise,200,OK,Crc Users 1-131,text,true,,14310000,961,135,135,https://cqube.tibilprojects.com/api/crc/allSchoolWise,12361,0,4
+1594305871129,91510,Crc SchoolWise,200,OK,Crc Users 1-15,text,true,,14310000,961,134,134,https://cqube.tibilprojects.com/api/crc/allSchoolWise,8835,0,5
+1594305870942,92253,Crc SchoolWise,200,OK,Crc Users 1-174,text,true,,14310000,961,133,133,https://cqube.tibilprojects.com/api/crc/allSchoolWise,16923,0,8
+1594305871554,91820,Crc SchoolWise,200,OK,Crc Users 1-20,text,true,,14310000,961,132,132,https://cqube.tibilprojects.com/api/crc/allSchoolWise,13932,0,3
+1594305870846,92561,Crc SchoolWise,200,OK,Crc Users 1-152,text,true,,14310000,961,131,131,https://cqube.tibilprojects.com/api/crc/allSchoolWise,16064,0,17
+1594305871008,92729,Crc SchoolWise,200,OK,Crc Users 1-162,text,true,,14310000,961,130,130,https://cqube.tibilprojects.com/api/crc/allSchoolWise,11641,0,5
+1594305871422,92491,Crc SchoolWise,200,OK,Crc Users 1-114,text,true,,14310000,961,129,129,https://cqube.tibilprojects.com/api/crc/allSchoolWise,18486,0,4
+1594305871044,93115,Crc SchoolWise,200,OK,Crc Users 1-34,text,true,,14310000,961,128,128,https://cqube.tibilprojects.com/api/crc/allSchoolWise,16497,0,6
+1594305871567,92985,Crc SchoolWise,200,OK,Crc Users 1-180,text,true,,14310000,961,127,127,https://cqube.tibilprojects.com/api/crc/allSchoolWise,17253,0,4
+1594305871631,93082,Crc SchoolWise,200,OK,Crc Users 1-51,text,true,,14310000,961,126,126,https://cqube.tibilprojects.com/api/crc/allSchoolWise,18914,0,3
+1594305871146,94288,Crc SchoolWise,200,OK,Crc Users 1-153,text,true,,14310000,961,125,125,https://cqube.tibilprojects.com/api/crc/allSchoolWise,13409,0,3
+1594305870986,94707,Crc SchoolWise,200,OK,Crc Users 1-53,text,true,,14310000,961,124,124,https://cqube.tibilprojects.com/api/crc/allSchoolWise,11007,0,6
+1594305871217,94638,Crc SchoolWise,200,OK,Crc Users 1-194,text,true,,14310000,961,123,123,https://cqube.tibilprojects.com/api/crc/allSchoolWise,12701,0,5
+1594305870846,95255,Crc SchoolWise,200,OK,Crc Users 1-44,text,true,,14310000,961,122,122,https://cqube.tibilprojects.com/api/crc/allSchoolWise,15738,0,7
+1594305871312,94791,Crc SchoolWise,200,OK,Crc Users 1-133,text,true,,14310000,961,121,121,https://cqube.tibilprojects.com/api/crc/allSchoolWise,16886,0,4
+1594305870986,95207,Crc SchoolWise,200,OK,Crc Users 1-78,text,true,,14310000,961,120,120,https://cqube.tibilprojects.com/api/crc/allSchoolWise,16249,0,7
+1594305871295,95088,Crc SchoolWise,200,OK,Crc Users 1-181,text,true,,14310000,961,119,119,https://cqube.tibilprojects.com/api/crc/allSchoolWise,14502,0,5
+1594305870939,95526,Crc SchoolWise,200,OK,Crc Users 1-159,text,true,,14310000,961,118,118,https://cqube.tibilprojects.com/api/crc/allSchoolWise,10433,0,5
+1594305870939,95882,Crc SchoolWise,200,OK,Crc Users 1-102,text,true,,14310000,961,117,117,https://cqube.tibilprojects.com/api/crc/allSchoolWise,18665,0,13
+1594305871401,95536,Crc SchoolWise,200,OK,Crc Users 1-18,text,true,,14310000,961,116,116,https://cqube.tibilprojects.com/api/crc/allSchoolWise,19445,0,4
+1594305871722,95272,Crc SchoolWise,200,OK,Crc Users 1-7,text,true,,14310000,961,115,115,https://cqube.tibilprojects.com/api/crc/allSchoolWise,19573,0,4
+1594305871132,95915,Crc SchoolWise,200,OK,Crc Users 1-91,text,true,,14310000,961,114,114,https://cqube.tibilprojects.com/api/crc/allSchoolWise,11831,0,4
+1594305871716,95415,Crc SchoolWise,200,OK,Crc Users 1-187,text,true,,14310000,961,113,113,https://cqube.tibilprojects.com/api/crc/allSchoolWise,19910,0,4
+1594305871549,95591,Crc SchoolWise,200,OK,Crc Users 1-47,text,true,,14310000,961,112,112,https://cqube.tibilprojects.com/api/crc/allSchoolWise,23034,0,3
+1594305871754,95515,Crc SchoolWise,200,OK,Crc Users 1-200,text,true,,14310000,961,111,111,https://cqube.tibilprojects.com/api/crc/allSchoolWise,22060,0,3
+1594305871389,95917,Crc SchoolWise,200,OK,Crc Users 1-36,text,true,,14310000,961,110,110,https://cqube.tibilprojects.com/api/crc/allSchoolWise,13795,0,4
+1594305870986,96679,Crc SchoolWise,200,OK,Crc Users 1-10,text,true,,14310000,961,109,109,https://cqube.tibilprojects.com/api/crc/allSchoolWise,11348,0,6
+1594305871640,96305,Crc SchoolWise,200,OK,Crc Users 1-52,text,true,,14310000,961,108,108,https://cqube.tibilprojects.com/api/crc/allSchoolWise,21840,0,3
+1594305871048,97333,Crc SchoolWise,200,OK,Crc Users 1-1,text,true,,14310000,961,107,107,https://cqube.tibilprojects.com/api/crc/allSchoolWise,21597,0,5
+1594305871484,96916,Crc SchoolWise,200,OK,Crc Users 1-157,text,true,,14310000,961,106,106,https://cqube.tibilprojects.com/api/crc/allSchoolWise,21657,0,7
+1594305871504,96905,Crc SchoolWise,200,OK,Crc Users 1-112,text,true,,14310000,961,105,105,https://cqube.tibilprojects.com/api/crc/allSchoolWise,17008,0,3
+1594305871906,96505,Crc SchoolWise,200,OK,Crc Users 1-117,text,true,,14310000,961,105,105,https://cqube.tibilprojects.com/api/crc/allSchoolWise,26265,0,4
+1594305871808,96608,Crc SchoolWise,200,OK,Crc Users 1-43,text,true,,14310000,961,103,103,https://cqube.tibilprojects.com/api/crc/allSchoolWise,24682,0,4
+1594305871301,97138,Crc SchoolWise,200,OK,Crc Users 1-183,text,true,,14310000,961,102,102,https://cqube.tibilprojects.com/api/crc/allSchoolWise,17848,0,4
+1594305871466,97022,Crc SchoolWise,200,OK,Crc Users 1-55,text,true,,14310000,961,101,101,https://cqube.tibilprojects.com/api/crc/allSchoolWise,18761,0,4
+1594305871587,97307,Crc SchoolWise,200,OK,Crc Users 1-85,text,true,,14310000,961,100,100,https://cqube.tibilprojects.com/api/crc/allSchoolWise,22649,0,4
+1594305871823,97104,Crc SchoolWise,200,OK,Crc Users 1-63,text,true,,14310000,961,99,99,https://cqube.tibilprojects.com/api/crc/allSchoolWise,25005,0,3
+1594305872062,97043,Crc SchoolWise,200,OK,Crc Users 1-110,text,true,,14310000,961,98,98,https://cqube.tibilprojects.com/api/crc/allSchoolWise,28510,0,3
+1594305871382,98171,Crc SchoolWise,200,OK,Crc Users 1-167,text,true,,14310000,961,97,97,https://cqube.tibilprojects.com/api/crc/allSchoolWise,13486,0,4
+1594305871471,98252,Crc SchoolWise,200,OK,Crc Users 1-160,text,true,,14310000,961,96,96,https://cqube.tibilprojects.com/api/crc/allSchoolWise,23762,0,4
+1594305871922,97828,Crc SchoolWise,200,OK,Crc Users 1-68,text,true,,14310000,961,95,95,https://cqube.tibilprojects.com/api/crc/allSchoolWise,26564,0,3
+1594305871887,98536,Crc SchoolWise,200,OK,Crc Users 1-49,text,true,,14310000,961,94,94,https://cqube.tibilprojects.com/api/crc/allSchoolWise,25610,0,4
+1594305872054,98697,Crc SchoolWise,200,OK,Crc Users 1-76,text,true,,14310000,961,93,93,https://cqube.tibilprojects.com/api/crc/allSchoolWise,28179,0,3
+1594305871804,99082,Crc SchoolWise,200,OK,Crc Users 1-108,text,true,,14310000,961,92,92,https://cqube.tibilprojects.com/api/crc/allSchoolWise,24372,0,4
+1594305873142,97772,Crc SchoolWise,200,OK,Crc Users 1-58,text,true,,14310000,961,91,91,https://cqube.tibilprojects.com/api/crc/allSchoolWise,29597,0,3
+1594305871991,99205,Crc SchoolWise,200,OK,Crc Users 1-26,text,true,,14310000,961,90,90,https://cqube.tibilprojects.com/api/crc/allSchoolWise,27614,0,3
+1594305871839,99370,Crc SchoolWise,200,OK,Crc Users 1-19,text,true,,14310000,961,89,89,https://cqube.tibilprojects.com/api/crc/allSchoolWise,25312,0,4
+1594305873331,97951,Crc SchoolWise,200,OK,Crc Users 1-176,text,true,,14310000,961,88,88,https://cqube.tibilprojects.com/api/crc/allSchoolWise,30638,0,2
+1594305871671,99615,Crc SchoolWise,200,OK,Crc Users 1-64,text,true,,14310000,961,87,87,https://cqube.tibilprojects.com/api/crc/allSchoolWise,20658,0,3
+1594305872472,99259,Crc SchoolWise,200,OK,Crc Users 1-48,text,true,,14310000,961,86,86,https://cqube.tibilprojects.com/api/crc/allSchoolWise,33738,0,3
+1594305873347,98423,Crc SchoolWise,200,OK,Crc Users 1-155,text,true,,14310000,961,85,85,https://cqube.tibilprojects.com/api/crc/allSchoolWise,30925,0,3
+1594305871977,100068,Crc SchoolWise,200,OK,Crc Users 1-168,text,true,,14310000,961,84,84,https://cqube.tibilprojects.com/api/crc/allSchoolWise,27307,0,3
+1594305873273,98796,Crc SchoolWise,200,OK,Crc Users 1-57,text,true,,14310000,961,83,83,https://cqube.tibilprojects.com/api/crc/allSchoolWise,30081,0,3
+1594305872090,100069,Crc SchoolWise,200,OK,Crc Users 1-72,text,true,,14310000,961,82,82,https://cqube.tibilprojects.com/api/crc/allSchoolWise,29141,0,3
+1594305872006,100290,Crc SchoolWise,200,OK,Crc Users 1-186,text,true,,14310000,961,81,81,https://cqube.tibilprojects.com/api/crc/allSchoolWise,27920,0,3
+1594305872401,99901,Crc SchoolWise,200,OK,Crc Users 1-158,text,true,,14310000,961,80,80,https://cqube.tibilprojects.com/api/crc/allSchoolWise,33152,0,3
+1594305873092,99277,Crc SchoolWise,200,OK,Crc Users 1-9,text,true,,14310000,961,79,79,https://cqube.tibilprojects.com/api/crc/allSchoolWise,29350,0,3
+1594305871893,100516,Crc SchoolWise,200,OK,Crc Users 1-40,text,true,,14310000,961,78,78,https://cqube.tibilprojects.com/api/crc/allSchoolWise,25934,0,3
+1594305871969,100491,Crc SchoolWise,200,OK,Crc Users 1-104,text,true,,14310000,961,77,77,https://cqube.tibilprojects.com/api/crc/allSchoolWise,26977,0,3
+1594305872819,99699,Crc SchoolWise,200,OK,Crc Users 1-195,text,true,,14310000,961,76,76,https://cqube.tibilprojects.com/api/crc/allSchoolWise,35471,0,3
+1594305872842,99696,Crc SchoolWise,200,OK,Crc Users 1-80,text,true,,14310000,961,75,75,https://cqube.tibilprojects.com/api/crc/allSchoolWise,36999,0,3
+1594305872076,100466,Crc SchoolWise,200,OK,Crc Users 1-56,text,true,,14310000,961,74,74,https://cqube.tibilprojects.com/api/crc/allSchoolWise,28830,0,3
+1594305873075,100064,Crc SchoolWise,200,OK,Crc Users 1-109,text,true,,14310000,961,73,73,https://cqube.tibilprojects.com/api/crc/allSchoolWise,39450,0,3
+1594305873059,100090,Crc SchoolWise,200,OK,Crc Users 1-37,text,true,,14310000,961,72,72,https://cqube.tibilprojects.com/api/crc/allSchoolWise,39144,0,3
+1594305872318,100838,Crc SchoolWise,200,OK,Crc Users 1-105,text,true,,14310000,961,71,71,https://cqube.tibilprojects.com/api/crc/allSchoolWise,32559,0,3
+1594305872724,100443,Crc SchoolWise,200,OK,Crc Users 1-12,text,true,,14310000,961,70,70,https://cqube.tibilprojects.com/api/crc/allSchoolWise,36456,0,3
+1594305873010,100172,Crc SchoolWise,200,OK,Crc Users 1-140,text,true,,14310000,961,69,69,https://cqube.tibilprojects.com/api/crc/allSchoolWise,40135,0,2
+1594305872664,100527,Crc SchoolWise,200,OK,Crc Users 1-74,text,true,,14310000,961,68,68,https://cqube.tibilprojects.com/api/crc/allSchoolWise,38384,0,3
+1594305872424,100775,Crc SchoolWise,200,OK,Crc Users 1-79,text,true,,14310000,961,67,67,https://cqube.tibilprojects.com/api/crc/allSchoolWise,33462,0,2
+1594305872673,100529,Crc SchoolWise,200,OK,Crc Users 1-123,text,true,,14310000,961,67,67,https://cqube.tibilprojects.com/api/crc/allSchoolWise,35835,0,3
+1594305872831,100375,Crc SchoolWise,200,OK,Crc Users 1-70,text,true,,14310000,961,66,66,https://cqube.tibilprojects.com/api/crc/allSchoolWise,36676,0,3
+1594305872328,100883,Crc SchoolWise,200,OK,Crc Users 1-164,text,true,,14310000,961,65,65,https://cqube.tibilprojects.com/api/crc/allSchoolWise,35382,0,3
+1594305873573,99642,Crc SchoolWise,200,OK,Crc Users 1-198,text,true,,14310000,961,63,63,https://cqube.tibilprojects.com/api/crc/allSchoolWise,42254,0,3
+1594305873410,99807,Crc SchoolWise,200,OK,Crc Users 1-4,text,true,,14310000,961,62,62,https://cqube.tibilprojects.com/api/crc/allSchoolWise,40134,0,3
+1594305872997,100263,Crc SchoolWise,200,OK,Crc Users 1-82,text,true,,14310000,961,61,61,https://cqube.tibilprojects.com/api/crc/allSchoolWise,37386,0,3
+1594305873576,99703,Crc SchoolWise,200,OK,Crc Users 1-144,text,true,,14310000,961,60,60,https://cqube.tibilprojects.com/api/crc/allSchoolWise,43363,0,3
+1594305872988,100294,Crc SchoolWise,200,OK,Crc Users 1-86,text,true,,14310000,961,59,59,https://cqube.tibilprojects.com/api/crc/allSchoolWise,39854,0,3
+1594305873407,99937,Crc SchoolWise,200,OK,Crc Users 1-136,text,true,,14310000,961,58,58,https://cqube.tibilprojects.com/api/crc/allSchoolWise,33530,0,3
+1594305872807,100581,Crc SchoolWise,200,OK,Crc Users 1-60,text,true,,14310000,961,57,57,https://cqube.tibilprojects.com/api/crc/allSchoolWise,38873,0,2
+1594305872736,100731,Crc SchoolWise,200,OK,Crc Users 1-178,text,true,,14310000,961,56,56,https://cqube.tibilprojects.com/api/crc/allSchoolWise,37981,0,3
+1594305872757,100716,Crc SchoolWise,200,OK,Crc Users 1-83,text,true,,14310000,961,55,55,https://cqube.tibilprojects.com/api/crc/allSchoolWise,38624,0,3
+1594305873658,99920,Crc SchoolWise,200,OK,Crc Users 1-126,text,true,,14310000,961,54,54,https://cqube.tibilprojects.com/api/crc/allSchoolWise,44580,0,3
+1594305873490,100163,Crc SchoolWise,200,OK,Crc Users 1-124,text,true,,14310000,961,53,53,https://cqube.tibilprojects.com/api/crc/allSchoolWise,40989,0,3
+1594305871062,102636,Crc SchoolWise,200,OK,Crc Users 1-84,text,true,,14310000,961,52,52,https://cqube.tibilprojects.com/api/crc/allSchoolWise,13181,0,5
+1594305873515,100423,Crc SchoolWise,200,OK,Crc Users 1-197,text,true,,14310000,961,51,51,https://cqube.tibilprojects.com/api/crc/allSchoolWise,41611,0,2
+1594305873731,100211,Crc SchoolWise,200,OK,Crc Users 1-191,text,true,,14310000,961,50,50,https://cqube.tibilprojects.com/api/crc/allSchoolWise,45124,0,3
+1594305872412,101564,Crc SchoolWise,200,OK,Crc Users 1-165,text,true,,14310000,961,49,49,https://cqube.tibilprojects.com/api/crc/allSchoolWise,34687,0,3
+1594305873647,100373,Crc SchoolWise,200,OK,Crc Users 1-98,text,true,,14310000,961,48,48,https://cqube.tibilprojects.com/api/crc/allSchoolWise,43947,0,3
+1594305873394,100719,Crc SchoolWise,200,OK,Crc Users 1-151,text,true,,14310000,961,47,47,https://cqube.tibilprojects.com/api/crc/allSchoolWise,47085,0,2
+1594305873493,100623,Crc SchoolWise,200,OK,Crc Users 1-184,text,true,,14310000,961,46,46,https://cqube.tibilprojects.com/api/crc/allSchoolWise,41312,0,2
+1594305873908,100223,Crc SchoolWise,200,OK,Crc Users 1-147,text,true,,14310000,961,45,45,https://cqube.tibilprojects.com/api/crc/allSchoolWise,49486,0,2
+1594305873598,100584,Crc SchoolWise,200,OK,Crc Users 1-148,text,true,,14310000,961,44,44,https://cqube.tibilprojects.com/api/crc/allSchoolWise,43672,0,3
+1594305872388,101907,Crc SchoolWise,200,OK,Crc Users 1-73,text,true,,14310000,961,43,43,https://cqube.tibilprojects.com/api/crc/allSchoolWise,35020,0,3
+1594305873739,100604,Crc SchoolWise,200,OK,Crc Users 1-66,text,true,,14310000,961,42,42,https://cqube.tibilprojects.com/api/crc/allSchoolWise,45448,0,2
+1594305873430,100917,Crc SchoolWise,200,OK,Crc Users 1-150,text,true,,14310000,961,41,41,https://cqube.tibilprojects.com/api/crc/allSchoolWise,40399,0,3
+1594305873478,100915,Crc SchoolWise,200,OK,Crc Users 1-129,text,true,,14310000,961,40,40,https://cqube.tibilprojects.com/api/crc/allSchoolWise,40669,0,3
+1594305874074,100357,Crc SchoolWise,200,OK,Crc Users 1-142,text,true,,14310000,961,39,39,https://cqube.tibilprojects.com/api/crc/allSchoolWise,51930,0,3
+1594305874066,100415,Crc SchoolWise,200,OK,Crc Users 1-161,text,true,,14310000,961,38,38,https://cqube.tibilprojects.com/api/crc/allSchoolWise,51422,0,3
+1594305873165,101327,Crc SchoolWise,200,OK,Crc Users 1-17,text,true,,14310000,961,37,37,https://cqube.tibilprojects.com/api/crc/allSchoolWise,58634,0,3
+1594305873982,100513,Crc SchoolWise,200,OK,Crc Users 1-193,text,true,,14310000,961,36,36,https://cqube.tibilprojects.com/api/crc/allSchoolWise,50068,0,3
+1594305874017,100481,Crc SchoolWise,200,OK,Crc Users 1-139,text,true,,14310000,961,35,35,https://cqube.tibilprojects.com/api/crc/allSchoolWise,51165,0,3
+1594305872926,101592,Crc SchoolWise,200,OK,Crc Users 1-13,text,true,,14310000,961,34,34,https://cqube.tibilprojects.com/api/crc/allSchoolWise,57812,0,2
+1594305873826,100703,Crc SchoolWise,200,OK,Crc Users 1-28,text,true,,14310000,961,33,33,https://cqube.tibilprojects.com/api/crc/allSchoolWise,48082,0,3
+1594305873814,100756,Crc SchoolWise,200,OK,Crc Users 1-100,text,true,,14310000,961,32,32,https://cqube.tibilprojects.com/api/crc/allSchoolWise,55774,0,3
+1594305873562,101012,Crc SchoolWise,200,OK,Crc Users 1-30,text,true,,14310000,961,31,31,https://cqube.tibilprojects.com/api/crc/allSchoolWise,41949,0,2
+1594305873822,100803,Crc SchoolWise,200,OK,Crc Users 1-62,text,true,,14310000,961,30,30,https://cqube.tibilprojects.com/api/crc/allSchoolWise,47623,0,3
+1594305872339,102291,Crc SchoolWise,200,OK,Crc Users 1-182,text,true,,14310000,961,29,29,https://cqube.tibilprojects.com/api/crc/allSchoolWise,32879,0,3
+1594305873241,101396,Crc SchoolWise,200,OK,Crc Users 1-179,text,true,,14310000,961,28,28,https://cqube.tibilprojects.com/api/crc/allSchoolWise,46396,0,4
+1594305872748,101963,Crc SchoolWise,200,OK,Crc Users 1-166,text,true,,14310000,961,27,27,https://cqube.tibilprojects.com/api/crc/allSchoolWise,36086,0,4
+1594305873745,100971,Crc SchoolWise,200,OK,Crc Users 1-146,text,true,,14310000,961,26,26,https://cqube.tibilprojects.com/api/crc/allSchoolWise,47501,0,3
+1594305873656,101086,Crc SchoolWise,200,OK,Crc Users 1-35,text,true,,14310000,961,25,25,https://cqube.tibilprojects.com/api/crc/allSchoolWise,44260,0,3
+1594305873225,101544,Crc SchoolWise,200,OK,Crc Users 1-16,text,true,,14310000,961,24,24,https://cqube.tibilprojects.com/api/crc/allSchoolWise,43050,0,3
+1594305873681,101089,Crc SchoolWise,200,OK,Crc Users 1-118,text,true,,14310000,961,24,24,https://cqube.tibilprojects.com/api/crc/allSchoolWise,44872,0,3
+1594305873247,101531,Crc SchoolWise,200,OK,Crc Users 1-120,text,true,,14310000,961,22,22,https://cqube.tibilprojects.com/api/crc/allSchoolWise,59477,0,27
+1594305873310,101470,Crc SchoolWise,200,OK,Crc Users 1-169,text,true,,14310000,961,21,21,https://cqube.tibilprojects.com/api/crc/allSchoolWise,46864,0,3
+1594305873849,100941,Crc SchoolWise,200,OK,Crc Users 1-61,text,true,,14310000,961,20,20,https://cqube.tibilprojects.com/api/crc/allSchoolWise,48402,0,2
+1594305874315,100560,Crc SchoolWise,200,OK,Crc Users 1-143,text,true,,14310000,961,19,19,https://cqube.tibilprojects.com/api/crc/allSchoolWise,54365,0,3
+1594305874099,100785,Crc SchoolWise,200,OK,Crc Users 1-138,text,true,,14310000,961,18,18,https://cqube.tibilprojects.com/api/crc/allSchoolWise,52606,0,3
+1594305874230,100661,Crc SchoolWise,200,OK,Crc Users 1-116,text,true,,14310000,961,17,17,https://cqube.tibilprojects.com/api/crc/allSchoolWise,53757,0,3
+1594305874347,100595,Crc SchoolWise,200,OK,Crc Users 1-50,text,true,,14310000,961,17,17,https://cqube.tibilprojects.com/api/crc/allSchoolWise,54913,0,3
+1594305873905,101044,Crc SchoolWise,200,OK,Crc Users 1-137,text,true,,14310000,961,15,15,https://cqube.tibilprojects.com/api/crc/allSchoolWise,49166,0,4
+1594305873990,100970,Crc SchoolWise,200,OK,Crc Users 1-130,text,true,,14310000,961,14,14,https://cqube.tibilprojects.com/api/crc/allSchoolWise,50608,0,3
+1594305873991,100970,Crc SchoolWise,200,OK,Crc Users 1-6,text,true,,14310000,961,14,14,https://cqube.tibilprojects.com/api/crc/allSchoolWise,50831,0,3
+1594305874150,100810,Crc SchoolWise,200,OK,Crc Users 1-192,text,true,,14310000,961,14,14,https://cqube.tibilprojects.com/api/crc/allSchoolWise,52908,0,2
+1594305873897,101071,Crc SchoolWise,200,OK,Crc Users 1-121,text,true,,14310000,961,11,11,https://cqube.tibilprojects.com/api/crc/allSchoolWise,48838,0,2
+1594305874076,100893,Crc SchoolWise,200,OK,Crc Users 1-23,text,true,,14310000,961,11,11,https://cqube.tibilprojects.com/api/crc/allSchoolWise,52278,0,2
+1594305874159,100815,Crc SchoolWise,200,OK,Crc Users 1-67,text,true,,14310000,961,9,9,https://cqube.tibilprojects.com/api/crc/allSchoolWise,53237,0,3
+1594305873933,101056,Crc SchoolWise,200,OK,Crc Users 1-111,text,true,,14310000,961,8,8,https://cqube.tibilprojects.com/api/crc/allSchoolWise,49790,0,3
+1594305874431,100577,Crc SchoolWise,200,OK,Crc Users 1-149,text,true,,14310000,961,7,7,https://cqube.tibilprojects.com/api/crc/allSchoolWise,59662,0,2
+1594305873323,101689,Crc SchoolWise,200,OK,Crc Users 1-119,text,true,,14310000,961,6,6,https://cqube.tibilprojects.com/api/crc/allSchoolWise,59731,0,3
+1594305874324,100693,Crc SchoolWise,200,OK,Crc Users 1-185,text,true,,14310000,961,5,5,https://cqube.tibilprojects.com/api/crc/allSchoolWise,59432,0,4
+1594305874242,100781,Crc SchoolWise,200,OK,Crc Users 1-163,text,true,,14310000,961,4,4,https://cqube.tibilprojects.com/api/crc/allSchoolWise,54082,0,2
+1594305874181,100844,Crc SchoolWise,200,OK,Crc Users 1-173,text,true,,14310000,961,3,3,https://cqube.tibilprojects.com/api/crc/allSchoolWise,58042,0,3
+1594305873176,101860,Crc SchoolWise,200,OK,Crc Users 1-170,text,true,,14310000,961,2,2,https://cqube.tibilprojects.com/api/crc/allSchoolWise,43411,0,3
+1594305874480,100557,Crc SchoolWise,200,OK,Crc Users 1-93,text,true,,14310000,961,1,1,https://cqube.tibilprojects.com/api/crc/allSchoolWise,58927,0,3

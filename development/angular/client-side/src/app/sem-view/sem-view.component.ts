@@ -4,8 +4,8 @@ import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import * as data from '../../assets/india.json';
-
-declare let L;
+import * as L from 'leaflet';
+import * as R from 'leaflet-responsive-popup';
 
 var globalMap;
 
@@ -76,15 +76,17 @@ export class SemViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    document.getElementById('backBtn').style.display = "none";
     this.initMap();
     this.districtWise();
+    document.getElementById('homeBtn').style.display = "Block";
   }
 
   //Initialisation of Map  
   initMap() {
     const lat = 22.3660414123535;
     const lng = 71.48396301269531;
-    globalMap = L.map('map').setView([lat, lng], 7);
+    globalMap = L.map('map', { zoomControl: false }).setView([lat, lng], 7);
     applyCountryBorder(globalMap);
 
     function applyCountryBorder(map) {
@@ -149,7 +151,6 @@ export class SemViewComponent implements OnInit {
       }
       this.myData = this.service.all_dist_sem_data().subscribe(res => {
         this.data = res;
-
         // to show only in dropdowns
         this.districtMarkers = this.data['sortedData'];
 
@@ -167,10 +168,14 @@ export class SemViewComponent implements OnInit {
 
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
-      })
+      }, err => {
+        this.data = [];
+        this.loaderAndErr();
+      });
       // adding the markers to the map layers
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'none';
+
     } catch (e) {
       console.log(e);
     }
@@ -183,7 +188,9 @@ export class SemViewComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
-
+      this.reportData = [];
+      this.districtId = undefined;
+      this.blockId = undefined;
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -194,25 +201,99 @@ export class SemViewComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      // api call to get the all blocks data
+      // api call to get the all clusters data
       if (this.myData) {
         this.myData.unsubscribe();
       }
       this.myData = this.service.all_block_sem_data().subscribe(res => {
-        this.data = res;
-
-        // options to set for markers in the map
+        this.data = res
         let options = {
-          radius: 3.5,
-          fillOpacity: 1,
-          strokeWeight: 0.01,
           mapZoom: 7,
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
-          level: 'block'
         }
-        this.genericFun(this.data, options);
-      })
+        if (this.data['sortedData'].length > 0) {
+          let result = this.data['sortedData']
+          this.blockMarkers = [];
+          // generate color gradient
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          this.colors = colors;
+          this.blockMarkers = result;
+
+          if (this.blockMarkers.length !== 0) {
+            for (let i = 0; i < this.blockMarkers.length; i++) {
+              var markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
+                // renderer: myRenderer,
+                radius: 3.5,
+                color: this.colors[i],
+                fillColor: this.colors[i],
+                fillOpacity: 1,
+                strokeWeight: 0.01
+              }).addTo(globalMap);
+
+              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
+                "<b>Semester Performance: </b>" + "&nbsp;" + this.blockMarkers[i].assesmentPercentage + " %" +
+                "<br><b>District: </b>" + "&nbsp;" + this.blockMarkers[i].districtName +
+                "<br><b>Block: </b>" + "&nbsp;" + this.blockMarkers[i].blockName +
+                "<br><b>Grade 3:</b>" + "&nbsp;" + this.blockMarkers[i].grade_3 + " %" +
+                "<br><b>Grade 4:</b>" + "&nbsp;" + this.blockMarkers[i].grade_4 + " %" +
+                "<br><b>Grade 5:</b>" + "&nbsp;" + this.blockMarkers[i].grade_5 + " %" +
+                "<br><b>Grade 6:</b>" + "&nbsp;" + this.blockMarkers[i].grade_6 + " %" +
+                "<br><b>Grade 7:</b>" + "&nbsp;" + this.blockMarkers[i].grade_7 + " %" +
+                "<br><b>Grade 8:</b>" + "&nbsp;" + this.blockMarkers[i].grade_8 + " %" +
+                "<br><b>Number of schools:</b>" + "&nbsp;" + this.blockMarkers[i].schoolsCount +
+                "<br><b>Number of students:</b>" + "&nbsp;" + this.blockMarkers[i].studentsCount +
+                "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.blockMarkers[i].percent_below_33 + " %" + ` (${this.blockMarkers[i].value_below_33} out of ${this.blockMarkers[i].schoolsCount})` +
+                "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.blockMarkers[i].percent_between_33_60 + " %" + ` (${this.blockMarkers[i].value_between_33_60} out of ${this.blockMarkers[i].schoolsCount})` +
+                "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.blockMarkers[i].percent_between_60_75 + " %" + ` (${this.blockMarkers[i].value_between_60_75} out of ${this.blockMarkers[i].schoolsCount})` +
+                "<br><b>% above 75%:</b>" + "&nbsp;" + this.blockMarkers[i].percent_above_75 + " %" + ` (${this.blockMarkers[i].value_above_75} out of ${this.blockMarkers[i].schoolsCount})`
+              );
+              markerIcon.addTo(globalMap).bindPopup(popup);
+
+              markerIcon.on('mouseover', function (e) {
+                this.openPopup();
+              });
+              markerIcon.on('mouseout', function (e) {
+                this.closePopup();
+              });
+              markerIcon.on('click', this.onClick_Marker, this);
+
+              this.layerMarkers.addLayer(markerIcon);
+              markerIcon.myJsonData = this.blockMarkers[i];
+            }
+
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+
+            this.schoolCount = this.data['totalValues'].totalSchools;
+            this.studentCount = this.data['totalValues'].totalStudents;
+
+            this.blockMarkers.forEach(schoolData => {
+              this.fileName = "Block_wise_report"
+              let obj = {
+                DistrictId: schoolData.districtId,
+                DistrictName: schoolData.districtName,
+                BlockId: schoolData.blockId,
+                BlockName: schoolData.blockName,
+                Semester_Performance: schoolData.assesmentPercentage + " %",
+                Grade3: schoolData.grade_3 + " %",
+                Grade4: schoolData.grade_4 + " %",
+                Grade5: schoolData.grade_5 + " %",
+                Grade6: schoolData.grade_6 + " %",
+                Grade7: schoolData.grade_7 + " %",
+                Grade8: schoolData.grade_8 + " %",
+                TotalSchools: Number(schoolData.schoolsCount.replace(/\,/g, '')),
+                TotalStudents: Number(schoolData.studentsCount.replace(/\,/g, ''))
+              }
+              this.reportData.push(obj);
+            });
+            this.loaderAndErr();
+            this.changeDetection.markForCheck();
+          }
+        }
+      }, err => {
+        this.data = [];
+        this.loaderAndErr();
+      });
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
     } catch (e) {
@@ -227,6 +308,10 @@ export class SemViewComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.reportData = [];
+      this.districtId = undefined;
+      this.blockId = undefined;
+      this.clusterId = undefined;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -251,32 +336,11 @@ export class SemViewComponent implements OnInit {
         }
         if (this.data['sortedData'].length > 0) {
           let result = this.data['sortedData']
-
+          this.clusterMarkers = [];
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
-
-          for (var i = 0; i < result.length; i++) {
-            this.clusterMarkers.push(
-              {
-                districtId: result[i].districtId,
-                districtName: result[i].districtName,
-                blockId: result[i].blockId,
-                blockName: result[i].blockName,
-                clusterId: result[i].clusterId,
-                clusterName: result[i].clusterName,
-                assesmentPercentage: result[i].assesmentPercentage,
-                grade_3: result[i].grade_3,
-                grade_4: result[i].grade_4,
-                grade_5: result[i].grade_5,
-                grade_6: result[i].grade_6,
-                grade_7: result[i].grade_7,
-                grade_8: result[i].grade_8,
-                lat: result[i].lat,
-                lng: result[i].lng,
-                studentsCount: result[i].studentsCount
-              });
-          };
+          this.clusterMarkers = result;
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
@@ -289,7 +353,7 @@ export class SemViewComponent implements OnInit {
                 strokeWeight: 0.01
               }).addTo(globalMap);
 
-              markerIcon.addTo(globalMap).bindPopup(
+              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b>Semester Performance: </b>" + "&nbsp;" + this.clusterMarkers[i].assesmentPercentage + " %" +
                 "<br><b>District: </b>" + "&nbsp;" + this.clusterMarkers[i].districtName +
                 "<br><b>Block: </b>" + "&nbsp;" + this.clusterMarkers[i].blockName +
@@ -300,8 +364,14 @@ export class SemViewComponent implements OnInit {
                 "<br><b>Grade 6:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_6 + " %" +
                 "<br><b>Grade 7:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_7 + " %" +
                 "<br><b>Grade 8:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_8 + " %" +
-                "<br><b>Number of students:</b>" + "&nbsp;" + this.clusterMarkers[i].studentsCount
+                "<br><b>Number of schools:</b>" + "&nbsp;" + this.clusterMarkers[i].schoolsCount +
+                "<br><b>Number of students:</b>" + "&nbsp;" + this.clusterMarkers[i].studentsCount +
+                "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_below_33 + " %" + ` (${this.clusterMarkers[i].value_below_33} out of ${this.clusterMarkers[i].schoolsCount})` +
+                "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_between_33_60 + " %" + ` (${this.clusterMarkers[i].value_between_33_60} out of ${this.clusterMarkers[i].schoolsCount})` +
+                "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_between_60_75 + " %" + ` (${this.clusterMarkers[i].value_between_60_75} out of ${this.clusterMarkers[i].schoolsCount})` +
+                "<br><b>% above 75%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_above_75 + " %" + ` (${this.clusterMarkers[i].value_above_75} out of ${this.clusterMarkers[i].schoolsCount})`
               );
+              markerIcon.addTo(globalMap).bindPopup(popup);
 
               markerIcon.on('mouseover', function (e) {
                 this.openPopup();
@@ -309,6 +379,7 @@ export class SemViewComponent implements OnInit {
               markerIcon.on('mouseout', function (e) {
                 this.closePopup();
               });
+              markerIcon.on('click', this.onClick_Marker, this);
 
               this.layerMarkers.addLayer(markerIcon);
               markerIcon.myJsonData = this.clusterMarkers[i];
@@ -320,14 +391,14 @@ export class SemViewComponent implements OnInit {
             this.studentCount = this.data['totalValues'].totalStudents;
 
             this.clusterMarkers.forEach(schoolData => {
-              this.fileName = "School_wise_report"
+              this.fileName = "Cluster_wise_report"
               let obj = {
                 DistrictId: schoolData.districtId,
                 DistrictName: schoolData.districtName,
                 BlockId: schoolData.blockId,
                 BlockName: schoolData.blockName,
                 ClusterId: schoolData.clusterId,
-                CRCName: schoolData.clusterName,
+                ClusterName: schoolData.clusterName,
                 Semester_Performance: schoolData.assesmentPercentage + " %",
                 Grade3: schoolData.grade_3 + " %",
                 Grade4: schoolData.grade_4 + " %",
@@ -335,8 +406,8 @@ export class SemViewComponent implements OnInit {
                 Grade6: schoolData.grade_6 + " %",
                 Grade7: schoolData.grade_7 + " %",
                 Grade8: schoolData.grade_8 + " %",
-                TotalSchools: Number(this.data['totalValues'].totalSchools),
-                TotalStudents: Number(this.data['totalValues'].totalStudents)
+                TotalSchools: Number(schoolData.schoolsCount.replace(/\,/g, '')),
+                TotalStudents: Number(schoolData.studentsCount.replace(/\,/g, ''))
               }
               this.reportData.push(obj);
             });
@@ -344,7 +415,10 @@ export class SemViewComponent implements OnInit {
             this.changeDetection.markForCheck();
           }
         }
-      })
+      }, err => {
+        this.data = [];
+        this.loaderAndErr();
+      });
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
     } catch (e) {
@@ -359,7 +433,7 @@ export class SemViewComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
-
+      this.reportData = [];
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -381,6 +455,7 @@ export class SemViewComponent implements OnInit {
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
         }
+        this.schoolMarkers = [];
         if (this.data['sortedData'].length > 0) {
           let result = this.data['sortedData']
 
@@ -388,30 +463,7 @@ export class SemViewComponent implements OnInit {
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
 
-          for (var i = 0; i < result.length; i++) {
-            this.schoolMarkers.push(
-              {
-                districtId: result[i].districtId,
-                districtName: result[i].districtName,
-                blockId: result[i].blockId,
-                blockName: result[i].blockName,
-                clusterId: result[i].clusterId,
-                clusterName: result[i].clusterName,
-                schoolId: result[i].schoolId,
-                schoolName: result[i].schoolName,
-                assesmentPercentage: result[i].assesmentPercentage,
-                grade_3: result[i].grade_3,
-                grade_4: result[i].grade_4,
-                grade_5: result[i].grade_5,
-                grade_6: result[i].grade_6,
-                grade_7: result[i].grade_7,
-                grade_8: result[i].grade_8,
-                lat: result[i].lat,
-                lng: result[i].lng,
-                studentsCount: result[i].studentsCount
-              });
-          };
-
+          this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var markerIcon = L.circleMarker([this.schoolMarkers[i].lat, this.schoolMarkers[i].lng], {
@@ -420,11 +472,11 @@ export class SemViewComponent implements OnInit {
                 color: this.colors[i],
                 fillColor: this.colors[i],
                 fillOpacity: 1,
-                weight: 1,
-                strokeWeight: 0.01
+                weight: 0,
+                strokeWeight: 0
               }).addTo(globalMap);
 
-              markerIcon.addTo(globalMap).bindPopup(
+              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b>Semester Performance: </b>" + "&nbsp;" + this.schoolMarkers[i].assesmentPercentage + " %" +
                 "<br><b>District: </b>" + "&nbsp;" + this.schoolMarkers[i].districtName +
                 "<br><b>Block: </b>" + "&nbsp;" + this.schoolMarkers[i].blockName +
@@ -438,6 +490,7 @@ export class SemViewComponent implements OnInit {
                 "<br><b>Grade 8:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_8 + " %" +
                 "<br><b>Number of students:</b>" + "&nbsp;" + this.schoolMarkers[i].studentsCount
               );
+              markerIcon.addTo(globalMap).bindPopup(popup);
 
               markerIcon.on('mouseover', function (e) {
                 this.openPopup();
@@ -463,9 +516,9 @@ export class SemViewComponent implements OnInit {
                 BlockId: schoolData.blockId,
                 BlockName: schoolData.blockName,
                 ClusterId: schoolData.clusterId,
-                CRCName: schoolData.clusterName,
-                SchoolId: schoolData.schooolId,
-                SchoolName: schoolData.schooolName,
+                ClusterName: schoolData.clusterName,
+                SchoolId: schoolData.schoolId,
+                SchoolName: schoolData.schoolName,
                 Semester_Performance: schoolData.assesmentPercentage + " %",
                 Grade3: schoolData.grade_3 + " %",
                 Grade4: schoolData.grade_4 + " %",
@@ -473,8 +526,7 @@ export class SemViewComponent implements OnInit {
                 Grade6: schoolData.grade_6 + " %",
                 Grade7: schoolData.grade_7 + " %",
                 Grade8: schoolData.grade_8 + " %",
-                TotalSchools: Number(this.data['totalValues'].totalSchools),
-                TotalStudents: Number(this.data['totalValues'].totalStudents)
+                TotalStudents: Number(schoolData.studentsCount.replace(/\,/g, ''))
               }
               this.reportData.push(obj);
             });
@@ -482,7 +534,10 @@ export class SemViewComponent implements OnInit {
             this.changeDetection.markForCheck();
           }
         }
-      })
+      }, err => {
+        this.data = [];
+        this.loaderAndErr();
+      });
 
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
@@ -500,14 +555,8 @@ export class SemViewComponent implements OnInit {
     this.blockId = undefined;
 
     // to show and hide the dropdowns
-    // if (this.stateLevel == 0) {
     this.blockHidden = false;
     this.clusterHidden = true;
-    // } else {
-    //   this.blockHidden = true;
-    //   this.clusterHidden = true;
-    //   this.stateLevel = 0
-    // }
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -515,8 +564,8 @@ export class SemViewComponent implements OnInit {
     }
     this.myData = this.service.block_wise_sem_data(districtId).subscribe(res => {
       this.data = res;
-      this.blockMarkers = this.data['sortedData'];
 
+      this.blockMarkers = this.data['sortedData'];
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data['sortedData'][0].districtId,
@@ -536,7 +585,7 @@ export class SemViewComponent implements OnInit {
         radius: 3.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
-        mapZoom: 9,
+        mapZoom: 8.3,
         centerLat: this.data['sortedData'][0].lat,
         centerLng: this.data['sortedData'][0].lng,
         level: 'block'
@@ -544,7 +593,10 @@ export class SemViewComponent implements OnInit {
       this.genericFun(this.data, options);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
-    })
+    }, err => {
+      this.data = [];
+      this.loaderAndErr();
+    });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
   }
@@ -558,14 +610,8 @@ export class SemViewComponent implements OnInit {
     this.clusterId = undefined;
 
     // to show and hide the dropdowns
-    // if (this.stateLevel == 0) {
     this.blockHidden = false;
     this.clusterHidden = false;
-    // } else {
-    //   this.blockHidden = true;
-    //   this.clusterHidden = true;
-    //   this.stateLevel = 0
-    // }
 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
@@ -573,11 +619,19 @@ export class SemViewComponent implements OnInit {
     }
     this.myData = this.service.cluster_wise_sem_data(this.districtHierarchy.distId, blockId).subscribe(res => {
       this.data = res;
-      this.clusterMarkers = this.data['sortedData']
-      this.clusterMarkers.forEach(element => {
-        if (element.clusterName == null) {
-          element.clusterName = 'NO NAME FOUND';
+      this.clusterMarkers = this.data['sortedData'];
+      var myBlocks = [];
+      this.blockMarkers.forEach(element => {
+        if (element.districtId === this.districtHierarchy.distId) {
+          myBlocks.push(element);
         }
+      });
+      this.blockMarkers = myBlocks;
+
+      this.clusterMarkers.forEach(element => {
+        // if (element.clusterName == null) {
+        //   element.clusterName = 'NO NAME FOUND';
+        // }
       });
       // set hierarchy values
       this.blockHierarchy = {
@@ -586,7 +640,7 @@ export class SemViewComponent implements OnInit {
         blockId: this.data['sortedData'][0].blockId,
         blockName: this.data['sortedData'][0].blockName
       }
-
+      this.districtId = this.data['sortedData'][0].districtId;
       this.blockId = blockId;
 
       // these are for showing the hierarchy names based on selection
@@ -608,7 +662,10 @@ export class SemViewComponent implements OnInit {
       this.genericFun(this.data, options);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
-    })
+    }, err => {
+      this.data = [];
+      this.loaderAndErr();
+    });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
   }
@@ -620,43 +677,77 @@ export class SemViewComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.errMsg();
 
+    this.blockHidden = false;
+    this.clusterHidden = false;
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.school_wise_sem_data(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
-      this.data = res;
-      this.schoolMarkers = this.data['sortedData'];
-      // set hierarchy values
-      this.clusterHierarchy = {
-        distId: this.data['sortedData'][0].districtId,
-        districtName: this.data['sortedData'][0].districtName,
-        blockId: this.data['sortedData'][0].blockId,
-        blockName: this.data['sortedData'][0].blockName,
-        clusterId: this.data['sortedData'][0].clusterId,
-        clusterName: this.data['sortedData'][0].clusterName,
-      }
+    this.myData = this.service.all_block_sem_data().subscribe(result => {
+      this.myData = this.service.school_wise_sem_data(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
+        this.data = res;
+        this.schoolMarkers = this.data['sortedData'];
 
-      this.clusterId = clusterId;
+        var markers = result['sortedData'];
+        var myBlocks = [];
+        markers.forEach(element => {
+          if (element.districtId === this.blockHierarchy.distId) {
+            myBlocks.push(element);
+          }
+        });
+        this.blockMarkers = myBlocks;
 
-      // these are for showing the hierarchy names based on selection
-      this.skul = false;
-      this.dist = false;
-      this.blok = false;
-      this.clust = true;
+        var myCluster = [];
+        this.clusterMarkers.forEach(element => {
+          if (element.blockId === this.blockHierarchy.blockId) {
+            myCluster.push(element);
+          }
+        });
+        this.clusterMarkers = myCluster;
 
-      // options to set for markers in the map
-      let options = {
-        radius: 3.5,
-        fillOpacity: 1,
-        strokeWeight: 0.01,
-        mapZoom: 12,
-        centerLat: this.data['sortedData'][0].lat,
-        centerLng: this.data['sortedData'][0].lng,
-        level: 'school'
-      }
-      this.genericFun(this.data, options);
-    })
+        // set hierarchy values
+        this.clusterHierarchy = {
+          distId: this.data['sortedData'][0].districtId,
+          districtName: this.data['sortedData'][0].districtName,
+          blockId: this.data['sortedData'][0].blockId,
+          blockName: this.data['sortedData'][0].blockName,
+          clusterId: this.data['sortedData'][0].clusterId,
+          clusterName: this.data['sortedData'][0].clusterName,
+        }
+
+        this.districtHierarchy = {
+          distId: this.data['sortedData'][0].districtId
+        }
+
+        this.districtId = this.data['sortedData'][0].districtId;
+        this.blockId = this.data['sortedData'][0].blockId;
+        this.clusterId = clusterId;
+
+        // these are for showing the hierarchy names based on selection
+        this.skul = false;
+        this.dist = false;
+        this.blok = false;
+        this.clust = true;
+
+        // options to set for markers in the map
+        let options = {
+          radius: 3.5,
+          fillOpacity: 1,
+          strokeWeight: 0.01,
+          mapZoom: 12,
+          centerLat: this.data['sortedData'][0].lat,
+          centerLng: this.data['sortedData'][0].lng,
+          level: 'school'
+        }
+        this.genericFun(this.data, options);
+      }, err => {
+        this.data = [];
+        this.loaderAndErr();
+      });
+    }, err => {
+      this.data = [];
+      this.loaderAndErr();
+    });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
   }
@@ -674,9 +765,9 @@ export class SemViewComponent implements OnInit {
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         // this.dateRange = this.markers[i]['data_from_date'] + " to " + this.markers[i]['data_upto_date'];
-
+        var markerIcon;
         if (options.weight) {
-          var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
+          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: options.radius,
             color: this.colors[i],
             fillColor: this.colors[i],
@@ -685,7 +776,7 @@ export class SemViewComponent implements OnInit {
             weight: options.weight
           })
         } else {
-          var markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
+          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: options.radius,
             color: this.colors[i],
             fillColor: this.colors[i],
@@ -698,7 +789,7 @@ export class SemViewComponent implements OnInit {
 
         // data to show on the tooltip for the desired levels
         if (options.level == 'district') {
-          markerIcon.addTo(globalMap).bindPopup(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Grade 3:</b>" + "&nbsp;" + this.markers[i].grade_3 + " %" +
@@ -714,6 +805,7 @@ export class SemViewComponent implements OnInit {
             "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
+          markerIcon.addTo(globalMap).bindPopup(popup);
 
           // to download the report
           this.fileName = "District_wise_report";
@@ -733,7 +825,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
 
         } else if (options.level == 'block') {
-          markerIcon.addTo(globalMap).bindPopup(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
@@ -750,7 +842,8 @@ export class SemViewComponent implements OnInit {
             "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
-          this.fileName = "Block_wise_report"
+          markerIcon.addTo(globalMap).bindPopup(popup);
+          this.fileName = "Block_Per_dist_report"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
@@ -769,7 +862,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
 
         } else if (options.level == 'cluster') {
-          markerIcon.addTo(globalMap).bindPopup(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
@@ -787,14 +880,15 @@ export class SemViewComponent implements OnInit {
             "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
-          this.fileName = "Cluster_wise_report"
+          markerIcon.addTo(globalMap).bindPopup(popup);
+          this.fileName = "Cluster_per_block_report"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
             BlockId: this.markers[i].blockId,
             BlockName: this.markers[i].blockName,
             ClusterId: this.markers[i].clusterId,
-            CRCName: this.markers[i].clusterName,
+            ClusterName: this.markers[i].clusterName,
             Semester_Performance: this.markers[i].assesmentPercentage + " %",
             Grade3: this.markers[i].grade_3 + " %",
             Grade4: this.markers[i].grade_4 + " %",
@@ -808,7 +902,7 @@ export class SemViewComponent implements OnInit {
           this.reportData.push(obj);
 
         } else if (options.level == 'school') {
-          markerIcon.addTo(globalMap).bindPopup(
+          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
             "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
             "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
@@ -822,16 +916,18 @@ export class SemViewComponent implements OnInit {
             "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
             "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount
           );
-          this.fileName = "School_wise_report"
+          markerIcon.addTo(globalMap).bindPopup(popup);
+
+          this.fileName = "School_per_cluster_report"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
             BlockId: this.markers[i].blockId,
             BlockName: this.markers[i].blockName,
             ClusterId: this.markers[i].clusterId,
-            CRCName: this.markers[i].clusterName,
-            SchoolId: this.markers[i].schooolId,
-            SchoolName: this.markers[i].schooolName,
+            ClusterName: this.markers[i].clusterName,
+            SchoolId: this.markers[i].schoolId,
+            SchoolName: this.markers[i].schoolName,
             Semester_Performance: this.markers[i].assesmentPercentage + " %",
             Grade3: this.markers[i].grade_3 + " %",
             Grade4: this.markers[i].grade_4 + " %",
@@ -839,13 +935,12 @@ export class SemViewComponent implements OnInit {
             Grade6: this.markers[i].grade_6 + " %",
             Grade7: this.markers[i].grade_7 + " %",
             Grade8: this.markers[i].grade_8 + " %",
-            TotalSchools: Number(this.data['totalValues'].totalSchools.replace(/\,/g, '')),
             TotalStudents: Number(this.markers[i].studentsCount.replace(/\,/g, ''))
           }
           this.reportData.push(obj);
         }
 
-        this.popups(markerIcon, this.markers, options);
+        this.popups(markerIcon, this.markers[i], options);
       }
 
       this.loaderAndErr();
@@ -869,7 +964,7 @@ export class SemViewComponent implements OnInit {
       if (options.level != 'school') {
         markerIcon.on('click', this.onClick_Marker, this)
       }
-      markerIcon.myJsonData = markers[i];
+      markerIcon.myJsonData = markers;
     }
   }
 
@@ -996,7 +1091,4 @@ export class SemViewComponent implements OnInit {
     };
   }
 
-  redirectTo() {
-    this.router.navigate(['home/dashboard']);
-  }
 }

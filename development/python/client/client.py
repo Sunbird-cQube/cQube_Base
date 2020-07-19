@@ -31,7 +31,7 @@ def get_access_token(emission_url,headers,payload):
 def get_s3_url(filename,access_token):
     """creates one time pre-signed s3 url with given filename"""
     s3_url = emission_url+"upload-url"
-    headers = { "Authorization" :"JWT " + access_token['access_token']}
+    headers = { "Authorization" :"Bearer " + access_token['access_token']}
     payload = { "filename": filename }
     res_s3_url = requests.post(s3_url, headers = headers, data=payload)
     return res_s3_url

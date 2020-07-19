@@ -1,0 +1,35 @@
+---
+- name: Creating a Directory to store the log files
+  file:
+    path: "{{ base_dir }}/cqube/logs"
+    state: absent
+
+- name: Creating a Directory to store the log files
+  file: 
+    path: "{{ base_dir }}/cqube/logs"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+
+- name: Create a symbolic link
+  shell: ln -s "{{ item.src }}" "{{ base_dir }}/cqube/logs/{{ item.dest }}"
+  args:
+    warn: false
+  with_items:
+    - { src: "{{base_dir}}/cqube/nifi/logs/nifi-app.log", dest: "nifi-app.log" }
+    - { src: "{{base_dir}}/cqube/nifi/logs/nifi-bootstrap.log", dest: "nifi-bootstrap.log" }
+    - { src: "/var/log/postgresql/postgresql-10-main.log", dest: "postgresql-10-main.log" }
+    - { src: "{{base_dir}}/cqube/emission_app/python/access.log", dest: "access.log" }
+    - { src: "{{base_dir}}/cqube/emission_app/python/error.log", dest: "error.log" }
+    - { src: "/home/{{system_user_name}}/.pm2/logs/client_side-error.log", dest: "client_side-error.log"}
+    - { src: "/home/{{system_user_name}}/.pm2/logs/client_side-out.log", dest: "client_side-out.log"}
+    - { src: "/home/{{system_user_name}}/.pm2/logs/server_side-error.log", dest: "server_side-error.log"}
+    - { src: "/home/{{system_user_name}}/.pm2/logs/server_side-out.log", dest: "server_side-out.log"}
+    - { src: "/home/{{system_user_name}}/.pm2/logs/admin_client_side-error.log", dest: "admin_client_side-error.log"}
+    - { src: "/home/{{system_user_name}}/.pm2/logs/admin_client_side-out.log", dest: "admin_client_side-out.log"}
+    - { src: "/home/{{system_user_name}}/.pm2/logs/admin_server_side-error.log", dest: "admin_server_side-error.log"}
+    - { src: "/home/{{system_user_name}}/.pm2/logs/admin_server_side-out.log", dest: "admin_server_side-out.log"}
+    - { src: "/var/log/syslog", dest: "syslog"}
+    - { src: "{{base_dir}}/cqube/keycloak/standalone/log/server.log", dest: "server.log"}
+    - { src: "{{base_dir}}/cqube/keycloak/standalone/log/audit.log", dest: "audit.log"}

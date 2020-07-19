@@ -1,49 +1,48 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
+const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 
 var const_data = require('../../lib/config');
+const s3File = require('../../lib/reads3File');
+
 router.post('/', auth.authController, async function (req, res) {
-    const_data['getParams']['Key'] = 'static/users.json';
-    const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
-        if (err) {
-            console.log(err);
-            res.send([]);
-        } else if (!data) {
-            console.log("Something went wrong or s3 file not found");
-            res.send([]);
-        } else {
-            users = JSON.parse(data.Body.toString());
-            const user = users.find(u => u.user_email === req.body.email);
-            if (user) {
-                //Password hashing
-                const hashedPass = await bcrypt.hash(req.body.cnfpass, 10);
-                user.password = hashedPass;
+    try {
+        logger.info('---Change password api ---');
+        let fileName = `static/users.json`
+        var users = await s3File.readS3File(fileName);
 
-                //updation date
-                user.updated_on = `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)} ${(new Date()).toLocaleTimeString('en-IN', { hour12: false })}`;
+        const user = users.find(u => u.user_email === req.body.email);
+        if (user) {
+            //Password hashing
+            const hashedPass = await bcrypt.hash(req.body.cnfpass, 10);
+            user.password = hashedPass;
 
-                //Updater
-                var updater = req.body.updaterId;
-                user.updated_by = JSON.parse(updater);
+            //updation date
+            user.updated_on = `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)} ${(new Date()).toLocaleTimeString('en-IN', { hour12: false })}`;
 
-                var params = {
-                    Bucket: const_data['getParams']['Bucket'],
-                    Key: "static/users.json",
-                    Body: JSON.stringify(users)
-                };
-                const_data['s3'].upload(params, function (err, data) {
-                    if (err) {
-                        console.log('ERROR MSG: ', err);
-                    } else {
-                        // console.log(users);
-                        res.status(200).json({ msg: "Password changed successfully" });
-                    }
-                });
-            }
+            //Updater
+            var updater = req.body.updaterId;
+            user.updated_by = JSON.parse(updater);
 
+            var params = {
+                Bucket: const_data['getParams']['Bucket'],
+                Key: "static/users.json",
+                Body: JSON.stringify(users)
+            };
+            const_data['s3'].upload(params, function (err, data) {
+                if (err) {
+                    console.log('ERROR MSG: ', err);
+                } else {
+                    // console.log(users);
+                    res.status(200).json({ msg: "Password changed successfully" });
+                }
+            });
         }
-    });
+    } catch (e) {
+        logger.error(`Error :: ${e}`);
+        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
+    }
 });
 
 module.exports = router;

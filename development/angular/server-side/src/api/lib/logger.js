@@ -41,19 +41,19 @@ function createLogger() {
     info: 'green',
     debug: 'gray',
   };
-  const logger = winston.createLogger({ transports, levels, exitOnError: false });
+  const log = new (winston.Logger)({ transports, levels, exitOnError: false });
   winston.addColors(colors);
-  return logger;
+  return log;
 }
 
 const loggerWithoutEnv = createLogger();
 
 const logger = {
   error(text) {
-    loggerWithoutEnv.error(`${Config.envName}: ${text}`);
+    loggerWithoutEnv.error(`PORT: ${Config.port}: ${text}`);
   },
   info(text) {
-    loggerWithoutEnv.info(`${Config.envName}: ${text}`);
+    loggerWithoutEnv.info(`PORT: ${Config.port}: ${text}`);
   },
 };
 

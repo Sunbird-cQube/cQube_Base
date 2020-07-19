@@ -1,29 +1,34 @@
 const router = require('express').Router();
-var const_data = require('../../lib/config');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
+const s3File = require('../../lib/reads3File');
 
-router.post('/distWise', auth.authController, function (req, res) {
+router.post('/distWise', auth.authController, async function (req, res) {
     try {
         logger.info('---Attendance dist wise api ---');
         var month = req.body.month;
         var year = req.body.year;
-        const_data['getParams']['Key'] = `attendance/district_attendance_${year}_${month}.json`;
-        const_data['s3'].getObject(const_data['getParams'], function (err, data) {
-            if (err) {
-                logger.error(err);
-                res.send([]);
-            } else if (!data) {
-                logger.info("Something went wrong or s3 file not found");
-                res.send([]);
-            } else {
-                logger.info('--- Attendance dist wise api response sent ---');
-                res.send(data.Body);
+        let fileName = `attendance/district_attendance_opt_json_${year}_${month}.json`;
+        var jsonData = await s3File.readS3File(fileName);
+        var districtAttendanceData = jsonData.data
+        var distData = [];
+        for (let i = 0; i < districtAttendanceData.length; i++) {
+            var obj = {
+                id: districtAttendanceData[i]['x_axis'],
+                name: districtAttendanceData[i]['district_name'],
+                label: districtAttendanceData[i]['x_value'],
+                lat: districtAttendanceData[i]['y_value'],
+                lng: districtAttendanceData[i]['z_value'],
+                stdCount: (districtAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                schCount: (districtAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
             }
-        });
+            distData.push(obj);
+        }
+        logger.info('--- Attendance dist wise api response sent ---');
+        res.status(200).send({ distData: distData, studentCount: jsonData.allDistrictsFooter.students, schoolCount: jsonData.allDistrictsFooter.schools });
     } catch (e) {
         logger.error(`Error :: ${e}`)
-        res.send({ status: 500, errMessage: "Internal error. Please try again!!" })
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 });
 

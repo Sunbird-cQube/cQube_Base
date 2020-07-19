@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <div [routerLink]="['/home/all-logs']" class="cards" id="logs">
+                <img src="../../assets/logs.png" alt="s3FileDownload" height="130" width="230"
+                    style="margin: 2% 0% 3% 0%; "><br>
+                <strong>
+                    Logs
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div [routerLink]="['/home/summary-statistics']" class="cards" id="summary">
+                <img src="../../assets/statistics.png" alt="statistics" height="130" width="230"
+                    style="margin: 2% 0% 3% 0%; "><br>
+                <strong>
+                    Summary Statistics
+                </strong>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div [routerLink]="['/home/s3FileDownload']" class="cards" id="s3dwn">
+                <img src="../../assets/downloadFile.png" alt="s3FileDownload" height="130" width="230"
+                    style="margin: 2% 0% 3% 0%; "><br>
+                <strong>
+                    Download S3 Files
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="cards" id="moniter">
+                <a href="{{grafanaUrl}}" target=" " style="text-decoration: none; color: #284d8a;">
+                    <img src="../../assets/monitering.png" alt="s3FileDownload" height="130" width="230"
+                        style="margin: 2% 0% 3% 0%; "><br>
+                    <strong>
+                        Monitoring Details
+                    </strong>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
