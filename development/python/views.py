@@ -103,7 +103,14 @@ def api_login():
 
 def validate_role(token):
     user_role = token.get("realm_access") 
-    if "admin" in user_role["roles"] or "emission" in user_role["roles"]:
+    if "admin" in user_role["roles"]:
+        return "Valid role"
+    else:
+        abort(401, f'Invalid user roles to access api')
+
+def validate_emission_role(token):
+    user_role = token.get("realm_access")
+    if "emission" in user_role["roles"]:
         return "Valid role"
     else:
         abort(401, f'Invalid user roles to access api')
@@ -111,7 +118,7 @@ def validate_role(token):
 @app.route('/upload-url',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_upload_url():
-    validate_role(g.oidc_token_info)
+    validate_emission_role(g.oidc_token_info)
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
     args = parser.parse_args()
@@ -197,6 +204,19 @@ def valid_path(filename):
     if not exists(full_path):
         return abort(404, f'Bad request, unable to find the file - validate the filename in payload')
 
+def valid_file(bucket,key):
+    bucket_name = get_bucket_name(bucket)
+    s3_client = get_s3_client()
+    try:
+        s3_files=s3_client.list_objects(Bucket=bucket_name)
+        files = [file_name['Key'] for file_name in s3_files['Contents']]
+        if key in files:
+            return True
+        else:
+            abort(404, f'Bad request, unable to find the key')
+    except Exception as err:
+        abort(404, f'Requested key not found')
+
 @app.route('/list_s3_files',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def list_s3_files():
@@ -261,10 +281,7 @@ def validate_weights(wdf):
     try:
         infra_file=s3_client.get_object(Bucket=OUTPUT_BUCKET_NAME,
                              Key="infrastructure_score/infrastructure_score.csv")
-        if infra_file:
-            df = pd.read_csv(BytesIO(infra_file['Body'].read()),sep='|')
-        else:
-            abort(400, f'Output bucket is not having infrastructure_score/infrastructure_score.csv key')
+        df = pd.read_csv(BytesIO(infra_file['Body'].read()),sep='|')
         if wdf["score"].sum() == 100:
             if list(df.columns) == list(wdf.columns):
                 if len(df[['infrastructure_name','infrastructure_category']].merge(wdf[['infrastructure_name','infrastructure_category']]).drop_duplicates())==len(df):
@@ -281,7 +298,7 @@ def validate_weights(wdf):
 @app.route('/infra_weights',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def upload_file():
-    validate_role(g.oidc_token_info)
+    validate_emission_role(g.oidc_token_info)
     uploaded_file = request.files['file']
     content_type = 'application/json'
     filename = secure_filename(uploaded_file.filename)
@@ -295,3 +312,19 @@ def upload_file():
                           Key="infrastructure_score/infrastructure_score.csv",
                           ContentType=content_type)
         return resp
+
+@app.route('/infra_score', methods=['GET'])
+@oidc.accept_token(require_token=True, scopes_required=['openid'])
+def get_infra_score():
+    validate_emission_role(g.oidc_token_info)
+    s3_client = get_s3_client()
+    key="infrastructure_score/infrastructure_score.csv"
+    if valid_file(OUTPUT_BUCKET_NAME,key):
+        total_bytes = get_total_bytes(s3_client, OUTPUT_BUCKET_NAME, key)
+        return Response(
+            get_object(s3_client, OUTPUT_BUCKET_NAME, key , total_bytes),
+            mimetype='text/plain',
+            headers={"Content-Disposition": "attachment;filename={}".format(key.split('/')[-1])}
+        )
+    else:
+        abort(400, f'Bad request, validate the filename in payload')
