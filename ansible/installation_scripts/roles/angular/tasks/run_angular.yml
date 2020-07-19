@@ -17,6 +17,13 @@
     src: ../../development/angular/client-side/dist
     dest: "{{ base_dir }}/cqube/dashboard/client_side"
 
+- name: changing ownership
+  file:
+    path: "{{ base_dir }}/cqube/dashboard/client_side"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+
 - name: checking process of pm2 client_side
   become: yes
   shell: pm2 id client_side

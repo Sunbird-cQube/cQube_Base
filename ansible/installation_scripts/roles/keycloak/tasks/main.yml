@@ -33,11 +33,6 @@
     enabled: yes
     state: started
 
-- name: add-user-keycloak
-  shell: ./add-user-keycloak.sh -u {{ keycloak_adm_user }} -p {{ keycloak_adm_passwd }}
-  args:
-    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
-
 - name: creating postgresql conf in keycloak
   file:
     path: "{{ base_dir }}/cqube/keycloak/modules/system/layers/keycloak/org/postgresql/main"
@@ -58,7 +53,12 @@
     src: standalone.xml.j2
     dest: "{{ base_dir }}/cqube/keycloak/standalone/configuration/standalone.xml"
 
-
-    
-
-
+- name: keycloak systemd service enable and start
+  service:
+    name: keycloak
+    state: restarted
+ 
+- name: add-user-keycloak
+  shell: ./add-user-keycloak.sh -u {{ keycloak_adm_user }} -p {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"

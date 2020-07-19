@@ -8,7 +8,7 @@
     state: directory
 
 - name: copying admin's server-side script
-  shell: "cp -R ../../development/admin/server-side {{base_dir}}/cqube/admin_dashboard/"
+  shell: "cp -R ../../development/admin/server-side/* {{base_dir}}/cqube/admin_dashboard/server_side"
 
 - name: Change to Node directory
   shell: "cd {{base_dir}}/cqube/admin_dashboard/server_side"
@@ -35,7 +35,9 @@
       BASEURL = "http://{{ local_ipv4_address}}:5000"
       EMAIL= "{{ keycloak_adm_user }}@cqube.com"
       PASSWORD= "{{ keycloak_adm_passwd }}"
-      KEYCLOAK_HOST = "http://{{ host_ip.stdout }}:8080"
-      KEYCLOAK_REALM = "cQube"
+
+      KEYCLOAK_HOST = "https://{{ api_endpoint }}"
+      KEYCLOAK_REALM = ""
+      KEYCLOAK_CLIENT= ""
 
 

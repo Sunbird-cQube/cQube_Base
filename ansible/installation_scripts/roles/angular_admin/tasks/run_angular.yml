@@ -17,6 +17,13 @@
     src: ../../development/admin/client-side/dist
     dest: "{{ base_dir }}/cqube/admin_dashboard/client_side"
 
+- name: changing ownership
+  file:
+    path: "{{ base_dir }}/cqube/admin_dashboard/client_side"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+
 - name: checking process of pm2 admin_http_server
   become: yes
   shell: pm2 id admin_client_side

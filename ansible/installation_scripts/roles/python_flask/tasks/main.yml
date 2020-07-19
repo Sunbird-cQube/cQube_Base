@@ -55,9 +55,14 @@
                CLIENT_SECRET= ""
                EMISSION_URL= ""
 
+- name: Making sure emission_app directory is present
+  file:
+    path: "{{ base_dir }}/cqube/emission_app"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+               
 - name: Starting the flask app
-  become: yes
-  become_user: "{{ system_user_name }}"
   shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/gunicorn -w 3 -b 0.0.0.0:5000 server:application &"
   args:
     chdir: "{{ base_dir }}/cqube/emission_app/python"

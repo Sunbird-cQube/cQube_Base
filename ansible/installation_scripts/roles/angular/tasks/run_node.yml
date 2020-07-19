@@ -1,4 +1,15 @@
 ---
+- name: checking process of pm2 server_side
+  become: yes
+  shell: pm2 id server_side
+  register: pm2_output
+
+- name: checking the existing pm2 processes if running
+  shell: pm2 delete server_side
+  when: pm2_output.stdout != "[]"
+  ignore_errors: True
+  become: yes
+
 - name: Starting NodeJS application
   become: yes
   shell: pm2 start npm --name server_side -- start
