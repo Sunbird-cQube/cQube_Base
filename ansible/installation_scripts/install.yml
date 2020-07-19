@@ -6,18 +6,18 @@
     - config.yml
 
   roles:
-     - create_base_dir
-     - java
-     - python
-     - createdb
-     - keycloak
-     - grafana
-     - python_flask
-     - angular
-     - angular_admin
-     - nifi_install
-     - nifi_crc
-     - nifi_static
-     - nifi_attendance
-     - nifi_semester
-     - nifi_infra
+          - create_base_dir
+          - java
+          - python
+          - createdb
+          - keycloak
+          - grafana
+          - python_flask
+          - angular
+          - angular_admin
+          - nifi_install
+          - nifi_crc
+          - nifi_static
+          - nifi_attendance
+          - nifi_semester
+          - nifi_infra

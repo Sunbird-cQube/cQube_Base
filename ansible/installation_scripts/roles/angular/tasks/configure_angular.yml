@@ -4,17 +4,15 @@
     path: ../../development/angular
     mode: '1755'
     
-- name: Replacing endpoint value in environment.ts
-  lineinfile:
-    path: ../../development/angular/client-side/src/environments/environment.ts
-    regexp: "apiEndpoint"
-    line: "apiEndpoint: '{{ api_endpoint }}'"
+- name: Configure the environment.ts
+  template:
+    src: environment.ts.j2
+    dest: ../../development/angular/client-side/src/environments/environment.ts
 
-- name: Replacing endpoint value in environment.prod.ts
-  lineinfile:
-    path: ../../development/angular/client-side/src/environments/environment.prod.ts
-    regexp: "apiEndpoint"
-    line: "apiEndpoint: '{{ api_endpoint }}'"
+- name: Configure the environment.prod.ts
+  template:
+    src: environment.prod.ts.j2
+    dest: ../../development/angular/client-side/src/environments/environment.prod.ts
 
 - name: Change to Angular directory
   shell: cd ../../development/angular/client-side

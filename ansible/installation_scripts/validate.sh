@@ -233,29 +233,20 @@ check_db_password(){
 }
 
 check_api_endpoint(){
-if [[ ! $2 =~ ^https?://[0-9] ]]; then
-
-   if [[ $2 =~ ^https?://[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
-        temp_fqdn=`echo $1 | sed -E 's/http:\/\/|https:\/\///g'`
-        if ! [[ ${#temp_fqdn} -le 255 ]]; then
-         echo "Error - FQDN exceeding 255 characters. Please provide the proper api url for $1"; fail=1
+if [[ ! $2 =~ ^[0-9] ]]; then
+        if [[ (( $2 =~ \-{2,} ))  ||  (( $2 =~ \.{2,} )) ]]; then
+          echo "Error - Please provide the proper api endpoint for $1"; fail=1
+  else
+   if [[ $2 =~ ^[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
+        if ! [[ ${#2} -le 255 ]]; then
+         echo "Error - FQDN exceeding 255 characters. Please provide the proper api endpoint for $1"; fail=1
         fi
     else
-        echo "Error - Please provide the proper api url for $1"; fail=1
+        echo "Error - Please provide the proper api point for $1"; fail=1
     fi
-
-else
-    ip_api=$(echo "$2" | grep -o -P '(?<=//).*(?=:)')
-    public_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-    if [[ ! "$ip_api" =~ ^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))$ ]]; then
-        echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
-        else
-          if [[ ! $ip_api == $public_ip ]] ; then
-            echo "Error - Public IP validation failed. Please provide the correct value of $1"; fail=1
-          fi
     fi
-
 fi
+
 }
 
 check_aws_default_region(){

@@ -154,7 +154,7 @@
     method: POST
     body_format: json
     status_code: 201
-    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4559"}}}
+    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4661"}}}
 
 #--- Run a python code to load required parameter values ---
 - name: Run python code
