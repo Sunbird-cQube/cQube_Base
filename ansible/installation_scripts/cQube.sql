@@ -6,7 +6,7 @@ CREATE EXTENSION IF NOT EXISTS tablefunc;
 
 create table IF NOT EXISTS manifest_datasource(
 file_id int,
-emission_time timestamp,
+emission_time text,
 folder_name text,
 is_zip boolean,
 total_files_in_zip_file int ,
@@ -699,7 +699,6 @@ return 0;
 END;
 $$  LANGUAGE plpgsql;
 
-
 /* temperory table */
 ----------------------------------------------
 create table if not exists cluster_tmp
@@ -729,7 +728,59 @@ created_on  TIMESTAMP without time zone ,
 updated_on  TIMESTAMP without time zone 
 );
 
+create table if not exists school_tmp
+	(
+school_id  bigint primary key not null,
+school_name varchar(250),
+school_address  varchar(250),
+school_zipcode  int,
+school_contact_number  bigint,
+school_email_contact  varchar(50),
+school_website  varchar(50),
+school_lowest_class  int,
+school_highest_class  int,
+school_management_type_id int ,
+school_category_id  int ,
+school_medium_id  int ,
+state_id bigint,
+district_id bigint,
+block_id bigint,
+cluster_id bigint,
+latitude double precision,
+longitude double precision,
+created_on  TIMESTAMP without time zone NOT NULL,
+updated_on  TIMESTAMP without time zone NOT NULL
+);
+
 ----------------------------------------------------
+/* mst tables */
+
+create table if not exists cluster_mst
+	(
+cluster_id  bigint primary key not null,
+cluster_name varchar(250),
+block_id  bigint,
+district_id  bigint,
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
+);
+
+create table if not exists block_mst
+	(
+block_id  bigint primary key not null,
+block_name varchar(250),
+district_id  bigint,
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
+);
+
+create table if not exists district_mst
+	(
+district_id  bigint primary key not null,
+district_name varchar(250),
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
+);
 
 /*school_master*/
 
@@ -925,8 +976,6 @@ updated_on  TIMESTAMP without time zone
 
 create index if not exists student_attendance_temp_id on student_attendance_temp(school_id,month,student_id);
 
-
-
 /*student_attendance_trans*/
 
 create table if not exists student_attendance_trans
@@ -1042,7 +1091,7 @@ resolved_from_that smallint,
 is_inspection smallint,
 reason_type varchar(100),
 reason_desc text,
-total_score integer,
+total_score double precision,
 score double precision,
 is_offline boolean,
 created_on  TIMESTAMP without time zone, /* created_on field will come from source data*/
@@ -1248,3 +1297,169 @@ primary key(school_id,semester,grade)
 );
 
 create index if not exists school_student_total_marks_id on school_student_subject_total_marks(semester,school_id,block_id,cluster_id);
+
+/* Infra tables*/
+
+/* infrastructure_staging_init */
+
+create table if not exists infrastructure_staging_init
+(  infrastructure_name varchar(30),
+   infrastructure_category varchar(20),
+   status boolean,
+   created_on timestamp,
+   updated_on timestamp
+); 
+
+/* infrastructure_staging_score */
+
+create table if not exists infrastructure_staging_score
+(  infrastructure_name varchar(30),
+   infrastructure_category varchar(20),
+   score numeric DEFAULT 0 not null,
+   created_on timestamp,
+   updated_on timestamp
+); 
+
+/* infrastructure_hist */
+
+create table if not exists infrastructure_hist
+(
+id serial,
+school_id bigint,
+inspection_id bigint,
+infrastructure_name varchar(20), 
+new_value int,
+old_value int,
+created_on TIMESTAMP without time zone,
+operation varchar(20)
+);
+
+/* infrastructure_master */
+
+create sequence if not exists infra_seq;
+alter sequence infra_seq restart; 
+
+create table if not exists infrastructure_master
+(  infrastructure_id text CHECK (infrastructure_id ~ '^infrastructure_[0-9]+$' ) 
+                                    DEFAULT 'infrastructure_'  || nextval('infra_seq'),
+   infrastructure_name varchar(30),
+   infrastructure_category varchar(20),
+   score numeric DEFAULT 0 not null,
+   status boolean,
+   created_on timestamp,
+   updated_on timestamp,
+primary key(infrastructure_name,infrastructure_id)
+); 
+
+/* Table name:log_summary */
+
+create table if not exists log_summary(
+filename varchar(200),
+ff_uuid varchar(200),
+total_records bigint,
+blank_lines int,
+duplicate_records int,
+attendance_id bigint,
+student_id bigint,
+school_id bigint,
+year bigint,
+month int,
+semester int,
+grade int,
+inspection_id bigint,
+in_school_location bigint,
+created_on bigint,
+school_name bigint,
+cluster_name bigint,
+block_name bigint,
+district_name bigint,
+cluster_id bigint,
+block_id bigint,
+district_id bigint,
+latitude int,
+longitude int,
+process_start_time timestamp ,
+process_end_time timestamp
+);
+
+/* Table name :    stud_att_null_col */
+
+create table if not exists stud_att_null_col( filename    varchar(200),
+ ff_uuid    varchar(200),        	
+ count_null_studentattid  int,
+ count_null_studentid  int,
+ count_null_schoolid int,
+ count_null_aadhaaruid int,
+ count_null_academicyear int, 
+count_null_month  int
+ );
+
+/* Table name: sem_null_col */
+
+create table if not exists sem_null_col
+(filename  varchar(200),  
+ ff_uuid  varchar(200), 
+ count_null_schoolid int,
+ count_null_sem int,
+ count_null_studyingclass int);
+
+/* Table name: crc_loc_null_col */
+
+create table if not exists crc_loc_null_col (filename varchar(200),
+     ff_uuid varchar(200),           	
+     count_null_schoolid  int, 
+      count_null_inspectionid int,
+      inschoolloc int,
+       count_null_createdon int,
+      count_latitude int,
+       count_longitude int);
+
+/* Table name: crc_inspec_null_col */
+
+create table if not exists crc_inspec_null_col(filename varchar(200),
+ff_uuid varchar(200),
+count_null_schoolid int,
+ count_null_inspectionid int,
+ count_null_createdon int);
+
+/* Table name : dist_null_col */
+
+create table if not exists dist_null_col( filename varchar(200),
+ ff_uuid varchar(200),
+ count_null_districtid int,
+  Count_null_district  int);
+
+/*Table name: cluster_null_col*/
+
+create table if not exists cluster_null_col( filename varchar(200),
+ ff_uuid varchar(200),
+count_null_clusterid int,
+count_null_cluster int,
+ count_null_districtid int,
+ count_null_block int,
+ count_null_blockid  int);
+
+/*Table name: block_null_col*/
+
+create table if not exists block_null_col( filename varchar(200),
+ ff_uuid varchar(200),
+count_null_districtid int,
+count_null_block int,
+ count_null_blockid int);
+
+/*Table name: school_null_col*/
+
+create table if not exists school_null_col( filename varchar(200),
+ ff_uuid varchar(200),
+count_null_school int,
+count_null_latitude int,
+count_null_longitude int);
+
+/*Table name: infra_null_col*/
+
+create table if not exists infra_null_col( filename varchar(200),
+ ff_uuid varchar(200),
+count_null_schoolid int);
+
+
+
