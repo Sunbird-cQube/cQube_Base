@@ -259,16 +259,16 @@ python3 client.py
 <b>Importing Grafana dashboard</b>
 
 - Connect the VPN from local machine
-- Open https://<domain_name> from the browser and login with admin credentials
+- Open `https://<domain_name>` from the browser and login with admin credentials
 - Click on Admin Console
 - Click on Monitoring details icon
-- New tab will be loaded with grafana login page on http://<private_ip_of_cqube_server>:9000
+- New tab will be loaded with grafana login page on `http://<private_ip_of_cqube_server>:9000`
 - Default username is admin and password is admin
 - Once your logged in change the password as per the need
 - After logged in. Click on Settings icon from the left side menu. 
 - Click Data Sources 
 - Click on Add data source and select Prometheus 
-- In URL field, fill http://<private_ip_of_cqube_server>:9090. Optionally configure the other settings.
+- In URL field, fill `http://<private_ip_of_cqube_server>:9090` Optionally configure the other settings.
 - Click on Save
 - On home page, click on '+' symbol and select Import
 - Click on 'Upload JSON file' and select the json file which is located in git repository `cQube/development/grafana/cQube_Monitoring_Dashboard.json`  and click Import
