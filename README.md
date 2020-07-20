@@ -7,7 +7,7 @@
 - Domain name (with SSL)
 - 1 TB Storage  
 
-<b>Reverse proxy rules</>
+<b>Reverse proxy rules</b>
 The following ports have to be configured in the nginix server with reverse proxy:
 1) Port 4200 should be proxied to the '/' 
 2) Port 8080 should be proxied to the '/auth'
@@ -192,31 +192,57 @@ sudo ansible-playbook integrate_keycloak.yml
 
 <b>Uploading data to S3 Emission bucket:</b>
 - 
-Create `cqube_emission` directory and place the data files as shown in file structure below inside the cqube_emission folder."
+Create `cqube_emission` directory and place the data files as shown in file structure below inside the cqube_emission folder.
+
+Master Files:
 ```
 cqube_emission
-.
+|
 ├── block_master
 │   └── block_mst.zip
+│       └── block_mst.csv
+│       └── manifest_datasource_block_mst.csv
 ├── cluster_master
 │   └── cluster_mst.zip
-|── district_master
-|   └── district_mst.zip
+│       └── cluster_mst.csv
+│       └── manifest_datasource_cluster_mst.csv
+├── district_master
+│   └── district_mst.zip
+│       └── district_mst.csv
+│       └── manifest_datasource_district_mst.csv
 ├── school_master
 │   └── school_mst.zip
+│       └── school_mst.csv
+│       └── manifest_datasource_school_mst.csv
+```
+
+Transactional Files:
+```
+cqube_emission
 |
-|── semester
-|   └── semester.zip
+├── semester
+│   └── semester.zip
+│       └── semester.csv
+│       └── manifest_datasource_semester.csv
+├── student_attendance
+│   └── student_attendance.zip
+│       └── student_attendance.csv
+│       └── manifest_datasource_student_attendance.csv
 ├── user_location_master
 │   └── user_location_master.zip
-|── inspection_master
-|   └── inspection_master.zip
-├── student_attendance
-|   └── student_attendance.zip
-|── infra_trans
-    └── infra_trans.zip
-    
+│       └── user_location_master.csv
+│       └── manifest_datasource_user_location_master.csv
+├── inspection_master
+│   └── inspection_master.zip
+│       └── inspection_master.csv
+│       └── manifest_datasource_inspection_master.csv
+├── infra_trans
+│   └── infra_trans.zip
+│       └── infra_trans.csv
+│       └── manifest_datasource_infra_trans.csv
 ```
+    
+
 - After creating the emission user, Update the emission user details mentioned below in `cQube/development/python/client/config.py`.
   - emission username 
   - emission password
