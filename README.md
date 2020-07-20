@@ -247,6 +247,7 @@ cqube_emission
   - emission username 
   - emission password
   - location of the cqube_emission directory where the files are placed as below. Example: `/home/ubuntu/cqube_emission/`
+  - emission_url ( https://<domain_name>/data Note: URL depends upon the server configured in firewall which includes SSL and reverse proxy location)
 
 - After completing the configuration. Save and close the file.
 - Execute the client.py file located in `cQube/development/python/client/` directory, as mentioned below to emit the data files to s3_emission bucket. 
