@@ -70,7 +70,7 @@ Once installation is completed without any errors, you will be prompted the foll
 
 <b>Creating Users and authentication with Keycloak:</b>
 
-<b>Creating a New Realm:<b>
+<b>Creating a New Realm:</b>
 
 To Create a new realm, complete the following steps:
 1) Go to ```https://<domain_name>/auth/``` and click on the Keycloak Administration Console. 
@@ -179,7 +179,7 @@ This section need not be changed
 - Export
 
 This section need not be changed
-```
+
 
 - After configuring the keycloak manually using the browser, fill the configurations in file using the command mentioned below from the terminal at the same location (cQube/ansible/installation_scripts/)
 ```
