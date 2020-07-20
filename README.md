@@ -95,7 +95,7 @@ SECTION - CONFIGURE
 Three clients have to be created using this functionality. 
 They are:
        1) Client for angular application (cQube dashboard) with the URL - ```https://<domain_name>/``` 
-       2) Client for admin application (admin dashboard) with the URL - ```http://<local_IP:4201>/```
+       2) Client for admin application (admin dashboard) with the URL - ```http://<private_ip_of_cqube_server:4201>/```
        3) Client for emission api with the URL- ```https://<domain_name>/data``` 
 
 1) Log in to the admin console with your admin account. 
