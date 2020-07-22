@@ -52,6 +52,7 @@ export class HomeComponent implements OnInit {
   logout() {
     localStorage.clear();
     this.keyCloakService.kc.logout();
+    window.location.replace(`${this.appUrl}/#/homePage`);
   }
 
   mouseenter() {
