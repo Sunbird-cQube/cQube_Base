@@ -11,8 +11,8 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
 })
 export class HomeComponent implements OnInit {
   public grafanaUrl = environment.grafanaEndPoint;
-
-  constructor(private router: Router, private service: AppService, public keyCloakService: KeycloakSecurityService) { 
+  logoutVar;
+  constructor(private router: Router, private service: AppService, public keyCloakService: KeycloakSecurityService) {
   }
   email: any;
   role: any;
@@ -51,7 +51,12 @@ export class HomeComponent implements OnInit {
   }
   logout() {
     localStorage.clear();
+    window.location.replace(`${this.appUrl}/#/homePage`);
     this.keyCloakService.kc.logout();
+  }
+
+  back() {
+    window.location.replace(`${this.appUrl}/#/homePage`);
   }
 
   mouseenter() {

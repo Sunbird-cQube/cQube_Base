@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router'
 import { KeycloakInstance } from 'keycloak-js';
 import { environment } from '../../src/environments/environment';
 declare var Keycloak: any;
@@ -9,10 +8,9 @@ declare var Keycloak: any;
 })
 export class KeycloakSecurityService {
   public kc: KeycloakInstance;
-  
-  constructor(public router: Router) {
 
-  }
+  constructor() { }
+  
   async init() {
     this.kc = new Keycloak({
       url: environment.keycloakUrl,
