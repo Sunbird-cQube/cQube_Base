@@ -87,9 +87,9 @@
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
-                <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.districtId"
+                <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.details.district_id"
                     style="font-family: Arial; font-size: 11px;">
-                    {{dist.districtName}}
+                    {{dist.details.district_name}}
                 </option>
             </select>
 
@@ -97,9 +97,9 @@
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="blockId" (change)="onBlockSelect(blockId)">
                 <option [value]="blockId" disabled selected="selected">Choose a Block</option>
-                <option *ngFor="let block of blockMarkers" [(ngValue)]="block.blockId"
+                <option *ngFor="let block of blockMarkers" [(ngValue)]="block.details.block_id"
                     style="font-family: Arial;font-size: 11px;">
-                    {{block.blockName}}
+                    {{block.details.block_name}}
                 </option>
             </select>
 
@@ -107,10 +107,10 @@
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="clusterId" (change)="onClusterSelect(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
-                <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.clusterId"
+                <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.details.cluster_id"
                     style="font-family: Arial;font-size: 11px; "
                     [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
-                    {{cluster.clusterName}}
+                    {{cluster.details.cluster_name}}
                 </option>
             </select>
             <select id="choose_infra"
@@ -122,7 +122,6 @@
                     {{infra.value}}
                 </option>
             </select>
-
         </div>
 
     </div>
