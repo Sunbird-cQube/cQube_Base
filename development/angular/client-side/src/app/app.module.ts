@@ -19,7 +19,6 @@ import { SemViewComponent } from './sem-view/sem-view.component';
 import { CrcReportComponent } from './crc-report/crc-report.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, MatSortModule } from '@angular/material';
-import { ChartsModule } from 'ng2-charts';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -55,7 +54,6 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    ChartsModule,
     MatButtonModule,
     MatIconModule,
     MatTableModule,
