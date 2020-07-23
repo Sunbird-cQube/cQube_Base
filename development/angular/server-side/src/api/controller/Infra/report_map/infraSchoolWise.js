@@ -33,7 +33,6 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         })
 
         let mydata = filterData;
-        console.log(mydata[0]);
         logger.info('---Infra schoolPerCluster api response sent---');
         res.status(200).send({ data: mydata, footer: schoolData.footer[`${clusterId}`].totalSchools });
 
