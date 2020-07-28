@@ -15,15 +15,17 @@ var requestData = {
     client_id: process.env.CLIENT_ID
 }
 
+var host = process.env.KEYCLOAK_HOST;
+
 router.post('/', async function (req, res) {
     try {
         logger.info('---Create user api ---');
 
-        var url = `http://localhost:8080/auth/realms/master/protocol/openid-connect/token`;
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
         var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
         var access_token = response.data.access_token;
 
-        var usersUrl = "http://localhost:8080/auth/admin/realms/cQube/users";
+        var usersUrl = `${host}/auth/admin/realms/cQube/users`;
         var headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer" + " " + access_token
@@ -62,11 +64,11 @@ router.post('/getAllUsers', async (req, res) => {
     try {
         logger.info('---Create user api ---');
 
-        var url = `http://localhost:8080/auth/realms/master/protocol/openid-connect/token`;
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
         var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
         var access_token = response.data.access_token;
 
-        var usersUrl = "http://localhost:8080/auth/admin/realms/cQube/users";
+        var usersUrl = `${host}/auth/admin/realms/cQube/users`;
         var headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer" + " " + access_token
@@ -86,11 +88,11 @@ router.get('/roles', async (req, res) => {
     try {
         logger.info('---get roles api ---');
 
-        var url = `http://localhost:8080/auth/realms/master/protocol/openid-connect/token`;
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
         var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
         var access_token = response.data.access_token;
 
-        var usersUrl = "http://localhost:8080/auth/admin/realms/cQube/roles";
+        var usersUrl = `${host}/auth/admin/realms/cQube/roles`;
         var headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer" + " " + access_token
@@ -111,12 +113,12 @@ router.post('/setRoles', async (req, res) => {
         logger.info('---set roles api ---');
         ;
 
-        var url = `http://localhost:8080/auth/realms/master/protocol/openid-connect/token`;
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
         var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
         var access_token = response.data.access_token;
 
         var userId = req.body.userId;
-        var usersUrl = `http://localhost:8080/auth/admin/realms/cQube/users/${userId}/role-mappings/realm`;
+        var usersUrl = `${host}/auth/admin/realms/cQube/users/${userId}/role-mappings/realm`;
         var headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer" + " " + access_token
