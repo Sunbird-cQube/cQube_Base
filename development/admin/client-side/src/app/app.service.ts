@@ -72,8 +72,8 @@ export class AppService {
         });
     }
 
-    addRole(id) {
-        return this.http.post(`${this.baseUrl}/addUser/setRoles`, { userId: id }, {
+    addRole(id, role) {
+        return this.http.post(`${this.baseUrl}/addUser/setRoles`, { userId: id, role: role }, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
 

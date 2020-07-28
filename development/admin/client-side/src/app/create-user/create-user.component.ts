@@ -12,11 +12,16 @@ export class CreateUserComponent implements OnInit {
   logData: any = {};
   err;
   msg;
+  roleId;
   roleIds: any = [];
+  selectedRole = {};
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  constructor(private service: AppService, private router: Router) {
+  constructor(private service: AppService, private router: Router) { }
 
+  onSelectRole() {
+    this.roleId = this.logData['roleid'];
+    this.selectedRole = this.roleIds.find(o => o.id == this.roleId);
   }
 
   ngOnInit() {
@@ -39,7 +44,7 @@ export class CreateUserComponent implements OnInit {
       this.err = '';
       setTimeout(() => {
         this.service.getCreatedUser(currUser).subscribe(user => {
-          this.service.addRole(user['id']).subscribe();
+          this.service.addRole(user['id'], this.selectedRole).subscribe();
         });
         formData.resetForm();
         document.getElementById('success').style.display = "none";

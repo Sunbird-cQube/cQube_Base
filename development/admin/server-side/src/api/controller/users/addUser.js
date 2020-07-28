@@ -125,8 +125,8 @@ router.post('/setRoles', auth.authController, async (req, res) => {
         }
         var roleDetails = [
             {
-                id: "c70bbc49-9531-42eb-8f61-e243074e3b02",
-                name: "admin"
+                id: req.body.role.id,
+                name: req.body.role.name
             }
         ];
 
