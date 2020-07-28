@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-6">
-            <h2 id="head" style=" color: #284d8a;;">Users List: </h2>
+            <h2 id="head" style=" color: #284d8a;;">Users List</h2>
             <p id="err">{{err}}</p>
         </div>
     </div>
@@ -15,21 +15,21 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>User Role</th>
-                            <th>Status</th>
+                            <!-- <th>Status</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of tableData">
-                            <td>{{data.first_name + " "+  data.last_name}}</td>
-                            <td> {{data.user_email}}</td>
-                            <td> {{data.role_name}}</td>
-                            <td style="display: block;"> <button class="btn btn-default"
+                            <td>{{data.firstName + " "+  data.lastName}}</td>
+                            <td> {{data.email}}</td>
+                            <td> {{data.roleName}}</td>
+                            <!-- <td style="display: block;"> <button class="btn btn-default"
                                     style="font-size: 11px; border: 1px solid gray;"
                                     (click)="changeUserStatus(data.user_id, data.user_status)"
                                     title="{{ data.user_status == user_status? 'Click to deactivate' : 'Click to activate'}}"
                                     [ngStyle]="{'color': data.user_status == user_status ? 'green' : 'red'}">
                                     {{ data.user_status == user_status ? 'Activated' : 'Deactivated' }} </button>
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>
