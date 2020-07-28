@@ -18,7 +18,7 @@ var requestData = {
 
 var host = process.env.KEYCLOAK_HOST;
 
-router.post('/', async function (req, res) {
+router.post('/',auth.authController, async function (req, res) {
     try {
         logger.info('---users api ---');
         console.log(requestData);

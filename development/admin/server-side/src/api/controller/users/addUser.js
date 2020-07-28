@@ -17,7 +17,7 @@ var requestData = {
 
 var host = process.env.KEYCLOAK_HOST;
 
-router.post('/', async function (req, res) {
+router.post('/', auth.authController, async function (req, res) {
     try {
         logger.info('---Create user api ---');
 
@@ -60,7 +60,7 @@ router.post('/', async function (req, res) {
 
 });
 
-router.post('/getAllUsers', async (req, res) => {
+router.post('/getAllUsers', auth.authController, async (req, res) => {
     try {
         logger.info('---Create user api ---');
 
@@ -84,7 +84,7 @@ router.post('/getAllUsers', async (req, res) => {
     }
 })
 
-router.get('/roles', async (req, res) => {
+router.get('/roles', auth.authController, async (req, res) => {
     try {
         logger.info('---get roles api ---');
 
@@ -108,7 +108,7 @@ router.get('/roles', async (req, res) => {
     }
 });
 
-router.post('/setRoles', async (req, res) => {
+router.post('/setRoles', auth.authController, async (req, res) => {
     try {
         logger.info('---set roles api ---');
         ;
