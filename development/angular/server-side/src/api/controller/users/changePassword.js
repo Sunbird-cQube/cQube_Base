@@ -17,10 +17,7 @@ const axios = require('axios');
 const qs = require('querystring')
 
 var requestData = {
-    username: "dheeraj8008tiwari",
-    password: "Baba@8008",
-    grant_type: "password",
-    client_id: "admin-cli"
+   
 }
 
 router.post('/', async function (req, res) {
