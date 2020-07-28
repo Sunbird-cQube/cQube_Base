@@ -59,6 +59,26 @@ export class AppService {
         });
     }
 
+    getCreatedUser(data) {
+        return this.http.post(`${this.baseUrl}/addUser/getAllUsers`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+
+    getRoles() {
+        return this.http.get(`${this.baseUrl}/addUser/roles`, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    addRole(id) {
+        return this.http.post(`${this.baseUrl}/addUser/setRoles`, { userId: id }, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+
+    }
+
     changeStatus(id, updaterId) {
         return this.http.post(`${this.baseUrl}/allUsers/changeStatus/${id}`, { updaterId: updaterId }, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
