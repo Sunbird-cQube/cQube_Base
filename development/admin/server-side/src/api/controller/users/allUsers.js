@@ -1,35 +1,64 @@
 const router = require('express').Router();
-const bcrypt = require('bcrypt');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 var cron = require('node-cron');
-
+const axios = require('axios');
+const qs = require('querystring');
 var const_data = require('../../lib/config');
 
-router.post('/', auth.authController, async function (req, res) {
+const dotenv = require('dotenv');
+dotenv.config();
+
+var requestData = {
+    username: process.env.KEYCLOAK_USER,
+    password: process.env.PASSWORD,
+    grant_type: process.env.GRANT_TYPE,
+    client_id: process.env.CLIENT_ID
+}
+
+var host = process.env.KEYCLOAK_HOST;
+
+router.post('/',auth.authController, async function (req, res) {
     try {
         logger.info('---users api ---');
+        console.log(requestData);
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
+        var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        var access_token = response.data.access_token;
+        var usersUrl = `${host}/auth/admin/realms/cQube/users`;
+        var headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer" + " " + access_token
+        }
 
-        const_data['getParams']['Key'] = 'static/users.json';
-        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
-            if (err) {
-                logger.error(err);
-                res.status(500).json({ errMsg: "Something went wrong" });
-            } else if (!data) {
-                logger.error("No data found in s3 file");
-                res.status(403).json({ errMsg: "No such data found" });
-            } else {
-                let users = JSON.parse(data.Body.toString());
-                logger.info('---users api response sent ---');
-                res.status(200).json(users);
-
+        var allUsers = [];
+        axios.get(usersUrl, { headers: headers }).then(async resp => {
+            for (let i = 0; i < resp.data.length; i++) {
+                var newUser = await setRole(resp.data[i], headers);
+                allUsers.push(newUser);
             }
+            res.status(201).json({ users: allUsers });
+        }).catch(error => {
+            console.log(error);
+            res.status(409).json({ errMsg: error });
         });
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 });
+
+function setRole(user, headers) {
+    return new Promise(async (resolve, reject) => {
+        var roleUrl = `${host}/auth/admin/realms/cQube/users/${user.id}/role-mappings/realm`;
+        await axios.get(roleUrl, { headers: headers }).then(roles => {
+            if (roles.data[0]) {
+                user['roleName'] = roles.data[0]['name'];
+            }
+        });
+        resolve(user);
+    });
+}
 
 router.post('/getUser/:id', auth.authController, async function (req, res) {
     try {
@@ -78,8 +107,6 @@ router.post('/changeStatus/:id', auth.authController, async function (req, res) 
                     } else {
                         user.user_status = 1;
                     }
-
-                    console.log(user);
 
                     //updation date
                     user.updated_on = `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)} ${(new Date()).toLocaleTimeString('en-IN', { hour12: false })}`;

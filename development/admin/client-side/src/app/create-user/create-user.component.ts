@@ -12,20 +12,29 @@ export class CreateUserComponent implements OnInit {
   logData: any = {};
   err;
   msg;
-  roleIds: any = [{ roleId: 1, roleName: "Admin" }, { roleId: 2, roleName: "Dashboard report creator" }, { roleId: 3, roleName: "Dashboard report viewer" }, { roleId: 4, roleName: "Adhoc analyst" }, { roleId: 5, roleName: "Data emission" }];
+  roleId;
+  roleIds: any = [];
+  selectedRole = {};
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  constructor(private service: AppService, private router: Router) {
+  constructor(private service: AppService, private router: Router) { }
 
+  onSelectRole() {
+    this.roleId = this.logData['roleid'];
+    this.selectedRole = this.roleIds.find(o => o.id == this.roleId);
   }
 
   ngOnInit() {
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
+    this.service.getRoles().subscribe(res => {
+      this.roleIds = res['roles'];
+    })
   }
 
 
   onSubmit(formData: NgForm) {
+    var currUser = this.logData;
     document.getElementById('spinner').style.display = 'block';
     this.logData['createrId'] = localStorage.getItem('user_id');
     this.service.addUser(this.logData).subscribe(res => {
@@ -34,12 +43,16 @@ export class CreateUserComponent implements OnInit {
       document.getElementById('spinner').style.display = 'none';
       this.err = '';
       setTimeout(() => {
+        this.service.getCreatedUser(currUser).subscribe(user => {
+          this.service.addRole(user['id'], this.selectedRole).subscribe();
+        });
         formData.resetForm();
         document.getElementById('success').style.display = "none";
       }, 2000);
     }, err => {
-      this.err = err.error['msg'];
+      this.err = err.error['errMsg'];
       document.getElementById('spinner').style.display = 'none';
     });
+
   }
 }
