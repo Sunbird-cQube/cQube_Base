@@ -24,7 +24,6 @@ def update_parameter_ctx(pc_var, parameter_name, jolt_spec):
 def nifi_params_config():
     params={
         'infra_parameters':'infra_parameters.txt',
-        'diksha_parameters':'diksha_parameters.txt',
         'static_data_parameters':'static_data_parameters.txt',
         'crc_parameters':'crc_parameters.txt',
         'student_attendance_parameters':'student_attendance_parameters.txt',

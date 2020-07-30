@@ -291,3 +291,5 @@
     body: {"id":"{{ tagExists[0].item.component.id }}","state":"RUNNING"}
   no_log: True
 
+- name: Run python code
+  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
