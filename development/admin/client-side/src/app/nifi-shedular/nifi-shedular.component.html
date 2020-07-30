@@ -1,0 +1,63 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8">
+            <h1 id="head" style="margin: 5px 0px 0px 0px; color: #284d8a; float: left;">Nifi Scheduler
+            </h1>
+            <p id="err" style="padding: 5px 0px 5px 0px;border-radius: 5px;float: left; margin-left: 20%; text-align: center;" class="validation-message">{{err}}</p>
+            <p id="success"
+                style="background-color: green;color: white; padding: 5px 2px 5px 2px;border-radius: 5px; display: none;float: left; margin-left: 20%; text-align: center;">
+                {{msg}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- <div style="border: 1px solid gray; padding: 1%;"> -->
+            <table #DataTable id="table" class="display nowrap" width="100%"
+                style="font-size: 12px; text-align: center;">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Process Name</th>
+                        <th>Schedule Time</th>
+                        <th>Stopping Hours</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let d of data; let i = index">
+                        <td>{{i+1}}</td>
+                        <td>{{d.name}}</td>
+                        <td>
+                            <select class="time" required id="role"
+                                style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                #role="ngModel" [(ngModel)]="selectedTime[i]" name="roleid" (change)="onSelectTime(i)">
+                                <option [value]="selectedTime[i]" disabled selected> Choose Time
+                                </option>
+                                <option *ngFor="let time of timeArr" [(ngValue)]="time.time">
+                                    {{time.time}}
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="time" required id="role"
+                                style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                #role="ngModel" [(ngModel)]="selectedHour[i]" name="roleid" (change)="onSelectHour(i)">
+                                <option [value]="selectedHour[i]" disabled selected> Choose Hours
+                                </option>
+                                <option *ngFor="let hour of hoursArr" [(ngValue)]="hour.hours">
+                                    {{hour.hours}}
+                                </option>
+                            </select>
+                        </td>
+                        <td><button id="schedule" class="btn btn-primary" (click)="onClickSchedule(d)">Schedule</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+<div id="spinner" style="display: none;">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>

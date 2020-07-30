@@ -17,15 +17,17 @@ var requestData = {
 }
 
 var host = process.env.KEYCLOAK_HOST;
+var realm = process.env.KEYCLOAK_REALM;
 
-router.post('/',auth.authController, async function (req, res) {
+
+router.post('/', auth.authController, async function (req, res) {
     try {
         logger.info('---users api ---');
         console.log(requestData);
         var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
         var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
         var access_token = response.data.access_token;
-        var usersUrl = `${host}/auth/admin/realms/cQube/users`;
+        var usersUrl = `${host}/auth/admin/realms/${realm}/users`;
         var headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer" + " " + access_token
@@ -50,7 +52,7 @@ router.post('/',auth.authController, async function (req, res) {
 
 function setRole(user, headers) {
     return new Promise(async (resolve, reject) => {
-        var roleUrl = `${host}/auth/admin/realms/cQube/users/${user.id}/role-mappings/realm`;
+        var roleUrl = `${host}/auth/admin/realms/${realm}/users/${user.id}/role-mappings/realm`;
         await axios.get(roleUrl, { headers: headers }).then(roles => {
             if (roles.data[0]) {
                 user['roleName'] = roles.data[0]['name'];
