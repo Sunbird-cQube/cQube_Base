@@ -224,9 +224,6 @@ AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is 
 GROUP BY cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,block_name,district_id,district_name,year,month
 ''',
 "stud_att_school-wise -per":'''
-25
-School-wise -attendance-per
-stud_att_school-wise -per
 SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
 INITCAP(cluster_name) AS cluster_name,INITCAP(crc_name)AS crc_name,
 Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS x_value,'latitude' AS y_axis,school_latitude AS y_value,'longitude' AS z_axis,school_longitude AS z_value,
@@ -239,15 +236,12 @@ FROM school_student_total_attendance WHERE block_latitude IS NOT NULL AND block_
 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL
 AND school_name IS NOT NULL and cluster_name is not null
 GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month
-26
-student_attendance_meta
-stud_att_meta
-select count(distinct(district_id)) as total_districts, count(distinct(block_id))as total_blocks, count(distinct(cluster_id))as total_clusters, count(distinct(school_id))as total_schools, cast(sum(students_count)/count(distinct(month)) as int)as total_students
+''',
+"stud_att_meta":'''select count(distinct(district_id)) as total_districts, count(distinct(block_id))as total_blocks, count(distinct(cluster_id))as total_clusters, count(distinct(school_id))as total_schools, cast(sum(students_count)/count(distinct(month)) as int)as total_students
        ,data_from_date(min(year),min(month)),data_upto_date(max(year),max(month)),month,TO_CHAR(
     TO_DATE (month::text, 'MM'), 'Month'
     ) AS month_name,year
-        from school_student_total_attendance group by month,year
-''',
+        from school_student_total_attendance group by month,year''',
 "stud_att_transform_district_wise":'''[{
     "operation": "shift",
     "spec": {
