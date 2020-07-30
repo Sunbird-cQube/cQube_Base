@@ -42,6 +42,7 @@ api_endpoint:                               # enter domain.com ( Example: cqubep
 local_ipv4_address:                         # enter the private ip of this server. To find the ip address. Use `ip addr` or `ifconfig`
 keycloak_adm_user:                          # enter the keycloak admin user to be created 
 keycloak_adm_passwd:                        # enter the keycloak admin password
+keycloak_config_otp:                        # enter True or False to enable OTP authentication for all users 
 
 #Please change the below parameters based on your system requirements
 shared_buffers: 2GB                         # Postgres buffer memory. Minimum usage: use 2GB for 16GB RAM system memory

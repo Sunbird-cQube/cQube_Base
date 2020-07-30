@@ -9,10 +9,10 @@
           - create_base_dir
           - java
           - python
+          - python_flask
           - createdb
           - keycloak
           - grafana
-          - python_flask
           - angular
           - angular_admin
           - nifi_install

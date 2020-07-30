@@ -1,0 +1,65 @@
+---
+- name: Checking the realm
+  shell: ./kcadm.sh get realms --fields realm,enabled --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  register: result
+
+- name: Parsing the output
+  set_fact:
+    realm_created: True
+  loop: '{{ result.stdout }}'
+  when: item.realm == "cQube"
+
+- name: Deleting the existing realm
+  shell: ./kcadm.sh delete realms/{{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  when: realm_created
+
+- name: Creating the realm 
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create realms -f {{ cQube_realm_with_otp }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    executable: /bin/bash
+  when: keycloak_config_otp 
+
+- name: Creating the realm without OTP option 
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create realms -f {{ cQube_realm_without_otp }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    executable: /bin/bash
+  when: not keycloak_config_otp 
+
+- name: Getting the client ID for emission app 
+  shell: ./kcadm.sh get clients -r {{realm_name}} --fields id,clientId --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}   
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  register: result
+
+- name: Parsing the output
+  set_fact:
+    emi_client_id: "{{item.id}}"
+  loop: '{{ result.stdout }}'
+  when: item.clientId == "cqube_flask"
+  no_log: true
+
+- name: Regenerating the emission app client's secret
+  shell: ./kcadm.sh create clients/{{ emi_client_id }}/client-secret -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+
+- name: Getting the emission app client's secret
+  shell: ./kcadm.sh get clients/{{ emi_client_id }}/client-secret -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  register: result
+
+- name: setting variable
+  set_fact:
+    emi_new_secret: "{{ (result.stdout|from_json).value}}"
+
+- name: Updating the emi_new_secret to env.py - emission app
+  lineinfile:
+    path: "{{ base_dir }}/cqube/emission_app/python/env.py"
+    regexp: '^CLIENT_SECRET='
+    line: CLIENT_SECRET= "{{ emi_new_secret }}"
+
