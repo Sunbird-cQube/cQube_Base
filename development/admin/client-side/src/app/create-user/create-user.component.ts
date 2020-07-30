@@ -13,6 +13,8 @@ export class CreateUserComponent implements OnInit {
   err;
   msg;
   roleId;
+  errMail;
+  errUsername;
   roleIds: any = [];
   selectedRole = {};
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -30,6 +32,10 @@ export class CreateUserComponent implements OnInit {
     this.service.getRoles().subscribe(res => {
       this.roleIds = res['roles'];
     })
+  }
+
+  verifyEmail() {
+
   }
 
 
@@ -50,7 +56,16 @@ export class CreateUserComponent implements OnInit {
         document.getElementById('success').style.display = "none";
       }, 2000);
     }, err => {
-      this.err = err.error['errMsg'];
+      this.errMail = ""; this.errUsername = "";
+      if (err.error['errMsg'] == "User exists with same username") {
+        console.log(err.error['errMsg'], ":::::::::;");
+        this.errUsername = err.error['errMsg'];
+      } else if (err.error['errMsg'] == "User exists with same email") {
+        this.errMail = err.error['errMsg'];
+        console.log(this.errMail);
+      } else {
+        this.err = err.error['errMsg'];
+      }
       document.getElementById('spinner').style.display = 'none';
     });
 

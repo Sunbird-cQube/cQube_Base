@@ -16,6 +16,8 @@ var requestData = {
 }
 
 var host = process.env.KEYCLOAK_HOST;
+var realm = process.env.KEYCLOAK_REALM;
+
 
 router.post('/', auth.authController, async function (req, res) {
     try {
@@ -25,7 +27,7 @@ router.post('/', auth.authController, async function (req, res) {
         var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
         var access_token = response.data.access_token;
 
-        var usersUrl = `${host}/auth/admin/realms/cQube/users`;
+        var usersUrl = `${host}/auth/admin/realms/${realm}/users`;
         var headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer" + " " + access_token
@@ -68,7 +70,7 @@ router.post('/getAllUsers', auth.authController, async (req, res) => {
         var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
         var access_token = response.data.access_token;
 
-        var usersUrl = `${host}/auth/admin/realms/cQube/users`;
+        var usersUrl = `${host}/auth/admin/realms/${realm}/users`;
         var headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer" + " " + access_token
@@ -92,7 +94,7 @@ router.get('/roles', auth.authController, async (req, res) => {
         var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
         var access_token = response.data.access_token;
 
-        var usersUrl = `${host}/auth/admin/realms/cQube/roles`;
+        var usersUrl = `${host}/auth/admin/realms/${realm}/roles`;
         var headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer" + " " + access_token
@@ -118,7 +120,7 @@ router.post('/setRoles', auth.authController, async (req, res) => {
         var access_token = response.data.access_token;
 
         var userId = req.body.userId;
-        var usersUrl = `${host}/auth/admin/realms/cQube/users/${userId}/role-mappings/realm`;
+        var usersUrl = `${host}/auth/admin/realms/${realm}/users/${userId}/role-mappings/realm`;
         var headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer" + " " + access_token
@@ -140,6 +142,7 @@ router.post('/setRoles', auth.authController, async (req, res) => {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
-})
+});
+
 
 module.exports = router;

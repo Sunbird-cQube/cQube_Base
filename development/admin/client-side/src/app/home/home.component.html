@@ -35,14 +35,14 @@
           <td>
             &nbsp;&nbsp; Create User </td>
         </a>
-        <!-- <a id="Chpass" mat-list-item (click)="sidenav.toggle()"
+        <a id="Chpass" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['change-password']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
           <td>
             &nbsp;&nbsp; Change Password </td>
-        </a> -->
+        </a>
 
         <a id="user" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['users']">
@@ -85,6 +85,14 @@
           </td>
           <td>
             &nbsp;&nbsp; Summary Statistics </td>
+        </a>
+        <a id="nifi" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['nifi-shedular']">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Nifi Scheduler </td>
         </a>
       </div>
 

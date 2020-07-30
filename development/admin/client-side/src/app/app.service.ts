@@ -26,8 +26,8 @@ export class AppService {
         });
     }
 
-    changePassword(data) {
-        return this.http.post(`${this.baseUrl}/changePassword`, data, {
+    changePassword(data, id) {
+        return this.http.post(`${this.baseUrl}/changePassword/${id}`, { cnfpass: data }, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
@@ -173,6 +173,26 @@ export class AppService {
     }
     getstSchoolSummary() {
         return this.http.post(`${this.baseUrl}/summary/stSchool`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    //nifi scheduler
+    nifiGetProcessorId() {
+        return this.http.get(`${this.baseUrl}/nifi/getProcessorId`, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    nifiGetProcessorDetails(id) {
+        return this.http.get(`${this.baseUrl}/nifi/getProcessorDetails/${id}`, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    nifiScheduleProcessor(id, data) {
+        console.log(id, data);
+        return this.http.post(`${this.baseUrl}/nifi/scheduleProcessor/${id}`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }

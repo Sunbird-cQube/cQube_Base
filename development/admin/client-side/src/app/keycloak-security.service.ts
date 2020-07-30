@@ -10,7 +10,7 @@ export class KeycloakSecurityService {
   public kc: KeycloakInstance;
 
   constructor() { }
-  
+
   async init() {
     this.kc = new Keycloak({
       url: environment.keycloakUrl,
@@ -21,6 +21,7 @@ export class KeycloakSecurityService {
     await this.kc.init({
       onLoad: 'login-required'
     });
+    localStorage.setItem('user_id', this.kc.tokenParsed.sub);
     localStorage.setItem('email', this.kc.tokenParsed['email']);
   }
 }
