@@ -1,5 +1,6 @@
 from update_nifi_jolt_params import *
 import time
+import ast
 
 def update_parameter_ctx(pc_var, parameter_name, jolt_spec):
     """
