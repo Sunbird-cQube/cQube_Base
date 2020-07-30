@@ -1,4 +1,4 @@
-from param_config import *
+from update_nifi_jolt_params import *
 import time
 
 def update_parameter_ctx(pc_var, parameter_name, jolt_spec):
