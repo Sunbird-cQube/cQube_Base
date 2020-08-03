@@ -11,6 +11,8 @@ const changePasswd = require('./controller/users/changePassword');
 //deeksha
 const deekshaData = require('./controller/diksha/diksha')
 
+const telemetryData = require('../api/controller/telemetry/telemetryData');
+
 // const crcData = require('./controller/users/crcData');
 // crc files
 const crcDistrictWise = require('../api/controller/crcRoutes/districtWise');
@@ -68,5 +70,6 @@ router.use('/infraMap', infraMapClusterWise);
 router.use('/infraMap', infraMapSchoolWise);
 
 router.use('/deeksha', deekshaData);
+router.use('/telemetry', telemetryData);
 
 module.exports = router;

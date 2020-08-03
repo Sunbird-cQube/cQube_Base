@@ -6,6 +6,7 @@ import { ExportToCsv } from 'export-to-csv';
 import * as data from './../../assets/india.json';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
+import { KeycloakSecurityService } from '../keycloak-security.service';
 
 var globalMap;
 
@@ -16,6 +17,20 @@ var globalMap;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudengtAttendanceComponent implements OnInit {
+  pageId = 1;
+  userId;
+  type = "Report";
+  start_time = new Date().toLocaleString();
+  public telemData = {
+    impression: {
+      pageid: this.pageId, // unique id of the page
+      uid: this.userId, // userid
+      type: this.type, // click,select,search
+      startTime: this.start_time, // starttime when user comes to that page
+    },
+    interact: []
+  }
+
   public disabled = false;
   public title: string = '';
   public titleName: string = '';
@@ -71,7 +86,9 @@ export class StudengtAttendanceComponent implements OnInit {
   public month;
   public element;
 
-  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
+  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef) {
+    this.userId = this.telemData.impression.uid = keyCloakSevice.kc.tokenParsed.sub;
+    service.telemetryData.push(this.telemData);
     service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -300,6 +317,15 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   blockWise() {
+    this.telemData.interact.push(
+      {
+        id: 'block', // id of the interaction like button_id, dropdown_id etc
+        uid: this.userId, // userid
+        type: 'Event', // click,select,search
+        pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
+        timestamp: new Date().toLocaleString()
+      }
+    );
     this.commonAtStateLevel();
     this.levelWise = "Block";
     if (this.months.length > 0) {
@@ -372,6 +398,15 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   schoolWise() {
+    this.telemData.interact.push(
+      {
+        id: 'school', // id of the interaction like button_id, dropdown_id etc
+        uid: this.userId, // userid
+        type: 'Event', // click,select,search
+        pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
+        timestamp: new Date().toLocaleString()
+      }
+    );
     this.commonAtStateLevel();
     this.levelWise = "School";
     if (this.months.length > 0) {
@@ -451,6 +486,15 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   clusterWise() {
+    this.telemData.interact.push(
+      {
+        id: 'cluster', // id of the interaction like button_id, dropdown_id etc
+        uid: this.userId, // userid
+        type: 'Event', // click,select,search
+        pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
+        timestamp: new Date().toLocaleString()
+      }
+    );
     this.commonAtStateLevel();
 
     this.levelWise = "Cluster";

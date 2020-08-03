@@ -12,7 +12,8 @@ export class AppServiceComponent {
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
         this.token = keyCloakService.kc.token;
         localStorage.setItem('token', this.token);
-    };
+        console.log(this.telemetryData);
+    }
 
     login(data) {
         return this.http.post(`${this.baseUrl}/roleBasedLogin`, data);
@@ -207,4 +208,12 @@ export class AppServiceComponent {
     dikshaData() {
         return this.http.post(`${this.baseUrl}/deeksha`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
+
+
+    public telemetryData = [];
+
+    telemetry() {
+        return this.http.post(`${this.baseUrl}/telemetry`, this.telemetryData, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
 }

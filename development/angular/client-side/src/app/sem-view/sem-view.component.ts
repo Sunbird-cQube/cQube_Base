@@ -6,6 +6,7 @@ import { ExportToCsv } from 'export-to-csv';
 import * as data from '../../assets/india.json';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
+import { KeycloakSecurityService } from '../keycloak-security.service';
 
 var globalMap;
 
@@ -16,6 +17,21 @@ var globalMap;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SemViewComponent implements OnInit {
+
+  pageId = 2;
+  userId;
+  type = "Report";
+  start_time = new Date().toLocaleString();
+  public telemData = {
+    impression: {
+      pageid: this.pageId, // unique id of the page
+      uid: this.userId, // userid
+      type: this.type, // click,select,search
+      startTime: this.start_time, // starttime when user comes to that page
+    },
+    interact: []
+  }
+
   public title: string = '';
   public titleName: string = '';
   public colors: any;
@@ -72,8 +88,12 @@ export class SemViewComponent implements OnInit {
     public http: HttpClient,
     public service: AppServiceComponent,
     public router: Router,
+    public keyCloakSevice: KeycloakSecurityService,
     private changeDetection: ChangeDetectorRef,
-  ) { }
+  ) {
+    this.userId = this.telemData.impression.uid = keyCloakSevice.kc.tokenParsed.sub;
+    service.telemetryData.push(this.telemData);
+  }
 
   ngOnInit() {
     document.getElementById('backBtn').style.display = "none";
@@ -184,6 +204,15 @@ export class SemViewComponent implements OnInit {
   // to load all the blocks for state data on the map
   blockWise() {
     try {
+      this.telemData.interact.push(
+        {
+          id: 'block', // id of the interaction like button_id, dropdown_id etc
+          uid: this.userId, // userid
+          type: 'Event', // click,select,search
+          pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
+          timestamp: new Date().toLocaleString()
+        }
+      );
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
@@ -304,6 +333,15 @@ export class SemViewComponent implements OnInit {
   // to load all the clusters for state data on the map
   clusterWise() {
     try {
+      this.telemData.interact.push(
+        {
+          id: 'cluster', // id of the interaction like button_id, dropdown_id etc
+          uid: this.userId, // userid
+          type: 'Event', // click,select,search
+          pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
+          timestamp: new Date().toLocaleString()
+        }
+      );
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
@@ -429,6 +467,15 @@ export class SemViewComponent implements OnInit {
   // to load all the schools for state data on the map
   schoolWise() {
     try {
+      this.telemData.interact.push(
+        {
+          id: 'school', // id of the interaction like button_id, dropdown_id etc
+          uid: this.userId, // userid
+          type: 'Click', // click,select,search
+          pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
+          timestamp: new Date().toLocaleString()
+        }
+      );
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
