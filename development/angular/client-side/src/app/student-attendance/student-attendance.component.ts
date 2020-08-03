@@ -17,13 +17,16 @@ var globalMap;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudengtAttendanceComponent implements OnInit {
+  impressionId = Math.floor(100000 + Math.random() * 900000);
   pageId = 1;
   userId;
   type = "Report";
-  start_time = new Date().toLocaleString();
+  date = new Date();
+  start_time = Math.floor(this.date.getTime() / 1000.0);
   public telemData = {
     impression: {
-      pageid: this.pageId, // unique id of the page
+      pageid: this.pageId,
+      impressionId: this.impressionId, // unique id of the page
       uid: this.userId, // userid
       type: this.type, // click,select,search
       startTime: this.start_time, // starttime when user comes to that page
@@ -317,13 +320,16 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   blockWise() {
+    var date = new Date();
+    var timeStamp = Math.floor(date.getTime() / 1000.0);
     this.telemData.interact.push(
       {
-        id: 'block', // id of the interaction like button_id, dropdown_id etc
+        buttonId: 'block', // id of the interaction like button_id, dropdown_id etc
         uid: this.userId, // userid
-        type: 'Event', // click,select,search
-        pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
-        timestamp: new Date().toLocaleString()
+        type: 'click', // click,select,search
+        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
+        impressionId: this.telemData.impression.impressionId,
+        timestamp: timeStamp
       }
     );
     this.commonAtStateLevel();
@@ -398,13 +404,16 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   schoolWise() {
+    var date = new Date();
+    var timeStamp = Math.floor(date.getTime() / 1000.0);
     this.telemData.interact.push(
       {
-        id: 'school', // id of the interaction like button_id, dropdown_id etc
+        buttonId: 'school', // id of the interaction like button_id, dropdown_id etc
         uid: this.userId, // userid
-        type: 'Event', // click,select,search
-        pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
-        timestamp: new Date().toLocaleString()
+        type: 'click', // click,select,search
+        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
+        impressionId: this.telemData.impression.impressionId,
+        timestamp: timeStamp
       }
     );
     this.commonAtStateLevel();
@@ -486,13 +495,16 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   clusterWise() {
+    var date = new Date();
+    var timeStamp = Math.floor(date.getTime() / 1000.0);
     this.telemData.interact.push(
       {
-        id: 'cluster', // id of the interaction like button_id, dropdown_id etc
+        buttonId: 'cluster', // id of the interaction like button_id, dropdown_id etc
         uid: this.userId, // userid
-        type: 'Event', // click,select,search
-        pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
-        timestamp: new Date().toLocaleString()
+        type: 'click', // click,select,search
+        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
+        impressionId: this.telemData.impression.impressionId,
+        timestamp: timeStamp
       }
     );
     this.commonAtStateLevel();
@@ -636,6 +648,7 @@ export class StudengtAttendanceComponent implements OnInit {
       localStorage.setItem('blockId', label.blockId);
       localStorage.setItem('cluster', label.name);
       localStorage.setItem('clusterId', label.id);
+
       this.myClusterData(label.id);
     }
   };
@@ -672,6 +685,18 @@ export class StudengtAttendanceComponent implements OnInit {
 
 
   myDistData(data) {
+    var date = new Date();
+    var timeStamp = Math.floor(date.getTime() / 1000.0);
+    this.telemData.interact.push(
+      {
+        buttonId: 'dist select', // id of the interaction like button_id, dropdown_id etc
+        uid: this.userId, // userid
+        type: 'select', // click,select,search
+        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
+        impressionId: this.telemData.impression.impressionId,
+        timestamp: timeStamp
+      }
+    );
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -774,6 +799,18 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   myBlockData(data) {
+    var date = new Date();
+    var timeStamp = Math.floor(date.getTime() / 1000.0);
+    this.telemData.interact.push(
+      {
+        buttonId: 'block select', // id of the interaction like button_id, dropdown_id etc
+        uid: this.userId, // userid
+        type: 'select', // click,select,search
+        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
+        impressionId: this.telemData.impression.impressionId,
+        timestamp: timeStamp
+      }
+    );
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -892,6 +929,18 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   myClusterData(data) {
+    var date = new Date();
+    var timeStamp = Math.floor(date.getTime() / 1000.0);
+    this.telemData.interact.push(
+      {
+        buttonId: 'cluster select', // id of the interaction like button_id, dropdown_id etc
+        uid: this.userId, // userid
+        type: 'select', // click,select,search
+        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
+        impressionId: this.telemData.impression.impressionId,
+        timestamp: timeStamp
+      }
+    );
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];

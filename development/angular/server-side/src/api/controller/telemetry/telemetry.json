@@ -1,0 +1,70 @@
+[
+    {
+        "impression": {
+            "pageid": 1,
+            "impressionId": 293748,
+            "uid": "ced1814a-dffe-4407-8947-49ee922cad34",
+            "type": "Report",
+            "startTime": 1596462884
+        },
+        "interact": [
+            {
+                "buttonId": "dist select",
+                "uid": "ced1814a-dffe-4407-8947-49ee922cad34",
+                "type": "select",
+                "pageid": 1,
+                "impressionId": 293748,
+                "timestamp": 1596463431
+            }
+        ]
+    },
+    {
+        "impression": {
+            "pageid": 1,
+            "impressionId": 328533,
+            "uid": "ced1814a-dffe-4407-8947-49ee922cad34",
+            "type": "Report",
+            "startTime": 1596463466
+        },
+        "interact": []
+    },
+    {
+        "impression": {
+            "pageId": 2,
+            "impressionId": 609541,
+            "uid": "ced1814a-dffe-4407-8947-49ee922cad34",
+            "type": "Report",
+            "startTime": 1596463469
+        },
+        "interact": []
+    },
+    {
+        "impression": {
+            "pageid": 1,
+            "impressionId": 359944,
+            "uid": "ced1814a-dffe-4407-8947-49ee922cad34",
+            "type": "Report",
+            "startTime": 1596463520
+        },
+        "interact": []
+    },
+    {
+        "impression": {
+            "pageId": 2,
+            "impressionId": 804467,
+            "uid": "ced1814a-dffe-4407-8947-49ee922cad34",
+            "type": "Report",
+            "startTime": 1596463544
+        },
+        "interact": [
+            {
+                "buttonId": "block",
+                "uid": "ced1814a-dffe-4407-8947-49ee922cad34",
+                "type": "click",
+                "pageid": 2,
+                "impressionId": 804467,
+                "timestamp": 1596463552
+            }
+        ]
+    }
+]

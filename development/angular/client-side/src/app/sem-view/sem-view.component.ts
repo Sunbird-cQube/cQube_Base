@@ -18,13 +18,16 @@ var globalMap;
 })
 export class SemViewComponent implements OnInit {
 
+  impressionId = Math.floor(100000 + Math.random() * 900000);
   pageId = 2;
   userId;
   type = "Report";
-  start_time = new Date().toLocaleString();
+  date = new Date();
+  start_time = Math.floor(this.date.getTime() / 1000.0);
   public telemData = {
     impression: {
-      pageid: this.pageId, // unique id of the page
+      pageId: this.pageId,
+      impressionId: this.impressionId, // unique id of the page
       uid: this.userId, // userid
       type: this.type, // click,select,search
       startTime: this.start_time, // starttime when user comes to that page
@@ -204,13 +207,16 @@ export class SemViewComponent implements OnInit {
   // to load all the blocks for state data on the map
   blockWise() {
     try {
+      var date = new Date();
+      var timeStamp = Math.floor(date.getTime() / 1000.0);
       this.telemData.interact.push(
         {
-          id: 'block', // id of the interaction like button_id, dropdown_id etc
+          buttonId: 'block', // id of the interaction like button_id, dropdown_id etc
           uid: this.userId, // userid
-          type: 'Event', // click,select,search
-          pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
-          timestamp: new Date().toLocaleString()
+          type: 'click', // click,select,search
+          pageid: this.telemData.impression.pageId, // unique id of the page where user is interacting
+          impressionId: this.telemData.impression.impressionId,
+          timestamp: timeStamp
         }
       );
       // to clear the existing data on the map layer
@@ -333,13 +339,16 @@ export class SemViewComponent implements OnInit {
   // to load all the clusters for state data on the map
   clusterWise() {
     try {
+      var date = new Date();
+      var timeStamp = Math.floor(date.getTime() / 1000.0);
       this.telemData.interact.push(
         {
-          id: 'cluster', // id of the interaction like button_id, dropdown_id etc
+          buttonId: 'cluster', // id of the interaction like button_id, dropdown_id etc
           uid: this.userId, // userid
-          type: 'Event', // click,select,search
-          pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
-          timestamp: new Date().toLocaleString()
+          type: 'click', // click,select,search
+          pageid: this.telemData.impression.pageId, // unique id of the page where user is interacting
+          impressionId: this.telemData.impression.impressionId,
+          timestamp: timeStamp
         }
       );
       // to clear the existing data on the map layer
@@ -467,13 +476,16 @@ export class SemViewComponent implements OnInit {
   // to load all the schools for state data on the map
   schoolWise() {
     try {
+      var date = new Date();
+      var timeStamp = Math.floor(date.getTime() / 1000.0);
       this.telemData.interact.push(
         {
-          id: 'school', // id of the interaction like button_id, dropdown_id etc
+          buttonId: 'school', // id of the interaction like button_id, dropdown_id etc
           uid: this.userId, // userid
-          type: 'Click', // click,select,search
-          pageid: String(this.telemData.impression.pageid), // unique id of the page where user is interacting
-          timestamp: new Date().toLocaleString()
+          type: 'click', // click,select,search
+          pageid: this.telemData.impression.pageId, // unique id of the page where user is interacting
+          impressionId: this.telemData.impression.impressionId,
+          timestamp: timeStamp
         }
       );
       // to clear the existing data on the map layer
