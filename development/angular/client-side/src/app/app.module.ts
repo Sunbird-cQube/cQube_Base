@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ChartsModule } from 'ng2-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -61,6 +62,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     MatSortModule,
     HttpClientModule,
     FormsModule,
+    ChartsModule,
     BrowserAnimationsModule
   ],
   exports: [

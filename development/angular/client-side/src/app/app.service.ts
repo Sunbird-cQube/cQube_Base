@@ -203,4 +203,8 @@ export class AppServiceComponent {
     infraMapSchoolWise(distId, blockId, clusterId) {
         return this.http.post(`${this.baseUrl}/infraMap/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
+
+    dikshaData() {
+        return this.http.post(`${this.baseUrl}/deeksha`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
 }

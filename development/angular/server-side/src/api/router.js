@@ -8,6 +8,9 @@ const getDateRange = require('./controller/attendanceRoutes/getDateRange');
 const roleLogin = require('./controller/users/roleBasedLogin');
 const changePasswd = require('./controller/users/changePassword');
 
+//deeksha
+const deekshaData = require('./controller/diksha/diksha')
+
 // const crcData = require('./controller/users/crcData');
 // crc files
 const crcDistrictWise = require('../api/controller/crcRoutes/districtWise');
@@ -63,5 +66,7 @@ router.use('/infraMap', infraMapDistWise);
 router.use('/infraMap', infraMapBlockWise);
 router.use('/infraMap', infraMapClusterWise);
 router.use('/infraMap', infraMapSchoolWise);
+
+router.use('/deeksha', deekshaData);
 
 module.exports = router;
