@@ -25,25 +25,20 @@ SUM(CASE when  Longitude IS NULL THEN 1 ELSE 0 END) AS count_longitude
 from flowfile)
 ''',
 "crc_insp_check_if_null":'''select * from flowfile except(select * from flowfile
-where UPPER(SchoolId) <> 'NULL'
-AND UPPER(InspectionId) <> 'NULL'
-AND UPPER(CreatedOn) <> 'NULL')
+where UPPER(SchoolId) <> 'NULL' )
 ''',
 "crc_insp_not_null":'''select * from flowfile
 where UPPER(SchoolId) <> 'NULL'
-AND UPPER(InspectionId) <> 'NULL'
-AND UPPER(CreatedOn) <> 'NULL'
+
 ''',
 "crc_insp_count_null":'''(select
 SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
 SUM(CASE when InspectionId IS NULL THEN 1 ELSE 0 END) AS count_null_inspectionid,
 SUM(CASE when CreatedOn IS NULL THEN 1 ELSE 0 END) AS count_null_createdon from flowfile)
 ''',
-"crc_inspec_dup_check":'''SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,VisitEndTime,
-ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline,count(InspectionId)  num_of_times
+"crc_inspec_dup_check":'''SELECT inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline,count(inspectionid)-1  num_of_times
 FROM flowfile
-GROUP BY InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,VisitEndTime,
-ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline
+GROUP BY inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline
 HAVING  COUNT(*) > 1
 ''',
 "crc_loc_dup_check":'''SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(UserLocationMasterId)  num_of_times
@@ -61,22 +56,13 @@ HAVING  COUNT(*) > 1
 BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
 ActualClassRooms as "actual_class_rooms",
 TotalSuggestionLastMonth as "total_suggestion_last_month",ResolvedFromThat as "resolved_from_that",IsInspection as "is_inspection",ReasonType as "reason_type",ReasonDesc as "reason_desc",
-TotalScore as "total_score",Score as "score",CreatedOn as "created_on",UpdatedOn as "updated_on",IsOffline as "is_offline",count(InspectionId)-1  num_of_times
+TotalScore as "total_score",Score as "score",IsOffline as "is_offline",num_of_times
 FROM flowfile
-GROUP BY InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,VisitEndTime,
-ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline
-HAVING  COUNT(*) > 1
 ''',
 "crc_insp_dup_tb_name":"crc_inspection_dup",
 "distinct_crc_loc_records":"select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude ,Longitude ,InSchoolLocation ,CreatedOn  from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn, row_number() over (partition by  UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn) as rn from flowfile)sq where rn=1",
-"distinct_crc_inspec_records":'''Select  InspectionId ,ObserverId ,ObserverName ,SchoolId ,
-BeginningStandard ,EndStandard ,TotalClassRooms ,VisitStartTime ,VisitEndTime ,
-ActualClassRooms ,
-TotalSuggestionLastMonth ,ResolvedFromThat ,IsInspection ,ReasonType ,ReasonDesc ,
-TotalScore ,Score ,CreatedOn ,UpdatedOn ,IsOffline  from (select InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,VisitEndTime,
-ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline, row_number() over(partition by
-InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,VisitEndTime,
-ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline) as rn from flowfile) sq where rn=1
+"distinct_crc_inspec_records":'''Select  inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline from (select inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline, row_number() over(partition by
+inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline) as rn from flowfile) sq where rn=1
 ''',
 "same_id_crc_loc_check":'''select *,count(*) as num_of_times from (
 select UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(*)
@@ -117,8 +103,8 @@ over (partition by ObserverId,CreatedOn) as rn from FLOWFILE) sq Where rn =1
 "crc_loc_blank_lines_check":'''select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude,Longitude ,InSchoolLocation ,CreatedOn
 from flowfile where has_records = non_empty_records
 ''',
-"crc_inspec_check_for_non_blank":'''Select  InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard ,EndStandard ,TotalClassRooms ,VisitStartTime ,VisitEndTime ,
-ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc ,TotalScore,Score,CreatedOn ,UpdatedOn,IsOffline
+"crc_inspec_check_for_non_blank":'''Select  inspectionid,observerid,observername,schoolid,beginningstandard ,endstandard ,totalclassrooms ,visitstarttime ,visitendtime ,
+actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc ,totalscore,score,isoffline
 from flowfile where has_records = non_empty_records
 ''',
 "update_crc_name":'''update school_hierarchy_details as b
@@ -134,8 +120,8 @@ from flowfile''',
 BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
 ActualClassRooms as "actual_class_rooms",
 TotalSuggestionLastMonth as "total_suggestion_last_month",ResolvedFromThat as "resolved_from_that",IsInspection as "is_inspection",ReasonType as "reason_type",ReasonDesc as "reason_desc",
-TotalScore as "total_score",Score as "score",CreatedOn as "created_on",UpdatedOn as "updated_on",IsOffline as "is_offline"
-from flowfile
+TotalScore as "total_score",Score as "score",IsOffline as "is_offline"
+FROM flowfile
 ''',
 "crc_inspec_trans_table_name":"crc_inspection_trans",
 "crc_loc_trans_table_name":"crc_location_trans",
