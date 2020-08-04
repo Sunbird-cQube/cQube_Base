@@ -17,23 +17,34 @@
     chdir: "{{ base_dir }}/cqube/keycloak/bin/"
   when: realm_created
 
-- name: Creating the realm 
-  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create realms -f {{ cQube_realm_with_otp }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
-  args:
-    executable: /bin/bash
-  when: keycloak_config_otp 
+- name: Creating the template for realm
+  template:
+    src: cQube_realm.json.j2
+    dest: kc_templates/cQube_realm.json
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    mode: '0644'
 
-- name: Creating the realm without OTP option 
-  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create realms -f {{ cQube_realm_without_otp }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+- name: Creating the realm 
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create realms -f {{ cQube_realm_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:
     executable: /bin/bash
-  when: not keycloak_config_otp 
 
 - name: Getting the client ID for emission app 
   shell: ./kcadm.sh get clients -r {{realm_name}} --fields id,clientId --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}   
   args:
     chdir: "{{ base_dir }}/cqube/keycloak/bin/"
   register: result
+
+- name: Regenerating the client's secret
+  shell: ./kcadm.sh create clients/{{ item[1].id }}/client-secret -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  when: item[1].clientId == item[0]
+  with_nested:
+    - [ 'account', 'broker', 'realm-management' ]
+    - '{{ result.stdout }}'
+  no_log: true
 
 - name: Parsing the output
   set_fact:
@@ -63,3 +74,12 @@
     regexp: '^CLIENT_SECRET='
     line: CLIENT_SECRET= "{{ emi_new_secret }}"
 
+- name: Creating realm admin user
+  shell: ./kcadm.sh create users -r {{ realm_name }} -s username={{ keycloak_adm_user }} -s enabled=true --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+
+- name: Creating realm admin user
+  shell: ./kcadm.sh add-roles --uusername {{ keycloak_adm_user }} --rolename admin -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"

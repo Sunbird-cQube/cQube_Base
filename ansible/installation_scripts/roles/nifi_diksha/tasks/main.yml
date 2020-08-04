@@ -5,7 +5,7 @@
   register: processor_id
 
 - name: Upload template
-  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/infra_transformer.xml
+  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/diksha_transformer.xml
   register: xml_output
   args:
     warn: false
@@ -13,7 +13,7 @@
 - name: Upload parameters
   action: shell curl -d @{{ item }} -H Content-Type:application/json -X POST http://localhost:{{ nifi_port }}/nifi-api/parameter-contexts
   with_items:
-     - nifi_json_files/infra.json
+     - nifi_json_files/diksha.json
      - nifi_json_files/raw.json
   args:
     warn: false
@@ -33,7 +33,7 @@
 - name: Instatiate template list
   action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }'   http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
   loop: "{{ template_list.json | json_query('templates[*]') }}"
-  when: item.template.name == 'infra_transformer'
+  when: item.template.name == 'diksha_transformer'
   no_log: True
   args:
     warn: false
@@ -55,12 +55,12 @@
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
     method: GET
   loop: "{{ processor_group_temp.json | json_query('processGroupFlow.flow.processGroups[*]') }}"
-  when: item.component.name == 'infra_transformer'
+  when: item.component.name == 'diksha_transformer'
   register: processor_group_template
   no_log: True
 
 - set_fact:
-    tagExists: "{{  processor_group_template | json_query('results[?item.component.name == `infra_transformer`]') }}"
+    tagExists: "{{  processor_group_template | json_query('results[?item.component.name == `diksha_transformer`]') }}"
 
 - name: Get multi processor group
   uri:
@@ -79,34 +79,34 @@
 - name: Display ID of cqube raw processor
   debug:
     var: item
-  loop: "{{ output | json_query(infra_raw_id) }}"
+  loop: "{{ output | json_query(diksha_raw_id) }}"
   vars:
-    infra_raw_id: "msg[?Name=='cQube_raw_data_fetch_infra'].ID"
+    diksha_raw_id: "msg[?Name=='cQube_raw_data_fetch_diksha'].ID"
   register: raw_id
 
 - name: Display version of cqube raw parameters
   debug:
     var: item
-  loop: "{{ output | json_query(infra_raw_version) }}"
+  loop: "{{ output | json_query(diksha_raw_version) }}"
   vars:
-    infra_raw_version: "msg[?Name=='cQube_raw_data_fetch_infra'].Version"
+    diksha_raw_version: "msg[?Name=='cQube_raw_data_fetch_diksha'].Version"
   register: raw_version
 
 - name: Display ID of infra processor
   debug:
     var: item
-  loop: "{{ output | json_query(infra_id) }}"
+  loop: "{{ output | json_query(diksha_id) }}"
   vars:
-    infra_id: "msg[?Name=='infra_processor'].ID"
-  register: infra_id
+    diksha_id: "msg[?Name=='diksha_processor'].ID"
+  register: diksha_id
 
 - name: Display version of cqube raw parameters
   debug:
     var: item
-  loop: "{{ output | json_query(infra_version) }}"
+  loop: "{{ output | json_query(diksha_version) }}"
   vars:
-    infra_version: "msg[?Name=='infra_processor'].Version"
-  register: infra_version
+    diksha_version: "msg[?Name=='diksha_processor'].Version"
+  register: diksha_version
 
 - name: Get Default Processor Group
   uri:
@@ -131,19 +131,19 @@
   when: item.component.name == 'cQube-raw-data-fetch-parameters'
   no_log: true
 
-- name: Connection infra processor group to infra parameters
+- name: Connection diksha processor group to infra parameters
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ infra_id.results[0].item }}
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ diksha_id.results[0].item }}
     method: PUT
     body_format: json
     body: {"revision": {
-            "version": "{{ infra_version.results[0].item }}",
+            "version": "{{ diksha_version.results[0].item }}",
             "lastModifier": "Ansible"
         },"component":
-              {"id": "{{ infra_id.results[0].item }}","parameterContext":{"id": "{{ item.component.id }}"}}
+              {"id": "{{ diksha_id.results[0].item }}","parameterContext":{"id": "{{ item.component.id }}"}}
      }
   loop: "{{ parameters.json | json_query('parameterContexts[*]') }}"
-  when: item.component.name == 'infra_parameters'
+  when: item.component.name == 'diksha_parameters'
   no_log: true
 
 #----starting of controllers and processor groups----
@@ -154,11 +154,7 @@
     method: POST
     body_format: json
     status_code: 201
-    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4661"}}}
-
-#--- Run a python code to load required parameter values ---
-- name: Run python code
-  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_jolt_params.py"
+    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4662"}}}
 
 - name: Get controllers
   uri:
@@ -168,9 +164,9 @@
 
 - name: Get controllers
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ infra_id.results[0].item }}/controller-services
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ diksha_id.results[0].item }}/controller-services
     method: GET
-  register: controllers_list_infra
+  register: controllers_list_diksha
 
 - name: Add s3 credentials parameters
   uri:
@@ -181,12 +177,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "cQube_s3_infra_raw",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_diksha_raw",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube_s3_infra_raw'
+  when: item.component.name == 'cQube_s3_diksha_raw'
   no_log: True
 
 - name: Add s3 credentials parameters
@@ -198,12 +194,12 @@
             "version": "{{ item.revision.version }}",
            "lastModifier": "Ansible"
        },
-       "component": {"id": "{{ item.id }}", "name": "cQube_s3_infra",
+       "component": {"id": "{{ item.id }}", "name": "cQube_s3_diksha",
        "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
     }
-  loop: "{{ controllers_list_infra.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube_s3_infra'
+  loop: "{{ controllers_list_diksha.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'cQube_s3_diksha'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -215,12 +211,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgres_infra_raw",
+        "component": {"id": "{{ item.id }}", "name": "postgres_diksha_raw",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres_infra_raw'
+  when: item.component.name == 'postgres_diksha_raw'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -232,12 +228,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-       "component": {"id": "{{ item.id }}", "name": "postgres_infra",
+       "component": {"id": "{{ item.id }}", "name": "postgres_diksha",
        "properties" : { "Password" : "#{db_password}"}}
 
     }
-  loop: "{{ controllers_list_infra.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres_infra'
+  loop: "{{ controllers_list_diksha.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'postgres_diksha'
   no_log: True
 
 - name: Get updated raw controllers
@@ -249,9 +245,9 @@
 
 - name: Get updated infra controllers
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ infra_id.results[0].item }}/controller-services
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ diksha_id.results[0].item }}/controller-services
     method: GET
-  register: controllers_list_infra_updated
+  register: controllers_list_diksha_updated
   no_log: True
 
 - name: Start controllers
@@ -279,7 +275,7 @@
        },
        "state":"ENABLED"
       }
-  loop: "{{ controllers_list_infra_updated.json | json_query('controllerServices[*]') }}"
+  loop: "{{ controllers_list_diksha_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
   no_log: True
 
@@ -290,3 +286,6 @@
     body_format: json
     body: {"id":"{{ tagExists[0].item.component.id }}","state":"RUNNING"}
   no_log: True
+
+- name: Run python code
+  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"

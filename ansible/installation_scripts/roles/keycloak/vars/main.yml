@@ -9,5 +9,5 @@ keycloak_log_dir: "{{ keycloak_jboss_home }}/standalone/log"
 
 realm_name: cQube
 realm_created: False
-cQube_realm_with_otp: kc_templates/cQube_realm_with_otp.json
-cQube_realm_without_otp: kc_templates/cQube_realm_without_otp.json
+cQube_realm_json: kc_templates/cQube_realm.json
+
