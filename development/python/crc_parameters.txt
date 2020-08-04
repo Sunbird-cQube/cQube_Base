@@ -492,6 +492,8 @@ group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id
 
 ]
 ''',
+"crc_loc_check_for_non_blank":'''select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude,Longitude ,InSchoolLocation ,CreatedOn 
+from flowfile where has_records = non_empty_records''',
 "crc_transform_block_wise_jolt":'''[{
     "operation": "shift",
     "spec": {
