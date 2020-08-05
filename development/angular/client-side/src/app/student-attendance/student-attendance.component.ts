@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -7,7 +7,6 @@ import * as data from './../../assets/india.json';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { KeycloakSecurityService } from '../keycloak-security.service';
-
 var globalMap;
 
 @Component({
@@ -16,12 +15,15 @@ var globalMap;
   styleUrls: ['./student-attendance.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudengtAttendanceComponent implements OnInit {
+export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   impressionId = Math.floor(100000 + Math.random() * 900000);
-  pageId = 1;
+  pageId = "Student_attendance";
   userId;
-  type = "Report";
+  type = "";
   date = new Date();
+  edate;
+  end_time;
+  public btnId;
   start_time = Math.floor(this.date.getTime() / 1000.0);
   public telemData = {
     impression: {
@@ -30,8 +32,19 @@ export class StudengtAttendanceComponent implements OnInit {
       uid: this.userId, // userid
       type: this.type, // click,select,search
       startTime: this.start_time, // starttime when user comes to that page
+      endTime: this.end_time
     },
     interact: []
+  }
+
+  ngOnDestroy() {
+    this.edate = new Date();
+    this.end_time = Math.floor(this.edate.getTime() / 1000.0);
+    this.telemData.impression.endTime = this.end_time;
+
+    this.service.telemetry().subscribe(res => {
+      console.log(res);
+    });
   }
 
   public disabled = false;
@@ -113,6 +126,10 @@ export class StudengtAttendanceComponent implements OnInit {
           month: this.month,
           year: this.year
         };
+        var eventType = "pageLoad";
+        this.btnId = '';
+        var date = new Date();
+        this.trackInteract(date, this.btnId, eventType);
         this.districtWise();
       }
 
@@ -180,7 +197,12 @@ export class StudengtAttendanceComponent implements OnInit {
   public fileName: any;
   public reportData: any = [];
 
-  downloadRoport() {
+  downloadRoport(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     if (this.reportData.length > 0) {
       const options = {
         fieldSeparator: ',',
@@ -196,31 +218,36 @@ export class StudengtAttendanceComponent implements OnInit {
       };
       const csvExporter = new ExportToCsv(options);
       csvExporter.generateCsv(this.reportData);
+
     } else {
       this.loaderAndErr();
     }
   }
 
   public month_year;
-  getMonth() {
+  getMonth(event) {
     var month = this.getMonthYear[`${this.year}`].find(a => a.month === this.month);
     this.dateRange = `${month.data_from_date} to ${month.data_upto_date}`;
     this.month_year = {
       month: this.month,
       year: this.year
     };
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
     if (this.skul) {
       if (this.levelWise === "District") {
         this.districtWise();
       }
       if (this.levelWise === "Block") {
-        this.blockWise();
+        this.blockWise(event);
       }
       if (this.levelWise === "Cluster") {
-        this.clusterWise();
+        this.clusterWise(event);
       }
       if (this.levelWise === "School") {
-        this.schoolWise();
+        this.schoolWise(event);
       }
     } else {
       if (this.dist && this.myDistrict !== null) {
@@ -250,6 +277,20 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   public myData;
+  homeClick(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+    this.districtWise();
+  }
+  distHierarchy(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+    this.districtWise();
+  }
   async districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
@@ -319,19 +360,14 @@ export class StudengtAttendanceComponent implements OnInit {
     document.getElementById('home').style.display = 'none';
   }
 
-  blockWise() {
+  blockWise(event) {
+    console.log(event.target.id);
+
+    var eventType = event.type;
+    this.btnId = event.target.id;
     var date = new Date();
-    var timeStamp = Math.floor(date.getTime() / 1000.0);
-    this.telemData.interact.push(
-      {
-        buttonId: 'block', // id of the interaction like button_id, dropdown_id etc
-        uid: this.userId, // userid
-        type: 'click', // click,select,search
-        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
-        impressionId: this.telemData.impression.impressionId,
-        timestamp: timeStamp
-      }
-    );
+    this.trackInteract(date, this.btnId, eventType);
+
     this.commonAtStateLevel();
     this.levelWise = "Block";
     if (this.months.length > 0) {
@@ -403,19 +439,12 @@ export class StudengtAttendanceComponent implements OnInit {
     ;
   }
 
-  schoolWise() {
+  schoolWise(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
     var date = new Date();
-    var timeStamp = Math.floor(date.getTime() / 1000.0);
-    this.telemData.interact.push(
-      {
-        buttonId: 'school', // id of the interaction like button_id, dropdown_id etc
-        uid: this.userId, // userid
-        type: 'click', // click,select,search
-        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
-        impressionId: this.telemData.impression.impressionId,
-        timestamp: timeStamp
-      }
-    );
+    this.trackInteract(date, this.btnId, eventType);
+
     this.commonAtStateLevel();
     this.levelWise = "School";
     if (this.months.length > 0) {
@@ -494,19 +523,12 @@ export class StudengtAttendanceComponent implements OnInit {
     ;
   }
 
-  clusterWise() {
+  clusterWise(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
     var date = new Date();
-    var timeStamp = Math.floor(date.getTime() / 1000.0);
-    this.telemData.interact.push(
-      {
-        buttonId: 'cluster', // id of the interaction like button_id, dropdown_id etc
-        uid: this.userId, // userid
-        type: 'click', // click,select,search
-        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
-        impressionId: this.telemData.impression.impressionId,
-        timestamp: timeStamp
-      }
-    );
+    this.trackInteract(date, this.btnId, eventType);
+
     this.commonAtStateLevel();
 
     this.levelWise = "Cluster";
@@ -621,7 +643,12 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
 
-  clickedMarker(label) {
+  clickedMarker(event, label) {
+    var eventType = event.type;
+    this.btnId = 'marker';
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     if (this.districtsIds.includes(label.id)) {
       localStorage.setItem('dist', label.name);
       localStorage.setItem('distId', label.id);
@@ -680,23 +707,17 @@ export class StudengtAttendanceComponent implements OnInit {
   onClick_Marker(event) {
     var marker = event.target;
     this.markerData = marker.myJsonData;
-    this.clickedMarker(marker.myJsonData);
+    this.clickedMarker(event, marker.myJsonData);
   }
 
-
-  myDistData(data) {
+  distSelect(event, data) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
     var date = new Date();
-    var timeStamp = Math.floor(date.getTime() / 1000.0);
-    this.telemData.interact.push(
-      {
-        buttonId: 'dist select', // id of the interaction like button_id, dropdown_id etc
-        uid: this.userId, // userid
-        type: 'select', // click,select,search
-        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
-        impressionId: this.telemData.impression.impressionId,
-        timestamp: timeStamp
-      }
-    );
+    this.trackInteract(date, this.btnId, eventType);
+    this.myDistData(data);
+  }
+  myDistData(data) {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -798,19 +819,14 @@ export class StudengtAttendanceComponent implements OnInit {
     globalMap.addLayer(this.layerMarkers);
   }
 
-  myBlockData(data) {
+  blockSelect(event, data) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
     var date = new Date();
-    var timeStamp = Math.floor(date.getTime() / 1000.0);
-    this.telemData.interact.push(
-      {
-        buttonId: 'block select', // id of the interaction like button_id, dropdown_id etc
-        uid: this.userId, // userid
-        type: 'select', // click,select,search
-        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
-        impressionId: this.telemData.impression.impressionId,
-        timestamp: timeStamp
-      }
-    );
+    this.trackInteract(date, this.btnId, eventType);
+    this.myBlockData(data);
+  }
+  myBlockData(data) {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -928,19 +944,14 @@ export class StudengtAttendanceComponent implements OnInit {
     document.getElementById('home').style.display = 'block';
   }
 
-  myClusterData(data) {
+  clusterSelect(event, data) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
     var date = new Date();
-    var timeStamp = Math.floor(date.getTime() / 1000.0);
-    this.telemData.interact.push(
-      {
-        buttonId: 'cluster select', // id of the interaction like button_id, dropdown_id etc
-        uid: this.userId, // userid
-        type: 'select', // click,select,search
-        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
-        impressionId: this.telemData.impression.impressionId,
-        timestamp: timeStamp
-      }
-    );
+    this.trackInteract(date, this.btnId, eventType);
+    this.myClusterData(data);
+  }
+  myClusterData(data) {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -1183,5 +1194,20 @@ export class StudengtAttendanceComponent implements OnInit {
       generateGradient
     };
   }
+
+  trackInteract(date, id, type) {
+    var timeStamp = Math.floor(date.getTime() / 1000.0);
+    this.telemData.interact.push(
+      {
+        eventId: id, // id of the interaction like button_id, dropdown_id etc
+        uid: this.userId, // userid
+        type: type, // click,select,search
+        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
+        impressionId: this.telemData.impression.impressionId,
+        timestamp: timeStamp
+      }
+    );
+  }
+
 
 }

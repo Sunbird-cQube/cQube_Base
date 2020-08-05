@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 id="head" style=" color: #284d8a;;">Users List</h2>
+            <p id="err">{{err}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- <div style="border: 1px solid gray; padding: 1%;"> -->
+                <table #DataTable id="table" class="display nowrap" width="100%"
+                    style="font-size: 11px; text-align: center;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>User Role</th>
+                            <!-- <th>Status</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of tableData">
+                            <td>{{data.firstName + " "+  data.lastName}}</td>
+                            <td> {{data.email}}</td>
+                            <td> {{data.roleName}}</td>
+                            <!-- <td style="display: block;"> <button class="btn btn-default"
+                                    style="font-size: 11px; border: 1px solid gray;"
+                                    (click)="changeUserStatus(data.user_id, data.user_status)"
+                                    title="{{ data.user_status == user_status? 'Click to deactivate' : 'Click to activate'}}"
+                                    [ngStyle]="{'color': data.user_status == user_status ? 'green' : 'red'}">
+                                    {{ data.user_status == user_status ? 'Activated' : 'Deactivated' }} </button>
+                            </td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+<div id="spinner" style="display: none;">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>

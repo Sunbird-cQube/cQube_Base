@@ -22,17 +22,18 @@ export class HomeComponent implements OnInit {
   showUser: boolean = true;
   currentURL;
   public userType = localStorage.getItem('roleName') === "admin";
-
+  public roleName;
   ngOnInit() {
     this.email = localStorage.getItem('email');
     this.role = localStorage.getItem('role');
-    if (this.role == 1) {
+    this.roleName = localStorage.getItem('roleName');
+    if (this.roleName == 'admin') {
       this.showsideMenu = false;
       this.showUser = false;
+    }else{
+      this.showUser = true;
     }
-    if (this.role == 3) {
-      this.showsideMenu = false;
-    }
+  
   }
 
 
@@ -52,12 +53,5 @@ export class HomeComponent implements OnInit {
       this.isShowing = false;
     }
   }
-
-  sendTelemetry() {
-    this.service.telemetry().subscribe(res => {
-      console.log(res);
-    })
-  }
-
 
 }
