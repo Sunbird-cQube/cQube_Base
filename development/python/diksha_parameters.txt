@@ -97,5 +97,34 @@ where diksha_null_col.ff_uuid = log_summary.ff_uuid
 "diksha_sum_of_dup":"select sum(num_of_times) from flowfile",
 "diksha_temp_tb":"diksha_content_temp",
 "save_to_diksha_total_content_pre_query":"drop view if exists insert_diksha_trans_view",
-"save_to_diksha_total_content_fn":"select insert_diksha_agg()"
+"save_to_diksha_total_content_fn":"select insert_diksha_agg()",
+"diksha_processed_records_log_db":'''update log_summary as b
+    set processed_records= a.processed_records
+    from (
+        select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records)-sum(attendance_id+student_id+school_id+year+month))as processed_records 
+        from log_summary group by ff_uuid) as a
+    where a.ff_uuid=b.ff_uuid''',
+"select_diksha_files_from_log_db":'''select * from log_summary where filename like '%diksha%'''',
+"diksha_jolt_for_log_summary":'''[{
+        "operation": "shift",
+        "spec": {
+            "*": {
+                "filename": "[&1].filename",
+               "ff_uuid": "[&1].ff_uuid",
+              "total_records": "[&1].total_records",
+              "blank_lines": "[&1].blank_lines",
+              "duplicate_records": "[&1].duplicate_records",
+              "attendance_id": "[&1].records_with_null_value.attendance_id",
+              "student_id": "[&1].records_with_null_value.student_id",
+              "school_id": "[&1].records_with_null_value.school_id",
+              "year": "[&1].records_with_null_value.year",
+              "month": "[&1].records_with_null_value.month",
+              "processed_records": "[&1].processed_records",
+              "process_start_time": "[&1].process_start_time",
+              "process_end_time": "[&1].process_end_time"           
+            }
+        }
+    }
+]
+'''
 }

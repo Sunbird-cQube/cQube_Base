@@ -47,15 +47,15 @@ SUM(CASE when BlockId IS NULL THEN 1 ELSE 0 END) AS count_null_blockid,
 SUM(CASE when Cluster IS NULL THEN 1 ELSE 0 END) AS count_null_cluster
 from flowfile)
 ''',
-"static_school_check_if_null":'''select * from flowfile except(select * from flowfile
-where UPPER(school) <> 'NULL'
-AND UPPER(latitude) <> 'NULL'
-AND UPPER(longitude) <> 'NULL' )
+"static_school_check_if_null":'''select * from flowfile except(select * from flowfile 
+where school is not NULL
+AND latitude > 0
+AND longitude > 0)
 ''',
-"static_school_not_null":'''select * from flowfile
-where UPPER(school) <> 'NULL'
-AND UPPER(latitude) <> 'NULL'
-AND UPPER(longitude) <> 'NULL'
+"static_school_not_null":'''select * from flowfile 
+where school is not NULL
+AND latitude > 0
+AND longitude > 0
 ''',
 "static_school_null_count":'''(select
 SUM(CASE when school IS NULL THEN 1 ELSE 0 END) AS count_null_school,
