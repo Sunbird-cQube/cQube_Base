@@ -13674,6 +13674,31 @@ VALUES
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>3295548d-9ab6-33d3-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>92e767f5-7883-3bbc-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>invalid</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>0d23ab27-c7c5-3f1d-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>32bf3007-6b83-3e80-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -14194,6 +14219,31 @@ VALUES
                             <source>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
 <id>9b1b2864-3183-3537-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>43180705-6c4d-34cf-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>92e767f5-7883-3bbc-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>invalid</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>4c7d1b25-b56a-3032-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -15457,7 +15507,7 @@ VALUES
                             </bends>
                             <destination>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>42ab4fc6-498a-3fc8-0000-000000000000</id>
+<id>bfe3df3c-8381-3fcd-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -15659,10 +15709,6 @@ VALUES
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>-9072.0</x>
-<y>48.0</y>
-                            </bends>
                             <destination>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
 <id>9d374757-b06a-3edb-0000-000000000000</id>
@@ -17398,12 +17444,12 @@ VALUES
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-8600.0</x>
+<x>-8744.0</x>
 <y>-208.0</y>
                             </bends>
                             <destination>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>42ab4fc6-498a-3fc8-0000-000000000000</id>
+<id>bfe3df3c-8381-3fcd-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -22293,75 +22339,6 @@ file:${filename} process_end_time updated to log summary table</value>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
                         <processors>
-                            <id>42ab4fc6-498a-3fc8-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <position>
-<x>-8952.0</x>
-<y>-104.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>log-level</key>
-        <value>
-            <name>log-level</name>
-        </value>
-    </entry>
-    <entry>
-        <key>log-prefix</key>
-        <value>
-            <name>log-prefix</name>
-        </value>
-    </entry>
-    <entry>
-        <key>log-message</key>
-        <value>
-            <name>log-message</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>log-level</key>
-        <value>info</value>
-    </entry>
-    <entry>
-        <key>log-prefix</key>
-        <value>---TRANSFORMATION---</value>
-    </entry>
-    <entry>
-        <key>log-message</key>
-        <value>Data type validation, 
-file: ${filename} has invalid data type, pass the file with right datatype. </value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>LogMessage</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.LogMessage</type>
-                        </processors>
-                        <processors>
                             <id>447df64d-8ef0-3f70-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
@@ -24442,7 +24419,7 @@ file: ${filename} null values found. </value>
                             <id>5be2490a-d2c6-3ed0-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>-9992.0</x>
+<x>-10056.0</x>
 <y>136.0</y>
                             </position>
                             <bundle>
@@ -24733,7 +24710,7 @@ file: ${filename} null values found. </value>
                             <id>5dd5d37d-61ed-3ffd-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>-10128.0</x>
+<x>-10056.0</x>
 <y>848.0</y>
                             </position>
                             <bundle>
@@ -25149,7 +25126,7 @@ where crc_loc_null_col.ff_uuid = log_summary.ff_uuid</value>
                             <id>61011bec-39c0-30c7-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>-10080.0</x>
+<x>-10056.0</x>
 <y>488.0</y>
                             </position>
                             <bundle>
@@ -25880,8 +25857,8 @@ file: ${filename} columns did not match.</value>
                             <id>6ecda84b-f7e7-3e1e-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>-7968.0</x>
-<y>-424.0</y>
+<x>-7608.0</x>
+<y>-464.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -25992,8 +25969,8 @@ file: ${filename} columns did not match.</value>
                             <id>702f932b-c43e-367a-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>-9536.0</x>
-<y>-48.0</y>
+<x>-9640.0</x>
+<y>104.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -27990,6 +27967,121 @@ Mirror data validation of file:${filename}.Error while checking mirror data</val
                             <type>org.apache.nifi.processors.standard.PutFile</type>
                         </processors>
                         <processors>
+                            <id>92e767f5-7883-3bbc-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <position>
+<x>-8912.0</x>
+<y>-128.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Log Level</key>
+        <value>
+            <name>Log Level</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Log Payload</key>
+        <value>
+            <name>Log Payload</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Attributes to Log</key>
+        <value>
+            <name>Attributes to Log</name>
+        </value>
+    </entry>
+    <entry>
+        <key>attributes-to-log-regex</key>
+        <value>
+            <name>attributes-to-log-regex</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Attributes to Ignore</key>
+        <value>
+            <name>Attributes to Ignore</name>
+        </value>
+    </entry>
+    <entry>
+        <key>attributes-to-ignore-regex</key>
+        <value>
+            <name>attributes-to-ignore-regex</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Log prefix</key>
+        <value>
+            <name>Log prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>character-set</key>
+        <value>
+            <name>character-set</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Log Level</key>
+        <value>warn</value>
+    </entry>
+    <entry>
+        <key>Log Payload</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>Attributes to Log</key>
+        <value>filename,count.total.lines,count.invalid.lines</value>
+    </entry>
+    <entry>
+        <key>attributes-to-log-regex</key>
+        <value>.*</value>
+    </entry>
+    <entry>
+        <key>Attributes to Ignore</key>
+    </entry>
+    <entry>
+        <key>attributes-to-ignore-regex</key>
+    </entry>
+    <entry>
+        <key>Log prefix</key>
+    </entry>
+    <entry>
+        <key>character-set</key>
+        <value>UTF-8</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>LogAttribute</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.LogAttribute</type>
+                        </processors>
+                        <processors>
                             <id>9369d54d-df72-34a2-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
@@ -28272,7 +28364,7 @@ blank line validation of file:${filename} started.</value>
                             <id>9b1b2864-3183-3537-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>-10032.0</x>
+<x>-10056.0</x>
 <y>-32.0</y>
                             </position>
                             <bundle>
@@ -28712,8 +28804,8 @@ blank line validation of file:${filename} started.</value>
                             <id>9d374757-b06a-3edb-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>-9264.0</x>
-<y>152.0</y>
+<x>-8304.0</x>
+<y>-488.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -29520,6 +29612,75 @@ where ff_uuid= '${zip_identifier}'
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
                         <processors>
+                            <id>bfe3df3c-8381-3fcd-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <position>
+<x>-9280.0</x>
+<y>-120.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>log-level</key>
+        <value>
+            <name>log-level</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>
+            <name>log-prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>
+            <name>log-message</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>log-level</key>
+        <value>info</value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>---TRANSFORMATION---</value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>Data type validation, 
+file: ${filename} has invalid data type: invalid record=${count.invalid.lines} , Total records=${count.total.lines}</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>LogMessage</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
+                        <processors>
                             <id>c1f92811-9cfd-30d3-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
@@ -30005,7 +30166,7 @@ file: ${filename} null value not found. </value>
                             <id>cbb7e499-402e-3568-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>-8128.0</x>
+<x>-8048.0</x>
 <y>-656.0</y>
                             </position>
                             <bundle>
@@ -31473,7 +31634,7 @@ where crc_inspec_null_col.ff_uuid = log_summary.ff_uuid</value>
                             <id>da69f93a-ef8e-3bf2-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>-10072.0</x>
+<x>-10056.0</x>
 <y>664.0</y>
                             </position>
                             <bundle>
@@ -34163,5 +34324,5 @@ file:${filename} process_end_time updated to log summary table</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/04/2020 17:36:10 IST</timestamp>
+    <timestamp>08/04/2020 22:57:25 IST</timestamp>
 </template>
