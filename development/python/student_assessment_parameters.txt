@@ -148,11 +148,11 @@ subject_1_marks_scored=a.subject_1_marks_scored,subject_1_total_marks=a.subject_
 ''',
 "sem_select_student_subject_total_marks":"select * from school_student_subject_total_marks limit 1",
 "sem_school-wise-assesment":'''create or replace view school_semester_no_data as
-select school_id,semester from school_student_subject_total_marks
+select school_id,semester from school_student_subject_total_marks 
 WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude <> 0 and cluster_name is not null
 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
 group by school_id,semester
-having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
+having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
  case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
  +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
  case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
@@ -160,45 +160,45 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  ) = 0;
 
 create or replace view school_grade as
-    SELECT school_id AS x_axis,grade,
-Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
-    case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
-    +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
-    case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
-    +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
-    ),0)*100.0/
+	SELECT school_id AS x_axis,grade,
+Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
+	case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+	+case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+	case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+	+case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+	),0)*100.0/
 Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
-    subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL
-AND block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL
-AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL 
+AND block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL 
+AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL 
 and school_id not in (select school_id from school_semester_no_data) and cluster_name is not null
-GROUP BY school_id,grade;
+GROUP BY school_id,grade; 
 
 select a.x_axis,school_name,cluster_id,cluster_name,crc_name,block_id,block_name,x_value,district_id,district_name,y_axis,y_value,z_axis,z_value,
-students_count,total_schools,a.semester,
+students_count,total_schools,a.semester, 
 b.grade_3,b.grade_4,b.grade_5,b.grade_6,b.grade_7,b.grade_8
 from
 (SELECT school_id AS x_axis,Initcap(school_name) AS school_name,district_id,Initcap(district_name) AS district_name,block_id,Initcap(block_name)AS block_name,cluster_id,
 Initcap(cluster_name) AS cluster_name,Initcap(crc_name)AS crc_name,
 Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,semester,
 'latitude' AS y_axis,school_latitude AS y_value,'longitude' AS z_axis,school_longitude AS z_value,
-Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
-    case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
-    +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
-    case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
-    +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
-    ),0)*100.0/
+Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
+	case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+	+case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+	case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+	+case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+	),0)*100.0/
 NULLIF(Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
-    subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),0),1) AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL
+	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),0),1) AS x_value
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
 AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 and cluster_name is not null
 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and school_id not in (select school_id from school_semester_no_data)
 GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,semester )as a
-left join
+left join 
 (select * from crosstab(
 'select x_axis,grade,x_value from school_grade order by 1',
-'select distinct(grade) from school_grade order by 1') as
+'select distinct(grade) from school_grade order by 1') as 
 (x_axis bigint,"grade_3" numeric,"grade_4" numeric,"grade_5" numeric,"grade_6" numeric
 ,"grade_7" numeric,"grade_8" numeric)
 ) as b
