@@ -217,5 +217,7 @@ select block_name,block_id,district_id,now(),now() from block_tmp
 on conflict (block_id)
 do update set block_name=excluded.block_name,block_id=excluded.block_id,district_id=excluded.district_id,
 created_on=excluded.created_on,updated_on=now()
-'''
+''',
+"static_get_invalid_names":'''select school_id,school_name,block_id,district_id,cluster_id from school_hierarchy_details where cluster_name is null or block_name is null or district_name is null''',
+"school_invalid_tb":"school_invalid_data"
 }
