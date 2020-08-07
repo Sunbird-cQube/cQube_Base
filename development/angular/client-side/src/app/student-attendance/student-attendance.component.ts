@@ -27,7 +27,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   start_time = Math.floor(this.date.getTime() / 1000.0);
   public telemData = {
     impression: {
-      pageid: this.pageId,
+      pageId: this.pageId,
       impressionId: this.impressionId, // unique id of the page
       uid: this.userId, // userid
       type: this.type, // click,select,search
@@ -42,7 +42,13 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     this.end_time = Math.floor(this.edate.getTime() / 1000.0);
     this.telemData.impression.endTime = this.end_time;
 
-    this.service.telemetry().subscribe(res => {
+    var dateObj = {
+      year: this.edate.getFullYear(),
+      month: this.edate.getMonth() + 1,
+      date: this.edate.getDate()
+    }
+
+    this.service.telemetry(dateObj).subscribe(res => {
       console.log(res);
     });
   }
@@ -104,7 +110,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef) {
     this.userId = this.telemData.impression.uid = keyCloakSevice.kc.tokenParsed.sub;
-    service.telemetryData.push(this.telemData);
+    service.telemetryData[0].Student_attendance.push(this.telemData);
     service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -129,7 +135,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         var eventType = "pageLoad";
         this.btnId = '';
         var date = new Date();
-        this.trackInteract(date, this.btnId, eventType);
+        this.trackInteract(date, this.btnId, eventType, undefined);
         this.districtWise();
       }
 
@@ -201,7 +207,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     var eventType = event.type;
     this.btnId = event.target.id;
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, undefined);
 
     if (this.reportData.length > 0) {
       const options = {
@@ -235,7 +241,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     var eventType = event.type;
     this.btnId = event.target.id;
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, undefined);
     if (this.skul) {
       if (this.levelWise === "District") {
         this.districtWise();
@@ -281,14 +287,14 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     var eventType = event.type;
     this.btnId = event.target.id;
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, undefined);
     this.districtWise();
   }
   distHierarchy(event) {
     var eventType = event.type;
     this.btnId = event.target.id;
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, undefined);
     this.districtWise();
   }
   async districtWise() {
@@ -366,7 +372,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     var eventType = event.type;
     this.btnId = event.target.id;
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, undefined);
 
     this.commonAtStateLevel();
     this.levelWise = "Block";
@@ -443,7 +449,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     var eventType = event.type;
     this.btnId = event.target.id;
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, undefined);
 
     this.commonAtStateLevel();
     this.levelWise = "School";
@@ -527,7 +533,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     var eventType = event.type;
     this.btnId = event.target.id;
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, undefined);
 
     this.commonAtStateLevel();
 
@@ -647,7 +653,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     var eventType = event.type;
     this.btnId = 'marker';
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, label.id);
 
     if (this.districtsIds.includes(label.id)) {
       localStorage.setItem('dist', label.name);
@@ -714,7 +720,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     var eventType = event.type;
     this.btnId = event.target.id;
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, data);
     this.myDistData(data);
   }
   myDistData(data) {
@@ -823,7 +829,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     var eventType = event.type;
     this.btnId = event.target.id;
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, data);
     this.myBlockData(data);
   }
   myBlockData(data) {
@@ -948,7 +954,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     var eventType = event.type;
     this.btnId = event.target.id;
     var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    this.trackInteract(date, this.btnId, eventType, data);
     this.myClusterData(data);
   }
   myClusterData(data) {
@@ -1195,14 +1201,15 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     };
   }
 
-  trackInteract(date, id, type) {
+  trackInteract(date, eventId, type, id) {
     var timeStamp = Math.floor(date.getTime() / 1000.0);
     this.telemData.interact.push(
       {
-        eventId: id, // id of the interaction like button_id, dropdown_id etc
+        eventId: eventId, // id of the interaction like button_id, dropdown_id etc
         uid: this.userId, // userid
         type: type, // click,select,search
-        pageid: this.telemData.impression.pageid, // unique id of the page where user is interacting
+        id: id,
+        pageId: this.telemData.impression.pageId, // unique id of the page where user is interacting
         impressionId: this.telemData.impression.impressionId,
         timestamp: timeStamp
       }

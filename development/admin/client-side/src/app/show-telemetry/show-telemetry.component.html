@@ -1,38 +1,95 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-6">
-            <h2 id="head" style=" color: #284d8a;;">Users List</h2>
+            <h2 id="head" style=" color: #284d8a;;">Telemetry Data</h2>
             <p id="err">{{err}}</p>
         </div>
     </div>
     <div class="row">
+        <div class="col-sm-8">
+            <select id="choose_year"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="year" name="year">
+                <option [value]="year" disabled selected="selected" style="color: white;">Choose a Block
+                </option>
+                <option *ngFor="let year of years" [(ngValue)]="year.year" style="font-family: Arial;font-size: 11px;">
+                    {{year.year}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-12">
+            <h2>Impression</h2>
             <!-- <div style="border: 1px solid gray; padding: 1%;"> -->
-                <table #DataTable id="table" class="display nowrap" width="100%"
-                    style="font-size: 11px; text-align: center;">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>User Role</th>
-                            <!-- <th>Status</th> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let data of tableData">
-                            <td>{{data.firstName + " "+  data.lastName}}</td>
-                            <td> {{data.email}}</td>
-                            <td> {{data.roleName}}</td>
-                            <!-- <td style="display: block;"> <button class="btn btn-default"
-                                    style="font-size: 11px; border: 1px solid gray;"
-                                    (click)="changeUserStatus(data.user_id, data.user_status)"
-                                    title="{{ data.user_status == user_status? 'Click to deactivate' : 'Click to activate'}}"
-                                    [ngStyle]="{'color': data.user_status == user_status ? 'green' : 'red'}">
-                                    {{ data.user_status == user_status ? 'Activated' : 'Deactivated' }} </button>
-                            </td> -->
-                        </tr>
-                    </tbody>
-                </table>
+            <table #DataTable id="table" class="display nowrap" width="100%"
+                style="font-size: 11px; text-align: center;">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Page Id</th>
+                        <th>ImpressionId</th>
+                        <th>UserId</th>
+                        <th>Time Spent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let impress of impression;let i = index">
+                        <td>{{i}}</td>
+                        <td>{{impress.pageId}}</td>
+                        <td>{{impress.impressionId}}</td>
+                        <td>{{impress.uid}}</td>
+                        <td>{{impress.endTime - impress.startTime}} sec</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- </div> -->
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 2%">
+        <div class="col-sm-12">
+            <h2>Interation</h2>
+            <!-- <div style="border: 1px solid gray; padding: 1%;"> -->
+            <table #DataTable id="table1" class="display nowrap" width="100%"
+                style="font-size: 11px; text-align: center;">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>ImpressionId</th>
+                        <th>EventId</th>
+                        <th>UserId</th>
+                        <th>Type</th>
+                        <th>Time-Stamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>482203</td>
+                        <td>home</td>
+                        <td>ced1814a-dffe-4407-8947-49ee922cad34</td>
+                        <td>Click</td>
+                        <td>1596793141</td>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>482203</td>
+                        <td>month</td>
+                        <td>ced1814a-dffe-4407-8947-49ee922cad34</td>
+                        <td>change</td>
+                        <td>1596793141</td>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>482203</td>
+                        <td>block</td>
+                        <td>ced1814a-dffe-4407-8947-49ee922cad34</td>
+                        <td>Click</td>
+                        <td>1596793141</td>
+                    </tr>
+                </tbody>
+            </table>
             <!-- </div> -->
         </div>
     </div>

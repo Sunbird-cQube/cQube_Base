@@ -11,61 +11,71 @@ declare const $;
 export class ShowTelemetryComponent implements OnInit {
   result: any = [];
   tableData: any = [];
-  user_status = 1;
   err;
-  currentDate = `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)} ${(new Date()).toLocaleTimeString('en-IN', { hour12: false })}`;
-
+  years = [{ year: 2019 }, { year: 2020 }];
+  year;
+  todaysDate = new Date();
+  dateObj = {
+    year: this.todaysDate.getFullYear(),
+    month: this.todaysDate.getMonth() + 1,
+    date: this.todaysDate.getDate()
+  };
   constructor(private router: Router, private service: AppService) { }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = "none";
-    this.showUsers();
+    this.showTelemetry();
     document.getElementById('homeBtn').style.display = "Block";
   }
+  impression = [];
+  showTelemetry() {
+    this.year = this.todaysDate.getFullYear();
 
-  showUsers() {
     document.getElementById('spinner').style.display = 'block';
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
     }
-    this.service.showTelemetry().subscribe(res => {
-      console.log(res);
-      
-      // this.tableData = this.result;
+    this.service.showTelemetry(this.dateObj).subscribe((res: any) => {
 
-      // $(document).ready(function () {
-      //   $('#table').DataTable({
-      //     destroy: false, bLengthChange: false, bInfo: false,
-      //     bPaginate: false, scrollY: 380, scrollX: true,
-      //     scrollCollapse: true, paging: false, searching: true,
-      //     fixedColumns: {
-      //       leftColumns: 1
-      //     }
-      //   });
-      // });
+      res.forEach(each => {
+        if (each.Student_attendance) {
+          each.Student_attendance.forEach(item => {
+            this.impression.push(item.impression)
+          })
+        }
+        if (each.Semester) {
+          each.Semester.forEach(item => {
+            this.impression.push(item.impression)
+          })
+        }
+
+      });
+      console.log(this.impression);
+
+      $(document).ready(function () {
+        $('#table').DataTable({
+          destroy: false, bLengthChange: false, bInfo: false,
+          bPaginate: false, scrollY: 250, scrollX: true,
+          scrollCollapse: true, paging: false, searching: true,
+          fixedColumns: {
+            leftColumns: 1
+          }
+        });
+      });
+
+      $(document).ready(function () {
+        $('#table1').DataTable({
+          destroy: false, bLengthChange: false, bInfo: false,
+          bPaginate: false, scrollY: 250, scrollX: true,
+          scrollCollapse: true, paging: false, searching: true,
+          fixedColumns: {
+            leftColumns: 1
+          }
+        });
+      });
       document.getElementById('spinner').style.display = 'none';
     }, err => {
       this.err = "No data found";
     })
   }
-
-  // changeUserStatus(id, usrStatus) {
-  //   if (id != localStorage.getItem('user_id')) {
-  //     if (usrStatus == 1) {
-  //       var status = confirm("Are you sure to deactivate user?");
-  //     } else {
-  //       status = confirm("Are you sure to activate user?");
-  //     }
-  //     if (status == true) {
-  //       document.getElementById('spinner').style.display = 'block';
-  //       var updaterId = localStorage.getItem('user_id');
-  //       this.service.changeStatus(id, updaterId).subscribe(res => {
-  //         this.showUsers();
-  //       });
-  //     }
-  //   } else {
-  //     alert("Logged in user can not change his own status...")
-  //   }
-  // }
-
 }

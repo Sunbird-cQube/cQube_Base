@@ -2,30 +2,46 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
+const axios = require('axios');
+const qs = require('querystring');
 const dotenv = require('dotenv');
 dotenv.config();
 
-
-
-const keycloakHost = process.env.KEYCLOAK_HOST;
-const realmName = process.env.KEYCLOAK_REALM;
-
-var const_data = require('../../lib/config');
-const s3File = require('../../lib/reads3File');
-
-const axios = require('axios');
-const qs = require('querystring')
-
 var requestData = {
-   
+    username: process.env.KEYCLOAK_USER,
+    password: process.env.PASSWORD,
+    grant_type: process.env.GRANT_TYPE,
+    client_id: process.env.CLIENT_ID
 }
 
-router.post('/', async function (req, res) {
+var host = process.env.KEYCLOAK_HOST;
+var realm = process.env.KEYCLOAK_REALM;
+
+router.post('/:id', auth.authController, async function (req, res) {
     try {
-        var url = `http://localhost:8080/auth/realms/master/protocol/openid-connect/token`;
-        axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } }).then((response) => {
-            res.status(200).json({ auth_token: response.data });
-        });
+        logger.info('---change password api ---');
+
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
+        var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        var access_token = response.data.access_token;
+        var userId = req.params.id;
+
+        var usersUrl = `${host}/auth/admin/realms/${realm}/users/${userId}/reset-password`;
+        var headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer" + " " + access_token
+        }
+        var newPass = {
+            type: "password",
+            value: req.body.cnfpass,
+            temporary: false
+        };
+
+        axios.put(usersUrl, newPass, { headers: headers }).then(resp => {
+            res.status(201).json({ msg: "Password changed" });
+        }).catch(error => {
+            res.status(409).json({ errMsg: error.response.data.errorMessage });
+        })
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });

@@ -1,19 +1,32 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
-const fs = require('fs');
+var const_data = require('../../lib/config');
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
-        var filePath = "/home/dheeraj/Desktop/files/telemetry.json";
-        logger.info('---telemetry api ---');
-        var data = fs.readFileSync(filePath);
-        logger.info('---telemetry api response sent---');
-        res.status(200).send({ data: JSON.parse(data.toString()) });
+        logger.info('--- get telemetry data api ---');
+        let year = req.body.year
+        let month = req.body.month
+        let date = req.body.date
+        console.log(req.body);
+        const_data['getParams']['Key'] = `telemetry/telemetry_${year}_${month}_${date}.json`
+        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
+            if (err) {
+                logger.error(err);
+                res.status(500).json({ errMsg: "Something went wrong" });
+            } else if (!data) {
+                logger.error("No data found in s3 file");
+                res.status(403).json({ errMsg: "No such data found" });
+            } else {
+                logger.info('--- get telemetry data api response sent ---');
+                res.send(JSON.parse(data.Body));
+            }
+        })
     } catch (e) {
-        logger.error(`Error :: ${e}`)
-        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+        logger.error(`Error :: ${e}`);
+        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
-});
+})
 
-module.exports = router;
+module.exports = router

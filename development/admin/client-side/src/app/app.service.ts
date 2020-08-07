@@ -197,8 +197,8 @@ export class AppService {
     }
 
     //telemetry data
-    showTelemetry() {
-        return this.http.get(`${this.baseUrl}/showTelemetry`, {
+    showTelemetry(date) {
+        return this.http.post(`${this.baseUrl}/showTelemetry`, date, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }

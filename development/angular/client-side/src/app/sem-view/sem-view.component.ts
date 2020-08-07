@@ -99,7 +99,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     private changeDetection: ChangeDetectorRef,
   ) {
     this.userId = this.telemData.impression.uid = keyCloakSevice.kc.tokenParsed.sub;
-    service.telemetryData.push(this.telemData);
+    service.telemetryData[1].Semester.push(this.telemData);
   }
 
   ngOnDestroy() {
@@ -107,7 +107,13 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.end_time = Math.floor(this.edate.getTime() / 1000.0);
     this.telemData.impression.endTime = this.end_time;
 
-    this.service.telemetry().subscribe(res => {
+    var dateObj = {
+      year: this.edate.getFullYear(),
+      month: this.edate.getMonth() + 1,
+      date: this.edate.getDate()
+    }
+
+    this.service.telemetry(dateObj).subscribe(res => {
       console.log(res);
     });
   }

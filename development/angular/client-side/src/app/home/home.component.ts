@@ -24,16 +24,16 @@ export class HomeComponent implements OnInit {
   public userType = localStorage.getItem('roleName') === "admin";
   public roleName;
   ngOnInit() {
-    this.email = localStorage.getItem('email');
+    this.email = localStorage.getItem('userName');
     this.role = localStorage.getItem('role');
     this.roleName = localStorage.getItem('roleName');
     if (this.roleName == 'admin') {
       this.showsideMenu = false;
       this.showUser = false;
-    }else{
+    } else {
       this.showUser = true;
     }
-  
+
   }
 
 

@@ -138,8 +138,8 @@ export class AppServiceComponent {
         });
     }
 
-    changePassword(data) {
-        return this.http.post(`${this.baseUrl}/changePassword`, data, {
+    changePassword(data, id) {
+        return this.http.post(`${this.baseUrl}/changePassword/${id}`, { cnfpass: data }, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
@@ -210,10 +210,13 @@ export class AppServiceComponent {
     }
 
 
-    public telemetryData = [];
+    public telemetryData = [
+        { Student_attendance: [] },
+        { Semester: [] }
+    ];
 
-    telemetry() {
-        return this.http.post(`${this.baseUrl}/telemetry`, this.telemetryData, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    telemetry(date) {
+        return this.http.post(`${this.baseUrl}/telemetry`, { telemetryData: this.telemetryData, date: date }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
 }
