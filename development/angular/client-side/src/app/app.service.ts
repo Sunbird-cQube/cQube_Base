@@ -204,7 +204,34 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/infraMap/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    dikshaData() {
-        return this.http.post(`${this.baseUrl}/deeksha`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    // diksha apis for stack bar chart
+    dikshaAllData(type, timePeriod) {
+        return this.http.post(`${this.baseUrl}/diksha/dikshaAllData`, { login_type: type, timePeriod: timePeriod }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    dikshaDistData(districtId, type, timePeriod) {
+        return this.http.post(`${this.baseUrl}/diksha/dikshaData`, { districtId: districtId, login_type: type, timePeriod: timePeriod }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    dikshaDataDownload(data) {
+        return this.http.post(`${this.baseUrl}/diksha/dikshaDataDownload`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    // diksha apis for table
+
+    dikshaMetaData() {
+        return this.http.get(`${this.baseUrl}/diksha/dikshaMetaData`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    dikshaAllTableData(data) {
+        return this.http.post(`${this.baseUrl}/dikshaTable/dikshaAllTableData`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    dikshaDistrictTableData(districtId) {
+        return this.http.post(`${this.baseUrl}/dikshaTable/dikshaDistrictTableData`, { districtId: districtId }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    dikshaTimeRangeTableData(districtId, timePeriod) {
+        return this.http.post(`${this.baseUrl}/dikshaTable/dikshaTimeRangeTableData`, { districtId: districtId, timePeriod: timePeriod }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 }

@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   email: any;
   role: any;
   showSubmenu1: any = false;
+  showSubmenu2: any = false;
   showsideMenu: boolean = false;
   isExpanded = true;
   showSubmenu: boolean = false;

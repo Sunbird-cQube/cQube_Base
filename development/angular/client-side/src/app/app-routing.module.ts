@@ -12,6 +12,8 @@ import { SchoolInfrastructureComponent } from './school-infrastructure/school-in
 import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
+import { DikshaTableComponent } from './diksha-table/diksha-table.component';
 
 const routes: Routes = [
   {
@@ -45,6 +47,12 @@ const routes: Routes = [
       },
       {
         path: 'school-infra-map', component: InfraMapVisualisationComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'diksha-chart', component: DikshaChartComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'diksha-table', component: DikshaTableComponent, canActivateChild: [AuthGuard]
       }
     ]
   }

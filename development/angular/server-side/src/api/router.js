@@ -9,7 +9,8 @@ const roleLogin = require('./controller/users/roleBasedLogin');
 const changePasswd = require('./controller/users/changePassword');
 
 //deeksha
-const deekshaData = require('./controller/diksha/diksha')
+const deekshaData = require('./controller/diksha/diksha');
+const dikshaTable = require('./controller/diksha/dikshaTable');
 
 // const crcData = require('./controller/users/crcData');
 // crc files
@@ -67,6 +68,7 @@ router.use('/infraMap', infraMapBlockWise);
 router.use('/infraMap', infraMapClusterWise);
 router.use('/infraMap', infraMapSchoolWise);
 
-router.use('/deeksha', deekshaData);
+router.use('/diksha', deekshaData);
+router.use('/dikshaTable', dikshaTable);
 
 module.exports = router;
