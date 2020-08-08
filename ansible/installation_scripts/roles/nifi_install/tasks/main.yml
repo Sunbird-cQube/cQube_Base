@@ -78,6 +78,9 @@
         path: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
         block: |
                java.arg.8=-Duser.timezone=Asia/Kolkata
+               java.arg.7=-XX:ReservedCodeCacheSize=1024m
+               java.arg.8=-XX:CodeCacheMinimumFreeSpace=10m
+               java.arg.9=-XX:+UseCodeCacheFlushing
 
 - name: Increase nifi memory
   replace:

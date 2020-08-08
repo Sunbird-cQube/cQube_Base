@@ -53,7 +53,7 @@
                REALM_NAME= "cQube"
                CLIENT_ID= "cqube_flask"
                CLIENT_SECRET= ""
-               EMISSION_URL= ""
+               EMISSION_URL= "https://{{ api_endpoint }}/data"
 
 - name: Making sure emission_app directory is present
   file:

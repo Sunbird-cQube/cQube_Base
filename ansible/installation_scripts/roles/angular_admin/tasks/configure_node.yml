@@ -37,7 +37,14 @@
       PASSWORD= "{{ keycloak_adm_passwd }}"
 
       KEYCLOAK_HOST = "https://{{ api_endpoint }}"
-      KEYCLOAK_REALM = ""
-      KEYCLOAK_CLIENT= ""
+      KEYCLOAK_REALM = "cQube"
+      KEYCLOAK_CLIENT= "cqube_admin"
+      KEYCLOAK_USER= "{{ keycloak_adm_user }}"
+      PASSWORD= "{{ keycloak_adm_passwd }}"
+      GRANT_TYPE= "password"
+      CLIENT_ID= "admin-cli"
+
+      NIFI_PROCESSORS= "crc_transformer,semester_transformer,student_attendance_transformer,diksha_transformer,infra_transformer,static_data_transformer"
+      NIFI_URL="https://{{ api_endpoint }}/nifi-api"
 
 

@@ -47,15 +47,15 @@ SUM(CASE when BlockId IS NULL THEN 1 ELSE 0 END) AS count_null_blockid,
 SUM(CASE when Cluster IS NULL THEN 1 ELSE 0 END) AS count_null_cluster
 from flowfile)
 ''',
-"static_school_check_if_null":'''select * from flowfile except(select * from flowfile
-where UPPER(school) <> 'NULL'
-AND UPPER(latitude) <> 'NULL'
-AND UPPER(longitude) <> 'NULL' )
+"static_school_check_if_null":'''select * from flowfile except(select * from flowfile 
+where school is not NULL
+AND latitude > 0
+AND longitude > 0)
 ''',
-"static_school_not_null":'''select * from flowfile
-where UPPER(school) <> 'NULL'
-AND UPPER(latitude) <> 'NULL'
-AND UPPER(longitude) <> 'NULL'
+"static_school_not_null":'''select * from flowfile 
+where school is not NULL
+AND latitude > 0
+AND longitude > 0
 ''',
 "static_school_null_count":'''(select
 SUM(CASE when school IS NULL THEN 1 ELSE 0 END) AS count_null_school,
@@ -141,14 +141,13 @@ schcat ,schoolmedium ,districtid ,blockid ,clusterid ,latitude ,longitude  from 
 SchMgt as school_management_type_id,SchCat as school_category_id,SchoolMedium as school_medium_id,StateId as state_id,
 DistrictId as district_id,BlockId as block_id,ClusterId as cluster_id,Latitude as latitude,Longitude as longitude from flowfile
 ''',
-"static_insert_school_master":'''insert into school_master as a (school_id,school_name,school_address,school_zipcode,school_contact_number,school_email_contact,school_website,school_lowest_class,
+"static_insert_school_master":'''insert into school_master as a (school_id,school_name,school_lowest_class,
 school_highest_class,school_management_type_id,school_category_id,school_medium_id,created_on,updated_on)
-select school_id,school_name,school_address,school_zipcode,school_contact_number,school_email_contact,school_website,school_lowest_class,
+select school_id,school_name,school_lowest_class,
 school_highest_class,school_management_type_id,school_category_id,school_medium_id,now(),now() from school_tmp
 on conflict (school_id)
 do update set school_id=excluded.school_id,school_name=excluded.school_name,
-school_address=excluded.school_address,school_zipcode=excluded.school_zipcode,school_contact_number=excluded.school_contact_number,
-school_email_contact=excluded.school_email_contact,school_website=excluded.school_website,school_lowest_class=excluded.school_lowest_class,
+school_lowest_class=excluded.school_lowest_class,
 school_highest_class=excluded.school_highest_class,school_management_type_id=excluded.school_management_type_id,school_category_id=excluded.school_category_id,
 school_medium_id=excluded.school_medium_id,
 created_on=excluded.created_on,updated_on=now()
@@ -218,5 +217,7 @@ select block_name,block_id,district_id,now(),now() from block_tmp
 on conflict (block_id)
 do update set block_name=excluded.block_name,block_id=excluded.block_id,district_id=excluded.district_id,
 created_on=excluded.created_on,updated_on=now()
-'''
+''',
+"static_get_invalid_names":'''select school_id,school_name,block_id,district_id,cluster_id from school_hierarchy_details where cluster_name is null or block_name is null or district_name is null''',
+"school_invalid_tb":"school_invalid_data"
 }

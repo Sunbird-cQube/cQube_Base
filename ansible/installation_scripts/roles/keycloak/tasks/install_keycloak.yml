@@ -60,9 +60,8 @@
     state: restarted
 
 - name: Waiting for keycloak to started.. 10 seconds
-  wait_for:
-    port: 8080
-    delay: 10
+  pause:
+    seconds: 10
  
 - name: add-user-keycloak
   shell: ./add-user-keycloak.sh -u {{ keycloak_adm_user }} -p {{ keycloak_adm_passwd }}
