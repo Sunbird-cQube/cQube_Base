@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -24,8 +24,6 @@ export class DikshaTableComponent implements OnInit {
   public all: boolean = false;
   fileName;
   reportData: any = [];
-
-  // @ViewChild('dataTable', { static: true }) table;
 
   constructor(
     public http: HttpClient,
@@ -58,6 +56,7 @@ export class DikshaTableComponent implements OnInit {
   }
 
   metaData() {
+    document.getElementById('home').style.display = "none";
     this.errMsg();
     this.districtId = '';
     this.all = true
@@ -76,7 +75,7 @@ export class DikshaTableComponent implements OnInit {
     this.service.dikshaAllTableData({ timePeriod: this.timePeriod }).subscribe(res => {
       this.fileName = `Diksha_All_Data_${this.timePeriod}`;
       this.result = res;
-      this.result.sort((a, b) => (a.total_content < b.total_content) ? 1 : ((b.total_content < a.total_content) ? -1 : 0));
+      this.result.sort((a, b) => (a.total_content_plays < b.total_content_plays) ? 1 : ((b.total_content_plays < a.total_content_plays) ? -1 : 0));
       $(document).ready(function () {
         $('#table').DataTable({
           destroy: true, bLengthChange: false, bInfo: false,
@@ -95,7 +94,7 @@ export class DikshaTableComponent implements OnInit {
           subject: element.subject,
           grade: element.grade,
           medium: element.medium,
-          total_content_plays: element.total_content
+          total_content_plays: element.total_content_plays
         }
         this.reportData.push(obj);
       });
@@ -140,7 +139,7 @@ export class DikshaTableComponent implements OnInit {
       this.service.dikshaDistrictTableData(districtId).subscribe(res => {
         this.fileName = `Diksha_Dist_Data_${this.timePeriod}`;
         this.result = res;
-        this.result.sort((a, b) => (a.total_content < b.total_content) ? 1 : ((b.total_content < a.total_content) ? -1 : 0));
+        this.result.sort((a, b) => (a.total_content_plays < b.total_content_plays) ? 1 : ((b.total_content_plays < a.total_content_plays) ? -1 : 0));
         $(document).ready(function () {
           $('#table').DataTable({
             destroy: true, bLengthChange: false, bInfo: false,
@@ -161,7 +160,7 @@ export class DikshaTableComponent implements OnInit {
             subject: element.subject,
             grade: element.grade,
             medium: element.medium,
-            total_content_plays: element.total_content
+            total_content_plays: element.total_content_plays
           }
           this.reportData.push(obj);
         });
@@ -188,7 +187,7 @@ export class DikshaTableComponent implements OnInit {
     this.service.dikshaTimeRangeTableData(this.districtId, timePeriod).subscribe(res => {
       this.fileName = `Diksha_${this.hierName}_Dist_Data_${this.timePeriod}`;
       this.result = res;
-      this.result.sort((a, b) => (a.total_content < b.total_content) ? 1 : ((b.total_content < a.total_content) ? -1 : 0));
+      this.result.sort((a, b) => (a.total_content_plays < b.total_content_plays) ? 1 : ((b.total_content_plays < a.total_content_plays) ? -1 : 0));
       $(document).ready(function () {
         $('#table').DataTable({
           destroy: true, bLengthChange: false, bInfo: false,
@@ -209,7 +208,7 @@ export class DikshaTableComponent implements OnInit {
           subject: element.subject,
           grade: element.grade,
           medium: element.medium,
-          total_content_plays: element.total_content
+          total_content_plays: element.total_content_plays
         }
         this.reportData.push(obj);
       });

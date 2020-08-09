@@ -15,10 +15,9 @@ export class ChangePasswordComponent implements OnInit {
   public err;
   public successMsg;
   public isDisabled;
-  emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   constructor(public service: AppService, public router: Router, public keycloakService: KeycloakSecurityService) {
-    this.changePasswdData['email'] = localStorage.getItem('email');
+    this.changePasswdData['userName'] = localStorage.getItem('userName');
   }
 
   ngOnInit() {
@@ -29,7 +28,7 @@ export class ChangePasswordComponent implements OnInit {
   onSubmit(formData: NgForm) {
     document.getElementById('spinner').style.display = 'block';
     this.isDisabled = false;
-    if (this.changePasswdData.email === localStorage.getItem('email')) {
+    if (this.changePasswdData.userName === localStorage.getItem('userName')) {
       if (this.changePasswdData.newPasswd != this.changePasswdData.cnfpass) {
         this.err = "Password not matched";
         document.getElementById('spinner').style.display = 'none';
@@ -51,7 +50,7 @@ export class ChangePasswordComponent implements OnInit {
         })
       }
     } else {
-      this.err = "Invalid email";
+      this.err = "Invalid User";
       document.getElementById('spinner').style.display = 'none';
     }
   }

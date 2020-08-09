@@ -22,6 +22,6 @@ export class KeycloakSecurityService {
       onLoad: 'login-required'
     });
     localStorage.setItem('user_id', this.kc.tokenParsed.sub);
-    localStorage.setItem('email', this.kc.tokenParsed['email']);
+    localStorage.setItem('userName', this.kc.tokenParsed['preferred_username']);
   }
 }

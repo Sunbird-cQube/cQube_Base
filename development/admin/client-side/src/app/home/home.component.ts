@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.appUrl = environment.appUrl;
-    this.email = localStorage.getItem('email');
+    this.email = localStorage.getItem('userName');
     this.role = localStorage.getItem('role');
     if (this.role == 1) {
       this.showsideMenu = false;

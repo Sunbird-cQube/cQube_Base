@@ -137,8 +137,8 @@ export class AppServiceComponent {
         });
     }
 
-    changePassword(data) {
-        return this.http.post(`${this.baseUrl}/changePassword`, data, {
+    changePassword(data, id) {
+        return this.http.post(`${this.baseUrl}/changePassword/${id}`, { cnfpass: data }, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
