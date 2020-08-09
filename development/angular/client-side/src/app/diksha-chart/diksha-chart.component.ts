@@ -100,26 +100,27 @@ export class DikshaChartComponent implements OnInit {
       this.y_axisValue = maxValue;
 
       this.stackChart('report1', result);
+
+      this.service.dikshaAllData('Teacher', this.timePeriod).subscribe(result => {
+        this.stackChart('report2', result);
+      }, err => {
+        this.loaderAndErr();
+      })
+      this.service.dikshaAllData('Student', this.timePeriod).subscribe(result => {
+        this.stackChart('report3', result)
+      }, err => {
+        this.loaderAndErr();
+      })
+      this.service.dikshaAllData('Other', this.timePeriod).subscribe(result => {
+        this.stackChart('report4', result);
+        document.getElementById('spinner').style.display = 'none';
+      }, err => {
+        this.loaderAndErr();
+      })
     }, err => {
       this.loaderAndErr();
     });
 
-    this.service.dikshaAllData('Teacher', this.timePeriod).subscribe(result => {
-      this.stackChart('report2', result);
-    }, err => {
-      this.loaderAndErr();
-    })
-    this.service.dikshaAllData('Student', this.timePeriod).subscribe(result => {
-      this.stackChart('report3', result)
-    }, err => {
-      this.loaderAndErr();
-    })
-    this.service.dikshaAllData('Other', this.timePeriod).subscribe(result => {
-      this.stackChart('report4', result);
-      document.getElementById('spinner').style.display = 'none';
-    }, err => {
-      this.loaderAndErr();
-    })
   }
 
 
@@ -174,31 +175,32 @@ export class DikshaChartComponent implements OnInit {
         var result1 = array.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);
         maxValue = Math.max(...result1);
         this.y_axisValue = maxValue;
-        this.stackChart('report1', result)
+        this.stackChart('report1', result);
+
+        this.service.dikshaDistData(districtId, 'Teacher', this.timePeriod).subscribe(result => {
+          this.stackChart('report2', result)
+        }, err => {
+          this.loaderAndErr();
+          console.log(err);
+        })
+        this.service.dikshaDistData(districtId, 'Student', this.timePeriod).subscribe(result => {
+          this.stackChart('report3', result)
+        }, err => {
+          this.loaderAndErr();
+          console.log(err);
+        })
+        this.service.dikshaDistData(districtId, 'Other', this.timePeriod).subscribe(result => {
+          this.stackChart('report4', result);
+          document.getElementById('spinner').style.display = 'none';
+        }, err => {
+          this.loaderAndErr();
+          console.log(err);
+        })
       }, err => {
         this.loaderAndErr();
         this.result = [];
         this.showAllChart = (this.result.length! > 0);
         this.allDataNotFound = err.error.errMsg;
-      })
-      this.service.dikshaDistData(districtId, 'Teacher', this.timePeriod).subscribe(result => {
-        this.stackChart('report2', result)
-      }, err => {
-        this.loaderAndErr();
-        console.log(err);
-      })
-      this.service.dikshaDistData(districtId, 'Student', this.timePeriod).subscribe(result => {
-        this.stackChart('report3', result)
-      }, err => {
-        this.loaderAndErr();
-        console.log(err);
-      })
-      this.service.dikshaDistData(districtId, 'Other', this.timePeriod).subscribe(result => {
-        this.stackChart('report4', result);
-        document.getElementById('spinner').style.display = 'none';
-      }, err => {
-        this.loaderAndErr();
-        console.log(err);
       })
 
     }
@@ -238,33 +240,34 @@ export class DikshaChartComponent implements OnInit {
       maxValue = Math.max(...result1);
       this.y_axisValue = maxValue;
 
-      this.stackChart('report1', result)
+      this.stackChart('report1', result);
+
+
+      this.service.dikshaDistData(this.districtId, 'Teacher', this.timePeriod).subscribe(result => {
+        this.stackChart('report2', result)
+      }, err => {
+        this.loaderAndErr();
+        console.log(err);
+      })
+      this.service.dikshaDistData(this.districtId, 'Student', this.timePeriod).subscribe(result => {
+        this.stackChart('report3', result)
+      }, err => {
+        this.loaderAndErr();
+        console.log(err);
+      })
+      this.service.dikshaDistData(this.districtId, 'Other', this.timePeriod).subscribe(result => {
+        this.stackChart('report4', result);
+        document.getElementById('spinner').style.display = 'none';
+      }, err => {
+        this.loaderAndErr();
+        console.log(err);
+      });
     }, err => {
       this.loaderAndErr();
       this.result = [];
       this.showAllChart = (this.result.length! > 0);
       this.allDataNotFound = err.error.errMsg;
     })
-    this.service.dikshaDistData(this.districtId, 'Teacher', this.timePeriod).subscribe(result => {
-      this.stackChart('report2', result)
-    }, err => {
-      this.loaderAndErr();
-      console.log(err);
-    })
-    this.service.dikshaDistData(this.districtId, 'Student', this.timePeriod).subscribe(result => {
-      this.stackChart('report3', result)
-    }, err => {
-      this.loaderAndErr();
-      console.log(err);
-    })
-    this.service.dikshaDistData(this.districtId, 'Other', this.timePeriod).subscribe(result => {
-      this.stackChart('report4', result);
-      document.getElementById('spinner').style.display = 'none';
-    }, err => {
-      this.loaderAndErr();
-      console.log(err);
-    });
-
 
   }
 

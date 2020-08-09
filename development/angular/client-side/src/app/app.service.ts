@@ -234,4 +234,34 @@ export class AppServiceComponent {
     dikshaTimeRangeTableData(districtId, timePeriod) {
         return this.http.post(`${this.baseUrl}/dikshaTable/dikshaTimeRangeTableData`, { districtId: districtId, timePeriod: timePeriod }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
+
+    //Semester Completion
+    semCompletionDist() {
+        return this.http.get(`${this.baseUrl}/semCompDist/allDistrictWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    semCompletionBlock() {
+        return this.http.get(`${this.baseUrl}/semCompBlock/allBlockWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    semCompletionCluster() {
+        return this.http.get(`${this.baseUrl}/semCompCluster/allClusterWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    semCompletionSchool() {
+        return this.http.post(`${this.baseUrl}/semCompSchool/allSchoolWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    semCompletionBlockPerDist(distId) {
+        return this.http.get(`${this.baseUrl}/semCompBlock/blockWise/${distId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    semCompletionClusterPerBlock(distId, blockId) {
+        return this.http.get(`${this.baseUrl}/semCompCluster/clusterWise/${distId}/${blockId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+    semCompletionSchoolPerClustter(distId, blockId, clusterId) {
+        return this.http.post(`${this.baseUrl}/semCompSchool/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    //-----------------------------------------------
+    school_invalid() {
+        return this.http.get(`${this.baseUrl}/school_invalid/school_invalid_data`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
 }

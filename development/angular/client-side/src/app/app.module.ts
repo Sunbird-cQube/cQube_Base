@@ -29,6 +29,7 @@ import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
 import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
 import { DikshaTableComponent } from './diksha-table/diksha-table.component';
+import { SemesterExceptionComponent } from './semester-exception/semester-exception.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -51,7 +52,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     InfraMapVisualisationComponent,
     HomePageComponent,
     DikshaChartComponent,
-    DikshaTableComponent
+    DikshaTableComponent,
+    SemesterExceptionComponent
   ],
   imports: [
     BrowserModule,

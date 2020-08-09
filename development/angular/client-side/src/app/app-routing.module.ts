@@ -14,6 +14,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
 import { DikshaTableComponent } from './diksha-table/diksha-table.component';
+import { SemesterExceptionComponent } from './semester-exception/semester-exception.component';
 
 const routes: Routes = [
   {
@@ -53,6 +54,9 @@ const routes: Routes = [
       },
       {
         path: 'diksha-table', component: DikshaTableComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'sem-exception', component: SemesterExceptionComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
