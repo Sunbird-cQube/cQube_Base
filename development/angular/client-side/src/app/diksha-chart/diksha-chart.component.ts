@@ -2,8 +2,9 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
-import { Chart } from 'chart.js';
 import { ExportToCsv } from 'export-to-csv';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-diksha-chart',
@@ -11,6 +12,37 @@ import { ExportToCsv } from 'export-to-csv';
   styleUrls: ['./diksha-chart.component.css']
 })
 export class DikshaChartComponent implements OnInit {
+  chart1: boolean = false;
+  chart2: boolean = false;
+  chart3: boolean = false;
+  chart4: boolean = false;
+
+  public colors = [];
+  public barChartOptions: ChartOptions = {};
+  public barChartLabels: Label[] = [];
+  public barChartLabels1: Label[] = [];
+  public barChartLabels2: Label[] = [];
+  public barChartLabels3: Label[] = [];
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  public barChartPlugins = [];
+
+  public barChartData: ChartDataSets[] = [
+    { data: [], label: 'Series A', stack: 'a' }
+  ];
+
+  public barChartData1: ChartDataSets[] = [
+    { data: [], label: 'Series A', stack: 'a' }
+  ];
+
+  public barChartData2: ChartDataSets[] = [
+    { data: [], label: 'Series A', stack: 'a' }
+  ];
+
+  public barChartData3: ChartDataSets[] = [
+    { data: [], label: 'Series A', stack: 'a' }
+  ];
+
   public result: any = [];
   public districtId: any = '';
   public timePeriod = 'last_30_days';
@@ -49,7 +81,7 @@ export class DikshaChartComponent implements OnInit {
       document.getElementById('spinner').style.display = 'none';
       document.getElementById('errMsg').style.color = 'red';
       document.getElementById('errMsg').style.display = 'block';
-      document.getElementById('errMsg').innerHTML = 'No data found';
+      // document.getElementById('errMsg').innerHTML = 'No data found';
     }
   }
   metaData() {
@@ -70,21 +102,30 @@ export class DikshaChartComponent implements OnInit {
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('spinner').style.marginTop = '3%';
   }
+  emptyChart() {
+    this.barChartData = [
+      { data: [], label: '', stack: 'a' }
+    ];
 
+    this.barChartData1 = [
+      { data: [], label: '', stack: 'a' }
+    ];
+
+    this.barChartData2 = [
+      { data: [], label: '', stack: 'a' }
+    ];
+
+    this.barChartData3 = [
+      { data: [], label: '', stack: 'a' }
+    ];
+  }
   async getAllData() {
-    if (this.result.length > 0) {
-      this.myChart.destroy();
-    }
+    this.emptyChart();
     document.getElementById('home').style.display = "none";
     this.errMsg();
     this.districtId = '';
     this.timePeriod = 'last_30_days';
-    if (this.result.length == 0 || this.result.data.length > 0) {
-      document.querySelector("#r1").innerHTML = '<h3>Overall Usage</h3><canvas *ngIf="!showAllChart" id="report1" height="120vh"></canvas>';
-      document.querySelector("#r2").innerHTML = '<h3>Usage by Teachers</h3><canvas id="report2" height="120vh"></canvas>';
-      document.querySelector("#r3").innerHTML = '<h3>Usage by Students</h3><canvas id="report3" height="120vh"></canvas>';
-      document.querySelector("#r4").innerHTML = '<h3>Usage by Others</h3><canvas id="report4" height="120vh"></canvas>';
-    }
+
     this.result = [];
     this.all = true
     this.dist = false
@@ -99,20 +140,34 @@ export class DikshaChartComponent implements OnInit {
       maxValue = Math.max(...result1);
       this.y_axisValue = maxValue;
 
-      this.stackChart('report1', result);
+      this.createChart(result, "barChartData");
+      if (result['data']) {
+        this.chart1 = (result['data'][0].length > 0);
+        console.log(this.chart1);
+      }
 
       this.service.dikshaAllData('Teacher', this.timePeriod).subscribe(result => {
-        this.stackChart('report2', result);
+        this.createChart(result, "barChartData1");
+        if (result['data']) {
+          this.chart2 = (result['data'][0].length > 0);
+        }
       }, err => {
         this.loaderAndErr();
       })
       this.service.dikshaAllData('Student', this.timePeriod).subscribe(result => {
-        this.stackChart('report3', result)
+        this.createChart(result, "barChartData2");
+        if (result['data']) {
+          this.chart3 = (result['data'][0].length > 0);
+        }
       }, err => {
         this.loaderAndErr();
       })
       this.service.dikshaAllData('Other', this.timePeriod).subscribe(result => {
-        this.stackChart('report4', result);
+
+        this.createChart(result, "barChartData3");
+        if (result['data']) {
+          this.chart4 = (result['data'][0].length > 0);
+        }
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.loaderAndErr();
@@ -125,9 +180,7 @@ export class DikshaChartComponent implements OnInit {
 
 
   districtWise(districtId) {
-    if (this.result.length > 0) {
-      this.myChart.destroy();
-    }
+    this.emptyChart();
     this.errMsg();
     document.getElementById('home').style.display = "Block";
     this.districtId = districtId
@@ -156,14 +209,7 @@ export class DikshaChartComponent implements OnInit {
         this.hierName = d[0].district_name
       }
 
-      if (this.result.data != undefined) {
-        if (this.result.data.length > 0) {
-          document.querySelector("#r1").innerHTML = '<h3>Overall Usage</h3><canvas id="report1" height="120vh"></canvas>';
-          document.querySelector("#r2").innerHTML = '<h3>Usage by Teachers</h3><canvas id="report2" height="120vh"></canvas>';
-          document.querySelector("#r3").innerHTML = '<h3>Usage by Students</h3><canvas id="report3" height="120vh"></canvas>';
-          document.querySelector("#r4").innerHTML = '<h3>Usage by Others</h3><canvas id="report4" height="120vh"></canvas>';
-        }
-      }
+
       this.result = [];
       this.service.dikshaDistData(districtId, 'All', this.timePeriod).subscribe(async result => {
         var arr = [];
@@ -175,22 +221,38 @@ export class DikshaChartComponent implements OnInit {
         var result1 = array.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);
         maxValue = Math.max(...result1);
         this.y_axisValue = maxValue;
-        this.stackChart('report1', result);
+        this.createChart(result, "barChartData");
+        if (result['data']) {
+          this.chart1 = (result['data'][0].length > 0);
+        }
 
         this.service.dikshaDistData(districtId, 'Teacher', this.timePeriod).subscribe(result => {
-          this.stackChart('report2', result)
+          if (result['data']) {
+            this.chart2 = (result['data'][0].length > 0);
+          }
+
+          this.createChart(result, "barChartData1");
         }, err => {
           this.loaderAndErr();
           console.log(err);
         })
         this.service.dikshaDistData(districtId, 'Student', this.timePeriod).subscribe(result => {
-          this.stackChart('report3', result)
+          this.createChart(result, "barChartData2");
+          if (result['data']) {
+            this.chart3 = (result['data'][0].length > 0);
+          }
+
         }, err => {
           this.loaderAndErr();
           console.log(err);
         })
         this.service.dikshaDistData(districtId, 'Other', this.timePeriod).subscribe(result => {
-          this.stackChart('report4', result);
+
+          this.createChart(result, "barChartData3");
+          if (result['data']) {
+            this.chart4 = (result['data'][0].length > 0);
+          }
+
           document.getElementById('spinner').style.display = 'none';
         }, err => {
           this.loaderAndErr();
@@ -208,21 +270,13 @@ export class DikshaChartComponent implements OnInit {
   }
 
   timeRange(timePeriod) {
-    if (this.result.length > 0) {
-      this.myChart.destroy();
-    }
+    this.emptyChart();
+
     document.getElementById('home').style.display = "block";
     this.allDataNotFound = undefined;
     console.log(this.timePeriod);
     this.errMsg();
-    if (this.result.data != undefined) {
-      if (this.result.data.length > 0) {
-        document.querySelector("#r1").innerHTML = '<h3>Overall Usage</h3><canvas id="report1" height="120vh"></canvas>';
-        document.querySelector("#r2").innerHTML = '<h3>Usage by Teachers</h3><canvas id="report2" height="120vh"></canvas>';
-        document.querySelector("#r3").innerHTML = '<h3>Usage by Students</h3><canvas id="report3" height="120vh"></canvas>';
-        document.querySelector("#r4").innerHTML = '<h3>Usage by Others</h3><canvas id="report4" height="120vh"></canvas>';
-      }
-    }
+
     this.result = [];
     if (this.districtId == '') {
       this.districtId = 'All'
@@ -240,23 +294,39 @@ export class DikshaChartComponent implements OnInit {
       maxValue = Math.max(...result1);
       this.y_axisValue = maxValue;
 
-      this.stackChart('report1', result);
+      this.createChart(result, "barChartData");
+      if (result['data']) {
+        this.chart1 = (result['data'][0].length > 0);
+      }
 
 
       this.service.dikshaDistData(this.districtId, 'Teacher', this.timePeriod).subscribe(result => {
-        this.stackChart('report2', result)
+        this.createChart(result, "barChartData1");
+        if (result['data']) {
+          this.chart2 = (result['data'][0].length > 0);
+        }
+
       }, err => {
         this.loaderAndErr();
         console.log(err);
       })
       this.service.dikshaDistData(this.districtId, 'Student', this.timePeriod).subscribe(result => {
-        this.stackChart('report3', result)
+        this.createChart(result, "barChartData2");
+        if (result['data']) {
+          this.chart3 = (result['data'][0].length > 0);
+        }
+
       }, err => {
         this.loaderAndErr();
         console.log(err);
       })
       this.service.dikshaDistData(this.districtId, 'Other', this.timePeriod).subscribe(result => {
-        this.stackChart('report4', result);
+
+        this.createChart(result, "barChartData3");
+        if (result['data']) {
+          this.chart4 = (result['data'][0].length > 0);
+        }
+
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.loaderAndErr();
@@ -271,14 +341,13 @@ export class DikshaChartComponent implements OnInit {
 
   }
 
-  stackChart(id, result) {
-    this.result = result;
-    let b = []
-    if (result.data != undefined) {
-      result.data.forEach(element => {
+  createChart(data, barChartData) {
+    var chartData = [];
+    if (data.data != undefined) {
+      data.data.forEach(element => {
+        var obj = { data: element.score, label: element.subject, stack: 'a' }
+        chartData.push(obj);
         let a = {}
-        a['label'] = element.subject;
-        a['data'] = element.score;
         if (element.subject == 'Sanskrit') {
           a['backgroundColor'] = '#cc0000'
         }
@@ -312,48 +381,80 @@ export class DikshaChartComponent implements OnInit {
         if (element.subject == 'Maths') {
           a['backgroundColor'] = '#3366cc'
         }
-        b.push(a)
+        this.colors.push(a);
       });
-    }
+      this.barChartOptions = {
+        legend: {
+          display: true
+        },
+        responsive: true,
+        tooltips: {
+          custom: function (tooltip) {
+            if (!tooltip) return;
+            tooltip.displayColors = false;
+          },
+          // callbacks: {
+          //   label: function (tooltipItem, data) {
+          //     var label = data.labels[tooltipItem.index];
+          //     var subject = data.datasets[tooltipItem.index].label
+          //     var multistringText = ["Grade Name" + ": " + label];
+          //     multistringText.push("Subject Name" + ": " + subject);
+          //     // multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
+          //     return multistringText;
+          //   }
+          // }
+        },
 
-    // var ctx = document.getElementById(id);
-    this.myChart = new Chart(id, {
-      type: 'bar',
-      data: {
-        labels: result.grades,
-        datasets: b,
-
-      },
-      options: {
         scales: {
           xAxes: [{
+            gridLines: {
+              color: "rgba(252, 239, 252)",
+            },
+            ticks: {
+              min: 0
+            },
             scaleLabel: {
               display: true,
-              labelString: 'Grades'
-            },
-            stacked: true,
-            gridLines: {
-              color: 'transparent'
+              labelString: "Content-Gradelevel(Group)",
+              fontSize: 12,
+              // fontColor: "dark gray"
             }
-
           }],
           yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Total Score'
-            },
-            stacked: true,
             gridLines: {
-              color: 'transparent'
+              color: "rgba(252, 239, 252)",
             },
             ticks: {
               min: 0,
               max: this.y_axisValue
             },
+            scaleLabel: {
+              display: true,
+              labelString: "Total Content Play",
+              fontSize: 12,
+              // fontColor: "dark gray",
+            }
           }]
         }
       }
-    });
+      if (barChartData == "barChartData") {
+        this.barChartLabels = data.grades;
+        this.barChartData = chartData;
+      }
+      if (barChartData == "barChartData1") {
+        this.barChartLabels1 = data.grades;
+        this.barChartData1 = chartData;
+      }
+      if (barChartData == "barChartData2") {
+        this.barChartLabels2 = data.grades;
+        this.barChartData2 = chartData;
+      }
+      if (barChartData == "barChartData3") {
+        this.barChartLabels3 = data.grades;
+        this.barChartData3 = chartData;
+      }
+
+    }
 
   }
 
