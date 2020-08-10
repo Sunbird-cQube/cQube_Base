@@ -703,7 +703,7 @@ END;
 $$  LANGUAGE plpgsql;
 
 /* temperory table */
-----------------------------------------------
+
 create table if not exists cluster_tmp
   (
 cluster_id  bigint primary key not null,
@@ -750,7 +750,7 @@ created_on  TIMESTAMP without time zone NOT NULL,
 updated_on  TIMESTAMP without time zone NOT NULL
 );
 
-----------------------------------------------------
+
 /* mst tables */
 
 create table if not exists cluster_mst
@@ -860,9 +860,6 @@ updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_master(school_id)
 );
 
--- create table if not exists holiday_master(holiday_id bigint primary key not null,school_id bigint not null,holiday_date date,created_on timestamp,updated_on timestamp);
-
--- create index if not exists holiday_master_id on holiday_master(school_id,holiday_date);
 
 /* school_hierarchy_details */
 
@@ -1805,7 +1802,7 @@ create table if not exists school_invalid_data
 
 
 /*Diksha*/
-  /* master table */
+/* master table */
 
 create table IF NOT EXISTS diksha_content_staging(
   ff_uuid text,
@@ -1870,8 +1867,8 @@ create table IF NOT EXISTS diksha_content_temp(
   );
 
 
--- Transanction table 
--- diksha_content_trans
+/* Transanction table */
+/* diksha_content_trans*/
 
   create table IF NOT EXISTS diksha_content_trans(
   content_view_date date,
@@ -1903,8 +1900,8 @@ create table IF NOT EXISTS diksha_content_temp(
   updated_on TIMESTAMP without time zone 
   );
 
-  -- Aggregation table
-  -- diksha_total_content
+/* Aggregation table*/
+/* diksha_total_content*/
 
   create table IF NOT EXISTS diksha_total_content(
   id serial,
@@ -1941,8 +1938,9 @@ create table IF NOT EXISTS diksha_content_temp(
   updated_on TIMESTAMP without time zone 
   );
 
-  -- null check
-  -- diksha_null_col
+/* null check*/
+/* diksha_null_col*/
+
   create table if not exists diksha_null_col
     (
   filename varchar(200),
@@ -1969,8 +1967,8 @@ create table IF NOT EXISTS diksha_content_temp(
   count_null_total_time_spent  int
   );
 
-  -- Duplicate check
-  -- diksha_dup
+/* Duplicate check*/
+/* diksha_dup*/
 
   create table if not exists diksha_dup
     (
@@ -2080,8 +2078,8 @@ create table IF NOT EXISTS diksha_content_temp(
   );
 
 
--- Transanction table 
--- diksha_content_trans
+/* Transanction table */
+/* diksha_content_trans*/
 
   create table IF NOT EXISTS diksha_content_trans(
   content_view_date date,
@@ -2113,8 +2111,8 @@ create table IF NOT EXISTS diksha_content_temp(
   updated_on TIMESTAMP without time zone 
   );
 
-  -- Aggregation table
-  -- diksha_total_content
+/* Aggregation table*/
+/* diksha_total_content*/
 
   create table IF NOT EXISTS diksha_total_content(
   id serial,
@@ -2151,8 +2149,8 @@ create table IF NOT EXISTS diksha_content_temp(
   updated_on TIMESTAMP without time zone 
   );
 
-  -- null check
-  -- diksha_null_col
+/* null check*/
+/* diksha_null_col*/
   create table if not exists diksha_null_col
     (
   filename varchar(200),
@@ -2179,8 +2177,8 @@ create table IF NOT EXISTS diksha_content_temp(
   count_null_total_time_spent  int
   );
 
-  -- Duplicate check
-  -- diksha_dup
+/* Duplicate check
+   diksha_dup */
 
   create table if not exists diksha_dup
     (
