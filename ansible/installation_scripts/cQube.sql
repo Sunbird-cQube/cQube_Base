@@ -1020,6 +1020,7 @@ create index if not exists student_attendance_staging2_id on student_attendance_
 
 create table if not exists student_attendance_temp
 (
+ff_uuid text,
 attendance_id  bigint primary key not null,
 student_id  bigint,
 school_id  bigint,

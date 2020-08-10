@@ -7,7 +7,11 @@
 - Domain name (with SSL)
 - 1 TB Storage  
 
+<<<<<<< HEAD
 <b>Reverse proxy rules</b>
+=======
+<b>Reverse proxy rules</>
+>>>>>>> 7b85da85849df83fa625168bcf38171d0e734910
 The following ports have to be configured in the nginix server with reverse proxy:
 1) Port 4200 should be proxied to the '/' 
 2) Port 8080 should be proxied to the '/auth'
@@ -78,7 +82,11 @@ Once installation is completed without any errors, you will be prompted the foll
 
 <b>Creating Users and authentication with Keycloak:</b>
 
+<<<<<<< HEAD
 <b>Creating a New Realm:</b>
+=======
+<b>Creating a New Realm:<b>
+>>>>>>> 7b85da85849df83fa625168bcf38171d0e734910
 
 To Create a new realm, complete the following steps:
 1) Go to ```https://<domain_name>/auth/``` and click on the Keycloak Administration Console. 
@@ -139,6 +147,7 @@ This section need not be changed
 - Identity Providers
 
 This section need not be changed 
+<<<<<<< HEAD
 
 - User Federation
 
@@ -288,11 +297,102 @@ cqube_emission
 ```
     
 
+=======
+
+- User Federation
+
+This section need not be changed 
+
+- Authentication
+
+This section need not be changed 
+
+SECTION - MANAGE
+
+- Groups 
+
+This section need not be changed 
+
+- Users
+
+To create a new user in your created realm, along with a temporary password for that new user, complete the following steps,
+
+1) From the left navigation bar, click on Users. The User creation section will be displayed on the right hand side of the page. 
+2) Click on the Add User button to open the add user page. 
+Create a user with the keycloak username and keycloak password mentioned during the cQube installation process in the config.yml file. This user will be the default admin user name and password that will be used for all the apis. (this is a mandatory step). 
+3) Enter information in all the fields, user enabled has to be set to 'ON' and email verified is set to 'OFF'. (The required user actions should be left as it is) 
+4) Once the uer is created, the user screen is displayed with the tabs Details, Attributes, Credentials, Role Mappings, Groups, Consents, Sessions.
+5) Click the Credentials tab to set a temporary password for the new user. 
+6) Type a new password and confirm it. 
+7) Click Set Password to set the user password.
+8) Click on the Role mappings tab.
+9) By default, the offline_access and uma_authorization roles are present in the Assigned Roles section. Remove these roles. (this is a mandatory step)
+10) Assign either one of the following roles (only one role can be assigned per user) - admin, emission, report_viewer. 
+11) Admin user can perform all the admin functionalities as well as view all the reports, emission user can emit the data files and the report viewer can view all the reports.
+12) Click on 'view all users' button to view a list of all the users.
+
+- Sessions 
+
+This section need not be changed
+
+- Events
+
+This section need not be changed
+
+- Import
+
+This section need not be changed
+
+- Export
+
+This section need not be changed
+```
+
+- After configuring the keycloak manually using the browser, fill the configurations in file using the command mentioned below from the terminal at the same location (cQube/ansible/installation_scripts/)
+```
+nano config_keycloak.yml
+```
+- After filling all the details in the file, Run the following command:
+```
+sudo ansible-playbook integrate_keycloak.yml
+```
+
+<b>Uploading data to S3 Emission bucket:</b>
+- 
+Create `cqube_emission` directory and place the data files as shown in file structure below inside the cqube_emission folder."
+```
+cqube_emission
+.
+├── block_master
+│   └── block_mst.zip
+├── cluster_master
+│   └── cluster_mst.zip
+|── district_master
+|   └── district_mst.zip
+├── school_master
+│   └── school_mst.zip
+|
+|── semester
+|   └── semester.zip
+├── user_location_master
+│   └── user_location_master.zip
+|── inspection_master
+|   └── inspection_master.zip
+├── student_attendance
+|   └── student_attendance.zip
+|── infra_trans
+    └── infra_trans.zip
+    
+```
+>>>>>>> 7b85da85849df83fa625168bcf38171d0e734910
 - After creating the emission user, Update the emission user details mentioned below in `cQube/development/python/client/config.py`.
   - emission username 
   - emission password
   - location of the cqube_emission directory where the files are placed as below. Example: `/home/ubuntu/cqube_emission/`
+<<<<<<< HEAD
   - emission_url ( `https://<domain_name>/data` Note: URL depends upon the server configured in firewall which includes SSL and reverse proxy location)
+=======
+>>>>>>> 7b85da85849df83fa625168bcf38171d0e734910
 
 - After completing the configuration. Save and close the file.
 - Execute the client.py file located in `cQube/development/python/client/` directory, as mentioned below to emit the data files to s3_emission bucket. 
