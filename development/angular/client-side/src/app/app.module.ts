@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ChartsModule } from 'ng2-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -26,6 +27,9 @@ import { SchoolInfrastructureComponent } from './school-infrastructure/school-in
 import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
+import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
+import { DikshaTableComponent } from './diksha-table/diksha-table.component';
+import { SemesterExceptionComponent } from './semester-exception/semester-exception.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -46,7 +50,10 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     DashboardComponent,
     SchoolInfrastructureComponent,
     InfraMapVisualisationComponent,
-    HomePageComponent
+    HomePageComponent,
+    DikshaChartComponent,
+    DikshaTableComponent,
+    SemesterExceptionComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +68,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     MatSortModule,
     HttpClientModule,
     FormsModule,
+    ChartsModule,
     BrowserAnimationsModule
   ],
   exports: [

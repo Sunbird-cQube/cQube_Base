@@ -8,6 +8,18 @@ const getDateRange = require('./controller/attendanceRoutes/getDateRange');
 const roleLogin = require('./controller/users/roleBasedLogin');
 const changePasswd = require('./controller/users/changePassword');
 
+//deeksha
+const deekshaData = require('./controller/diksha/diksha');
+const dikshaTable = require('./controller/diksha/dikshaTable');
+
+//completion report...
+const sem_completionDist = require('./controller/completionReports/semester/districtWise')
+const sem_completionBlock = require('./controller/completionReports/semester/blockWise')
+const sem_completionCluster = require('./controller/completionReports/semester/clusterWise')
+const sem_completionSchool = require('./controller/completionReports/semester/schoolWise')
+
+const school_invalid = require('./controller/completionReports/school_invalid');
+
 // const crcData = require('./controller/users/crcData');
 // crc files
 const crcDistrictWise = require('../api/controller/crcRoutes/districtWise');
@@ -63,5 +75,16 @@ router.use('/infraMap', infraMapDistWise);
 router.use('/infraMap', infraMapBlockWise);
 router.use('/infraMap', infraMapClusterWise);
 router.use('/infraMap', infraMapSchoolWise);
+
+router.use('/diksha', deekshaData);
+router.use('/dikshaTable', dikshaTable);
+
+// Semester completion report
+router.use('/semCompDist', sem_completionDist);
+router.use('/semCompBlock', sem_completionBlock);
+router.use('/semCompCluster', sem_completionCluster);
+router.use('/semCompSchool', sem_completionSchool);
+
+router.use('/school_invalid', school_invalid);
 
 module.exports = router;
