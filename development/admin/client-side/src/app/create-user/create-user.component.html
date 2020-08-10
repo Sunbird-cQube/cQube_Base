@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-12">
                     <h1 id="head" style="text-align: center; margin: 20px 0px 20px 0px; color: #284d8a;">Create User
                     </h1>
                     <p id="err" class="validation-message">{{err}}</p>
@@ -14,56 +14,18 @@
             <form class="user" #formData="ngForm" (ngSubmit)="formData.valid && onSubmit(formData)"
                 style="padding: 0px 25px 0px 25px;">
                 <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-6">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="form-group" style="margin-bottom: 15px;">
-                                    <label for="firstname" style="color: blue; font-family: Arial;">Enter the First Name
-                                        <span style="color:red">*</span> </label>
-                                    <input type="text" #firstname="ngModel" [(ngModel)]="logData.firstname" id="fname"
-                                        class="form-control form-control-user" name="firstname" required
-                                        [ngClass]="{'invalid-textbox' :formData.submitted && !firstname.valid }">
-                                    <div *ngIf="formData.submitted && firstname?.errors">
-                                        <label *ngIf="firstname.errors.required" class="validation-message">This
-                                            field is required</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-5">
-                                <div class="form-group" style="margin-bottom: 15px;">
-                                    <label for="lastname" style="color: blue; font-family: Arial;">Enter the Last
-                                        Name</label>
-
-                                    <input type="text" #lastname="ngModel" [(ngModel)]="logData.lastname" id="lname"
-                                        class="form-control form-control-user" name="lastname"
-                                        [ngClass]="{'invalid-textbox' :formData.submitted && !lastname.valid }">
-                                    <div *ngIf="formData.submitted && lastname?.errors">
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <div
+                            style="margin: 0px auto; width: 170px;text-align: justify;color: rgb(107, 107, 107);padding: 5%; background-color: rgb(241, 241, 241);border-radius: 3%;">
+                            <em style="font-weight: bold;" class="fa fa-hand-o-right"></em> &nbsp; The Create User
+                            Screen allows you to add new users who can login to your site.
+                            Enter the required information and click on 'Create User'.
                         </div>
+                    </div>
+                    <div class="col-sm-4">
                         <div class="row">
-                            <div class="col-sm-5">
-                                <div class="form-group" style="margin-bottom: 15px;">
-                                    <label for="email" style="color: blue; font-family: Arial;">Enter the Email
-                                        Address <span style="color:red">*</span></label>
-                                    <input id="email" type="text" #email="ngModel" [(ngModel)]="logData.email"
-                                        class="form-control form-control-user" name="email" aria-describedby="emailHelp"
-                                        required [pattern]="emailRegex"
-                                        [ngClass]="{'invalid-textbox' :formData.submitted && !email.valid }">
-                                    <div *ngIf="formData.submitted && email?.errors">
-                                        <label *ngIf="email.errors.required" class="validation-message">This field is
-                                            required</label>
-                                        <label *ngIf="email.errors.pattern" class="validation-message">Invalid email
-                                            address</label>
-                                    </div>
-                                    <label *ngIf="errMail" class="validation-message">{{errMail}}</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-12">
                                 <div class="form-group" style="margin-bottom: 15px;">
                                     <label for="username" style="color: blue; font-family: Arial;">Enter the Username
                                         <span style="color:red">*</span></label>
@@ -79,7 +41,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-5">
+                            <div class="col-sm-12">
                                 <div class="form-group" style="margin-bottom: 15px;">
                                     <label for="roleid" style="color: blue; font-family: Arial;">Select the
                                         Role <span style="color:red">*</span></label><br>
@@ -99,8 +61,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-12">
                                 <div class="form-group" style="margin-bottom: 15px;">
                                     <label for="password" style="color: blue; font-family: Arial;">Password <span
                                             style="color:red">*</span></label>
@@ -124,16 +85,11 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div
-                            style="margin: 0px auto; width: 170px;text-align: justify;color: rgb(107, 107, 107);padding: 5%; background-color: rgb(241, 241, 241);border-radius: 3%;">
-                            <em style="font-weight: bold;" class="fa fa-hand-o-right"></em> &nbsp; The Create User
-                            Screen allows you to add new users who can login to your site.
-                            Enter the required information and click on 'Create User'.
-                        </div>
+
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4"></div>
+                    <div class="col-sm-5"></div>
                     <div class="col-sm-2">
                         <button id="btn" style="background-color: #0549dd;" class="btn btn-primary btn-user btn-block"
                             type="submit">
