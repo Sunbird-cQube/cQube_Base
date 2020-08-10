@@ -13,3 +13,5 @@
 /ansible/installation_scripts/nifi.json
 
 /ansible/installation_scripts/config.yml
+
+/ansible/installation_scripts/upgradation_config.yml

@@ -1,4 +1,5 @@
 ---
+# installing global packages related to angular and node.js
 - name: Install the gpg key for nodejs LTS
   apt_key:
     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"

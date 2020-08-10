@@ -43,13 +43,11 @@ over (partition by AadhaarUID,SchoolId,Sem) as rn from FLOWFILE) sq Where rn >1
 select AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit from (SELECT AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit,count(*)
 over (partition by AadhaarUID,SchoolId,Sem) as rn from FLOWFILE) sq Where rn >1) group by AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit
 ''',
-"same_id_sem":'''SELECT AadhaarUID AS "student_uid",SchoolId AS "school_id",
-Sem AS "semester",studyingclass AS "grade",gujarati AS "subject_2",maths AS "subject_3",es AS "subject_1",science AS subject_6,ss AS "subject_7",hindi AS "subject_5",
-english AS "subject_4",sanskrit AS "subject_8",num_of_times FROM flowfile
+"same_id_sem":'''SELECT AadhaarUID AS "student_uid",SchoolId AS "school_id", 
+Sem AS "semester",StudyingClass AS "grade",Gujarati AS "subject_2",Maths AS "subject_3",ES AS "subject_1",Science AS subject_6,SS AS "subject_7",Hindi AS "subject_5",
+English AS "subject_4",Sanskrit AS "subject_8",num_of_times FROM flowfile
 ''',
-"unique_sem":'''SELECT AadhaarUID AS "student_uid",SchoolId AS "school_id",
-Sem AS "semester",studyingclass AS "grade",gujarati AS "subject_2",maths AS "subject_3",es AS "subject_1",science AS subject_6,ss AS "subject_7",hindi AS "subject_5",
-english AS "subject_4",sanskrit AS "subject_8" FROM (select AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit, row_number() over (partition by AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit) as rn from flowfile) sq where rn=1
+"unique_sem":'''SELECT AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit FROM (select AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit, row_number() over (partition by AadhaarUID,SchoolId,Sem,StudyingClass) as rn from flowfile) sq where rn=1
 ''',
 "check_for_non_blank":"SELECT AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit FROM flowfile WHERE has_records = non_empty_records",
 "sem_normalize":'''SELECT aadhaaruid AS "student_uid",schoolid AS "school_id",

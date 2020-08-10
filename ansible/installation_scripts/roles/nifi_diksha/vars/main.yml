@@ -1,0 +1,4 @@
+---
+
+parameter_name: diksha_parameters
+parameter_path: "{{ base_dir }}/cqube/emission_app/python/diksha_parameters.txt"

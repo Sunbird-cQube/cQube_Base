@@ -1,0 +1,22 @@
+- include_tasks: template.yml
+  with_items:
+    - { parent_processor: "crc_transformer", multi_processor1: "cQube_raw_data_fetch_crc", multi_processor2: "CRC_Processor" }
+    - { parent_processor: "static_data_transformer", multi_processor1: "cQube_raw_data_fetch_static", multi_processor2: "Static-Data_Processor" }
+    - { parent_processor: "student_attendance_transformer", multi_processor1: "cQube_raw_data_fetch_attendance", multi_processor2: "student_attendance_processor" }
+    - { parent_processor: "semester_transformer", multi_processor1: "cQube_raw_data_fetch_sem", multi_processor2: "student_assessment_processor" } 
+    - { parent_processor: "infra_transformer", multi_processor1: "cQube_raw_data_fetch_infra", multi_processor2: "infra_processor" } 
+  loop_control:
+   loop_var: temp
+  tags: update
+
+- include_tasks: del_parameters.yml
+  with_items:
+    - { parameter: "crc_parameters" }      
+    - { parameter: "static_data_parameters" }
+    - { parameter: "student_assessment_parameters" }
+    - { parameter: "student_attendance_parameters" }
+    - { parameter: "infra_parameters" }
+    - { parameter: "cQube-raw-data-fetch-parameters" } 
+  loop_control:
+   loop_var: temp 
+  tags: update

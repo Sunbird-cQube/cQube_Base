@@ -1,4 +1,15 @@
 ---
+- name: Stoping the admin_server_side app
+  become: yes
+  shell: pm2 stop admin_server_side
+  tags: update
+
+- name: Delete admin_server_side directory
+  file:
+    path: "{{ base_dir }}/cqube/admin_dashboard/server_side"
+    state: absent
+  tags: update
+
 - name: Creating the admin's server_side Directory for the installation
   file: 
     path: "{{ base_dir }}/cqube/admin_dashboard/server_side"
@@ -6,22 +17,23 @@
     group: "{{ system_user_name }}"
     recurse: yes
     state: directory
+  tags: [ install, update ]
 
 - name: copying admin's server-side script
   shell: "cp -R ../../development/admin/server-side/* {{base_dir}}/cqube/admin_dashboard/server_side"
-
-- name: Change to Node directory
-  shell: "cd {{base_dir}}/cqube/admin_dashboard/server_side"
+  tags: [ install, update ]
 
 - name: NodeJS dependencies install
   npm:
     path: "{{base_dir}}/cqube/admin_dashboard/server_side"
+  tags: [ install, update ]
 
 - name: Creating environmental variables
   file:
     path: "{{base_dir}}/cqube/admin_dashboard/server_side/.env"
     state: touch
     mode: u+rw,g+rw,o+rw
+  tags: [ install, update ]
 
 - name: Loading required data inside .env file
   blockinfile:
@@ -46,5 +58,6 @@
 
       NIFI_PROCESSORS= "crc_transformer,semester_transformer,student_attendance_transformer,diksha_transformer,infra_transformer,static_data_transformer"
       NIFI_URL="https://{{ api_endpoint }}/nifi-api"
+  tags: [ install, update ]
 
 
