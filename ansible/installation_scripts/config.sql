@@ -1,3 +1,19 @@
+/*Drop functions if exists*/
+
+drop function IF exists insert_infra_master;
+drop function IF exists create_infra_table;
+drop function IF exists update_infra_score;
+drop function IF exists insert_infra_trans;
+drop function IF exists insert_infra_agg;
+drop function IF exists infra_district_reports;
+drop function IF exists infra_block_reports;
+drop function IF exists infra_cluster_reports;
+drop function IF exists infra_school_reports;
+drop function IF exists Infra_jolt_spec;
+drop function IF exists semester_no_schools;
+drop function IF exists insert_diksha_trans;
+drop function IF exists insert_diksha_agg;
+
 /* Insert master infrastructure */
 
 CREATE OR REPLACE FUNCTION insert_infra_master()

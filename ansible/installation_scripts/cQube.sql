@@ -2007,7 +2007,7 @@ create table IF NOT EXISTS diksha_content_temp(
 /* master table */
 
 create table IF NOT EXISTS diksha_subject_grade(
-subject text ,grades text[])
+subject text ,grades text[]);
 
 /*temp table*/
 
@@ -2213,5 +2213,31 @@ create table IF NOT EXISTS diksha_content_temp(
   created_on_file_process  TIMESTAMP without time zone default current_timestamp
   );  
 
+/*Upgrade scripts*/
+
+/*files_ingestion table*/
+alter table files_ingestion alter COLUMN ff_uuid type text;
+alter table files_ingestion drop constraint if exists files_ingestion_pkey;
+alter table files_ingestion add primary key(ff_uuid);
+
+/*student_attendance_meta*/
+alter table student_attendance_meta drop constraint if exists student_attendance_meta_pkey;
+alter table student_attendance_meta add primary key(month,year);
+
+/*school_master*/
+alter table school_master drop COLUMN if exists school_address;
+alter table school_master drop COLUMN if exists school_zipcode;
+alter table school_master drop COLUMN if exists school_contact_number;
+alter table school_master drop COLUMN if exists school_email_contact;
+alter table school_master drop COLUMN if exists school_website;
+
+/*student_attendance_temp*/
+alter table student_attendance_temp add COLUMN if not exists ff_uuid text;
+
+/*crc_inspection_trans*/
+alter table crc_inspection_trans alter COLUMN total_score type double precision;
+
+/*student_semester_trans*/
+alter table student_semester_staging add COLUMN if not exists ff_uuid text;
 
 
