@@ -1,8 +1,13 @@
 <<<<<<< HEAD
 --- 
 - include_tasks: install_postgress.yml
+  tags: install
+
 - include_tasks: keycloak_user.yml
+  tags: install
+
 - include_tasks: initiate_infra.yml
+<<<<<<< HEAD
 =======
 - name: Ensure bash, OpenSSl, and libssl are the latest versions
   apt:
@@ -69,3 +74,6 @@
   notify:
    - restart postgresql
 >>>>>>> upstream/cQube-release-0.12
+=======
+  tags: [ install, update ]
+>>>>>>> upstream/cQube-release-new

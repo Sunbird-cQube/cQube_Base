@@ -1,24 +1,55 @@
 ---
-- name: Change permission
+- name: Stoping the client_side app
+  become: yes
+  shell: pm2 stop client_side
+  tags: update
+
+- name: Delete client_side directory
   file:
-    path: ../../development/angular
-    mode: '1755'
-    
-- name: Replacing endpoint value in environment.ts
-  lineinfile:
-    path: ../../development/angular/client-side/src/environments/environment.ts
-    regexp: "apiEndpoint"
-    line: "apiEndpoint: '{{ api_endpoint }}'"
+    path: "{{ base_dir }}/cqube/dashboard/client_side"
+    state: absent
+  tags: update
 
-- name: Replacing endpoint value in environment.prod.ts
-  lineinfile:
-    path: ../../development/angular/client-side/src/environments/environment.prod.ts
-    regexp: "apiEndpoint"
-    line: "apiEndpoint: '{{ api_endpoint }}'"
+- name: Making sure {{ base_dir }}/cqube/dashboard/client_side directory is present
+  file:
+    path: "{{ base_dir }}/cqube/dashboard/client_side"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  tags: [ install, update ]
 
-- name: Change to Angular directory
-  shell: cd ../../development/angular/client-side
+- name: copying server-side script
+  shell: "cp -R ../../development/angular/client-side/* {{base_dir}}/cqube/dashboard/client_side"
+  tags: [ install, update ]
+
+- name: Configure the environment.ts
+  template:
+    src: environment.ts.j2
+    dest: "{{ base_dir }}/cqube/dashboard/client_side/src/environments/environment.ts"
+  tags: [ install, update ]
+
+- name: Configure the environment.prod.ts
+  template:
+    src: environment.prod.ts.j2
+    dest: "{{ base_dir }}/cqube/dashboard/client_side/src/environments/environment.prod.ts"
+  tags: [ install, update ]
 
 - name: Install Angular packages based on package.json.
   npm:
-    path: ../../development/angular/client-side
+    path: "{{ base_dir }}/cqube/dashboard/client_side"
+  tags: [ install, update ]
+
+- name: Building Angular client-side code
+  command: ng build --prod
+  args:
+    chdir: "{{ base_dir }}/cqube/dashboard/client_side"
+  tags: [ install, update ]
+
+- name: changing ownership
+  file:
+    path: "{{ base_dir }}/cqube/dashboard/client_side"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+  tags: [ install, update ]

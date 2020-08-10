@@ -1,0 +1,4 @@
+---
+
+parameter_name: crc_parameters
+parameter_path: "{{ base_dir }}/cqube/emission_app/python/crc_parameters.txt"

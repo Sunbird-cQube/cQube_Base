@@ -5,15 +5,15 @@
   <h4>cQube - Dashboard </h4>
   <span style="flex: 1 1 auto;"></span>
   <span id="backBtn" class="headerBtn"
-    style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;display: none;">
-    <strong><a href="{{appUrl}}/#/homePage" style="text-decoration: none; color: white;">Back</a></strong>
+    style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;display: none;" (click)="back()">
+    <strong>Back</strong>
   </span>
   <span id="homeBtn" class="headerBtn"
     style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;display: none;" [routerLink]="['/home']">
     <strong>Home</strong>
   </span>
   <span id="logout" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()">
-    <strong><a href="{{appUrl}}/#/homePage" style="text-decoration: none; color: white;">Logout</a> </strong>
+    <strong>Logout </strong>
   </span>
 </mat-toolbar>
 
@@ -27,7 +27,7 @@
         </mat-toolbar-row>
       </mat-toolbar>
       <div *ngIf="!showsideMenu">
-        <!-- <a id="crtUsr" mat-list-item (click)="sidenav.toggle()"
+        <a id="crtUsr" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['create-user']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -42,7 +42,16 @@
           </td>
           <td>
             &nbsp;&nbsp; Change Password </td>
-        </a> -->
+        </a>
+
+        <a id="user" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['users']">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Users List</td>
+        </a>
 
         <a id="logs" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['all-logs']">
@@ -52,14 +61,7 @@
           <td>
             &nbsp;&nbsp; Logs </td>
         </a>
-        <!-- <a id="user" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['users']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; All Users </td>
-        </a> -->
+
         <a id="downloads" mat-list-item (click)="sidenav.toggle()"
           style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['s3FileDownload']">
           <td>
@@ -83,6 +85,14 @@
           </td>
           <td>
             &nbsp;&nbsp; Summary Statistics </td>
+        </a>
+        <a id="nifi" mat-list-item (click)="sidenav.toggle()"
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['nifi-shedular']">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Nifi Scheduler </td>
         </a>
       </div>
 

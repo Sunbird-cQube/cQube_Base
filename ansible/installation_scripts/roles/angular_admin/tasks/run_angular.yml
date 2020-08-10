@@ -1,35 +1,25 @@
 ---
-- name: Building Angular client-side code
-  command: ng build --prod
-  args:
-    chdir: ../../development/admin/client-side
-
-- name: Making sure {{ base_dir }}/cqube/admin_dashboard/client_side directory is present
-  file:
-    path: "{{ base_dir }}/cqube/admin_dashboard/client_side"
-    owner: "{{ system_user_name }}"
-    group: "{{ system_user_name }}"
-    recurse: yes
-    state: directory
-
-- name: Copying built angular app into cqube directory
-  copy:
-    src: ../../development/admin/client-side/dist
-    dest: "{{ base_dir }}/cqube/admin_dashboard/client_side"
-
 - name: checking process of pm2 admin_http_server
   become: yes
   shell: pm2 id admin_client_side
   register: pm2_output
+  tags: install
 
 - name: checking the existing pm2 processes if running
   shell: pm2 delete admin_client_side
   when: pm2_output.stdout != "[]"
   ignore_errors: True
   become: yes
+  tags: install
 
 - name: Starting / restarting the http-server
   become: yes
   shell: pm2 start /usr/bin/http-server --name admin_client_side -- -a {{ local_ipv4_address }} -p 4201
   args:
     chdir: "{{ base_dir }}/cqube/admin_dashboard/client_side/dist/client-side"
+  tags: install
+
+- name: Starting the admin_client_side app
+  become: yes
+  shell: pm2 start admin_client_side
+  tags: update

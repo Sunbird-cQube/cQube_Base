@@ -39,8 +39,8 @@ if [ ! $? = 0 ]; then
 tput setaf 1; echo "Error there is a problem installing Ansible"; tput sgr0
 exit
 fi
-python3 nifi_config.py
-ansible-playbook install.yml
+
+ansible-playbook install.yml --tags "install"
 if [ $? = 0 ]; then
 echo "CQube installed successfully!!"
 fi

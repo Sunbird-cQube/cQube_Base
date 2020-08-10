@@ -7,6 +7,7 @@
     - config.yml
 
   roles:
+<<<<<<< HEAD
      - create_base_dir
      - java
      - python
@@ -34,3 +35,22 @@
   - angular
   - nifi
 >>>>>>> upstream/cQube-release-0.12
+=======
+          - create_base_dir
+          - java
+          - python
+          - createdb
+          - python_flask
+          - keycloak
+          - grafana
+          - angular
+          - angular_admin
+          - nifi_params
+          - nifi_install
+          - nifi_crc
+          - nifi_static
+          - nifi_attendance
+          - nifi_semester
+          - nifi_infra
+          - nifi_diksha
+>>>>>>> upstream/cQube-release-new

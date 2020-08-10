@@ -10,6 +10,7 @@ import { UsersComponent } from './users/users.component';
 import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SummaryStatistictsComponent } from './summary-statisticts/summary-statisticts.component';
+import { NifiShedularComponent } from './nifi-shedular/nifi-shedular.component';
 
 const routes: Routes = [
   {
@@ -20,23 +21,26 @@ const routes: Routes = [
       {
         path: '', component: DashboardComponent, canActivateChild: [AuthGuard]
       },
-      // {
-      //   path: 'create-user', component: CreateUserComponent, canActivateChild: [AuthGuard]
-      // },
-      // {
-      //   path: 'change-password', component: ChangePasswordComponent, canActivateChild: [AuthGuard]
-      // },
+      {
+        path: 'create-user', component: CreateUserComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'change-password', component: ChangePasswordComponent, canActivateChild: [AuthGuard]
+      },
       {
         path: 'all-logs', component: AllLogsComponent, canActivateChild: [AuthGuard]
       },
-      // {
-      //   path: 'users', component: UsersComponent, canActivateChild: [AuthGuard]
-      // },
+      {
+        path: 'users', component: UsersComponent, canActivateChild: [AuthGuard]
+      },
       {
         path: 's3FileDownload', component: S3FilesDownloadComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'summary-statistics', component: SummaryStatistictsComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'nifi-shedular', component: NifiShedularComponent, canActivateChild:[AuthGuard]
       }
     ]
   }

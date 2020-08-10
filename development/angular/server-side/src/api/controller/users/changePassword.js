@@ -3,42 +3,46 @@ const bcrypt = require('bcrypt');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 
-var const_data = require('../../lib/config');
-const s3File = require('../../lib/reads3File');
+const axios = require('axios');
+const qs = require('querystring');
+const dotenv = require('dotenv');
+dotenv.config();
 
-router.post('/', auth.authController, async function (req, res) {
+var requestData = {
+    username: process.env.KEYCLOAK_USER,
+    password: process.env.PASSWORD,
+    grant_type: process.env.GRANT_TYPE,
+    client_id: process.env.CLIENT_ID
+}
+
+var host = process.env.KEYCLOAK_HOST;
+var realm = process.env.KEYCLOAK_REALM;
+
+router.post('/:id', auth.authController, async function (req, res) {
     try {
-        logger.info('---Change password api ---');
-        let fileName = `static/users.json`
-        var users = await s3File.readS3File(fileName);
+        logger.info('---change password api ---');
 
-        const user = users.find(u => u.user_email === req.body.email);
-        if (user) {
-            //Password hashing
-            const hashedPass = await bcrypt.hash(req.body.cnfpass, 10);
-            user.password = hashedPass;
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
+        var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        var access_token = response.data.access_token;
+        var userId = req.params.id;
 
-            //updation date
-            user.updated_on = `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)} ${(new Date()).toLocaleTimeString('en-IN', { hour12: false })}`;
-
-            //Updater
-            var updater = req.body.updaterId;
-            user.updated_by = JSON.parse(updater);
-
-            var params = {
-                Bucket: const_data['getParams']['Bucket'],
-                Key: "static/users.json",
-                Body: JSON.stringify(users)
-            };
-            const_data['s3'].upload(params, function (err, data) {
-                if (err) {
-                    console.log('ERROR MSG: ', err);
-                } else {
-                    // console.log(users);
-                    res.status(200).json({ msg: "Password changed successfully" });
-                }
-            });
+        var usersUrl = `${host}/auth/admin/realms/${realm}/users/${userId}/reset-password`;
+        var headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer" + " " + access_token
         }
+        var newPass = {
+            type: "password",
+            value: req.body.cnfpass,
+            temporary: false
+        };
+
+        axios.put(usersUrl, newPass, { headers: headers }).then(resp => {
+            res.status(201).json({ msg: "Password changed" });
+        }).catch(error => {
+            res.status(409).json({ errMsg: error.response.data.errorMessage });
+        })
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });

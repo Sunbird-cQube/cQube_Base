@@ -1,90 +1,55 @@
 ---
-- name: Change permission
+- name: Stoping the admin_client_side app
+  become: yes
+  shell: pm2 stop admin_client_side
+  tags: update
+
+- name: Delete admin_client_side directory
   file:
-    path: ../../development/admin
-    mode: '1755'
+    path: "{{ base_dir }}/cqube/admin_dashboard/client_side"
+    state: absent
+  tags: update
 
-- name: Fetch public ip or domain name
-  shell: echo "{{ api_endpoint }}" | grep -o -P '(?<=//).*(?=[\/|:])'
-  register: host_ip
+- name: Making sure {{ base_dir }}/cqube/admin_dashboard/client_side directory is present
+  file:
+    path: "{{ base_dir }}/cqube/admin_dashboard/client_side"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  tags: [ install, update ]
 
-- name: Replacing endpoint value in environment.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.ts
-    regexp: "  apiEndpoint"
-    line: "apiEndpoint: 'http://{{ local_ipv4_address }}:3001/api',"
+- name: copying server-side script
+  shell: "cp -R ../../development/admin/client-side/* {{base_dir}}/cqube/admin_dashboard/client_side"
+  tags: [ install, update ]
 
-- name: Replacing endpoint value in environment.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.ts
-    regexp: "  appUrl"
-    line: "appUrl: 'http://{{ host_ip.stdout }}:4200',"
+- name: Configure the environment.ts
+  template:
+    src: environment.ts.j2
+    dest: "{{ base_dir }}/cqube/admin_dashboard/client_side/src/environments/environment.ts"
+  tags: [ install, update ]
 
-- name: Replacing endpoint value in environment.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.ts
-    regexp: "  grafanaEndPoint:"
-    line: "grafanaEndPoint: 'http://{{ local_ipv4_address }}:9000',"
-
-- name: Replacing endpoint value in environment.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.ts
-    regexp: "  keycloakUrl"
-    line: "keycloakUrl: 'http://{{ host_ip.stdout }}:8080/auth',"
-
-- name: Replacing endpoint value in environment.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.ts
-    regexp: "realm"
-    line: "realm: 'cQube',"
-
-- name: Replacing endpoint value in environment.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.ts
-    regexp: "clientId"
-    line: "clientId: 'cqube_admin'"
-    
-
-- name: Replacing endpoint value in environment.prod.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.prod.ts
-    regexp: "apiEndpoint"
-    line: "apiEndpoint: 'http://{{ local_ipv4_address }}:3001/api',"
-
-- name: Replacing endpoint value in environment.prod.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.prod.ts
-    
-    regexp: "  appUrl"
-    line: "appUrl: 'http://{{ host_ip.stdout }}:4200',"
-
-- name: Replacing endpoint value in environment.prod.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.prod.ts
-    regexp: "  grafanaEndPoint:"
-    line: "grafanaEndPoint: 'http://{{ local_ipv4_address }}:9000',"
-
-- name: Replacing endpoint value in environment.prod.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.prod.ts
-    regexp: "  keycloakUrl"
-    line: "keycloakUrl: 'http://{{ host_ip.stdout }}:8080/auth',"
-
-- name: Replacing endpoint value in environment.prod.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.prod.ts
-    regexp: "realm"
-    line: "realm: 'cQube',"
-
-- name: Replacing endpoint value in environment.prod.ts
-  lineinfile:
-    path: ../../development/admin/client-side/src/environments/environment.prod.ts
-    regexp: "clientId"
-    line: "clientId: 'cqube_admin'"
-    
-- name: Change to Angular directory
-  shell: cd ../../development/admin/client-side
+- name: Configure the environment.prod.ts
+  template:
+    src: environment.prod.ts.j2
+    dest: "{{ base_dir }}/cqube/admin_dashboard/client_side/src/environments/environment.prod.ts"
+  tags: [ install, update ]   
 
 - name: Install Angular packages based on package.json.
   npm:
-    path: ../../development/admin/client-side
+    path: "{{ base_dir }}/cqube/admin_dashboard/client_side"
+  tags: [ install, update ]
+
+- name: Building Angular client-side code
+  command: ng build --prod
+  args:
+    chdir: "{{ base_dir }}/cqube/admin_dashboard/client_side"
+  tags: [ install, update ]
+
+- name: changing ownership
+  file:
+    path: "{{ base_dir }}/cqube/admin_dashboard/client_side"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+  tags: [ install, update ]

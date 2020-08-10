@@ -29,26 +29,25 @@ export class UsersComponent implements OnInit {
       $('#table').DataTable().destroy();
     }
     this.service.allUsers().subscribe(res => {
-      this.result = res;
+      this.result = res['users'];
       this.result.forEach(item => {
         this.user_status = item.user_status;
-        if (item.role_id == 1) {
-          item['role_name'] = "Admin";
+        if (item.firstName == undefined) {
+          item['firstName'] = "";
         }
-        if (item.role_id == 2) {
-          item['role_name'] = "Dashboard report creator";
+        if (item.lastName == undefined) {
+          item['lastName'] = "";
         }
-        if (item.role_id == 3) {
-          item['role_name'] = "Dashboard report viewer";
-        }
-        if (item.role_id == 4) {
-          item['role_name'] = "Adhoc analyst";
-        }
-        if (item.role_id == 5) {
-          item['role_name'] = "Data emission";
-        }
+        // if (item.role_id == 3) {
+        //   item['role_name'] = "Dashboard report viewer";
+        // }
+        // if (item.role_id == 4) {
+        //   item['role_name'] = "Adhoc analyst";
+        // }
+        // if (item.role_id == 5) {
+        //   item['role_name'] = "Data emission";
+        // }
       });
-      console.log(this.result[0]);
       this.tableData = this.result;
 
       $(document).ready(function () {
@@ -62,7 +61,7 @@ export class UsersComponent implements OnInit {
         });
       });
       document.getElementById('spinner').style.display = 'none';
-    }, err=>{
+    }, err => {
       this.err = "No data found";
     })
   }

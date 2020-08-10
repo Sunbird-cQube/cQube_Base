@@ -21,6 +21,7 @@ import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SummaryStatistictsComponent } from './summary-statisticts/summary-statisticts.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
+import { NifiShedularComponent } from './nifi-shedular/nifi-shedular.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -39,6 +40,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     S3FilesDownloadComponent,
     DashboardComponent,
     SummaryStatistictsComponent,
+    NifiShedularComponent,
   ],
   imports: [
     FormsModule,

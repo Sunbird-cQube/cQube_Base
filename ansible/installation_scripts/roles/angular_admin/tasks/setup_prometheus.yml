@@ -30,11 +30,6 @@
     src: prometheus.yml.j2
     dest: "{{ base_dir }}/cqube/admin_dashboard/prometheus/prometheus.yml"
 
-- name: Executing the Prometheus
-  shell: nohup ./prometheus --config.file=prometheus.yml &
-  args:
-    chdir: "{{ base_dir }}/cqube/admin_dashboard/prometheus/"
-
 - name: Downloading node_exporter
   get_url:
     url: https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
@@ -53,7 +48,19 @@
 - name: Rename the extracted folder
   shell: mv {{ base_dir }}/cqube/admin_dashboard/node_exporter* {{ base_dir }}/cqube/admin_dashboard/node_exporter
 
+- name: changing ownership
+  file:
+    path: "{{ base_dir }}/cqube/admin_dashboard"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+
 - name: Executing the Prometheus
+  shell: nohup ./prometheus --config.file=prometheus.yml &
+  args:
+    chdir: "{{ base_dir }}/cqube/admin_dashboard/prometheus/"
+
+- name: Executing the node_exporter
   shell: nohup ./node_exporter &
   args:
     chdir: "{{ base_dir }}/cqube/admin_dashboard/node_exporter/"

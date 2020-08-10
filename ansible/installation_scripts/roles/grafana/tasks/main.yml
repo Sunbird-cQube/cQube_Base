@@ -30,6 +30,7 @@
   service:
     name: grafana-server
     state: started
+    enabled: yes
 
 - name: Edit grafana config
   lineinfile:
@@ -39,6 +40,9 @@
   with_items:
     - { regexp: ';http_port =', line: 'http_port = 9000' }
     - { regexp: ';http_addr =', line: 'http_addr = {{ local_ipv4_address }}' }
-  notify: 
-    - restart grafana
 
+- name: restart grafana
+  become: true
+  service:
+    name: grafana-server
+    state: restarted

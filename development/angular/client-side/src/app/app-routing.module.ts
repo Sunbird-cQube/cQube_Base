@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 <<<<<<< HEAD
 import { StudengtAttendanceComponent } from './student-attendance/student-attendance.component';
@@ -14,11 +13,17 @@ import { SchoolInfrastructureComponent } from './school-infrastructure/school-in
 import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
+<<<<<<< HEAD
 =======
 import { MapViewComponent } from './map-view/map-view.component';
 import { ChartViewComponent } from './chart-view/chart-view.component';
 
 >>>>>>> upstream/cQube-release-0.12
+=======
+import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
+import { DikshaTableComponent } from './diksha-table/diksha-table.component';
+import { SemesterExceptionComponent } from './semester-exception/semester-exception.component';
+>>>>>>> upstream/cQube-release-new
 
 const routes: Routes = [
   {
@@ -53,6 +58,15 @@ const routes: Routes = [
       },
       {
         path: 'school-infra-map', component: InfraMapVisualisationComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'diksha-chart', component: DikshaChartComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'diksha-table', component: DikshaTableComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'sem-exception', component: SemesterExceptionComponent, canActivateChild: [AuthGuard]
       }
     ]
 =======
@@ -62,6 +76,7 @@ const routes: Routes = [
   ,
   {
     path: 'user-view', component: UserViewComponent
+<<<<<<< HEAD
   },
 <<<<<<< HEAD
 =======
@@ -69,6 +84,9 @@ const routes: Routes = [
     path:'map-view',component:MapViewComponent
   }
 >>>>>>> upstream/cQube-release-0.12
+=======
+  }
+>>>>>>> upstream/cQube-release-new
 ];
 
 @NgModule({

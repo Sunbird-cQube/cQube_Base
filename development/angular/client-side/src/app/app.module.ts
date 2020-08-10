@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ChartsModule } from 'ng2-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -20,7 +21,6 @@ import { SemViewComponent } from './sem-view/sem-view.component';
 import { CrcReportComponent } from './crc-report/crc-report.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, MatSortModule } from '@angular/material';
-import { ChartsModule } from 'ng2-charts';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -28,6 +28,9 @@ import { SchoolInfrastructureComponent } from './school-infrastructure/school-in
 import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
+import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
+import { DikshaTableComponent } from './diksha-table/diksha-table.component';
+import { SemesterExceptionComponent } from './semester-exception/semester-exception.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -54,11 +57,18 @@ import { ChartViewComponent } from './chart-view/chart-view.component';
     DashboardComponent,
     SchoolInfrastructureComponent,
     InfraMapVisualisationComponent,
+<<<<<<< HEAD
     HomePageComponent
 =======
     MapViewComponent,
     ChartViewComponent,
 >>>>>>> upstream/cQube-release-0.12
+=======
+    HomePageComponent,
+    DikshaChartComponent,
+    DikshaTableComponent,
+    SemesterExceptionComponent
+>>>>>>> upstream/cQube-release-new
   ],
   imports: [
     BrowserModule,
@@ -66,7 +76,6 @@ import { ChartViewComponent } from './chart-view/chart-view.component';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    ChartsModule,
     MatButtonModule,
     MatIconModule,
     MatTableModule,
@@ -76,6 +85,10 @@ import { ChartViewComponent } from './chart-view/chart-view.component';
     LeafletModule.forRoot(),
     FormsModule,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    ChartsModule,
+>>>>>>> upstream/cQube-release-new
     BrowserAnimationsModule
   ],
   exports: [
