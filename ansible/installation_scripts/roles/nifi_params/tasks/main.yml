@@ -1,35 +1,13 @@
 ---
-- name: creating the assessment params json
+- name: creating the {{ item }} params json
   template:
-    src: assessment_params.json.j2
-    dest: nifi_json_files/assessment.json
-
-- name: creating the attendance params json
-  template:
-    src: attendance_params.json.j2
-    dest: nifi_json_files/attendance.json
-
-- name: creating the crc params json
-  template:
-    src: crc_params.json.j2
-    dest: nifi_json_files/crc.json
-
-- name: creating the diksha params json
-  template:
-    src: diksha_params.json.j2
-    dest: nifi_json_files/diksha.json
-
-- name: creating the infra params json
-  template:
-    src: infra_params.json.j2
-    dest: nifi_json_files/infra.json
-
-- name: creating the raw params json
-  template:
-    src: raw_params.json.j2
-    dest: nifi_json_files/raw.json
-
-- name: creating the static params json
-  template:
-    src: static_params.json.j2
-    dest: nifi_json_files/static.json
+    src: "{{ item }}_params.json.j2"
+    dest: nifi_json_files/{{ item }}.json
+  loop:
+    - assessment
+    - attendance
+    - crc
+    - diksha
+    - infra
+    - raw
+    - static

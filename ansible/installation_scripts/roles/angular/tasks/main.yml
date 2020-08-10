@@ -1,7 +1,16 @@
 ---
 - include_tasks: install_angular.yml
+  tags: install
+
 - include_tasks: configure_angular.yml
+  tags: [ install, update ]
+
 - include_tasks: run_angular.yml
+  tags: [ install, update ]
+
 - include_tasks: configure_node.yml
+  tags: [ install, update ]
+
 - include_tasks: run_node.yml
+  tags: [ install, update ]
 

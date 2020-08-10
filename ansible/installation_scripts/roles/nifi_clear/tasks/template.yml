@@ -1,0 +1,144 @@
+- set_fact: 
+     temp_pp: "{{ temp.parent_processor }}"
+
+- set_fact:
+     temp_mp1: "{{ temp.multi_processor1 }}"
+
+- set_fact:
+     temp_mp2: "{{ temp.multi_processor2 }}"
+
+- name: Fetch nifi processor group id
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
+    method: GET
+  register: processor_id
+
+- name: Get processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_id.json.id }}
+    method: GET
+  register: processor_group
+
+- name: Get processor group id of the crc-processor
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
+    method: GET
+  loop: "{{ processor_group.json | json_query('processGroupFlow.flow.processGroups[*]') }}"
+  when: item.component.name == temp_pp
+  register: processor_group_template
+  no_log: True
+
+- name: Run jmesquery
+  debug: msg={{ processor_group_template | json_query(jmesquery) }}
+  vars:
+    jmesquery: "results[*].{Name: item.component.name, ID: item.component.id}"
+  register: parent_processor
+
+- name: Display ID of parent processor
+  debug:
+    var: item
+  loop: "{{ parent_processor | json_query(prc_id) }}"
+  vars:
+    prc_id: "msg[?Name=='{{ temp_pp }}'].ID"
+  register: parent_processor_id
+
+- debug:
+     var: parent_processor_id.results[0].item
+
+- name: Get multi processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ parent_processor_id.results[0].item }}
+    method: GET
+  register: multi_processor
+
+- name: Run jmesquery
+  debug: msg={{ multi_processor.json | json_query(jmesquery) }}
+  vars:
+    jmesquery: "processGroupFlow.flow.processGroups[*].{Name: component.name, ID: component.id,  Version: revision.version}"
+  register: output
+
+- name: Display ID of multi processor
+  debug:
+    var: item
+  loop: "{{ output | json_query(raw_id) }}"
+  vars:
+    raw_id: "msg[?Name=='{{ temp_mp1 }}'].ID"
+  register: mp1_id
+
+- name: Display ID of multi processor
+  debug:
+    var: item
+  loop: "{{ output | json_query(crc_id) }}"
+  vars:
+    crc_id: "msg[?Name=='{{ temp_mp2 }}'].ID"
+  register: mp2_id
+  
+- name: Get controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ mp1_id.results[0].item }}/controller-services
+    method: GET
+  register: controllers_list_mp1
+
+- name: Get controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ mp2_id.results[0].item }}/controller-services
+    method: GET
+  register: controllers_list_mp2
+
+- name: Stop Processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ parent_processor_id.results[0].item }}
+    method: PUT
+    body_format: json
+    body: {"id":"{{ parent_processor_id.results[0].item }}","state":"STOPPED"}
+  no_log: True
+
+- name: Stop controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}/run-status
+    method: PUT
+    body_format: json
+    body: {"revision": {
+            "version": "{{ item.revision.version }}"
+        },
+        "state":"DISABLED"
+        }
+  loop: "{{ controllers_list_mp1.json | json_query('controllerServices[*]') }}"
+  when: (item.component.state == 'ENABLED') or (item.component.validationStatus == 'INVALID') 
+  no_log: True
+
+- name: Stop controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}/run-status
+    method: PUT
+    body_format: json
+    body: {"revision": {
+           "version": "{{ item.revision.version }}"
+       },
+       "state":"DISABLED"
+      }
+  loop: "{{ controllers_list_mp2.json | json_query('controllerServices[*]') }}"
+  when: (item.component.state == 'ENABLED') or (item.component.validationStatus == 'INVALID')
+  no_log: True
+
+- name: Delete processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ item.id }}?version={{ item.revision.version }}&disconnectedNodeAcknowledged=false
+    method: DELETE
+  loop: "{{ processor_group.json | json_query('processGroupFlow.flow.processGroups[*]') }}"
+  when: item.component.name == temp_pp
+  no_log: True
+
+- name: Get template list
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/templates
+    method: GET
+  register: template_list
+
+- name: Delete template
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/templates/{{ item.id }}
+    method: DELETE
+  loop: "{{ template_list.json | json_query('templates[*]') }}"
+  when: item.template.name == temp_pp
+  no_log: True
