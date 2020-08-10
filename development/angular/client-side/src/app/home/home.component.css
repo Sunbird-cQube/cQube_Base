@@ -97,11 +97,22 @@ img{
   transition: 300ms ease-in-out;
   height: 0;
 }
+
+.submenu2 {
+  overflow-y: hidden;
+  transition: 300ms ease-in-out;
+  height: 0;
+}
+
 .submenu.expanded {
   height: 48px;
 }
 
 .submenu1.expanded {
+  height: 96px;
+}
+
+.submenu2.expanded {
   height: 96px;
 }
 
