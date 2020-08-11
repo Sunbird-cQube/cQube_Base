@@ -4,7 +4,7 @@ import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { Label, Color } from 'ng2-charts';
 
 @Component({
   selector: 'app-diksha-chart',
@@ -26,6 +26,10 @@ export class DikshaChartComponent implements OnInit {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
+  public barChartColors: Color[] = [
+    { backgroundColor: 'red' },
+    { backgroundColor: 'green' },
+  ]
 
   public barChartData: ChartDataSets[] = [
     { data: [], label: 'Series A', stack: 'a' }
@@ -347,41 +351,41 @@ export class DikshaChartComponent implements OnInit {
       data.data.forEach(element => {
         var obj = { data: element.score, label: element.subject, stack: 'a' }
         chartData.push(obj);
-        let a = {}
+        let a = { backgroundColor: '' };
         if (element.subject == 'Sanskrit') {
-          a['backgroundColor'] = '#cc0000'
+          a.backgroundColor = '#cc0000'
         }
         if (element.subject == 'Gujarati') {
-          a['backgroundColor'] = '#006600'
+          a.backgroundColor = '#006600'
         }
         if (element.subject == 'Science') {
-          a['backgroundColor'] = '#333300'
+          a.backgroundColor = '#333300'
         }
         if (element.subject == 'Gyan Setu') {
-          a['backgroundColor'] = '#006666'
+          a.backgroundColor = '#006666'
         }
         if (element.subject == 'Environmental Studies') {
-          a['backgroundColor'] = '#003366'
+          a.backgroundColor = '#003366'
         }
         if (element.subject == 'Hindi') {
-          a['backgroundColor'] = '#333399'
+          a.backgroundColor = '#333399'
         }
         if (element.subject == 'Multi_Subject') {
-          a['backgroundColor'] = '#660066'
+          a.backgroundColor = '#660066'
         }
         if (element.subject == 'Mathematics') {
-          a['backgroundColor'] = '#cc3300'
+          a.backgroundColor = '#cc3300'
         }
         if (element.subject == 'English') {
-          a['backgroundColor'] = '#996600'
+          a.backgroundColor = '#996600'
         }
         if (element.subject == 'Social Science') {
-          a['backgroundColor'] = '#6600cc'
+          a.backgroundColor = '#6600cc'
         }
         if (element.subject == 'Maths') {
-          a['backgroundColor'] = '#3366cc'
+          a.backgroundColor = '#3366cc'
         }
-        this.colors.push(a);
+        this.barChartColors.push(a);
       });
       this.barChartOptions = {
         legend: {
@@ -463,14 +467,20 @@ export class DikshaChartComponent implements OnInit {
   }
 
   downloadReportByType(type) {
+
     if (type) {
       this.errMsg();
       this.service.dikshaDataDownload({ districtId: this.districtId, timePeriod: this.timePeriod }).subscribe(res => {
+
         if (this.districtId == '') {
           if (res['All'][`${type}`]) {
             this.fileName = `Diksha_All_data_${type}`;
             this.reportData = res['All'][`${type}`];
             this.downloadRoport();
+          } else {
+            document.getElementById('errMsg').innerHTML = 'No data found for this type';
+            document.getElementById('errMsg').style.display = 'block';
+            document.getElementById('errMsg').style.color = 'red';
           }
 
         } else {
@@ -478,9 +488,11 @@ export class DikshaChartComponent implements OnInit {
             this.fileName = `Diksha_${this.hierName}_data_${type}`;
             this.reportData = res[`${this.districtId}`][`${type}`];
             this.downloadRoport();
+          } else {
+            document.getElementById('errMsg').innerHTML = 'No data found for this type';
+            document.getElementById('errMsg').style.display = 'block';
+            document.getElementById('errMsg').style.color = 'red';
           }
-
-
         }
         document.getElementById('spinner').style.display = 'none';
       }, err => {
@@ -497,6 +509,7 @@ export class DikshaChartComponent implements OnInit {
   }
 
   downloadRoport() {
+    console.log(this.reportData.length);
     const options = {
       fieldSeparator: ',',
       quoteStrings: '"',

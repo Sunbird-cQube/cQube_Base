@@ -10,7 +10,6 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         var year = req.body.year;
         let fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`
         var jsonData = await s3File.readS3File(fileName);
-        console.log(jsonData.data[0]);
         
         var blocksAttendanceData = jsonData.data
         var blockData = [];

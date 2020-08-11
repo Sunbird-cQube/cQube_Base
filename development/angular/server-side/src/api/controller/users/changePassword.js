@@ -2,7 +2,6 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
-
 const axios = require('axios');
 const qs = require('querystring');
 const dotenv = require('dotenv');

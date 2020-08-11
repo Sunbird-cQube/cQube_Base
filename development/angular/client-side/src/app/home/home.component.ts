@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { KeycloakSecurityService } from '../keycloak-security.service';
+import { AppServiceComponent } from '../app.service';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, public http: HttpClient, public keyCloakService: KeycloakSecurityService) { }
+  constructor(private router: Router, public http: HttpClient, public service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) { }
   email: any;
   role: any;
   showSubmenu1: any = false;
@@ -22,7 +23,7 @@ export class HomeComponent implements OnInit {
   showUser: boolean = true;
   currentURL;
   public userType = localStorage.getItem('roleName') === "admin";
-
+  public roleName;
   ngOnInit() {
     this.email = localStorage.getItem('userName');
     this.role = localStorage.getItem('roleName');
@@ -52,6 +53,5 @@ export class HomeComponent implements OnInit {
       this.isShowing = false;
     }
   }
-
 
 }
