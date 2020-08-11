@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { ExportToCsv } from 'export-to-csv';
 import * as data from '../../assets/india.json';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
+import { KeycloakSecurityService } from '../keycloak-security.service';
 
 var globalMap;
 
@@ -15,7 +16,29 @@ var globalMap;
   styleUrls: ['./sem-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SemViewComponent implements OnInit {
+export class SemViewComponent implements OnInit, OnDestroy {
+
+  impressionId = Math.floor(100000 + Math.random() * 900000);
+  pageId = "Semester";
+  userId;
+  type = "";
+  public btnId;
+  date = new Date();
+  edate;
+  end_time;
+  start_time = Math.floor(this.date.getTime() / 1000.0);
+  public telemData = {
+    impression: {
+      pageId: this.pageId,
+      impressionId: this.impressionId, // unique id of the page
+      uid: this.userId, // userid
+      type: this.type, // click,select,search
+      startTime: this.start_time, // starttime when user comes to that page
+      endTime: this.end_time
+    },
+    interact: []
+  }
+
   public title: string = '';
   public titleName: string = '';
   public colors: any;
@@ -72,10 +95,35 @@ export class SemViewComponent implements OnInit {
     public http: HttpClient,
     public service: AppServiceComponent,
     public router: Router,
+    public keyCloakSevice: KeycloakSecurityService,
     private changeDetection: ChangeDetectorRef,
-  ) { }
+  ) {
+    this.userId = this.telemData.impression.uid = keyCloakSevice.kc.tokenParsed.sub;
+    service.telemetryData[1].Semester.push(this.telemData);
+  }
+
+  ngOnDestroy() {
+    this.edate = new Date();
+    this.end_time = Math.floor(this.edate.getTime() / 1000.0);
+    this.telemData.impression.endTime = this.end_time;
+
+    var dateObj = {
+      year: this.edate.getFullYear(),
+      month: this.edate.getMonth() + 1,
+      date: this.edate.getDate()
+    }
+
+    this.service.telemetry(dateObj).subscribe(res => {
+      console.log(res);
+    });
+  }
 
   ngOnInit() {
+    var eventType = "pageLoad";
+    this.btnId = "";
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     document.getElementById('backBtn').style.display = "none";
     this.initMap();
     this.districtWise();
@@ -126,9 +174,17 @@ export class SemViewComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
   }
 
+  homeClick(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+    this.districtWise();
+  }
   // to load all the districts for state data on the map
   districtWise() {
     try {
+
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
@@ -182,7 +238,12 @@ export class SemViewComponent implements OnInit {
   }
 
   // to load all the blocks for state data on the map
-  blockWise() {
+  blockWise(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
@@ -302,7 +363,11 @@ export class SemViewComponent implements OnInit {
   }
 
   // to load all the clusters for state data on the map
-  clusterWise() {
+  clusterWise(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
@@ -427,7 +492,12 @@ export class SemViewComponent implements OnInit {
   }
 
   // to load all the schools for state data on the map
-  schoolWise() {
+  schoolWise(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
@@ -546,6 +616,13 @@ export class SemViewComponent implements OnInit {
     }
   }
 
+  distSelect(event, districtId) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+    this.onDistrictSelect(districtId);
+  }
   // to load all the blocks for selected district for state data on the map
   onDistrictSelect(districtId) {
     // to clear the existing data on the map layer  
@@ -601,8 +678,28 @@ export class SemViewComponent implements OnInit {
     document.getElementById('home').style.display = 'block';
   }
 
+  blockSelect(event, blockId) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+    this.onBlockSelect(blockId);
+  }
+
   // to load all the clusters for selected block for state data on the map
   onBlockSelect(blockId) {
+    var date = new Date();
+    var timeStamp = Math.floor(date.getTime() / 1000.0);
+    this.telemData.interact.push(
+      {
+        selectId: 'block select', // id of the interaction like button_id, dropdown_id etc
+        uid: this.userId, // userid
+        type: 'select', // click,select,search
+        pageid: this.telemData.impression.pageId, // unique id of the page where user is interacting
+        impressionId: this.telemData.impression.impressionId,
+        timestamp: timeStamp
+      }
+    );
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -670,8 +767,27 @@ export class SemViewComponent implements OnInit {
     document.getElementById('home').style.display = 'block';
   }
 
+  clusterSelect(event, clusterId) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+    this.onClusterSelect(clusterId);
+  }
   // to load all the schools for selected cluster for state data on the map
   onClusterSelect(clusterId) {
+    var date = new Date();
+    var timeStamp = Math.floor(date.getTime() / 1000.0);
+    this.telemData.interact.push(
+      {
+        selectId: 'cluster select', // id of the interaction like button_id, dropdown_id etc
+        uid: this.userId, // userid
+        type: 'select', // click,select,search
+        pageid: this.telemData.impression.pageId, // unique id of the page where user is interacting
+        impressionId: this.telemData.impression.impressionId,
+        timestamp: timeStamp
+      }
+    );
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -983,6 +1099,11 @@ export class SemViewComponent implements OnInit {
 
   // drilldown/ click functionality on markers
   onClick_Marker(event) {
+    var eventType = event.type;
+    this.btnId = 'marker';
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     var data = event.target.myJsonData;
     if (data.districtId && !data.blockId && !data.clusterId) {
       this.stateLevel = 1;
@@ -1006,7 +1127,12 @@ export class SemViewComponent implements OnInit {
   }
 
   // to download the excel report
-  downloadReport() {
+  downloadReport(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     const options = {
       fieldSeparator: ',',
       quoteStrings: '"',
@@ -1020,9 +1146,8 @@ export class SemViewComponent implements OnInit {
       filename: this.fileName
     };
     const csvExporter = new ExportToCsv(options);
-
-
     csvExporter.generateCsv(this.reportData);
+
   }
 
   // to generate the color gradient from red to green based on the attendance percentage values
@@ -1090,5 +1215,20 @@ export class SemViewComponent implements OnInit {
       generateGradient
     };
   }
+
+  trackInteract(date, id, type) {
+    var timeStamp = Math.floor(date.getTime() / 1000.0);
+    this.telemData.interact.push(
+      {
+        eventId: id, // id of the interaction like button_id, dropdown_id etc
+        uid: this.userId, // userid
+        type: type, // click,select,search
+        pageid: this.telemData.impression.pageId, // unique id of the page where user is interacting
+        impressionId: this.telemData.impression.impressionId,
+        timestamp: timeStamp
+      }
+    );
+  }
+
 
 }

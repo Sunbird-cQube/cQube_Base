@@ -191,9 +191,17 @@ export class AppService {
     }
 
     nifiScheduleProcessor(id, data) {
-        console.log(id, data);
         return this.http.post(`${this.baseUrl}/nifi/scheduleProcessor/${id}`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
+
+    //telemetry data
+    showTelemetry(date) {
+        return this.http.post(`${this.baseUrl}/showTelemetry`, date, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+
 }

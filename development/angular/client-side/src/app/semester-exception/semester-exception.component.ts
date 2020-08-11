@@ -435,8 +435,8 @@ export class SemesterExceptionComponent implements OnInit {
               var markerIcon = L.circleMarker([this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude], {
                 // renderer: myRenderer,
                 radius: 0,
-                color: this.colors[i],
-                fillColor: this.colors[i],
+                color: "#fc5e03",
+                fillColor: "#fc5e03",
                 fillOpacity: 1,
                 weight: 1.5,
                 strokeWeight: 1
@@ -681,6 +681,7 @@ export class SemesterExceptionComponent implements OnInit {
           radius: 3.5,
           fillOpacity: 1,
           strokeWeight: 0.01,
+          weight: 1,
           mapZoom: 12,
           centerLat: this.data['data'][0].school_latitude,
           centerLng: this.data['data'][0].school_longitude,
@@ -742,8 +743,8 @@ export class SemesterExceptionComponent implements OnInit {
         if (options.weight) {
           markerIcon = L.circleMarker([lat, lng], {
             radius: options.radius,
-            color: this.colors[i],
-            fillColor: this.colors[i],
+            color: "#fc5e03",
+            fillColor: "#fc5e03",
             fillOpacity: options.fillOpacity,
             strokeWeight: options.strokeWeight,
             weight: options.weight
@@ -774,8 +775,20 @@ export class SemesterExceptionComponent implements OnInit {
               orgObject[key] = details[key];
             }
           });
+          var detailSchool = {};
+          var yourData;
+          if (options.level == "school") {
+            Object.keys(orgObject).forEach(key => {
+              if (key !== "total_schools_not_received") {
+                detailSchool[key] = orgObject[key];
+              }
+            });
+            yourData = this.getInfoFrom(detailSchool).join(" <br>");
+          } else {
+            yourData = this.getInfoFrom(orgObject).join(" <br>");
+
+          }
           //Generate dynamic tool-tip
-          var yourData = this.getInfoFrom(orgObject).join(" <br>");
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             yourData);
           markerIcon.addTo(globalMap).bindPopup(popup);
@@ -941,13 +954,26 @@ export class SemesterExceptionComponent implements OnInit {
     var stringLine;
     for (var key in object) {
       if (object.hasOwnProperty(key)) {
-        stringLine = "<b>" +
-          key.replace(
-            /\w\S*/g,
-            function (txt) {
-              return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            })
-          + "</b>" + ": " + object[key] + `</span>`;
+        if (key == "percentage_schools_not_received") {
+          stringLine = "<b>" +
+            key.replace(
+              /\w\S*/g,
+              function (txt) {
+                txt = txt.replace(/_/g, ' ');
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+              })
+            + "</b>" + ": " + object[key] + " %" + `</span>`;
+        } else {
+          stringLine = "<b>" +
+            key.replace(
+              /\w\S*/g,
+              function (txt) {
+                txt = txt.replace(/_/g, ' ');
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+              })
+            + "</b>" + ": " + object[key] + `</span>`;
+        }
+
       }
       popupFood.push(stringLine);
     }

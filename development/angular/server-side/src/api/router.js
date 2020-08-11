@@ -20,6 +20,8 @@ const sem_completionSchool = require('./controller/completionReports/semester/sc
 
 const school_invalid = require('./controller/completionReports/school_invalid');
 
+const telemetryData = require('../api/controller/telemetry/telemetryData');
+
 // const crcData = require('./controller/users/crcData');
 // crc files
 const crcDistrictWise = require('../api/controller/crcRoutes/districtWise');
@@ -76,6 +78,8 @@ router.use('/infraMap', infraMapBlockWise);
 router.use('/infraMap', infraMapClusterWise);
 router.use('/infraMap', infraMapSchoolWise);
 
+router.use('/deeksha', deekshaData);
+router.use('/telemetry', telemetryData);
 router.use('/diksha', deekshaData);
 router.use('/dikshaTable', dikshaTable);
 
