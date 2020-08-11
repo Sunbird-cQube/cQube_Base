@@ -25,32 +25,21 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   end_time;
   public btnId;
   start_time = Math.floor(this.date.getTime() / 1000.0);
-  public telemData = {
-    impression: {
-      pageId: this.pageId,
-      impressionId: this.impressionId, // unique id of the page
-      uid: this.userId, // userid
-      type: this.type, // click,select,search
-      startTime: this.start_time, // starttime when user comes to that page
-      endTime: this.end_time
-    },
-    interact: []
-  }
+  public telemData = {}
 
   ngOnDestroy() {
-    this.edate = new Date();
-    this.end_time = Math.floor(this.edate.getTime() / 1000.0);
-    this.telemData.impression.endTime = this.end_time;
+    // this.edate = new Date();
+    // // this.end_time = Math.floor(this.edate.getTime() / 1000.0);
 
-    var dateObj = {
-      year: this.edate.getFullYear(),
-      month: this.edate.getMonth() + 1,
-      date: this.edate.getDate()
-    }
+    // var dateObj = {
+    //   year: this.edate.getFullYear(),
+    //   month: this.edate.getMonth() + 1,
+    //   date: this.edate.getDate()
+    // }
 
-    this.service.telemetry(dateObj).subscribe(res => {
-      console.log(res);
-    });
+    // this.service.telemetry(dateObj).subscribe(res => {
+    //   console.log(res);
+    // });
   }
 
   public disabled = false;
@@ -109,8 +98,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   public element;
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef) {
-    this.userId = this.telemData.impression.uid = keyCloakSevice.kc.tokenParsed.sub;
-    service.telemetryData[0].Student_attendance.push(this.telemData);
     service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -135,7 +122,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         var eventType = "pageLoad";
         this.btnId = '';
         var date = new Date();
-        this.trackInteract(date, this.btnId, eventType, undefined);
+        // this.trackInteract(date, this.btnId, eventType, undefined);
         this.districtWise();
       }
 
@@ -203,11 +190,22 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   public fileName: any;
   public reportData: any = [];
 
+  globalId;
+
   downloadRoport(event) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, undefined);
+    if (this.globalId == this.myDistrict) {
+      this.getTelemetryData({ id: this.globalId }, event.target.id);
+    }
+    if (this.globalId == this.myBlock) {
+      this.getTelemetryData({ id: this.globalId }, event.target.id);
+    }
+    if (this.globalId == this.myCluster) {
+      this.getTelemetryData({ id: this.globalId }, event.target.id);
+    }
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
 
     if (this.reportData.length > 0) {
       const options = {
@@ -238,10 +236,10 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       month: this.month,
       year: this.year
     };
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, undefined);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
     if (this.skul) {
       if (this.levelWise === "District") {
         this.districtWise();
@@ -284,19 +282,22 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
 
   public myData;
   homeClick(event) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, undefined);
+    this.globalId = undefined;
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
     this.districtWise();
   }
   distHierarchy(event) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, undefined);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
     this.districtWise();
   }
+
+  districtData = [];
   async districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
@@ -307,7 +308,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         this.myData.unsubscribe();
       }
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res['distData'];
+        this.districtData = this.mylatlngData = res['distData'];
         var sorted = this.mylatlngData.sort((a, b) => (a.label > b.label) ? 1 : -1);
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
@@ -369,10 +370,10 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   blockWise(event) {
     console.log(event.target.id);
 
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, undefined);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
 
     this.commonAtStateLevel();
     this.levelWise = "Block";
@@ -446,10 +447,10 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   }
 
   schoolWise(event) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, undefined);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
 
     this.commonAtStateLevel();
     this.levelWise = "School";
@@ -529,11 +530,12 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     ;
   }
 
+
   clusterWise(event) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, undefined);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
 
     this.commonAtStateLevel();
 
@@ -650,10 +652,19 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
 
 
   clickedMarker(event, label) {
-    var eventType = event.type;
-    this.btnId = 'marker';
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, label.id);
+    if (event.latlng) {
+      var obj = {
+        id: label.id,
+        lat: event.latlng.lat,
+        lng: event.latlng.lng
+      }
+      this.getTelemetryData(obj, event.type);
+    }
+
+    // var eventType = event.type;
+    // this.btnId = 'marker';
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, label.id);
 
     if (this.districtsIds.includes(label.id)) {
       localStorage.setItem('dist', label.name);
@@ -717,12 +728,22 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   }
 
   distSelect(event, data) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, data);
+    var distData = {};
+    this.districtData.find(a => {
+      if (a.id == data) {
+        distData = a;
+      }
+    });
+    this.getTelemetryData(distData, event.type);
+
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, data);
     this.myDistData(data);
   }
+
+  blockData = [];
   myDistData(data) {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -749,7 +770,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       localStorage.setItem('dist', obj.name);
       localStorage.setItem('distId', data);
 
-      this.myDistrict = data;
+      this.globalId = this.myDistrict = data;
       this.myBlock = null;
 
       this.month_year['id'] = data;
@@ -758,7 +779,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         this.myData.unsubscribe();
       }
       this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
-        this.mylatlngData = res['blockData'];
+        this.blockData = this.mylatlngData = res['blockData'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['id'] === current['id']);
           if (object.length == 0) previous.push(current);
@@ -826,12 +847,21 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   }
 
   blockSelect(event, data) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, data);
+    var blockData = {};
+    this.blockData.find(a => {
+      if (a.id == data) {
+        blockData = a;
+      }
+    });
+    this.getTelemetryData(blockData, event.type);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, data);
     this.myBlockData(data);
   }
+
+  clusterData = [];
   myBlockData(data) {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -867,7 +897,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       this.blockName = { id: data, name: obj.name };
       this.hierName = obj.name;
 
-      this.myBlock = data;
+      this.globalId = this.myBlock = data;
       this.myDistrict = Number(localStorage.getItem('distId'));
       this.myCluster = null;
 
@@ -876,7 +906,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       }
       this.month_year['id'] = data;
       this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
-        this.mylatlngData = res['clusterDetails'];
+        this.clusterData = this.mylatlngData = res['clusterDetails'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['id'] === current['id']);
           if (object.length == 0) previous.push(current);
@@ -950,11 +980,20 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     document.getElementById('home').style.display = 'block';
   }
 
+
   clusterSelect(event, data) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType, data);
+    var clusterData = {};
+    console.log(this.clusterData);
+    this.clusterData.find(a => {
+      if (a.id == data) {
+        clusterData = a;
+      }
+    });
+    this.getTelemetryData(clusterData, event.type);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, data);
     this.myClusterData(data);
   }
   myClusterData(data) {
@@ -1019,7 +1058,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       this.clustName = { id: data };
       this.hierName = obj.name;
 
-      this.myCluster = data;
+      this.globalId = this.myCluster = data;
       this.myBlock = blockId;
       this.myDistrict = Number(localStorage.getItem('distId'));
 
@@ -1201,20 +1240,56 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     };
   }
 
-  trackInteract(date, eventId, type, id) {
-    var timeStamp = Math.floor(date.getTime() / 1000.0);
-    this.telemData.interact.push(
-      {
-        eventId: eventId, // id of the interaction like button_id, dropdown_id etc
-        uid: this.userId, // userid
-        type: type, // click,select,search
-        id: id,
-        pageId: this.telemData.impression.pageId, // unique id of the page where user is interacting
-        impressionId: this.telemData.impression.impressionId,
-        timestamp: timeStamp
+  // trackInteract(date, eventId, type, id) {
+  //   var timeStamp = Math.floor(date.getTime() / 1000.0);
+  //   this.telemData.interact.push(
+  //     {
+  //       eventId: eventId, // id of the interaction like button_id, dropdown_id etc
+  //       uid: this.userId, // userid
+  //       type: type, // click,select,search
+  //       id: id,
+  //       pageId: this.telemData.impression.pageId, // unique id of the page where user is interacting
+  //       impressionId: this.telemData.impression.impressionId,
+  //       timestamp: timeStamp
+  //     }
+  //   );
+  // }
+  getTelemetryData(data, event) {
+    var obj = {};
+    if (data.id != undefined) {
+      if (event == 'download') {
+        obj = {
+          pageId: "student_attendance",
+          uid: this.keyCloakSevice.kc.tokenParsed.sub,
+          event: event,
+          locationid: data.id,
+          download: 1
+        }
+        this.service.telemetryData.push(obj);
+      } else {
+        obj = {
+          pageId: "student_attendance",
+          uid: this.keyCloakSevice.kc.tokenParsed.sub,
+          event: event,
+          locationid: data.id,
+          lat: data.lat,
+          lng: data.lng,
+          download: 0
+        }
+        this.service.telemetryData.push(obj);
       }
-    );
-  }
 
+      this.edate = new Date();
+      var dateObj = {
+        year: this.edate.getFullYear(),
+        month: this.edate.getMonth() + 1,
+        date: this.edate.getDate()
+      }
+
+      this.service.telemetry(dateObj).subscribe(res => {
+        console.log(res);
+      });
+    }
+  }
 
 }

@@ -1,0 +1,17 @@
+---
+- name: Upgrading cQube
+  hosts: localhost
+  remote_user: root
+  vars_files:
+    - upgradation_config.yml      
+
+  roles:
+          - nifi_clear
+          - nifi_update
+          - nifi_params
+          - nifi_crc
+          - nifi_static
+          - nifi_attendance
+          - nifi_semester
+          - nifi_infra
+          - nifi_diksha

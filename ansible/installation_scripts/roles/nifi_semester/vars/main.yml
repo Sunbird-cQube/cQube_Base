@@ -1,0 +1,5 @@
+---
+
+parameter_name: student_assessment_parameters
+parameter_path: "{{ base_dir }}/cqube/emission_app/python/student_assessment_parameters.txt"
+

@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   email: any;
   role: any;
   showSubmenu1: any = false;
+  showSubmenu2: any = false;
   showsideMenu: boolean = false;
   isExpanded = true;
   showSubmenu: boolean = false;
@@ -25,15 +26,14 @@ export class HomeComponent implements OnInit {
   public roleName;
   ngOnInit() {
     this.email = localStorage.getItem('userName');
-    this.role = localStorage.getItem('role');
-    this.roleName = localStorage.getItem('roleName');
-    if (this.roleName == 'admin') {
+    this.role = localStorage.getItem('roleName');
+    if (this.role == "admin") {
       this.showsideMenu = false;
       this.showUser = false;
     } else {
       this.showUser = true;
     }
-
+   
   }
 
 

@@ -1,0 +1,99 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-7">
+            <div *ngIf='all'>
+                <p id="dist_level"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Diksha Report: <span (click)="metaData()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+            </div>
+            <div *ngIf='dist'>
+                <p id="block_level"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Diksha Report: <span (click)="metaData()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                        (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
+                        {{hierName}}</span> </p>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="row">
+                <div class="col-sm-7">
+                    <p id="errMsg"
+                        style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                    </p>
+                </div>
+                <div class="col-sm-5">
+                    <em class="fa fa-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                        (click)="downloadRoport()"></em>
+                    <em class="fa fa-home" id="home" title="Home"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        alt="Home" (click)="metaData()"></em>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-sm-2">
+            <select id="choose_dist"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="districtId" (change)="districtWise(districtId)">
+                <option [value]="districtId" disabled selected="selected">Choose a District</option>
+                <option *ngFor="let dist of districtsDetails" [(ngValue)]="dist.district_id"
+                    style="font-family: Arial; font-size: 11px;">
+                    {{dist.district_name}}
+                </option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <select
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="timePeriod" name="timePeriod" (change)="timeRange(timePeriod)">
+                <option [value]="timePeriod" disabled selected="selected">Choose Time Range
+                </option>
+                <option *ngFor="let time of timeDetails" [(ngValue)]="time.key"
+                    style="font-family: Arial; font-size: 11px;">
+                    {{time.key}}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- <div class="col-sm-2"></div> -->
+        <div class="col-sm-12">
+            <table #DataTable id="table" class="display nowrap" width="100%"
+                style="font-size: 12px; text-align: center;">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Content Id</th>
+                        <th>Content Name</th>
+                        <th>Textbook</th>
+                        <th>Subject</th>
+                        <th>Grade</th>
+                        <th>Medium</th>
+                        <th>Total Content Plays</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let d of result; let i = index">
+                        <td>{{i+1}}</td>
+                        <td>{{d.content_id}}</td>
+                        <td>{{d.content_name}}</td>
+                        <td>{{d.textbook}}</td>
+                        <td>{{d.subject}}</td>
+                        <td>{{d.grade}}</td>
+                        <td>{{d.medium}}</td>
+                        <td>{{d.total_content_plays}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="spinner">
+    <div class="loading">Loading&#8230;</div>
+</div>
