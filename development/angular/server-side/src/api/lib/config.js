@@ -27,16 +27,34 @@ const Config = {
 const accessKeyId = process.env.ACCESS_KEY_ID;
 const secretAccessKey = process.env.SECRET_ACCESS_KEY;
 const bucketName = process.env.OUTPUT_BUCKET;
+const bucketName1 = process.env.EMISSION_BUCKET;
+
+var S3Config = require('s3-append').S3Config;
+var appendConfig = new S3Config({
+    "accessKeyId": accessKeyId,
+    "secretAccessKey": secretAccessKey,
+    "region": "",
+    "bucket": bucketName1
+});
 
 var s3 = new aws.S3({ 'accessKeyId': accessKeyId, 'secretAccessKey': secretAccessKey });
 
 var getParams = {
     Bucket: bucketName, //replace example bucket with your s3 bucket name
+    // Bucket1: bucketName1,
+    Key: '', // replace file location with your s3 file location
+};
+
+var getParams1 = {
+    Bucket: bucketName1, //replace example bucket with your s3 bucket name
+    // Bucket1: ,
     Key: '', // replace file location with your s3 file location
 };
 
 module.exports = {
+    getParams1,
     Config,
     s3,
-    getParams
+    getParams,
+    appendConfig
 };

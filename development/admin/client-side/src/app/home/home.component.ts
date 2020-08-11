@@ -51,8 +51,10 @@ export class HomeComponent implements OnInit {
   }
   logout() {
     localStorage.clear();
-    window.location.replace(`${this.appUrl}/#/homePage`);
-    this.keyCloakService.kc.logout();
+    let options = {
+      redirectUri: `${this.appUrl}`
+    }
+    this.keyCloakService.kc.logout(options);
   }
 
   back() {
