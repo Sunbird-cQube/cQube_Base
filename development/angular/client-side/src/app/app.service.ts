@@ -9,10 +9,13 @@ import { KeycloakSecurityService } from './keycloak-security.service';
 export class AppServiceComponent {
     public baseUrl = environment.apiEndpoint;
     public token;
+    public telemetryData = [];
+    
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
         this.token = keyCloakService.kc.token;
         localStorage.setItem('token', this.token);
-    };
+        console.log(this.telemetryData);
+    }
 
     login(data) {
         return this.http.post(`${this.baseUrl}/roleBasedLogin`, data);
@@ -264,4 +267,8 @@ export class AppServiceComponent {
         return this.http.get(`${this.baseUrl}/school_invalid/school_invalid_data`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
+    //------------------------------------
+    telemetry(date) {
+        return this.http.post(`${this.baseUrl}/telemetry`, { telemetryData: this.telemetryData, date: date }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
 }

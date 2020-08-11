@@ -54,13 +54,13 @@ router.post('/scheduleProcessor/:id', async (req, res) => {
         let state = req.body.state
         let timeToSchedule = req.body.time
         timeToSchedule = timeToSchedule.split(':')
-        let hours = timeToSchedule[0]
-        let mins = timeToSchedule[1]
+        let hours = parseInt(timeToSchedule[0])
+        let mins = parseInt(timeToSchedule[1])
         let timeToStop = req.body.stopTime
         timeToStop = hours + timeToStop
 
         let url = `${process.env.NIFI_URL}/flow/process-groups/${groupId}`
-        
+
         await schedule.scheduleJob(`${mins} ${hours} * * *`, async function () {
             logger.info(`--- ${groupId} Job scheduling started ---`);
             let result = await axios.put(url, {
