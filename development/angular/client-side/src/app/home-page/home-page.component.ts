@@ -16,6 +16,28 @@ export class HomePageComponent implements OnInit {
     if (localStorage.getItem('roleName') != 'admin') {
       this.router.navigate(['/home']);
     }
+    if (this.keycloakService.kc.tokenParsed.realm_access) {
+      if (this.keycloakService.kc.tokenParsed.realm_access.roles.length > 1) {
+        alert("One user can not be assigned multiple roles");
+        this.keycloakService.kc.logout();
+      } else {
+        this.keycloakService.kc.tokenParsed.realm_access.roles.forEach(role => {
+          if (role == "admin") {
+            localStorage.setItem('roleName', role);
+            this.router.navigate(['/homePage']);
+          } else if (role == "report_viewer") {
+            localStorage.setItem('roleName', role);
+            this.router.navigate(['home']);
+          } else {
+            alert("Unauthorized user");
+            this.keycloakService.kc.logout();
+          }
+        });
+      }
+    } else {
+      alert("Please assign role to user");
+      this.keycloakService.kc.logout();
+    }
   }
 
   logout() {

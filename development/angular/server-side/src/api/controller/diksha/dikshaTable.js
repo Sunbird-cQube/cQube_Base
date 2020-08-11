@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.get('/dikshaMetaData', async (req, res) => {
+router.get('/dikshaMetaData', auth.authController, async (req, res) => {
     try {
         logger.info('--- dikshaMetaData api ---');
         let fileName = `diksha/table_reports/diksha_metadata.json`
@@ -20,7 +20,7 @@ router.get('/dikshaMetaData', async (req, res) => {
     }
 })
 
-router.post('/dikshaAllTableData', async (req, res) => {
+router.post('/dikshaAllTableData', auth.authController, async (req, res) => {
     try {
         logger.info('--- dikshaAllTableData api ---');
         let fileName = `diksha/table_reports/${req.body.timePeriod}/All.json`
@@ -32,7 +32,7 @@ router.post('/dikshaAllTableData', async (req, res) => {
     }
 })
 
-router.post('/dikshaDistrictTableData', async (req, res) => {
+router.post('/dikshaDistrictTableData', auth.authController, async (req, res) => {
     try {
         logger.info('--- dikshaDistrictTableData api ---');
         console.log(req.body.districtId);
@@ -58,7 +58,7 @@ router.post('/dikshaDistrictTableData', async (req, res) => {
 //     }
 // })
 
-router.post('/dikshaTimeRangeTableData', async (req, res) => {
+router.post('/dikshaTimeRangeTableData', auth.authController, async (req, res) => {
     try {
         logger.info('--- dikshaTimeRangeTableData api ---');
         let fileName = `diksha/table_reports/${req.body.timePeriod}/${req.body.districtId}.json`

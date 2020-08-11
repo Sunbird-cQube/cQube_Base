@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.get('/school_invalid_data', async (req, res) => {
+router.get('/school_invalid_data', auth.authController, async (req, res) => {
     try {
         logger.info('--- school invalid data api ---');
         let fileName = `exception_list/school_invalid_data.json`

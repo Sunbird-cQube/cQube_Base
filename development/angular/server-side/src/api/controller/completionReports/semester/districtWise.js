@@ -3,7 +3,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.get('/allDistrictWise', async (req, res) => {
+router.get('/allDistrictWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- semester_completion district api ---');
         let fileName = `exception_list/semester_completion/district_sem_completion_2.json`

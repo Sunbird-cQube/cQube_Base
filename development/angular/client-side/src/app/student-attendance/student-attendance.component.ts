@@ -119,9 +119,9 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
           month: this.month,
           year: this.year
         };
-        var eventType = "pageLoad";
-        this.btnId = '';
-        var date = new Date();
+        // var eventType = "pageLoad";
+        // this.btnId = '';
+        // var date = new Date();
         // this.trackInteract(date, this.btnId, eventType, undefined);
         this.districtWise();
       }
@@ -194,13 +194,31 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
 
   downloadRoport(event) {
     if (this.globalId == this.myDistrict) {
-      this.getTelemetryData({ id: this.globalId }, event.target.id);
+      var distData = {};
+      this.districtData.find(a => {
+        if (a.id == this.myDistrict) {
+          distData = a;
+        }
+      });
+      this.getTelemetryData(distData, event.target.id, "district");
     }
     if (this.globalId == this.myBlock) {
-      this.getTelemetryData({ id: this.globalId }, event.target.id);
+      var blockData = {};
+      this.blockData.find(a => {
+        if (a.id == this.myBlock) {
+          blockData = a;
+        }
+      });
+      this.getTelemetryData(blockData, event.target.id, "block");
     }
     if (this.globalId == this.myCluster) {
-      this.getTelemetryData({ id: this.globalId }, event.target.id);
+      var clusterData = {};
+      this.clusterData.find(a => {
+        if (a.id == this.myCluster) {
+          clusterData = a;
+        }
+      });
+      this.getTelemetryData(clusterData, event.target.id, "cluster");
     }
     // var eventType = event.type;
     // this.btnId = event.target.id;
@@ -368,8 +386,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   }
 
   blockWise(event) {
-    console.log(event.target.id);
-
+    // console.log(event.target.id);
     // var eventType = event.type;
     // this.btnId = event.target.id;
     // var date = new Date();
@@ -652,14 +669,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
 
 
   clickedMarker(event, label) {
-    if (event.latlng) {
-      var obj = {
-        id: label.id,
-        lat: event.latlng.lat,
-        lng: event.latlng.lng
-      }
-      this.getTelemetryData(obj, event.type);
-    }
+    var level;
 
     // var eventType = event.type;
     // this.btnId = 'marker';
@@ -667,12 +677,14 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     // this.trackInteract(date, this.btnId, eventType, label.id);
 
     if (this.districtsIds.includes(label.id)) {
+      level = "district";
       localStorage.setItem('dist', label.name);
       localStorage.setItem('distId', label.id);
       this.myDistData(label.id);
     }
 
     if (this.blocksIds.includes(label.id)) {
+      level = "block";
       if (this.skul) {
         localStorage.setItem('dist', label.dist);
         localStorage.setItem('distId', label.distId);
@@ -686,6 +698,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     }
 
     if (this.clusterIds.includes(label.id)) {
+      level = "cluster";
       localStorage.setItem('dist', label.dist);
       localStorage.setItem('distId', label.distId);
       localStorage.setItem('block', label.block);
@@ -694,6 +707,15 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       localStorage.setItem('clusterId', label.id);
 
       this.myClusterData(label.id);
+    }
+    if (event.latlng) {
+      var obj = {
+        id: label.id,
+        name: label.name,
+        lat: event.latlng.lat,
+        lng: event.latlng.lng
+      }
+      this.getTelemetryData(obj, event.type, level);
     }
   };
 
@@ -734,7 +756,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         distData = a;
       }
     });
-    this.getTelemetryData(distData, event.type);
+    this.getTelemetryData(distData, event.type, "district");
 
     // var eventType = event.type;
     // this.btnId = event.target.id;
@@ -853,7 +875,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         blockData = a;
       }
     });
-    this.getTelemetryData(blockData, event.type);
+    this.getTelemetryData(blockData, event.type, "block");
     // var eventType = event.type;
     // this.btnId = event.target.id;
     // var date = new Date();
@@ -983,13 +1005,12 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
 
   clusterSelect(event, data) {
     var clusterData = {};
-    console.log(this.clusterData);
     this.clusterData.find(a => {
       if (a.id == data) {
         clusterData = a;
       }
     });
-    this.getTelemetryData(clusterData, event.type);
+    this.getTelemetryData(clusterData, event.type, "cluster");
     // var eventType = event.type;
     // this.btnId = event.target.id;
     // var date = new Date();
@@ -1254,7 +1275,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   //     }
   //   );
   // }
-  getTelemetryData(data, event) {
+  getTelemetryData(data, event, level) {
+    this.service.telemetryData = [];
     var obj = {};
     if (data.id != undefined) {
       if (event == 'download') {
@@ -1262,7 +1284,11 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
           pageId: "student_attendance",
           uid: this.keyCloakSevice.kc.tokenParsed.sub,
           event: event,
+          level: level,
           locationid: data.id,
+          locationname: data.name,
+          lat: data.lat,
+          lng: data.lng,
           download: 1
         }
         this.service.telemetryData.push(obj);
@@ -1271,7 +1297,9 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
           pageId: "student_attendance",
           uid: this.keyCloakSevice.kc.tokenParsed.sub,
           event: event,
+          level: level,
           locationid: data.id,
+          locationname: data.name,
           lat: data.lat,
           lng: data.lng,
           download: 0
@@ -1283,7 +1311,10 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       var dateObj = {
         year: this.edate.getFullYear(),
         month: this.edate.getMonth() + 1,
-        date: this.edate.getDate()
+        date: this.edate.getDate(),
+        hour: this.edate.getHours(),
+        // minuts: this.edate.getMinus(),
+        // seconds: this.edate.getSeconds()
       }
 
       this.service.telemetry(dateObj).subscribe(res => {

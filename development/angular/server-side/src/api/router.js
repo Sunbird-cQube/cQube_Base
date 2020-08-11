@@ -5,7 +5,6 @@ const cluster_wise_data = require('./controller/attendanceRoutes/cluster_wise_da
 const school_wise_data = require('./controller/attendanceRoutes/school_wise_data');
 const getDateRange = require('./controller/attendanceRoutes/getDateRange');
 
-const roleLogin = require('./controller/users/roleBasedLogin');
 const changePasswd = require('./controller/users/changePassword');
 
 //deeksha
@@ -64,7 +63,6 @@ router.use('/attendance', school_wise_data);
 router.use('/attendance', getDateRange)
 
 // user details routes
-router.use('/roleBasedLogin', roleLogin);
 router.use('/changePassword', changePasswd);
 
 // Infra
