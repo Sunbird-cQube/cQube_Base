@@ -6,20 +6,21 @@
     - config.yml
 
   roles:
-          - create_base_dir
-          - java
-          - python
+          - { role: create_base_dir, tags: install }
+          - { role: java, tags: install }  
+          - { role: python, tags: install }
           - createdb
           - python_flask
-          - keycloak
-          - grafana
+          - { role: keycloak, tags: install }
+          - { role: grafana, tags: install }
           - angular
           - angular_admin
-          - nifi_params
-          - nifi_install
-          - nifi_crc
-          - nifi_static
-          - nifi_attendance
-          - nifi_semester
-          - nifi_infra
-          - nifi_diksha
+          - { role: prometheus, tags: install }
+          - { role: nifi_params, tags: install }
+          - { role: nifi_install, tags: install }
+          - { role: nifi_crc, tags: install }
+          - { role: nifi_static, tags: install }
+          - { role: nifi_attendance, tags: install }
+          - { role: nifi_semester, tags: install }
+          - { role: nifi_infra, tags: install }
+          - { role: nifi_diksha, tags: install }

@@ -136,7 +136,7 @@ else
 fi
 
 #addition of all memories
-if [[ $(($final_java_arg_2+$final_java_arg_3+$final_work_mem+$final_share_mem)) -ge $mb ]] ; then
+if [[ $(($final_java_arg_3+$final_work_mem+$final_share_mem)) -ge $mb ]] ; then
     echo "Error - Memory values are more than the RAM size" ; fail=1
 fi
 
@@ -200,13 +200,6 @@ if [[ $aws_key_status == 0 ]]; then
             echo "Error: [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in config.yml"; fail=1
         fi
 fi
-}
-
-check_nifi_port(){
-    port_status=$(sudo lsof -i:$2)
-    if [ $? == 0 ]; then
-        echo "Error - Port $2 is already running. Please change the port."; fail=1
-    fi
 }
 
 check_db_naming(){
@@ -277,10 +270,9 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "nifi_port" "s3_access_key" "s3_secret_key" \
+declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" "shared_buffers" "work_mem" "java_arg_2" "java_arg_3" \
-		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "db_connection_url" "db_driver_dir" \
-		"db_driver_class_name" "nifi_error_dir") 
+		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" ) 
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -360,13 +352,6 @@ case $key in
           check_ip $key $value
        fi
        ;;
-   nifi_port)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       else
-          check_nifi_port $key $value
-       fi
-       ;;
    db_user)
        if [[ $value == "" ]]; then
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
@@ -410,21 +395,6 @@ case $key in
           check_api_endpoint $key $value
        fi
        ;;
-   db_connection_url)
-       if [[ ! "$value" =~ ^(jdbc:postgresql://localhost:5432/)$ ]]; then
-          echo "Error - Valid values for $key is jdbc:postgresql://localhost:5432/"; fail=1
-       fi
-       ;;
-   db_driver_dir)
-       if [[ ! "$value" =~ ^(jars/postgresql-42.2.10.jar)$ ]]; then
-          echo "Error - Valid values for $key is jars/postgresql-42.2.10.jar"; fail=1
-       fi
-       ;;
-   db_driver_class_name)
-       if [[ ! "$value" =~ ^(org.postgresql.Driver)$ ]]; then
-          echo "Error - Valid values for $key is org.postgresql.Driver"; fail=1
-       fi
-       ;;
    shared_buffers)
        if [[ $value == "" ]]; then
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
@@ -445,11 +415,6 @@ case $key in
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
            check_mem_variables $shared_buffers $work_mem $java_arg_2 $java_arg_3
-       fi
-       ;;
-   nifi_error_dir)
-       if [[ ! "$value" =~ ^(/cqube/nifi/nifi_errors)$ ]]; then
-          echo "Error - Valid values for $key is /cqube/nifi/nifi_errors"; fail=1
        fi
        ;;
    aws_default_region)

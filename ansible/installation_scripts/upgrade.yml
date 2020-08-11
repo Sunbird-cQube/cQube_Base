@@ -6,12 +6,16 @@
     - upgradation_config.yml      
 
   roles:
-          - nifi_clear
-          - nifi_update
-          - nifi_params
-          - nifi_crc
-          - nifi_static
-          - nifi_attendance
-          - nifi_semester
-          - nifi_infra
-          - nifi_diksha
+          - createdb
+          - python_flask
+          - angular
+          - angular_admin
+          - { role: nifi_clear, tags: update }
+          - { role: nifi_update, tags: update }
+          - { role: nifi_params, tags: update }
+          - { role: nifi_crc, tags: update }
+          - { role: nifi_static, tags: update }
+          - { role: nifi_attendance, tags: update }
+          - { role: nifi_semester, tags: update } 
+          - { role: nifi_infra, tags: update }
+          - { role: nifi_diksha, tags: update }

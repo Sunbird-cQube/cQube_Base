@@ -1,50 +1,28 @@
 {
-"diksha_check_if_null":'''select * from flowfile except(select * from flowfile
-where UPPER("date") <> 'NULL'
-AND UPPER(dimensions_pdata_id) <> 'NULL' 
-AND UPPER(dimensions_pdata_pid) <> 'NULL' 
-AND UPPER(content_name) <> 'NULL' 
-AND UPPER(content_board) <> 'NULL' 
-AND UPPER("content_mimetype") <> 'NULL'
-AND UPPER("content_medium") <> 'NULL'
-AND UPPER("content_gradelevel") <> 'NULL'
-AND UPPER("content_subject") <> 'NULL'
-AND UPPER("content_created_for") <> 'NULL'
-AND UPPER("object_id") <> 'NULL'
-AND UPPER("object_rollup_l1") <> 'NULL'
-AND UPPER("derived_loc_state") <> 'NULL'
-AND UPPER("derived_loc_district") <> 'NULL'
-AND UPPER("user_signin_type") <> 'NULL'
-AND UPPER("user_login_type") <> 'NULL'
-AND UPPER("collection_type") <> 'NULL'
-AND UPPER("collection_created_for") <> 'NULL'
-AND UPPER("total_count") <> 'NULL'
-AND UPPER("total_time_spent") <> 'NULL')
-''',
-"diksha_not_null":'''select * from flowfile
-where UPPER("date") <> 'NULL'
-AND UPPER(dimensions_pdata_id) <> 'NULL' 
-AND UPPER(dimensions_pdata_pid) <> 'NULL' 
-AND UPPER(content_name) <> 'NULL' 
-AND UPPER(content_board) <> 'NULL' 
-AND UPPER("content_mimetype") <> 'NULL'
-AND UPPER("content_medium") <> 'NULL'
-AND UPPER("content_gradelevel") <> 'NULL'
-AND UPPER("content_subject") <> 'NULL'
-AND UPPER("content_created_for") <> 'NULL'
-AND UPPER("object_id") <> 'NULL'
-AND UPPER("object_rollup_l1") <> 'NULL'
-AND UPPER("derived_loc_state") <> 'NULL'
-AND UPPER("derived_loc_district") <> 'NULL'
-AND UPPER("user_signin_type") <> 'NULL'
-AND UPPER("user_login_type") <> 'NULL'
-AND UPPER("collection_type") <> 'NULL'
-AND UPPER("collection_created_for") <> 'NULL'
-AND UPPER("total_count") <> 'NULL'
-AND UPPER("total_time_spent") <> 'NULL'
+"diksha_check_if_null":'''select * from diksha_content_staging
+where content_view_date IS NULL
+ OR dimensions_pdata_id IS NULL
+ OR dimensions_pdata_pid IS NULL
+ OR content_name IS NULL
+ OR content_board IS NULL
+ OR content_mimetype IS NULL
+ OR content_medium IS NULL
+ OR content_gradelevel IS NULL
+ OR content_subject IS NULL
+ OR content_created_for IS NULL
+ OR object_id IS NULL
+ OR object_rollup_l1 IS NULL
+ OR derived_loc_state IS NULL
+ OR derived_loc_dIStrict IS NULL
+ OR user_signin_type IS NULL
+ OR user_login_type IS NULL
+ OR collection_type IS NULL
+ OR collection_created_for IS NULL
+ OR total_count IS NULL
+ OR total_time_spent IS NULL
 ''',
 "diksha_count_null_value":'''(select 
-SUM(CASE when "date" IS NULL THEN 1 ELSE 0 END) AS count_null_content_view_date,
+SUM(CASE when content_view_date IS NULL THEN 1 ELSE 0 END) AS count_null_content_view_date,
 SUM(CASE when dimensions_pdata_id IS NULL THEN 1 ELSE 0 END) AS count_null_dimensions_pdata_id,
 SUM(CASE when dimensions_pdata_pid IS NULL THEN 1 ELSE 0 END) AS count_null_dimensions_pdata_pid,
 SUM(CASE when content_name IS NULL THEN 1 ELSE 0 END) AS count_null_content_name,
@@ -64,7 +42,7 @@ SUM(CASE when "collection_type" IS NULL THEN 1 ELSE 0 END) AS count_null_collect
 SUM(CASE when "collection_created_for" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_created_for,
 SUM(CASE when "total_count" IS NULL THEN 1 ELSE 0 END) AS count_null_total_count,
 SUM(CASE when "total_time_spent" IS NULL THEN 1 ELSE 0 END) AS count_null_total_time_spent
-from flowfile)
+from diksha_content_staging)
 ''',
 "diksha_save_null_tb_name":"diksha_null_col",
 "diksha_null_to_log_db":'''update log_summary
@@ -126,5 +104,77 @@ where diksha_null_col.ff_uuid = log_summary.ff_uuid
         }
     }
 ]
+''',
+"diksha_check_same_records":'''SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent
+,count(*)-1  num_of_times
+FROM diksha_content_staging
+GROUP BY content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent
+HAVING  COUNT(*) > 1
+''',
+"diksha_delete_null_values_qry":'''delete  from diksha_content_staging
+where content_view_date IS NULL
+ OR dimensions_pdata_id IS NULL
+ OR dimensions_pdata_pid IS NULL
+ OR content_name IS NULL
+ OR content_board IS NULL
+ OR content_mimetype IS NULL
+ OR content_medium IS NULL
+ OR content_gradelevel IS NULL
+ OR content_subject IS NULL
+ OR content_created_for IS NULL
+ OR object_id IS NULL
+ OR object_rollup_l1 IS NULL
+ OR derived_loc_state IS NULL
+ OR derived_loc_dIStrict IS NULL
+ OR user_signin_type IS NULL
+ OR user_login_type IS NULL
+ OR collection_type IS NULL
+ OR collection_created_for IS NULL
+ OR total_count IS NULL
+ OR total_time_spent IS NULL
+''',
+"diksha_check_same_records":'''SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent
+,count(*)-1  num_of_times
+FROM diksha_content_staging
+GROUP BY content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent
+HAVING  COUNT(*) > 1
+''',
+"diksha_unique_records_same_records":'''select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent
+from (SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent,
+row_number() over (partition by content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent) as rn from diksha_content_staging) sq Where rn =1
+''',
+"diksha_stg_to_temp_qry":'''select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging
 '''
 }

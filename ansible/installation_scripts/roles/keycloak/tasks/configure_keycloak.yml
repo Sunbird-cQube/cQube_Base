@@ -17,15 +17,20 @@
     chdir: "{{ base_dir }}/cqube/keycloak/bin/"
   when: realm_created
 
+- name: Creating a kc_templates directory
+  file:
+    path: "{{ base_dir }}/cqube/keycloak/kc_templates"
+    state: directory
+
 - name: Creating the template for realm
   template:
     src: cQube_realm.json.j2
-    dest: kc_templates/cQube_realm.json
+    dest: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm.json"
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
     mode: '0644'
 
-- name: Creating the realm 
+- name: Creating the realm
   shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create realms -f {{ cQube_realm_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:
     executable: /bin/bash

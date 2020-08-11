@@ -13,12 +13,27 @@
     state: directory
   tags: install
 
-- name: Creating environmental variables
+- name: Copy requirements.txt
+  copy:
+    src: requirements.txt
+    dest: "{{ base_dir }}/cqube/emission_app/requirements.txt"
+  tags: [ install, update ]
+
+- name: Copying python files
+  shell: cp -R ../../development/python {{ base_dir }}/cqube/emission_app/
+  tags: [ install, update ]
+
+- name: Delete env.py
   file:
     path: "{{ base_dir }}/cqube/emission_app/python/env.py"
-    state: touch
-    mode: u+rw,g+rw,o+rw
-  tags: install
+    state: absent
+  tags: update
+
+- name: Updating env.py
+  template:
+    src: env.py.j2
+    dest: "{{ base_dir }}/cqube/emission_app/python/env.py"
+  tags: [ install, update ]
 
 - name: create a virtual environment directory
   file:
@@ -40,32 +55,10 @@
     creates: "{{ base_dir }}/cqube/emission_app/flaskenv"
   tags: install
 
-- name: Copy requirements.txt
-  copy:
-    src: requirements.txt
-    dest: "{{ base_dir }}/cqube/emission_app/requirements.txt"
-  tags: [ install, update ]
-
-- name: Copying python files
-  shell: cp -R ../../development/python {{ base_dir }}/cqube/emission_app/    
-  tags: [ install, update ]
-
-- name: Delete env.py
-  file:
-    path: "{{ base_dir }}/cqube/emission_app/python/env.py"
-    state: absent
-  tags: update
-
-- name: Updating env.py
-  template:
-    src: env.py.j2
-    dest: "{{ base_dir }}/cqube/emission_app/python/env.py"
-  tags: [ install, update ]   
-
 - name: Changing the permission of the directory
   file:
     path: "{{ base_dir }}/cqube/emission_app"
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
     recurse: yes
-  tags: install
+  tags: [ install, update ]

@@ -1,28 +1,18 @@
 {
-"stud_att_check_if_null":'''select * from flowfile except(select * from flowfile
-where UPPER(StudentAttendanceId) <> 'NULL'
-AND UPPER(StudentId) <> 'NULL'
-AND UPPER(SchoolId) <> 'NULL'
-AND UPPER(AadhaarUID) <> 'NULL'
-AND UPPER(AcademicYear) <> 'NULL'
-AND UPPER("Month") <> 'NULL')
+"stud_att_check_if_null":'''select * from student_attendance_staging_1
+where attendance_id is null or
+student_id is null or
+school_id is null or
+year is null or
+month is null
 ''',
-"stud_att_not_null":'''select * from flowfile
-where UPPER(StudentAttendanceId) <> 'NULL'
-AND UPPER(StudentId) <> 'NULL'
-AND UPPER(SchoolId) <> 'NULL'
-AND UPPER(AadhaarUID) <> 'NULL'
-AND UPPER(AcademicYear) <> 'NULL'
-AND UPPER("Month") <> 'NULL'
-''',
-"stud_att_count_null_value" :'''(select
-SUM(CASE when StudentAttendanceId IS NULL THEN 1 ELSE 0 END) AS count_null_studentattid,
-SUM(CASE when StudentId IS NULL THEN 1 ELSE 0 END) AS count_null_studentid,
-SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
-SUM(CASE when AadhaarUID IS NULL THEN 1 ELSE 0 END) AS count_null_aadhaarUID,
-SUM(CASE when AcademicYear IS NULL THEN 1 ELSE 0 END) AS count_null_AcademicYear,
-SUM(CASE when "Month" IS NULL THEN 1 ELSE 0 END) AS count_null_Month
-from flowfile)
+"stud_att_count_null_value" :'''(select 
+SUM(CASE when attendance_id IS NULL THEN 1 ELSE 0 END) AS count_null_studentattid,
+SUM(CASE when student_id IS NULL THEN 1 ELSE 0 END) AS count_null_studentid,
+SUM(CASE when school_id IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
+SUM(CASE when year IS NULL THEN 1 ELSE 0 END) AS count_null_AcademicYear,
+SUM(CASE when month IS NULL THEN 1 ELSE 0 END) AS count_null_Month
+from student_attendance_staging_1)
 ''',
 "stud_att_save_null_tb_name":"stud_att_null_col",
 "stud_att_null_to_log_db":'''update log_summary
@@ -34,54 +24,54 @@ month = stud_att_null_col.count_null_month
 from stud_att_null_col
 where stud_att_null_col.ff_uuid = log_summary.ff_uuid
 ''',
-"stud_att_staging_tb_name":"student_attendance_staging",
 "stud_att_check_same_records":'''
 SELECT attendance_id,student_id,school_id,year,
 month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31
-,count(attendance_id)-1  num_of_times
-FROM student_attendance_staging
+,ff_uuid,count(attendance_id)-1  num_of_times
+FROM student_attendance_staging_1
 GROUP BY attendance_id,student_id,school_id,year,
-month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
 HAVING  COUNT(*) > 1
 ''',
 "stud_att_unique_records_same_records":'''
+insert into student_attendance_staging_2(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
 select attendance_id,student_id,school_id,year,
 month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
-day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
 from (SELECT attendance_id,student_id,school_id,year,
 month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,
-day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,
+day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid,
 row_number() over (partition by attendance_id,student_id,school_id,year,
 month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,
-day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31) as rn from student_attendance_staging) sq Where rn =1
+day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid) as rn from student_attendance_staging_1) sq Where rn =1
 ''',
 "save-to-student_attendance_dup":"student_attendance_dup",
 "stud_att_sum_of_dup":"select sum(num_of_times) from flowfile",
 "stud_att_check_same_id_records":'''SELECT b.attendance_id,b.student_id,b.school_id,b.year,
-b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31
-,count(*) num_of_times  from (select attendance_id,student_id,school_id,year,month from student_attendance_staging
-    group by attendance_id,student_id,school_id,year,month having count(1)>1)  as a, student_attendance_staging b
-where
+b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid
+,count(*) num_of_times  from (select attendance_id,student_id,school_id,year,month,ff_uuid from student_attendance_staging_2
+    group by attendance_id,student_id,school_id,year,month,ff_uuid having count(1)>1)  as a, student_attendance_staging_2 b
+where 
 a.attendance_id=b.attendance_id
 and a.student_id=b.student_id
 and a.school_id=b.school_id
 and a.year=b.year
 and a.month=b.month
+and a.ff_uuid=b.ff_uuid
 group by b.attendance_id,b.student_id,b.school_id,b.year,
-b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31
+b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid
 ''',
-"stud_att_unique_record_same_id":'''SELECT b.attendance_id,b.student_id,b.school_id,b.year,
-b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31
-,count(*) num_of_times  from (select attendance_id,student_id,school_id,year,month from student_attendance_staging
-    group by attendance_id,student_id,school_id,year,month having count(1)>1)  as a, student_attendance_staging b
-where
-a.attendance_id=b.attendance_id
-and a.student_id=b.student_id
-and a.school_id=b.school_id
-and a.year=b.year
-and a.month=b.month
-group by b.attendance_id,b.student_id,b.school_id,b.year,
-b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31
+"stud_att_unique_record_same_id":'''insert into student_attendance_temp(attendance_id,student_id,school_id,year,month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from
+(select attendance_id,student_id,school_id,year,month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+,count(*) over (partition by attendance_id,student_id,school_id,year,month,ff_uuid) as rn  from student_attendance_staging_2)as a
+where a.rn=1
 ''',
 "stud_att_unique_record_same_id":'''select attendance_id,student_id,school_id,year,month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
 day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31
@@ -91,7 +81,6 @@ day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day
 ,count(*) over (partition by attendance_id,student_id,school_id,year,month) as rn  from demo)as a
 where a.rn=1
 ''',
-"stud_att_delete_temp_table":"truncate table student_attendance_staging",
 "save-to-school_student_total_att_pre_query":'''create or replace view attendance_trans_to_aggregate as
     select ll.year,ll.month,ll.school_id,hr.school_name,
 ll.school_latitude,ll.school_longitude,ll.district_id,hr.district_name,ll.district_latitude,
@@ -597,6 +586,53 @@ case when "28"  = 'NULL' then '0' else "28" end  as "day_28",
 case when "29"  = 'NULL' then '0' else "29" end  as "day_29",
 case when "30"  = 'NULL' then '0' else "30" end  as "day_30",
 case when "31"  = 'NULL' then '0' else "31" end  as "day_31"
-from flowfile'''
+from flowfile''',
+"student_stg_1_to_stg_2_qry":'''insert into student_attendance_staging_2(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  student_attendance_staging_1''',
+"student_att_stg_2_to_temp_qry":'''insert into student_attendance_temp(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  student_attendance_staging_2''',
+"stud_att_staging_1_tb_name":"student_attendance_staging_1",
+"student_stg_1_to_stg_2_qry":'''insert into student_attendance_staging_2(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  student_attendance_staging_1
+''',
+"student_att_stg_2_to_temp_qry":'''insert into student_attendance_temp(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  student_attendance_staging_2
+''',
+"stud_att_delete_null_values_qry":'''delete from student_attendance_staging_1 
+where attendance_id is null or
+student_id is null or
+school_id is null or
+year is null or
+month is null
+''',
+"student_stg_1_to_stg_2_qry":'''insert into student_attendance_staging_2(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  student_attendance_staging_1
+''',
+
 }
 
