@@ -3,7 +3,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.get('/allBlockWise', async (req, res) => {
+router.get('/allBlockWise',auth.authController, async (req, res) => {
     try {
         logger.info('--- all blocks semester_completion api ---');
         let fileName = `exception_list/semester_completion/block_sem_completion_2.json`
@@ -17,7 +17,7 @@ router.get('/allBlockWise', async (req, res) => {
     }
 })
 
-router.get('/blockWise/:distId', async (req, res) => {
+router.get('/blockWise/:distId',auth.authController, async (req, res) => {
     try {
         console.log(req.params);
         logger.info('--- block wise semester_completion api ---');

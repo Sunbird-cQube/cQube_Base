@@ -4,7 +4,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.get('/allClusterWise', async (req, res) => {
+router.get('/allClusterWise',auth.authController, async (req, res) => {
     try {
         logger.info('--- semester_completion cluster wise api ---');
         let fileName = `exception_list/semester_completion/cluster_sem_completion_2.json`;
@@ -18,7 +18,7 @@ router.get('/allClusterWise', async (req, res) => {
     }
 });
 
-router.get('/clusterWise/:distId/:blockId', async (req, res) => {
+router.get('/clusterWise/:distId/:blockId',auth.authController, async (req, res) => {
     try {
         logger.info('---semester_completion clusterperBlock api ---');
         let fileName = `exception_list/semester_completion/cluster_sem_completion_2.json`;

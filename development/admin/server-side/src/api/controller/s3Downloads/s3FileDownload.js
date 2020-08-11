@@ -13,7 +13,7 @@ router.post('/listBuckets', auth.authController, async function (req, res) {
         // var decoded = jwtDecode(token);
         // var username = decoded.user_email;
         // var password = decoded.password;
-
+        logger.info("listbucket of s3 api");
         let apiresult = await axios.post(`${baseUrl}/auth`,
             {
                 username: process.env.EMAIL,
@@ -23,6 +23,7 @@ router.post('/listBuckets', auth.authController, async function (req, res) {
         let listBuckets = await axios.get(`${baseUrl}/list_s3_buckets`,
             { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
 
+        logger.info("listfolder of s3 api response sent");
         res.send(listBuckets.data);
 
     } catch (e) {
@@ -33,6 +34,7 @@ router.post('/listBuckets', auth.authController, async function (req, res) {
 
 router.post('/listFolders/:bucketName', auth.authController, async function (req, res) {
     try {
+        logger.info("listfolder of s3 api");
         let apiresult = await axios.post(`${baseUrl}/auth`,
             {
                 username: process.env.EMAIL,
@@ -43,6 +45,7 @@ router.post('/listFolders/:bucketName', auth.authController, async function (req
             { "bucket": req.params.bucketName },
             { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
 
+        logger.info("listfolder of s3 api reponse sent");
         res.send(listFIles.data.Contents);
 
     } catch (e) {
@@ -66,6 +69,7 @@ router.post('/getDownloadUrl', auth.authController, async function (req, res) {
                 bucket: req.body.bucketName
             },
             { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
+        logger.info("list s3 file for bucket response sent..");
         res.send({ "downloadUrl": downloadUrl.data });
 
     } catch (e) {
@@ -92,6 +96,7 @@ router.post('/listFiles/:bucketName/:folderName', async function (req, res) {
 
                     keys.push({ fileName: file.Key });
                 })
+                logger.info("list s3 files api sent");
                 res.send(keys)
             }
         });

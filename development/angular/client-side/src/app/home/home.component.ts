@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { KeycloakSecurityService } from '../keycloak-security.service';
 import { AppServiceComponent } from '../app.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -33,13 +34,16 @@ export class HomeComponent implements OnInit {
     } else {
       this.showUser = true;
     }
-   
+
   }
 
 
   logout() {
     localStorage.clear();
-    this.keyCloakService.kc.logout();
+    let options = {
+      redirectUri: environment.appUrl
+    }
+    this.keyCloakService.kc.logout(options);
   }
 
   mouseenter() {
