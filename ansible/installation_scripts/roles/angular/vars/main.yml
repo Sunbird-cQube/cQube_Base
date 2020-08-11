@@ -1,2 +1,5 @@
+---
 nodejs_version: 12
 ansible_distribution_release: trusty
+realm_name: cQube
+angular_app_client_id: cqube_app

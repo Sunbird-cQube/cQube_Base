@@ -1,19 +1,3 @@
-/*Drop functions if exists*/
-
-drop function IF exists insert_infra_master;
-drop function IF exists create_infra_table;
-drop function IF exists update_infra_score;
-drop function IF exists insert_infra_trans;
-drop function IF exists insert_infra_agg;
-drop function IF exists infra_district_reports;
-drop function IF exists infra_block_reports;
-drop function IF exists infra_cluster_reports;
-drop function IF exists infra_school_reports;
-drop function IF exists Infra_jolt_spec;
-drop function IF exists semester_no_schools;
-drop function IF exists insert_diksha_trans;
-drop function IF exists insert_diksha_agg;
-
 /* Insert master infrastructure */
 
 CREATE OR REPLACE FUNCTION insert_infra_master()
@@ -554,7 +538,7 @@ END;
 $$LANGUAGE plpgsql;
 
 /* JOLT spec dynamic */
--- old and current jolt structure
+/* old and current jolt structure */
 
 create or replace function Infra_jolt_spec(category_1 text,category_2 text)
     RETURNS text AS
@@ -975,99 +959,4 @@ END;
 $$
 LANGUAGE plpgsql;
 
-/*Create jolt spec for Infra reports*/
-
 select Infra_jolt_spec('water','toilet');
-
-/*config semester with no school information*/
-
-create or replace FUNCTION semester_no_schools(semester int)
-RETURNS text AS
-$$
-DECLARE
-semester_no_schools text;
-BEGIN
-semester_no_schools= 'create or replace view semester_exception_completion_data as 
-select distinct a.school_id,a.school_name,a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name
-,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,'||semester||' as semester,
- b.district_latitude,b.district_longitude from school_hierarchy_details as a
- 	inner join school_geo_master as b on a.school_id=b.school_id
-where a.school_id not in 
-(select distinct school_id from student_semester_trans where semester='||semester||')
-and cluster_name is not null';
-Execute semester_no_schools; 
-return 0;
-END;
-$$LANGUAGE plpgsql;
-
-
-/*Diksha config script*/
-
-CREATE OR REPLACE FUNCTION insert_diksha_trans()
-RETURNS text AS
-$$
-DECLARE
-transaction_insert text;
-BEGIN
-transaction_insert='insert into diksha_content_trans(content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,created_on,updated_on) 
-select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent
-,now(),now() from diksha_content_temp except select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,now(),now() from diksha_content_trans';
-Execute transaction_insert; 
-return 0;
-END;
-$$LANGUAGE plpgsql;
-
-
-CREATE OR REPLACE FUNCTION insert_diksha_agg()
-RETURNS text AS
-$$
-DECLARE
-diksha_view text;
-agg_insert text;
-BEGIN
-diksha_view='create or replace view insert_diksha_trans_view as
-select b.district_id,b.district_latitude,b.district_longitude,Initcap(b.district_name) as district_name,
-	   a.content_view_date,a.dimensions_pdata_id,a.dimensions_pdata_pid,a.content_name,a.content_board,a.content_mimetype,a.content_medium,a.content_gradelevel,a.content_subject,
-	   a.content_created_for,a.object_id,a.object_rollup_l1,a.derived_loc_state,a.derived_loc_district,a.user_signin_type,a.user_login_type,a.collection_name,a.collection_board,
-	   a.collection_type,a.collection_medium,a.collection_gradelevel,a.collection_subject,a.collection_created_for,a.total_count,a.total_time_spent
-        from (select case when replace(upper(derived_loc_district),'' '','''') in (''CHHOTAUDEPUR'',''CHHOTAUDAIPUR'') then ''CHHOTAUDEPUR'' 
-       when replace(upper(derived_loc_district),'' '','''') in (''DOHAD'',''DAHOD'') then ''DOHAD''																									
-       when replace(upper(derived_loc_district),'' '','''') in (''PANCHMAHALS'',''PANCHMAHAL'') then ''DOHAD'' 
-       when replace(upper(derived_loc_district),'' '','''') in (''MAHESANA'',''MEHSANA'') then ''MAHESANA''
-       when replace(upper(derived_loc_district),'' '','''') in (''THEDANGS'',''DANG'',''DANGS'') then ''THEDANGS'' 
-       else replace(upper(derived_loc_district),'' '','''') end as district_name,
-content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,
-case when content_gradelevel like ''[%'' then ''Multi_Grade'' else content_gradelevel end as content_gradelevel,
-case when content_subject like ''[%'' then ''Multi_Subject'' else content_subject end as content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent
-from diksha_content_trans ) as a left join         
-        (select distinct a.district_id,a.district_name,b.district_latitude,b.district_longitude from 
-(select district_id,replace(upper(district_name),'' '','''') as district_name from school_hierarchy_details
-group by district_id,district_name
-) as a left join school_geo_master as b on a.district_id=b.district_id) as b on a.district_name=b.district_name
-where a.district_name is not null';
-Execute diksha_view;
-agg_insert='insert into diksha_total_content(district_id,district_latitude,district_longitude,district_name,
-content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,created_on,updated_on
-) select district_id,district_latitude,district_longitude,district_name,
-content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,now(),now()
-from insert_diksha_trans_view  
-except select district_id,district_latitude,district_longitude,district_name,
-content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,now(),now() from diksha_total_content';
-Execute agg_insert; 
-return 0;
-END;
-$$LANGUAGE plpgsql;

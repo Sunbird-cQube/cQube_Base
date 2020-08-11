@@ -28,3 +28,4 @@
   service: 
     name: keycloak
     state: restarted
+  tags: [ install, update ]

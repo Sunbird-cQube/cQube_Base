@@ -3,6 +3,6 @@ export const environment = {
   apiEndpoint: "https://{{ api_endpoint }}/api",
   adminUrl: "http://{{ local_ipv4_address }}:4201",
   keycloakUrl: "https://{{ api_endpoint }}/auth",
-  realm: "cQube",
-  clientId: "cqube_app"
+  realm: "{{ realm_name }}",
+  clientId: "{{ angular_app_client_id }}"
 };

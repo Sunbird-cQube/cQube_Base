@@ -45,6 +45,6 @@
       OUTPUT_BUCKET = "{{ s3_output_bucket }}"
 
       KEYCLOAK_HOST = "https://{{ api_endpoint }}"
-      KEYCLOAK_REALM = ""
-      KEYCLOAK_CLIENT = ""
+      KEYCLOAK_REALM = "{{ realm_name }}"
+      KEYCLOAK_CLIENT = "{{ angular_app_client_id }}"
   tags: [ install, update ]

@@ -12,6 +12,7 @@
   tags: [ install, update ]
 
 - include_tasks: link_logs.yml
+  tags: intstall
 
-- include_tasks: setup_prometheus.yml
+
 

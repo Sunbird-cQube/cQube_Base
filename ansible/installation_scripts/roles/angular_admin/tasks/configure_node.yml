@@ -49,8 +49,8 @@
       PASSWORD= "{{ keycloak_adm_passwd }}"
 
       KEYCLOAK_HOST = "https://{{ api_endpoint }}"
-      KEYCLOAK_REALM = "cQube"
-      KEYCLOAK_CLIENT= "cqube_admin"
+      KEYCLOAK_REALM = "{{ realm_name }}"
+      KEYCLOAK_CLIENT= "{{ admin_app_client_id }}"
       KEYCLOAK_USER= "{{ keycloak_adm_user }}"
       PASSWORD= "{{ keycloak_adm_passwd }}"
       GRANT_TYPE= "password"
