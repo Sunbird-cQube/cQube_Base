@@ -1,0 +1,13 @@
+---
+- name: creating the {{ item }} params json
+  template:
+    src: "{{ item }}_params.json.j2"
+    dest: nifi_json_files/{{ item }}.json
+  loop:
+    - assessment
+    - attendance
+    - crc
+    - diksha
+    - infra
+    - raw
+    - static

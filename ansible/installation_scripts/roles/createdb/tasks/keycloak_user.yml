@@ -5,4 +5,4 @@
     name: keycloak
     encoding: 'UTF-8'
     state: present
-
+  tags: install

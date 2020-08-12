@@ -3,41 +3,46 @@
     name: ['bash', 'openssl', 'libssl-dev', 'libssl-doc']
     update_cache: true
     state: latest
-  tags: packages
+  tags: install
 
 - name: Install PostgreSQL
   apt:
     name: ['postgresql', 'postgresql-contrib', 'libpq-dev', 'python-psycopg2']
     update_cache: true
     state: present
-  tags: packages
+  tags: install
 
 - name: configure postgre file
   replace:
     dest: /etc/postgresql/10/main/pg_hba.conf
     regexp: 'host    all             all             127.0.0.1/32            md5'
     replace: 'host    all             postgres             127.0.0.1/32            trust'
+  tags: install  
 
 - name: Inserting configuration in pg_hba.conf file
   lineinfile:
     path: /etc/postgresql/10/main/pg_hba.conf
     line: "host    all             {{ db_user }}            127.0.0.1/32            trust"
     insertafter: "host    all             postgres             127.0.0.1/32            trust"
+  tags: install
 
 - name: Increase buffer memory postgre file
   replace:
     dest: /etc/postgresql/10/main/postgresql.conf
     regexp: "shared_buffers = 128MB"
     replace: "shared_buffers = {{ shared_buffers }}"
+  tags: install
 
 - name: Increase work memory postgre file
   replace:
     dest: /etc/postgresql/10/main/postgresql.conf
     regexp: "#work_mem = 4MB"
     replace: "work_mem = {{ work_mem }}"    
+  tags: install
 
 - name: Ensure the PostgreSQL service is running
   service: name=postgresql state=started enabled=yes
+  tags: install
 
 - name: Ensure database is created
   become: true
@@ -46,6 +51,7 @@
     name: "{{ db_name }}"
     encoding: 'UTF-8'
     state: present
+  tags: install
 
 - name: Ensure user has access to the database
   become: true
@@ -59,13 +65,4 @@
     role_attr_flags: SUPERUSER,CREATEDB,CREATEROLE,REPLICATION,LOGIN
     state: present
   no_log: true
-
-- name: Run queries from SQL script
-  become: true
-  become_user: postgres
-  postgresql_query:
-    db: "{{ db_name }}"
-    path_to_script: cQube.sql
-  notify:
-   - restart postgresql
-
+  tags: install

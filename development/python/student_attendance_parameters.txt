@@ -1,0 +1,628 @@
+{
+"stud_att_check_if_null":'''select * from student_attendance_staging_1
+where attendance_id is null or
+student_id is null or
+school_id is null or
+year is null or
+month is null
+''',
+"stud_att_count_null_value" :'''(select 
+SUM(CASE when attendance_id IS NULL THEN 1 ELSE 0 END) AS count_null_studentattid,
+SUM(CASE when student_id IS NULL THEN 1 ELSE 0 END) AS count_null_studentid,
+SUM(CASE when school_id IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
+SUM(CASE when year IS NULL THEN 1 ELSE 0 END) AS count_null_AcademicYear,
+SUM(CASE when month IS NULL THEN 1 ELSE 0 END) AS count_null_Month
+from student_attendance_staging_1)
+''',
+"stud_att_save_null_tb_name":"stud_att_null_col",
+"stud_att_null_to_log_db":'''update log_summary
+SET attendance_id = stud_att_null_col.count_null_studentattid,
+student_id = stud_att_null_col.count_null_studentid,
+school_id = stud_att_null_col.count_null_schoolid,
+year = stud_att_null_col.count_null_academicyear,
+month = stud_att_null_col.count_null_month
+from stud_att_null_col
+where stud_att_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"stud_att_check_same_records":'''
+SELECT attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31
+,ff_uuid,count(attendance_id)-1  num_of_times
+FROM student_attendance_staging_1
+GROUP BY attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+HAVING  COUNT(*) > 1
+''',
+"stud_att_unique_records_same_records":'''
+insert into student_attendance_staging_2(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from (SELECT attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,
+day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid,
+row_number() over (partition by attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,
+day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid) as rn from student_attendance_staging_1) sq Where rn =1
+''',
+"save-to-student_attendance_dup":"student_attendance_dup",
+"stud_att_sum_of_dup":"select sum(num_of_times) from flowfile",
+"stud_att_check_same_id_records":'''SELECT b.attendance_id,b.student_id,b.school_id,b.year,
+b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid
+,count(*) num_of_times  from (select attendance_id,student_id,school_id,year,month,ff_uuid from student_attendance_staging_2
+    group by attendance_id,student_id,school_id,year,month,ff_uuid having count(1)>1)  as a, student_attendance_staging_2 b
+where 
+a.attendance_id=b.attendance_id
+and a.student_id=b.student_id
+and a.school_id=b.school_id
+and a.year=b.year
+and a.month=b.month
+and a.ff_uuid=b.ff_uuid
+group by b.attendance_id,b.student_id,b.school_id,b.year,
+b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid
+''',
+"stud_att_unique_record_same_id":'''insert into student_attendance_temp(attendance_id,student_id,school_id,year,month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from
+(select attendance_id,student_id,school_id,year,month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+,count(*) over (partition by attendance_id,student_id,school_id,year,month,ff_uuid) as rn  from student_attendance_staging_2)as a
+where a.rn=1
+''',
+"save-to-school_student_total_att_pre_query":'''create or replace view attendance_trans_to_aggregate as
+    select ll.year,ll.month,ll.school_id,hr.school_name,
+ll.school_latitude,ll.school_longitude,ll.district_id,hr.district_name,ll.district_latitude,
+ll.district_longitude,ll.block_id,hr.block_name,'NA' as brc_name,ll.block_latitude,ll.block_longitude,ll.cluster_id,
+hr.cluster_name,hr.crc_name,ll.cluster_latitude,ll.cluster_longitude,
+cast(ll.present_sum as int) as total_present,cast(ll.working_days as int) as total_working_days,ll.students_count
+from (select at.present_sum,at.working_days,at.month,at.year,at.students_count,at.school_id,
+sg.school_latitude,sg.school_longitude,sg.district_id,sg.district_latitude,sg.district_longitude,sg.block_id,sg.block_latitude,sg.block_longitude,
+sg.cluster_id,sg.cluster_latitude,sg.cluster_longitude
+ from (select
+sum(cast((case when day_1=1 then 1 else 0 end + case when day_2=1 then 1 else 0 end +
+case when day_3=1 then 1 else 0 end +
+case when day_4=1 then 1 else 0 end +
+case when day_5=1 then 1 else 0 end +
+case when day_6=1 then 1 else 0 end +
+case when day_7=1 then 1 else 0 end +
+case when day_8=1 then 1 else 0 end +
+case when day_9=1 then 1 else 0 end +
+case when day_10=1 then 1 else 0 end +
+case when day_11=1 then 1 else 0 end +
+case when day_12=1 then 1 else 0 end +
+case when day_13=1 then 1 else 0 end +
+case when day_14=1 then 1 else 0 end +
+case when day_15=1 then 1 else 0 end +
+case when day_16=1 then 1 else 0 end +
+case when day_17=1 then 1 else 0 end +
+case when day_18=1 then 1 else 0 end +
+case when day_19=1 then 1 else 0 end +
+case when day_20=1 then 1 else 0 end +
+case when day_21=1 then 1 else 0 end +
+case when day_22=1 then 1 else 0 end +
+case when day_23=1 then 1 else 0 end +
+case when day_24=1 then 1 else 0 end +
+case when day_25=1 then 1 else 0 end +
+case when day_26=1 then 1 else 0 end +
+case when day_27=1 then 1 else 0 end +
+case when day_28=1 then 1 else 0 end +
+case when day_29=1 then 1 else 0 end +
+case when day_30=1 then 1 else 0 end +
+case when day_31=1 then 1 else 0 end) as float)) as present_sum,
+sum(cast((case when day_1=2 or day_1=1 then 1 else 0 end +
+case when day_2=2 or day_2=1 then 1 else 0 end +
+case when day_3=2 or day_3=1 then 1 else 0 end +
+case when day_4=2 or day_4=1 then 1 else 0 end +
+case when day_5=2 or day_5=1 then 1 else 0 end +
+case when day_6=2 or day_6=1 then 1 else 0 end +
+case when day_7=2 or day_7=1 then 1 else 0 end +
+case when day_8=2 or day_8=1 then 1 else 0 end +
+case when day_9=2 or day_9=1 then 1 else 0 end +
+case when day_10=2 or day_10=1 then 1 else 0 end +
+case when day_11=2 or day_11=1 then 1 else 0 end +
+case when day_12=2 or day_12=1 then 1 else 0 end +
+case when day_13=2 or day_13=1 then 1 else 0 end +
+case when day_14=2 or day_14=1 then 1 else 0 end +
+case when day_15=2 or day_15=1 then 1 else 0 end +
+case when day_16=2 or day_16=1 then 1 else 0 end +
+case when day_17=2 or day_17=1 then 1 else 0 end +
+case when day_18=2 or day_18=1 then 1 else 0 end +
+case when day_19=2 or day_19=1 then 1 else 0 end +
+case when day_20=2 or day_20=1 then 1 else 0 end +
+case when day_21=2 or day_21=1 then 1 else 0 end +
+case when day_22=2 or day_22=1 then 1 else 0 end +
+case when day_23=2 or day_23=1 then 1 else 0 end +
+case when day_24=2 or day_24=1 then 1 else 0 end +
+case when day_25=2 or day_25=1 then 1 else 0 end +
+case when day_26=2 or day_26=1 then 1 else 0 end +
+case when day_27=2 or day_27=1 then 1 else 0 end +
+case when day_28=2 or day_28=1 then 1 else 0 end +
+case when day_29=2 or day_29=1 then 1 else 0 end +
+case when day_30=2 or day_30=1 then 1 else 0 end +
+case when day_31=2 or day_31=1 then 1 else 0 end )  as float)) as working_days
+,school_id,month,year,count(distinct(student_id)) as students_count
+from student_attendance_trans group by school_id,year,month) as at left join school_geo_master as sg on at.school_id=sg.school_id) as ll left join
+school_hierarchy_details as hr on ll.school_id=hr.school_id;
+
+insert into school_student_total_attendance as a (year,month,school_id,school_name,school_latitude,school_longitude,district_id,district_name,district_latitude,district_longitude,
+block_id,block_name,brc_name,block_latitude,block_longitude,cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,total_present,total_working_days,
+students_count)
+select year,month,school_id,school_name,school_latitude,school_longitude,district_id,district_name,district_latitude,district_longitude,
+block_id,block_name,brc_name,block_latitude,block_longitude,cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,total_present,total_working_days,
+students_count from attendance_trans_to_aggregate
+on conflict (month,year,school_id)
+do update set year= a.year,month=a.month,school_id=a.school_id,school_name=a.school_name,
+school_latitude=a.school_latitude,school_longitude=a.school_longitude,district_id=a.district_id,
+district_name=a.district_name,district_latitude=a.district_latitude,district_longitude=a.district_longitude,
+block_id=a.block_id,block_name=a.block_name,brc_name=a.brc_name,block_latitude=a.block_latitude,
+block_longitude=a.block_longitude,cluster_id=a.cluster_id,cluster_name=a.cluster_name,crc_name=a.crc_name,
+cluster_latitude=a.cluster_latitude,cluster_longitude=a.cluster_longitude,total_present=a.total_present,total_working_days=a.total_working_days,
+students_count=a.students_count
+''',
+"save-to-school_student_total_att_select_query":"select * from school_student_total_attendance limit 1",
+"save-to-stud_att_temp_tb_name":"student_attendance_temp",
+"stud_att_month":'select distinct("month") from flowfile limit 1',
+"stud_att_year":'select distinct("year") from flowfile limit 1',
+"stud_att_district-wise-per":'''SELECT district_id AS x_axis,INITCAP(district_name) AS district_name, 
+Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS x_value,
+'latitude' AS y_axis,district_latitude AS y_value,'longitude' AS z_axis,district_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,Data_from_date(Min(year),
+  (SELECT Min(month) FROM school_student_total_attendance GROUP BY year HAVING year=Min(year)) 
+  ),Data_upto_date(Max(year), 
+  (SELECT Max(month) FROM school_student_total_attendance GROUP BY year HAVING year=Max(year)) 
+  ),year,month 
+FROM school_student_total_attendance WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0
+GROUP BY district_id,district_latitude,district_longitude,district_name ,year,month
+''',
+"stud_att_block-wise-per":'''SELECT block_id AS x_axis,INITCAP(block_name) AS block_name,district_id,INITCAP(district_name) AS district_name,
+Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS x_value,'latitude' AS y_axis,block_latitude AS y_value,'longitude' AS z_axis,block_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,Data_from_date(Min(year),
+  (SELECT Min(month) FROM school_student_total_attendance GROUP BY year HAVING year=Min(year)) 
+  ),Data_upto_date(Max(year), 
+  (SELECT Max(month) FROM school_student_total_attendance GROUP BY year HAVING year=Max(year)) 
+  ),year,month 
+FROM school_student_total_attendance WHERE block_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0
+GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district_name,year,month
+''',
+"stud_att_cluster-wise-per":'''SELECT cluster_id AS x_axis,INITCAP(cluster_name) AS cluster_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name) AS block_name,
+Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS x_value,'latitude' AS y_axis,cluster_latitude AS y_value,'longitude' AS z_axis,cluster_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,Data_from_date(Min(year),
+  (SELECT Min(month) FROM school_student_total_attendance GROUP BY year HAVING year=Min(year)) 
+  ),Data_upto_date(Max(year), 
+  (SELECT Max(month) FROM school_student_total_attendance GROUP BY year HAVING year=Max(year)) 
+  ),year,month 
+FROM school_student_total_attendance WHERE cluster_latitude IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0
+GROUP BY cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,block_name,district_id,district_name,year,month
+''',
+"stud_att_school-wise-per":'''
+SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,INITCAP(crc_name)AS crc_name, 
+Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS x_value,'latitude' AS y_axis,school_latitude AS y_value,'longitude' AS z_axis,school_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,Data_from_date(Min(year), 
+ (SELECT Min(month) FROM school_student_total_attendance GROUP BY year HAVING year=Min(year)) 
+ ),Data_upto_date(Max(year), 
+ (SELECT Max(month) FROM school_student_total_attendance GROUP BY year HAVING year=Max(year)) 
+ ),year,month 
+FROM school_student_total_attendance WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0
+GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month
+''',
+"stud_att_meta":'''select count(distinct(district_id)) as total_districts, count(distinct(block_id))as total_blocks, count(distinct(cluster_id))as total_clusters, count(distinct(school_id))as total_schools, cast(sum(students_count)/count(distinct(month)) as int)as total_students
+       ,data_from_date(min(year),min(month)),data_upto_date(max(year),max(month)),month,TO_CHAR(
+    TO_DATE (month::text, 'MM'), 'Month'
+    ) AS month_name,year
+        from school_student_total_attendance group by month,year''',
+"stud_att_transform_district_wise":'''[{
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "district_name": "data.[&1].district_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "year": "data.[&1].year",
+        "month": "data.[&1].month",
+        "@students_count": "data.[&1].students_count",
+        "@total_schools": "data.[&1].total_schools",
+        "students_count": "allDistrictsFooter.students[]",
+        "total_schools": "allDistrictsFooter.schools[]"
+      }
+    }
+},
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "students": "=intSum(@(1,students))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+  }
+ 
+]
+''',
+"stud_att_transform_school_wise":'''[
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "cluster_id": ["=toString", null]
+       
+      }
+    }
+    },
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "school_name": "data.[&1].school_name",
+        "cluster_id": "data.[&1].cluster_id",
+        "cluster_name": "data.[&1].cluster_name",
+        "crc_name": "data.[&1].crc_name",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "year": "data.[&1].year",
+        "month": "data.[&1].month",
+        "@students_count": "data.[&1].students_count",
+        "@total_schools": "data.[&1].total_schools",
+        "students_count": "footer.@(1,cluster_id).students[]",
+        "total_schools": "footer.@(1,cluster_id).schools[]"
+      }
+    }
+    },
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "students": "=intSum(@(1,students))",
+          "schools": "=intSum(@(1,schools))"
+        }
+      }
+    }
+    }
+ , {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "x_axis": "data.[&1].x_axis",
+          "school_name": "data.[&1].school_name",
+          "cluster_id": "data.[&1].cluster_id",
+          "cluster_name": "data.[&1].cluster_name",
+          "crc_name": "data.[&1].crc_name",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "x_value": "data.[&1].x_value",
+          "y_axis": "data.[&1].y_axis",
+          "y_value": "data.[&1].y_value",
+          "z_axis": "data.[&1].z_axis",
+          "z_value": "data.[&1].z_value",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
+          "year": "data.[&1].year",
+          "month": "data.[&1].month",
+          "@students_count": "data.[&1].students_count",
+          "@total_schools": "data.[&1].total_schools",
+          "students_count": "allSchoolsFooter.students[]",
+          "total_schools": "allSchoolsFooter.schools[]"
+        }
+      },
+      "footer": "&"
+    }
+    }, {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "students": "=intSum(@(1,students))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+    },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "foot": {
+      "*": {
+       
+      }
+    }
+    }
+  }
+]
+''',
+"stud_att_transform_cluster_wise":'''[{
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "cluster_name": "data.[&1].cluster_name",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+    "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "year": "data.[&1].year",
+        "month": "data.[&1].month",
+        "@students_count": "data.[&1].students_count",
+        "@total_schools": "data.[&1].total_schools",
+        "students_count": "footer.@(1,block_id).students[]",
+        "total_schools": "footer.@(1,block_id).schools[]"
+      }
+    }
+},
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "students": "=intSum(@(1,students))",
+          "schools": "=intSum(@(1,schools))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+                  "x_axis": "data.[&1].x_axis",
+        "cluster_name": "data.[&1].cluster_name",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+    "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "year": "data.[&1].year",
+        "month": "data.[&1].month",
+          "@students_count": "data.[&1].students_count",
+          "@total_schools": "data.[&1].total_schools",
+          "students_count": "allClustersFooter.students[]",
+          "total_schools": "allClustersFooter.schools[]"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "students": "=intSum(@(1,students))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+  }
+
+]
+''',
+"stud_att_transform_block_wise":'''[{
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "district_name": "data.[&1].district_name",
+        "district_id": "data.[&1].district_id",
+
+"block_name": "data.[&1].block_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "year": "data.[&1].year",
+        "month": "data.[&1].month",
+        "@students_count": "data.[&1].students_count",
+        "@total_schools": "data.[&1].total_schools",
+        "students_count": "footer.@(1,district_id).students[]",
+        "total_schools": "footer.@(1,district_id).schools[]"
+      }
+    }
+},
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "students": "=intSum(@(1,students))",
+          "schools": "=intSum(@(1,schools))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "x_axis": "data.[&1].x_axis",
+          "district_name": "data.[&1].district_name",
+          "district_id": "data.[&1].district_id",
+ "block_name": "data.[&1].block_name",
+          "x_value": "data.[&1].x_value",
+          "y_axis": "data.[&1].y_axis",
+          "y_value": "data.[&1].y_value",
+          "z_axis": "data.[&1].z_axis",
+          "z_value": "data.[&1].z_value",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
+          "year": "data.[&1].year",
+          "month": "data.[&1].month",
+          "@students_count": "data.[&1].students_count",
+          "@total_schools": "data.[&1].total_schools",
+          "students_count": "allBlocksFooter.students[]",
+          "total_schools": "allBlocksFooter.schools[]"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "students": "=intSum(@(1,students))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+  }
+]
+''',
+"stud_att_processed_records_log_db":'''update log_summary as b
+    set processed_records= a.processed_records
+    from (
+        select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records)-sum(attendance_id+student_id+school_id+year+month))as processed_records
+        from log_summary group by ff_uuid) as a
+    where a.ff_uuid=b.ff_uuid
+''',
+"select_att_files_from__log_db":"select * from log_summary where filename like '%attendance%'",
+"stud_att_jolt_for_log_summary":'''[{
+        "operation": "shift",
+        "spec": {
+            "*": {
+                "filename": "[&1].filename",
+               "ff_uuid": "[&1].ff_uuid",
+              "total_records": "[&1].total_records",
+              "blank_lines": "[&1].blank_lines",
+              "duplicate_records": "[&1].duplicate_records",
+              "attendance_id": "[&1].records_with_null_value.attendance_id",
+              "student_id": "[&1].records_with_null_value.student_id",
+              "school_id": "[&1].records_with_null_value.school_id",
+              "year": "[&1].records_with_null_value.year",
+              "month": "[&1].records_with_null_value.month",
+              
+              "processed_records": "[&1].processed_records",
+              "process_start_time": "[&1].process_start_time",
+              "process_end_time": "[&1].process_end_time"
+            }
+        }
+    }
+]
+''',
+"stud_attendance_normalize":'''select StudentAttendanceId as "attendance_id",StudentId as "student_id",SchoolId as "school_id","Month",AcademicYear as "year",
+case when "1"  = 'NULL' then '0' else "1" end  as "day_1",
+case when "2"  = 'NULL' then '0' else "2" end  as "day_2",
+case when "3"  = 'NULL' then '0' else "3" end  as "day_3",
+case when "4"  = 'NULL' then '0' else "4" end  as "day_4",
+case when "5"  = 'NULL' then '0' else "5" end  as "day_5",
+case when "6"  = 'NULL' then '0' else "6" end  as "day_6",
+case when "7"  = 'NULL' then '0' else "7" end  as "day_7",
+case when "8"  = 'NULL' then '0' else "8" end  as "day_8",
+case when "9"  = 'NULL' then '0' else "9" end  as "day_9",
+case when "10"  = 'NULL' then '0' else "10" end  as "day_10",
+case when "11"  = 'NULL' then '0' else "11" end  as "day_11",
+case when "12"  = 'NULL' then '0' else "12" end  as "day_12",
+case when "13"  = 'NULL' then '0' else "13" end  as "day_13",
+case when "14"  = 'NULL' then '0' else "14" end  as "day_14",
+case when "15"  = 'NULL' then '0' else "15" end  as "day_15",
+case when "16"  = 'NULL' then '0' else "16" end  as "day_16",
+case when "17"  = 'NULL' then '0' else "17" end  as "day_17",
+case when "18"  = 'NULL' then '0' else "18" end  as "day_18",
+case when "19"  = 'NULL' then '0' else "19" end  as "day_19",
+case when "20"  = 'NULL' then '0' else "20" end  as "day_20",
+case when "21"  = 'NULL' then '0' else "21" end  as "day_21",
+case when "22"  = 'NULL' then '0' else "22" end  as "day_22",
+case when "23"  = 'NULL' then '0' else "23" end  as "day_23",
+case when "24"  = 'NULL' then '0' else "24" end  as "day_24",
+case when "25"  = 'NULL' then '0' else "25" end  as "day_25",
+case when "26"  = 'NULL' then '0' else "26" end  as "day_26",
+case when "27"  = 'NULL' then '0' else "27" end  as "day_27",
+case when "28"  = 'NULL' then '0' else "28" end  as "day_28",
+case when "29"  = 'NULL' then '0' else "29" end  as "day_29",
+case when "30"  = 'NULL' then '0' else "30" end  as "day_30",
+case when "31"  = 'NULL' then '0' else "31" end  as "day_31"
+from flowfile''',
+"student_stg_1_to_stg_2_qry":'''insert into student_attendance_staging_2(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  student_attendance_staging_1''',
+"student_att_stg_2_to_temp_qry":'''insert into student_attendance_temp(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  student_attendance_staging_2''',
+"stud_att_staging_1_tb_name":"student_attendance_staging_1",
+"student_stg_1_to_stg_2_qry":'''insert into student_attendance_staging_2(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  student_attendance_staging_1
+''',
+"student_att_stg_2_to_temp_qry":'''insert into student_attendance_temp(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  student_attendance_staging_2
+''',
+"stud_att_delete_null_values_qry":'''delete from student_attendance_staging_1 
+where attendance_id is null or
+student_id is null or
+school_id is null or
+year is null or
+month is null
+''',
+"student_stg_1_to_stg_2_qry":'''insert into student_attendance_staging_2(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  student_attendance_staging_1
+'''
+}
+

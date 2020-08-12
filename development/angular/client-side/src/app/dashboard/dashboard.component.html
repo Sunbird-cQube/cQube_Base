@@ -1,8 +1,8 @@
-<!-- <div class="container" *ngIf="hiddenPass">
+<div class="container">
     <div class="row">
         <div class="col-sm-3">
             <div [routerLink]="['/home/attendance-report']" class="cards" id="sar">
-                <img src="../../assets/stdAtt.png" alt="studentAttendance" height="130" width="210"
+                <img src="../../assets/stdAtt.png" alt="studentAttendance" 
                     style="margin: 5% 0% 3% 0%; "><br>
                 <strong>
                     Student Attendance Report
@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-3">
             <div [routerLink]="['/home/crc-report']" class="cards" id="crcr">
-                <img src="../../assets/crcReport.png" alt="crcReport" height="130" width="230"
+                <img src="../../assets/crcReport.png" alt="crcReport"
                     style="margin: 5% 0% 3% 0%; "><br>
                 <strong>
                     CRC Report
@@ -20,7 +20,7 @@
         </div>
         <div class="col-sm-3">
             <div [routerLink]="['/home/semester-report']" class="cards" id="sr">
-                <img src="../../assets/semester.png" alt="semesterReport" height="130" width="230"
+                <img src="../../assets/semester.png" alt="semesterReport"
                     style="margin: 5% 0% 3% 0%; "><br>
                 <strong>
                     Semester Report
@@ -29,7 +29,7 @@
         </div>
         <div class="col-sm-3">
             <div [routerLink]="['/home/teacher-attendance']" class="cards" id="tar">
-                <img src="../../assets/teacherAtt.png" alt="TeacherAttendance" height="130" width="230"
+                <img src="../../assets/teacherAtt.png" alt="TeacherAttendance"
                     style="margin: 5% 0% 3% 0%; "><br>
                 <strong>
                     Teacher Attendance Report
@@ -38,27 +38,66 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div [routerLink]="['/home/school-infra-map']" class="cards" id="imr">
-                <img src="../../assets/infraMap.png" alt="infraMap" height="130" width="230"
+                <img src="../../assets/infraMap.png" alt="infraMap"
                     style="margin: 5% 0% 3% 0%; "><br>
                 <strong>
                     Infrastructure Map Report
                 </strong>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div [routerLink]="['/home/school-infrastructure']" class="cards" id="icr">
-                <img src="../../assets/schoolInfra.png" alt="schoolInfra" height="130" width="230"
+                <img src="../../assets/schoolInfra.png" alt="schoolInfra"
                     style="margin: 5% 0% 3% 0%; "><br>
                 <strong>
                     Infrastructure Chart Report
                 </strong>
             </div>
         </div>
-        <div class="col-sm-4">
-            <div [routerLink]="['/home/changePassword']" class="cards" id="cp">
-                <img src="../../assets/changePassword.png" alt="TeacherAttendance" height="130" width="230"
+
+        <div class="col-sm-3">
+            <div [routerLink]="['/home/diksha-chart']" class="cards" id="icr">
+                <img src="../../assets/diksha_chart.png" alt="dikshaChart"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Diksha Chart Report
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div [routerLink]="['/home/diksha-table']" class="cards" id="icr">
+                <img src="../../assets/table.png" alt="dikshaTable"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Diksha Table Report
+                </strong>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div [routerLink]="['/home/sem-exception']" class="cards" id="SemExp">
+                <img src="../../assets/sem_exception.png" alt="semExcep"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Semester Exceptions
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="cards" id="isdata" (click)="school_Invalid_Data()">
+                <img src="../../assets/download_invalid.png" alt="schInvalid"
+                    style="margin: 5% 0% 3% 0%; "><br>
+                <strong>
+                    Missing Schools Info
+                </strong>
+            </div>
+        </div>
+        <div class="col-sm-3" *ngIf="hiddenPass">
+            <div [routerLink]="['/home/changePassword']" class="cards" id="chPass">
+                <img src="../../assets/changePassword.png" alt="changePass"
                     style="margin: 5% 0% 3% 0%; "><br>
                 <strong>
                     Change Password
@@ -66,65 +105,8 @@
             </div>
         </div>
     </div>
-</div> -->
+</div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            <div [routerLink]="['/home/attendance-report']" class="cards" id="sar">
-                <img src="../../assets/stdAtt.png" alt="studentAttendance" height="130" width="210"
-                    style="margin: 5% 0% 3% 0%; "><br>
-                <strong>
-                    Student Attendance Report Admin
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div [routerLink]="['/home/crc-report']" class="cards" id="crcr">
-                <img src="../../assets/crcReport.png" alt="crcReport" height="130" width="230"
-                    style="margin: 5% 0% 3% 0%; "><br>
-                <strong>
-                    CRC Report
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div [routerLink]="['/home/semester-report']" class="cards" id="sr">
-                <img src="../../assets/semester.png" alt="semesterReport" height="130" width="230"
-                    style="margin: 5% 0% 3% 0%; "><br>
-                <strong>
-                    Semester Report
-                </strong>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <div [routerLink]="['/home/teacher-attendance']" class="cards" id="tar">
-                <img src="../../assets/teacherAtt.png" alt="TeacherAttendance" height="130" width="230"
-                    style="margin: 5% 0% 3% 0%; "><br>
-                <strong>
-                    Teacher Attendance Report
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div [routerLink]="['/home/school-infra-map']" class="cards" id="imr">
-                <img src="../../assets/infraMap.png" alt="infraMap" height="130" width="230"
-                    style="margin: 5% 0% 3% 0%; "><br>
-                <strong>
-                    Infrastructure Map Report
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div [routerLink]="['/home/school-infrastructure']" class="cards" id="icr">
-                <img src="../../assets/schoolInfra.png" alt="schoolInfra" height="130" width="230"
-                    style="margin: 5% 0% 3% 0%; "><br>
-                <strong>
-                    Infrastructure Chart Report
-                </strong>
-            </div>
-        </div>
-    </div>
+<div id="spinner" style="display: none;">
+    <div class="loading">Loading&#8230;</div>
 </div>

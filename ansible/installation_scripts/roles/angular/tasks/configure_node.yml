@@ -1,4 +1,15 @@
 ---
+- name: Stoping the server_side app
+  become: yes
+  shell: pm2 stop server_side
+  tags: update
+
+- name: Delete server_side directory
+  file:
+    path: "{{ base_dir }}/cqube/dashboard/server_side"
+    state: absent
+  tags: update
+
 - name: Creating the server_side Directory for the installation
   file: 
     path: "{{ base_dir }}/cqube/dashboard/server_side"
@@ -6,22 +17,23 @@
     group: "{{ system_user_name }}"
     recurse: yes
     state: directory
+  tags: [ install, update ]
     
 - name: copying server-side script
   shell: "cp -R ../../development/angular/server-side/* {{base_dir}}/cqube/dashboard/server_side"
-
-- name: Change to Node directory
-  shell: "cd {{base_dir}}/cqube/dashboard/server_side"
+  tags: [ install, update ]
 
 - name: NodeJS dependencies install
   npm:
     path: "{{base_dir}}/cqube/dashboard/server_side"
+  tags: [ install, update ]
 
 - name: Creating environmental variables
   file:
     path: "{{base_dir}}/cqube/dashboard/server_side/.env"
     state: touch
     mode: u+rw,g+rw,o+rw
+  tags: [ install, update ]
 
 - name: Loading required data inside .env file
   blockinfile:
@@ -33,5 +45,6 @@
       OUTPUT_BUCKET = "{{ s3_output_bucket }}"
 
       KEYCLOAK_HOST = "https://{{ api_endpoint }}"
-      KEYCLOAK_REALM = ""
-      KEYCLOAK_CLIENT = ""
+      KEYCLOAK_REALM = "{{ realm_name }}"
+      KEYCLOAK_CLIENT = "{{ angular_app_client_id }}"
+  tags: [ install, update ]

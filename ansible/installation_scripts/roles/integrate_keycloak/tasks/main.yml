@@ -1,4 +1,0 @@
----
-- include_tasks: build_python_flask.yml
-- include_tasks: build_angular.yml
-- include_tasks: build_admin_angular.yml

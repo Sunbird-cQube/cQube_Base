@@ -3,4 +3,3 @@ grafana_dependencies:
   - apt-transport-https
   - software-properties-common
   - wget
-local_ipv4_address: 0.0.0.0

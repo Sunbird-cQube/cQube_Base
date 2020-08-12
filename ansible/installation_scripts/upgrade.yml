@@ -1,0 +1,21 @@
+---
+- name: Upgrading cQube
+  hosts: localhost
+  remote_user: root
+  vars_files:
+    - upgradation_config.yml      
+
+  roles:
+          - createdb
+          - python_flask
+          - angular
+          - angular_admin
+          - { role: nifi_clear, tags: update }
+          - { role: nifi_update, tags: update }
+          - { role: nifi_params, tags: update }
+          - { role: nifi_crc, tags: update }
+          - { role: nifi_static, tags: update }
+          - { role: nifi_attendance, tags: update }
+          - { role: nifi_semester, tags: update } 
+          - { role: nifi_infra, tags: update }
+          - { role: nifi_diksha, tags: update }
