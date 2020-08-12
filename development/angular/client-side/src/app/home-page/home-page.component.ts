@@ -19,7 +19,10 @@ export class HomePageComponent implements OnInit {
     if (this.keycloakService.kc.tokenParsed.realm_access) {
       if (this.keycloakService.kc.tokenParsed.realm_access.roles.length > 1) {
         alert("One user can not be assigned multiple roles");
-        this.keycloakService.kc.logout();
+        let options = {
+          redirectUri: environment.appUrl
+        }
+        this.keycloakService.kc.logout(options);
       } else {
         this.keycloakService.kc.tokenParsed.realm_access.roles.forEach(role => {
           if (role == "admin") {
@@ -30,19 +33,28 @@ export class HomePageComponent implements OnInit {
             this.router.navigate(['home']);
           } else {
             alert("Unauthorized user");
-            this.keycloakService.kc.logout();
+            let options = {
+              redirectUri: environment.appUrl
+            }
+            this.keycloakService.kc.logout(options);
           }
         });
       }
     } else {
       alert("Please assign role to user");
-      this.keycloakService.kc.logout();
+      let options = {
+        redirectUri: environment.appUrl
+      }
+      this.keycloakService.kc.logout(options);
     }
   }
 
   logout() {
     localStorage.clear();
-    this.keycloakService.kc.logout();
+    let options = {
+      redirectUri: environment.appUrl
+    }
+    this.keycloakService.kc.logout(options);
   }
 
 }
