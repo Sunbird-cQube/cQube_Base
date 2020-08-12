@@ -30,7 +30,6 @@ export class UsersComponent implements OnInit {
     }
     this.service.allUsers().subscribe(res => {
       this.result = res['users'];
-      console.log(this.result);
       this.result.forEach(item => {
         this.user_status = item.user_status;
         if (item.firstName == undefined) {
