@@ -149,9 +149,8 @@ fi
 }
 
 check_sys_user(){
-    who | grep $2 > /dev/null 2>&1
-    result=$?
-    if [[ `egrep -i ^$2: /etc/passwd ; echo $?` != 0 && $result != 0 ]]; then 
+    result=`who | awk '{print $1}'`
+    if [[ `egrep -i ^$2: /etc/passwd ; echo $?` != 0 && $result != $2 ]]; then 
         echo "Error - Please check the system_user_name."; fail=1
     fi
 }
