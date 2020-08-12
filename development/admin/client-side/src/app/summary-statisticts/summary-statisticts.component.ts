@@ -19,70 +19,83 @@ export class SummaryStatistictsComponent implements OnInit {
     document.getElementById('homeBtn').style.display = "Block";
     this.service.getAttendanceSummary().subscribe((res: any) => {
       this.tableData = res;
-      this.tableData.forEach(element => {
-        if (element.total_records == null) {
-          element.total_records = 0;
-        }
-      });
-      this.tableWithSubHeaders(this.tableData, "table1");
+      if (this.tableData) {
+        this.tableData.forEach(element => {
+          if (element.total_records == null) {
+            element.total_records = 0;
+          }
+        });
+        this.tableWithSubHeaders(this.tableData, "table1");
+      }
     });
     this.service.getSemSummary().subscribe((res: any) => {
       this.tableData = res;
-      this.tableData.forEach(element => {
-        if (element.total_records == null) {
-          element.total_records = 0;
-        }
-      });
-      this.tableWithSubHeaders(this.tableData, "table2");
+      if (this.tableData) {
+        this.tableData.forEach(element => {
+          if (element.total_records == null) {
+            element.total_records = 0;
+          }
+        });
+        this.tableWithSubHeaders(this.tableData, "table2");
+      }
     });
     this.service.getCrcSummary().subscribe((res: any) => {
       this.tableData = res;
-      this.tableData.forEach(element => {
-        if (element.total_records == null) {
-          element.total_records = 0;
-        }
-      });
-      this.tableWithSubHeaders(this.tableData, "table3");
-
+      if (this.tableData) {
+        this.tableData.forEach(element => {
+          if (element.total_records == null) {
+            element.total_records = 0;
+          }
+        });
+        this.tableWithSubHeaders(this.tableData, "table3");
+      }
     });
 
     this.service.getInfraSummary().subscribe((res: any) => {
       this.tableData = res;
-      this.tableData.forEach(element => {
-        if (element.total_records == null) {
-          element.total_records = 0;
-        }
-      });
-      this.tableWithSubHeaders(this.tableData, "table4");
+      if (this.tableData) {
+        this.tableData.forEach(element => {
+          if (element.total_records == null) {
+            element.total_records = 0;
+          }
+        });
+        this.tableWithSubHeaders(this.tableData, "table4");
+      }
     });
 
     this.service.getInspecSummary().subscribe((res: any) => {
       this.tableData = res;
-      this.tableData.forEach(element => {
-        if (element.total_records == null) {
-          element.total_records = 0;
-        }
-      });
-      this.tableWithSubHeaders(this.tableData, "table5");
+      if (this.tableData) {
+        this.tableData.forEach(element => {
+          if (element.total_records == null) {
+            element.total_records = 0;
+          }
+        });
+        this.tableWithSubHeaders(this.tableData, "table5");
+      }
     });
 
     this.service.getstDistSummary().subscribe((res: any) => {
       this.tableData = res;
-      this.tableData.forEach(element => {
-        if (element.total_records == null) {
-          element.total_records = 0;
-        }
-      });
-      this.tableWithSubHeaders(this.tableData, "table6");
+      if (this.tableData) {
+        this.tableData.forEach(element => {
+          if (element.total_records == null) {
+            element.total_records = 0;
+          }
+        });
+        this.tableWithSubHeaders(this.tableData, "table6");
+      }
     });
     this.service.getstBlockSummary().subscribe((res: any) => {
       this.tableData = res;
-      this.tableData.forEach(element => {
-        if (element.total_records == null) {
-          element.total_records = 0;
-        }
-      });
-      this.tableWithSubHeaders(this.tableData, "table7");
+      if (this.tableData) {
+        this.tableData.forEach(element => {
+          if (element.total_records == null) {
+            element.total_records = 0;
+          }
+        });
+        this.tableWithSubHeaders(this.tableData, "table7");
+      }
     });
     this.service.getstClusterSummary().subscribe((res: any) => {
       this.tableData = res;
