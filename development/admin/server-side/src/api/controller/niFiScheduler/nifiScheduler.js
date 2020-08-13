@@ -58,6 +58,11 @@ router.post('/scheduleProcessor/:id', async (req, res) => {
         let timeToStop = req.body.stopTime
         timeToStop = hours + timeToStop
 
+        if (timeToStop >= 24) {
+            timeToStop = timeToStop % 24;
+            timeToStop = timeToStop < 0 ? 24 + timeToStop : +timeToStop;
+        }
+
         let url = `${process.env.NIFI_URL}/flow/process-groups/${groupId}`
 
         await schedule.scheduleJob(`${mins} ${hours} * * *`, async function () {

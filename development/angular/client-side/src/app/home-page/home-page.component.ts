@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { KeycloakSecurityService } from '../keycloak-security.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { AppServiceComponent } from '../app.service';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -9,7 +10,9 @@ import { Router } from '@angular/router';
 })
 export class HomePageComponent implements OnInit {
   adminUrl;
-  constructor(public keycloakService: KeycloakSecurityService, public router: Router) { }
+  constructor(public keycloakService: KeycloakSecurityService, public router: Router, public service: AppServiceComponent) {
+    service.logoutOnToeknExpire();
+  }
 
   ngOnInit(): void {
     this.adminUrl = environment.adminUrl;

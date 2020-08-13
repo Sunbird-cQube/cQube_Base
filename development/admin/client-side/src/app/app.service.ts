@@ -14,6 +14,14 @@ export class AppService {
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
         this.token = keyCloakService.kc.token;
         localStorage.setItem('token', this.token);
+
+        if (this.keyCloakService.kc.isTokenExpired() == true) {
+            alert("Session expired, Please login again!");
+            let options = {
+                redirectUri: environment.appUrl
+            }
+            this.keyCloakService.kc.logout(options);
+        }
     }
 
     login(data) {
@@ -197,8 +205,20 @@ export class AppService {
     }
 
     //telemetry data
-    showTelemetry(date) {
-        return this.http.post(`${this.baseUrl}/showTelemetry`, date, {
+    telemetryDist() {
+        return this.http.post(`${this.baseUrl}/showDistTelemetry`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    telemetryBlock() {
+        return this.http.post(`${this.baseUrl}/showBlockTelemetry/all_Block`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    telemetryCluster() {
+        return this.http.post(`${this.baseUrl}/showClusterTelemetry/all_Cluster`, {}, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }

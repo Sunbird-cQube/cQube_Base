@@ -26,10 +26,10 @@ export class DikshaChartComponent implements OnInit {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
-  public barChartColors: Color[] = [
-    { backgroundColor: 'red' },
-    { backgroundColor: 'green' },
-  ]
+  public barChartColors: Color[] = [];
+  public barChartColors1: Color[] = [];
+  public barChartColors2: Color[] = [];
+  public barChartColors3: Color[] = []
 
   public barChartData: ChartDataSets[] = [
     { data: [], label: 'Series A', stack: 'a' }
@@ -58,7 +58,7 @@ export class DikshaChartComponent implements OnInit {
   public myChart: Chart;
   public showAllChart: boolean = false;
   public allDataNotFound: any;
-  public usageByType: any = [{ type: "All" }, { type: "Teacher" }, { type: "Student" }, { type: "Others" }];
+  public usageByType: any = [{ type: "All" }, { type: "Teacher" }, { type: "Student" }, { type: "Other" }];
   downloadType;
   fileName: any;
   reportData: any = [];
@@ -70,7 +70,9 @@ export class DikshaChartComponent implements OnInit {
     public service: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
-  ) { console.log(this.timePeriod) }
+  ) { 
+    service.logoutOnToeknExpire();
+  }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = "none";
@@ -147,7 +149,6 @@ export class DikshaChartComponent implements OnInit {
       this.createChart(result, "barChartData");
       if (result['data']) {
         this.chart1 = (result['data'][0].length > 0);
-        console.log(this.chart1);
       }
 
       this.service.dikshaAllData('Teacher', this.timePeriod).subscribe(result => {
@@ -203,7 +204,6 @@ export class DikshaChartComponent implements OnInit {
         this.all = true
         this.dist = false
       } else {
-        console.log(districtId)
         this.all = false
         this.dist = true
         let d = this.districtsDetails.filter(item => {
@@ -278,7 +278,6 @@ export class DikshaChartComponent implements OnInit {
 
     document.getElementById('home').style.display = "block";
     this.allDataNotFound = undefined;
-    console.log(this.timePeriod);
     this.errMsg();
 
     this.result = [];
@@ -347,45 +346,46 @@ export class DikshaChartComponent implements OnInit {
 
   createChart(data, barChartData) {
     var chartData = [];
+    var colors = [];
     if (data.data != undefined) {
       data.data.forEach(element => {
         var obj = { data: element.score, label: element.subject, stack: 'a' }
         chartData.push(obj);
         let a = { backgroundColor: '' };
         if (element.subject == 'Sanskrit') {
-          a.backgroundColor = '#cc0000'
+          a.backgroundColor = '#a6cee3'
         }
         if (element.subject == 'Gujarati') {
-          a.backgroundColor = '#006600'
+          a.backgroundColor = '#1f78b4'
         }
         if (element.subject == 'Science') {
-          a.backgroundColor = '#333300'
+          a.backgroundColor = '#b2df8a'
         }
         if (element.subject == 'Gyan Setu') {
-          a.backgroundColor = '#006666'
+          a.backgroundColor = '#33a02c'
         }
         if (element.subject == 'Environmental Studies') {
-          a.backgroundColor = '#003366'
+          a.backgroundColor = '#fb9a99'
         }
         if (element.subject == 'Hindi') {
-          a.backgroundColor = '#333399'
+          a.backgroundColor = '#e31a1c'
         }
         if (element.subject == 'Multi_Subject') {
-          a.backgroundColor = '#660066'
+          a.backgroundColor = '#fdbf6f'
         }
         if (element.subject == 'Mathematics') {
-          a.backgroundColor = '#cc3300'
+          a.backgroundColor = '#ff7f00'
         }
         if (element.subject == 'English') {
-          a.backgroundColor = '#996600'
+          a.backgroundColor = '#cab2d6'
         }
         if (element.subject == 'Social Science') {
-          a.backgroundColor = '#6600cc'
+          a.backgroundColor = '#6a3d9a'
         }
         if (element.subject == 'Maths') {
-          a.backgroundColor = '#3366cc'
+          a.backgroundColor = '#b15928'
         }
-        this.barChartColors.push(a);
+        colors.push(a);
       });
       this.barChartOptions = {
         legend: {
@@ -444,18 +444,22 @@ export class DikshaChartComponent implements OnInit {
       if (barChartData == "barChartData") {
         this.barChartLabels = data.grades;
         this.barChartData = chartData;
+        this.barChartColors = colors;
       }
       if (barChartData == "barChartData1") {
         this.barChartLabels1 = data.grades;
         this.barChartData1 = chartData;
+        this.barChartColors1 = colors;
       }
       if (barChartData == "barChartData2") {
         this.barChartLabels2 = data.grades;
         this.barChartData2 = chartData;
+        this.barChartColors2 = colors;
       }
       if (barChartData == "barChartData3") {
         this.barChartLabels3 = data.grades;
         this.barChartData3 = chartData;
+        this.barChartColors3 = colors;
       }
 
     }
@@ -471,7 +475,6 @@ export class DikshaChartComponent implements OnInit {
     if (type) {
       this.errMsg();
       this.service.dikshaDataDownload({ districtId: this.districtId, timePeriod: this.timePeriod }).subscribe(res => {
-
         if (this.districtId == '') {
           if (res['All'][`${type}`]) {
             this.fileName = `Diksha_All_data_${type}`;
@@ -509,7 +512,6 @@ export class DikshaChartComponent implements OnInit {
   }
 
   downloadRoport() {
-    console.log(this.reportData.length);
     const options = {
       fieldSeparator: ',',
       quoteStrings: '"',

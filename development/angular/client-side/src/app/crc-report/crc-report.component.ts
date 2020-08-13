@@ -104,6 +104,7 @@ export class CrcReportComponent implements OnInit {
 
   myData;
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
+    service.logoutOnToeknExpire();
     localStorage.removeItem('resData');
   }
 

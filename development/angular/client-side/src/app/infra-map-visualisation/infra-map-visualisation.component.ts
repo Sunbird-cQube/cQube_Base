@@ -81,7 +81,9 @@ export class InfraMapVisualisationComponent implements OnInit {
     public service: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
-  ) { }
+  ) {
+    service.logoutOnToeknExpire();
+   }
 
   ngOnInit() {
     this.initMap();

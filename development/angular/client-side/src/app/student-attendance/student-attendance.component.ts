@@ -98,6 +98,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   public element;
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef) {
+    service.logoutOnToeknExpire();
     service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -1306,16 +1307,17 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         }
         this.service.telemetryData.push(obj);
       }
+      //("0" + (this.edate.getDate())).slice(-2)
 
       this.edate = new Date();
       var dateObj = {
         year: this.edate.getFullYear(),
-        month: this.edate.getMonth() + 1,
-        date: this.edate.getDate(),
-        hour: this.edate.getHours(),
-        // minuts: this.edate.getMinus(),
-        // seconds: this.edate.getSeconds()
+        month: ("0" + (this.edate.getMonth() + 1)).slice(-2),
+        date: ("0" + (this.edate.getDate())).slice(-2),
+        hour: ("0" + (this.edate.getHours())).slice(-2),
       }
+
+      console.log(dateObj);
 
       this.service.telemetry(dateObj).subscribe(res => {
         console.log(res);

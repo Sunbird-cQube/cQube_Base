@@ -1,21 +1,19 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppServiceComponent } from '../app.service';
+import { AppService } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
-import * as data from '../../assets/india.json';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
-
 var globalMap;
 
 @Component({
-  selector: 'app-semester-exception',
-  templateUrl: './semester-exception.component.html',
-  styleUrls: ['./semester-exception.component.css'],
+  selector: 'app-telemetry-data',
+  templateUrl: './telemetry-data.component.html',
+  styleUrls: ['./telemetry-data.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SemesterExceptionComponent implements OnInit {
+export class TelemetryDataComponent implements OnInit {
   public title: string = '';
   public titleName: string = '';
   public colors: any;
@@ -68,13 +66,42 @@ export class SemesterExceptionComponent implements OnInit {
 
   public myData;
 
+  //Choosing year, month, date and hours.......
+  years = ["2020"];
+  months = [];
+  dates = [];
+  hours = [];
+
+  year;
+  month;
+  date;
+  hour;
+
+  hideMonth = true;
+  hideDate = true;
+  hideHour = true;
+
   constructor(
     public http: HttpClient,
-    public service: AppServiceComponent,
+    public service: AppService,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
-  ) { 
-    service.logoutOnToeknExpire();
+  ) {
+    var val_i = (new Date()).getMonth() + 1;
+    var monthName = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    for (let i = 0; i < val_i; i++) {
+      this.months.push({ id: `${i + 1}`, name: monthName[i] });
+    }
+
+    var dateRange = (new Date()).getDate();
+    for (let i = 0; i < dateRange; i++) {
+      this.dates.push(i + 1);
+    }
+
+    var hourRange = (new Date()).getHours();
+    for (let i = 0; i < hourRange; i++) {
+      this.hours.push(i + 1);
+    }
   }
 
   ngOnInit() {
@@ -89,16 +116,16 @@ export class SemesterExceptionComponent implements OnInit {
     const lat = 22.3660414123535;
     const lng = 71.48396301269531;
     globalMap = L.map('map', { zoomControl: false }).setView([lat, lng], 7);
-    applyCountryBorder(globalMap);
+    // applyCountryBorder(globalMap);
 
-    function applyCountryBorder(map) {
-      L.geoJSON(data['features'][0], {
-        color: "#a9a9a9",
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0.0
-      }).addTo(map);
-    }
+    // function applyCountryBorder(map) {
+    //   L.geoJSON(data['features'][0], {
+    //     color: "#a9a9a9",
+    //     weight: 2,
+    //     opacity: 1,
+    //     fillOpacity: 0.0
+    //   }).addTo(map);
+    // }
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
       {
         token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -128,6 +155,33 @@ export class SemesterExceptionComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
   }
 
+
+  getDaysInMonth = function (month, year) {
+    return new Date(year, month, 0).getDate();
+  };
+
+  getYear() {
+    this.hideMonth = false;
+    this.hideDate = true;
+    this.hideHour = true;
+    console.log(this.year);
+  }
+  getMonth(event) {
+    this.hideMonth = false;
+    this.hideDate = false;
+    this.hideHour = true;
+    console.log(this.month)
+  }
+  getDate(event) {
+    this.hideMonth = false;
+    this.hideDate = false;
+    this.hideHour = false;
+    console.log(this.date)
+  }
+  getHour(event) {
+    console.log(this.hour)
+  }
+
   // to load all the districts for state data on the map
   districtWise() {
     try {
@@ -151,7 +205,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionDist().subscribe(res => {
+      this.myData = this.service.telemetryDist().subscribe(res => {
         this.data = res;
         // to show only in dropdowns
         this.districtMarkers = this.data['data'];
@@ -170,7 +224,7 @@ export class SemesterExceptionComponent implements OnInit {
         this.genericFun(this.data, options, fileName);
 
         // sort the districtname alphabetically
-        this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
+        this.districtMarkers.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
       }, err => {
         this.data = [];
         this.loaderAndErr();
@@ -208,7 +262,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionBlock().subscribe(res => {
+      this.myData = this.service.telemetryBlock().subscribe(res => {
         this.data = res
         let options = {
           mapZoom: 7,
@@ -225,7 +279,7 @@ export class SemesterExceptionComponent implements OnInit {
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude], {
+              var markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
                 // renderer: myRenderer,
                 radius: 3.5,
                 color: this.colors[i],
@@ -237,12 +291,12 @@ export class SemesterExceptionComponent implements OnInit {
               var details = {};
               var orgObject = {};
               Object.keys(this.blockMarkers[i]).forEach(key => {
-                if (key !== "block_latitude") {
+                if (key !== "lat") {
                   details[key] = this.blockMarkers[i][key];
                 }
               });
               Object.keys(details).forEach(key => {
-                if (key !== "block_longitude") {
+                if (key !== "lng") {
                   orgObject[key] = details[key];
                 }
               });
@@ -314,7 +368,8 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionCluster().subscribe(res => {
+      this.myData = this.service.telemetryCluster().subscribe(res => {
+        console.log(res);
         this.data = res
         let options = {
           mapZoom: 7,
@@ -331,24 +386,35 @@ export class SemesterExceptionComponent implements OnInit {
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude], {
-                // renderer: myRenderer,
-                radius: 1,
-                color: this.colors[i],
-                fillColor: this.colors[i],
-                fillOpacity: 1,
-                strokeWeight: 0.01
-              }).addTo(globalMap);
+              var markerIcon;
+              if (this.clusterMarkers.length == 1) {
+                markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
+                  radius: 2,
+                  color: "orange",
+                  fillColor: "orange",
+                  fillOpacity: 1,
+                  strokeWeight: 0.01
+                }).addTo(globalMap);
+              } else {
+                markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
+                  radius: 2,
+                  color: this.colors[i],
+                  fillColor: this.colors[i],
+                  fillOpacity: 1,
+                  strokeWeight: 0.01
+                }).addTo(globalMap);
+              }
+
 
               var details = {};
               var orgObject = {};
               Object.keys(this.clusterMarkers[i]).forEach(key => {
-                if (key !== "cluster_latitude") {
+                if (key !== "lat") {
                   details[key] = this.clusterMarkers[i][key];
                 }
               });
               Object.keys(details).forEach(key => {
-                if (key !== "cluster_longitude") {
+                if (key !== "lng") {
                   orgObject[key] = details[key];
                 }
               });
@@ -395,7 +461,7 @@ export class SemesterExceptionComponent implements OnInit {
   }
 
   // to load all the schools for state data on the map
-  schoolWise() {
+  /* schoolWise() {
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
@@ -407,11 +473,11 @@ export class SemesterExceptionComponent implements OnInit {
       this.dist = false;
       this.blok = false;
       this.clust = false;
-
+ 
       // to show and hide the dropdowns
       this.blockHidden = true;
       this.clusterHidden = true;
-
+ 
       // api call to get the all schools data
       if (this.myData) {
         this.myData.unsubscribe();
@@ -426,11 +492,11 @@ export class SemesterExceptionComponent implements OnInit {
         this.schoolMarkers = [];
         if (this.data['data'].length > 0) {
           let result = this.data['data']
-
+ 
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
-
+ 
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
@@ -443,7 +509,7 @@ export class SemesterExceptionComponent implements OnInit {
                 weight: 1.5,
                 strokeWeight: 1
               }).addTo(globalMap);
-
+ 
               var details = {};
               var orgObject = {};
               Object.keys(this.schoolMarkers[i]).forEach(key => {
@@ -461,27 +527,27 @@ export class SemesterExceptionComponent implements OnInit {
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
-
+ 
               // to download the report
               this.fileName = "School_wise_report";
               var obj = { ...this.schoolMarkers[i] };
               this.reportData.push(obj);
-
+ 
               markerIcon.on('mouseover', function (e) {
                 this.openPopup();
               });
               markerIcon.on('mouseout', function (e) {
                 this.closePopup();
               });
-
+ 
               this.layerMarkers.addLayer(markerIcon);
               markerIcon.myJsonData = this.schoolMarkers[i];
             }
-
+ 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
-
+ 
             this.schoolCount = this.data['footer'];
-
+ 
             this.loaderAndErr();
             this.changeDetection.markForCheck();
           }
@@ -490,14 +556,14 @@ export class SemesterExceptionComponent implements OnInit {
         this.data = [];
         this.loaderAndErr();
       });
-
+ 
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
     } catch (e) {
       console.log(e);
     }
   }
-
+ 
   // to load all the blocks for selected district for state data on the map
   onDistrictSelect(districtId) {
     // to clear the existing data on the map layer  
@@ -505,33 +571,33 @@ export class SemesterExceptionComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.errMsg();
     this.blockId = undefined;
-
+ 
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = true;
-
+ 
     // api call to get the blockwise data for selected district
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service.semCompletionBlockPerDist(districtId).subscribe(res => {
       this.data = res;
-
+ 
       this.blockMarkers = this.data['data'];
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data['data'][0].district_id,
         districtName: this.data['data'][0].district_name
       }
-
+ 
       this.districtId = districtId;
-
+ 
       // these are for showing the hierarchy names based on selection
       this.skul = false;
       this.dist = true;
       this.blok = false;
       this.clust = false;
-
+ 
       // options to set for markers in the map
       let options = {
         radius: 3.5,
@@ -553,7 +619,7 @@ export class SemesterExceptionComponent implements OnInit {
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
   }
-
+ 
   // to load all the clusters for selected block for state data on the map
   onBlockSelect(blockId) {
     // to clear the existing data on the map layer
@@ -561,11 +627,11 @@ export class SemesterExceptionComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.errMsg();
     this.clusterId = undefined;
-
+ 
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = false;
-
+ 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
       this.myData.unsubscribe();
@@ -580,7 +646,7 @@ export class SemesterExceptionComponent implements OnInit {
         }
       });
       this.blockMarkers = myBlocks;
-
+ 
       // set hierarchy values
       this.blockHierarchy = {
         distId: this.data['data'][0].district_id,
@@ -590,13 +656,13 @@ export class SemesterExceptionComponent implements OnInit {
       }
       this.districtId = this.data['data'][0].district_id;
       this.blockId = blockId;
-
+ 
       // these are for showing the hierarchy names based on selection
       this.skul = false;
       this.dist = false;
       this.blok = true;
       this.clust = false;
-
+ 
       // options to set for markers in the map
       let options = {
         radius: 3,
@@ -618,14 +684,14 @@ export class SemesterExceptionComponent implements OnInit {
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
   }
-
+ 
   // to load all the schools for selected cluster for state data on the map
   onClusterSelect(clusterId) {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.errMsg();
-
+ 
     this.blockHidden = false;
     this.clusterHidden = false;
     // api call to get the schoolwise data for selected district, block, cluster
@@ -636,7 +702,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.myData = this.service.semCompletionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
         this.data = res;
         this.schoolMarkers = this.data['data'];
-
+ 
         var markers = result['data'];
         var myBlocks = [];
         markers.forEach(element => {
@@ -645,7 +711,7 @@ export class SemesterExceptionComponent implements OnInit {
           }
         });
         this.blockMarkers = myBlocks;
-
+ 
         var myCluster = [];
         this.clusterMarkers.forEach(element => {
           if (element.block_id === this.blockHierarchy.blockId) {
@@ -653,7 +719,7 @@ export class SemesterExceptionComponent implements OnInit {
           }
         });
         this.clusterMarkers = myCluster;
-
+ 
         // set hierarchy values
         this.clusterHierarchy = {
           distId: this.data['data'][0].district_id,
@@ -663,21 +729,21 @@ export class SemesterExceptionComponent implements OnInit {
           clusterId: this.data['data'][0].cluster_id,
           clusterName: this.data['data'][0].cluster_name,
         }
-
+ 
         this.districtHierarchy = {
           distId: this.data['data'][0].district_id
         }
-
+ 
         this.districtId = this.data['data'][0].district_id;
         this.blockId = this.data['data'][0].block_id;
         this.clusterId = clusterId;
-
+ 
         // these are for showing the hierarchy names based on selection
         this.skul = false;
         this.dist = false;
         this.blok = false;
         this.clust = true;
-
+ 
         // options to set for markers in the map
         let options = {
           radius: 3.5,
@@ -701,7 +767,7 @@ export class SemesterExceptionComponent implements OnInit {
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
-  }
+  }*/
 
   // common function for all the data to show in the map
   genericFun(data, options, fileName) {
@@ -743,7 +809,7 @@ export class SemesterExceptionComponent implements OnInit {
 
         var markerIcon;
         if (options.weight) {
-          markerIcon = L.circleMarker([lat, lng], {
+          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: options.radius,
             color: "#fc5e03",
             fillColor: "#fc5e03",
@@ -752,7 +818,7 @@ export class SemesterExceptionComponent implements OnInit {
             weight: options.weight
           })
         } else {
-          markerIcon = L.circleMarker([lat, lng], {
+          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: options.radius,
             color: this.colors[i],
             fillColor: this.colors[i],
@@ -768,12 +834,12 @@ export class SemesterExceptionComponent implements OnInit {
           var details = {};
           var orgObject = {};
           Object.keys(this.markers[i]).forEach(key => {
-            if (key !== strLat) {
+            if (key !== "lat") {
               details[key] = this.markers[i][key];
             }
           });
           Object.keys(details).forEach(key => {
-            if (key !== strLng) {
+            if (key !== "lng") {
               orgObject[key] = details[key];
             }
           });
@@ -843,25 +909,25 @@ export class SemesterExceptionComponent implements OnInit {
   // drilldown/ click functionality on markers
   onClick_Marker(event) {
     var data = event.target.myJsonData;
-    if (data.district_id && !data.block_id && !data.cluster_id) {
-      this.stateLevel = 1;
-      this.onDistrictSelect(data.district_id)
-    }
-    if (data.district_id && data.block_id && !data.cluster_id) {
-      this.stateLevel = 1;
-      this.districtHierarchy = {
-        distId: data.district_id
-      }
-      this.onBlockSelect(data.block_id)
-    }
-    if (data.district_id && data.block_id && data.cluster_id) {
-      this.stateLevel = 1;
-      this.blockHierarchy = {
-        distId: data.district_id,
-        blockId: data.block_id
-      }
-      this.onClusterSelect(data.cluster_id)
-    }
+    // if (data.district_id && !data.block_id && !data.cluster_id) {
+    //   this.stateLevel = 1;
+    //   this.onDistrictSelect(data.district_id)
+    // }
+    // if (data.district_id && data.block_id && !data.cluster_id) {
+    //   this.stateLevel = 1;
+    //   this.districtHierarchy = {
+    //     distId: data.district_id
+    //   }
+    //   this.onBlockSelect(data.block_id)
+    // }
+    // if (data.district_id && data.block_id && data.cluster_id) {
+    //   this.stateLevel = 1;
+    //   this.blockHierarchy = {
+    //     distId: data.district_id,
+    //     blockId: data.block_id
+    //   }
+    //   this.onClusterSelect(data.cluster_id)
+    // }
   }
 
   // to download the excel report
@@ -981,4 +1047,5 @@ export class SemesterExceptionComponent implements OnInit {
     }
     return popupFood;
   }
+
 }
