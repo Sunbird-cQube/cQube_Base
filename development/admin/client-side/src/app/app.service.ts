@@ -205,20 +205,20 @@ export class AppService {
     }
 
     //telemetry data
-    telemetryDist() {
-        return this.http.post(`${this.baseUrl}/showDistTelemetry`, {}, {
+    telemetryDist(data) {
+        return this.http.post(`${this.baseUrl}/showDistTelemetry`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
 
-    telemetryBlock() {
-        return this.http.post(`${this.baseUrl}/showBlockTelemetry/all_Block`, {}, {
+    telemetryBlock(data) {
+        return this.http.post(`${this.baseUrl}/showBlockTelemetry/all_Block`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
 
-    telemetryCluster() {
-        return this.http.post(`${this.baseUrl}/showClusterTelemetry/all_Cluster`, {}, {
+    telemetryCluster(data) {
+        return this.http.post(`${this.baseUrl}/showClusterTelemetry/all_Cluster`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }

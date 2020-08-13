@@ -67,7 +67,7 @@ export class TelemetryDataComponent implements OnInit {
   public myData;
 
   //Choosing year, month, date and hours.......
-  years = ["2020"];
+  years = [{ year: "2020" }];
   months = [];
   dates = [];
   hours = [];
@@ -87,29 +87,65 @@ export class TelemetryDataComponent implements OnInit {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
+  }
+
+  filters() {
+    this.months = [];
+    this.dates = [];
+    this.hours = [];
     var val_i = (new Date()).getMonth() + 1;
     var monthName = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    for (let i = 0; i < val_i; i++) {
-      this.months.push({ id: `${i + 1}`, name: monthName[i] });
+    if (this.year == (new Date()).getFullYear()) {
+      for (let i = 0; i < val_i; i++) {
+        this.months.push({ id: `${("0" + (i + 1)).slice(-2)}`, name: monthName[i] });
+      }
+    } else {
+      for (let i = 0; i < 12; i++) {
+        this.months.push({ id: `${("0" + (i + 1)).slice(-2)}`, name: monthName[i] });
+      }
     }
 
     var dateRange = (new Date()).getDate();
-    for (let i = 0; i < dateRange; i++) {
-      this.dates.push(i + 1);
+    if (this.month == ("0" + ((new Date()).getMonth() + 1)).slice(-2)) {
+      for (let i = 0; i < dateRange; i++) {
+        this.dates.push({ date: ("0" + (i + 1)).slice(-2) });
+      }
+    } else {
+      var days = this.getDaysInMonth(this.month, this.year);
+      console.log(days);
+      for (let i = 0; i < days; i++) {
+        this.dates.push({ date: ("0" + (i + 1)).slice(-2) });
+      }
     }
 
     var hourRange = (new Date()).getHours();
-    for (let i = 0; i < hourRange; i++) {
-      this.hours.push(i + 1);
+    if (this.date == ("0" + ((new Date()).getDate())).slice(-2)) {
+      for (let i = 0; i < hourRange; i++) {
+        this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
+      }
+    } else {
+      for (let i = 0; i < 24; i++) {
+        this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
+      }
     }
   }
 
   ngOnInit() {
+    this.year = `${(new Date()).getFullYear()}`;
+    this.month = ("0" + ((new Date()).getMonth() + 1)).slice(-2);
+    this.date = ("0" + ((new Date()).getDate())).slice(-2);
+    this.hour = ("0" + ((new Date()).getHours() - 1)).slice(-2);
+
     document.getElementById('backBtn').style.display = "none";
     this.initMap();
     this.districtWise();
     document.getElementById('homeBtn').style.display = "Block";
+    this.filters();
   }
+
+  getDaysInMonth = function (month, year) {
+    return new Date(year, month, 0).getDate();
+  };
 
   //Initialisation of Map  
   initMap() {
@@ -155,31 +191,62 @@ export class TelemetryDataComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
   }
 
-
-  getDaysInMonth = function (month, year) {
-    return new Date(year, month, 0).getDate();
-  };
-
-  getYear() {
+  getYear(year) {
+    this.filters();
     this.hideMonth = false;
     this.hideDate = true;
     this.hideHour = true;
-    console.log(this.year);
+    if (this.skul) {
+      this.districtWise();
+    }
+    if (this.dist) {
+      this.blockWise();
+    }
+    if (this.blok) {
+      this.clusterWise();
+    }
   }
-  getMonth(event) {
+  getMonth(month) {
+    this.filters();
     this.hideMonth = false;
     this.hideDate = false;
     this.hideHour = true;
-    console.log(this.month)
+    if (this.skul) {
+      this.districtWise();
+    }
+    if (this.dist) {
+      this.blockWise();
+    }
+    if (this.blok) {
+      this.clusterWise();
+    }
   }
-  getDate(event) {
+  getDate(date) {
+    this.filters();
     this.hideMonth = false;
     this.hideDate = false;
     this.hideHour = false;
-    console.log(this.date)
+    if (this.skul) {
+      this.districtWise();
+    }
+    if (this.dist) {
+      this.blockWise();
+    }
+    if (this.blok) {
+      this.clusterWise();
+    }
   }
-  getHour(event) {
-    console.log(this.hour)
+  getHour(year) {
+    this.filters();
+    if (this.skul) {
+      this.districtWise();
+    }
+    if (this.dist) {
+      this.blockWise();
+    }
+    if (this.blok) {
+      this.clusterWise();
+    }
   }
 
   // to load all the districts for state data on the map
@@ -201,11 +268,18 @@ export class TelemetryDataComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
+      var obj = {
+        year: this.year,
+        month: this.month,
+        date: this.date,
+        hour: this.hour
+      }
+      console.log("myObj: ", obj);
       // api call to get all the districts data
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.telemetryDist().subscribe(res => {
+      this.myData = this.service.telemetryDist(obj).subscribe(res => {
         this.data = res;
         // to show only in dropdowns
         this.districtMarkers = this.data['data'];
@@ -249,8 +323,8 @@ export class TelemetryDataComponent implements OnInit {
       this.districtId = undefined;
       this.blockId = undefined;
       // these are for showing the hierarchy names based on selection
-      this.skul = true;
-      this.dist = false;
+      this.skul = false;
+      this.dist = true;
       this.blok = false;
       this.clust = false;
 
@@ -258,11 +332,18 @@ export class TelemetryDataComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
+      var obj = {
+        year: this.year,
+        month: this.month,
+        date: this.date,
+        hour: this.hour
+      }
+
       // api call to get the all clusters data
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.telemetryBlock().subscribe(res => {
+      this.myData = this.service.telemetryBlock(obj).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: 7,
@@ -279,14 +360,24 @@ export class TelemetryDataComponent implements OnInit {
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
-                // renderer: myRenderer,
-                radius: 3.5,
-                color: this.colors[i],
-                fillColor: this.colors[i],
-                fillOpacity: 1,
-                strokeWeight: 0.01
-              }).addTo(globalMap);
+              var markerIcon;
+              if (this.blockMarkers.length == 1) {
+                markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
+                  radius: 3.5,
+                  color: "orange",
+                  fillColor: "orange",
+                  fillOpacity: 1,
+                  strokeWeight: 0.01
+                }).addTo(globalMap);
+              } else {
+                markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
+                  radius: 3.5,
+                  color: this.colors[i],
+                  fillColor: this.colors[i],
+                  fillOpacity: 1,
+                  strokeWeight: 0.01
+                }).addTo(globalMap);
+              }
 
               var details = {};
               var orgObject = {};
@@ -355,20 +446,26 @@ export class TelemetryDataComponent implements OnInit {
       this.clusterId = undefined;
 
       // these are for showing the hierarchy names based on selection
-      this.skul = true;
+      this.skul = false;
       this.dist = false;
-      this.blok = false;
+      this.blok = true;
       this.clust = false;
 
       // to show and hide the dropdowns
       this.blockHidden = true;
       this.clusterHidden = true;
 
+      var obj = {
+        year: this.year,
+        month: this.month,
+        date: this.date,
+        hour: this.hour
+      }
       // api call to get the all clusters data
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.telemetryCluster().subscribe(res => {
+      this.myData = this.service.telemetryCluster(obj).subscribe(res => {
         console.log(res);
         this.data = res
         let options = {
@@ -389,7 +486,7 @@ export class TelemetryDataComponent implements OnInit {
               var markerIcon;
               if (this.clusterMarkers.length == 1) {
                 markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
-                  radius: 2,
+                  radius: 2.5,
                   color: "orange",
                   fillColor: "orange",
                   fillOpacity: 1,
@@ -397,14 +494,13 @@ export class TelemetryDataComponent implements OnInit {
                 }).addTo(globalMap);
               } else {
                 markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
-                  radius: 2,
+                  radius: 2.5,
                   color: this.colors[i],
                   fillColor: this.colors[i],
                   fillOpacity: 1,
                   strokeWeight: 0.01
                 }).addTo(globalMap);
               }
-
 
               var details = {};
               var orgObject = {};
@@ -818,13 +914,23 @@ export class TelemetryDataComponent implements OnInit {
             weight: options.weight
           })
         } else {
-          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
-            radius: options.radius,
-            color: this.colors[i],
-            fillColor: this.colors[i],
-            fillOpacity: options.fillOpacity,
-            strokeWeight: options.strokeWeight
-          })
+          if (this.markers.length == 1) {
+            markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
+              radius: options.radius,
+              color: "#fc5e03",
+              fillColor: "#fc5e03",
+              fillOpacity: options.fillOpacity,
+              strokeWeight: options.strokeWeight
+            })
+          } else {
+            markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
+              radius: options.radius,
+              color: this.colors[i],
+              fillColor: this.colors[i],
+              fillOpacity: options.fillOpacity,
+              strokeWeight: options.strokeWeight
+            })
+          }
         }
 
         globalMap.setZoom(options.mapZoom);

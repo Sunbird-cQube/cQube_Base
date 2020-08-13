@@ -4,8 +4,17 @@
             <div *ngIf='skul'>
                 <p id="dist"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Telemetry data for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+                    Telemetry data for: Distric Level
+            </div>
+            <div *ngIf='dist'>
+                <p id="dist"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Telemetry data for: Block Level
+            </div>
+            <div *ngIf='blok'>
+                <p id="dist"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Telemetry data for: Cluster Level
             </div>
             <!-- <div *ngIf='dist'>
                 <p id="block"
@@ -109,51 +118,51 @@
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-3">
-                    <select id="year"
-                        style="margin-top: 0.5%; padding: 2px;width: 100%; margin: 0px auto; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                        [(ngModel)]="year" name="year" (change)="getYear()">
+                    Select Year ↴ <select id="year"
+                        style="float: left; margin-top: 0.5%; padding: 2px;width: 100%; margin-bottom: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                        [(ngModel)]="year" name="year" (change)="getYear(year)">
                         <option [value]="year" disabled selected="selected">Choose Year
                         </option>
-                        <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]"
+                        <option *ngFor="let year of years, let i = index" [(ngValue)]="year.year"
                             style="font-family: Arial;font-size: 11px; ">
-                            {{years[i]}}
+                            {{year.year}}
                         </option>
                     </select>
                 </div>
                 <div class="col-sm-3">
-                    <select id="month" [hidden]="hideMonth"
-                        style="margin-top: 0.5%; padding: 2px;width: 100%; margin: 0px auto; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                        [(ngModel)]="month" name="month" (change)="getMonth($event)">
+                    Select Month ↴ <select id="month"
+                        style=" float: left;margin-top: 0.5%; padding: 2px;width: 100%; margin-bottom: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                        [(ngModel)]="month" name="month" (change)="getMonth(month)">
                         <option [value]="month" disabled selected="selected">Choose Month
                         </option>
-                        <option *ngFor="let month of months, let i = index" [(ngValue)]="months[i].id"
+                        <option *ngFor="let month of months, let i = index" [(ngValue)]="month.id"
                             style="font-family: Arial;font-size: 11px; ">
-                            {{months[i].name}}
+                            {{month.name}}
                         </option>
                     </select>
                 </div>
                 <div class="col-sm-3">
-                    <select id="date" [hidden]="hideDate"
-                        style="margin-top: 0.5%; padding: 2px;width: 100%; margin: 0px auto; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                        [(ngModel)]="date" name="date" (change)="getDate($event)">
+                    Select Date ↴ <select id="date"
+                        style=" float: left;margin-top: 0.5%; padding: 2px;width: 100%; margin-bottom: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                        [(ngModel)]="date" name="date" (change)="getDate(date)">
                         <option [value]="date" disabled selected="selected">Choose Date
                         </option>
-                        <option *ngFor="let date of dates, let i = index" [(ngValue)]="dates[i]"
+                        <option *ngFor="let date of dates, let i = index" [(ngValue)]="date.date"
                             style="font-family: Arial;font-size: 11px; ">
-                            {{dates[i]}}
+                            {{date.date}}
                         </option>
                     </select>
 
                 </div>
                 <div class="col-sm-3">
-                    <select id="hour" [hidden]="hideHour"
-                        style="margin-top: 0.5%; padding: 2px;width: 100%; margin: 0px auto; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                        [(ngModel)]="hour" name="hour" (change)="getHour($event)">
+                    Select Hour ↴ <select id="hour"
+                        style="margin-top: 0.5%; padding: 2px;width: 100%; margin-bottom: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                        [(ngModel)]="hour" name="hour" (change)="getHour(hour)">
                         <option [value]="hour" disabled selected="selected">Choose Hour
                         </option>
-                        <option *ngFor="let hour of hours, let i = index" [(ngValue)]="hours[i]"
+                        <option *ngFor="let hour of hours, let i = index" [(ngValue)]="hour.hour"
                             style="font-family: Arial;font-size: 11px; ">
-                            {{hours[i]}}
+                            {{hour.hour}}
                         </option>
                     </select>
                 </div>
@@ -166,12 +175,12 @@
             <div #mapContainer id="map" class="active" style="width: 100%; height: 77vh"></div>
         </div>
     </div>
-    <div class="row"
+    <!-- <div class="row"
         style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-6">
             <span id="schools" style="text-align: center;">Total School Not Received: {{schoolCount}}</span>
         </div>
-    </div>
+    </div> -->
 </div>
 <div id="spinner">
     <div class="loading">Loading&#8230;</div>
