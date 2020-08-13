@@ -159,5 +159,29 @@ router.post('/setRoles', auth.authController, async (req, res) => {
     }
 });
 
+router.get('/roles', auth.authController, async (req, res) => {
+    try {
+        logger.info('---get roles api ---');
+
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
+        var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        var access_token = response.data.access_token;
+
+        var usersUrl = `${host}/auth/admin/realms/${realm}/roles`;
+        var headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer" + " " + access_token
+        }
+        axios.get(usersUrl, { headers: headers }).then(resp => {
+            res.status(201).json({ roles: resp.data });
+        }).catch(error => {
+            res.status(409).json({ errMsg: error.response.data.errorMessage });
+        })
+    } catch (e) {
+        logger.error(`Error :: ${e}`);
+        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
+    }
+});
+
 
 module.exports = router;

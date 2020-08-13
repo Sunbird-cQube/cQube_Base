@@ -23,7 +23,6 @@ var realm = process.env.KEYCLOAK_REALM;
 router.post('/', auth.authController, async function (req, res) {
     try {
         logger.info('---users api ---');
-        console.log(requestData);
         var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
         var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
         var access_token = response.data.access_token;

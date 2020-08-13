@@ -49,7 +49,6 @@ router.get('/getProcessorDetails/:id', async (req, res) => {
 router.post('/scheduleProcessor/:id', async (req, res) => {
     try {
         logger.info('--- schedule processor api ---')
-        console.log(req.body);
         let groupId = req.params.id
         let state = req.body.state
         let timeToSchedule = req.body.time
