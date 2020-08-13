@@ -31,7 +31,7 @@ export class DikshaTableComponent implements OnInit {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
-    service.logoutOnToeknExpire();
+    service.logoutOnTokenExpire();
   }
 
   ngOnInit(): void {

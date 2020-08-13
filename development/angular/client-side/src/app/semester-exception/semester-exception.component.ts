@@ -74,7 +74,7 @@ export class SemesterExceptionComponent implements OnInit {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
-    service.logoutOnToeknExpire();
+    service.logoutOnTokenExpire();
   }
 
   ngOnInit() {

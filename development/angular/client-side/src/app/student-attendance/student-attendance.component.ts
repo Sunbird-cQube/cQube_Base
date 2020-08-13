@@ -98,7 +98,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   public element;
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef) {
-    service.logoutOnToeknExpire();
     service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -1320,6 +1319,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
 
       this.service.telemetry(dateObj).subscribe(res => {
         console.log(res);
+      }, err => {
+        console.log(err);
       });
     }
   }

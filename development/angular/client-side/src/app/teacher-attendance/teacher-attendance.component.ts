@@ -9,7 +9,7 @@ import { AppServiceComponent } from '../app.service';
 export class TeacherAttendanceComponent implements OnInit {
 
   constructor(service: AppServiceComponent) {
-    service.logoutOnToeknExpire();
+    service.logoutOnTokenExpire();
   }
 
   ngOnInit() {

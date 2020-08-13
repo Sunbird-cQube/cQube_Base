@@ -11,7 +11,7 @@ import { AppServiceComponent } from '../app.service';
 export class HomePageComponent implements OnInit {
   adminUrl;
   constructor(public keycloakService: KeycloakSecurityService, public router: Router, public service:AppServiceComponent) { 
-    service.logoutOnToeknExpire();
+    // service.logoutOnTokenExpire();
   }
 
   ngOnInit(): void {

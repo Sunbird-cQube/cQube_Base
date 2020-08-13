@@ -14,8 +14,8 @@ export class DashboardComponent implements OnInit {
   reportData: any = [];
 
   constructor(private router: Router, private service: AppServiceComponent) {
-    service.logoutOnToeknExpire();
-   }
+    service.logoutOnTokenExpire();
+  }
   ngOnInit() {
     document.getElementById('spinner').style.display = 'none';
     if (localStorage.getItem('roleName') == "admin") {

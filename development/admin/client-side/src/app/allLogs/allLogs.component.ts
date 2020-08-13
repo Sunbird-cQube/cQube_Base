@@ -26,6 +26,7 @@ export class AllLogsComponent implements OnInit {
   showErr = true;
   constructor(private router: Router, private service: AppService) {
     this.showErr = false;
+    service.logoutOnTokenExpire();
   }
 
   ngOnInit() {
