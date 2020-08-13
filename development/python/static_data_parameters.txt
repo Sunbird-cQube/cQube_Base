@@ -219,5 +219,6 @@ do update set block_name=excluded.block_name,block_id=excluded.block_id,district
 created_on=excluded.created_on,updated_on=now()
 ''',
 "static_get_invalid_names":'''select school_id,school_name,block_id,district_id,cluster_id from school_hierarchy_details where cluster_name is null or block_name is null or district_name is null''',
-"school_invalid_tb":"school_invalid_data"
+"school_invalid_tb":"school_invalid_data",
+"chng_cols_names_no_school_lat_long":'''select schoolid as school_id,school as school_name,districtid as district_id,blockid as block_id,clusterid as cluster_id,latitude as school_latitude,longitude as school_longitude from flowfile'''
 }
