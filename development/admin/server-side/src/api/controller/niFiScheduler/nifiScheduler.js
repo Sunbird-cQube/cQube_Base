@@ -4,7 +4,7 @@ const auth = require('../../middleware/check-auth');
 const axios = require('axios');
 var schedule = require('node-schedule');
 
-router.get('/getProcessorId', async (req, res) => {
+router.get('/getProcessorId', auth.authController, async (req, res) => {
     try {
         logger.info('--- get nifi processor group id api ---')
         let url = `${process.env.NIFI_URL}/process-groups/root`
@@ -17,7 +17,7 @@ router.get('/getProcessorId', async (req, res) => {
     }
 })
 
-router.get('/getProcessorDetails/:id', async (req, res) => {
+router.get('/getProcessorDetails/:id', auth.authController, async (req, res) => {
     try {
         logger.info('--- get nifi processor group details api ---');
         let groupId = req.params.id
@@ -46,7 +46,7 @@ router.get('/getProcessorDetails/:id', async (req, res) => {
     }
 });
 
-router.post('/scheduleProcessor/:id', async (req, res) => {
+router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
     try {
         logger.info('--- schedule processor api ---')
         let groupId = req.params.id

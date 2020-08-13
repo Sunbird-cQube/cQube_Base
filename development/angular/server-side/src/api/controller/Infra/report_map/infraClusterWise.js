@@ -7,7 +7,7 @@ const s3File = require('../../../lib/reads3File');
 router.post('/allClusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra cluster wise api ---');
-        let fileName = `infra/infra_cluster_map_new.json`;
+        let fileName = `infra/infra_cluster_map.json`;
         var clusterData = await s3File.readS3File(fileName);
         var mydata = clusterData.data;
         logger.info('---Infra cluster wise api response sent---');
@@ -21,7 +21,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
 router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra clusterperBlock api ---');
-        let fileName = `infra/infra_cluster_map_new.json`;
+        let fileName = `infra/infra_cluster_map.json`;
         var clusterData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId;
