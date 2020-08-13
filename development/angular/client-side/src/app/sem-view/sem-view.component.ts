@@ -98,7 +98,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     public keyCloakSevice: KeycloakSecurityService,
     private changeDetection: ChangeDetectorRef,
   ) {
-    service.logoutOnToeknExpire();
+    service.logoutOnTokenExpire();
     // this.userId = this.telemData.impression.uid = keyCloakSevice.kc.tokenParsed.sub;
     // service.telemetryData[1].Semester.push(this.telemData);
   }

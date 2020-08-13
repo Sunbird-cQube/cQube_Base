@@ -15,7 +15,9 @@ export class UsersComponent implements OnInit {
   err;
   currentDate = `${(new Date()).getFullYear()}-${("0" + ((new Date()).getMonth() + 1)).slice(-2)}-${("0" + ((new Date()).getDate())).slice(-2)} ${(new Date()).toLocaleTimeString('en-IN', { hour12: false })}`;
 
-  constructor(private router: Router, private service: AppService) { }
+  constructor(private router: Router, private service: AppService) {
+    service.logoutOnTokenExpire();
+  }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = "none";
@@ -47,22 +49,22 @@ export class UsersComponent implements OnInit {
     })
   }
 
-  changeUserStatus(id, usrStatus) {
-    if (id != localStorage.getItem('user_id')) {
-      if (usrStatus == 1) {
-        var status = confirm("Are you sure to deactivate user?");
-      } else {
-        status = confirm("Are you sure to activate user?");
-      }
-      if (status == true) {
-        document.getElementById('spinner').style.display = 'block';
-        var updaterId = localStorage.getItem('user_id');
-        this.service.changeStatus(id, updaterId).subscribe(res => {
-          this.showUsers();
-        });
-      }
-    } else {
-      alert("Logged in user can not change his own status...")
-    }
-  }
+  // changeUserStatus(id, usrStatus) {
+  //   if (id != localStorage.getItem('user_id')) {
+  //     if (usrStatus == 1) {
+  //       var status = confirm("Are you sure to deactivate user?");
+  //     } else {
+  //       status = confirm("Are you sure to activate user?");
+  //     }
+  //     if (status == true) {
+  //       document.getElementById('spinner').style.display = 'block';
+  //       var updaterId = localStorage.getItem('user_id');
+  //       this.service.changeStatus(id, updaterId).subscribe(res => {
+  //         this.showUsers();
+  //       });
+  //     }
+  //   } else {
+  //     alert("Logged in user can not change his own status...")
+  //   }
+  // }
 }

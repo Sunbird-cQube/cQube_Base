@@ -8,8 +8,8 @@ import { AppServiceComponent } from '../app.service';
 })
 export class TeacherAttendanceComponent implements OnInit {
 
-  constructor(service: AppServiceComponent) { 
-    service.logoutOnToeknExpire();
+  constructor(service: AppServiceComponent) {
+    service.logoutOnTokenExpire();
   }
 
   ngOnInit() {

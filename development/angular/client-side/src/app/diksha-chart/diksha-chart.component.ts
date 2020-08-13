@@ -26,10 +26,11 @@ export class DikshaChartComponent implements OnInit {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
+
   public barChartColors: Color[] = [];
   public barChartColors1: Color[] = [];
   public barChartColors2: Color[] = [];
-  public barChartColors3: Color[] = []
+  public barChartColors3: Color[] = [];
 
   public barChartData: ChartDataSets[] = [
     { data: [], label: 'Series A', stack: 'a' }
@@ -49,7 +50,7 @@ export class DikshaChartComponent implements OnInit {
 
   public result: any = [];
   public districtId: any = '';
-  public timePeriod = 'last_30_days';
+  public timePeriod = 'Last 30 Days';
   public hierName: any;
   public dist: boolean = false;
   public all: boolean = false;
@@ -70,8 +71,8 @@ export class DikshaChartComponent implements OnInit {
     public service: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
-  ) { 
-    service.logoutOnToeknExpire();
+  ) {
+    service.logoutOnTokenExpire();
   }
 
   ngOnInit(): void {
@@ -92,10 +93,10 @@ export class DikshaChartComponent implements OnInit {
   }
   metaData() {
     document.getElementById('spinner').style.display = 'block';
-    this.service.dikshaMetaData().subscribe(result => {
+    this.service.dikshaMetaData().subscribe((result) => {
       this.districtsDetails = result['districtDetails']
-      result['timeRange'].forEach(element => {
-        var obj = { timeRange: element }
+      result['timeRange'].forEach((element) => {
+        var obj = { timeRange: element, name: this.changeingStringCases(element.replace(/_/g, ' ')) }
         this.timeDetails.push(obj);
       });
     }, err => {
@@ -526,5 +527,14 @@ export class DikshaChartComponent implements OnInit {
     };
     const csvExporter = new ExportToCsv(options);
     csvExporter.generateCsv(this.reportData);
+  }
+
+  changeingStringCases(str) {
+    return str.replace(
+      /\w\S*/g,
+      function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
 }

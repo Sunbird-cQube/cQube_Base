@@ -78,7 +78,7 @@ router.post('/getDownloadUrl', auth.authController, async function (req, res) {
     }
 });
 
-router.post('/listFiles/:bucketName/:folderName', async function (req, res) {
+router.post('/listFiles/:bucketName/:folderName',auth.authController, async function (req, res) {
     try {
         logger.info(`---list s3 Files for bucket ${req.params.bucketName} and folder ${req.params.folderName} api ---`);
         var params = {

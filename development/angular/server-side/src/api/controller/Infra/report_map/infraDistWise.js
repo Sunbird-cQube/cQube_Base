@@ -7,7 +7,7 @@ const s3File = require('../../../lib/reads3File');
 router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra dist wise api ---');
-        let fileName = `infra/infra_district_map_new.json`
+        let fileName = `infra/infra_district_map.json`
         var districtData = await s3File.readS3File(fileName);
         var mydata = districtData.data;
 

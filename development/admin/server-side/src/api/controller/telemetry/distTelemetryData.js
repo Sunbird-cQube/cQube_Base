@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 var const_data = require('../../lib/config');
 
-router.post('/', async (req, res) => {
+router.post('/',auth.authController, async (req, res) => {
     try {
         logger.info('--- get dist telemetry data api ---');
         let year = req.body.year;
