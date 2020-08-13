@@ -70,7 +70,9 @@ export class DikshaChartComponent implements OnInit {
     public service: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
-  ) { console.log(this.timePeriod) }
+  ) {
+    service.logoutOnToeknExpire();
+  }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = "none";
@@ -353,37 +355,37 @@ export class DikshaChartComponent implements OnInit {
         chartData.push(obj);
         let a = { backgroundColor: '' };
         if (element.subject == 'Sanskrit') {
-          a.backgroundColor = '#cc0000'
+          a.backgroundColor = '#a6cee3'
         }
         if (element.subject == 'Gujarati') {
-          a.backgroundColor = '#006600'
+          a.backgroundColor = '#1f78b4'
         }
         if (element.subject == 'Science') {
-          a.backgroundColor = '#333300'
+          a.backgroundColor = '#b2df8a'
         }
         if (element.subject == 'Gyan Setu') {
-          a.backgroundColor = '#006666'
+          a.backgroundColor = '#33a02c'
         }
         if (element.subject == 'Environmental Studies') {
-          a.backgroundColor = '#003366'
+          a.backgroundColor = '#fb9a99'
         }
         if (element.subject == 'Hindi') {
-          a.backgroundColor = '#333399'
+          a.backgroundColor = '#e31a1c'
         }
         if (element.subject == 'Multi_Subject') {
-          a.backgroundColor = '#660066'
+          a.backgroundColor = '#fdbf6f'
         }
         if (element.subject == 'Mathematics') {
-          a.backgroundColor = '#cc3300'
+          a.backgroundColor = '#ff7f00'
         }
         if (element.subject == 'English') {
-          a.backgroundColor = '#996600'
+          a.backgroundColor = '#cab2d6'
         }
         if (element.subject == 'Social Science') {
-          a.backgroundColor = '#6600cc'
+          a.backgroundColor = '#6a3d9a'
         }
         if (element.subject == 'Maths') {
-          a.backgroundColor = '#3366cc'
+          a.backgroundColor = '#b15928'
         }
         this.barChartColors.push(a);
       });

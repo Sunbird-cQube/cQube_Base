@@ -98,6 +98,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   public element;
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef) {
+    service.logoutOnToeknExpire();
     service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);

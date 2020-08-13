@@ -79,7 +79,7 @@
             <div *ngIf="barChartData[0]['data'].length > 0">
                 <canvas height="140vh" baseChart [datasets]="barChartData" [labels]="barChartLabels"
                     [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
-                    [chartType]="barChartType"[colors]="barChartColors">
+                    [chartType]="barChartType" [colors]="barChartColors">
                 </canvas>
             </div>
             <div *ngIf="barChartData[0]['data'].length === 0"
@@ -88,14 +88,14 @@
             </div>
         </div>
         <div class="col-lg-6" id="r2">
-            <h3>Usage by Teachers</h3>
-            <div *ngIf="barChartData1[0]['data'].length > 0">
-                <canvas height="140vh" baseChart [datasets]="barChartData1" [labels]="barChartLabels1"
-                    [options]="barChartOptions" [plugins]="barChartPlugins" [chartType]="barChartType"
-                   [colors]="barChartColors">
+            <h3>Usage by Others</h3>
+            <div *ngIf="barChartData3[0]['data'].length > 0">
+                <canvas height="140vh" baseChart [datasets]="barChartData3" [labels]="barChartLabels3"
+                    [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                    [chartType]="barChartType" [colors]="barChartColors">
                 </canvas>
             </div>
-            <div *ngIf="barChartData1[0]['data'].length === 0 "
+            <div *ngIf="barChartData3[0]['data'].length === 0 "
                 style="position: absolute; left: 45%; top: 45%;color: red;">
                 No Data Available
             </div>
@@ -107,7 +107,7 @@
             <div *ngIf="barChartData2[0]['data'].length > 0">
                 <canvas height="140vh" baseChart [datasets]="barChartData2" [labels]="barChartLabels2"
                     [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
-                    [chartType]="barChartType"[colors]="barChartColors">
+                    [chartType]="barChartType" [colors]="barChartColors">
                 </canvas>
             </div>
             <div *ngIf="barChartData2[0]['data'].length === 0 "
@@ -116,14 +116,14 @@
             </div>
         </div>
         <div class="col-lg-6" id="r4">
-            <h3>Usage by Others</h3>
-            <div *ngIf="barChartData3[0]['data'].length > 0">
-                <canvas height="140vh" baseChart [datasets]="barChartData3" [labels]="barChartLabels3"
-                    [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
-                    [chartType]="barChartType"[colors]="barChartColors">
+            <h3>Usage by Teachers</h3>
+            <div *ngIf="barChartData1[0]['data'].length > 0">
+                <canvas height="140vh" baseChart [datasets]="barChartData1" [labels]="barChartLabels1"
+                    [options]="barChartOptions" [plugins]="barChartPlugins" [chartType]="barChartType"
+                    [colors]="barChartColors">
                 </canvas>
             </div>
-            <div *ngIf="barChartData3[0]['data'].length === 0 "
+            <div *ngIf="barChartData1[0]['data'].length === 0 "
                 style="position: absolute; left: 45%; top: 45%;color: red;">
                 No Data Available
             </div>

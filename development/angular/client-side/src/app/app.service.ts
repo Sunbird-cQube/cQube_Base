@@ -10,11 +10,20 @@ export class AppServiceComponent {
     public baseUrl = environment.apiEndpoint;
     public token;
     public telemetryData = [];
-    
+
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
         this.token = keyCloakService.kc.token;
         localStorage.setItem('token', this.token);
-        console.log(this.telemetryData);
+    }
+
+    logoutOnToeknExpire() {
+        if (this.keyCloakService.kc.isTokenExpired() == true) {
+            alert("Session expired, Please login again!");
+            let options = {
+                redirectUri: environment.appUrl
+            }
+            this.keyCloakService.kc.logout(options);
+        }
     }
 
     login(data) {

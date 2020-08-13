@@ -73,7 +73,9 @@ export class SemesterExceptionComponent implements OnInit {
     public service: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
-  ) { }
+  ) {
+    service.logoutOnToeknExpire();
+  }
 
   ngOnInit() {
     document.getElementById('backBtn').style.display = "none";

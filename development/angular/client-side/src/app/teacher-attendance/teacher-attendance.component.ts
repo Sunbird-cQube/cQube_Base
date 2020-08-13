@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppServiceComponent } from '../app.service';
 
 @Component({
   selector: 'app-teacher-attendance',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeacherAttendanceComponent implements OnInit {
 
-  constructor() { }
+  constructor(service: AppServiceComponent) {
+    service.logoutOnToeknExpire();
+  }
 
   ngOnInit() {
     document.getElementById('backBtn').style.display = "none";
