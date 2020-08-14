@@ -14,7 +14,7 @@ export class DikshaTableComponent implements OnInit {
   public result: any = [];
   public districtId: any = '';
   public timePeriod: any = 'last_30_days';
-  public timeDetails: any = '';
+  public timeDetails: any = [];
   public districtsDetails: any = '';
   dataTable: any;
   dtOptions: any;
@@ -66,8 +66,10 @@ export class DikshaTableComponent implements OnInit {
     this.timePeriod = 'last_30_days';
     this.service.dikshaMetaData().subscribe(result => {
       this.districtsDetails = result['districtDetails']
-      this.timeDetails = result['timeRange']
-      this.timeDetails = [{ key: 'last_day' }, { key: 'last_7_days' }, { key: 'last_30_days' }]
+      result['timeRange'].forEach((element) => {
+        var obj = { timeRange: element, name: this.changeingStringCases(element.replace(/_/g, ' ')) }
+        this.timeDetails.push(obj);
+      });
     })
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
@@ -235,5 +237,13 @@ export class DikshaTableComponent implements OnInit {
     };
     const csvExporter = new ExportToCsv(options);
     csvExporter.generateCsv(this.reportData);
+  }
+  changeingStringCases(str) {
+    return str.replace(
+      /\w\S*/g,
+      function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
 }

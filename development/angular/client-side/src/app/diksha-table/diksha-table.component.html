@@ -53,9 +53,9 @@
                 [(ngModel)]="timePeriod" name="timePeriod" (change)="timeRange(timePeriod)">
                 <option [value]="timePeriod" disabled selected="selected">Choose Time Range
                 </option>
-                <option *ngFor="let time of timeDetails" [(ngValue)]="time.key"
+                <option *ngFor="let time of timeDetails" [(ngValue)]="time.timeRange"
                     style="font-family: Arial; font-size: 11px;">
-                    {{time.key}}
+                    {{time.name}}
                 </option>
             </select>
         </div>
