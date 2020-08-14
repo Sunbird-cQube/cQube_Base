@@ -112,7 +112,6 @@ export class TelemetryDataComponent implements OnInit {
       }
     } else {
       var days = this.getDaysInMonth(this.month, this.year);
-      console.log(days);
       for (let i = 0; i < days; i++) {
         this.dates.push({ date: ("0" + (i + 1)).slice(-2) });
       }
@@ -124,6 +123,11 @@ export class TelemetryDataComponent implements OnInit {
         this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
       }
     } else {
+      for (let i = 0; i < 24; i++) {
+        this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
+      }
+    }
+    if (this.month != ("0" + ((new Date()).getMonth() + 1)).slice(-2)) {
       for (let i = 0; i < 24; i++) {
         this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
       }
@@ -585,7 +589,6 @@ export class TelemetryDataComponent implements OnInit {
                 weight: 1.5,
                 strokeWeight: 1
               }).addTo(globalMap);
-
               var details = {};
               var orgObject = {};
               Object.keys(this.schoolMarkers[i]).forEach(key => {
@@ -603,12 +606,10 @@ export class TelemetryDataComponent implements OnInit {
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
-
               // to download the report
               this.fileName = "School_wise_report";
               var obj = { ...this.schoolMarkers[i] };
               this.reportData.push(obj);
-
               markerIcon.on('mouseover', function (e) {
                 this.openPopup();
               });
@@ -632,7 +633,6 @@ export class TelemetryDataComponent implements OnInit {
         this.data = [];
         this.loaderAndErr();
       });
-
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
     } catch (e) {

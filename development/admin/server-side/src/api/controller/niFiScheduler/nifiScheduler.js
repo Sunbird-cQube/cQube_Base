@@ -95,4 +95,53 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
     }
 })
 
+router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
+    try {
+        logger.info('--- schedule processor api ---')
+        let groupId = req.params.id
+        let state = req.body.state
+        let timeToSchedule = req.body.time
+        timeToSchedule = timeToSchedule.split(':')
+        let hours = parseInt(timeToSchedule[0])
+        let mins = parseInt(timeToSchedule[1])
+        let timeToStop = req.body.stopTime
+        timeToStop = hours + timeToStop
+
+        if (timeToStop >= 24) {
+            timeToStop = timeToStop % 24;
+            timeToStop = timeToStop < 0 ? 24 + timeToStop : +timeToStop;
+        }
+
+        let url = `${process.env.NIFI_URL}/flow/process-groups/${groupId}`
+
+        await schedule.scheduleJob(`${mins} ${hours} * * *`, async function () {
+            logger.info(`--- ${groupId} Job scheduling started ---`);
+            let result = await axios.put(url, {
+                id: groupId,
+                state: state,
+                disconnectedNodeAcknowledged: false
+            });
+            logger.info(JSON.stringify(result.data))
+            logger.info(`--- ${groupId} Job scheduling completed ---`);
+        });
+
+        await schedule.scheduleJob(`${mins} ${timeToStop} * * *`, async function () {
+            logger.info(`--- ${groupId} Job stopping started ---`);
+            let result = await axios.put(url, {
+                id: groupId,
+                state: 'STOPPED',
+                disconnectedNodeAcknowledged: false
+            });
+            logger.info(JSON.stringify(result.data))
+            logger.info(`--- ${groupId} Job stopping completed ---`);
+        });
+
+        logger.info('--- schedule processor api response sent ---')
+        res.send({ msg: `Job scheduled successfully at ${req.body.time} every day` })
+    } catch (e) {
+        logger.error(`Error :: ${e}`);
+        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
+    }
+})
+
 module.exports = router;
