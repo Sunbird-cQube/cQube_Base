@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.get('/dikshaMetaData', auth.authController, async (req, res) => {
+router.get('/dikshaMetaData', async (req, res) => {
     try {
         logger.info('--- dikshaMetaData api ---');
         let fileName = `diksha/table_reports/diksha_metadata.json`
@@ -20,10 +20,11 @@ router.get('/dikshaMetaData', auth.authController, async (req, res) => {
     }
 })
 
-router.post('/dikshaAllTableData', auth.authController, async (req, res) => {
+router.post('/dikshaAllTableData', async (req, res) => {
     try {
         logger.info('--- dikshaAllTableData api ---');
-        let fileName = `diksha/table_reports/${req.body.timePeriod}/All.json`
+        var collectionType = req.body.collectionType;
+        let fileName = `diksha/table_reports/${collectionType}/All.json`
         var tableData = await s3File.readS3File(fileName);
         res.send(tableData)
     } catch (e) {
@@ -32,11 +33,14 @@ router.post('/dikshaAllTableData', auth.authController, async (req, res) => {
     }
 })
 
-router.post('/dikshaDistrictTableData', auth.authController, async (req, res) => {
+router.post('/dikshaDistrictTableData', async (req, res) => {
     try {
         logger.info('--- dikshaDistrictTableData api ---');
-        console.log(req.body.districtId);
-        let fileName = `diksha/table_reports/${req.body.districtId}.json`
+        var distId = req.body.districtId;
+        var collectionType = req.body.collectionType;
+        console.log(req.body);
+        var fileName = `diksha/table_reports/${collectionType}/${distId}.json`;
+
         var tableData = await s3File.readS3File(fileName);
         logger.info('--- dikshaDistrictTableData api response sent ---');
         res.send(tableData)
@@ -58,10 +62,19 @@ router.post('/dikshaDistrictTableData', auth.authController, async (req, res) =>
 //     }
 // })
 
-router.post('/dikshaTimeRangeTableData', auth.authController, async (req, res) => {
+router.post('/dikshaTimeRangeTableData', async (req, res) => {
     try {
         logger.info('--- dikshaTimeRangeTableData api ---');
-        let fileName = `diksha/table_reports/${req.body.timePeriod}/${req.body.districtId}.json`
+        var collectionType = req.body.collectionType;
+        var distId = req.body.districtId;
+        var timePeriod = req.body.timePeriod;
+        console.log(req.body);
+        var fileName;
+        if (distId) {
+            fileName = `diksha/table_reports/${collectionType}/${timePeriod}/${distId}.json`;
+        } else {
+            fileName = `diksha/table_reports/${collectionType}/${timePeriod}/All.json`;
+        }
         var tableData = await s3File.readS3File(fileName);
         res.send(tableData)
     } catch (e) {

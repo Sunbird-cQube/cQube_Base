@@ -4,13 +4,13 @@
             <div *ngIf='all'>
                 <p id="dist_level"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Diksha Report: <span (click)="metaData()"
+                    Diksha Report: <span (click)="default()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block_level"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Diksha Report: <span (click)="metaData()"
+                    Diksha Report: <span (click)="default()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
@@ -29,13 +29,24 @@
                         (click)="downloadRoport()"></em>
                     <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
-                        alt="Home" (click)="metaData()"></em>
+                        alt="Home" (click)="default()"></em>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="row" style="margin-top: 5px;">
+        <div class="col-sm-2">
+            <select id="chosse_collection"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                [(ngModel)]="collectionType" (change)="collectionWise()">
+                <option [value]="collectionType" disabled selected="selected">Choose a District</option>
+                <option *ngFor="let collection of allCollections" [(ngValue)]="collection.id"
+                    style="font-family: Arial; font-size: 11px;">
+                    {{collection.name}}
+                </option>
+            </select>
+        </div>
         <div class="col-sm-2">
             <select id="choose_dist"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
@@ -60,36 +71,11 @@
             </select>
         </div>
     </div>
-
+    <hr>
     <div class="row">
-        <!-- <div class="col-sm-2"></div> -->
         <div class="col-sm-12">
             <table #DataTable id="table" class="display nowrap" width="100%"
                 style="font-size: 12px; text-align: center;">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Content Id</th>
-                        <th>Content Name</th>
-                        <th>Textbook</th>
-                        <th>Subject</th>
-                        <th>Grade</th>
-                        <th>Medium</th>
-                        <th>Total Content Plays</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let d of result; let i = index">
-                        <td>{{i+1}}</td>
-                        <td>{{d.content_id}}</td>
-                        <td>{{d.content_name}}</td>
-                        <td>{{d.textbook}}</td>
-                        <td>{{d.subject}}</td>
-                        <td>{{d.grade}}</td>
-                        <td>{{d.medium}}</td>
-                        <td>{{d.total_content_plays}}</td>
-                    </tr>
-                </tbody>
             </table>
         </div>
     </div>

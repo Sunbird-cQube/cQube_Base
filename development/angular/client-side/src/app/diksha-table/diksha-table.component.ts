@@ -13,7 +13,9 @@ declare const $;
 export class DikshaTableComponent implements OnInit {
   public result: any = [];
   public districtId: any = '';
-  public timePeriod: any = 'last_30_days';
+  public timePeriod: any = '';
+  public collectionType = 'all';
+  public allCollections = [];
   public timeDetails: any = [];
   public districtsDetails: any = '';
   dataTable: any;
@@ -31,13 +33,14 @@ export class DikshaTableComponent implements OnInit {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
+    this.allCollections = [{ id: "all", name: "All" }, { id: "course", name: "Course" }, { id: "textbook", name: "Textbook" }]
     service.logoutOnTokenExpire();
   }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
-    this.metaData();
+    this.collectionWise();
   }
 
   loaderAndErr() {
@@ -57,13 +60,19 @@ export class DikshaTableComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
   }
 
-  metaData() {
+  default() {
+    this.collectionType = "all";
+    this.collectionWise();
+  }
+
+  collectionWise() {
     document.getElementById('home').style.display = "none";
     this.errMsg();
     this.districtId = '';
+    this.timePeriod = '';
     this.all = true
     this.dist = false;
-    this.timePeriod = 'last_30_days';
+    this.timeDetails = [];
     this.service.dikshaMetaData().subscribe(result => {
       this.districtsDetails = result['districtDetails']
       result['timeRange'].forEach((element) => {
@@ -73,35 +82,17 @@ export class DikshaTableComponent implements OnInit {
     })
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
+      $('#table').empty();
     }
     this.result = [];
     this.reportData = [];
-    this.service.dikshaAllTableData({ timePeriod: this.timePeriod }).subscribe(res => {
+    this.service.dikshaAllTableData({ collectionType: this.collectionType }).subscribe(res => {
       this.fileName = `Diksha_All_Data_${this.timePeriod}`;
       this.result = res;
       this.result.sort((a, b) => (a.total_content_plays < b.total_content_plays) ? 1 : ((b.total_content_plays < a.total_content_plays) ? -1 : 0));
-      $(document).ready(function () {
-        $('#table').DataTable({
-          destroy: true, bLengthChange: false, bInfo: false,
-          bPaginate: false, scrollY: "68vh", scrollX: true,
-          scrollCollapse: true, paging: false, searching: true,
-          fixedColumns: {
-            leftColumns: 1
-          }
-        });
-      });
-      this.result.forEach(element => {
-        var obj = {
-          usage_By: "All",
-          content_name: element.content_name,
-          textbook: element.textbook,
-          subject: element.subject,
-          grade: element.grade,
-          medium: element.medium,
-          total_content_plays: element.total_content_plays
-        }
-        this.reportData.push(obj);
-      });
+
+      this.tableCreation(this.result, 'table');
+      this.reportData = this.result;
       document.getElementById('spinner').style.display = 'none';
     }, err => {
       this.loaderAndErr();
@@ -137,37 +128,18 @@ export class DikshaTableComponent implements OnInit {
 
       if (this.result.length! > 0) {
         $('#table').DataTable().destroy();
+        $('#table').empty();
       }
       this.result = [];
       this.reportData = [];
-      this.service.dikshaDistrictTableData(districtId).subscribe(res => {
+      this.service.dikshaDistrictTableData({ districtId: districtId, collectionType: this.collectionType }).subscribe(res => {
         this.fileName = `Diksha_Dist_Data_${this.timePeriod}`;
         this.result = res;
         this.result.sort((a, b) => (a.total_content_plays < b.total_content_plays) ? 1 : ((b.total_content_plays < a.total_content_plays) ? -1 : 0));
-        $(document).ready(function () {
-          $('#table').DataTable({
-            destroy: true, bLengthChange: false, bInfo: false,
-            bPaginate: false, scrollY: "68vh", scrollX: true,
-            scrollCollapse: true, paging: false, searching: false,
-            fixedColumns: {
-              leftColumns: 1
-            }
-          });
-        });
-        this.result.forEach(element => {
-          var obj = {
-            usage_By: "District",
-            district_name: element.district_name,
-            district_id: element.district_id,
-            content_name: element.content_name,
-            textbook: element.textbook,
-            subject: element.subject,
-            grade: element.grade,
-            medium: element.medium,
-            total_content_plays: element.total_content_plays
-          }
-          this.reportData.push(obj);
-        });
+        this.tableCreation(this.result, 'table');
+
+        this.reportData = this.result;
+
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.loaderAndErr();
@@ -180,42 +152,22 @@ export class DikshaTableComponent implements OnInit {
     this.errMsg();
     document.getElementById('home').style.display = "Block";
     if (this.districtId == '') {
-      this.districtId = 'All'
+      this.districtId = undefined
     }
     this.timePeriod = timePeriod
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
+      $('#table').empty();
     }
     this.result = [];
     this.reportData = [];
-    this.service.dikshaTimeRangeTableData(this.districtId, timePeriod).subscribe(res => {
+    this.service.dikshaTimeRangeTableData({ districtId: this.districtId, timePeriod: timePeriod, collectionType: this.collectionType }).subscribe(res => {
       this.fileName = `Diksha_${this.hierName}_Dist_Data_${this.timePeriod}`;
       this.result = res;
       this.result.sort((a, b) => (a.total_content_plays < b.total_content_plays) ? 1 : ((b.total_content_plays < a.total_content_plays) ? -1 : 0));
-      $(document).ready(function () {
-        $('#table').DataTable({
-          destroy: true, bLengthChange: false, bInfo: false,
-          bPaginate: false, scrollY: "68vh", scrollX: true,
-          scrollCollapse: true, paging: false, searching: true,
-          fixedColumns: {
-            leftColumns: 1
-          }
-        });
-      });
-      this.result.forEach(element => {
-        var obj = {
-          usage_By: "District",
-          district_name: element.district_name,
-          district_id: element.district_id,
-          content_name: element.content_name,
-          textbook: element.textbook,
-          subject: element.subject,
-          grade: element.grade,
-          medium: element.medium,
-          total_content_plays: element.total_content_plays
-        }
-        this.reportData.push(obj);
-      });
+      this.tableCreation(this.result, 'table');
+
+      this.reportData = this.result;
       document.getElementById('spinner').style.display = 'none';
     }, err => {
       this.loaderAndErr();
@@ -245,5 +197,67 @@ export class DikshaTableComponent implements OnInit {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
       }
     );
+  }
+
+  tableCreation(dataSet, tablename) {
+    var my_columns = [];
+    $.each(dataSet[0], function (key, value) {
+      var my_item = {};
+      my_item['data'] = key;
+      my_item['value'] = value;
+      my_columns.push(my_item);
+    });
+
+
+    $(document).ready(function () {
+      var headers = '<thead><tr>'
+      var body = '<tbody>';
+
+      my_columns.forEach((column, i) => {
+        var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+        // if (col != "District Id" && col != "District Name") {
+        headers += `<th> ${col}</th>`
+        // }
+      });
+
+
+      let newArr = [];
+      $.each(dataSet, function (a, b) {
+        let temp = [];
+        $.each(b, function (key, value) {
+          var new_item = {};
+          new_item['data'] = key;
+          new_item['value'] = value;
+          temp.push(new_item);
+        });
+        newArr.push(temp)
+      });
+
+      newArr.forEach((columns) => {
+        body += '<tr>';
+        columns.forEach((column) => {
+          // if (column.data != "district_id" && column.data != "district_name") {
+          body += `<td>${column.value}</td>`
+          // }
+        });
+        body += '</tr>';
+      });
+
+      headers += `</tr></thead>`;
+      body += '</tr></tbody>';
+      $(`#${tablename}`).empty();
+      $(`#${tablename}`).append(headers);
+      $(`#${tablename}`).append(body);
+      $(`#${tablename}`).DataTable({
+        destroy: true, bLengthChange: false, bInfo: false,
+        bPaginate: false, scrollY: "64vh", scrollX: true,
+        scrollCollapse: true, paging: false, searching: true,
+        fixedColumns: {
+          leftColumns: 1
+        }
+      });
+    });
   }
 }
