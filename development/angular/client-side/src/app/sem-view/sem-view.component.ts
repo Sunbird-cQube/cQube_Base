@@ -27,17 +27,17 @@ export class SemViewComponent implements OnInit, OnDestroy {
   edate;
   end_time;
   start_time = Math.floor(this.date.getTime() / 1000.0);
-  public telemData = {
-    impression: {
-      pageId: this.pageId,
-      impressionId: this.impressionId, // unique id of the page
-      uid: this.userId, // userid
-      type: this.type, // click,select,search
-      startTime: this.start_time, // starttime when user comes to that page
-      endTime: this.end_time
-    },
-    interact: []
-  }
+  // public telemData = {
+  //   impression: {
+  //     pageId: this.pageId,
+  //     impressionId: this.impressionId, // unique id of the page
+  //     uid: this.userId, // userid
+  //     type: this.type, // click,select,search
+  //     startTime: this.start_time, // starttime when user comes to that page
+  //     endTime: this.end_time
+  //   },
+  //   interact: []
+  // }
 
   public title: string = '';
   public titleName: string = '';
