@@ -350,7 +350,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
               "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
             );
             markerIcon.addTo(globalMap).bindPopup(popup);
-
             this.popups(markerIcon, this.markers[i]);
           }
         }
@@ -510,9 +509,11 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
             markerIcon.on('mouseover', function (e) {
               this.openPopup();
             });
+
             markerIcon.on('mouseout', function (e) {
               this.closePopup();
             });
+            markerIcon.on('click', this.onClickSchool, this);
 
             this.layerMarkers.addLayer(markerIcon);
             markerIcon.myJsonData = this.markers[i];
@@ -733,16 +734,32 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('dist');
-    localStorage.removeItem('distId');
-    localStorage.removeItem('block');
-    localStorage.removeItem('blockId');
-    localStorage.removeItem('schStd');
-    this.router.navigate(['/']);
+  onClickSchool(event) {
+    var level = "School";
+    if (event.latlng) {
+      var obj = {
+        id: event.target.myJsonData.id,
+        name: event.target.myJsonData.name,
+        lat: event.target.myJsonData.lat,
+        lng: event.target.myJsonData.lng
+      }
+      this.getTelemetryData(obj, event.type, level);
+    }
   }
+
+  //   block: "Jasdan"
+  // blockId: 240904
+  // cluster: "Kumar Taluka School Jasdan"
+  // clusterId: "2409040007"
+  // dist: "Rajkot"
+  // distId: 2409
+  // id: 24090401901
+  // label: "89.4"
+  // lat: 22.040928
+  // lng: 71.14643
+  // name: "Chitaliya Primary School"
+  // schCount: "1"
+  // stdCount: "166"
 
   onClick_Marker(event) {
     var marker = event.target;
@@ -1128,6 +1145,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
             this.closePopup();
           });
 
+          markerIcon.on('click', this.onClickSchool, this);
+
           this.layerMarkers.addLayer(markerIcon);
           markerIcon.myJsonData = this.markers[i];
         };
@@ -1307,7 +1326,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         }
         this.service.telemetryData.push(obj);
       }
-      //("0" + (this.edate.getDate())).slice(-2)
 
       this.edate = new Date();
       var dateObj = {
@@ -1317,7 +1335,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         hour: ("0" + (this.edate.getHours())).slice(-2),
       }
 
-      console.log(dateObj);
 
       this.service.telemetry(dateObj).subscribe(res => {
         console.log(res);

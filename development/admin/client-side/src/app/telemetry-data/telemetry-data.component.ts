@@ -112,7 +112,6 @@ export class TelemetryDataComponent implements OnInit {
       }
     } else {
       var days = this.getDaysInMonth(this.month, this.year);
-      console.log(days);
       for (let i = 0; i < days; i++) {
         this.dates.push({ date: ("0" + (i + 1)).slice(-2) });
       }
@@ -124,6 +123,11 @@ export class TelemetryDataComponent implements OnInit {
         this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
       }
     } else {
+      for (let i = 0; i < 24; i++) {
+        this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
+      }
+    }
+    if (this.month != ("0" + ((new Date()).getMonth() + 1)).slice(-2)) {
       for (let i = 0; i < 24; i++) {
         this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
       }
@@ -569,11 +573,11 @@ export class TelemetryDataComponent implements OnInit {
       this.dist = false;
       this.blok = false;
       this.clust = false;
- 
+   
       // to show and hide the dropdowns
       this.blockHidden = true;
       this.clusterHidden = true;
- 
+   
       // api call to get the all schools data
       if (this.myData) {
         this.myData.unsubscribe();
@@ -588,11 +592,11 @@ export class TelemetryDataComponent implements OnInit {
         this.schoolMarkers = [];
         if (this.data['data'].length > 0) {
           let result = this.data['data']
- 
+   
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
- 
+   
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
@@ -605,7 +609,7 @@ export class TelemetryDataComponent implements OnInit {
                 weight: 1.5,
                 strokeWeight: 1
               }).addTo(globalMap);
- 
+   
               var details = {};
               var orgObject = {};
               Object.keys(this.schoolMarkers[i]).forEach(key => {
@@ -623,27 +627,27 @@ export class TelemetryDataComponent implements OnInit {
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
- 
+   
               // to download the report
               this.fileName = "School_wise_report";
               var obj = { ...this.schoolMarkers[i] };
               this.reportData.push(obj);
- 
+   
               markerIcon.on('mouseover', function (e) {
                 this.openPopup();
               });
               markerIcon.on('mouseout', function (e) {
                 this.closePopup();
               });
- 
+   
               this.layerMarkers.addLayer(markerIcon);
               markerIcon.myJsonData = this.schoolMarkers[i];
             }
- 
+   
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
- 
+   
             this.schoolCount = this.data['footer'];
- 
+   
             this.loaderAndErr();
             this.changeDetection.markForCheck();
           }
@@ -652,14 +656,14 @@ export class TelemetryDataComponent implements OnInit {
         this.data = [];
         this.loaderAndErr();
       });
- 
+   
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
     } catch (e) {
       console.log(e);
     }
   }
- 
+   
   // to load all the blocks for selected district for state data on the map
   onDistrictSelect(districtId) {
     // to clear the existing data on the map layer  
@@ -667,33 +671,33 @@ export class TelemetryDataComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.errMsg();
     this.blockId = undefined;
- 
+   
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = true;
- 
+   
     // api call to get the blockwise data for selected district
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service.semCompletionBlockPerDist(districtId).subscribe(res => {
       this.data = res;
- 
+   
       this.blockMarkers = this.data['data'];
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data['data'][0].district_id,
         districtName: this.data['data'][0].district_name
       }
- 
+   
       this.districtId = districtId;
- 
+   
       // these are for showing the hierarchy names based on selection
       this.skul = false;
       this.dist = true;
       this.blok = false;
       this.clust = false;
- 
+   
       // options to set for markers in the map
       let options = {
         radius: 3.5,
@@ -715,7 +719,7 @@ export class TelemetryDataComponent implements OnInit {
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
   }
- 
+   
   // to load all the clusters for selected block for state data on the map
   onBlockSelect(blockId) {
     // to clear the existing data on the map layer
@@ -723,11 +727,11 @@ export class TelemetryDataComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.errMsg();
     this.clusterId = undefined;
- 
+   
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = false;
- 
+   
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
       this.myData.unsubscribe();
@@ -742,7 +746,7 @@ export class TelemetryDataComponent implements OnInit {
         }
       });
       this.blockMarkers = myBlocks;
- 
+   
       // set hierarchy values
       this.blockHierarchy = {
         distId: this.data['data'][0].district_id,
@@ -752,13 +756,13 @@ export class TelemetryDataComponent implements OnInit {
       }
       this.districtId = this.data['data'][0].district_id;
       this.blockId = blockId;
- 
+   
       // these are for showing the hierarchy names based on selection
       this.skul = false;
       this.dist = false;
       this.blok = true;
       this.clust = false;
- 
+   
       // options to set for markers in the map
       let options = {
         radius: 3,
@@ -780,14 +784,14 @@ export class TelemetryDataComponent implements OnInit {
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
   }
- 
+   
   // to load all the schools for selected cluster for state data on the map
   onClusterSelect(clusterId) {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.errMsg();
- 
+   
     this.blockHidden = false;
     this.clusterHidden = false;
     // api call to get the schoolwise data for selected district, block, cluster
@@ -798,7 +802,7 @@ export class TelemetryDataComponent implements OnInit {
       this.myData = this.service.semCompletionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
         this.data = res;
         this.schoolMarkers = this.data['data'];
- 
+   
         var markers = result['data'];
         var myBlocks = [];
         markers.forEach(element => {
@@ -807,7 +811,7 @@ export class TelemetryDataComponent implements OnInit {
           }
         });
         this.blockMarkers = myBlocks;
- 
+   
         var myCluster = [];
         this.clusterMarkers.forEach(element => {
           if (element.block_id === this.blockHierarchy.blockId) {
@@ -815,7 +819,7 @@ export class TelemetryDataComponent implements OnInit {
           }
         });
         this.clusterMarkers = myCluster;
- 
+   
         // set hierarchy values
         this.clusterHierarchy = {
           distId: this.data['data'][0].district_id,
@@ -825,21 +829,21 @@ export class TelemetryDataComponent implements OnInit {
           clusterId: this.data['data'][0].cluster_id,
           clusterName: this.data['data'][0].cluster_name,
         }
- 
+   
         this.districtHierarchy = {
           distId: this.data['data'][0].district_id
         }
- 
+   
         this.districtId = this.data['data'][0].district_id;
         this.blockId = this.data['data'][0].block_id;
         this.clusterId = clusterId;
- 
+   
         // these are for showing the hierarchy names based on selection
         this.skul = false;
         this.dist = false;
         this.blok = false;
         this.clust = true;
- 
+   
         // options to set for markers in the map
         let options = {
           radius: 3.5,
