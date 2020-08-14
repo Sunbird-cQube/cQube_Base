@@ -17,6 +17,7 @@ export class ChangePasswordComponent implements OnInit {
   public isDisabled;
 
   constructor(public service: AppService, public router: Router, public keycloakService: KeycloakSecurityService) {
+    service.logoutOnTokenExpire();
     this.changePasswdData['userName'] = localStorage.getItem('userName');
   }
 

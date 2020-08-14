@@ -4,7 +4,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allSchoolWise', async (req, res) => {
+router.post('/allSchoolWise',auth.authController, async (req, res) => {
     try {
         logger.info('--- semseter all school wise api ---');
         let fileName = `semester/school_sem_opt_json_2.json`

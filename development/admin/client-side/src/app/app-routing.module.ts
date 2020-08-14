@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
@@ -11,7 +10,6 @@ import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SummaryStatistictsComponent } from './summary-statisticts/summary-statisticts.component';
 import { NifiShedularComponent } from './nifi-shedular/nifi-shedular.component';
-import { ShowTelemetryComponent } from './show-telemetry/show-telemetry.component';
 
 const routes: Routes = [
   {
@@ -42,9 +40,6 @@ const routes: Routes = [
       },
       {
         path: 'nifi-shedular', component: NifiShedularComponent, canActivateChild: [AuthGuard]
-      },
-      {
-        path: 'telemetry', component: ShowTelemetryComponent, canActivateChild: [AuthGuard]
       }
     ]
   }

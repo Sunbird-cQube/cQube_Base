@@ -7,7 +7,7 @@ const s3File = require('../../../lib/reads3File');
 router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra school wise api ---');
-        let fileName = `infra/infra_school_map_new.json`;
+        let fileName = `infra/infra_school_map.json`;
         var schoolData = await s3File.readS3File(fileName);
         var mydata = schoolData.data;
         logger.info('---Infra school wise api response sent---');
@@ -21,7 +21,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra schoolPerCluster api ---');
-        let fileName = `infra/infra_school_map_new.json`;
+        let fileName = `infra/infra_school_map.json`;
         var schoolData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId;
