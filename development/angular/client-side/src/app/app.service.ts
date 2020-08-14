@@ -315,4 +315,24 @@ export class AppServiceComponent {
         this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/telemetry`, { telemetryData: this.telemetryData, date: date }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
+
+    //telemetry data
+    telemetryDist(data) {
+        return this.http.post(`${this.baseUrl}/showDistTelemetry`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    telemetryBlock(data) {
+        return this.http.post(`${this.baseUrl}/showBlockTelemetry/all_Block`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    telemetryCluster(data) {
+        return this.http.post(`${this.baseUrl}/showClusterTelemetry/all_Cluster`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
 }

@@ -11,6 +11,11 @@ const changePasswd = require('./controller/users/changePassword');
 const deekshaData = require('./controller/diksha/diksha');
 const dikshaTable = require('./controller/diksha/dikshaTable');
 
+//Show telemetry
+const showDistTelemetry = require('./controller/telemetry/showTelemetry/distTelemetryData');
+const showBlockTelemetry = require('./controller/telemetry/showTelemetry/blockTelemetryData');
+const showClusterTelemetry = require('./controller/telemetry/showTelemetry/clusterTelemetryData');
+
 //completion report...
 const sem_completionDist = require('./controller/completionReports/semester/districtWise')
 const sem_completionBlock = require('./controller/completionReports/semester/blockWise')
@@ -88,5 +93,10 @@ router.use('/semCompCluster', sem_completionCluster);
 router.use('/semCompSchool', sem_completionSchool);
 
 router.use('/school_invalid', school_invalid);
+
+//show telemetry
+router.use('/showDistTelemetry', showDistTelemetry);
+router.use('/showBlockTelemetry', showBlockTelemetry);
+router.use('/showClusterTelemetry', showClusterTelemetry);
 
 module.exports = router;

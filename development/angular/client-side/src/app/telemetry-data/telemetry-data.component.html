@@ -78,9 +78,9 @@
             <button class="btn btn-secondary" id="cluster"
                 style="font-size: 11px; width: 70px; margin: 2px 10px 5px 0px;padding: 2px;"
                 (click)="clusterWise()">&nbsp;<strong style="font-family: Arial;">Clusters</strong> </button>
-            <!-- <button class="btn btn-secondary" id="school"
+            <button class="btn btn-secondary" id="school"
                 style="font-size: 11px; width: 70px; margin: 2px 0px 5px 0px;padding: 2px;"
-                (click)="schoolWise()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button> -->
+                (click)="schoolWise()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
         </div>
         <div class="col-sm-2" style="font-family: Arial;">
             <!-- <select id="choose_dist"
@@ -118,7 +118,7 @@
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-3">
-                    Select Year ↴ <select id="year"
+                    <span style="font-size: 12px;">Select Year ↴ </span> <select id="year"
                         style="float: left; margin-top: 0.5%; padding: 2px;width: 100%; margin-bottom: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                         [(ngModel)]="year" name="year" (change)="getYear(year)">
                         <option [value]="year" disabled selected="selected">Choose Year
@@ -130,7 +130,7 @@
                     </select>
                 </div>
                 <div class="col-sm-3">
-                    Select Month ↴ <select id="month"
+                    <span style="font-size: 12px;">Select Month ↴ </span> <select id="month"
                         style=" float: left;margin-top: 0.5%; padding: 2px;width: 100%; margin-bottom: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                         [(ngModel)]="month" name="month" (change)="getMonth(month)">
                         <option [value]="month" disabled selected="selected">Choose Month
@@ -142,7 +142,7 @@
                     </select>
                 </div>
                 <div class="col-sm-3">
-                    Select Date ↴ <select id="date"
+                    <span style="font-size: 12px;">Select Date ↴ </span> <select id="date"
                         style=" float: left;margin-top: 0.5%; padding: 2px;width: 100%; margin-bottom: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                         [(ngModel)]="date" name="date" (change)="getDate(date)">
                         <option [value]="date" disabled selected="selected">Choose Date
@@ -155,7 +155,7 @@
 
                 </div>
                 <div class="col-sm-3">
-                    Select Hour ↴ <select id="hour"
+                    <span style="font-size: 12px;">Select Hour ↴ </span> <select id="hour"
                         style="margin-top: 0.5%; padding: 2px;width: 100%; margin-bottom: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                         [(ngModel)]="hour" name="hour" (change)="getHour(hour)">
                         <option [value]="hour" disabled selected="selected">Choose Hour
