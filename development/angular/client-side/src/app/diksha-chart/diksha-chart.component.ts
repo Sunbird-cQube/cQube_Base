@@ -150,7 +150,6 @@ export class DikshaChartComponent implements OnInit {
       this.createChart(result, "barChartData");
       if (result['data']) {
         this.chart1 = (result['data'][0].length > 0);
-        console.log(this.chart1);
       }
 
       this.service.dikshaAllData('Teacher', this.timePeriod).subscribe(result => {
@@ -206,7 +205,6 @@ export class DikshaChartComponent implements OnInit {
         this.all = true
         this.dist = false
       } else {
-        console.log(districtId)
         this.all = false
         this.dist = true
         let d = this.districtsDetails.filter(item => {
@@ -281,7 +279,6 @@ export class DikshaChartComponent implements OnInit {
 
     document.getElementById('home').style.display = "block";
     this.allDataNotFound = undefined;
-    console.log(this.timePeriod);
     this.errMsg();
 
     this.result = [];
@@ -479,7 +476,6 @@ export class DikshaChartComponent implements OnInit {
     if (type) {
       this.errMsg();
       this.service.dikshaDataDownload({ districtId: this.districtId, timePeriod: this.timePeriod }).subscribe(res => {
-
         if (this.districtId == '') {
           if (res['All'][`${type}`]) {
             this.fileName = `Diksha_All_data_${type}`;
@@ -517,7 +513,6 @@ export class DikshaChartComponent implements OnInit {
   }
 
   downloadRoport() {
-    console.log(this.reportData.length);
     const options = {
       fieldSeparator: ',',
       quoteStrings: '"',

@@ -33,7 +33,6 @@ export class UsersComponent implements OnInit {
     this.service.allUsers().subscribe(res => {
       this.result = res['users'];
       this.tableData = this.result;
-
       $(document).ready(function () {
         $('#table').DataTable({
           destroy: false, bLengthChange: false, bInfo: false,

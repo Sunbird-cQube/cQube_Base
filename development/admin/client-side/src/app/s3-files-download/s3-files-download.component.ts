@@ -42,14 +42,14 @@ export class S3FilesDownloadComponent implements OnInit {
     document.getElementById('homeBtn').style.display = "Block";
   }
 
-  listFolders() {
+  listFiles() {
     document.getElementById('spinner').style.display = 'block';
     this.folderHidden = true;
     this.fileHidden = false;
     this.folderName = '';
     var element = <HTMLBodyElement>document.getElementById('btn');
     element['disabled'] = true;
-    this.service.listFolders(this.bucketName).subscribe((res: any) => {
+    this.service.listFiles(this.bucketName).subscribe((res: any) => {
 
       var files = []
       res.forEach(element => {
@@ -64,7 +64,7 @@ export class S3FilesDownloadComponent implements OnInit {
     })
   }
 
-  listFiles() {
+  // listFiles() {
     // this.fileHidden = false;
     // this.fileNames = [];
     // this.service.listFolders(this.bucketName).subscribe(res => {
@@ -74,7 +74,7 @@ export class S3FilesDownloadComponent implements OnInit {
     //     element['checked'] = false;
     //   });
     // })
-  }
+  // }
 
   checkedList() {
     var element = <HTMLBodyElement>document.getElementById('btn');
