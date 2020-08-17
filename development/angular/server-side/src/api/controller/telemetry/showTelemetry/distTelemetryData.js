@@ -6,11 +6,8 @@ var const_data = require('../../../lib/config');
 router.post('/', auth.authController, async (req, res) => {
     try {
         logger.info('--- get dist telemetry data api ---');
-        let year = req.body.year;
-        let month = req.body.month;
-        let date = req.body.date;
-        let hour = req.body.hour;
-        const_data['getParams']['Key'] = `cqube_telemetry/${year}-${month}-${date}/district_telemetry_${year}_${month}_${date}_${hour}.json`;
+        let timePeriod = req.body.timePeriod;
+        const_data['getParams']['Key'] = `cqube_telemetry/${timePeriod}/districts.json`;
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);

@@ -66,20 +66,8 @@ export class TelemetryDataComponent implements OnInit {
 
   public myData;
 
-  //Choosing year, month, date and hours.......
-  years = [{ year: "2020" }];
-  months = [];
-  dates = [];
-  hours = [];
-
-  year;
-  month;
-  date;
-  hour;
-
-  hideMonth = true;
-  hideDate = true;
-  hideHour = true;
+  timePeriod = '';
+  timeDetails = [{ id: "overall", time: "Over All" }, { id: "last_30_days", time: "Last 30 Days" }, { id: "last_7_days", time: "Last 7 Days" }, { id: "last_day", time: "Last Day" }];
 
   constructor(
     public http: HttpClient,
@@ -89,62 +77,12 @@ export class TelemetryDataComponent implements OnInit {
   ) {
   }
 
-  filters() {
-    this.months = [];
-    this.dates = [];
-    this.hours = [];
-    var val_i = (new Date()).getMonth() + 1;
-    var monthName = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    if (this.year == (new Date()).getFullYear()) {
-      for (let i = 0; i < val_i; i++) {
-        this.months.push({ id: `${("0" + (i + 1)).slice(-2)}`, name: monthName[i] });
-      }
-    } else {
-      for (let i = 0; i < 12; i++) {
-        this.months.push({ id: `${("0" + (i + 1)).slice(-2)}`, name: monthName[i] });
-      }
-    }
-
-    var dateRange = (new Date()).getDate();
-    if (this.month == ("0" + ((new Date()).getMonth() + 1)).slice(-2)) {
-      for (let i = 0; i < dateRange; i++) {
-        this.dates.push({ date: ("0" + (i + 1)).slice(-2) });
-      }
-    } else {
-      var days = this.getDaysInMonth(this.month, this.year);
-      for (let i = 0; i < days; i++) {
-        this.dates.push({ date: ("0" + (i + 1)).slice(-2) });
-      }
-    }
-
-    var hourRange = (new Date()).getHours();
-    if (this.date == ("0" + ((new Date()).getDate())).slice(-2)) {
-      for (let i = 0; i < hourRange; i++) {
-        this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
-      }
-    } else {
-      for (let i = 0; i < 24; i++) {
-        this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
-      }
-    }
-    if (this.month != ("0" + ((new Date()).getMonth() + 1)).slice(-2)) {
-      for (let i = 0; i < 24; i++) {
-        this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
-      }
-    }
-  }
-
   ngOnInit() {
-    this.year = `${(new Date()).getFullYear()}`;
-    this.month = ("0" + ((new Date()).getMonth() + 1)).slice(-2);
-    this.date = ("0" + ((new Date()).getDate())).slice(-2);
-    this.hour = ("0" + ((new Date()).getHours() - 1)).slice(-2);
-
+    this.timePeriod = 'overall';
     document.getElementById('backBtn').style.display = "none";
     this.initMap();
     this.districtWise();
     document.getElementById('homeBtn').style.display = "Block";
-    this.filters();
   }
 
   getDaysInMonth = function (month, year) {
@@ -156,16 +94,7 @@ export class TelemetryDataComponent implements OnInit {
     const lat = 22.3660414123535;
     const lng = 71.48396301269531;
     globalMap = L.map('map', { zoomControl: false }).setView([lat, lng], 7);
-    // applyCountryBorder(globalMap);
 
-    // function applyCountryBorder(map) {
-    //   L.geoJSON(data['features'][0], {
-    //     color: "#a9a9a9",
-    //     weight: 2,
-    //     opacity: 1,
-    //     fillOpacity: 0.0
-    //   }).addTo(map);
-    // }
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
       {
         token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -195,11 +124,7 @@ export class TelemetryDataComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
   }
 
-  getYear(year) {
-    this.filters();
-    this.hideMonth = false;
-    this.hideDate = true;
-    this.hideHour = true;
+  getTimePeriod(timePeriod) {
     if (this.skul) {
       this.districtWise();
     }
@@ -209,47 +134,8 @@ export class TelemetryDataComponent implements OnInit {
     if (this.blok) {
       this.clusterWise();
     }
-  }
-  getMonth(month) {
-    this.filters();
-    this.hideMonth = false;
-    this.hideDate = false;
-    this.hideHour = true;
-    if (this.skul) {
-      this.districtWise();
-    }
-    if (this.dist) {
-      this.blockWise();
-    }
-    if (this.blok) {
-      this.clusterWise();
-    }
-  }
-  getDate(date) {
-    this.filters();
-    this.hideMonth = false;
-    this.hideDate = false;
-    this.hideHour = false;
-    if (this.skul) {
-      this.districtWise();
-    }
-    if (this.dist) {
-      this.blockWise();
-    }
-    if (this.blok) {
-      this.clusterWise();
-    }
-  }
-  getHour(year) {
-    this.filters();
-    if (this.skul) {
-      this.districtWise();
-    }
-    if (this.dist) {
-      this.blockWise();
-    }
-    if (this.blok) {
-      this.clusterWise();
+    if (this.clust) {
+      this.schoolWise();
     }
   }
 
@@ -273,10 +159,7 @@ export class TelemetryDataComponent implements OnInit {
       this.clusterHidden = true;
 
       var obj = {
-        year: this.year,
-        month: this.month,
-        date: this.date,
-        hour: this.hour
+        timePeriod: this.timePeriod
       }
       console.log("myObj: ", obj);
       // api call to get all the districts data
@@ -337,10 +220,7 @@ export class TelemetryDataComponent implements OnInit {
       this.clusterHidden = true;
 
       var obj = {
-        year: this.year,
-        month: this.month,
-        date: this.date,
-        hour: this.hour
+        timePeriod: this.timePeriod
       }
 
       // api call to get the all clusters data
@@ -447,10 +327,7 @@ export class TelemetryDataComponent implements OnInit {
       this.clusterHidden = true;
 
       var obj = {
-        year: this.year,
-        month: this.month,
-        date: this.date,
-        hour: this.hour
+        timePeriod: this.timePeriod
       }
       // api call to get the all clusters data
       if (this.myData) {
@@ -544,26 +421,23 @@ export class TelemetryDataComponent implements OnInit {
       this.errMsg();
       this.reportData = [];
       // these are for showing the hierarchy names based on selection
-      this.skul = true;
+      this.skul = false;
       this.dist = false;
       this.blok = false;
-      this.clust = false;
+      this.clust = true;
 
       // to show and hide the dropdowns
       this.blockHidden = true;
       this.clusterHidden = true;
 
       var obj = {
-        year: this.year,
-        month: this.month,
-        date: this.date,
-        hour: this.hour
+        timePeriod: this.timePeriod
       }
       // api call to get the all schools data
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionSchool().subscribe(res => {
+      this.myData = this.service.telemetrySchool(obj).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: 7,
@@ -581,8 +455,8 @@ export class TelemetryDataComponent implements OnInit {
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude], {
-                radius: 0,
+              var markerIcon = L.circleMarker([this.schoolMarkers[i].lat, this.schoolMarkers[i].lng], {
+                radius: 2,
                 color: "#fc5e03",
                 fillColor: "#fc5e03",
                 fillOpacity: 1,
@@ -592,12 +466,12 @@ export class TelemetryDataComponent implements OnInit {
               var details = {};
               var orgObject = {};
               Object.keys(this.schoolMarkers[i]).forEach(key => {
-                if (key !== "school_latitude") {
+                if (key !== "lat") {
                   details[key] = this.schoolMarkers[i][key];
                 }
               });
               Object.keys(details).forEach(key => {
-                if (key !== "school_longitude") {
+                if (key !== "lng") {
                   orgObject[key] = details[key];
                 }
               });

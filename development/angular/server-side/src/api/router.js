@@ -15,6 +15,7 @@ const dikshaTable = require('./controller/diksha/dikshaTable');
 const showDistTelemetry = require('./controller/telemetry/showTelemetry/distTelemetryData');
 const showBlockTelemetry = require('./controller/telemetry/showTelemetry/blockTelemetryData');
 const showClusterTelemetry = require('./controller/telemetry/showTelemetry/clusterTelemetryData');
+const showSchoolTelemetry = require('./controller/telemetry/showTelemetry/schoolTelemetryData');
 
 //completion report...
 const sem_completionDist = require('./controller/completionReports/semester/districtWise')
@@ -98,5 +99,6 @@ router.use('/school_invalid', school_invalid);
 router.use('/showDistTelemetry', showDistTelemetry);
 router.use('/showBlockTelemetry', showBlockTelemetry);
 router.use('/showClusterTelemetry', showClusterTelemetry);
+router.use('/showSchoolTelemetry', showSchoolTelemetry);
 
 module.exports = router;

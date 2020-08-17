@@ -336,4 +336,10 @@ export class AppServiceComponent {
         });
     }
 
+    telemetrySchool(data) {
+        return this.http.post(`${this.baseUrl}/showSchoolTelemetry/all_school`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
 }
