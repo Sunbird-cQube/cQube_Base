@@ -1335,7 +1335,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         hour: ("0" + (this.edate.getHours())).slice(-2),
       }
 
-
       this.service.telemetry(dateObj).subscribe(res => {
         console.log(res);
       }, err => {

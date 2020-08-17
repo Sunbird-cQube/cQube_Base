@@ -205,7 +205,9 @@ export class DikshaTableComponent implements OnInit {
       var my_item = {};
       my_item['data'] = key;
       my_item['value'] = value;
-      my_columns.push(my_item);
+      if (value != 'All' && value != '') {
+        my_columns.push(my_item);
+      }
     });
 
 
@@ -217,9 +219,7 @@ export class DikshaTableComponent implements OnInit {
         var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
-        // if (col != "District Id" && col != "District Name") {
         headers += `<th> ${col}</th>`
-        // }
       });
 
 
@@ -230,7 +230,9 @@ export class DikshaTableComponent implements OnInit {
           var new_item = {};
           new_item['data'] = key;
           new_item['value'] = value;
-          temp.push(new_item);
+          if (value != 'All' && value != '') {
+            temp.push(new_item);
+          }
         });
         newArr.push(temp)
       });
@@ -238,9 +240,7 @@ export class DikshaTableComponent implements OnInit {
       newArr.forEach((columns) => {
         body += '<tr>';
         columns.forEach((column) => {
-          // if (column.data != "district_id" && column.data != "district_name") {
           body += `<td>${column.value}</td>`
-          // }
         });
         body += '</tr>';
       });
