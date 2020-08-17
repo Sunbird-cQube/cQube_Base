@@ -109,7 +109,7 @@ router.post('/dikshaData', auth.authController, async (req, res) => {
 router.get('/dikshaMetaData', auth.authController, async (req, res) => {
     try {
         logger.info('--- dikshaMetaData api ---');
-        let fileName = `diksha/table_reports/diksha_metadata.json`
+        let fileName = `diksha/stack_bar_reports/diksha_metadata.json`
         var tableData = await s3File.readS3File(fileName);
         if (tableData.districtDetails != null) {
             var sortedData = tableData.districtDetails.sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1)
