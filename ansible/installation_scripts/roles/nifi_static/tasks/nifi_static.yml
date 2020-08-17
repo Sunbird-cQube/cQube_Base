@@ -131,7 +131,7 @@
   when: item.component.name == 'cQube-raw-data-fetch-parameters'
   no_log: True
 
-- name: Connection crc processor group to crc parameters
+- name: Connection static processor group to static parameters
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ static_data_id.results[0].item }}
     method: PUT
@@ -297,13 +297,3 @@
   loop: "{{ controllers_list_static_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
   no_log: True 
-  
-
-- name: Start Processor group
-  uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ tagExists[0].item.component.id }}
-    method: PUT
-    body_format: json
-    body: {"id":"{{ tagExists[0].item.component.id }}","state":"RUNNING"}
-  no_log: True
-

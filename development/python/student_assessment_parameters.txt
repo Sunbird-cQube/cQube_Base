@@ -22,14 +22,15 @@ grade = sem_null_col.count_null_studyingclass
 from sem_null_col
 where sem_null_col.ff_uuid = log_summary.ff_uuid
 ''',
-"sem_dup_check":'''select AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit,count(AadhaarUID) num_of_times
-from flowfile
-group by AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit
+"sem_dup_check":'''select student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid,count(student_uid)-1 num_of_times
+from student_semester_temp
+group by student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid
 HAVING  COUNT(*) > 1
 ''',
-"distinct_sem_records":'''SELECT AadhaarUID ,SchoolId ,
-Sem ,studyingclass ,gujarati ,maths ,es,science,ss,hindi ,
-english,sanskrit FROM (select AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit, row_number() over (partition by AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit) as rn from flowfile) sq where rn=1
+"distinct_sem_records":'''SELECT student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid
+FROM (select student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid, 
+	row_number() over (partition by student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid) as rn 
+	from student_semester_temp) sq where rn=1
 ''',
 "same_id_sem_db":'''select AadhaarUID AS "student_uid",SchoolId AS "school_id",
 Sem AS "semester",studyingclass AS "grade",gujarati AS "subject_2",maths AS "subject_3",es AS "subject_1",science AS subject_6,ss AS "subject_7",hindi AS "subject_5",
@@ -39,9 +40,15 @@ over (partition by AadhaarUID,SchoolId,Sem) as rn from FLOWFILE) sq Where rn >1
 ) group by AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit
 ''',
 "save-to-sem_dup_tb_name":"student_semester_dup",
-"same_id_sem_check":'''select *,count(*) as num_of_times from (
-select AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit from (SELECT AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit,count(*)
-over (partition by AadhaarUID,SchoolId,Sem) as rn from FLOWFILE) sq Where rn >1) group by AadhaarUID,SchoolId,Sem,StudyingClass,Gujarati,Maths,ES,Science,SS,Hindi,English,Sanskrit
+"same_id_sem_check":'''SELECT b.student_uid,b.school_id,b.semester,b.grade,
+b.subject_1,b.subject_2,b.subject_3,b.subject_4,b.subject_5,b.subject_6,b.subject_7,b.subject_8,count(*) num_of_times  from (select student_uid,school_id,semester,grade from student_semester_staging 
+    group by student_uid,school_id,semester,grade having count(1)>1)  as a, student_semester_staging b
+where 
+a.student_uid=b.student_uid
+and a.school_id=b.school_id
+and a.semester=b.semester
+and a.grade=b.grade
+group by b.student_uid,b.school_id,b.semester,b.grade,b.subject_1,b.subject_2,b.subject_3,b.subject_4,b.subject_5,b.subject_6,b.subject_7,b.subject_8
 ''',
 "same_id_sem":'''SELECT AadhaarUID AS "student_uid",SchoolId AS "school_id", 
 Sem AS "semester",StudyingClass AS "grade",Gujarati AS "subject_2",Maths AS "subject_3",ES AS "subject_1",Science AS subject_6,SS AS "subject_7",Hindi AS "subject_5",
@@ -928,5 +935,37 @@ group by district_id ,district_name,block_id,block_name,cluster_id,cluster_name,
         }
     }
  ]
-'''
+''',
+"temp_to_staging_sem":'''insert into student_semester_staging(student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid)
+SELECT student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid 
+FROM student_semester_temp''',
+"same_id_stag_to_trans":'''insert into student_semester_trans as a (student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,
+subject_5,subject_6,subject_7,subject_8,created_on)
+select student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,
+subject_5,subject_6,subject_7,subject_8,now() from (select student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8
+from
+(select student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8
+,count(*) over (partition by student_uid,school_id,semester,grade) as rn  from student_semester_staging)as a
+where a.rn=1) as b
+on conflict (student_uid,school_id,semester,grade)
+do update set year=excluded.year,student_uid=excluded.student_uid,school_id=excluded.school_id,
+semester=excluded.semester,grade=excluded.grade,subject_1=excluded.subject_1,subject_2=excluded.subject_2,
+subject_3=excluded.subject_3,subject_4=excluded.subject_4,subject_5=excluded.subject_5,subject_6=excluded.subject_6,
+subject_7=excluded.subject_7,subject_8=excluded.subject_8,
+updated_on=now()''',
+"same_id_staging_to_trans_sem":'''insert into student_semester_trans (student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,
+subject_5,subject_6,subject_7,subject_8,created_on)
+select student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,
+subject_5,subject_6,subject_7,subject_8,now() from student_semester_staging
+on conflict (student_uid,school_id,semester,grade)
+do update set year=excluded.year,student_uid=excluded.student_uid,school_id=excluded.school_id,
+semester=excluded.semester,grade=excluded.grade,subject_1=excluded.subject_1,subject_2=excluded.subject_2,
+subject_3=excluded.subject_3,subject_4=excluded.subject_4,subject_5=excluded.subject_5,subject_6=excluded.subject_6,
+subject_7=excluded.subject_7,subject_8=excluded.subject_8,updated_on=now()''',
+"sem_delete_staging":"delete from student_semester_staging where ff_uuid='${files_uuid}'",
+"sem_delete_temp":"delete from student_semester_temp where ff_uuid='${files_uuid}'",
+"get_semester_value":"select distinct(semester) from flowfile",
+"temp_to_staging_sem":'''insert into student_semester_staging(student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid)
+SELECT student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid 
+FROM student_semester_temp'''
 }

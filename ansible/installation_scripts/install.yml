@@ -24,3 +24,5 @@
           - { role: nifi_semester, tags: install }
           - { role: nifi_infra, tags: install }
           - { role: nifi_diksha, tags: install }
+          - { role: nifi_telemetry, tags: install }
+          

@@ -50,7 +50,7 @@
     method: GET
   register: processor_group_temp
 
-- name: Get processor group id of the infra processor
+- name: Get processor group id of the diksha processor
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
     method: GET
@@ -84,7 +84,7 @@
     diksha_raw_id: "msg[?Name=='cQube_raw_data_fetch_diksha'].ID"
   register: raw_id
 
-- name: Display version of cqube raw parameters
+- name: Display version of cqube raw processor
   debug:
     var: item
   loop: "{{ output | json_query(diksha_raw_version) }}"
@@ -92,7 +92,7 @@
     diksha_raw_version: "msg[?Name=='cQube_raw_data_fetch_diksha'].Version"
   register: raw_version
 
-- name: Display ID of infra processor
+- name: Display ID of diksha processor
   debug:
     var: item
   loop: "{{ output | json_query(diksha_id) }}"
@@ -100,7 +100,7 @@
     diksha_id: "msg[?Name=='diksha_processor'].ID"
   register: diksha_id
 
-- name: Display version of cqube raw parameters
+- name: Display version of diksha processor
   debug:
     var: item
   loop: "{{ output | json_query(diksha_version) }}"
@@ -131,7 +131,7 @@
   when: item.component.name == 'cQube-raw-data-fetch-parameters'
   no_log: true
 
-- name: Connection diksha processor group to infra parameters
+- name: Connection diksha processor group to diksha parameters
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ diksha_id.results[0].item }}
     method: PUT
@@ -292,12 +292,3 @@
   loop: "{{ controllers_list_diksha_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
   no_log: True
-
-- name: Start Processor group
-  uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ tagExists[0].item.component.id }}
-    method: PUT
-    body_format: json
-    body: {"id":"{{ tagExists[0].item.component.id }}","state":"RUNNING"}
-  no_log: True
-
