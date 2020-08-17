@@ -1019,14 +1019,13 @@ collection_type,collection_medium,collection_gradelevel,collection_subject,colle
 select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent
-,now(),now() from diksha_content_temp except select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
+,now(),now() from diksha_content_temp where not exists (select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,now(),now() from diksha_content_trans';
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent from diksha_content_trans)';
 Execute transaction_insert; 
 return 0;
 END;
 $$LANGUAGE plpgsql;
-
 
 CREATE OR REPLACE FUNCTION insert_diksha_agg()
 RETURNS text AS
@@ -1038,7 +1037,9 @@ BEGIN
 diksha_view='create or replace view insert_diksha_trans_view as
 select b.district_id,b.district_latitude,b.district_longitude,Initcap(b.district_name) as district_name,
 	   a.content_view_date,a.dimensions_pdata_id,a.dimensions_pdata_pid,a.content_name,a.content_board,a.content_mimetype,a.content_medium,a.content_gradelevel,a.content_subject,
-	   a.content_created_for,a.object_id,a.object_rollup_l1,a.derived_loc_state,a.derived_loc_district,a.user_signin_type,a.user_login_type,a.collection_name,a.collection_board,
+	   a.content_created_for,a.object_id,a.object_rollup_l1,a.derived_loc_state,a.derived_loc_district,a.user_signin_type,a.user_login_type,
+	   case when a.collection_name is null then ''Other'' else a.collection_name end as collection_name,
+	   a.collection_board,
 	   a.collection_type,a.collection_medium,a.collection_gradelevel,a.collection_subject,a.collection_created_for,a.total_count,a.total_time_spent
         from (select case when replace(upper(derived_loc_district),'' '','''') in (''CHHOTAUDEPUR'',''CHHOTAUDAIPUR'') then ''CHHOTAUDEPUR'' 
        when replace(upper(derived_loc_district),'' '','''') in (''DOHAD'',''DAHOD'') then ''DOHAD''																									
@@ -1056,7 +1057,7 @@ from diksha_content_trans ) as a left join
 (select district_id,replace(upper(district_name),'' '','''') as district_name from school_hierarchy_details
 group by district_id,district_name
 ) as a left join school_geo_master as b on a.district_id=b.district_id) as b on a.district_name=b.district_name
-where a.district_name is not null';
+where a.district_name is not null and b.district_id is not null';
 Execute diksha_view;
 agg_insert='insert into diksha_total_content(district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
@@ -1067,10 +1068,10 @@ content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,now(),now()
 from insert_diksha_trans_view  
-except select district_id,district_latitude,district_longitude,district_name,
+where not exists (select district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,now(),now() from diksha_total_content';
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent from diksha_total_content)';
 Execute agg_insert; 
 return 0;
 END;
