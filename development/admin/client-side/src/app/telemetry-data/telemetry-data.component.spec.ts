@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShowTelemetryComponent } from './show-telemetry.component';
+import { TelemetryDataComponent } from './telemetry-data.component';
 
-describe('ShowTelemetryComponent', () => {
-  let component: ShowTelemetryComponent;
-  let fixture: ComponentFixture<ShowTelemetryComponent>;
+describe('TelemetryDataComponent', () => {
+  let component: TelemetryDataComponent;
+  let fixture: ComponentFixture<TelemetryDataComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShowTelemetryComponent ]
+      declarations: [ TelemetryDataComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShowTelemetryComponent);
+    fixture = TestBed.createComponent(TelemetryDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

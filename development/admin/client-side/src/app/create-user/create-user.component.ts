@@ -19,7 +19,9 @@ export class CreateUserComponent implements OnInit {
   selectedRole = {};
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  constructor(private service: AppService, private router: Router) { }
+  constructor(private service: AppService, private router: Router) {
+    service.logoutOnTokenExpire();
+  }
 
   onSelectRole() {
     this.roleId = this.logData['roleid'];

@@ -98,6 +98,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   public element;
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef) {
+    service.logoutOnTokenExpire();
     service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -349,7 +350,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
               "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
             );
             markerIcon.addTo(globalMap).bindPopup(popup);
-
             this.popups(markerIcon, this.markers[i]);
           }
         }
@@ -509,9 +509,11 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
             markerIcon.on('mouseover', function (e) {
               this.openPopup();
             });
+
             markerIcon.on('mouseout', function (e) {
               this.closePopup();
             });
+            markerIcon.on('click', this.onClickSchool, this);
 
             this.layerMarkers.addLayer(markerIcon);
             markerIcon.myJsonData = this.markers[i];
@@ -732,16 +734,32 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('dist');
-    localStorage.removeItem('distId');
-    localStorage.removeItem('block');
-    localStorage.removeItem('blockId');
-    localStorage.removeItem('schStd');
-    this.router.navigate(['/']);
+  onClickSchool(event) {
+    var level = "School";
+    if (event.latlng) {
+      var obj = {
+        id: event.target.myJsonData.id,
+        name: event.target.myJsonData.name,
+        lat: event.target.myJsonData.lat,
+        lng: event.target.myJsonData.lng
+      }
+      this.getTelemetryData(obj, event.type, level);
+    }
   }
+
+  //   block: "Jasdan"
+  // blockId: 240904
+  // cluster: "Kumar Taluka School Jasdan"
+  // clusterId: "2409040007"
+  // dist: "Rajkot"
+  // distId: 2409
+  // id: 24090401901
+  // label: "89.4"
+  // lat: 22.040928
+  // lng: 71.14643
+  // name: "Chitaliya Primary School"
+  // schCount: "1"
+  // stdCount: "166"
 
   onClick_Marker(event) {
     var marker = event.target;
@@ -1127,6 +1145,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
             this.closePopup();
           });
 
+          markerIcon.on('click', this.onClickSchool, this);
+
           this.layerMarkers.addLayer(markerIcon);
           markerIcon.myJsonData = this.markers[i];
         };
@@ -1310,15 +1330,16 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       this.edate = new Date();
       var dateObj = {
         year: this.edate.getFullYear(),
-        month: this.edate.getMonth() + 1,
-        date: this.edate.getDate(),
-        hour: this.edate.getHours(),
-        // minuts: this.edate.getMinus(),
-        // seconds: this.edate.getSeconds()
+        month: ("0" + (this.edate.getMonth() + 1)).slice(-2),
+        date: ("0" + (this.edate.getDate())).slice(-2),
+        hour: ("0" + (this.edate.getHours())).slice(-2),
       }
+
 
       this.service.telemetry(dateObj).subscribe(res => {
         console.log(res);
+      }, err => {
+        console.log(err);
       });
     }
   }

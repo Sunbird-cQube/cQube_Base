@@ -1,18 +1,23 @@
 
 .cards{
-    height: 180px;
-    width:250px; 
-    background-color: rgb(237, 238, 238);
-    color: #284d8a;
-    cursor: pointer;
-    margin: 0px auto;
-    margin-top: 10%;
-    margin-bottom: 4%;
-    text-align: center;
-    font-size: 14px;
-    /* box-shadow: 2px 5px 10px #888888; */
-    transition: transform .5s;
-    border-radius: 5px;
+  height: 130px;
+  width:210px; 
+  background-color: rgb(237, 238, 238);
+  color: #284d8a;
+  cursor: pointer;
+  margin: 0px auto;
+  margin-top: 15%;
+  margin-bottom: 4%;
+  text-align: center;
+  font-size: 14px;
+  /* box-shadow: 2px 5px 10px #888888; */
+  transition: transform .5s;
+  border-radius: 5px;
+}
+
+.cards img {
+height: 85px;
+ width: 170px;
 }
 
 .cards:hover {

@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { StudengtAttendanceComponent } from './student-attendance/student-attendance.component';
 import { HomeComponent } from './home/home.component';
@@ -38,7 +37,6 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     UserViewComponent,
     StudengtAttendanceComponent,
     HomeComponent,

@@ -25,12 +25,12 @@ router.post('/', auth.authController, async (req, res) => {
                 //=====================Upload new files..........
                 jsonexport(req.body.telemetryData, function (error, csv) {
                     if (error) return console.error(error);
-                    var params = {
+                    var params1 = {
                         Bucket: const_data['getParams1']['Bucket'],
                         Key: `telemetry/telemetry_${year}_${month}_${date}_${hour}.csv`,
                         Body: csv.replace(/,/g, '|')
                     };
-                    const_data['s3'].upload(params, function (err, result) {
+                    const_data['s3'].upload(params1, function (err, result) {
                         if (err) {
                             res.status(500)({ errMsg: "Internal error" });
                         } else {

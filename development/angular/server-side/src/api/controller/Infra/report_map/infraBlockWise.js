@@ -7,7 +7,7 @@ const s3File = require('../../../lib/reads3File');
 router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- all blocks infra api ---');
-        let fileName = `infra/infra_block_map_new.json`
+        let fileName = `infra/infra_block_map.json`
         var blockData = await s3File.readS3File(fileName);
         var mydata = blockData.data;
         logger.info('--- blocks infra api response sent---');
@@ -22,7 +22,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         logger.info('--- block wise infra api ---');
-        let fileName = `infra/infra_block_map_new.json`
+        let fileName = `infra/infra_block_map.json`
         var blockData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId

@@ -11,7 +11,9 @@ declare const $;
 export class SummaryStatistictsComponent implements OnInit {
   err;
   tableData: any = [];
-  constructor(private router: Router, private service: AppService) { }
+  constructor(private router: Router, private service: AppService) {
+    service.logoutOnTokenExpire();
+  }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = "none";

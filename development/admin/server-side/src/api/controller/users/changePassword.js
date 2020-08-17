@@ -32,14 +32,14 @@ router.post('/:id', auth.authController, async function (req, res) {
             "Content-Type": "application/json",
             "Authorization": "Bearer" + " " + access_token
         }
-        var newPass =  {
-                type: "password",
-                value: req.body.cnfpass,
-                temporary: false
-            };
+        var newPass = {
+            type: "password",
+            value: req.body.cnfpass,
+            temporary: false
+        };
 
         axios.put(usersUrl, newPass, { headers: headers }).then(resp => {
-            res.status(201).json({msg: "Password changed"});
+            res.status(201).json({ msg: "Password changed" });
         }).catch(error => {
             res.status(409).json({ errMsg: error.response.data.errorMessage });
         })

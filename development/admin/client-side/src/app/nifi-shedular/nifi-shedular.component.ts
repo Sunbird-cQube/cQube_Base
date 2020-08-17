@@ -22,7 +22,9 @@ export class NifiShedularComponent implements OnInit {
   selectedHour = [];
   selectedDuration = '';
   processorId;
-  constructor(private router: Router, private service: AppService) { }
+  constructor(private router: Router, private service: AppService) {
+    service.logoutOnTokenExpire();
+  }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = "none";

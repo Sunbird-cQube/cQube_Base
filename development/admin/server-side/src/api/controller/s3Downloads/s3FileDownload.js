@@ -9,45 +9,31 @@ const baseUrl = process.env.BASEURL;
 
 router.post('/listBuckets', auth.authController, async function (req, res) {
     try {
-        // const token = req.headers.token.split(" ")[1];
-        // var decoded = jwtDecode(token);
-        // var username = decoded.user_email;
-        // var password = decoded.password;
         logger.info("listbucket of s3 api");
-        let apiresult = await axios.post(`${baseUrl}/auth`,
-            {
-                username: process.env.EMAIL,
-                password: process.env.PASSWORD
-            });
-
-        let listBuckets = await axios.get(`${baseUrl}/list_s3_buckets`,
-            { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
-
+        let listBuckets = {
+            'input': process.env.INPUT_BUCKET_NAME,
+            'output': process.env.OUTPUT_BUCKET_NAME,
+            'emission': process.env.EMISSION_BUCKET_NAME
+        }
         logger.info("listfolder of s3 api response sent");
-        res.send(listBuckets.data);
-
+        res.status(200).send(listBuckets);
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 });
 
-router.post('/listFolders/:bucketName', auth.authController, async function (req, res) {
+router.post('/listFiles/:bucketName', auth.authController, async function (req, res) {
     try {
-        logger.info("listfolder of s3 api");
-        let apiresult = await axios.post(`${baseUrl}/auth`,
-            {
-                username: process.env.EMAIL,
-                password: process.env.PASSWORD
-            });
-
-        let listFIles = await axios.post(`${baseUrl}/list_s3_files`,
-            { "bucket": req.params.bucketName },
-            { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
-
-        logger.info("listfolder of s3 api reponse sent");
-        res.send(listFIles.data.Contents);
-
+        logger.info("listfiles of s3 api");
+        let parms = {
+            Bucket: req.params.bucketName
+        }
+        const_data['s3'].listObjects(parms, function (err, data) {
+            if (err) throw err;
+            logger.info("listfiles of s3 api reponse sent");
+            res.status(200).send(data.Contents);
+        })
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
@@ -56,54 +42,22 @@ router.post('/listFolders/:bucketName', auth.authController, async function (req
 
 router.post('/getDownloadUrl', auth.authController, async function (req, res) {
     try {
-        logger.info(`---list s3 Files for bucket ${req.body.bucketName} and folder ${req.body.folderName} api ---`);
-        let apiresult = await axios.post(`${baseUrl}/auth`,
-            {
-                username: process.env.EMAIL,
-                password: process.env.PASSWORD
-            });
-
-        let downloadUrl = await axios.post(`${baseUrl}/download_url`,
-            {
-                filename: req.body.fileName,
-                bucket: req.body.bucketName
-            },
-            { headers: { 'Authorization': `Bearer ${apiresult.data.access_token}` } });
-        logger.info("list s3 file for bucket response sent..");
-        res.send({ "downloadUrl": downloadUrl.data });
-
-    } catch (e) {
-        logger.error(`Error :: ${e}`);
-        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
-    }
-});
-
-router.post('/listFiles/:bucketName/:folderName', async function (req, res) {
-    try {
-        logger.info(`---list s3 Files for bucket ${req.params.bucketName} and folder ${req.params.folderName} api ---`);
-        var params = {
-            Bucket: req.params.bucketName,
-            Delimiter: '/',
-            Prefix: req.params.folderName + "/"
+        logger.info(`---list s3 Files for bucket ${req.body.bucketName} and fileName ${req.body.fileName} api ---`);
+        const params = {
+            Bucket: req.body.bucketName,
+            Key: req.body.fileName,
+            Expires: 60 * 5
         };
-        const_data.s3.listObjectsV2(params, function (err, data) {
-            if (err) {
-                logger.error(err, err.stack);
-            }
-            else {
-                let keys = []
-                data.Contents.forEach(file => {
 
-                    keys.push({ fileName: file.Key });
-                })
-                logger.info("list s3 files api sent");
-                res.send(keys)
-            }
+        const_data['s3_download'].getSignedUrl('getObject', params, (err, url) => {
+            logger.info(" ---- list s3  file for bucket response sent.. ----");
+            res.status(200).send({ downloadUrl: url })
         });
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 });
+
 
 module.exports = router;
