@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment'
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,7 +9,9 @@ import { environment } from '../../environments/environment'
 })
 export class DashboardComponent implements OnInit {
   public grafanaUrl = environment.grafanaEndPoint;
-  constructor() { }
+  constructor(service: AppService) {
+    service.logoutOnTokenExpire();
+  }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = "block";

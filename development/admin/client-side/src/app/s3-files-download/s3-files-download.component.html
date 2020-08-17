@@ -10,23 +10,12 @@
 
             <select id="choose_dist"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                [(ngModel)]="bucketName" name="bucketName" (change)="listFolders()">
+                [(ngModel)]="bucketName" name="bucketName" (change)="listFiles()">
                 <option [value]="bucketName" disabled selected="selected" style="color: white;">Choose a bucket
                 </option>
                 <option *ngFor="let bucket of listBucket" [(ngValue)]="bucket.Name"
                     style="font-family: Arial; font-size: 11px;">
                     {{bucket.Name}}
-                </option>
-            </select>
-
-            <select [hidden]="folderHidden" id="choose_block"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
-                [(ngModel)]="folderName" name="folderName" (change)="listFiles()">
-                <option [value]="folderName" disabled selected="selected" style="color: white;">Choose a Block
-                </option>
-                <option *ngFor="let folder of listFolder" [(ngValue)]="folder.Prefix"
-                    style="font-family: Arial;font-size: 11px;">
-                    {{folder.Prefix}}
                 </option>
             </select>
         </div>

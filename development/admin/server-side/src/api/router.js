@@ -4,7 +4,10 @@ const addUser = require('./controller/users/addUser');
 const changePasswd = require('./controller/users/changePassword');
 const users = require('./controller/users/allUsers');
 
-const showTelemetry = require('./controller/telemetry/telemetryData');
+const showDistTelemetry = require('./controller/telemetry/distTelemetryData');
+const showBlockTelemetry = require('./controller/telemetry/blockTelemetryData');
+const showClusterTelemetry = require('./controller/telemetry/clusterTelemetryData');
+
 //sumary
 const summary = require('./controller/statistics/summary');
 //logs
@@ -25,5 +28,8 @@ router.use('/summary', summary);
 
 router.use('/nifi', nifi);
 
-router.use('/showTelemetry', showTelemetry);
+router.use('/showDistTelemetry', showDistTelemetry);
+router.use('/showBlockTelemetry', showBlockTelemetry);
+router.use('/showClusterTelemetry', showClusterTelemetry);
+
 module.exports = router;

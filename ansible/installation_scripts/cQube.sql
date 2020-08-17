@@ -2002,6 +2002,31 @@ create table IF NOT EXISTS diksha_content_temp(
   created_on_file_process  TIMESTAMP without time zone default current_timestamp
   ); 
 
+/*Telemetry*/
+
+create table if not exists emission_files_details
+    (
+  filename text,
+  ff_uuid text,
+  s3_bucket text,
+  last_modified_time TIMESTAMP without time zone,
+  processed_status boolean,
+  created_on TIMESTAMP without time zone default current_timestamp
+  );
+  
+  create table if not exists telemetry_data
+    (
+  pageid text,
+  uid text,
+  event text,
+  level text,
+  locationid int,
+  locationname text,
+  lat double precision,
+  lng double precision,
+  download int,
+  created_on TIMESTAMP without time zone default current_timestamp
+  );
 
 /*Upgrade scripts*/
 

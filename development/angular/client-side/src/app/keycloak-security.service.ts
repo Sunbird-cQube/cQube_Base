@@ -21,7 +21,7 @@ export class KeycloakSecurityService {
     await this.kc.init({
       onLoad: 'login-required'
     });
-    console.log(this.kc.isTokenExpired());
+    console.log(this.kc.isTokenExpired() == true);
     localStorage.setItem('userName', this.kc.tokenParsed['preferred_username']);
   }
 }
