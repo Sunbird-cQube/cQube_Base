@@ -282,10 +282,10 @@
         }
       ],
       "security-admin-console": [],
-      "cqube_admin": [],
-      "cqube_app": [],
+      "{{ admin_app_client_id }}": [],
+      "{{ angular_app_client_id }}": [],
       "admin-cli": [],
-      "cqube_flask": [],
+      "{{ emission_app_client_id }}": [],
       "account-console": [],
       "broker": [
         {
@@ -602,7 +602,7 @@
     },
     {
       "id": "06ecdc52-ef2c-4f00-ab5e-21bd4d2d0d0a",
-      "clientId": "cqube_admin",
+      "clientId": "{{ admin_app_client_id }}",
       "rootUrl": "http://{{ local_ipv4_address }}:4201",
       "adminUrl": "http://{{ local_ipv4_address }}:4201",
       "baseUrl": "/",
@@ -661,7 +661,7 @@
     },
     {
       "id": "46fa55d3-da38-4b57-b39e-3a6555485650",
-      "clientId": "cqube_app",
+      "clientId": "{{ angular_app_client_id }}",
       "rootUrl": "https://{{ api_endpoint }}",
       "adminUrl": "https://{{ api_endpoint }}",
       "baseUrl": "/",
@@ -720,7 +720,7 @@
     },
     {
       "id": "2fc9b01c-1fe1-41b9-a88e-cd39a977032c",
-      "clientId": "cqube_flask",
+      "clientId": "{{ emission_app_client_id }}",
       "rootUrl": "https://{{ api_endpoint }}/data",
       "adminUrl": "https://{{ api_endpoint }}/data",
       "baseUrl": "/",
@@ -2100,8 +2100,8 @@
       "alias": "CONFIGURE_TOTP",
       "name": "Configure OTP",
       "providerId": "CONFIGURE_TOTP",
-      "enabled": {{ keycloak_config_otp }},
-      "defaultAction": true,
+      "enabled": {% if temp_config_otp == True %}true{% endif %}{% if temp_config_otp == False %}false{% endif %},
+      "defaultAction": false,
       "priority": 10,
       "config": {}
     },

@@ -1,6 +1,7 @@
 - name: ansible create directory with mode setting example
   file:
     path: /tmp/postgres
+    user: postgres
     state: directory
     mode: "u=rw,g=wx,o=rwx"
   tags: install
@@ -9,9 +10,9 @@
   copy:
     src: infrastructure_master.csv
     dest: /tmp/postgres
+    mode: "0644"
   tags: [ install, update ]
  
-
 - name: Run queries from SQL script
   become: true
   become_user: postgres
@@ -33,5 +34,3 @@
   tags: [ install, update ]  
   notify:
    - restart postgresql
-
- 

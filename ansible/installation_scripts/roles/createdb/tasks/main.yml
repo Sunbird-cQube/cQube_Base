@@ -1,5 +1,5 @@
 --- 
-- include_tasks: install_postgress.yml
+- include_tasks: install_postgres.yml
   tags: install
 
 - include_tasks: keycloak_user.yml

@@ -77,7 +77,7 @@
 
 #--- Display ID and Version of respective processor groups
 
-- name: Display ID of static attendance processor
+- name: Display ID of attendance raw processor
   debug:
     var: item
   loop: "{{ output | json_query(attendance_raw_id) }}"
@@ -85,7 +85,7 @@
     attendance_raw_id: "msg[?Name=='cQube_raw_data_fetch_attendance'].ID"
   register: attendance_raw_id
 
-- name: Display version of static raw processor
+- name: Display version of attendance raw processor
   debug:
     var: item
   loop: "{{ output | json_query(attendance_raw_version) }}"
@@ -297,13 +297,5 @@
         }
   loop: "{{ controllers_list_attendance_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
-  no_log: True
-
-- name: Start Processor group
-  uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ tagExists[0].item.component.id }}
-    method: PUT
-    body_format: json
-    body: {"id":"{{ tagExists[0].item.component.id }}","state":"RUNNING"}
   no_log: True
 

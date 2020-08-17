@@ -177,79 +177,34 @@ object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_ty
 collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
 collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging
 ''',
-"diksha_table_last_day_query":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,content_name as Content_Name,collection_name as Textbook,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content 
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date = (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,content_medium)
-union
-(select 'All' as district_id,'' as district_name,
-content_name as Content_Name,collection_name as Textbook,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content 
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date = (select max(content_view_date) from diksha_total_content)
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium)
-''',
-"diksha_table_last_7_days_query":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,content_name as Content_Name,collection_name as Textbook,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content 
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date < (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content)
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,content_medium)
-union
-(select 'All' as district_id,'' as district_name,
-content_name as Content_Name,collection_name as Textbook,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content 
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date < (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content)
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium)
-''',
-"diksha_table_last_30_days_query":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,content_name as Content_Name,collection_name as Textbook,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content 
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date < (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content)
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,content_medium)
-union
-(select 'All' as district_id,'' as district_name,
-content_name as Content_Name,collection_name as Textbook,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content 
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date < (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content)
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium)
-''',
-"diksha_table_all_query":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,content_name as Content_Name,collection_name as Textbook,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content 
-from diksha_total_content 
-where collection_type='TextBook'
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,content_medium)
-union
-(select 'All' as district_id,'' as district_name,
-content_name as Content_Name,collection_name as Textbook,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content 
-from diksha_total_content 
-where collection_type='TextBook' 
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium)
-''',
-"diskha_table_meta_query":'''select json_build_object('timeRange',array['last_day','last_7_ days','last_30_days'],
-   'districtDetails',
-    array_to_json(array_agg(row_to_json(a))))
- from (
- select district_id,district_name from diksha_total_content 
+"diskha_table_meta_query":'''select json_build_object('timeRange',timeRange,'districtDetails',
+array_to_json(array_agg(row_to_json(b))))
+from
+(select 
+case when (select exists(select 1 from diksha_total_content where content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) 
+    and (select max(content_view_date) from diksha_total_content)))=True then array['last_day','last_7_days','last_30_days']
+     when (select exists(select 1 from diksha_total_content where content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) 
+    and (select max(content_view_date) from diksha_total_content)))=True then array['last_day','last_7_days']
+     when (select exists(select 1 from diksha_total_content where content_view_date = (select max(content_view_date) from diksha_total_content)))=True then array['last_day']
+     end as timeRange,
+     cast(district_id as text) as district_id,district_name
+ from diksha_total_content 
  where district_name is not null and district_id is not null 
-and collection_type='TextBook'
-group by district_id,district_name)as a
+group by district_id,district_name,timeRange )as a
+join (select 
+     cast(district_id as text) as district_id,district_name
+ from diksha_total_content 
+ where district_name is not null and district_id is not null 
+group by district_id,district_name 
+) as b on a.district_id=b.district_id
+group by timeRange
 ''',
 "diksha_stack_last_day_query":'''(select 
 district_id,district_name,
 initcap(user_login_type)as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
@@ -259,40 +214,45 @@ user_login_type,
 content_gradelevel,content_subject order by 1,3,4,5)
 union 
 (select 
-'All' as district_id,'' as district_name,
+district_id,district_name,
+'All' as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
+and content_view_date = (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 content_gradelevel,content_subject order by 1,3,4,5)
 ''',
-"diksha_stack_last_7_days_query":'''(select 
+"diksha_stack_last_7_days_query":'''
+(select 
 district_id,district_name,
 initcap(user_login_type)as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
+and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) 
+and (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 user_login_type,
 content_gradelevel,content_subject order by 1,3,4,5)
 union 
 (select 
-'All' as district_id,'' as district_name,
+district_id,district_name,
+'All' as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
+and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) 
+and (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 content_gradelevel,content_subject order by 1,3,4,5)
 ''',
@@ -301,24 +261,27 @@ district_id,district_name,
 initcap(user_login_type)as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date < (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content)
+and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 user_login_type,
 content_gradelevel,content_subject order by 1,3,4,5)
 union 
 (select 
-'All' as district_id,'' as district_name,
+district_id,district_name,
+'All' as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date < (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content)
+and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 content_gradelevel,content_subject order by 1,3,4,5)
 ''',
@@ -347,26 +310,39 @@ and district_id is not null
 group by district_id,district_name,
 content_gradelevel,content_subject order by 1,3,4,5)
 ''',
-"diksha_stack_meta_query":'''select json_build_object('timeRange',array['last_day','last_7_ days','last_30_days'],
-   'districtDetails',
-    array_to_json(array_agg(row_to_json(a))))
- from (
- select district_id,district_name from diksha_total_content 
+"diksha_stack_meta_query":'''select json_build_object('timeRange',timeRange,'districtDetails',
+array_to_json(array_agg(row_to_json(b))))
+from
+(select 
+case when (select exists(select 1 from diksha_total_content where content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) 
+    and (select max(content_view_date) from diksha_total_content)))=True then array['last_day','last_7_days','last_30_days']
+     when (select exists(select 1 from diksha_total_content where content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) 
+    and (select max(content_view_date) from diksha_total_content)))=True then array['last_day','last_7_days']
+     when (select exists(select 1 from diksha_total_content where content_view_date = (select max(content_view_date) from diksha_total_content)))=True then array['last_day']
+     end as timeRange,
+     cast(district_id as text) as district_id,district_name
+ from diksha_total_content 
  where district_name is not null and district_id is not null 
-and collection_type='TextBook'
-group by district_id,district_name)as a
+group by district_id,district_name,timeRange )as a
+join (select 
+     cast(district_id as text) as district_id,district_name
+ from diksha_total_content 
+ where district_name is not null and district_id is not null 
+group by district_id,district_name 
+) as b on a.district_id=b.district_id
+group by timeRange
 ''',
-"diksha_stack_all_last_day_query":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(total_count) as total_count
+"diksha_stack_all_last_day_query":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(Total_content_plays) as Total_content_plays
 from ((select 
 district_id,district_name,
 initcap(user_login_type)as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
+and content_view_date = (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 user_login_type,
 content_gradelevel,content_subject order by 1,3,4,5)
@@ -376,26 +352,27 @@ district_id,district_name,
 'All' as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
+and content_view_date = (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 content_gradelevel,content_subject order by 1,3,4,5))as a
 group by user_login_type,content_gradelevel,content_subject
 ''',
-"diksha_stack_all_last_7_days_query":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(total_count)as total_count
+"diksha_stack_all_last_7_days_query":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(Total_content_plays) as Total_content_plays
 from ((select 
 district_id,district_name,
 initcap(user_login_type)as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date < (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content)
+and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 user_login_type,
 content_gradelevel,content_subject order by 1,3,4,5)
@@ -405,26 +382,28 @@ district_id,district_name,
 'All' as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date < (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content)
+and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 content_gradelevel,content_subject order by 1,3,4,5))as a
 group by user_login_type,content_gradelevel,content_subject
 ''',
-"diksha_stack_all_last_30_days_query":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(total_count) as total_count
+"diksha_stack_all_last_30_days_query":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(Total_content_plays) as Total_content_plays
 from ((select 
 district_id,district_name,
 initcap(user_login_type)as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date < (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content)
+and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 user_login_type,
 content_gradelevel,content_subject order by 1,3,4,5)
@@ -434,22 +413,23 @@ district_id,district_name,
 'All' as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
-and content_view_date < (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content)
+and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,
 content_gradelevel,content_subject order by 1,3,4,5))as a
 group by user_login_type,content_gradelevel,content_subject
 ''',
-"diksha_stack_all_all":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(total_count) as total_count
+"diksha_stack_all_all":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(Total_content_plays) as Total_content_plays
 from ((select 
 district_id,district_name,
 initcap(user_login_type)as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
@@ -462,13 +442,13 @@ district_id,district_name,
 'All' as user_login_type,
 initcap(content_gradelevel)as content_gradelevel,
 initcap(content_subject)as content_subject,
-sum(total_count) as total_count
+sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
 and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
 group by district_id,district_name,
 content_gradelevel,content_subject order by 1,3,4,5))as a
-group by content_gradelevel,content_subject,user_login_type
+group by user_login_type,content_gradelevel,content_subject
 ''',
 "diksha_table_overall_last_day_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,collection_type,collection_name,
 object_id as content_id,content_name as Content_Name,content_subject as Subject,
@@ -544,7 +524,7 @@ collection_name as Textbook,object_id as content_id,content_name as Content_Name
 content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays
 from diksha_total_content
 where collection_type='Course' and
-content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content ) and
+content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and
 (select max(content_view_date) from diksha_total_content)
 group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
 union
@@ -553,7 +533,7 @@ union
 content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays
 from diksha_total_content
 where collection_type='Course' and
-content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content ) and
+content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and
 (select max(content_view_date) from diksha_total_content)
 group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
 ''',
@@ -752,5 +732,72 @@ and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
 group by district_id,district_name,collection_type
 order by 1,3)
-'''
+''',
+"diksha_table_txt_bk_last_day_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
+    collection_name as Textbook,object_id as content_id,content_name as Content_Name,content_subject as Subject,
+content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
+from diksha_total_content 
+where collection_type='TextBook' and
+content_view_date = (select max(content_view_date) from diksha_total_content )
+group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
+union
+(select 'All' as district_id,'' as district_name,collection_name as Textbook
+,object_id as content_id,content_name as Content_Name,content_subject as Subject,
+content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
+from diksha_total_content 
+where collection_type='TextBook' and
+content_view_date = (select max(content_view_date) from diksha_total_content )
+group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
+''',
+"diksha_table_txt_bk_last_7_days_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
+    collection_name as Textbook,object_id as content_id,content_name as Content_Name,content_subject as Subject,
+content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
+from diksha_total_content 
+where collection_type='TextBook' and
+content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content ) and 
+(select max(content_view_date) from diksha_total_content)
+group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
+union
+(select 'All' as district_id,'' as district_name,collection_name as Textbook
+,object_id as content_id,content_name as Content_Name,content_subject as Subject,
+content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
+from diksha_total_content 
+where collection_type='TextBook' and
+content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content ) and 
+(select max(content_view_date) from diksha_total_content)
+group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
+''',
+"diksha_table_txt_bk_last_30_days_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
+    collection_name as Textbook,object_id as content_id,content_name as Content_Name,content_subject as Subject,
+content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
+from diksha_total_content 
+where collection_type='TextBook' and
+content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content)
+group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
+union
+(select 'All' as district_id,'' as district_name,collection_name as Textbook
+,object_id as content_id,content_name as Content_Name,content_subject as Subject,
+content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
+from diksha_total_content 
+where collection_type='TextBook' and
+content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content)
+group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
+''',
+"diksha_table_txt_bk_all_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
+    collection_name as Textbook,object_id as content_id,content_name as Content_Name,content_subject as Subject,
+content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
+from diksha_total_content 
+where collection_type='TextBook' 
+group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
+union
+(select 'All' as district_id,'' as district_name,collection_name as Textbook
+,object_id as content_id,content_name as Content_Name,content_subject as Subject,
+content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
+from diksha_total_content 
+where collection_type='TextBook' 
+group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
+''',
+"
 }
