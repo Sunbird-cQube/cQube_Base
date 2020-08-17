@@ -259,18 +259,19 @@ export class AppServiceComponent {
     }
 
     dikshaAllTableData(data) {
+        console.log(data);
         this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/dikshaTable/dikshaAllTableData`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    dikshaDistrictTableData(districtId) {
+    dikshaDistrictTableData(data) {
         this.logoutOnTokenExpire();
-        return this.http.post(`${this.baseUrl}/dikshaTable/dikshaDistrictTableData`, { districtId: districtId }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/dikshaTable/dikshaDistrictTableData`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    dikshaTimeRangeTableData(districtId, timePeriod) {
+    dikshaTimeRangeTableData(data) {
         this.logoutOnTokenExpire();
-        return this.http.post(`${this.baseUrl}/dikshaTable/dikshaTimeRangeTableData`, { districtId: districtId, timePeriod: timePeriod }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/dikshaTable/dikshaTimeRangeTableData`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     //Semester Completion
