@@ -8,10 +8,10 @@
   roles:
           - createdb
           - python_flask
+          - { role: keycloak, tags: update }
           - angular
           - angular_admin
           - { role: nifi_clear, tags: update }
-          - { role: nifi_update, tags: update }
           - { role: nifi_params, tags: update }
           - { role: nifi_crc, tags: update }
           - { role: nifi_static, tags: update }
@@ -19,3 +19,4 @@
           - { role: nifi_semester, tags: update } 
           - { role: nifi_infra, tags: update }
           - { role: nifi_diksha, tags: update }
+          - { role: nifi_telemetry, tags: update }

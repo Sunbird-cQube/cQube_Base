@@ -25,7 +25,7 @@ aws_default_region: 'ap-south-1'            # AWS default region of s3 bucket.
 
 api_endpoint:                               # Enter domain.com. ( Example: cqubeprojects.com )
 local_ipv4_address:                         # Enter the private ip of this server. To find the ip address. Use `ip addr` or `ifconfig`.
-keycloak_adm_user:                          # Enter the keycloak admin user.
-keycloak_adm_passwd:                        # Enter the keycloak admin password.
+keycloak_adm_user:                          # Enter existing keycloak admin user.
+keycloak_adm_passwd:                        # Enter existing keycloak admin password.
 keycloak_config_otp:                        # Enter true or false to enable OTP authentication for all users 
 

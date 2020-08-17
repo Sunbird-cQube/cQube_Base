@@ -55,13 +55,30 @@
     group: "{{ system_user_name }}"
     recurse: yes
 
-- name: Executing the Prometheus
-  shell: nohup ./prometheus --config.file=prometheus.yml &
-  args:
-    chdir: "{{ base_dir }}/cqube/admin_dashboard/prometheus/"
+- name: prometheus systemd setup
+  template:
+    owner: root
+    group: root
+    mode: 0644
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
 
-- name: Executing the node_exporter
-  shell: nohup ./node_exporter &
-  args:
-    chdir: "{{ base_dir }}/cqube/admin_dashboard/node_exporter/"
+- name: node exporter systemd setup
+  template:
+    owner: root
+    group: root
+    mode: 0644
+    src: node_exporter.service.j2
+    dest: /etc/systemd/system/node_exporter.service
 
+- name: reload systemd
+  shell: sudo systemctl daemon-reload
+
+- name: Starting the prometheus and node_exporter service
+  service:
+    name: {{ item }}
+    enabled: yes
+    state: started
+  loop:
+    - prometheus
+    - node_exporter

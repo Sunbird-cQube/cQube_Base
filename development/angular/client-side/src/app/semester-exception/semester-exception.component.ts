@@ -218,6 +218,7 @@ export class SemesterExceptionComponent implements OnInit {
         if (this.data['data'].length > 0) {
           let result = this.data['data']
           this.blockMarkers = [];
+          result = result.sort((a, b) => (parseInt(a.percentage_schools_not_received) > parseInt(b.percentage_schools_not_received)) ? 1 : -1)
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
@@ -322,7 +323,8 @@ export class SemesterExceptionComponent implements OnInit {
           centerLng: 71.48396301269531,
         }
         if (this.data['data'].length > 0) {
-          let result = this.data['data']
+          let result = this.data['data'];
+          result = result.sort((a, b) => (parseInt(a.percentage_schools_not_received) > parseInt(b.percentage_schools_not_received)) ? 1 : -1)
           this.clusterMarkers = [];
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
@@ -426,7 +428,7 @@ export class SemesterExceptionComponent implements OnInit {
         this.schoolMarkers = [];
         if (this.data['data'].length > 0) {
           let result = this.data['data']
-
+          result = result.sort((a, b) => (parseInt(a.percentage_schools_not_received) > parseInt(b.percentage_schools_not_received)) ? 1 : -1)
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
@@ -708,7 +710,7 @@ export class SemesterExceptionComponent implements OnInit {
     this.reportData = [];
     if (data['data'].length > 0) {
       this.markers = data['data']
-
+      this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_not_received) > parseInt(b.percentage_schools_not_received)) ? 1 : -1)
       // generate color gradient
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
       this.colors = colors;

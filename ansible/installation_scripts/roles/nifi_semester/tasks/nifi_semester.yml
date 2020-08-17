@@ -76,7 +76,7 @@
 
 #--- Display ID and Version of respective processor groups ---
 
-- name: Display ID of raw semester processor
+- name: Display ID of semester raw processor
   debug:
     var: item
   loop: "{{ output | json_query(semester_raw_id) }}"
@@ -293,12 +293,3 @@
   loop: "{{ controllers_list_assessment_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
   no_log: True
-
-- name: Start Processor group
-  uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ tagExists[0].item.component.id }}
-    method: PUT
-    body_format: json
-    body: {"id":"{{ tagExists[0].item.component.id }}","state":"RUNNING"}
-  no_log: True
-
