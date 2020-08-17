@@ -1,12 +1,20 @@
 #!/bin/bash 
 
 check_keycloak_credentials(){
-if [[ $base_dir_status == 0 ]]; then  
-    $base_dir/cqube/keycloak/bin/kcadm.sh get realms --no-config --server http://localhost:8080/auth --realm master --user $1 --password $2 > /dev/null 2>&1
-    if [ ! $? -eq 0 ]; then echo "Error - Invalid keycloak user or password"; fail=1
-    fi
-else
-  "Error - Since provided base_dir is invalid, Unable to verify keycloak."; fail=1
+$base_dir/cqube/keycloak/bin/kcadm.sh get realms --no-config --server http://localhost:8080/auth --realm master --user $1 --password $2 > /dev/null 2>&1
+if [ ! $? -eq 0 ]; then 
+  echo "Error - Invalid keycloak user or password"; fail=1
+fi
+
+$base_dir/cqube/keycloak/bin/kcadm.sh get realms/$realm_name --no-config --server http://localhost:8080/auth --realm master --user $1 --password $2 > /dev/null 2>&1
+if [ ! $? -eq 0 ]; then 
+  echo "Error - Unable to find cQube realm"; fail=1
+fi
+}
+
+check_kc_config_otp(){
+if ! [[ $2 == "true" || $2 == "false" ]]; then
+    echo "Error - Please enter either true or false for $1"; fail=1
 fi
 }
 
@@ -14,6 +22,7 @@ check_base_dir(){
 base_dir_status=0
 if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
     echo "Error - Please enter the absolute path or make sure the directory is present."; fail=1
+    base_dir_status=1
 else
    if [[ -e "$2/cqube/.cqube_config" ]]; then
         dir=$(cat $2/cqube/.cqube_config | grep CQUBE_BASE_DIR )
@@ -24,7 +33,12 @@ else
         fi
     else
        echo "Error - Base directory should be same as previous installation directory"; fail=1
+       base_dir_status=1
     fi
+fi
+if [[ $base_dir_status == 1 ]]; then
+  echo "Please rectify the base_dir error and restart the upgradation"
+  exit 1
 fi
 }
 
@@ -39,9 +53,8 @@ fi
 }
 
 check_sys_user(){
-    who | grep $2 > /dev/null 2>&1
-    result=$?
-    if [[ `egrep -i ^$2: /etc/passwd ; echo $?` != 0 && $result != 0 ]]; then 
+    result=`who | head -1 | awk '{print $1}'`
+    if [[ `egrep -i ^$2: /etc/passwd ; echo $?` != 0 && $result != $2 ]]; then 
         echo "Error - Please check the system_user_name."; fail=1
     fi
 }
@@ -112,13 +125,9 @@ fi
 }
 
 check_api_endpoint(){
-if [[ $base_dir_status == 0 ]]; then  
-    temp_ep=`grep '^KEYCLOAK_HOST =' $base_dir/cqube/dashboard/server_side/.env | awk '{print $3}' | sed s/\"//g`
-    if [[ ! $temp_ep == "https://$2" ]]; then
-        echo "Error - Change in domain name. Please verify the api_endpoint "; fail=1
-    fi
-else
-    "Error - Since provided base_dir is invalid, Unable to verify keycloak."; fail=1
+temp_ep=`grep '^KEYCLOAK_HOST =' $base_dir/cqube/dashboard/server_side/.env | awk '{print $3}' | sed s/\"//g`
+if [[ ! $temp_ep == "https://$2" ]]; then
+    echo "Error - Change in domain name. Please verify the api_endpoint "; fail=1
 fi
 }
 
@@ -156,6 +165,9 @@ declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" 
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
+
+# Constant variables
+realm_name=cQube
 
 # Getting aws keys
 aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
@@ -265,6 +277,13 @@ case $key in
           check_keycloak_credentials $keycloak_adm_user $keycloak_adm_passwd
        fi
        ;;
+   keycloak_config_otp)
+       if [[ $value == "" ]]; then
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+       else
+          check_kc_config_otp $key $value
+       fi
+       ;;
    db_password)
        if [[ $value == "" ]]; then
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
@@ -295,7 +314,7 @@ esac
 done
 
 if [[ $fail -eq 1 ]]; then
-   echo -e "\e[0;34m${bold}Config file has errors. Please rectify the issues and restart the installation${normal}"
+   echo -e "\e[0;34m${bold}Config file has errors. Please rectify the issues and restart the upgradation${normal}"
    exit 1
 else
    echo -e "\e[0;32m${bold}Config file successfully validated${normal}"

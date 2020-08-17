@@ -4,17 +4,17 @@
     method: GET
   register: processor_id
 
-- name: upload template
-  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/semester_transformer.xml
+- name: Upload template
+  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/cqube_telemetry_transformer.xml
   register: xml_output
   args:
     warn: false
 
-- name: upload parameters
+- name: Upload parameters
   action: shell curl -d @{{ item }} -H Content-Type:application/json -X POST http://localhost:{{ nifi_port }}/nifi-api/parameter-contexts
   with_items:
+     - nifi_json_files/telemetry.json
      - nifi_json_files/raw.json
-     - nifi_json_files/assessment.json
   args:
     warn: false
 
@@ -33,7 +33,7 @@
 - name: Instatiate template list
   action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }'   http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
   loop: "{{ template_list.json | json_query('templates[*]') }}"
-  when: item.template.name == 'semester_transformer'
+  when: item.template.name == 'cqube_telemetry_transformer'
   no_log: True
   args:
     warn: false
@@ -50,17 +50,17 @@
     method: GET
   register: processor_group_temp
 
-- name: Get processor group id of the semester processor
+- name: Get processor group id of the telemetry processor
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
     method: GET
   loop: "{{ processor_group_temp.json | json_query('processGroupFlow.flow.processGroups[*]') }}"
-  when: item.component.name == 'semester_transformer'
+  when: item.component.name == 'cqube_telemetry_transformer'
   register: processor_group_template
   no_log: True
 
 - set_fact:
-    tagExists: "{{  processor_group_template | json_query('results[?item.component.name == `semester_transformer`]') }}"
+    tagExists: "{{  processor_group_template | json_query('results[?item.component.name == `cqube_telemetry_transformer`]') }}"
 
 - name: Get multi processor group
   uri:
@@ -74,39 +74,39 @@
     jmesquery: "processGroupFlow.flow.processGroups[*].{Name: component.name, ID: component.id,  Version: revision.version}"
   register: output
 
-#--- Display ID and Version of respective processor groups ---
+#---- Fetch ID and Version of each processor -----
 
-- name: Display ID of semester raw processor
+- name: Display ID of cqube raw processor
   debug:
     var: item
-  loop: "{{ output | json_query(semester_raw_id) }}"
+  loop: "{{ output | json_query(telemetry_raw_id) }}"
   vars:
-    semester_raw_id: "msg[?Name=='cQube_raw_data_fetch_sem'].ID"
-  register: semester_raw_id
+    telemetry_raw_id: "msg[?Name=='cQube_raw_data_fetch_cqube_telemetry'].ID"
+  register: raw_id
 
-- name: Display version of semester raw processor
+- name: Display version of cqube raw processor
   debug:
     var: item
-  loop: "{{ output | json_query(semester_raw_version) }}"
+  loop: "{{ output | json_query(telemetry_raw_version) }}"
   vars:
-    semester_raw_version: "msg[?Name=='cQube_raw_data_fetch_sem'].Version"
-  register: semester_raw_version
+    telemetry_raw_version: "msg[?Name=='cQube_raw_data_fetch_cqube_telemetry'].Version"
+  register: raw_version
 
-- name: Display ID of assessment processor
+- name: Display ID of telemetry processor
   debug:
     var: item
-  loop: "{{ output | json_query(assessment_id) }}"
+  loop: "{{ output | json_query(telemetry_id) }}"
   vars:
-    assessment_id: "msg[?Name=='student_assessment_processor'].ID"
-  register: assessment_id
+    telemetry_id: "msg[?Name=='cqube_telemetry_processor'].ID"
+  register: telemetry_id
 
-- name: Display version of assessment processor
+- name: Display version of telemetry processor
   debug:
     var: item
-  loop: "{{ output | json_query(assessment_version) }}"
+  loop: "{{ output | json_query(telemetry_version) }}"
   vars:
-    assessment_version: "msg[?Name=='student_assessment_processor'].Version"
-  register: assessment_version
+    telemetry_version: "msg[?Name=='cqube_telemetry_processor'].Version"
+  register: telemetry_version
 
 - name: Get Default Processor Group
   uri:
@@ -114,47 +114,47 @@
     method: GET
   register: parameters
 
-#--- Connection of processor groups to respective parameter contexts ---
+#----connection of processor groups to respective parameter contexts -----
 
-- name: Connection semester raw processor group to raw parameters
+- name: Connection raw processor group to raw parameters
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ semester_raw_id.results[0].item }}
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ raw_id.results[0].item }}
     method: PUT
     body_format: json
     body: {"revision": {
-            "version": "{{ semester_raw_version.results[0].item }}",
+            "version": "{{ raw_version.results[0].item }}",
             "lastModifier": "Ansible"
         },"component":
-              {"id": "{{ semester_raw_id.results[0].item }}","parameterContext":{"id": "{{ item.component.id }}"}}
+              {"id": "{{ raw_id.results[0].item }}","parameterContext":{"id": "{{ item.component.id }}"}}
      }
   loop: "{{ parameters.json | json_query('parameterContexts[*]') }}"
   when: item.component.name == 'cQube-raw-data-fetch-parameters'
-  no_log: True
+  no_log: true
 
-- name: Connection assessment processor group to assessment parameters
+- name: Connection telemetry  processor group to telemetry parameters
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ assessment_id.results[0].item }}
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ telemetry_id.results[0].item }}
     method: PUT
     body_format: json
     body: {"revision": {
-            "version": "{{ assessment_version.results[0].item }}",
+            "version": "{{ telemetry_version.results[0].item }}",
             "lastModifier": "Ansible"
         },"component":
-              {"id": "{{ assessment_id.results[0].item }}","parameterContext":{"id": "{{ item.component.id }}"}}
+              {"id": "{{ telemetry_id.results[0].item }}","parameterContext":{"id": "{{ item.component.id }}"}}
      }
   loop: "{{ parameters.json | json_query('parameterContexts[*]') }}"
-  when: item.component.name == 'student_assessment_parameters'
-  no_log: True
+  when: item.component.name == 'cqube_telemetry_parameters'
+  no_log: true
 
-#--- Starting of Controllers and ProcessorGroups ---
+#----starting of controllers and processor groups----
 
 - name: Create DistributedMapCacheServer
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ semester_raw_id.results[0].item }}/controller-services
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ raw_id.results[0].item }}/controller-services
     method: POST
     body_format: json
     status_code: 201
-    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4558"}}}
+    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4663"}}}
 
 #--- Run a python code to load required parameter values ---
 - name: Deleting params file if exists
@@ -172,17 +172,15 @@
 
 - name: Get controllers
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ semester_raw_id.results[0].item }}/controller-services
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ raw_id.results[0].item }}/controller-services
     method: GET
   register: controllers_list_raw
-  no_log: True
 
 - name: Get controllers
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ assessment_id.results[0].item }}/controller-services
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ telemetry_id.results[0].item }}/controller-services
     method: GET
-  register: controllers_list_assessment
-  no_log: True
+  register: controllers_list_telemetry
 
 - name: Add s3 credentials parameters
   uri:
@@ -193,12 +191,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "cQube_s3_sem_raw",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_telemetry_raw",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube_s3_sem_raw'
+  when: item.component.name == 'cQube_s3_telemetry_raw'
   no_log: True
 
 - name: Add s3 credentials parameters
@@ -207,32 +205,15 @@
     method: PUT
     body_format: json
     body: {"revision": {
-             "version": "{{ item.revision.version }}",
-            "lastModifier": "Ansible"
-        },
-        "component": {"id": "{{ item.id }}", "name": "cQube_s3_sem",
-        "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
+            "version": "{{ item.revision.version }}",
+           "lastModifier": "Ansible"
+       },
+       "component": {"id": "{{ item.id }}", "name": "cQube_s3_cqube_telemetry",
+       "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
-     }
-  loop: "{{ controllers_list_assessment.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube_s3_sem'
-  no_log: True
-  
-- name: Add postgre-source-pwd
-  uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
-    method: PUT
-    body_format: json
-    body: {"revision": {
-             "version": "{{ item.revision.version }}",
-            "lastModifier": "Ansible"
-        },
-        "component": {"id": "{{ item.id }}", "name": "postgres_sem_raw",
-        "properties" : { "Password" : "#{db_password}"}}
-
-     }
-  loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres_sem_raw'
+    }
+  loop: "{{ controllers_list_telemetry.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'cQube_s3_cqube_telemetry'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -244,35 +225,52 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgres_sem",
+        "component": {"id": "{{ item.id }}", "name": "postgres_cque_telemetry_raw",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
-  loop: "{{ controllers_list_assessment.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres_sem'
+  loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'postgres_cque_telemetry_raw'
   no_log: True
 
-- name: Get controllers raw updated
+- name: Add postgre-source-pwd
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ semester_raw_id.results[0].item }}/controller-services
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+             "version": "{{ item.revision.version }}",
+            "lastModifier": "Ansible"
+        },
+       "component": {"id": "{{ item.id }}", "name": "postgres_cqube_telemetry",
+       "properties" : { "Password" : "#{db_password}"}}
+
+    }
+  loop: "{{ controllers_list_telemetry.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'postgres_cqube_telemetry'
+  no_log: True
+
+- name: Get updated raw controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ raw_id.results[0].item }}/controller-services
     method: GET
   register: controllers_list_raw_updated
   no_log: True
 
-- name: Get controllers assessment updated
+- name: Get updated infra controllers
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ assessment_id.results[0].item }}/controller-services
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ telemetry_id.results[0].item }}/controller-services
     method: GET
-  register: controllers_list_assessment_updated
+  register: controllers_list_telemetry_updated
   no_log: True
-  
-- name: Start semester raw controllers
+
+- name: Start controllers
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}/run-status
     method: PUT
     body_format: json
     body: {"revision": {
-            "version": "{{ item.revision.version }}"
+            "version": "{{ item.revision.version }}",
         },
         "state":"ENABLED"
         }
@@ -280,16 +278,17 @@
   when: item.component.state == 'DISABLED'
   no_log: True
 
-- name: Start assessment controllers
+- name: Start controllers
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}/run-status
     method: PUT
     body_format: json
     body: {"revision": {
-            "version": "{{ item.revision.version }}"
-        },
-        "state":"ENABLED"
-        }
-  loop: "{{ controllers_list_assessment_updated.json | json_query('controllerServices[*]') }}"
+           "version": "{{ item.revision.version }}",
+           "lastModifier": "Ansible"
+       },
+       "state":"ENABLED"
+      }
+  loop: "{{ controllers_list_telemetry_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
   no_log: True

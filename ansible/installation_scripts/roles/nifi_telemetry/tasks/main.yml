@@ -1,0 +1,2 @@
+- include_tasks: nifi_telemetry.yml
+  tags: [ install, update ]

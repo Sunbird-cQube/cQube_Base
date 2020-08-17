@@ -84,7 +84,7 @@
     infra_raw_id: "msg[?Name=='cQube_raw_data_fetch_infra'].ID"
   register: raw_id
 
-- name: Display version of cqube raw parameters
+- name: Display version of cqube raw processor
   debug:
     var: item
   loop: "{{ output | json_query(infra_raw_version) }}"
@@ -100,7 +100,7 @@
     infra_id: "msg[?Name=='infra_processor'].ID"
   register: infra_id
 
-- name: Display version of cqube raw parameters
+- name: Display version of infra processor
   debug:
     var: item
   loop: "{{ output | json_query(infra_version) }}"
@@ -294,12 +294,4 @@
       }
   loop: "{{ controllers_list_infra_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
-  no_log: True
-
-- name: Start Processor group
-  uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ tagExists[0].item.component.id }}
-    method: PUT
-    body_format: json
-    body: {"id":"{{ tagExists[0].item.component.id }}","state":"RUNNING"}
   no_log: True

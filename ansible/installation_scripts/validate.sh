@@ -17,6 +17,12 @@ if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
 fi
 }
 
+check_kc_config_otp(){
+if ! [[ $2 == "true" || $2 == "false" ]]; then
+    echo "Error - Please enter either true or false for $1"; fail=1
+fi
+}
+
 check_s3_bucket_naming()
 {
 s3_bucket_naming_status=0
@@ -149,7 +155,7 @@ fi
 }
 
 check_sys_user(){
-    result=`who | awk '{print $1}'`
+    result=`who | head -1 | awk '{print $1}'`
     if [[ `egrep -i ^$2: /etc/passwd ; echo $?` != 0 && $result != $2 ]]; then 
         echo "Error - Please check the system_user_name."; fail=1
     fi
@@ -271,7 +277,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 # An array of mandatory values
 declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" "shared_buffers" "work_mem" "java_arg_2" "java_arg_3" \
-		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" ) 
+		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp") 
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -378,6 +384,13 @@ case $key in
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_db_password $key $value
+       fi
+       ;;
+   keycloak_config_otp)
+       if [[ $value == "" ]]; then
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+       else
+          check_kc_config_otp $key $value
        fi
        ;;
    db_password)
