@@ -161,7 +161,6 @@ export class TelemetryDataComponent implements OnInit {
       var obj = {
         timePeriod: this.timePeriod
       }
-      console.log("myObj: ", obj);
       // api call to get all the districts data
       if (this.myData) {
         this.myData.unsubscribe();
@@ -338,7 +337,6 @@ export class TelemetryDataComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.telemetryCluster(obj).subscribe(res => {
-        console.log(res);
         this.data = res
         let options = {
           mapZoom: 7,

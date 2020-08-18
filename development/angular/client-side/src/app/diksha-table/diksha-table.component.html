@@ -4,13 +4,13 @@
             <div *ngIf='all'>
                 <p id="dist_level"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Diksha Report: <span (click)="default()"
+                    {{header}} usage Report: <span (click)="default()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block_level"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Diksha Report: <span (click)="default()"
+                    {{header}} usage Report: <span (click)="default()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
@@ -40,7 +40,7 @@
             <select id="chosse_collection"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
                 [(ngModel)]="collectionType" (change)="collectionWise()">
-                <option [value]="collectionType" disabled selected="selected">Choose a District</option>
+                <option [value]="collectionType" disabled selected="selected">Choose collection type</option>
                 <option *ngFor="let collection of allCollections" [(ngValue)]="collection.id"
                     style="font-family: Arial; font-size: 11px;">
                     {{collection.name}}
@@ -75,7 +75,12 @@
     <div class="row">
         <div class="col-sm-12">
             <table #DataTable id="table" class="display nowrap" width="100%"
-                style="font-size: 12px; text-align: center;">
+                style="font-size: 12px; text-align: center; font-family: Arial;">
+                <thead>
+                    <tr>
+                        <th style="font-size: 15px;"></th>
+                    </tr>
+                </thead>
             </table>
         </div>
     </div>

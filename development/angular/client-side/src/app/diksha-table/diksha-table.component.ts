@@ -26,6 +26,7 @@ export class DikshaTableComponent implements OnInit {
   public all: boolean = false;
   fileName;
   reportData: any = [];
+  header = '';
 
   constructor(
     public http: HttpClient,
@@ -33,7 +34,7 @@ export class DikshaTableComponent implements OnInit {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
-    this.allCollections = [{ id: "all", name: "All" }, { id: "course", name: "Course" }, { id: "textbook", name: "Textbook" }]
+    this.allCollections = [{ id: "all", name: "Overall" }, { id: "course", name: "Course" }, { id: "textbook", name: "Textbook" }]
     service.logoutOnTokenExpire();
   }
 
@@ -86,13 +87,33 @@ export class DikshaTableComponent implements OnInit {
     }
     this.result = [];
     this.reportData = [];
+    this.header = this.collectionType;
+    if (this.collectionType == "all") {
+      this.header = "overall";
+    }
+    this.header = this.changeingStringCases(this.header);
     this.service.dikshaAllTableData({ collectionType: this.collectionType }).subscribe(res => {
       this.fileName = `Diksha_All_Data_${this.timePeriod}`;
       this.result = res;
-      this.result.sort((a, b) => (a.total_content_plays < b.total_content_plays) ? 1 : ((b.total_content_plays < a.total_content_plays) ? -1 : 0));
-
       this.tableCreation(this.result, 'table');
-      this.reportData = this.result;
+
+      this.result.forEach(element => {
+        var obj1 = {};
+        var obj2 = {};
+        Object.keys(element).forEach(key => {
+          if (key !== "district_id") {
+            obj1[key] = element[key];
+          }
+        });
+        Object.keys(obj1).forEach(key => {
+          if (key !== "district_name") {
+            obj2[key] = obj1[key];
+          }
+        });
+        this.reportData.push(obj2);
+      });
+
+      // this.reportData = this.result;
       document.getElementById('spinner').style.display = 'none';
     }, err => {
       this.loaderAndErr();
@@ -135,7 +156,6 @@ export class DikshaTableComponent implements OnInit {
       this.service.dikshaDistrictTableData({ districtId: districtId, collectionType: this.collectionType }).subscribe(res => {
         this.fileName = `Diksha_Dist_Data_${this.timePeriod}`;
         this.result = res;
-        this.result.sort((a, b) => (a.total_content_plays < b.total_content_plays) ? 1 : ((b.total_content_plays < a.total_content_plays) ? -1 : 0));
         this.tableCreation(this.result, 'table');
 
         this.reportData = this.result;
@@ -162,12 +182,30 @@ export class DikshaTableComponent implements OnInit {
     this.result = [];
     this.reportData = [];
     this.service.dikshaTimeRangeTableData({ districtId: this.districtId, timePeriod: timePeriod, collectionType: this.collectionType }).subscribe(res => {
-      this.fileName = `Diksha_${this.hierName}_Dist_Data_${this.timePeriod}`;
       this.result = res;
-      this.result.sort((a, b) => (a.total_content_plays < b.total_content_plays) ? 1 : ((b.total_content_plays < a.total_content_plays) ? -1 : 0));
       this.tableCreation(this.result, 'table');
+      if (this.hierName) {
+        this.reportData = this.result;
+        this.fileName = `Diksha_${this.hierName}_Dist_Data_${this.timePeriod}`;
+      } else {
+        this.result.forEach(element => {
+          var obj1 = {};
+          var obj2 = {};
+          Object.keys(element).forEach(key => {
+            if (key !== "district_id") {
+              obj1[key] = element[key];
+            }
+          });
+          Object.keys(obj1).forEach(key => {
+            if (key !== "district_name") {
+              obj2[key] = obj1[key];
+            }
+          });
+          this.reportData.push(obj2);
+        });
+        this.fileName = `Diksha_${this.collectionType}_Dist_Data_${this.timePeriod}`;
+      }
 
-      this.reportData = this.result;
       document.getElementById('spinner').style.display = 'none';
     }, err => {
       this.loaderAndErr();
@@ -251,6 +289,7 @@ export class DikshaTableComponent implements OnInit {
       $(`#${tablename}`).append(headers);
       $(`#${tablename}`).append(body);
       $(`#${tablename}`).DataTable({
+        "order": [[my_columns.length - 1, "desc"]],
         destroy: true, bLengthChange: false, bInfo: false,
         bPaginate: false, scrollY: "64vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: true,

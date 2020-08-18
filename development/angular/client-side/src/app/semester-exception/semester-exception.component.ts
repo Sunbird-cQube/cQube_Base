@@ -783,7 +783,7 @@ export class SemesterExceptionComponent implements OnInit {
           var yourData;
           if (options.level == "school") {
             Object.keys(orgObject).forEach(key => {
-              if (key !== "total_schools_not_received") {
+              if (key !== "total_schools_with_missing_data") {
                 detailSchool[key] = orgObject[key];
               }
             });
