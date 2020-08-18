@@ -1,7 +1,7 @@
-- name: ansible create directory with mode setting example
+- name: Create directory with mode setting 
   file:
     path: /tmp/postgres
-    user: postgres
+    owner: postgres
     state: directory
     mode: "u=rw,g=wx,o=rwx"
   tags: install

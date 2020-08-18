@@ -4,6 +4,7 @@
   remote_user: root
   vars_files:
     - config.yml
+    - datasource_config.yml
 
   roles:
           - { role: create_base_dir, tags: install }
@@ -17,12 +18,35 @@
           - angular_admin
           - { role: prometheus, tags: install }
           - { role: nifi_params, tags: install }
-          - { role: nifi_install, tags: install }
-          - { role: nifi_crc, tags: install }
-          - { role: nifi_static, tags: install }
-          - { role: nifi_attendance, tags: install }
-          - { role: nifi_semester, tags: install }
-          - { role: nifi_infra, tags: install }
-          - { role: nifi_diksha, tags: install }
-          - { role: nifi_telemetry, tags: install }
+          - { role: nifi_install, tags: install }    
+
+          - role: nifi_crc
+            tags: install
+            when: nifi_crc
+
+          - role: nifi_static
+            tags: install
+            when: nifi_static
+
+          - role: nifi_attendance
+            tags: install
+            when: nifi_attendance
+
+          - role: nifi_semester
+            tags: install
+            when: nifi_semester
+
+          - role: nifi_infra
+            tags: install
+            when: nifi_infra
+
+          - role: nifi_diksha
+            tags: install
+            when: nifi_diksha
+
+          - role: nifi_telemetry
+            tags: install
+            when: nifi_telemetry
+
+          - { role: nifi_scheduler, tags: install }
           

@@ -16,6 +16,7 @@ sudo apt update -y
 chmod u+x upgradation_validate.sh
 
 . "upgradation_validate.sh"
+. "$INS_DIR/validation_scripts/datasource_config_validation.sh"
 . "$INS_DIR/validation_scripts/backup_postgres.sh"
 
 ansible-playbook upgrade.yml --tags "update"

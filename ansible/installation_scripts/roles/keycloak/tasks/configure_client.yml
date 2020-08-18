@@ -1,3 +1,4 @@
+---
 - name: Getting the client ID for emission app 
   shell: ./kcadm.sh get clients -r {{realm_name}} --fields id,clientId --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}   
   args:

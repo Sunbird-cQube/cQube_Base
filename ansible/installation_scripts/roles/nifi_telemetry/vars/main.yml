@@ -1,4 +1,4 @@
 ---
 
 parameter_name: cqube_telemetry_parameters
-parameter_path: "{{ base_dir }}/cqube/emission_app/python/telemetry_parameters.txt"
+parameter_path: "{{ base_dir }}/cqube/emission_app/python/cqube_telemetry_parameters.txt"
