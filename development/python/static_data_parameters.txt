@@ -57,10 +57,10 @@ where school is not NULL
 AND latitude > 0
 AND longitude > 0
 ''',
-"static_school_null_count":'''(select
+"static_school_null_count":'''(select 
 SUM(CASE when school IS NULL THEN 1 ELSE 0 END) AS count_null_school,
-SUM(CASE when latitude IS NULL THEN 1 ELSE 0 END) AS count_null_latitude,
-SUM(CASE when longitude IS NULL THEN 1 ELSE 0 END) AS count_null_longitude
+SUM(CASE when (latitude IS NULL OR latitude = '0.0') THEN 1 ELSE 0 END) AS count_null_latitude,
+SUM(CASE when (longitude IS NULL OR longitude = '0.0') THEN 1 ELSE 0 END) AS count_null_longitude
 from flowfile)
 ''',
 "static_school_dup_check":'''SELECT schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,districtid,blockid,clusterid,latitude,longitude,count(schoolid)  num_of_times

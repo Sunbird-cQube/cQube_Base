@@ -76,7 +76,7 @@
 
 - name: Starting the prometheus and node_exporter service
   service:
-    name: {{ item }}
+    name: "{{ item }}"
     enabled: yes
     state: started
   loop:

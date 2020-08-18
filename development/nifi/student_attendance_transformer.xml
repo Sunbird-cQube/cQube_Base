@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>release-1.2</description>
+    <description></description>
     <groupId>281dc6f4-0173-1000-6ece-d7cd0acfb411</groupId>
     <name>student_attendance_transformer</name>
     <snippet>
@@ -1744,8 +1744,8 @@
 <y>-472.0</y>
                             </bends>
                             <bends>
-<x>-9336.0</x>
-<y>-472.0</y>
+<x>-9288.0</x>
+<y>-616.0</y>
                             </bends>
                             <destination>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
@@ -31682,5 +31682,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/11/2020 11:30:17 IST</timestamp>
+    <timestamp>08/18/2020 17:38:18 IST</timestamp>
 </template>

@@ -12,9 +12,11 @@ if [ $temp == 0 ]; then
                 read -p "Enter the Username: " bk_db_uname
                 pg_dump -h localhost -U $bk_db_uname -W -F t $bk_db_name > `date +%Y%m%d%H%M`$bk_db_name.tar
                 if [[ ! $? == 0 ]]; then
-                    echo "There is a problem dumping the database"; tput sgr0 ; fail=1; break;
-                fi
-                echo "Backed up the database..."
-                echo "Backup file will be uploaded to S3 bucket, once the installation completes."
+                    echo "There is a problem dumping the database"; tput sgr0 ;
+		    exit 1
+	        else
+                  echo "Backed up the database..."
+                  echo "Backup file will be uploaded to S3 bucket, once the installation completes."
+	        fi
      fi
 fi

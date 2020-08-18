@@ -27,5 +27,25 @@
         }
     }
 ]
+''',
+"telemetry_query_last_day_data":'''select pageid,count(uid) as Number_of_views,count(distinct(uid)) as Number_of_users,level,locationid,locationname,lat,lng 
+from telemetry_data where event in ('click','change') and created_on = (select max(created_on) from telemetry_data )
+group by pageid,level,locationid,locationname,lat,lng
+''',
+"telemetry_query_last_7_days_data":'''select pageid,count(uid) as Number_of_views,count(distinct(uid)) as Number_of_users,level,locationid,locationname,lat,lng 
+from telemetry_data where event in ('click','change') and created_on between (select max(created_on)-INTERVAL '7 DAY' 
+    from telemetry_data) and 
+(select max(created_on) from telemetry_data )
+group by pageid,level,locationid,locationname,lat,lng
+''',
+"telemetry_query_last_30_days_data":'''select pageid,count(uid) as Number_of_views,count(distinct(uid)) as Number_of_users,level,locationid,locationname,lat,lng 
+from telemetry_data where event in ('click','change') and created_on between (select max(created_on)-INTERVAL '30 DAY' 
+    from telemetry_data) and 
+(select max(created_on) from telemetry_data )
+group by pageid,level,locationid,locationname,lat,lng
+''',
+"telemetry_query_overall_data":'''select pageid,count(uid) as Number_of_views,count(distinct(uid)) as Number_of_users,level,locationid,locationname,lat,lng 
+from telemetry_data where event in ('click','change')
+group by pageid,level,locationid,locationname,lat,lng
 '''
 }

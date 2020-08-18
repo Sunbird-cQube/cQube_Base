@@ -1,22 +1,26 @@
 {
 "sem_check_if_null":'''select * from flowfile except(select * from flowfile
 where UPPER(SchoolId) <> 'NULL'
-AND UPPER(Sem) <> 'NULL'
-AND UPPER(studyingclass) <> 'NULL' )
+AND UPPER(AadhaarUID) <> 'NULL' 
+AND UPPER(Sem) <> 'NULL' 
+AND UPPER(studyingclass) <> 'NULL')
 ''',
 "sem_not_null":'''select * from flowfile
 where UPPER(SchoolId) <> 'NULL'
-AND UPPER(Sem) <> 'NULL'
+AND UPPER(AadhaarUID) <> 'NULL' 
+AND UPPER(Sem) <> 'NULL' 
 AND UPPER(studyingclass) <> 'NULL'
 ''',
-"sem_check_null_values":'''(select
+"sem_check_null_values":'''(select 
 SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
+SUM(CASE when AadhaarUID IS NULL THEN 1 ELSE 0 END) AS count_null_studentid,
 SUM(CASE when Sem IS NULL THEN 1 ELSE 0 END) AS count_null_sem,
 SUM(CASE when studyingclass IS NULL THEN 1 ELSE 0 END) AS count_null_studyingclass
 from flowfile)
 ''',
 "sem_null_vals_to_log":'''update log_summary
 SET school_id = sem_null_col.count_null_schoolid,
+student_id = sem_null_col.count_null_studentid,
 semester = sem_null_col.count_null_sem,
 grade = sem_null_col.count_null_studyingclass
 from sem_null_col
