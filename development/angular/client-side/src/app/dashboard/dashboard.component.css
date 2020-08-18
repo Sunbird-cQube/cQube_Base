@@ -1,6 +1,6 @@
 
 .cards{
-    height: 120px;
+    height: 125px;
     width:200; 
     background-color: rgb(237, 238, 238);
     color: #284d8a;
@@ -16,7 +16,7 @@
 }
 
 .cards img {
-  height: 80px;
+  height: 70px;
    width: 150px;
 }
 
