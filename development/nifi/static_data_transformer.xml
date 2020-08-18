@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>release-1.2</description>
+    <description></description>
     <groupId>281dc6f4-0173-1000-6ece-d7cd0acfb411</groupId>
     <name>static_data_transformer</name>
     <snippet>
@@ -835,8 +835,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>5544.0</x>
-<y>2504.0</y>
+<x>5504.0</x>
+<y>2456.0</y>
                             </bends>
                             <bends>
 <x>5256.0</x>
@@ -1555,8 +1555,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-14552.0</x>
-<y>2680.0</y>
+<x>-14192.0</x>
+<y>2600.0</y>
                             </bends>
                             <bends>
 <x>-13367.1142578125</x>
@@ -11663,14 +11663,6 @@
                             </position>
                         </funnels>
                         <funnels>
-                            <id>f3b5841a-b464-3181-0000-000000000000</id>
-                            <parentGroupId>6e6de41b-95e7-3acc-0000-000000000000</parentGroupId>
-                            <position>
-<x>-14304.0</x>
-<y>2704.0</y>
-                            </position>
-                        </funnels>
-                        <funnels>
                             <id>f8946b35-c262-3e5a-0000-000000000000</id>
                             <parentGroupId>6e6de41b-95e7-3acc-0000-000000000000</parentGroupId>
                             <position>
@@ -12200,11 +12192,11 @@
 <properties>
     <entry>
         <key>Regular Expression</key>
-        <value>\\"</value>
+        <value>[@\\"]</value>
     </entry>
     <entry>
         <key>Replacement Value</key>
-        <value>"</value>
+        <value></value>
     </entry>
     <entry>
         <key>Character Set</key>
@@ -12212,7 +12204,7 @@
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>500 MB</value>
+        <value>1 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -12220,7 +12212,7 @@
     </entry>
     <entry>
         <key>Evaluation Mode</key>
-        <value>Entire text</value>
+        <value>Line-by-Line</value>
     </entry>
     <entry>
         <key>Line-by-Line Evaluation Mode</key>
@@ -13997,7 +13989,7 @@
 <properties>
     <entry>
         <key>counter-name</key>
-        <value>processed_file_count_district</value>
+        <value>processed_file_count_cluster</value>
     </entry>
     <entry>
         <key>delta</key>
@@ -14010,7 +14002,7 @@
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>update_processed_file_count_district</name>
+                            <name>update_processed_file_count_cluster</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
@@ -22448,7 +22440,7 @@ same id data validation of file:${filename}, same id records not found </value>
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>300 MB</value>
+        <value>1 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -22456,7 +22448,7 @@ same id data validation of file:${filename}, same id records not found </value>
     </entry>
     <entry>
         <key>Evaluation Mode</key>
-        <value>Entire text</value>
+        <value>Line-by-Line</value>
     </entry>
     <entry>
         <key>Line-by-Line Evaluation Mode</key>
@@ -27296,7 +27288,7 @@ file: ${filename} is not valid</value>
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>300 MB</value>
+        <value>1 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -27304,7 +27296,7 @@ file: ${filename} is not valid</value>
     </entry>
     <entry>
         <key>Evaluation Mode</key>
-        <value>Entire text</value>
+        <value>Line-by-Line</value>
     </entry>
     <entry>
         <key>Line-by-Line Evaluation Mode</key>
@@ -36589,7 +36581,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>300 MB</value>
+        <value>1 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -36597,7 +36589,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
     </entry>
     <entry>
         <key>Evaluation Mode</key>
-        <value>Entire text</value>
+        <value>Line-by-Line</value>
     </entry>
     <entry>
         <key>Line-by-Line Evaluation Mode</key>
@@ -40161,39 +40153,6 @@ Optional(ParseInt()),ParseLong(),ParseLong(),ParseLong(),ParseBigDecimal(),Parse
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>78eda73b-4ed9-3682-0000-000000000000</id>
-                            <parentGroupId>ffe985b7-c00c-3555-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>6506.20751953125</x>
-<y>-1602.61767578125</y>
-                            </bends>
-                            <bends>
-<x>6530.20751953125</x>
-<y>-1562.61767578125</y>
-                            </bends>
-                            <destination>
-<groupId>ffe985b7-c00c-3555-0000-000000000000</groupId>
-<id>8f953aa8-4a32-3a9d-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>failure</selectedRelationships>
-                            <source>
-<groupId>ffe985b7-c00c-3555-0000-000000000000</groupId>
-<id>8f953aa8-4a32-3a9d-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>79a0cf41-a223-3275-0000-000000000000</id>
                             <parentGroupId>ffe985b7-c00c-3555-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -40580,8 +40539,8 @@ Optional(ParseInt()),ParseLong(),ParseLong(),ParseLong(),ParseBigDecimal(),Parse
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>3595.0</x>
-<y>1009.0</y>
+<x>3576.0</x>
+<y>1024.0</y>
                             </bends>
                             <bends>
 <x>3563.0</x>
@@ -41085,6 +41044,32 @@ Optional(ParseInt()),ParseLong(),ParseLong(),ParseLong(),ParseBigDecimal(),Parse
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>ce1b4f67-f66b-3dfc-0000-000000000000</id>
+                            <parentGroupId>ffe985b7-c00c-3555-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ffe985b7-c00c-3555-0000-000000000000</groupId>
+<id>2a2ad8f8-7af2-38a2-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>32d1ec69-f140-3b0c-9232-7652737f66b7</versionedComponentId>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <source>
+<groupId>ffe985b7-c00c-3555-0000-000000000000</groupId>
+<id>4ad8569d-21a8-35d9-0000-000000000000</id>
+<type>FUNNEL</type>
+<versionedComponentId>2a34da0e-a7ee-3b4d-9842-e7f15def40a8</versionedComponentId>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>ce389ee5-5fad-3eaf-0000-000000000000</id>
                             <parentGroupId>ffe985b7-c00c-3555-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -41240,33 +41225,6 @@ Optional(ParseInt()),ParseLong(),ParseLong(),ParseLong(),ParseBigDecimal(),Parse
 <groupId>ffe985b7-c00c-3555-0000-000000000000</groupId>
 <id>f4bcd396-a87d-3c92-0000-000000000000</id>
 <type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>da18d7ef-d659-3370-0000-000000000000</id>
-                            <parentGroupId>ffe985b7-c00c-3555-0000-000000000000</parentGroupId>
-                            <versionedComponentId>fef85e12-01d3-3945-af76-ab2a56eef943</versionedComponentId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>ffe985b7-c00c-3555-0000-000000000000</groupId>
-<id>2a2ad8f8-7af2-38a2-0000-000000000000</id>
-<type>PROCESSOR</type>
-<versionedComponentId>32d1ec69-f140-3b0c-9232-7652737f66b7</versionedComponentId>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <source>
-<groupId>ffe985b7-c00c-3555-0000-000000000000</groupId>
-<id>4ad8569d-21a8-35d9-0000-000000000000</id>
-<type>FUNNEL</type>
-<versionedComponentId>2a34da0e-a7ee-3b4d-9842-e7f15def40a8</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -41562,39 +41520,6 @@ Optional(ParseInt()),ParseLong(),ParseLong(),ParseLong(),ParseBigDecimal(),Parse
                             <source>
 <groupId>ffe985b7-c00c-3555-0000-000000000000</groupId>
 <id>72b31c80-33c0-3814-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>f742d710-3790-39ad-0000-000000000000</id>
-                            <parentGroupId>ffe985b7-c00c-3555-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>6565.494773728974</x>
-<y>-1386.7749774079293</y>
-                            </bends>
-                            <bends>
-<x>6557.494773728974</x>
-<y>-1346.7749774079293</y>
-                            </bends>
-                            <destination>
-<groupId>ffe985b7-c00c-3555-0000-000000000000</groupId>
-<id>cdd00608-0eff-3e08-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>failure</selectedRelationships>
-                            <source>
-<groupId>ffe985b7-c00c-3555-0000-000000000000</groupId>
-<id>cdd00608-0eff-3e08-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -42779,8 +42704,8 @@ Optional(ParseInt()),ParseLong(),ParseLong(),ParseLong(),ParseBigDecimal(),Parse
                             <id>314f4c29-627f-322d-0000-000000000000</id>
                             <parentGroupId>ffe985b7-c00c-3555-0000-000000000000</parentGroupId>
                             <position>
-<x>3544.0</x>
-<y>512.0</y>
+<x>3448.0</x>
+<y>648.0</y>
                             </position>
                             <height>104.0</height>
                             <label>                                      Source file wait</label>
@@ -44675,9 +44600,9 @@ Datasource file:${filename} matched the filename and records count</value>
         <key>wait-penalty-duration</key>
     </entry>
 </properties>
-<runDurationMillis>250</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>5 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -47398,7 +47323,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>0</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>release-signal-id</key>
@@ -47691,7 +47616,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>count_records</name>
                             <relationships>
-<autoTerminate>false</autoTerminate>
+<autoTerminate>true</autoTerminate>
 <name>failure</name>
                             </relationships>
                             <relationships>
@@ -49642,8 +49567,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
     </entry>
 </properties>
 <runDurationMillis>2000</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingPeriod>5 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>30 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -49877,7 +49802,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>check_count_match</name>
                             <relationships>
-<autoTerminate>false</autoTerminate>
+<autoTerminate>true</autoTerminate>
 <name>failure</name>
                             </relationships>
                             <relationships>
@@ -51035,5 +50960,5 @@ where ff_uuid= '${files_uuid}'
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/11/2020 11:29:48 IST</timestamp>
+    <timestamp>08/18/2020 17:37:52 IST</timestamp>
 </template>
