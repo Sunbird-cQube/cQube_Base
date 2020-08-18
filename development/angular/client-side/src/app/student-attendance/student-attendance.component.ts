@@ -735,7 +735,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   }
 
   onClickSchool(event) {
-    var level = "School";
+    var level = "school";
     if (event.latlng) {
       var obj = {
         id: event.target.myJsonData.id,
@@ -746,20 +746,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       this.getTelemetryData(obj, event.type, level);
     }
   }
-
-  //   block: "Jasdan"
-  // blockId: 240904
-  // cluster: "Kumar Taluka School Jasdan"
-  // clusterId: "2409040007"
-  // dist: "Rajkot"
-  // distId: 2409
-  // id: 24090401901
-  // label: "89.4"
-  // lat: 22.040928
-  // lng: 71.14643
-  // name: "Chitaliya Primary School"
-  // schCount: "1"
-  // stdCount: "166"
 
   onClick_Marker(event) {
     var marker = event.target;

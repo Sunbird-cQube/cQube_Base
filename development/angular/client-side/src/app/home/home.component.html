@@ -91,9 +91,11 @@
           </mat-list-item>
           <div class="submenu2" [ngClass]="{'expanded' : showSubmenu2}" *ngIf="isShowing || isExpanded">
             <a mat-list-item [routerLink]="['diksha-chart']" (click)="sidenav.toggle() " id="chrtReport"
-              (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">Chart Report</span></a>
+              (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">Stack Chart Report</span></a>
             <a mat-list-item [routerLink]="['diksha-table']" (click)="sidenav.toggle()" id="dtblReport"
               (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">Table Report</span></a>
+            <a mat-list-item [routerLink]="['diksha-column-chart']" (click)="sidenav.toggle()" id="dtblReport"
+              (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">Column Chart Report</span></a>
           </div>
         </mat-nav-list>
         <mat-nav-list *ngIf="showUser">
