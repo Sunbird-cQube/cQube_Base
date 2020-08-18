@@ -274,6 +274,24 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/dikshaTable/dikshaTimeRangeTableData`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
+    dikshaBarChart(data) {
+        return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaAllData`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    listCollectionNames(data) {
+        return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaGetCollections`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
+    getDataByCollectionNames(data) {
+        return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaGetCollectionData`, data, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
     //Semester Completion
     semCompletionDist() {
         this.logoutOnTokenExpire();
@@ -341,5 +359,6 @@ export class AppServiceComponent {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
+
 
 }
