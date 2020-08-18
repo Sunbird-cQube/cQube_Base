@@ -1049,7 +1049,8 @@ select b.district_id,b.district_latitude,b.district_longitude,Initcap(b.district
        else replace(upper(derived_loc_district),'' '','''') end as district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,
 case when content_gradelevel like ''[%'' then ''Multi_Grade'' else content_gradelevel end as content_gradelevel,
-case when content_subject like ''[%'' then ''Multi_Subject'' else content_subject end as content_subject,
+case when content_subject like ''[%'' then ''Multi_Subject'' when initcap(content_subject)=''Maths'' then ''Mathematics''
+else content_subject end as content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent
 from diksha_content_trans ) as a left join         
@@ -1076,3 +1077,4 @@ Execute agg_insert;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+

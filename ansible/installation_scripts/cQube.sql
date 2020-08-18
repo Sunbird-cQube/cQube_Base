@@ -1564,6 +1564,7 @@ create table if not exists sem_null_col
 (filename  varchar(200),  
  ff_uuid  varchar(200), 
  count_null_schoolid int,
+ count_null_studentid int,
  count_null_sem int,
  count_null_studyingclass int);
 
@@ -2020,6 +2021,7 @@ create table if not exists emission_files_details
   uid text,
   event text,
   level text,
+  locationid bigint,
   locationid int,
   locationname text,
   lat double precision,
