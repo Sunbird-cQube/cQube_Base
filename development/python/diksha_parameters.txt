@@ -798,6 +798,5 @@ content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_c
 from diksha_total_content 
 where collection_type='TextBook' 
 group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"
+'''
 }
