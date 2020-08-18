@@ -3,6 +3,7 @@ import { AppService } from '../app.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { KeycloakSecurityService } from '../keycloak-security.service';
+import { environment } from 'src/environments/environment';
 declare const $;
 
 @Component({
