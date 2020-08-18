@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppService } from '../app.service';
+import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import * as L from 'leaflet';
@@ -66,85 +66,23 @@ export class TelemetryDataComponent implements OnInit {
 
   public myData;
 
-  //Choosing year, month, date and hours.......
-  years = [{ year: "2020" }];
-  months = [];
-  dates = [];
-  hours = [];
-
-  year;
-  month;
-  date;
-  hour;
-
-  hideMonth = true;
-  hideDate = true;
-  hideHour = true;
+  timePeriod = '';
+  timeDetails = [{ id: "overall", time: "Over All" }, { id: "last_30_days", time: "Last 30 Days" }, { id: "last_7_days", time: "Last 7 Days" }, { id: "last_day", time: "Last Day" }];
 
   constructor(
     public http: HttpClient,
-    public service: AppService,
+    public service: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
   }
 
-  filters() {
-    this.months = [];
-    this.dates = [];
-    this.hours = [];
-    var val_i = (new Date()).getMonth() + 1;
-    var monthName = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    if (this.year == (new Date()).getFullYear()) {
-      for (let i = 0; i < val_i; i++) {
-        this.months.push({ id: `${("0" + (i + 1)).slice(-2)}`, name: monthName[i] });
-      }
-    } else {
-      for (let i = 0; i < 12; i++) {
-        this.months.push({ id: `${("0" + (i + 1)).slice(-2)}`, name: monthName[i] });
-      }
-    }
-
-    var dateRange = (new Date()).getDate();
-    if (this.month == ("0" + ((new Date()).getMonth() + 1)).slice(-2)) {
-      for (let i = 0; i < dateRange; i++) {
-        this.dates.push({ date: ("0" + (i + 1)).slice(-2) });
-      }
-    } else {
-      var days = this.getDaysInMonth(this.month, this.year);
-      for (let i = 0; i < days; i++) {
-        this.dates.push({ date: ("0" + (i + 1)).slice(-2) });
-      }
-    }
-
-    var hourRange = (new Date()).getHours();
-    if (this.date == ("0" + ((new Date()).getDate())).slice(-2)) {
-      for (let i = 0; i < hourRange; i++) {
-        this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
-      }
-    } else {
-      for (let i = 0; i < 24; i++) {
-        this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
-      }
-    }
-    if (this.month != ("0" + ((new Date()).getMonth() + 1)).slice(-2)) {
-      for (let i = 0; i < 24; i++) {
-        this.hours.push(({ hour: ("0" + (i)).slice(-2) }));
-      }
-    }
-  }
-
   ngOnInit() {
-    this.year = `${(new Date()).getFullYear()}`;
-    this.month = ("0" + ((new Date()).getMonth() + 1)).slice(-2);
-    this.date = ("0" + ((new Date()).getDate())).slice(-2);
-    this.hour = ("0" + ((new Date()).getHours() - 1)).slice(-2);
-
+    this.timePeriod = 'overall';
     document.getElementById('backBtn').style.display = "none";
     this.initMap();
     this.districtWise();
     document.getElementById('homeBtn').style.display = "Block";
-    this.filters();
   }
 
   getDaysInMonth = function (month, year) {
@@ -156,16 +94,7 @@ export class TelemetryDataComponent implements OnInit {
     const lat = 22.3660414123535;
     const lng = 71.48396301269531;
     globalMap = L.map('map', { zoomControl: false }).setView([lat, lng], 7);
-    // applyCountryBorder(globalMap);
 
-    // function applyCountryBorder(map) {
-    //   L.geoJSON(data['features'][0], {
-    //     color: "#a9a9a9",
-    //     weight: 2,
-    //     opacity: 1,
-    //     fillOpacity: 0.0
-    //   }).addTo(map);
-    // }
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
       {
         token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -195,11 +124,7 @@ export class TelemetryDataComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
   }
 
-  getYear(year) {
-    this.filters();
-    this.hideMonth = false;
-    this.hideDate = true;
-    this.hideHour = true;
+  getTimePeriod(timePeriod) {
     if (this.skul) {
       this.districtWise();
     }
@@ -209,47 +134,8 @@ export class TelemetryDataComponent implements OnInit {
     if (this.blok) {
       this.clusterWise();
     }
-  }
-  getMonth(month) {
-    this.filters();
-    this.hideMonth = false;
-    this.hideDate = false;
-    this.hideHour = true;
-    if (this.skul) {
-      this.districtWise();
-    }
-    if (this.dist) {
-      this.blockWise();
-    }
-    if (this.blok) {
-      this.clusterWise();
-    }
-  }
-  getDate(date) {
-    this.filters();
-    this.hideMonth = false;
-    this.hideDate = false;
-    this.hideHour = false;
-    if (this.skul) {
-      this.districtWise();
-    }
-    if (this.dist) {
-      this.blockWise();
-    }
-    if (this.blok) {
-      this.clusterWise();
-    }
-  }
-  getHour(year) {
-    this.filters();
-    if (this.skul) {
-      this.districtWise();
-    }
-    if (this.dist) {
-      this.blockWise();
-    }
-    if (this.blok) {
-      this.clusterWise();
+    if (this.clust) {
+      this.schoolWise();
     }
   }
 
@@ -273,10 +159,7 @@ export class TelemetryDataComponent implements OnInit {
       this.clusterHidden = true;
 
       var obj = {
-        year: this.year,
-        month: this.month,
-        date: this.date,
-        hour: this.hour
+        timePeriod: this.timePeriod
       }
       console.log("myObj: ", obj);
       // api call to get all the districts data
@@ -337,10 +220,7 @@ export class TelemetryDataComponent implements OnInit {
       this.clusterHidden = true;
 
       var obj = {
-        year: this.year,
-        month: this.month,
-        date: this.date,
-        hour: this.hour
+        timePeriod: this.timePeriod
       }
 
       // api call to get the all clusters data
@@ -357,31 +237,18 @@ export class TelemetryDataComponent implements OnInit {
         if (this.data['data'].length > 0) {
           let result = this.data['data']
           this.blockMarkers = [];
-          // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
           this.blockMarkers = result;
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var markerIcon;
-              if (this.blockMarkers.length == 1) {
-                markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
-                  radius: 3.5,
-                  color: "orange",
-                  fillColor: "orange",
-                  fillOpacity: 1,
-                  strokeWeight: 0.01
-                }).addTo(globalMap);
-              } else {
-                markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
-                  radius: 3.5,
-                  color: this.colors[i],
-                  fillColor: this.colors[i],
-                  fillOpacity: 1,
-                  strokeWeight: 0.01
-                }).addTo(globalMap);
-              }
+              markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
+                radius: 3.5,
+                color: "#fc5e03",
+                fillColor: "#fc5e03",
+                fillOpacity: 1,
+                strokeWeight: 0.01
+              }).addTo(globalMap);
 
               var details = {};
               var orgObject = {};
@@ -460,10 +327,7 @@ export class TelemetryDataComponent implements OnInit {
       this.clusterHidden = true;
 
       var obj = {
-        year: this.year,
-        month: this.month,
-        date: this.date,
-        hour: this.hour
+        timePeriod: this.timePeriod
       }
       // api call to get the all clusters data
       if (this.myData) {
@@ -480,31 +344,19 @@ export class TelemetryDataComponent implements OnInit {
         if (this.data['data'].length > 0) {
           let result = this.data['data']
           this.clusterMarkers = [];
-          // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
           this.clusterMarkers = result;
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               var markerIcon;
-              if (this.clusterMarkers.length == 1) {
-                markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
-                  radius: 2.5,
-                  color: "orange",
-                  fillColor: "orange",
-                  fillOpacity: 1,
-                  strokeWeight: 0.01
-                }).addTo(globalMap);
-              } else {
-                markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
-                  radius: 2.5,
-                  color: this.colors[i],
-                  fillColor: this.colors[i],
-                  fillOpacity: 1,
-                  strokeWeight: 0.01
-                }).addTo(globalMap);
-              }
+              markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
+                radius: 2.5,
+                color: "#fc5e03",
+                fillColor: "#fc5e03",
+                fillOpacity: 1,
+                strokeWeight: 0.01
+              }).addTo(globalMap);
+
 
               var details = {};
               var orgObject = {};
@@ -561,7 +413,7 @@ export class TelemetryDataComponent implements OnInit {
   }
 
   // to load all the schools for state data on the map
-  /* schoolWise() {
+  schoolWise() {
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
@@ -569,20 +421,23 @@ export class TelemetryDataComponent implements OnInit {
       this.errMsg();
       this.reportData = [];
       // these are for showing the hierarchy names based on selection
-      this.skul = true;
+      this.skul = false;
       this.dist = false;
       this.blok = false;
-      this.clust = false;
-   
+      this.clust = true;
+
       // to show and hide the dropdowns
       this.blockHidden = true;
       this.clusterHidden = true;
-   
+
+      var obj = {
+        timePeriod: this.timePeriod
+      }
       // api call to get the all schools data
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionSchool().subscribe(res => {
+      this.myData = this.service.telemetrySchool(obj).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: 7,
@@ -592,33 +447,31 @@ export class TelemetryDataComponent implements OnInit {
         this.schoolMarkers = [];
         if (this.data['data'].length > 0) {
           let result = this.data['data']
-   
+
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
-   
+
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude], {
-                // renderer: myRenderer,
-                radius: 0,
+              var markerIcon = L.circleMarker([this.schoolMarkers[i].lat, this.schoolMarkers[i].lng], {
+                radius: 2,
                 color: "#fc5e03",
                 fillColor: "#fc5e03",
                 fillOpacity: 1,
                 weight: 1.5,
                 strokeWeight: 1
               }).addTo(globalMap);
-   
               var details = {};
               var orgObject = {};
               Object.keys(this.schoolMarkers[i]).forEach(key => {
-                if (key !== "school_latitude") {
+                if (key !== "lat") {
                   details[key] = this.schoolMarkers[i][key];
                 }
               });
               Object.keys(details).forEach(key => {
-                if (key !== "school_longitude") {
+                if (key !== "lng") {
                   orgObject[key] = details[key];
                 }
               });
@@ -627,27 +480,25 @@ export class TelemetryDataComponent implements OnInit {
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
-   
               // to download the report
               this.fileName = "School_wise_report";
               var obj = { ...this.schoolMarkers[i] };
               this.reportData.push(obj);
-   
               markerIcon.on('mouseover', function (e) {
                 this.openPopup();
               });
               markerIcon.on('mouseout', function (e) {
                 this.closePopup();
               });
-   
+
               this.layerMarkers.addLayer(markerIcon);
               markerIcon.myJsonData = this.schoolMarkers[i];
             }
-   
+
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
-   
+
             this.schoolCount = this.data['footer'];
-   
+
             this.loaderAndErr();
             this.changeDetection.markForCheck();
           }
@@ -656,218 +507,217 @@ export class TelemetryDataComponent implements OnInit {
         this.data = [];
         this.loaderAndErr();
       });
-   
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
     } catch (e) {
       console.log(e);
     }
   }
-   
+
   // to load all the blocks for selected district for state data on the map
-  onDistrictSelect(districtId) {
-    // to clear the existing data on the map layer  
-    globalMap.removeLayer(this.markersList);
-    this.layerMarkers.clearLayers();
-    this.errMsg();
-    this.blockId = undefined;
-   
-    // to show and hide the dropdowns
-    this.blockHidden = false;
-    this.clusterHidden = true;
-   
-    // api call to get the blockwise data for selected district
-    if (this.myData) {
-      this.myData.unsubscribe();
-    }
-    this.myData = this.service.semCompletionBlockPerDist(districtId).subscribe(res => {
-      this.data = res;
-   
-      this.blockMarkers = this.data['data'];
-      // set hierarchy values
-      this.districtHierarchy = {
-        distId: this.data['data'][0].district_id,
-        districtName: this.data['data'][0].district_name
-      }
-   
-      this.districtId = districtId;
-   
-      // these are for showing the hierarchy names based on selection
-      this.skul = false;
-      this.dist = true;
-      this.blok = false;
-      this.clust = false;
-   
-      // options to set for markers in the map
-      let options = {
-        radius: 3.5,
-        fillOpacity: 1,
-        strokeWeight: 0.01,
-        mapZoom: 8.3,
-        centerLat: this.data['data'][0].block_latitude,
-        centerLng: this.data['data'][0].block_longitude,
-        level: 'block'
-      }
-      var fileName = "Block_per_dist_report";
-      this.genericFun(this.data, options, fileName);
-      // sort the blockname alphabetically
-      this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
-    }, err => {
-      this.data = [];
-      this.loaderAndErr();
-    });
-    globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
-  }
-   
-  // to load all the clusters for selected block for state data on the map
-  onBlockSelect(blockId) {
-    // to clear the existing data on the map layer
-    globalMap.removeLayer(this.markersList);
-    this.layerMarkers.clearLayers();
-    this.errMsg();
-    this.clusterId = undefined;
-   
-    // to show and hide the dropdowns
-    this.blockHidden = false;
-    this.clusterHidden = false;
-   
-    // api call to get the clusterwise data for selected district, block
-    if (this.myData) {
-      this.myData.unsubscribe();
-    }
-    this.myData = this.service.semCompletionClusterPerBlock(this.districtHierarchy.distId, blockId).subscribe(res => {
-      this.data = res;
-      this.clusterMarkers = this.data['data'];
-      var myBlocks = [];
-      this.blockMarkers.forEach(element => {
-        if (element.district_id === this.districtHierarchy.distId) {
-          myBlocks.push(element);
-        }
-      });
-      this.blockMarkers = myBlocks;
-   
-      // set hierarchy values
-      this.blockHierarchy = {
-        distId: this.data['data'][0].district_id,
-        districtName: this.data['data'][0].district_name,
-        blockId: this.data['data'][0].block_id,
-        blockName: this.data['data'][0].block_name
-      }
-      this.districtId = this.data['data'][0].district_id;
-      this.blockId = blockId;
-   
-      // these are for showing the hierarchy names based on selection
-      this.skul = false;
-      this.dist = false;
-      this.blok = true;
-      this.clust = false;
-   
-      // options to set for markers in the map
-      let options = {
-        radius: 3,
-        fillOpacity: 1,
-        strokeWeight: 0.01,
-        mapZoom: 10,
-        centerLat: this.data['data'][0].cluster_latitude,
-        centerLng: this.data['data'][0].cluster_longitude,
-        level: 'cluster'
-      }
-      var fileName = "Cluster_per_block_report";
-      this.genericFun(this.data, options, fileName);
-      // sort the clusterName alphabetically
-      this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
-    }, err => {
-      this.data = [];
-      this.loaderAndErr();
-    });
-    globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
-  }
-   
-  // to load all the schools for selected cluster for state data on the map
-  onClusterSelect(clusterId) {
-    // to clear the existing data on the map layer
-    globalMap.removeLayer(this.markersList);
-    this.layerMarkers.clearLayers();
-    this.errMsg();
-   
-    this.blockHidden = false;
-    this.clusterHidden = false;
-    // api call to get the schoolwise data for selected district, block, cluster
-    if (this.myData) {
-      this.myData.unsubscribe();
-    }
-    this.myData = this.service.semCompletionBlock().subscribe(result => {
-      this.myData = this.service.semCompletionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
-        this.data = res;
-        this.schoolMarkers = this.data['data'];
-   
-        var markers = result['data'];
-        var myBlocks = [];
-        markers.forEach(element => {
-          if (element.district_id === this.blockHierarchy.distId) {
-            myBlocks.push(element);
-          }
-        });
-        this.blockMarkers = myBlocks;
-   
-        var myCluster = [];
-        this.clusterMarkers.forEach(element => {
-          if (element.block_id === this.blockHierarchy.blockId) {
-            myCluster.push(element);
-          }
-        });
-        this.clusterMarkers = myCluster;
-   
-        // set hierarchy values
-        this.clusterHierarchy = {
-          distId: this.data['data'][0].district_id,
-          districtName: this.data['data'][0].district_name,
-          blockId: this.data['data'][0].block_id,
-          blockName: this.data['data'][0].block_name,
-          clusterId: this.data['data'][0].cluster_id,
-          clusterName: this.data['data'][0].cluster_name,
-        }
-   
-        this.districtHierarchy = {
-          distId: this.data['data'][0].district_id
-        }
-   
-        this.districtId = this.data['data'][0].district_id;
-        this.blockId = this.data['data'][0].block_id;
-        this.clusterId = clusterId;
-   
-        // these are for showing the hierarchy names based on selection
-        this.skul = false;
-        this.dist = false;
-        this.blok = false;
-        this.clust = true;
-   
-        // options to set for markers in the map
-        let options = {
-          radius: 3.5,
-          fillOpacity: 1,
-          strokeWeight: 0.01,
-          weight: 1,
-          mapZoom: 12,
-          centerLat: this.data['data'][0].school_latitude,
-          centerLng: this.data['data'][0].school_longitude,
-          level: 'school'
-        }
-        var fileName = "School_per_cluster_report";
-        this.genericFun(this.data, options, fileName);
-      }, err => {
-        this.data = [];
-        this.loaderAndErr();
-      });
-    }, err => {
-      this.data = [];
-      this.loaderAndErr();
-    });
-    globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
-  }*/
+  /* onDistrictSelect(districtId) {
+     // to clear the existing data on the map layer  
+     globalMap.removeLayer(this.markersList);
+     this.layerMarkers.clearLayers();
+     this.errMsg();
+     this.blockId = undefined;
+  
+     // to show and hide the dropdowns
+     this.blockHidden = false;
+     this.clusterHidden = true;
+  
+     // api call to get the blockwise data for selected district
+     if (this.myData) {
+       this.myData.unsubscribe();
+     }
+     this.myData = this.service.semCompletionBlockPerDist(districtId).subscribe(res => {
+       this.data = res;
+  
+       this.blockMarkers = this.data['data'];
+       // set hierarchy values
+       this.districtHierarchy = {
+         distId: this.data['data'][0].district_id,
+         districtName: this.data['data'][0].district_name
+       }
+  
+       this.districtId = districtId;
+  
+       // these are for showing the hierarchy names based on selection
+       this.skul = false;
+       this.dist = true;
+       this.blok = false;
+       this.clust = false;
+  
+       // options to set for markers in the map
+       let options = {
+         radius: 3.5,
+         fillOpacity: 1,
+         strokeWeight: 0.01,
+         mapZoom: 8.3,
+         centerLat: this.data['data'][0].block_latitude,
+         centerLng: this.data['data'][0].block_longitude,
+         level: 'block'
+       }
+       var fileName = "Block_per_dist_report";
+       this.genericFun(this.data, options, fileName);
+       // sort the blockname alphabetically
+       this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
+     }, err => {
+       this.data = [];
+       this.loaderAndErr();
+     });
+     globalMap.addLayer(this.layerMarkers);
+     document.getElementById('home').style.display = 'block';
+   }
+  
+   // to load all the clusters for selected block for state data on the map
+   onBlockSelect(blockId) {
+     // to clear the existing data on the map layer
+     globalMap.removeLayer(this.markersList);
+     this.layerMarkers.clearLayers();
+     this.errMsg();
+     this.clusterId = undefined;
+  
+     // to show and hide the dropdowns
+     this.blockHidden = false;
+     this.clusterHidden = false;
+  
+     // api call to get the clusterwise data for selected district, block
+     if (this.myData) {
+       this.myData.unsubscribe();
+     }
+     this.myData = this.service.semCompletionClusterPerBlock(this.districtHierarchy.distId, blockId).subscribe(res => {
+       this.data = res;
+       this.clusterMarkers = this.data['data'];
+       var myBlocks = [];
+       this.blockMarkers.forEach(element => {
+         if (element.district_id === this.districtHierarchy.distId) {
+           myBlocks.push(element);
+         }
+       });
+       this.blockMarkers = myBlocks;
+  
+       // set hierarchy values
+       this.blockHierarchy = {
+         distId: this.data['data'][0].district_id,
+         districtName: this.data['data'][0].district_name,
+         blockId: this.data['data'][0].block_id,
+         blockName: this.data['data'][0].block_name
+       }
+       this.districtId = this.data['data'][0].district_id;
+       this.blockId = blockId;
+  
+       // these are for showing the hierarchy names based on selection
+       this.skul = false;
+       this.dist = false;
+       this.blok = true;
+       this.clust = false;
+  
+       // options to set for markers in the map
+       let options = {
+         radius: 3,
+         fillOpacity: 1,
+         strokeWeight: 0.01,
+         mapZoom: 10,
+         centerLat: this.data['data'][0].cluster_latitude,
+         centerLng: this.data['data'][0].cluster_longitude,
+         level: 'cluster'
+       }
+       var fileName = "Cluster_per_block_report";
+       this.genericFun(this.data, options, fileName);
+       // sort the clusterName alphabetically
+       this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
+     }, err => {
+       this.data = [];
+       this.loaderAndErr();
+     });
+     globalMap.addLayer(this.layerMarkers);
+     document.getElementById('home').style.display = 'block';
+   }
+  
+   // to load all the schools for selected cluster for state data on the map
+   onClusterSelect(clusterId) {
+     // to clear the existing data on the map layer
+     globalMap.removeLayer(this.markersList);
+     this.layerMarkers.clearLayers();
+     this.errMsg();
+  
+     this.blockHidden = false;
+     this.clusterHidden = false;
+     // api call to get the schoolwise data for selected district, block, cluster
+     if (this.myData) {
+       this.myData.unsubscribe();
+     }
+     this.myData = this.service.semCompletionBlock().subscribe(result => {
+       this.myData = this.service.semCompletionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
+         this.data = res;
+         this.schoolMarkers = this.data['data'];
+  
+         var markers = result['data'];
+         var myBlocks = [];
+         markers.forEach(element => {
+           if (element.district_id === this.blockHierarchy.distId) {
+             myBlocks.push(element);
+           }
+         });
+         this.blockMarkers = myBlocks;
+  
+         var myCluster = [];
+         this.clusterMarkers.forEach(element => {
+           if (element.block_id === this.blockHierarchy.blockId) {
+             myCluster.push(element);
+           }
+         });
+         this.clusterMarkers = myCluster;
+  
+         // set hierarchy values
+         this.clusterHierarchy = {
+           distId: this.data['data'][0].district_id,
+           districtName: this.data['data'][0].district_name,
+           blockId: this.data['data'][0].block_id,
+           blockName: this.data['data'][0].block_name,
+           clusterId: this.data['data'][0].cluster_id,
+           clusterName: this.data['data'][0].cluster_name,
+         }
+  
+         this.districtHierarchy = {
+           distId: this.data['data'][0].district_id
+         }
+  
+         this.districtId = this.data['data'][0].district_id;
+         this.blockId = this.data['data'][0].block_id;
+         this.clusterId = clusterId;
+  
+         // these are for showing the hierarchy names based on selection
+         this.skul = false;
+         this.dist = false;
+         this.blok = false;
+         this.clust = true;
+  
+         // options to set for markers in the map
+         let options = {
+           radius: 3.5,
+           fillOpacity: 1,
+           strokeWeight: 0.01,
+           weight: 1,
+           mapZoom: 12,
+           centerLat: this.data['data'][0].school_latitude,
+           centerLng: this.data['data'][0].school_longitude,
+           level: 'school'
+         }
+         var fileName = "School_per_cluster_report";
+         this.genericFun(this.data, options, fileName);
+       }, err => {
+         this.data = [];
+         this.loaderAndErr();
+       });
+     }, err => {
+       this.data = [];
+       this.loaderAndErr();
+     });
+     globalMap.addLayer(this.layerMarkers);
+     document.getElementById('home').style.display = 'block';
+   }*/
 
   // common function for all the data to show in the map
   genericFun(data, options, fileName) {
@@ -918,23 +768,13 @@ export class TelemetryDataComponent implements OnInit {
             weight: options.weight
           })
         } else {
-          if (this.markers.length == 1) {
-            markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
-              radius: options.radius,
-              color: "#fc5e03",
-              fillColor: "#fc5e03",
-              fillOpacity: options.fillOpacity,
-              strokeWeight: options.strokeWeight
-            })
-          } else {
-            markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
-              radius: options.radius,
-              color: this.colors[i],
-              fillColor: this.colors[i],
-              fillOpacity: options.fillOpacity,
-              strokeWeight: options.strokeWeight
-            })
-          }
+          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
+            radius: options.radius,
+            color: "#fc5e03",
+            fillColor: "#fc5e03",
+            fillOpacity: options.fillOpacity,
+            strokeWeight: options.strokeWeight
+          })
         }
 
         globalMap.setZoom(options.mapZoom);
