@@ -16,6 +16,8 @@ import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
 import { DikshaTableComponent } from './diksha-table/diksha-table.component';
 import { SemesterExceptionComponent } from './semester-exception/semester-exception.component';
 import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
+import { DikshaBarChartComponent } from './diksha-bar-chart/diksha-bar-chart.component';
+import { MissingDataComponent } from './missing-data/missing-data.component';
 
 const routes: Routes = [
   {
@@ -57,10 +59,16 @@ const routes: Routes = [
         path: 'diksha-table', component: DikshaTableComponent, canActivateChild: [AuthGuard]
       },
       {
+        path: 'diksha-column-chart', component: DikshaBarChartComponent, canActivateChild: [AuthGuard]
+      },
+      {
         path: 'sem-exception', component: SemesterExceptionComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'telemetry', component: TelemetryDataComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'download-missing-data', component: MissingDataComponent, canActivateChild: [AuthGuard]
       }
     ]
   }

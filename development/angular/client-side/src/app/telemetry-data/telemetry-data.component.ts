@@ -238,6 +238,10 @@ export class TelemetryDataComponent implements OnInit {
           let result = this.data['data']
           this.blockMarkers = [];
           this.blockMarkers = result;
+          // result.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
+          // generate color gradient
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          this.colors = colors;
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
@@ -346,6 +350,11 @@ export class TelemetryDataComponent implements OnInit {
           this.clusterMarkers = [];
           this.clusterMarkers = result;
 
+          // result.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
+          // generate color gradient
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          this.colors = colors;
+
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               var markerIcon;
@@ -447,7 +456,7 @@ export class TelemetryDataComponent implements OnInit {
         this.schoolMarkers = [];
         if (this.data['data'].length > 0) {
           let result = this.data['data']
-
+          // result.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
@@ -725,9 +734,12 @@ export class TelemetryDataComponent implements OnInit {
     if (data['data'].length > 0) {
       this.markers = data['data']
 
+      // result.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
       // generate color gradient
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
       this.colors = colors;
+
+
 
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
