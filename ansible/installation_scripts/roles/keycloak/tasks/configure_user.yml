@@ -1,3 +1,4 @@
+---
 - name: Creating realm admin user
   shell: ./kcadm.sh create users -r {{ realm_name }} -s username={{ keycloak_adm_user }} -s enabled=true --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
   args:

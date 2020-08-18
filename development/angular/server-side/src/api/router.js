@@ -10,6 +10,7 @@ const changePasswd = require('./controller/users/changePassword');
 //deeksha
 const deekshaData = require('./controller/diksha/diksha');
 const dikshaTable = require('./controller/diksha/dikshaTable');
+const diskhaBarChart =  require('./controller/diksha/diksha-bar-chart');
 
 //Show telemetry
 const showDistTelemetry = require('./controller/telemetry/showTelemetry/distTelemetryData');
@@ -86,6 +87,7 @@ router.use('/deeksha', deekshaData);
 router.use('/telemetry', telemetryData);
 router.use('/diksha', deekshaData);
 router.use('/dikshaTable', dikshaTable);
+router.use('/dikshaBarChart', diskhaBarChart);
 
 // Semester completion report
 router.use('/semCompDist', sem_completionDist);

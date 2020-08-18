@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>release-1.2</description>
+    <description></description>
     <groupId>281dc6f4-0173-1000-6ece-d7cd0acfb411</groupId>
     <name>crc_transformer</name>
     <snippet>
@@ -22414,7 +22414,7 @@ file:${filename} process_end_time updated to log summary table</value>
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>1GB</value>
+        <value>1 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -22422,7 +22422,7 @@ file:${filename} process_end_time updated to log summary table</value>
     </entry>
     <entry>
         <key>Evaluation Mode</key>
-        <value>Entire text</value>
+        <value>Line-by-Line</value>
     </entry>
     <entry>
         <key>Line-by-Line Evaluation Mode</key>
@@ -32961,7 +32961,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>1GB</value>
+        <value>1 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -32969,7 +32969,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
     </entry>
     <entry>
         <key>Evaluation Mode</key>
-        <value>Entire text</value>
+        <value>Line-by-Line</value>
     </entry>
     <entry>
         <key>Line-by-Line Evaluation Mode</key>
@@ -34022,5 +34022,5 @@ file:${filename} process_end_time updated to log summary table</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/11/2020 11:34:41 IST</timestamp>
+    <timestamp>08/18/2020 17:38:49 IST</timestamp>
 </template>

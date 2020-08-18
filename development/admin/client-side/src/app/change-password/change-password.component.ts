@@ -3,6 +3,7 @@ import { AppService } from '../app.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { KeycloakSecurityService } from '../keycloak-security.service';
+import { environment } from 'src/environments/environment';
 declare const $;
 
 @Component({
@@ -37,13 +38,16 @@ export class ChangePasswordComponent implements OnInit {
         this.service.changePassword(this.changePasswdData.cnfpass, localStorage.getItem('user_id')).subscribe(res => {
           document.getElementById('success').style.display = "Block";
           this.err = '';
-          this.successMsg = res['msg'] + "\n" + " please login aging...";
+          this.successMsg = res['msg'] + "\n" + " please login again...";
           document.getElementById('spinner').style.display = 'none';
           this.isDisabled = true;
           formData.resetForm();
           setTimeout(() => {
             localStorage.clear();
-            this.keycloakService.kc.logout();
+            let options = {
+              redirectUri: environment.appUrl
+            }
+            this.keycloakService.kc.logout(options);
           }, 2000);
         }, err => {
           this.err = "Something went wrong"

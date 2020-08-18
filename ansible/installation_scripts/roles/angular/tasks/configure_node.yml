@@ -48,4 +48,9 @@
       KEYCLOAK_HOST = "https://{{ api_endpoint }}"
       KEYCLOAK_REALM = "{{ realm_name }}"
       KEYCLOAK_CLIENT = "{{ angular_app_client_id }}"
+         
+      KEYCLOAK_USER= "{{ keycloak_adm_user }}"
+      PASSWORD= "{{ keycloak_adm_passwd }}"
+      GRANT_TYPE= "password"
+      CLIENT_ID= "admin-cli"
   tags: [ install, update ]
