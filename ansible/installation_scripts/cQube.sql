@@ -2058,4 +2058,12 @@ alter table crc_inspection_trans alter COLUMN total_score type double precision;
 /*student_semester_trans*/
 alter table student_semester_staging add COLUMN if not exists ff_uuid text;
 
+/*log summary*/
+alter table log_summary add COLUMN if not exists datatype_mismatch int;
+
+/*sem null coll*/
+alter table sem_null_col add COLUMN if not exists count_null_studentid int;
+
+/*diksha content trans*/
+alter table diksha_content_trans add COLUMN if not exists ff_uuid text;
 
