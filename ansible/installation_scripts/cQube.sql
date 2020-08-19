@@ -1498,6 +1498,7 @@ ff_uuid varchar(200),
 total_records bigint,
 blank_lines int,
 duplicate_records int,
+datatype_mismatch int,
 attendance_id bigint,
 student_id bigint,
 school_id bigint,
@@ -1564,6 +1565,7 @@ create table if not exists sem_null_col
 (filename  varchar(200),  
  ff_uuid  varchar(200), 
  count_null_schoolid int,
+ count_null_studentid int,
  count_null_sem int,
  count_null_studyingclass int);
 
@@ -1871,6 +1873,7 @@ create table IF NOT EXISTS diksha_content_temp(
 /* diksha_content_trans*/
 
   create table IF NOT EXISTS diksha_content_trans(
+  ff_uuid text,
   content_view_date date,
   dimensions_pdata_id text,
   dimensions_pdata_pid text,
@@ -2020,7 +2023,7 @@ create table if not exists emission_files_details
   uid text,
   event text,
   level text,
-  locationid int,
+  locationid bigint,
   locationname text,
   lat double precision,
   lng double precision,
@@ -2055,4 +2058,12 @@ alter table crc_inspection_trans alter COLUMN total_score type double precision;
 /*student_semester_trans*/
 alter table student_semester_staging add COLUMN if not exists ff_uuid text;
 
+/*log summary*/
+alter table log_summary add COLUMN if not exists datatype_mismatch int;
+
+/*sem null coll*/
+alter table sem_null_col add COLUMN if not exists count_null_studentid int;
+
+/*diksha content trans*/
+alter table diksha_content_trans add COLUMN if not exists ff_uuid text;
 
