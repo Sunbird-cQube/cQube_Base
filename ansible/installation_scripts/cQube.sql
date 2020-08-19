@@ -1873,6 +1873,7 @@ create table IF NOT EXISTS diksha_content_temp(
 /* diksha_content_trans*/
 
   create table IF NOT EXISTS diksha_content_trans(
+  ff_uuid text,
   content_view_date date,
   dimensions_pdata_id text,
   dimensions_pdata_pid text,

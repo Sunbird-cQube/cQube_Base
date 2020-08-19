@@ -571,7 +571,7 @@ infra_table_percent text:='select string_agg(''"''||replace(trim(LOWER(infrastru
  from infrastructure_master where status = true';   
 infra_table_percent_cols text;
 jolt_table_query text;
-infra_map_percent text:='select string_agg(''"''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent": "data.[&1].''||
+infra_map_percent text:='select string_agg(''"''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent": "data.[&1].metrics.''||
  replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent"'','','')
 from infrastructure_master where status = true;';   
 infra_map_percent_cols text;
@@ -581,6 +581,10 @@ composite_infra_1_cols text;
 composite_infra_2 text:='select string_agg(''"access_to_'||category_2||'_percent": "data.[&1].access_to_'||category_2||'_percent"'','','')';
 composite_infra_2_cols text;
 
+composite_inframap_1 text:='select string_agg(''"access_to_'||category_1||'_percent": "data.[&1].metrics.access_to_'||category_1||'_percent"'','','')';
+composite_inframap_1_cols text;
+composite_inframap_2 text:='select string_agg(''"access_to_'||category_2||'_percent": "data.[&1].metrics.access_to_'||category_2||'_percent"'','','')';
+composite_inframap_2_cols text;
 
 jolt_map_query text;
 BEGIN
@@ -589,6 +593,8 @@ execute infra_table_percent into infra_table_percent_cols;
 execute composite_infra_2 into composite_infra_2_cols;
 execute composite_infra_1 into composite_infra_1_cols;
 execute infra_map_percent into infra_map_percent_cols;
+execute composite_inframap_2 into composite_inframap_2_cols;
+execute composite_inframap_1 into composite_inframap_1_cols;
 IF infra_table_value_cols <> '' THEN 
 jolt_table_query = '
 create or replace view Infra_jolt_district_table as 
@@ -698,7 +704,7 @@ select ''
               "district_name": "data.[&1].details.district_name",
               "infra_score": "data.[&1].details.infrastructure_score",
 
-			'||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
+			'||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
               
               "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
 			  "total_schools_data_received": "allDistrictsFooter.totalSchools[]"
@@ -732,7 +738,7 @@ as select ''
         "average_value": "data.[&1].details.average_value",
         "average_percent": "data.[&1].details.average_percent",
 
-              '||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
+              '||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
         "total_schools": "data.[&1].total_schools",
         "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
         "total_schools_data_received": "footer.@(1,district_id).totalSchools[]"
@@ -791,7 +797,7 @@ as select ''
         "infra_score": "data.[&1].details.infrastructure_score",
         "average_value": "data.[&1].details.average_value",
         "average_percent": "data.[&1].details.average_percent",
-'||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
+'||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
         "total_schools": "data.[&1].total_schools",
         "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
         "total_schools_data_received": "footer.@(1,block_id).totalSchools[]"
@@ -864,7 +870,7 @@ as select ''
 				"average_value": "data.[&1].details.average_value",
 				"average_percent": "data.[&1].details.average_percent",
 
-'||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
+'||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
 				"total_schools": "data.[&1].total_schools",
 				"@total_schools_data_received": "data.[&1].details.total_schools_data_received",
 				"total_schools_data_received": "footer.@(1,cluster_id).totalSchools[]"
