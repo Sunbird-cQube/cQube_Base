@@ -104,7 +104,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
     this.myDistrict = '';
     this.downloadType = '';
-    this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
+    this.modes = ['Dist Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
 
     this.dist = false;
     this.blok = false;
@@ -662,23 +662,23 @@ export class SchoolInfrastructureComponent implements OnInit {
       newData.push(newObj);
     })
     this.reportData = newData
-    if (this.downloadType === 'Dist_Wise' || this.downloadType === 'Block_Wise' || this.downloadType === 'Cluster_Wise' || this.downloadType === 'School_Wise') {
+    if (this.downloadType === 'Dist Wise' || this.downloadType === 'Block Wise' || this.downloadType === 'Cluster Wise' || this.downloadType === 'School Wise') {
       this.downloadRoport();
     }
   }
 
   public downloadType: string;
   downloadReportofState(downloadType) {
-    if (downloadType === 'Dist_Wise') {
+    if (downloadType === 'Dist Wise') {
       this.distWise();
     }
-    if (downloadType === 'Block_Wise') {
+    if (downloadType === 'Block Wise') {
       this.blockWise();
     }
-    if (downloadType === 'Cluster_Wise') {
+    if (downloadType === 'Cluster Wise') {
       this.clusterWise();
     }
-    if (downloadType === 'School_Wise') {
+    if (downloadType === 'School Wise') {
       this.schoolWise();
     }
   }

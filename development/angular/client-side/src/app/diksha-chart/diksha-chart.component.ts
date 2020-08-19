@@ -372,7 +372,7 @@ export class DikshaChartComponent implements OnInit {
         if (element.subject == 'Hindi') {
           a.backgroundColor = '#e31a1c'
         }
-        if (element.subject == 'Multi_Subject') {
+        if (element.subject == 'Multi Subject') {
           a.backgroundColor = '#fdbf6f'
         }
         if (element.subject == 'Mathematics') {
@@ -384,8 +384,17 @@ export class DikshaChartComponent implements OnInit {
         if (element.subject == 'Social Science') {
           a.backgroundColor = '#6a3d9a'
         }
-        if (element.subject == 'Maths') {
+        if (element.subject == 'Training') {
+          a.backgroundColor = '#e31a1c'
+        }
+        if (element.subject == 'Psychology') {
           a.backgroundColor = '#b15928'
+        }
+        if (element.subject == 'Biology') {
+          a.backgroundColor = '#ff7f00'
+        }
+        if (element.subject == 'Physics') {
+          a.backgroundColor = '#ffff99'
         }
         colors.push(a);
       });
