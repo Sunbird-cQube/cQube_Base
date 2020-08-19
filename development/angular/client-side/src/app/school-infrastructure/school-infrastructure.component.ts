@@ -61,6 +61,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
   ngOnInit() {
     this.districtWise();
+    document.getElementById('spinner').style.display = 'block';
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
   }
@@ -87,7 +88,6 @@ export class SchoolInfrastructureComponent implements OnInit {
   public modes: any
 
   districtWise() {
-    document.getElementById('spinner').style.display = 'block';
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
     }

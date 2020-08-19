@@ -10,7 +10,7 @@ import { AppServiceComponent } from '../app.service';
 })
 export class HomePageComponent implements OnInit {
   adminUrl;
-  constructor(public keycloakService: KeycloakSecurityService, public router: Router, public service:AppServiceComponent) { 
+  constructor(public keycloakService: KeycloakSecurityService, public router: Router, public service: AppServiceComponent) {
     // service.logoutOnTokenExpire();
   }
 
@@ -20,28 +20,21 @@ export class HomePageComponent implements OnInit {
       this.router.navigate(['/home']);
     }
     if (this.keycloakService.kc.tokenParsed.realm_access) {
-      if (this.keycloakService.kc.tokenParsed.realm_access.roles.length > 1) {
-        alert("One user can not be assigned multiple roles");
-        let options = {
-          redirectUri: environment.appUrl
-        }
-        this.keycloakService.kc.logout(options);
+      if (this.keycloakService.kc.tokenParsed.realm_access.roles.includes('admin')) {
+        localStorage.setItem('roleName', 'admin');
+        this.router.navigate(['/homePage']);
+      } else if (this.keycloakService.kc.tokenParsed.realm_access.roles.includes('report_viewer')) {
+        localStorage.setItem('roleName', 'report_viewer');
+        this.router.navigate(['/home']);
       } else {
-        this.keycloakService.kc.tokenParsed.realm_access.roles.forEach(role => {
-          if (role == "admin") {
-            localStorage.setItem('roleName', role);
-            this.router.navigate(['/homePage']);
-          } else if (role == "report_viewer") {
-            localStorage.setItem('roleName', role);
-            this.router.navigate(['home']);
-          } else {
-            alert("Unauthorized user");
-            let options = {
-              redirectUri: environment.appUrl
-            }
-            this.keycloakService.kc.logout(options);
+        if (!this.keycloakService.kc.tokenParsed.realm_access.roles.includes('report_viewer')
+          || !this.keycloakService.kc.tokenParsed.realm_access.roles.includes('admin')) {
+          alert("Please assing roles")
+          let options = {
+            redirectUri: environment.appUrl
           }
-        });
+          this.keycloakService.kc.logout(options);
+        }
       }
     } else {
       alert("Please assign role to user");
@@ -51,7 +44,6 @@ export class HomePageComponent implements OnInit {
       this.keycloakService.kc.logout(options);
     }
   }
-
   logout() {
     localStorage.clear();
     let options = {
