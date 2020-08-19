@@ -7384,9 +7384,9 @@ where ff_uuid= '${files_uuid}';
         <key>wait-penalty-duration</key>
     </entry>
 </properties>
-<runDurationMillis>250</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>10 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -7964,7 +7964,8 @@ block_id ,
 district_id ,
 latitude ,
 longitude ,
-process_start_time
+process_start_time,
+datatype_mismatch
 )
 VALUES
 (
@@ -7991,7 +7992,8 @@ VALUES
 '0',
 '0',
 '0',
-'${now():format("yyyy-MM-dd HH:mm:ss")}'
+'${now():format("yyyy-MM-dd HH:mm:ss")}',
+'0'
 ) </value>
     </entry>
     <entry>
@@ -13405,31 +13407,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <groupId>08f846bd-cb1b-3676-0000-000000000000</groupId>
 <id>9801b151-cb1d-3e56-0000-000000000000</id>
 <type>FUNNEL</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>bee268f8-cefb-3bcd-0000-000000000000</id>
-                            <parentGroupId>08f846bd-cb1b-3676-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>08f846bd-cb1b-3676-0000-000000000000</groupId>
-<id>276dd716-aa35-3829-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>08f846bd-cb1b-3676-0000-000000000000</groupId>
-<id>28a8abd4-7ee4-3cfe-0000-000000000000</id>
-<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -18944,8 +18921,8 @@ Mirror data validation of file:${filename} started</value>
     </entry>
 </properties>
 <runDurationMillis>2000</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingPeriod>2 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -18969,103 +18946,6 @@ Mirror data validation of file:${filename} started</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
-                        </processors>
-                        <processors>
-                            <id>28a8abd4-7ee4-3cfe-0000-000000000000</id>
-                            <parentGroupId>08f846bd-cb1b-3676-0000-000000000000</parentGroupId>
-                            <position>
-<x>-264.0</x>
-<y>-1256.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>File Size</key>
-        <value>
-            <name>File Size</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Batch Size</key>
-        <value>
-            <name>Batch Size</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Data Format</key>
-        <value>
-            <name>Data Format</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Unique FlowFiles</key>
-        <value>
-            <name>Unique FlowFiles</name>
-        </value>
-    </entry>
-    <entry>
-        <key>generate-ff-custom-text</key>
-        <value>
-            <name>generate-ff-custom-text</name>
-        </value>
-    </entry>
-    <entry>
-        <key>character-set</key>
-        <value>
-            <name>character-set</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>File Size</key>
-        <value>0B</value>
-    </entry>
-    <entry>
-        <key>Batch Size</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>Data Format</key>
-        <value>Text</value>
-    </entry>
-    <entry>
-        <key>Unique FlowFiles</key>
-        <value>false</value>
-    </entry>
-    <entry>
-        <key>generate-ff-custom-text</key>
-    </entry>
-    <entry>
-        <key>character-set</key>
-        <value>UTF-8</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1 day</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>GenerateFlowFile</name>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
                         </processors>
                         <processors>
                             <id>28ceacac-9d56-3696-0000-000000000000</id>
@@ -21051,8 +20931,8 @@ file: ${filename} columns did not match.</value>
         <key>wait-penalty-duration</key>
     </entry>
 </properties>
-<runDurationMillis>500</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>10 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -23551,7 +23431,7 @@ where ff_uuid= '${zip_identifier}'</value>
         <value>update log_summary as b
 	set processed_records= a.processed_records
 	from (
-		select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records)-sum(school_id))as processed_records 
+		select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records+datatype_mismatch)-sum(school_id))as processed_records 
 		from log_summary group by ff_uuid) as a
 	where a.ff_uuid=b.ff_uuid</value>
     </entry>
@@ -27015,8 +26895,8 @@ file: ${filename} has invalid data type, pass the file with right datatype.</val
         <key>wait-penalty-duration</key>
     </entry>
 </properties>
-<runDurationMillis>500</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>10 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -32057,5 +31937,5 @@ same id data validation of file:${filename} started</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/18/2020 17:38:59 IST</timestamp>
+    <timestamp>08/19/2020 21:24:24 IST</timestamp>
 </template>
