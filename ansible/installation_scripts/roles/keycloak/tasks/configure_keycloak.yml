@@ -57,7 +57,7 @@
 
 - name: Creating the json for config_otp option
   template:
-    src: cQube_realm.json.j2
+    src: cQube_realm_config_otp.json.j2
     dest: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm_config_otp.json"
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
@@ -69,8 +69,3 @@
   args:
     executable: /bin/bash
   tags: update
-
-
-
-
-
