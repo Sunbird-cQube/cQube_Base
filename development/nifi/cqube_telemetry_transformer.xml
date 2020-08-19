@@ -7136,8 +7136,8 @@ VALUES
     </entry>
 </properties>
 <runDurationMillis>2000</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingPeriod>10 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>30 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -8400,8 +8400,8 @@ WHERE ff_uuid = '${files_uuid}';</value>
     </entry>
 </properties>
 <runDurationMillis>2000</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingPeriod>10 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -14862,5 +14862,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/19/2020 19:59:59 IST</timestamp>
+    <timestamp>08/19/2020 21:24:48 IST</timestamp>
 </template>

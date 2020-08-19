@@ -4428,7 +4428,7 @@
     </entry>
 </properties>
 <runDurationMillis>2000</runDurationMillis>
-<schedulingPeriod>2 secs</schedulingPeriod>
+<schedulingPeriod>10 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>30 sec</yieldDuration>
                             </config>
@@ -7874,7 +7874,7 @@ VALUES
         <key>wait-penalty-duration</key>
     </entry>
 </properties>
-<runDurationMillis>1000</runDurationMillis>
+<runDurationMillis>2000</runDurationMillis>
 <schedulingPeriod>2 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
@@ -9114,8 +9114,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
         <key>wait-penalty-duration</key>
     </entry>
 </properties>
-<runDurationMillis>1000</runDurationMillis>
-<schedulingPeriod>2 secs</schedulingPeriod>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>5 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -9396,7 +9396,7 @@ Datasource file:${filename} did not match with the filename or records count</va
     </entry>
 </properties>
 <runDurationMillis>2000</runDurationMillis>
-<schedulingPeriod>5 secs</schedulingPeriod>
+<schedulingPeriod>10 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -29771,8 +29771,8 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
         <key>wait-penalty-duration</key>
     </entry>
 </properties>
-<runDurationMillis>500</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>10 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -34898,7 +34898,7 @@ where ff_uuid= '${files_uuid}'</value>
     </entry>
 </properties>
 <runDurationMillis>2000</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingPeriod>10 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -40068,5 +40068,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/19/2020 19:59:44 IST</timestamp>
+    <timestamp>08/19/2020 21:24:37 IST</timestamp>
 </template>
