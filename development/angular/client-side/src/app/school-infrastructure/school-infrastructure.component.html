@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div *ngIf="skul; else ng_else" style="float: right; " id="select">
-                        <em class="fa fa-download" title="Download Report" id="download"
+                        <em class="fa fa-download" title="Download Report" id="download1"
                             style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
                             (click)="downloadReportofState(downloadType)"></em>
                         <select class="dwnld" id="downloader"
@@ -116,7 +116,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="row">
-                    <select
+                    <select id="choose_dist"
                         style="margin-right: 10px; padding: 1px;margin-left: 2%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                         <option [value]="myDistrict" disabled selected="selected">Choose a District
@@ -127,7 +127,7 @@
                         </option>
                     </select>
 
-                    <select [hidden]="blockHidden"
+                    <select [hidden]="blockHidden" id="choose_block"
                         style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                         <option [value]="myBlock" disabled selected="selected">Choose a Block
@@ -137,7 +137,7 @@
                         </option>
                     </select>
 
-                    <select [hidden]="clusterHidden"
+                    <select [hidden]="clusterHidden" id="choose_cluster"
                         style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
                         <option [value]="myCluster" disabled selected="selected">Choose a Cluster

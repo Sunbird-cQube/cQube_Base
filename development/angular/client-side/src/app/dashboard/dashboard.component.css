@@ -1,7 +1,7 @@
 
 .cards{
     height: 125px;
-    width:200; 
+    width:100%; 
     background-color: rgb(237, 238, 238);
     color: #284d8a;
     cursor: pointer;
@@ -16,8 +16,10 @@
 }
 
 .cards img {
+  overflow: hidden;
+  position: relative;
   height: 70px;
-   width: 150px;
+  width: 70%;
 }
 
 .cards:hover {

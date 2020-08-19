@@ -104,6 +104,35 @@ img{
   height: 0;
 }
 
+.submenu3 {
+  overflow-y: hidden;
+  transition: 300ms ease-in-out;
+  height: 0;
+}
+
+.submenu4 {
+  overflow-y: hidden;
+  transition: 300ms ease-in-out;
+  height: 0;
+}
+
+.submenu5 {
+  overflow-y: hidden;
+  transition: 300ms ease-in-out;
+  height: 0;
+}
+
+.submenu6 {
+  overflow-y: hidden;
+  transition: 300ms ease-in-out;
+  height: 0;
+}
+
+.submenu7 {
+  overflow-y: hidden;
+  transition: 300ms ease-in-out;
+  height: 0;
+}
 .submenu.expanded {
   height: 48px;
 }
@@ -114,6 +143,26 @@ img{
 
 .submenu2.expanded {
   height: 144px;
+}
+
+.submenu3.expanded {
+  height: 96px;
+}
+
+.submenu4.expanded {
+  height: 96px;
+}
+
+.submenu5.expanded {
+  height: 48px;
+}
+
+.submenu6.expanded {
+  height: 48px;
+}
+
+.submenu7.expanded {
+  height: 48px;
 }
 
 a{
