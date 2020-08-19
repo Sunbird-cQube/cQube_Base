@@ -7384,9 +7384,9 @@ where ff_uuid= '${files_uuid}';
         <key>wait-penalty-duration</key>
     </entry>
 </properties>
-<runDurationMillis>250</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>10 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -7964,7 +7964,8 @@ block_id ,
 district_id ,
 latitude ,
 longitude ,
-process_start_time
+process_start_time,
+datatype_mismatch
 )
 VALUES
 (
@@ -7991,7 +7992,8 @@ VALUES
 '0',
 '0',
 '0',
-'${now():format("yyyy-MM-dd HH:mm:ss")}'
+'${now():format("yyyy-MM-dd HH:mm:ss")}',
+'0'
 ) </value>
     </entry>
     <entry>
@@ -23551,7 +23553,7 @@ where ff_uuid= '${zip_identifier}'</value>
         <value>update log_summary as b
 	set processed_records= a.processed_records
 	from (
-		select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records)-sum(school_id))as processed_records 
+		select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records+datatype_mismatch)-sum(school_id))as processed_records 
 		from log_summary group by ff_uuid) as a
 	where a.ff_uuid=b.ff_uuid</value>
     </entry>
@@ -32057,5 +32059,5 @@ same id data validation of file:${filename} started</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/18/2020 17:38:59 IST</timestamp>
+    <timestamp>08/19/2020 19:59:32 IST</timestamp>
 </template>
