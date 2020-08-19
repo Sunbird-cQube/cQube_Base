@@ -18,6 +18,7 @@ export class MissingDataComponent implements OnInit {
 
   ngOnInit(): void {
     document.getElementById('homeBtn').style.display = "Block";
+    document.getElementById('backBtn').style.display = "none";
     $(document).ready(function () {
       $('#table').DataTable({
         destroy: true, bLengthChange: false, bInfo: false,

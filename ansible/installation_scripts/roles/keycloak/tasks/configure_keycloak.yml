@@ -65,7 +65,7 @@
   tags: update
 
 - name: Updating the config_otp option to realm
-  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh update "authentication/required-actions/CONFIGURE_TOTP" -r {{ realm_name }} -f {{ cQube_realm_config_otp_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh update 'authentication/required-actions/CONFIGURE_TOTP' -r {{ realm_name }} -f {{ cQube_realm_config_otp_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:
     executable: /bin/bash
   tags: update

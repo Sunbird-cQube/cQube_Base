@@ -14012,7 +14012,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -14707,5 +14707,5 @@ file: ${filename} columns did not match.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/18/2020 12:58:09 IST</timestamp>
+    <timestamp>08/18/2020 17:39:47 IST</timestamp>
 </template>

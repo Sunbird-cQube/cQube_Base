@@ -60,9 +60,11 @@ echo """1. Skip the Postgres installation (Will backup the data locally for futu
                 pg_dump -h localhost -U $bk_db_uname -W -F t $bk_db_name > `date +%Y%m%d%H%M`$bk_db_name.tar
                 if [[ ! $? == 0 ]]; then
                     echo "There is a problem dumping the database"; tput sgr0 ; fail=1; break;
-                fi
-                echo "Backed up the database..."
-                echo "Backup file will be uploaded to S3 bucket, once the installation completes."
+		    exit 1
+	        else
+                  echo "Backed up the database..."
+                  echo "Backup file will be uploaded to S3 bucket, once the installation completes."
+	        fi
 		sudo sed -i "s/- include_tasks: install_postgress.yml/#&/g" roles/createdb/tasks/main.yml
         break
         ;;

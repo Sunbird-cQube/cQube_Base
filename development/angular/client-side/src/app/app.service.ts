@@ -259,7 +259,6 @@ export class AppServiceComponent {
     }
 
     dikshaAllTableData(data) {
-        console.log(data);
         this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/dikshaTable/dikshaAllTableData`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
@@ -275,18 +274,21 @@ export class AppServiceComponent {
     }
 
     dikshaBarChart(data) {
+        this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaAllData`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
 
     listCollectionNames(data) {
+        this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaGetCollections`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
 
     getDataByCollectionNames(data) {
+        this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaGetCollectionData`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
@@ -337,24 +339,28 @@ export class AppServiceComponent {
 
     //telemetry data
     telemetryDist(data) {
+        this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/showDistTelemetry`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
 
     telemetryBlock(data) {
+        this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/showBlockTelemetry/all_Block`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
 
     telemetryCluster(data) {
+        this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/showClusterTelemetry/all_Cluster`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
     }
 
     telemetrySchool(data) {
+        this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/showSchoolTelemetry/all_school`, data, {
             'headers': { 'token': "Bearer " + localStorage.getItem('token') }
         });
