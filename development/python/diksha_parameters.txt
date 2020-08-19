@@ -897,5 +897,20 @@ and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 group by district_id,district_name,collection_type 
 order by 1,3)
-'''
+''',
+"diksha_table_txt_bk_last_day_query":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
+	collection_name as Textbook,object_id as content_id,content_name as Content_Name,content_subject as Subject,
+content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
+from diksha_total_content 
+where collection_type='TextBook' and
+content_view_date = (select max(content_view_date) from diksha_total_content )
+group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
+union
+(select 'All' as district_id,'' as district_name,collection_name as Textbook
+,object_id as content_id,content_name as Content_Name,content_subject as Subject,
+content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
+from diksha_total_content 
+where collection_type='TextBook' and
+content_view_date = (select max(content_view_date) from diksha_total_content )
+group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)'''
 }
