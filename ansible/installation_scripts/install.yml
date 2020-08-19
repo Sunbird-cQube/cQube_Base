@@ -5,18 +5,19 @@
   vars_files:
     - config.yml
     - datasource_config.yml
+    - .version
 
   roles:
-          - { role: create_base_dir, tags: install }
+          - create_base_dir
           - { role: java, tags: install }  
           - { role: python, tags: install }
           - createdb
           - python_flask
-          - { role: keycloak, tags: install }
-          - { role: grafana, tags: install }
+          - keycloak
           - angular
           - angular_admin
-          - { role: prometheus, tags: install }
+          - prometheus
+          - { role: grafana, tags: install }
           - { role: nifi_params, tags: install }
           - { role: nifi_install, tags: install }    
 

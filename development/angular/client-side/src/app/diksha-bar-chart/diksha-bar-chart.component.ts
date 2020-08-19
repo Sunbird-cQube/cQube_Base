@@ -136,6 +136,7 @@ export class DikshaBarChartComponent implements OnInit {
       this.collectionNames = res['uniqueCollections'];
       this.collectionNames.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0));
       if (res['chartData']) {
+        document.getElementById('home').style.display = "block";
         this.result = [];
         this.emptyChart();
         this.result = res['chartData'];
