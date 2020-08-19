@@ -10,7 +10,7 @@ router.get('/allBlockWise',auth.authController, async (req, res) => {
         var blockData = await s3File.readS3File(fileName);
         var sortedData = blockData['data'].sort((a, b) => (a.block_name) > (b.block_name) ? 1 : -1)
         logger.info('--- blocks semester_completion api response sent---');
-        res.status(200).send({ data: sortedData, footer: blockData.allBlocksFooter.total_schools_not_received });
+        res.status(200).send({ data: sortedData, footer: blockData.allBlocksFooter.total_schools_with_missing_data });
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -29,7 +29,7 @@ router.get('/blockWise/:distId',auth.authController, async (req, res) => {
         })
         var sortedData = filterData.sort((a, b) => (a.block_name) > (b.block_name) ? 1 : -1)
         logger.info('--- block per dist semester_completion api response sent---');
-        res.status(200).send({ data: sortedData, footer: blockData.footer[`${distId}`].total_schools_not_received });
+        res.status(200).send({ data: sortedData, footer: blockData.footer[`${distId}`].total_schools_with_missing_data });
     } catch (e) {
         logger.error(e);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

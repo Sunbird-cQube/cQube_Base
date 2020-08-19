@@ -101,6 +101,7 @@ export class DikshaChartComponent implements OnInit {
       });
     }, err => {
       console.log(err);
+      this.loaderAndErr();
     })
   }
 

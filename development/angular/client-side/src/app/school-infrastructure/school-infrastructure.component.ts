@@ -87,6 +87,7 @@ export class SchoolInfrastructureComponent implements OnInit {
   public modes: any
 
   districtWise() {
+    document.getElementById('spinner').style.display = 'block';
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
     }
@@ -417,8 +418,8 @@ export class SchoolInfrastructureComponent implements OnInit {
       l = 6;
     }
     for (i = l; i < Object.keys(result[0]).length; i++) {
-      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').toLocaleUpperCase() });
+      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').toLocaleUpperCase() });
     }
 
     var labels = [];
@@ -504,7 +505,7 @@ export class SchoolInfrastructureComponent implements OnInit {
           || column.data == 'school'
           || column.data == 'total_schools'
           || column.data == 'infra_score'
-          || column.data == 'total_schools_data_received') ? 'rowspan="2" style = "text-transform:capitalize;"' : 'colspan="2" style = "text-transform:capitalize;"'}>${column.data}</th>`
+          || column.data == 'total_schools_data_received') ? 'rowspan="2" style = "text-transform:capitalize;"' : 'colspan="2" style = "text-transform:capitalize;"'}>${column.data.replace(/_/g, ' ')}</th>`
         if (column.data != 'district'
           && column.data != 'block'
           && column.data != 'cluster'
