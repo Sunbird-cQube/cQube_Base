@@ -50,23 +50,23 @@ case when drink_water_yn<>1 then 0 else 1 end as drinking_water from flowfile'''
 "infra_files_from_log":"select * from log_summary where filename like '%infra%'",
 "infra_jolt_log":'''
 [{
-        "operation": "shift",
-        "spec": {
-            "*": {
-                "filename": "[&1].filename",
-               "ff_uuid": "[&1].ff_uuid",
+		"operation": "shift",
+		"spec": {
+			"*": {
+				"filename": "[&1].filename",
+			   "ff_uuid": "[&1].ff_uuid",
               "total_records": "[&1].total_records",
               "blank_lines": "[&1].blank_lines",
               "duplicate_records": "[&1].duplicate_records",
+              "datatype_mismatch": "[&1].datatype_mismatch",
               "school_id": "[&1].records_with_null_value.school_id",
               "processed_records": "[&1].processed_records",
               "process_start_time": "[&1].process_start_time",
-              "process_end_time": "[&1].process_end_time"
-            }
-        }
-    }
-]
-''',
+              "process_end_time": "[&1].process_end_time"              
+			}
+		}
+	}
+]''',
 "infra_get_infra_staging_score":"select infrastructure_name,infrastructure_category,score from infrastructure_staging_score",
 "update_infra_score_table_name":"infrastructure_staging_score",
 "update_infra_score_master":"select update_infra_score();",
