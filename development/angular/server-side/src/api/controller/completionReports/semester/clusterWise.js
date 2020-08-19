@@ -11,7 +11,7 @@ router.get('/allClusterWise',auth.authController, async (req, res) => {
         var clusterData = await s3File.readS3File(fileName);
         var sortedData = clusterData['data'].sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1)
         logger.info('--- semester_completion cluster wise api response sent---');
-        res.status(200).send({ data: sortedData, footer: clusterData.allClustersFooter.total_schools_not_received });
+        res.status(200).send({ data: sortedData, footer: clusterData.allClustersFooter.total_schools_with_missing_data });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -32,7 +32,7 @@ router.get('/clusterWise/:distId/:blockId',auth.authController, async (req, res)
         })
         var sortedData = filterData.sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1)
         logger.info('---Infra clusterperBlock api response sent---');
-        res.status(200).send({ data: sortedData, footer: clusterData.footer[`${blockId}`].total_schools_not_received });
+        res.status(200).send({ data: sortedData, footer: clusterData.footer[`${blockId}`].total_schools_with_missing_data });
     } catch (e) {
         logger.error(e);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

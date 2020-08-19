@@ -30,45 +30,64 @@
       </mat-toolbar>
 
       <div *ngIf="!showsideMenu">
-        <a id="SAR" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['attendance-report']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Student Attendance Report </td>
-        </a>
 
-        <a id="crcr" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray;font-family: Arial;" [routerLink]="['crc-report']">
-          <td>
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu4 = !showSubmenu4" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; CRC Report </td>
-        </a>
+            <span class="full-width" id="excpList" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; "> Exception
+              List</span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu4}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu4" [ngClass]="{'expanded' : showSubmenu4}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['sem-exception']" (click)="sidenav.toggle() " id="SemException"
+              (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Semester Exception</span></a>
+            <a mat-list-item [routerLink]="['download-missing-data']" (click)="sidenav.toggle()" id="cmplnErr"
+              (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Completion Error</span></a>
+          </div>
+        </mat-nav-list>
 
-        <a id="tar" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['teacher-attendance']">
-          <td>
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu5 = !showSubmenu5" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp;Teacher Attendance Report</td>
-        </a>
-        <a id="sr" mat-list-item (click)="sidenav.toggle()"
-          style="font-family: Arial; border-bottom: 1px solid lightgray;" [routerLink]="['semester-report']">
-          <td>
+            <span class="full-width" id="sclMonitor" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; "> School
+              Monitoring
+            </span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu5}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu5" [ngClass]="{'expanded' : showSubmenu5}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['crc-report']" (click)="sidenav.toggle() " id="crcReport"
+              (click)="showSubmenu5 = !showSubmenu5"><span style="margin-left: 50px;"> CRC Report</span></a>
+          </div>
+        </mat-nav-list>
+
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu3 = !showSubmenu3" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp;Semester Report</td>
-        </a>
+            <span class="full-width" id="attedReport" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
+              Attendance</span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu3}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu3" [ngClass]="{'expanded' : showSubmenu3}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['attendance-report']" (click)="sidenav.toggle() " id="stdReport"
+              (click)="showSubmenu3 = !showSubmenu3"><span style="margin-left: 50px;">Student Attendance
+                Report</span></a>
+            <a mat-list-item [routerLink]="['teacher-attendance']" (click)="sidenav.toggle()" id="thrReport"
+              (click)="showSubmenu3 = !showSubmenu3"><span style="margin-left: 50px;">Teacher Attendance
+                Report</span></a>
+          </div>
+        </mat-nav-list>
+
         <mat-nav-list>
           <mat-list-item (click)="showSubmenu = !showSubmenu" class="abc1"
             style="font-family: Arial; border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-            <span class="full-width" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; "> School
+            <span class="full-width" id="schInfra" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; "> School
               Infrastructure</span>
             <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || isShowing">
               expand_more</mat-icon>
@@ -81,28 +100,64 @@
               (click)="showSubmenu = !showSubmenu"><span style="margin-left: 50px;">Report</span></a>
           </div>
         </mat-nav-list>
+
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu6 = !showSubmenu6" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+            <span class="full-width" id="stdPerform" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">Student
+              Performance
+            </span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu6}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu6" [ngClass]="{'expanded' : showSubmenu6}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['semester-report']" (click)="sidenav.toggle() " id="semReport"
+              (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">Semester Report</span></a>
+          </div>
+        </mat-nav-list>
+
         <mat-nav-list>
           <mat-list-item (click)="showSubmenu2 = !showSubmenu2" class="abc1"
             style="font-family: Arial; border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-            <span class="full-width" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; "> Diksha</span>
+            <span class="full-width" id="diksha" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
+              Diksha</span>
             <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu2}" *ngIf="isExpanded || isShowing">
               expand_more</mat-icon>
           </mat-list-item>
           <div class="submenu2" [ngClass]="{'expanded' : showSubmenu2}" *ngIf="isShowing || isExpanded">
             <a mat-list-item [routerLink]="['diksha-chart']" (click)="sidenav.toggle() " id="chrtReport"
               (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">Stack Chart Report</span></a>
+            <a mat-list-item [routerLink]="['diksha-column-chart']" (click)="sidenav.toggle()" id="clmnReport"
+              (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">Column Chart Report</span></a>
             <a mat-list-item [routerLink]="['diksha-table']" (click)="sidenav.toggle()" id="dtblReport"
               (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">Table Report</span></a>
-            <a mat-list-item [routerLink]="['diksha-column-chart']" (click)="sidenav.toggle()" id="dtblReport"
-              (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">Column Chart Report</span></a>
           </div>
         </mat-nav-list>
+
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu7 = !showSubmenu7" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+            <span class="full-width" id="telemetry" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">Telemetry
+              Data
+            </span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu7}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu7" [ngClass]="{'expanded' : showSubmenu7}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['telemetry']" (click)="sidenav.toggle() " id="telemReport"
+              (click)="showSubmenu7 = !showSubmenu7"><span style="margin-left: 50px;">Telemetry</span></a>
+          </div>
+        </mat-nav-list>
+
         <mat-nav-list *ngIf="showUser">
           <mat-list-item (click)="showSubmenu1 = !showSubmenu1" class="abc1"
             style="font-family: Arial; border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-            <span class="full-width" *ngIf="isExpanded || isShowing" id="usr" style=" margin-left: 4%;"> User </span>
+            <span class="full-width" id="user" *ngIf="isExpanded || isShowing" style=" margin-left: 4%;"> User
+            </span>
             <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu1}" *ngIf="isExpanded || isShowing">
               expand_more</mat-icon>
           </mat-list-item>
@@ -112,23 +167,6 @@
                 Password</span></a>
           </div>
         </mat-nav-list>
-        <a id="ser" mat-list-item (click)="sidenav.toggle()"
-          style="font-family: Arial; border-bottom: 1px solid lightgray;" [routerLink]="['sem-exception']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp;Semester-Exception</td>
-        </a>
-
-        <a id="telemetry" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['telemetry']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Telemetry Data </td>
-        </a>
 
       </div>
 

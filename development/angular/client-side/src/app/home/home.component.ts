@@ -17,6 +17,11 @@ export class HomeComponent implements OnInit {
   role: any;
   showSubmenu1: any = false;
   showSubmenu2: any = false;
+  showSubmenu3: any = false;
+  showSubmenu4: any = false;
+  showSubmenu5: any = false;
+  showSubmenu6: any = false;
+  showSubmenu7: any = false;
   showsideMenu: boolean = false;
   isExpanded = true;
   showSubmenu: boolean = false;

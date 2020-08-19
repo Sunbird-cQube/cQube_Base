@@ -95,7 +95,7 @@ export class DikshaTableComponent implements OnInit {
     this.service.dikshaAllTableData({ collectionType: this.collectionType }).subscribe(res => {
       this.fileName = `Diksha_All_Data_${this.timePeriod}`;
       this.result = res;
-      this.tableCreation(this.result, 'table');
+      this.tableCreation(this.result);
 
       this.result.forEach(element => {
         var obj1 = {};
@@ -156,7 +156,7 @@ export class DikshaTableComponent implements OnInit {
       this.service.dikshaDistrictTableData({ districtId: districtId, collectionType: this.collectionType }).subscribe(res => {
         this.fileName = `Diksha_Dist_Data_${this.timePeriod}`;
         this.result = res;
-        this.tableCreation(this.result, 'table');
+        this.tableCreation(this.result);
 
         this.reportData = this.result;
 
@@ -183,7 +183,7 @@ export class DikshaTableComponent implements OnInit {
     this.reportData = [];
     this.service.dikshaTimeRangeTableData({ districtId: this.districtId, timePeriod: timePeriod, collectionType: this.collectionType }).subscribe(res => {
       this.result = res;
-      this.tableCreation(this.result, 'table');
+      this.tableCreation(this.result);
       if (this.hierName) {
         this.reportData = this.result;
         this.fileName = `Diksha_${this.hierName}_Dist_Data_${this.timePeriod}`;
@@ -237,15 +237,15 @@ export class DikshaTableComponent implements OnInit {
     );
   }
 
-  tableCreation(dataSet, tablename) {
+  tableCreation(dataSet) {
     var my_columns = [];
     $.each(dataSet[0], function (key, value) {
       var my_item = {};
       my_item['data'] = key;
       my_item['value'] = value;
-      if (value != 'All' && value != '') {
-        my_columns.push(my_item);
-      }
+      // if (value != 'All' && value != '') {
+      my_columns.push(my_item);
+      // }
     });
 
 
@@ -257,9 +257,8 @@ export class DikshaTableComponent implements OnInit {
         var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
-        headers += `<th> ${col}</th>`
+        headers += `<th> ${col}</th>`;
       });
-
 
       let newArr = [];
       $.each(dataSet, function (a, b) {
@@ -268,9 +267,9 @@ export class DikshaTableComponent implements OnInit {
           var new_item = {};
           new_item['data'] = key;
           new_item['value'] = value;
-          if (value != 'All' && value != '') {
-            temp.push(new_item);
-          }
+          // if (value != 'All' && value != '') {
+          temp.push(new_item);
+          // }
         });
         newArr.push(temp)
       });
@@ -285,11 +284,11 @@ export class DikshaTableComponent implements OnInit {
 
       headers += `</tr></thead>`;
       body += '</tr></tbody>';
-      $(`#${tablename}`).empty();
-      $(`#${tablename}`).append(headers);
-      $(`#${tablename}`).append(body);
-      $(`#${tablename}`).DataTable({
-        "order": [[my_columns.length - 1, "desc"]],
+      $(`#table`).empty();
+      $(`#table`).append(headers);
+      $(`#table`).append(body);
+      $(`#table`).DataTable({
+        "order": [[my_columns.length - 5, "desc"]],
         destroy: true, bLengthChange: false, bInfo: false,
         bPaginate: false, scrollY: "64vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: true,

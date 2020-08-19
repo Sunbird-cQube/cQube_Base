@@ -209,6 +209,7 @@ export class SemesterExceptionComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.semCompletionBlock().subscribe(res => {
+        console.log(res);
         this.data = res
         let options = {
           mapZoom: 7,
@@ -218,7 +219,7 @@ export class SemesterExceptionComponent implements OnInit {
         if (this.data['data'].length > 0) {
           let result = this.data['data']
           this.blockMarkers = [];
-          result = result.sort((a, b) => (parseInt(a.percentage_schools_not_received) > parseInt(b.percentage_schools_not_received)) ? 1 : -1)
+          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
@@ -324,7 +325,7 @@ export class SemesterExceptionComponent implements OnInit {
         }
         if (this.data['data'].length > 0) {
           let result = this.data['data'];
-          result = result.sort((a, b) => (parseInt(a.percentage_schools_not_received) > parseInt(b.percentage_schools_not_received)) ? 1 : -1)
+          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           this.clusterMarkers = [];
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
@@ -428,7 +429,7 @@ export class SemesterExceptionComponent implements OnInit {
         this.schoolMarkers = [];
         if (this.data['data'].length > 0) {
           let result = this.data['data']
-          result = result.sort((a, b) => (parseInt(a.percentage_schools_not_received) > parseInt(b.percentage_schools_not_received)) ? 1 : -1)
+          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
           let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
@@ -448,6 +449,7 @@ export class SemesterExceptionComponent implements OnInit {
 
               var details = {};
               var orgObject = {};
+              var detailSchool = {};
               Object.keys(this.schoolMarkers[i]).forEach(key => {
                 if (key !== "school_latitude") {
                   details[key] = this.schoolMarkers[i][key];
@@ -458,8 +460,13 @@ export class SemesterExceptionComponent implements OnInit {
                   orgObject[key] = details[key];
                 }
               });
+              Object.keys(orgObject).forEach(key => {
+                if (key !== "total_schools_with_missing_data") {
+                  detailSchool[key] = orgObject[key];
+                }
+              });
               //Generate dynamic tool-tip
-              var yourData = this.getInfoFrom(orgObject).join(" <br>");
+              var yourData = this.getInfoFrom(detailSchool).join(" <br>");
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
@@ -710,7 +717,7 @@ export class SemesterExceptionComponent implements OnInit {
     this.reportData = [];
     if (data['data'].length > 0) {
       this.markers = data['data']
-      this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_not_received) > parseInt(b.percentage_schools_not_received)) ? 1 : -1)
+      this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
       // generate color gradient
       let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
       this.colors = colors;
@@ -958,7 +965,7 @@ export class SemesterExceptionComponent implements OnInit {
     var stringLine;
     for (var key in object) {
       if (object.hasOwnProperty(key)) {
-        if (key == "percentage_schools_not_received") {
+        if (key == "percentage_schools_with_missing_data") {
           stringLine = "<b>" +
             key.replace(
               /\w\S*/g,

@@ -62,23 +62,23 @@
     <div class="row">
         <div class="col-sm-3">
             <button class="btn btn-secondary" id="allBlock" name="block"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px; padding: 2px;"
+                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="blockWise($event)">&nbsp;<strong id="allBlock" style="font-family: Arial;">Blocks</strong>
             </button>
             <button class="btn btn-secondary" id="allCluster"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px;"
+                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="clusterWise($event)">&nbsp;<strong id="allCluster"
                     style="font-family: Arial;">Clusters</strong>
             </button>
             <button class="btn btn-secondary" id="allSchool"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px;"
+                style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise($event)">&nbsp;<strong id="allSchool" style="font-family: Arial;">Schools</strong>
             </button>
         </div>
         <div class="col-sm-6" style="font-family: Arial;">
 
             <select id="choose_dist"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="distSelect($event,myDistrict)">
                 <option [value]="myDistrict" disabled selected="selected" style="color: white;">Choose a District
                 </option>
@@ -89,7 +89,7 @@
             </select>
 
             <select [hidden]="blockHidden" id="choose_block"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="myBlock" name="myBlock" (change)="blockSelect($event,myBlock)">
                 <option [value]="myBlock" disabled selected="selected" style="color: white;">Choose a Block
                 </option>
@@ -100,7 +100,7 @@
             </select>
 
             <select [hidden]="clusterHidden" id="choose_cluster"
-                style="padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                style="padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="myCluster" name="myCluster" (change)="clusterSelect($event,myCluster)">
                 <option [value]="myCluster" disabled selected="selected">Choose a cluster
                 </option>
@@ -114,7 +114,7 @@
         </div>
         <div class="col-sm-3">
             <select id="year"
-                style="margin-left: 10%; width: 43%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                style="margin-left: 10%; width: 43%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="year" name="year" (change)="getYear()">
                 <option [value]="year" disabled selected="selected">Choose Year
                 </option>
@@ -124,7 +124,7 @@
                 </option>
             </select>
             <select id="month"
-                style="float: right;margin-left: 2%; margin-top: 0.5%;width: 43%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: gray"
+                style="float: right;margin-left: 2%; margin-top: 0.5%;width: 43%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="month" name="month" (change)="getMonth($event)">
                 <option [value]="month" disabled selected="selected">Choose Month
                 </option>
@@ -142,7 +142,7 @@
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial;padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
+        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial;padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-4">
             <span id="students">Number of students: {{studentCount}}</span>
         </div>
