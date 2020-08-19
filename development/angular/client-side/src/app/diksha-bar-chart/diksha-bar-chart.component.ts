@@ -15,6 +15,7 @@ export class DikshaBarChartComponent implements OnInit {
   chart: boolean = false;
 
   public colors = [];
+  header = '';
   public barChartOptions: ChartOptions = {};
   public barChartLabels: Label[] = [];
   public barChartType: ChartType = 'horizontalBar';
@@ -33,12 +34,12 @@ export class DikshaBarChartComponent implements OnInit {
   public hierName: any;
   public dist: boolean = false;
   public all: boolean = false;
-  public timeDetails: any = [{ id: "last_30_days", name: "Last 30 Days" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_day", name: "Last Day" }];
+  public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" }];
   public districtsDetails: any = '';
   public myChart: Chart;
   public showAllChart: boolean = false;
   public allDataNotFound: any;
-  public collectioTypes: any = [{ id: "all", type: "All" }, { id: "course", type: "Course" }, { id: "textbook", type: "TextBook" }, { id: "others", type: "Others" }];
+  public collectioTypes: any = [{ id: "all", type: "Overall" }, { id: "course", type: "Course" }, { id: "textbook", type: "TextBook" }, { id: "others", type: "Others" }];
   public collectionNames: any = [];
   collectionName = '';
 
@@ -61,7 +62,6 @@ export class DikshaBarChartComponent implements OnInit {
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
     this.getAllData();
-    this.listCollectionNames();
   }
   loaderAndErr() {
     if (this.result.length !== 0) {
@@ -70,7 +70,6 @@ export class DikshaBarChartComponent implements OnInit {
       document.getElementById('spinner').style.display = 'none';
       document.getElementById('errMsg').style.color = 'red';
       document.getElementById('errMsg').style.display = 'block';
-      // document.getElementById('errMsg').innerHTML = 'No data found';
     }
   }
 
@@ -81,16 +80,20 @@ export class DikshaBarChartComponent implements OnInit {
   }
   emptyChart() {
     this.barChartData = [
-      { data: [], label: '', stack: 'a' }
+      { data: [], label: '' }
     ];
+    this.result = [];
   }
 
   homeClick() {
+    document.getElementById('home').style.display = "none";
+    this.getAllData()
+  }
+  linkClick() {
     this.collection_type = "all";
     document.getElementById('home').style.display = "none";
     this.getAllData()
   }
-
   async getAllData() {
     this.emptyChart();
     if (this.collection_type != "all") {
@@ -102,7 +105,13 @@ export class DikshaBarChartComponent implements OnInit {
     this.fileName = `collectionType_${this.collection_type}_data`;
     this.result = [];
     this.all = true
-    this.dist = false
+    this.dist = false;
+    this.header = this.collection_type;
+    if (this.collection_type == 'all') {
+      this.header = "overall";
+    }
+    this.header = this.changeingStringCases(this.header);
+    this.listCollectionNames();
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
       this.result = result['chartData'];
       this.reportData = result['downloadData'];
@@ -112,6 +121,8 @@ export class DikshaBarChartComponent implements OnInit {
       }
       document.getElementById('spinner').style.display = 'none';
     }, err => {
+      this.result = [];
+      this.emptyChart();
       this.loaderAndErr();
     });
 
@@ -119,10 +130,24 @@ export class DikshaBarChartComponent implements OnInit {
 
   listCollectionNames() {
     this.errMsg();
+    this.collectionName = '';
     this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod }).subscribe(res => {
-      console.log(res);
-      this.collectionNames = res;
+      this.collectionNames = [];
+      this.collectionNames = res['uniqueCollections'];
+      this.collectionNames.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0));
+      if (res['chartData']) {
+        this.result = [];
+        this.emptyChart();
+        this.result = res['chartData'];
+        this.createChart(this.result);
+        this.reportData = res['downloadData'];
+      }
       document.getElementById('spinner').style.display = 'none';
+    }, err => {
+      this.collectionNames = [];
+      this.result = [];
+      this.emptyChart();
+      this.loaderAndErr();
     })
   }
 
@@ -150,7 +175,7 @@ export class DikshaBarChartComponent implements OnInit {
 
   createChart(data) {
     var chartData = [];
-    var obj = { data: data.data, label: "Total Conetnt Play" }
+    var obj = { data: data.data, label: "Total Content Play" }
     chartData.push(obj);
     this.barChartOptions = {
       legend: {
@@ -165,9 +190,11 @@ export class DikshaBarChartComponent implements OnInit {
         // callbacks: {
         //   label: function (tooltipItem, data) {
         //     var label = data.labels[tooltipItem.index];
+        //     var content = data.datasets[0].data;
+        //     var scores = content[tooltipItem.index];
         //     // var subject = data.datasets[tooltipItem.index].label
         //     var multistringText = ["District Name" + ": " + label];
-        //     // multistringText.push("Subject Name" + ": " + subject);
+        //     multistringText.push("Total Content Plays" + ": " + scores);
         //     // multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
         //     return multistringText;
         //   }
@@ -184,7 +211,7 @@ export class DikshaBarChartComponent implements OnInit {
           },
           scaleLabel: {
             display: true,
-            labelString: "Total Conetnt Play",
+            labelString: "Total Content Play",
             fontSize: 12,
             // fontColor: "dark gray"
           }
