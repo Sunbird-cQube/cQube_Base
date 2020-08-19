@@ -917,6 +917,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
+
 /*Create jolt spec for Infra reports*/
 
 select Infra_jolt_spec('water','toilet');
