@@ -571,7 +571,7 @@ infra_table_percent text:='select string_agg(''"''||replace(trim(LOWER(infrastru
  from infrastructure_master where status = true';   
 infra_table_percent_cols text;
 jolt_table_query text;
-infra_map_percent text:='select string_agg(''"''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent": "data.[&1].''||
+infra_map_percent text:='select string_agg(''"''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent": "data.[&1].metrics.''||
  replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent"'','','')
 from infrastructure_master where status = true;';   
 infra_map_percent_cols text;
@@ -581,6 +581,10 @@ composite_infra_1_cols text;
 composite_infra_2 text:='select string_agg(''"access_to_'||category_2||'_percent": "data.[&1].access_to_'||category_2||'_percent"'','','')';
 composite_infra_2_cols text;
 
+composite_inframap_1 text:='select string_agg(''"access_to_'||category_1||'_percent": "data.[&1].metrics.access_to_'||category_1||'_percent"'','','')';
+composite_inframap_1_cols text;
+composite_inframap_2 text:='select string_agg(''"access_to_'||category_2||'_percent": "data.[&1].metrics.access_to_'||category_2||'_percent"'','','')';
+composite_inframap_2_cols text;
 
 jolt_map_query text;
 BEGIN
@@ -589,6 +593,8 @@ execute infra_table_percent into infra_table_percent_cols;
 execute composite_infra_2 into composite_infra_2_cols;
 execute composite_infra_1 into composite_infra_1_cols;
 execute infra_map_percent into infra_map_percent_cols;
+execute composite_inframap_2 into composite_inframap_2_cols;
+execute composite_inframap_1 into composite_inframap_1_cols;
 IF infra_table_value_cols <> '' THEN 
 jolt_table_query = '
 create or replace view Infra_jolt_district_table as 
@@ -692,14 +698,15 @@ select ''
 		"operation": "shift",
 		"spec": {
 			"*": {
-				"district_id": "data.[&1].district_id",
-				"district_name": "data.[&1].district_name",
-              "district_latitude": "data.[&1].district_latitude",
-              "district_longitude": "data.[&1].district_longitude",
-              "infra_score": "data.[&1].infra_score",
-			'||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
+				"district_id": "data.[&1].details.district_id",
+			   "district_latitude": "data.[&1].details.latitude",
+              "district_longitude": "data.[&1].details.longitude",
+              "district_name": "data.[&1].details.district_name",
+              "infra_score": "data.[&1].details.infrastructure_score",
+
+			'||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
               
-              "@total_schools_data_received": "data.[&1].total_schools_data_received",
+              "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
 			  "total_schools_data_received": "allDistrictsFooter.totalSchools[]"
 			}
 		}
@@ -712,165 +719,126 @@ select ''
 			}
 		}
 	}
-]                                       
 
+]
 ''as jolt_spec;
 create or replace view Infra_jolt_block_map
 as select ''
 [{
-   "operation": "shift",
-   "spec": {
-     "*": {
-       
-       "district_id": "data.[&1].district_id",		
-        "district_name": "data.[&1].district_name",
-       "block_id": "data.[&1].block_id",
-       "block_name": "data.[&1].block_name",
-         "block_latitude": "data.[&1].block_latitude",
-         "block_longitude": "data.[&1].block_longitude",
-         
-                            "infra_score": "data.[&1].infra_score",
-              "average_value": "data.[&1].average_value",
-              "average_percent": "data.[&1].average_percent",
-              '||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
-               "total_schools": "data.[&1].total_schools",
-              
-              
-              "@total_schools_data_received": "data.[&1].total_schools_data_received",
-		"total_schools_data_received": "footer.@(1,district_id).totalSchools[]"
-       
-     }
-   }
-},
- 
- {
-   "operation": "modify-overwrite-beta",
-   "spec": {
-     "footer": {
-       "*": {
-         "totalSchools": "=intSum(@(1,totalSchools))"
-       }
-     }
-   }
- },
- {
-   "operation": "shift",
-   "spec": {
-     "data": {
-       "*": {
-         "district_id": "data.[&1].district_id",
-				"district_name": "data.[&1].district_name",
-       "block_id": "data.[&1].block_id",
-         "block_name": "data.[&1].block_name",
-         "block_latitude": "data.[&1].block_latitude",
-         "block_longitude": "data.[&1].block_longitude",
-                            "infra_score": "data.[&1].infra_score",
-              "average_value": "data.[&1].average_value",
-              "average_percent": "data.[&1].average_percent",
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "district_id": "data.[&1].details.district_id",
+        "block_id": "data.[&1].details.block_id",
+        "block_latitude": "data.[&1].details.latitude",
+        "block_longitude": "data.[&1].details.longitude",
+        "district_name": "data.[&1].details.district_name",
+        "block_name": "data.[&1].details.block_name",
+        "infra_score": "data.[&1].details.infrastructure_score",
+        "average_value": "data.[&1].details.average_value",
+        "average_percent": "data.[&1].details.average_percent",
 
-'||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
-         
-         
-               "total_schools": "data.[&1].total_schools",
-              
-              
-                    "@total_schools_data_received": "data.[&1].total_schools_data_received",
-		"total_schools_data_received": "allBlocksFooter.totalSchools[]"
-       }
-     },
-     "footer": "&"
-   }
- },
- {
-   "operation": "modify-overwrite-beta",
-   "spec": {
-     "*": {
-       "totalSchools": "=intSum(@(1,totalSchools))"
-     }
-   }
- } 
+              '||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
+        "total_schools": "data.[&1].total_schools",
+        "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
+        "total_schools_data_received": "footer.@(1,district_id).totalSchools[]"
+      }
+    }
+	},
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "details": "data.[&1].&",
+          "metrics": "data.[&1].&",
+          "@details.total_schools_data_received": "allBlocksFooter.totalSchools[]"
+        }
+      },
+      "footer": "&"
+    }
+	},
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "totalSchools": "=intSum(@(1,totalSchools))"
+        }
+      }
+    }
+	}
+, {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "totalSchools": "=intSum(@(1,totalSchools))"
+      }
+    }
+	}
+
 ]
 '' as jolt_spec;
 create or replace view Infra_jolt_cluster_map
 as select ''
 [{
-		"operation": "shift",
-		"spec": {
-			"*": {
-
-				"district_id": "data.[&1].district_id",
-				"district_name": "data.[&1].district_name",
-				"block_id": "data.[&1].block_id",
-				"block_name": "data.[&1].block_name",
-				
-              "cluster_id": "data.[&1].cluster_id",
-              "cluster_name": "data.[&1].cluster_name",
-              "cluster_latitude": "data.[&1].cluster_latitude",
-				"cluster_longitude": "data.[&1].cluster_longitude",
-
-				"infra_score": "data.[&1].infra_score",
-				"average_value": "data.[&1].average_value",
-				"average_percent": "data.[&1].average_percent",
-
-'||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
-				"total_schools": "data.[&1].total_schools",
-
-
-				"@total_schools_data_received": "data.[&1].total_schools_data_received",
-				"total_schools_data_received": "footer.@(1,block_id).totalSchools[]"
-
-			}
-		}
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "district_id": "data.[&1].details.district_id",
+        "block_id": "data.[&1].details.block_id",
+        "cluster_id": "data.[&1].details.cluster_id",
+        "cluster_latitude": "data.[&1].details.latitude",
+        "cluster_longitude": "data.[&1].details.longitude",
+        "district_name": "data.[&1].details.district_name",
+        "block_name": "data.[&1].details.block_name",
+        "cluster_name": "data.[&1].details.cluster_name",
+        "infra_score": "data.[&1].details.infrastructure_score",
+        "average_value": "data.[&1].details.average_value",
+        "average_percent": "data.[&1].details.average_percent",
+'||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
+        "total_schools": "data.[&1].total_schools",
+        "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
+        "total_schools_data_received": "footer.@(1,block_id).totalSchools[]"
+      }
+    }
+	},
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "details": "data.[&1].&",
+          "metrics": "data.[&1].&",
+          "@details.total_schools_data_received": "allClustersFooter.totalSchools[]"
+        }
+      },
+      "footer": "&"
+    }
 	},
 
-	{
-		"operation": "modify-overwrite-beta",
-		"spec": {
-			"footer": {
-				"*": {
-					"totalSchools": "=intSum(@(1,totalSchools))"
-				}
-			}
-		}
-	}, {
-		"operation": "shift",
-		"spec": {
-			"data": {
-				"*": {
-					"district_id": "data.[&1].district_id",
-					"district_name": "data.[&1].district_name",
-					"block_id": "data.[&1].block_id",
-					"block_name": "data.[&1].block_name",
-					"cluster_id": "data.[&1].cluster_id",
-              "cluster_name": "data.[&1].cluster_name",
-              "cluster_latitude": "data.[&1].cluster_latitude",
-				"cluster_longitude": "data.[&1].cluster_longitude",
-                  
-					"infra_score": "data.[&1].infra_score",
-					"average_value": "data.[&1].average_value",
-					"average_percent": "data.[&1].average_percent",
-
-'||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
-
-
-					"total_schools": "data.[&1].total_schools",
-
-
-					"@total_schools_data_received": "data.[&1].total_schools_data_received",
-					"total_schools_data_received": "allClustersFooter.totalSchools[]"
-				}
-			},
-			"footer": "&"
-		}
-	}, {
-		"operation": "modify-overwrite-beta",
-		"spec": {
-			"*": {
-				"totalSchools": "=intSum(@(1,totalSchools))"
-			}
-		}
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "totalSchools": "=intSum(@(1,totalSchools))"
+        }
+      }
+    }
 	}
+, {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "totalSchools": "=intSum(@(1,totalSchools))"
+      }
+    }
+	}
+
 ]
+
 ''as jolt_spec;
 create or replace view Infra_jolt_school_map
 as select ''
@@ -884,37 +852,41 @@ as select ''
 		}
 	},
 
-	{
+  {
 		"operation": "shift",
 		"spec": {
 			"*": {
+				"district_id": "data.[&1].details.district_id",
+				"block_id": "data.[&1].details.block_id",
+				"cluster_id": "data.[&1].details.cluster_id",
+              "school_id": "data.[&1].details.school_id",
+				"school_latitude": "data.[&1].details.latitude",
+				"school_longitude": "data.[&1].details.longitude",
+				"district_name": "data.[&1].details.district_name",
+				"block_name": "data.[&1].details.block_name",
+				"cluster_name": "data.[&1].details.cluster_name",
+              "school_name": "data.[&1].details.school_name",
+				"infra_score": "data.[&1].details.infrastructure_score",
+				"average_value": "data.[&1].details.average_value",
+				"average_percent": "data.[&1].details.average_percent",
 
-				"district_id": "data.[&1].district_id",
-				"district_name": "data.[&1].district_name",
-				"block_id": "data.[&1].block_id",
-				"block_name": "data.[&1].block_name",
-
-				"cluster_id": "data.[&1].cluster_id",
-				"cluster_name": "data.[&1].cluster_name",
-				"school_id": "data.[&1].school_id",
-				"school_name": "data.[&1].school_name",
-
-				"school_latitude": "data.[&1].school_latitude",
-
-				"school_longitude": "data.[&1].school_longitude",
-
-				"infra_score": "data.[&1].infra_score",
-				"average_value": "data.[&1].average_value",
-				"average_percent": "data.[&1].average_percent",
-
-'||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
+'||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
 				"total_schools": "data.[&1].total_schools",
-
-
-				"@total_schools_data_received": "data.[&1].total_schools_data_received",
+				"@total_schools_data_received": "data.[&1].details.total_schools_data_received",
 				"total_schools_data_received": "footer.@(1,cluster_id).totalSchools[]"
-
 			}
+		}
+	}, {
+		"operation": "shift",
+		"spec": {
+			"data": {
+				"*": {
+					"details": "data.[&1].&",
+					"metrics": "data.[&1].&",
+					"@details.total_schools_data_received": "allSchoolsFooter.totalSchools[]"
+				}
+			},
+			"footer": "&"
 		}
 	},
 
@@ -928,41 +900,6 @@ as select ''
 			}
 		}
 	}, {
-		"operation": "shift",
-		"spec": {
-			"data": {
-				"*": {
-					"district_id": "data.[&1].district_id",
-					"district_name": "data.[&1].district_name",
-					"block_id": "data.[&1].block_id",
-					"block_name": "data.[&1].block_name",
-					"cluster_id": "data.[&1].cluster_id",
-					"cluster_name": "data.[&1].cluster_name",
-					"school_id": "data.[&1].school_id",
-					"school_name": "data.[&1].school_name",
-
-					"school_latitude": "data.[&1].school_latitude",
-
-					"school_longitude": "data.[&1].school_longitude",
-
-
-					"infra_score": "data.[&1].infra_score",
-					"average_value": "data.[&1].average_value",
-					"average_percent": "data.[&1].average_percent",
-
-'||infra_map_percent_cols||','||composite_infra_1_cols||','||composite_infra_2_cols||',
-
-
-					"total_schools": "data.[&1].total_schools",
-
-
-					"@total_schools_data_received": "data.[&1].total_schools_data_received",
-					"total_schools_data_received": "allSchoolsFooter.totalSchools[]"
-				}
-			},
-			"footer": "&"
-		}
-	}, {
 		"operation": "modify-overwrite-beta",
 		"spec": {
 			"*": {
@@ -970,6 +907,7 @@ as select ''
 			}
 		}
 	}
+
 ]
 ''as jolt_spec;';
 Execute jolt_map_query;
@@ -978,6 +916,7 @@ return 0;
 END;
 $$
 LANGUAGE plpgsql;
+
 
 /*Create jolt spec for Infra reports*/
 
@@ -1036,7 +975,9 @@ agg_insert text;
 BEGIN
 diksha_view='create or replace view insert_diksha_trans_view as
 select b.district_id,b.district_latitude,b.district_longitude,Initcap(b.district_name) as district_name,
-	   a.content_view_date,a.dimensions_pdata_id,a.dimensions_pdata_pid,a.content_name,a.content_board,a.content_mimetype,a.content_medium,a.content_gradelevel,a.content_subject,
+	   a.content_view_date,a.dimensions_pdata_id,a.dimensions_pdata_pid,a.content_name,a.content_board,a.content_mimetype,a.content_medium,
+	   ltrim(rtrim(a.content_gradelevel)) as content_gradelevel,regexp_replace(ltrim(rtrim(a.content_subject)),
+	   ''([a-z])([A-Z])'', ''\1 \2'',''g'') as content_subject,
 	   a.content_created_for,a.object_id,a.object_rollup_l1,a.derived_loc_state,a.derived_loc_district,a.user_signin_type,a.user_login_type,
 	   case when a.collection_name is null then ''Other'' else a.collection_name end as collection_name,
 	   a.collection_board,
@@ -1048,8 +989,9 @@ select b.district_id,b.district_latitude,b.district_longitude,Initcap(b.district
        when replace(upper(derived_loc_district),'' '','''') in (''THEDANGS'',''DANG'',''DANGS'') then ''THEDANGS'' 
        else replace(upper(derived_loc_district),'' '','''') end as district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,
-case when content_gradelevel like ''[%'' then ''Multi_Grade'' else content_gradelevel end as content_gradelevel,
-case when content_subject like ''[%'' then ''Multi_Subject'' else content_subject end as content_subject,
+case when content_gradelevel like ''[%'' then ''Multi Grade'' else initcap(ltrim(rtrim(content_gradelevel))) end as content_gradelevel,
+case when content_subject like ''[%'' then ''Multi Subject'' when initcap(ltrim(rtrim(content_subject)))=''Maths'' then ''Mathematics''
+else initcap(ltrim(rtrim(content_subject))) end as content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent
 from diksha_content_trans ) as a left join         
@@ -1076,3 +1018,4 @@ Execute agg_insert;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
