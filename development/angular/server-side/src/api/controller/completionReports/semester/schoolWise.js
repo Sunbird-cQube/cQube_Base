@@ -11,7 +11,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         var schoolData = await s3File.readS3File(fileName);
         var sortedData = schoolData['data'].sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1)
         logger.info('--- semester_completion school wise api response sent---');
-        res.status(200).send({ data: sortedData, footer: schoolData.allSchoolsFooter.total_schools_not_received });
+        res.status(200).send({ data: sortedData, footer: schoolData.allSchoolsFooter.total_schools_with_missing_data });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -34,7 +34,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
 
         var sortedData = filterData.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1)
         logger.info('--- semester_completion schoolPerCluster api response sent---');
-        res.status(200).send({ data: sortedData, footer: schoolData.footer[`${clusterId}`].total_schools_not_received });
+        res.status(200).send({ data: sortedData, footer: schoolData.footer[`${clusterId}`].total_schools_with_missing_data });
     } catch (e) {
         logger.error(e);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

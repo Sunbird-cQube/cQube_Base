@@ -42,6 +42,41 @@ if [[ $base_dir_status == 1 ]]; then
 fi
 }
 
+check_version(){
+
+# getting the installed version
+if [[ ! "$base_dir" = /* ]] || [[ ! -d $base_dir ]]; then
+    echo "Error - Please enter the absolute path or make sure the directory is present."; 
+    exit 1
+else
+   if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
+        installed_ver=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_VERSION )
+        installed_version=$(cut -d "=" -f2 <<< "$installed_ver")
+    else
+       echo "Error - Invalid base_dir";
+       exit 1
+    fi
+fi
+
+# getting this release version
+if [[ -e ".version" ]]; then
+    this_version=$(awk ''/^cqube_version:' /{ if ($2 !~ /#.*/) {print $2}}' .version)
+
+    if [[ $this_version == "" ]] || [[ ! `echo $this_version | grep -E '^[0-9]{1,2}\.[0-9]{1,2}$'` ]]; then
+       echo "Error - cQube's constant variables changed. Re-clone the repository again";
+       exit 1 
+    fi
+else
+   echo "Error - cQube's constant variables changed. Re-clone the repository again";
+   exit 1
+fi
+
+if [[ ! $installed_version < $this_version ]]; then
+   echo "Error - cQube is already upgraded to this version.";
+   exit 1
+fi
+}
+
 check_postgres(){
 echo "Checking for Postgres ..."
 temp=$(psql -V > /dev/null 2>&1; echo $?)
@@ -173,17 +208,20 @@ realm_name=cQube
 aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 
-#Getting base_dir
+# Getting base_dir
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 
-#Getting keycloak_adm_user and keycloak_adm_passwd
+# Getting keycloak_adm_user and keycloak_adm_passwd
 keycloak_adm_user=$(awk ''/^keycloak_adm_user:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 keycloak_adm_passwd=$(awk ''/^keycloak_adm_passwd:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 
-#Getting db_user, db_name and db_password
+# Getting db_user, db_name and db_password
 db_user=$(awk ''/^db_user:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 db_name=$(awk ''/^db_name:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
+
+# Check the version before starting validation
+check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}

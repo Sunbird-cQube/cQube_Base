@@ -136,12 +136,17 @@ export class SummaryStatistictsComponent implements OnInit {
       my_columns.push(my_item);
     });
     var sub_column = []
-    $.each(my_columns[5].value, function (key, value) {
-      var my_item = {};
-      my_item['data'] = key;
-      my_item['value'] = value;
-      sub_column.push(my_item);
-    });
+    my_columns.forEach(val => {
+      if (typeof val.value == "object") {
+        $.each(val.value, function (key, value) {
+          var my_item = {};
+          my_item['data'] = key;
+          my_item['value'] = value;
+          sub_column.push(my_item);
+        });
+      }
+    })
+
 
     var colspanlength = sub_column.length;
 

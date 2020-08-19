@@ -173,7 +173,10 @@ router.get('/roles', auth.authController, async (req, res) => {
             "Authorization": "Bearer" + " " + access_token
         }
         axios.get(usersUrl, { headers: headers }).then(resp => {
-            res.status(201).json({ roles: resp.data });
+            var roles = resp.data.filter(role => {
+                return role.name != 'uma_authorization' && role.name != 'offline_access'
+            })
+            res.status(201).json({ roles: roles });
         }).catch(error => {
             res.status(409).json({ errMsg: error.response.data.errorMessage });
         })
@@ -182,6 +185,7 @@ router.get('/roles', auth.authController, async (req, res) => {
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 });
+
 
 
 module.exports = router;
