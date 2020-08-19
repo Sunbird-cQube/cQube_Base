@@ -8,7 +8,7 @@
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial; }
+body { margin: 0; font-family:  Arial; }
 
 table {
     width: 100%;
@@ -17,9 +17,6 @@ table {
   th.mat-sort-header-sorted {
     color: black;
   }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
 .leaflet-bottom, leaflet-right{
   display: none;
 }
