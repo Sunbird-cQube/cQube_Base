@@ -29,7 +29,7 @@ export class HomePageComponent implements OnInit {
       } else {
         if (!this.keycloakService.kc.tokenParsed.realm_access.roles.includes('report_viewer')
           || !this.keycloakService.kc.tokenParsed.realm_access.roles.includes('admin')) {
-          alert("Please assing roles")
+          alert("Unauthorised user, Only admin and viewer can login")
           let options = {
             redirectUri: environment.appUrl
           }
