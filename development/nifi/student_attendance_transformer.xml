@@ -7926,7 +7926,7 @@ file: ${filename} null values are not found.</value>
     </entry>
     <entry>
         <key>putsql-sql-statement</key>
-        <value>delete from student_attendance_temp where month=${attendance_meta.student_attendance_month} and year=${attendance_meta.student_attendance_year}</value>
+        <value>delete from student_attendance_temp where ff_uuid='${zip_identifier}'</value>
     </entry>
     <entry>
         <key>Support Fragmented Transactions</key>
@@ -7952,7 +7952,7 @@ file: ${filename} null values are not found.</value>
         <value>false</value>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
+<runDurationMillis>2000</runDurationMillis>
 <schedulingPeriod>1 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
@@ -14638,7 +14638,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>4</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>record-reader</key>
@@ -14698,9 +14698,9 @@ where ff_uuid= '${files_uuid}'</value>
         <value>#{stud_attendance_normalize}</value>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>10 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -16149,8 +16149,8 @@ file: ${filename} is not valid</value>
         <value>false</value>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>5 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -16551,8 +16551,8 @@ file: ${filename} duplicate count updated to log summary db.</value>
         <value>false</value>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>10 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -17040,8 +17040,8 @@ Mirror data validation of file:${filename}.Error while selecting unique data</va
         <value>false</value>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>10 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -24576,7 +24576,7 @@ from flowfile</value>
     </entry>
     <entry>
         <key>Communications Timeout</key>
-        <value>30 secs</value>
+        <value>60 secs</value>
     </entry>
     <entry>
         <key>SSL Context Service</key>
@@ -31930,5 +31930,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/19/2020 21:23:59 IST</timestamp>
+    <timestamp>08/20/2020 11:07:45 IST</timestamp>
 </template>
