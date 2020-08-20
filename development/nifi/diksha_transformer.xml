@@ -1235,35 +1235,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>788ece98-6dfc-3dba-0000-000000000000</id>
-                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>2248.0</x>
-<y>-1152.0</y>
-                            </bends>
-                            <destination>
-<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
-<id>c9e515ee-38ae-30c2-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>unmatched</selectedRelationships>
-                            <source>
-<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
-<id>a2186530-34d6-3682-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>7989e044-5e47-3466-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <versionedComponentId>8130223a-ab44-392f-8adc-54f497bf5a35</versionedComponentId>
@@ -2742,7 +2713,7 @@
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name></name>
-                            <selectedRelationships>stud_att</selectedRelationships>
+                            <selectedRelationships>diksha</selectedRelationships>
                             <source>
 <groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
 <id>a2186530-34d6-3682-0000-000000000000</id>
@@ -9165,9 +9136,9 @@ WHERE ff_uuid = '${source.uuid}';</value>
         </value>
     </entry>
     <entry>
-        <key>stud_att</key>
+        <key>diksha</key>
         <value>
-            <name>stud_att</name>
+            <name>diksha</name>
         </value>
     </entry>
 </descriptors>
@@ -9180,7 +9151,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
         <value>Route to Property name</value>
     </entry>
     <entry>
-        <key>stud_att</key>
+        <key>diksha</key>
         <value>${filename:startsWith('diksha/')}</value>
     </entry>
 </properties>
@@ -9193,10 +9164,10 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <name>route_based_on_s3_dir</name>
                             <relationships>
 <autoTerminate>false</autoTerminate>
-<name>stud_att</name>
+<name>diksha</name>
                             </relationships>
                             <relationships>
-<autoTerminate>false</autoTerminate>
+<autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
                             <state>STOPPED</state>
@@ -10203,74 +10174,6 @@ where ff_uuid= '${files_uuid}'
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
-                        </processors>
-                        <processors>
-                            <id>c9e515ee-38ae-30c2-0000-000000000000</id>
-                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
-                            <position>
-<x>1856.0</x>
-<y>-1120.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>log-level</key>
-        <value>
-            <name>log-level</name>
-        </value>
-    </entry>
-    <entry>
-        <key>log-prefix</key>
-        <value>
-            <name>log-prefix</name>
-        </value>
-    </entry>
-    <entry>
-        <key>log-message</key>
-        <value>
-            <name>log-message</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>log-level</key>
-        <value>info</value>
-    </entry>
-    <entry>
-        <key>log-prefix</key>
-        <value>---S3 EMISSION BUCKET---</value>
-    </entry>
-    <entry>
-        <key>log-message</key>
-        <value>File: ${filename} is not supported. Please send the valid file.</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>LogMessage</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
                             <id>d38c1247-03a9-3375-0000-000000000000</id>
@@ -40065,5 +39968,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/20/2020 11:08:35 IST</timestamp>
+    <timestamp>08/20/2020 17:02:01 IST</timestamp>
 </template>

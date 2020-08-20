@@ -1,6 +1,7 @@
 infrastructure,infrastructure_category,status
 Toilet,toilet,1
 Handwash,toilet,1
+cctv,monitoring,0
 Solar Panel,Energy resource,1
 library,study,1
 Drinking water,water,1
@@ -12,6 +13,7 @@ News paper,study,0
 hand pumps,water,1
 boys toilet,toilet,1
 girls toilet,toilet,1
+cwsn toilet,toilet,0
 cwsn boys toilet,toilet,0
 cwsn girls toilet,toilet,0
 boys urinals,toilet,0
