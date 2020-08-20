@@ -1235,35 +1235,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>a432689f-15c5-3fe0-0000-000000000000</id>
-                            <parentGroupId>0ad436a9-b1de-3afd-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>2248.0</x>
-<y>-1152.0</y>
-                            </bends>
-                            <destination>
-<groupId>0ad436a9-b1de-3afd-0000-000000000000</groupId>
-<id>ead3c24a-8222-34d6-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>unmatched</selectedRelationships>
-                            <source>
-<groupId>0ad436a9-b1de-3afd-0000-000000000000</groupId>
-<id>c7acbbe1-ad17-346d-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>a4bd9769-aca1-3c5f-0000-000000000000</id>
                             <parentGroupId>0ad436a9-b1de-3afd-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -2588,8 +2559,8 @@
                             <id>c68d13a8-9a85-3c22-0000-000000000000</id>
                             <parentGroupId>0ad436a9-b1de-3afd-0000-000000000000</parentGroupId>
                             <position>
-<x>1944.0</x>
-<y>-968.0</y>
+<x>1792.0</x>
+<y>-1176.0</y>
                             </position>
                             <height>48.0</height>
                             <label> Route the cqube telemetry files. Others to unmatched status</label>
@@ -7217,7 +7188,7 @@ VALUES
 <name>cqube_telemetry</name>
                             </relationships>
                             <relationships>
-<autoTerminate>false</autoTerminate>
+<autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
                             <state>STOPPED</state>
@@ -8111,74 +8082,6 @@ WHERE ff_uuid = '${files_uuid}';</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
-                        </processors>
-                        <processors>
-                            <id>ead3c24a-8222-34d6-0000-000000000000</id>
-                            <parentGroupId>0ad436a9-b1de-3afd-0000-000000000000</parentGroupId>
-                            <position>
-<x>1856.0</x>
-<y>-1120.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>log-level</key>
-        <value>
-            <name>log-level</name>
-        </value>
-    </entry>
-    <entry>
-        <key>log-prefix</key>
-        <value>
-            <name>log-prefix</name>
-        </value>
-    </entry>
-    <entry>
-        <key>log-message</key>
-        <value>
-            <name>log-message</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>log-level</key>
-        <value>info</value>
-    </entry>
-    <entry>
-        <key>log-prefix</key>
-        <value>---S3 EMISSION BUCKET---</value>
-    </entry>
-    <entry>
-        <key>log-message</key>
-        <value>File: ${filename} is not supported. Please send the valid file.</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>LogMessage</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
                             <id>ece5d95a-5561-3292-0000-000000000000</id>
@@ -14862,5 +14765,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/20/2020 11:08:52 IST</timestamp>
+    <timestamp>08/20/2020 17:01:22 IST</timestamp>
 </template>
