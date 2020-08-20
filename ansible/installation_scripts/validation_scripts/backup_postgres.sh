@@ -15,8 +15,7 @@ if [ $temp == 0 ]; then
                     echo "There is a problem dumping the database"; tput sgr0 ;
 		    exit 1
 	        else
-                  echo "Backed up the database..."
-                  echo "Backup file will be uploaded to S3 bucket, once the installation completes."
+                  echo "Database backup is completed"
 	        fi
      fi
 fi
