@@ -106,11 +106,11 @@ export class DikshaBarChartComponent implements OnInit {
     this.result = [];
     this.all = true
     this.dist = false;
-    this.header = this.collection_type;
+    this.header = this.changeingStringCases(this.collection_type) + " linked";
     if (this.collection_type == 'all') {
-      this.header = "overall";
+      this.header = "Overall";
     }
-    this.header = this.changeingStringCases(this.header);
+    this.header = this.header;
     this.listCollectionNames();
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
       this.result = result['chartData'];
