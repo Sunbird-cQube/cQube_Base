@@ -61,6 +61,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
   ngOnInit() {
     this.districtWise();
+    document.getElementById('spinner').style.display = 'block';
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
   }
@@ -87,7 +88,6 @@ export class SchoolInfrastructureComponent implements OnInit {
   public modes: any
 
   districtWise() {
-    document.getElementById('spinner').style.display = 'block';
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
     }
@@ -556,7 +556,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       $("#table").append(body);
       $('#table').DataTable({
         destroy: true, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: "58vh", scrollX: true,
+        bPaginate: false, scrollY: "48vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: false,
         fixedColumns: {
           leftColumns: 1
