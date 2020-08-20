@@ -19509,6 +19509,7 @@ Mirror data validation of file:${filename} started</value>
     </entry>
     <entry>
         <key>sql-pre-query</key>
+        <value>#{update_infra_new_score_pre_qry}</value>
     </entry>
     <entry>
         <key>SQL select query</key>
@@ -31844,5 +31845,5 @@ same id data validation of file:${filename} started</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/20/2020 17:01:41 IST</timestamp>
+    <timestamp>08/20/2020 23:54:37 IST</timestamp>
 </template>
