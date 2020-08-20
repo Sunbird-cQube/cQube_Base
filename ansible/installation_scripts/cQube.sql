@@ -1021,7 +1021,7 @@ create index if not exists student_attendance_staging2_id on student_attendance_
 create table if not exists student_attendance_temp
 (
 ff_uuid text,
-attendance_id  bigint primary key not null,
+attendance_id  bigint,
 student_id  bigint,
 school_id  bigint,
 year  int,
@@ -2051,6 +2051,8 @@ alter table school_master drop COLUMN if exists school_website;
 
 /*student_attendance_temp*/
 alter table student_attendance_temp add COLUMN if not exists ff_uuid text;
+alter table student_attendance_temp drop constraint if exists student_attendance_temp_pkey;
+alter table student_attendance_temp add primary key(ff_uuid,attendance_id);
 
 /*crc_inspection_trans*/
 alter table crc_inspection_trans alter COLUMN total_score type double precision;
