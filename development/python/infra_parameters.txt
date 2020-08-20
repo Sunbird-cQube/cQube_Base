@@ -73,5 +73,5 @@ case when drink_water_yn<>1 then 0 else 1 end as drinking_water from flowfile'''
 "update_infra_score_master":"select update_infra_score();",
 "update_infra_new_score":"select insert_infra_agg();",
 "infra_sum_of_dup":"select sum(num_of_times) from flowfile",
-"update_infra_new_score_pre_qry":'''drop view if exists insert_infra_agg_view; drop view if exists infra_score_view;'''
+"update_infra_new_score_pre_qry":'''Drop view if exists insert_infra_agg_view cascade; Drop view if exists infra_score_view cascade;'''
 }
