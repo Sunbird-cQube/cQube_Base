@@ -14603,7 +14603,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
     </entry>
     <entry>
         <key>/created_on</key>
-        <value>${now():format('dd-MM-yyyy_HH:mm:ss.SSS')}</value>
+        <value>${now():format("yyyy-MM-dd HH:mm:ss.SSS")}</value>
     </entry>
     <entry>
         <key>/exception_type</key>
@@ -33156,7 +33156,7 @@ same id data validation of file:${filename}, same id records found </value>
     </entry>
     <entry>
         <key>/created_on</key>
-        <value>${now():format('dd-MM-yyyy_HH:mm:ss.SSS')}</value>
+        <value>${now():format("yyyy-MM-dd HH:mm:ss.SSS")}</value>
     </entry>
     <entry>
         <key>/exception_type</key>
@@ -51097,5 +51097,5 @@ where ff_uuid= '${files_uuid}'
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/20/2020 17:02:40 IST</timestamp>
+    <timestamp>08/20/2020 23:55:24 IST</timestamp>
 </template>
