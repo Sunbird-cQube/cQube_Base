@@ -62,8 +62,7 @@ echo """1. Skip the Postgres installation (Will backup the data locally for futu
                     echo "There is a problem dumping the database"; tput sgr0 ; fail=1; break;
 		    exit 1
 	        else
-                  echo "Backed up the database..."
-                  echo "Backup file will be uploaded to S3 bucket, once the installation completes."
+                  echo "Database backup is completed"
 	        fi
 		sudo sed -i "s/- include_tasks: install_postgress.yml/#&/g" roles/createdb/tasks/main.yml
         break
