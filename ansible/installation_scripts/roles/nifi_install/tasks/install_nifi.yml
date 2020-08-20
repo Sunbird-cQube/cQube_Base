@@ -1,21 +1,26 @@
 - name: Creates directory
   file: path=~/nifi state=directory
+  tags: install
 
 - name: Installing curl
   apt: name=curl
+  tags: install
 
 - name: Download NiFi
   get_url:
     url: https://archive.apache.org/dist/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.tar.gz
     dest: ~/nifi
+  tags: install
 
 - name: Check if nifi is present in destination
   stat: path={{ base_dir }}/cqube/nifi
   register: status
+  tags: install
 
 - name: stop nifi if its running
   shell: "{{ base_dir }}/cqube/nifi/bin/nifi.sh stop"
   when: status.stat.exists == true
+  tags: install
 
 - name: remove nifi directory if present
   become: yes
@@ -23,28 +28,34 @@
   ignore_errors: yes
   args:
     warn: false
+  tags: install
 
 - name: Extract NiFi in the same folder
   unarchive:
     src: ~/nifi/nifi-{{ nifi_version }}-bin.tar.gz
     dest: "{{ base_dir }}/cqube"
+  tags: install
 
 - name: Rename the extracted folder
   shell: mv {{ base_dir }}/cqube/nifi* {{ base_dir }}/cqube/nifi
+  tags: install
 
 - name: Creates directory
   file: path={{ base_dir }}/cqube/nifi/jars state=directory
+  tags: install
 
 - name: Download Jar file
   get_url:
     url: https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.10/postgresql-42.2.10.jar
     dest: "{{ base_dir }}/cqube/nifi/jars"
+  tags: install
 
 - name: Touch a file
   file:
     path: "{{ base_dir }}/cqube/emission_app/python/nifi_env_db.py"
     state: touch
     mode: u+rw,g+rw,o+rw
+  tags: install
 
 - name: Loading required data inside nifi_env_db.py file
   blockinfile:
@@ -54,55 +65,71 @@
                db_user= "{{ db_user }}"
                db_pwd= "{{ db_password }}"
                nifi_port= "{{ nifi_port }}" 
+  tags: install
 
 - name: configure the webserver in nifi.properties file
   replace:
     dest: "{{ base_dir }}/cqube/nifi/conf/nifi.properties"
     regexp: 'nifi.web.http.host='
     replace: 'nifi.web.http.host=0.0.0.0'
+  tags: install
 
 - name: configure the webserver in nifi.properties file
   replace:
     dest: "{{ base_dir }}/cqube/nifi/conf/nifi.properties"
     regexp: 'nifi.web.http.port=8080'
     replace: 'nifi.web.http.port={{ nifi_port }}'
+  tags: install
 
 - name: Increase nifi memory
-  replace:
-    dest: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
-    regexp: "java.arg.2=-Xms512m"
-    replace: "java.arg.2={{ java_arg_2 }}"
+  lineinfile:
+    path: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
+    regexp: '^java.arg.2='
+    line: "java.arg.2={{ java_arg_2 }}"
+  tags: [ install ,update ]
 
 - name: Add time zone to nifi
   blockinfile:
         path: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
         block: |
                java.arg.8=-Duser.timezone=Asia/Kolkata
+  tags: install
 
 - name: Increase nifi memory
-  replace:
-    dest: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
-    regexp: "java.arg.3=-Xmx512m"
-    replace: "java.arg.3={{ java_arg_3 }}"
+  lineinfile:
+    path: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
+    regexp: '^java.arg.3='
+    line: "java.arg.3={{ java_arg_3 }}"
+  tags: [ install, update ]
 
 - name: start NiFi
   shell: "{{ base_dir }}/cqube/nifi/bin/nifi.sh start"
 - pause:
     minutes: 3
     prompt: "nifi is starting, kindly do not press any key"
+  tags: install
+
+- name: Restart NiFi
+  shell: "{{ base_dir }}/cqube/nifi/bin/nifi.sh restart"
+- pause:
+    minutes: 3
+    prompt: "nifi is restarting, kindly do not press any key"
+  tags: update
 
 - name: Get configuration details
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/controller/config
     method: GET
   register: nifi_config  
+  tags: [ install, update ]
     
 - name: Update the NiFi thread count
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/controller/config
     method: PUT
     body_format: json
-    body: {"revision":{"version":"{{ nifi_config.json.revision.version }}"},"component":{"maxTimerDrivenThreadCount":"100","maxEventDrivenThreadCount":"100"}}
+    body: {"revision":{"version":"{{ nifi_config.json.revision.version }}"},"component":{"maxTimerDrivenThreadCount":"22","maxEventDrivenThreadCount":"10"}}
+  tags: [ install, update ]
 
 - name: Create the prometheus task
   uri:
@@ -112,6 +139,7 @@
     status_code: 201
     body: {"revision":{"clientId":"","version":0},"disconnectedNodeAcknowledged":false,"component":{"type":"org.apache.nifi.reporting.prometheus.PrometheusReportingTask","bundle":{"group":"org.apache.nifi","artifact":"nifi-prometheus-nar","version":"1.11.4"}}}
   register: output
+  tags: install
 
 - name: Start the prometheus task
   uri:
@@ -119,4 +147,5 @@
     method: PUT
     body_format: json
     body: {"revision":{"clientId":"","version":1},"disconnectedNodeAcknowledged":false,"state":"RUNNING"}
+  tags: install  
 

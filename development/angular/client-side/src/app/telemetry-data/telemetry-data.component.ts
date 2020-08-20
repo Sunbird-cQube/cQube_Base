@@ -256,8 +256,8 @@ export class TelemetryDataComponent implements OnInit {
               var markerIcon;
               markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
                 radius: 3.5,
-                color: "#fc5e03",
-                fillColor: "#fc5e03",
+                color: "#42a7f5",
+                fillColor: "#42a7f5",
                 fillOpacity: 1,
                 strokeWeight: 0.01
               }).addTo(globalMap);
@@ -367,8 +367,8 @@ export class TelemetryDataComponent implements OnInit {
               var markerIcon;
               markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
                 radius: 2.5,
-                color: "#fc5e03",
-                fillColor: "#fc5e03",
+                color: "#42a7f5",
+                fillColor: "#42a7f5",
                 fillOpacity: 1,
                 strokeWeight: 0.01
               }).addTo(globalMap);
@@ -473,8 +473,8 @@ export class TelemetryDataComponent implements OnInit {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var markerIcon = L.circleMarker([this.schoolMarkers[i].lat, this.schoolMarkers[i].lng], {
                 radius: 2,
-                color: "#fc5e03",
-                fillColor: "#fc5e03",
+                color: "#42a7f5",
+                fillColor: "#42a7f5",
                 fillOpacity: 1,
                 weight: 1.5,
                 strokeWeight: 1
@@ -780,8 +780,8 @@ export class TelemetryDataComponent implements OnInit {
         if (options.weight) {
           markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: options.radius,
-            color: "#fc5e03",
-            fillColor: "#fc5e03",
+            color: "#42a7f5",
+            fillColor: "#42a7f5",
             fillOpacity: options.fillOpacity,
             strokeWeight: options.strokeWeight,
             weight: options.weight
@@ -789,8 +789,8 @@ export class TelemetryDataComponent implements OnInit {
         } else {
           markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
             radius: options.radius,
-            color: "#fc5e03",
-            fillColor: "#fc5e03",
+            color: "#42a7f5",
+            fillColor: "#42a7f5",
             fillOpacity: options.fillOpacity,
             strokeWeight: options.strokeWeight
           })

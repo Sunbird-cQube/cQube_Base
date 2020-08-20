@@ -2068,4 +2068,3 @@ alter table sem_null_col add COLUMN if not exists count_null_studentid int;
 
 /*diksha content trans*/
 alter table diksha_content_trans add COLUMN if not exists ff_uuid text;
-

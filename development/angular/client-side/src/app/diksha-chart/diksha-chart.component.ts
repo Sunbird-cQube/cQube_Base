@@ -132,6 +132,7 @@ export class DikshaChartComponent implements OnInit {
     document.getElementById('home').style.display = "none";
     this.errMsg();
     this.districtId = '';
+    this.hierName = undefined;
     this.timePeriod = 'last_30_days';
 
     this.result = [];
@@ -191,6 +192,7 @@ export class DikshaChartComponent implements OnInit {
     this.errMsg();
     document.getElementById('home').style.display = "Block";
     this.districtId = districtId
+    this.hierName = undefined;
     if (this.timePeriod !== '') {
       this.all = false
       this.dist = true
@@ -198,7 +200,7 @@ export class DikshaChartComponent implements OnInit {
         if (item.district_id == districtId)
           return item.district_name
       })
-      this.hierName = d[0].district_name
+      this.hierName = d[0].district_name;
       this.timeRange(this.timePeriod);
     } else {
 
@@ -212,7 +214,7 @@ export class DikshaChartComponent implements OnInit {
           if (item.district_id == districtId)
             return item.district_name
         })
-        this.hierName = d[0].district_name
+        this.hierName = d[0].district_name;
       }
 
 
@@ -281,7 +283,7 @@ export class DikshaChartComponent implements OnInit {
     document.getElementById('home').style.display = "block";
     this.allDataNotFound = undefined;
     this.errMsg();
-
+    // this.hierName = undefined;
     this.result = [];
     if (this.districtId == '') {
       this.districtId = 'All'
@@ -388,10 +390,10 @@ export class DikshaChartComponent implements OnInit {
           a.backgroundColor = '#e31a1c'
         }
         if (element.subject == 'Psychology') {
-          a.backgroundColor = '#b15928'
+          a.backgroundColor = '#b1592a'
         }
         if (element.subject == 'Biology') {
-          a.backgroundColor = '#ff7f00'
+          a.backgroundColor = '#ff7fff'
         }
         if (element.subject == 'Physics') {
           a.backgroundColor = '#ffff99'
@@ -482,14 +484,29 @@ export class DikshaChartComponent implements OnInit {
   }
 
   downloadReportByType(type) {
-
+    this.reportData = [];
     if (type) {
       this.errMsg();
       this.service.dikshaDataDownload({ districtId: this.districtId, timePeriod: this.timePeriod }).subscribe(res => {
-        if (this.districtId == '') {
+        if (this.districtId == '' || this.districtId == undefined || this.hierName == undefined) {
           if (res['All'][`${type}`]) {
-            this.fileName = `Diksha_All_data_${type}`;
-            this.reportData = res['All'][`${type}`];
+            this.fileName = `Diksha_${this.timePeriod}_data_${type}`;
+            // this.reportData = res['All'][`${type}`];
+            res['All'][`${type}`].forEach(element => {
+              var obj1 = {};
+              var obj2 = {};
+              Object.keys(element).forEach(key => {
+                if (key !== "district_id") {
+                  obj1[key] = element[key];
+                }
+              });
+              Object.keys(obj1).forEach(key => {
+                if (key !== "district_name") {
+                  obj2[key] = obj1[key];
+                }
+              });
+              this.reportData.push(obj2);
+            });
             this.downloadRoport();
           } else {
             document.getElementById('errMsg').innerHTML = 'No data found for this type';

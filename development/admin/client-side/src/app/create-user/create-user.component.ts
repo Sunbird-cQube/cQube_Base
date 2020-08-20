@@ -46,19 +46,24 @@ export class CreateUserComponent implements OnInit {
     document.getElementById('spinner').style.display = 'block';
     this.logData['createrId'] = localStorage.getItem('user_id');
     this.service.addUser(this.logData).subscribe(res => {
-      document.getElementById('success').style.display = "Block";
       this.msg = res['msg'];
-      document.getElementById('spinner').style.display = 'none';
+
       this.err = '';
+      this.errUsername = undefined;
+      this.errMail = undefined;
       setTimeout(() => {
         this.service.getCreatedUser(currUser).subscribe(user => {
           this.service.addRole(user['id'], this.selectedRole).subscribe();
         });
         formData.resetForm();
-        document.getElementById('success').style.display = "none";
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('success').style.display = "block";
       }, 2000);
+      setTimeout(() => {
+        document.getElementById('success').style.display = "none";
+      }, 4000);
     }, err => {
-      this.errMail = ""; this.errUsername = "";
+      this.errMail = undefined; this.errUsername = undefined;
       if (err.error['errMsg'] == "User exists with same username") {
         console.log(err.error['errMsg'], ":::::::::;");
         this.errUsername = err.error['errMsg'];
