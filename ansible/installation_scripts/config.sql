@@ -1018,3 +1018,4 @@ Execute agg_insert;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+

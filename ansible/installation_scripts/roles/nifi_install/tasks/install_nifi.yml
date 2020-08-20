@@ -82,10 +82,10 @@
   tags: install
 
 - name: Increase nifi memory
-  replace:
-    dest: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
-    regexp: "java.arg.2="
-    replace: "java.arg.2={{ java_arg_2 }}"
+  lineinfile:
+    path: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
+    regexp: '^java.arg.2='
+    line: "java.arg.2={{ java_arg_2 }}"
   tags: [ install ,update ]
 
 - name: Add time zone to nifi
@@ -96,10 +96,10 @@
   tags: install
 
 - name: Increase nifi memory
-  replace:
-    dest: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
-    regexp: "java.arg.3="
-    replace: "java.arg.3={{ java_arg_3 }}"
+  lineinfile:
+    path: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
+    regexp: '^java.arg.3='
+    line: "java.arg.3={{ java_arg_3 }}"
   tags: [ install, update ]
 
 - name: start NiFi
@@ -128,7 +128,7 @@
     url: http://localhost:{{ nifi_port }}/nifi-api/controller/config
     method: PUT
     body_format: json
-    body: {"revision":{"version":{{ nifi_config.json.revision.version }}},"component":{"maxTimerDrivenThreadCount":"22","maxEventDrivenThreadCount":"10"}}
+    body: {"revision":{"version":"{{ nifi_config.json.revision.version }}"},"component":{"maxTimerDrivenThreadCount":"22","maxEventDrivenThreadCount":"10"}}
   tags: [ install, update ]
 
 - name: Create the prometheus task
