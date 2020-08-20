@@ -2059,6 +2059,8 @@ alter table crc_inspection_trans alter COLUMN total_score type double precision;
 
 /*student_semester_trans*/
 alter table student_semester_staging add COLUMN if not exists ff_uuid text;
+alter table student_semester_trans drop constraint if exists student_semester_trans_id;
+alter table student_semester_trans add primary key(student_uid, school_id, semester, grade);
 
 /*log summary*/
 alter table log_summary add COLUMN if not exists datatype_mismatch int;
