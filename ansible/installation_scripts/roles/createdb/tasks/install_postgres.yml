@@ -29,9 +29,9 @@
 - name: Increase buffer memory postgre file
   replace:
     dest: /etc/postgresql/10/main/postgresql.conf
-    regexp: "shared_buffers = 128MB"
+    regexp: "shared_buffers ="
     replace: "shared_buffers = {{ shared_buffers }}"
-  tags: install
+  tags: [ install, update ]
 
 - name: Increase work memory postgre file
   replace:
@@ -39,6 +39,13 @@
     regexp: "#work_mem = 4MB"
     replace: "work_mem = {{ work_mem }}"    
   tags: install
+
+- name: Increase work memory postgre file
+  replace:
+    dest: /etc/postgresql/10/main/postgresql.conf
+    regexp: "work_mem = "
+    replace: "work_mem = {{ work_mem }}"    
+  tags: update
 
 - name: Ensure the PostgreSQL service is running
   service: name=postgresql state=started enabled=yes

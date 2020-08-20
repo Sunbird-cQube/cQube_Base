@@ -33,11 +33,10 @@ CREATE TABLE IF NOT EXISTS zip_files_processing (
 CREATE TABLE IF NOT EXISTS files_ingestion ( 
  zip_file_name varchar(255), 
  file_name varchar(255), 
- ff_uuid text, 
+ ff_uuid varchar(255), 
  storage_date timestamp, 
  storage_name varchar(255), 
- status varchar(15),
- primary key(ff_uuid) 
+ status varchar(15) 
 );
 
 /* role and user based auth tables */
@@ -703,7 +702,7 @@ END;
 $$  LANGUAGE plpgsql;
 
 /* temperory table */
-
+----------------------------------------------
 create table if not exists cluster_tmp
   (
 cluster_id  bigint primary key not null,
@@ -735,6 +734,11 @@ create table if not exists school_tmp
   (
 school_id  bigint primary key not null,
 school_name varchar(250),
+school_address  varchar(250),
+school_zipcode  int,
+school_contact_number  bigint,
+school_email_contact  varchar(50),
+school_website  varchar(50),
 school_lowest_class  int,
 school_highest_class  int,
 school_management_type_id int ,
@@ -750,7 +754,7 @@ created_on  TIMESTAMP without time zone NOT NULL,
 updated_on  TIMESTAMP without time zone NOT NULL
 );
 
-
+----------------------------------------------------
 /* mst tables */
 
 create table if not exists cluster_mst
@@ -786,6 +790,11 @@ create table if not exists school_master
   (
 school_id  bigint primary key not null,
 school_name varchar(250),
+school_address  varchar(250),
+school_zipcode  int,
+school_contact_number  bigint,
+school_email_contact  varchar(50),
+school_website  varchar(50),
 school_lowest_class  int,
 school_highest_class  int,
 school_management_type_id int ,
@@ -860,6 +869,9 @@ updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_master(school_id)
 );
 
+-- create table if not exists holiday_master(holiday_id bigint primary key not null,school_id bigint not null,holiday_date date,created_on timestamp,updated_on timestamp);
+
+-- create index if not exists holiday_master_id on holiday_master(school_id,holiday_date);
 
 /* school_hierarchy_details */
 
@@ -918,12 +930,11 @@ create table if not exists teacher_hierarchy_details
 
 create index if not exists teacher_hierarchy_details_id on teacher_hierarchy_details(school_id,nature_of_employment);
 
-/*student_attendance_staging*/
+/*student_attendance_temp*/
 
-create table if not exists student_attendance_staging_1
+create table if not exists student_attendance_staging
 (
-  ff_uuid text,
-attendance_id  bigint,
+attendance_id  bigint primary key not null,
 student_id  bigint,
 school_id  bigint,
 year  int,
@@ -965,62 +976,13 @@ updated_on  TIMESTAMP without time zone
 -- foreign key (student_id) references student_hierarchy_details(student_id)
 );
 
-create index if not exists student_attendance_staging1_id on student_attendance_staging_1(school_id,month,student_id);
-
-create table if not exists student_attendance_staging_2
-(
-  ff_uuid text,
-attendance_id  bigint,
-student_id  bigint,
-school_id  bigint,
-year  int,
-month  int,
-day_1  smallint,
-day_2  smallint,
-day_3  smallint,
-day_4  smallint,
-day_5  smallint,
-day_6  smallint,
-day_7  smallint,
-day_8  smallint,
-day_9  smallint,
-day_10  smallint,
-day_11  smallint,
-day_12  smallint,
-day_13  smallint,
-day_14  smallint,
-day_15  smallint,
-day_16  smallint,
-day_17  smallint,
-day_18  smallint,
-day_19  smallint,
-day_20  smallint,
-day_21  smallint,
-day_22  smallint,
-day_23  smallint,
-day_24  smallint,
-day_25  smallint,
-day_26  smallint,
-day_27  smallint,
-day_28  smallint,
-day_29  smallint,
-day_30  smallint,
-day_31  smallint,
-created_on  TIMESTAMP without time zone ,
-updated_on  TIMESTAMP without time zone
---foreign key (school_id) references school_hierarchy_details(school_id),
--- foreign key (student_id) references student_hierarchy_details(student_id)
-);
-
-create index if not exists student_attendance_staging2_id on student_attendance_staging_2(school_id,month,student_id);
-
+create index if not exists student_attendance_staging_id on student_attendance_staging(school_id,month,student_id);
 
 
 /*student_attendance_temp*/
 
 create table if not exists student_attendance_temp
 (
-ff_uuid text,
 attendance_id  bigint primary key not null,
 student_id  bigint,
 school_id  bigint,
@@ -1217,53 +1179,7 @@ updated_on  TIMESTAMP without time zone
 create index if not exists crc_location_trans_id on crc_location_trans(school_id,crc_id);
 
 
-/* student_semester_staging */
-
-create table if not exists student_semester_temp
-(
-  ff_uuid text,
-assessment_id serial,
-year int,
-student_uid bigint,
-school_id  bigint,
-semester  int ,
-grade  int,
-subject_1  int,
-subject_2  int,
-subject_3 int,
-subject_4 int,
-subject_5 int,
-subject_6 int,
-subject_7 int,
-subject_8 int,
-created_on  TIMESTAMP without time zone, 
-updated_on  TIMESTAMP without time zone
--- ,foreign key (school_id) references school_hierarchy_details(school_id),
--- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
-);
-
-create table if not exists student_semester_staging
-(
-  ff_uuid text,
-assessment_id serial,
-year int,
-student_uid bigint,
-school_id  bigint,
-semester  int ,
-grade  int,
-subject_1  int,
-subject_2  int,
-subject_3 int,
-subject_4 int,
-subject_5 int,
-subject_6 int,
-subject_7 int,
-subject_8 int,
-created_on  TIMESTAMP without time zone, 
-updated_on  TIMESTAMP without time zone
--- ,foreign key (school_id) references school_hierarchy_details(school_id),
--- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
-);
+/* student_semester_trans */
 
 create table if not exists student_semester_trans
 (
@@ -1282,8 +1198,7 @@ subject_6 int,
 subject_7 int,
 subject_8 int,
 created_on  TIMESTAMP without time zone, 
-updated_on  TIMESTAMP without time zone,
-primary key(student_uid,school_id,semester,grade)
+updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_hierarchy_details(school_id),
 -- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
 );
@@ -1498,7 +1413,6 @@ ff_uuid varchar(200),
 total_records bigint,
 blank_lines int,
 duplicate_records int,
-datatype_mismatch int,
 attendance_id bigint,
 student_id bigint,
 school_id bigint,
@@ -1518,31 +1432,6 @@ block_id bigint,
 district_id bigint,
 latitude int,
 longitude int,
-  content_view_date int,
-  dimensions_pdata_id int,
-  dimensions_pdata_pid int,
-  content_name int,
-  content_board int,
-  content_mimetype int,
-  content_medium int,
-  content_gradelevel int,
-  content_subject int,
-  content_created_for int,
-  object_id int,
-  object_rollup_l1 int,
-  derived_loc_state int,
-  derived_loc_district int,
-  user_signin_type int,
-  user_login_type int,
-  collection_name int,
-  collection_board int,
-  collection_type int,
-  collection_medium int,
-  collection_gradelevel int,
-  collection_subject int,
-  collection_created_for int,
-  total_count int,
-  total_time_spent int,
 processed_records int,
 process_start_time timestamp ,
 process_end_time timestamp
@@ -1555,6 +1444,7 @@ create table if not exists stud_att_null_col( filename    varchar(200),
  count_null_studentattid  int,
  count_null_studentid  int,
  count_null_schoolid int,
+ count_null_aadhaaruid int,
  count_null_academicyear int, 
 count_null_month  int
  );
@@ -1565,7 +1455,6 @@ create table if not exists sem_null_col
 (filename  varchar(200),  
  ff_uuid  varchar(200), 
  count_null_schoolid int,
- count_null_studentid int,
  count_null_sem int,
  count_null_studyingclass int);
 
@@ -1726,6 +1615,7 @@ reason_desc text,
 total_score double precision,
 score double precision,
 is_offline boolean,
+created_on  TIMESTAMP without time zone, /* created_on field will come from source data*/
 num_of_times int,
 ff_uuid varchar(255),
 created_on_file_process  TIMESTAMP without time zone default current_timestamp
@@ -1771,6 +1661,11 @@ create table if not exists school_dup
   (
 school_id  bigint  not null,
 school_name varchar(250),
+school_address  varchar(250),
+school_zipcode  int,
+school_contact_number  bigint,
+school_email_contact  varchar(50),
+school_website  varchar(50),
 school_lowest_class  int,
 school_highest_class  int,
 school_management_type_id int ,
@@ -1784,286 +1679,7 @@ cluster_id bigint,
 num_of_times int,
 ff_uuid varchar(255),
 created_on_file_process  TIMESTAMP without time zone default current_timestamp
+
 );
 
-
-create table if not exists school_invalid_data
-  (
-    ff_uuid text,
-    exception_type text,
-    school_id bigint ,
-    school_name varchar(300),
-    block_id bigint,
-    district_id bigint,
-    cluster_id bigint,
-    school_latitude double precision,
-    school_longitude double precision,
-    created_on TIMESTAMP without time zone
-    -- ,foreign key (school_id) references school_geo_master(school_id)
-    );
-
-
-/*Diksha*/
-/* master table */
-
-create table IF NOT EXISTS diksha_content_staging(
-  ff_uuid text,
-  content_view_date date,
-  dimensions_pdata_id text,
-  dimensions_pdata_pid text,
-  content_name text,
-  content_board text,
-  content_mimetype text,
-  content_medium text,
-  content_gradelevel text,
-  content_subject text,
-  content_created_for double precision,
-  object_id text,
-  object_rollup_l1 text,
-  derived_loc_state text,
-  derived_loc_district text,
-  user_signin_type text,
-  user_login_type text,
-  collection_name text,
-  collection_board text,
-  collection_type text,
-  collection_medium text,
-  collection_gradelevel text,
-  collection_subject text,
-  collection_created_for double precision,
-  total_count int,
-  total_time_spent double precision,
-  created_on TIMESTAMP without time zone,
-  updated_on TIMESTAMP without time zone 
-  );
-
-create table IF NOT EXISTS diksha_content_temp(
-  ff_uuid text,
-  content_view_date date,
-  dimensions_pdata_id text,
-  dimensions_pdata_pid text,
-  content_name text,
-  content_board text,
-  content_mimetype text,
-  content_medium text,
-  content_gradelevel text,
-  content_subject text,
-  content_created_for double precision,
-  object_id text,
-  object_rollup_l1 text,
-  derived_loc_state text,
-  derived_loc_district text,
-  user_signin_type text,
-  user_login_type text,
-  collection_name text,
-  collection_board text,
-  collection_type text,
-  collection_medium text,
-  collection_gradelevel text,
-  collection_subject text,
-  collection_created_for double precision,
-  total_count int,
-  total_time_spent double precision,
-  created_on TIMESTAMP without time zone,
-  updated_on TIMESTAMP without time zone 
-  );
-
-
-/* Transanction table */
-/* diksha_content_trans*/
-
-  create table IF NOT EXISTS diksha_content_trans(
-  ff_uuid text,
-  content_view_date date,
-  dimensions_pdata_id text,
-  dimensions_pdata_pid text,
-  content_name text,
-  content_board text,
-  content_mimetype text,
-  content_medium text,
-  content_gradelevel text,
-  content_subject text,
-  content_created_for double precision,
-  object_id text,
-  object_rollup_l1 text,
-  derived_loc_state text,
-  derived_loc_district text,
-  user_signin_type text,
-  user_login_type text,
-  collection_name text,
-  collection_board text,
-  collection_type text,
-  collection_medium text,
-  collection_gradelevel text,
-  collection_subject text,
-  collection_created_for double precision,
-  total_count int,
-  total_time_spent double precision,
-  created_on TIMESTAMP without time zone,
-  updated_on TIMESTAMP without time zone 
-  );
-
-/* Aggregation table*/
-/* diksha_total_content*/
-
-  create table IF NOT EXISTS diksha_total_content(
-  id serial,
-  district_id int,
-  district_name text,
-  district_latitude double precision,
-  district_longitude double precision,
-  content_view_date date,
-  dimensions_pdata_id text,
-  dimensions_pdata_pid text,
-  content_name text,
-  content_board text,
-  content_mimetype text,
-  content_medium text,
-  content_gradelevel text,
-  content_subject text,
-  content_created_for double precision,
-  object_id text,
-  object_rollup_l1 text,
-  derived_loc_state text,
-  derived_loc_district text,
-  user_signin_type text,
-  user_login_type text,
-  collection_name text,
-  collection_board text,
-  collection_type text,
-  collection_medium text,
-  collection_gradelevel text,
-  collection_subject text,
-  collection_created_for double precision,
-  total_count int,
-  total_time_spent double precision,
-  created_on TIMESTAMP without time zone,
-  updated_on TIMESTAMP without time zone 
-  );
-
-/* null check*/
-/* diksha_null_col*/
-
-  create table if not exists diksha_null_col
-    (
-  filename varchar(200),
-  ff_uuid varchar(200),
-  count_null_content_view_date int,
-  count_null_dimensions_pdata_id int,
-  count_null_dimensions_pdata_pid int,
-  count_null_content_name int,
-  count_null_content_board int,
-  count_null_content_mimetype int,
-  count_null_content_medium int,
-  count_null_content_gradelevel int,
-  count_null_content_subject int,
-  count_null_content_created_for int,
-  count_null_object_id int,
-  count_null_object_rollup_l1 int,
-  count_null_derived_loc_state int,
-  count_null_derived_loc_district int,
-  count_null_user_signin_type int,
-  count_null_user_login_type int,
-  count_null_collection_type int,
-  count_null_collection_created_for int,
-  count_null_total_count int,
-  count_null_total_time_spent  int
-  );
-
-/* Duplicate check*/
-/* diksha_dup*/
-
-  create table if not exists diksha_dup
-    (
-  content_view_date date,
-  dimensions_pdata_id text,
-  dimensions_pdata_pid text,
-  content_name text,
-  content_board text,
-  content_mimetype text,
-  content_medium text,
-  content_gradelevel text,
-  content_subject text,
-  content_created_for double precision,
-  object_id text,
-  object_rollup_l1 text,
-  derived_loc_state text,
-  derived_loc_district text,
-  user_signin_type text,
-  user_login_type text,
-  collection_name text,
-  collection_board text,
-  collection_type text,
-  collection_medium text,
-  collection_gradelevel text,
-  collection_subject text,
-  collection_created_for double precision,
-  total_count int,
-  total_time_spent double precision,
-  num_of_times int,
-  ff_uuid varchar(255),
-  created_on_file_process  TIMESTAMP without time zone default current_timestamp
-  ); 
-
-/*Telemetry*/
-
-create table if not exists emission_files_details
-    (
-  filename text,
-  ff_uuid text,
-  s3_bucket text,
-  last_modified_time TIMESTAMP without time zone,
-  processed_status boolean,
-  created_on TIMESTAMP without time zone default current_timestamp
-  );
-  
-  create table if not exists telemetry_data
-    (
-  pageid text,
-  uid text,
-  event text,
-  level text,
-  locationid bigint,
-  locationname text,
-  lat double precision,
-  lng double precision,
-  download int,
-  created_on TIMESTAMP without time zone default current_timestamp
-  );
-
-/*Upgrade scripts*/
-
-/*files_ingestion table*/
-alter table files_ingestion alter COLUMN ff_uuid type text;
-alter table files_ingestion drop constraint if exists files_ingestion_pkey;
-alter table files_ingestion add primary key(ff_uuid);
-
-/*student_attendance_meta*/
-alter table student_attendance_meta drop constraint if exists student_attendance_meta_pkey;
-alter table student_attendance_meta add primary key(month,year);
-
-/*school_master*/
-alter table school_master drop COLUMN if exists school_address;
-alter table school_master drop COLUMN if exists school_zipcode;
-alter table school_master drop COLUMN if exists school_contact_number;
-alter table school_master drop COLUMN if exists school_email_contact;
-alter table school_master drop COLUMN if exists school_website;
-
-/*student_attendance_temp*/
-alter table student_attendance_temp add COLUMN if not exists ff_uuid text;
-
-/*crc_inspection_trans*/
-alter table crc_inspection_trans alter COLUMN total_score type double precision;
-
-/*student_semester_trans*/
-alter table student_semester_staging add COLUMN if not exists ff_uuid text;
-
-/*log summary*/
-alter table log_summary add COLUMN if not exists datatype_mismatch int;
-
-/*sem null coll*/
-alter table sem_null_col add COLUMN if not exists count_null_studentid int;
-
-/*diksha content trans*/
-alter table diksha_content_trans add COLUMN if not exists ff_uuid text;
 

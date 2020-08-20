@@ -209,7 +209,6 @@ export class SemesterExceptionComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.semCompletionBlock().subscribe(res => {
-        console.log(res);
         this.data = res
         let options = {
           mapZoom: 7,

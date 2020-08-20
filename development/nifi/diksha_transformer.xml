@@ -20831,8 +20831,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
     </entry>
     <entry>
         <key>dir</key>
-        <value>bar_chart_reports/course/last_7_days
-</value>
+        <value>bar_chart_reports/course/last_7_days</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -21305,8 +21304,7 @@ where ff_uuid= '${zip_identifier}'
     </entry>
     <entry>
         <key>dir</key>
-        <value>bar_chart_reports/textbook/last_7_days
-</value>
+        <value>bar_chart_reports/textbook/last_7_days</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -30620,8 +30618,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
     </entry>
     <entry>
         <key>dir</key>
-        <value>bar_chart_reports/all/last_7_days
-</value>
+        <value>bar_chart_reports/all/last_7_days</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -40068,5 +40065,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/19/2020 21:24:37 IST</timestamp>
+    <timestamp>08/20/2020 11:08:35 IST</timestamp>
 </template>

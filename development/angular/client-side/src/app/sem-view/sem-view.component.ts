@@ -89,6 +89,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
   public blockId: any = '';
   public clusterId: any = '';
 
+  public semesters = [{ id: 1, name: "Semester 1" }, { id: 2, name: "Semester 2" }];
+  public semester = 2;
+  public levelWise = '';
+
   public myData;
 
   constructor(
@@ -180,8 +184,37 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.btnId = event.target.id;
     var date = new Date();
     this.trackInteract(date, this.btnId, eventType);
+    this.semester = 2;
     this.districtWise();
   }
+
+  semSelect() {
+    if (this.skul) {
+      if (this.levelWise === "district") {
+        this.districtWise();
+      }
+      if (this.levelWise === "block") {
+        this.blockWise(event);
+      }
+      if (this.levelWise === "cluster") {
+        this.clusterWise(event);
+      }
+      if (this.levelWise === "school") {
+        this.schoolWise(event);
+      }
+    } else {
+      if (this.dist && this.districtId !== undefined) {
+        this.onDistrictSelect(this.districtId);
+      }
+      if (this.blok && this.blockId !== undefined) {
+        this.onBlockSelect(this.blockId);
+      }
+      if (this.clust && this.clusterId !== undefined) {
+        this.onClusterSelect(this.clusterId);
+      }
+    }
+  }
+
   // to load all the districts for state data on the map
   districtWise() {
     try {
@@ -191,7 +224,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
       this.errMsg();
-
+      this.levelWise = "district";
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -206,7 +239,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_dist_sem_data().subscribe(res => {
+      this.myData = this.service.all_dist_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res;
         // to show only in dropdowns
         this.districtMarkers = this.data['sortedData'];
@@ -250,6 +283,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.levelWise = "block";
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -267,7 +301,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_block_sem_data().subscribe(res => {
+      this.myData = this.service.all_block_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: 7,
@@ -330,7 +364,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
             this.studentCount = this.data['totalValues'].totalStudents;
 
             this.blockMarkers.forEach(schoolData => {
-              this.fileName = "Block_wise_report"
+              this.fileName = "Block_wise_report_sem_"
               let obj = {
                 DistrictId: schoolData.districtId,
                 DistrictName: schoolData.districtName,
@@ -374,6 +408,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.levelWise = "cluster";
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -393,7 +428,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_cluster_sem_data().subscribe(res => {
+      this.myData = this.service.all_cluster_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: 7,
@@ -457,7 +492,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
             this.studentCount = this.data['totalValues'].totalStudents;
 
             this.clusterMarkers.forEach(schoolData => {
-              this.fileName = "Cluster_wise_report"
+              this.fileName = "Cluster_wise_report_sem_"
               let obj = {
                 DistrictId: schoolData.districtId,
                 DistrictName: schoolData.districtName,
@@ -504,6 +539,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.levelWise = "school";
       this.reportData = [];
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -519,7 +555,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_school_sem_data().subscribe(res => {
+      this.myData = this.service.all_school_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: 7,
@@ -580,7 +616,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
             this.studentCount = this.data['totalValues'].totalStudents;
 
             this.schoolMarkers.forEach(schoolData => {
-              this.fileName = "School_wise_report"
+              this.fileName = "School_wise_report_sem_"
               let obj = {
                 DistrictId: schoolData.districtId,
                 DistrictName: schoolData.districtName,
@@ -640,7 +676,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.block_wise_sem_data(districtId).subscribe(res => {
+    this.myData = this.service.block_wise_sem_data(districtId, { sem: this.semester }).subscribe(res => {
       this.data = res;
 
       this.blockMarkers = this.data['sortedData'];
@@ -715,7 +751,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.cluster_wise_sem_data(this.districtHierarchy.distId, blockId).subscribe(res => {
+    this.myData = this.service.cluster_wise_sem_data(this.districtHierarchy.distId, blockId, { sem: this.semester }).subscribe(res => {
       this.data = res;
       this.clusterMarkers = this.data['sortedData'];
       var myBlocks = [];
@@ -800,8 +836,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.all_block_sem_data().subscribe(result => {
-      this.myData = this.service.school_wise_sem_data(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
+    this.myData = this.service.all_block_sem_data({ sem: this.semester }).subscribe(result => {
+      this.myData = this.service.school_wise_sem_data(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { sem: this.semester }).subscribe(res => {
         this.data = res;
         this.schoolMarkers = this.data['sortedData'];
 
@@ -925,7 +961,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
           markerIcon.addTo(globalMap).bindPopup(popup);
 
           // to download the report
-          this.fileName = "District_wise_report";
+          this.fileName = "District_wise_report_sem_";
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
@@ -960,7 +996,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
           markerIcon.addTo(globalMap).bindPopup(popup);
-          this.fileName = "Block_Per_dist_report"
+          this.fileName = "Block_Per_dist_report_sem_"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
@@ -998,7 +1034,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
           markerIcon.addTo(globalMap).bindPopup(popup);
-          this.fileName = "Cluster_per_block_report"
+          this.fileName = "Cluster_per_block_report_sem_"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
@@ -1035,7 +1071,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
           );
           markerIcon.addTo(globalMap).bindPopup(popup);
 
-          this.fileName = "School_per_cluster_report"
+          this.fileName = "School_per_cluster_report_sem_"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
@@ -1144,7 +1180,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,
-      filename: this.fileName
+      filename: this.fileName + this.semester
     };
     const csvExporter = new ExportToCsv(options);
     csvExporter.generateCsv(this.reportData);

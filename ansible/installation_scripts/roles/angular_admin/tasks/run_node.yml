@@ -17,15 +17,13 @@
   shell: pm2 start npm --name admin_server_side -- start
   args:
     chdir: "{{ base_dir }}/cqube/admin_dashboard/server_side"
+  notify: 
+    - restart keycloak
   tags: install
 
 - name: Starting the admin_server_side app
   become: yes
   shell: pm2 start admin_server_side
+  notify: 
+    - restart keycloak
   tags: update
-
-- name: Restarting the keycloak service
-  service: 
-    name: keycloak
-    state: restarted
-  tags: [ install, update ]

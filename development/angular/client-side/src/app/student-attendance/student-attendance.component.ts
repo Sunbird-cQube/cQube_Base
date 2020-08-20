@@ -1322,7 +1322,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       }
 
       this.service.telemetry(dateObj).subscribe(res => {
-        console.log(res);
       }, err => {
         console.log(err);
       });
