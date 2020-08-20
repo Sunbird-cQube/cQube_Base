@@ -2062,9 +2062,35 @@ alter table student_semester_staging add COLUMN if not exists ff_uuid text;
 
 /*log summary*/
 alter table log_summary add COLUMN if not exists datatype_mismatch int;
+alter table log_summary add COLUMN if not exists content_view_date int;
+alter table log_summary add COLUMN if not exists dimensions_pdata_pid int;
+alter table log_summary add COLUMN if not exists dimensions_pdata_id int;
+alter table log_summary add COLUMN if not exists content_name int;
+alter table log_summary add COLUMN if not exists content_board int;
+alter table log_summary add COLUMN if not exists content_mimetype int;
+alter table log_summary add COLUMN if not exists content_medium int;
+alter table log_summary add COLUMN if not exists content_gradelevel int;
+alter table log_summary add COLUMN if not exists content_subject int;
+alter table log_summary add COLUMN if not exists content_created_for int;
+alter table log_summary add COLUMN if not exists object_id int;
+alter table log_summary add COLUMN if not exists object_rollup_l1 int;
+alter table log_summary add COLUMN if not exists derived_loc_state int;
+alter table log_summary add COLUMN if not exists derived_loc_district int;
+alter table log_summary add COLUMN if not exists user_signin_type int;
+alter table log_summary add COLUMN if not exists user_login_type int;
+alter table log_summary add COLUMN if not exists collection_name int;
+alter table log_summary add COLUMN if not exists collection_board int;
+alter table log_summary add COLUMN if not exists collection_type int;
+alter table log_summary add COLUMN if not exists collection_medium int;
+alter table log_summary add COLUMN if not exists collection_gradelevel int;
+alter table log_summary add COLUMN if not exists collection_subject int;
+alter table log_summary add COLUMN if not exists collection_created_for int;
+alter table log_summary add COLUMN if not exists total_count int;
+alter table log_summary add COLUMN if not exists total_time_spent int;
 
 /*sem null coll*/
 alter table sem_null_col add COLUMN if not exists count_null_studentid int;
 
 /*diksha content trans*/
 alter table diksha_content_trans add COLUMN if not exists ff_uuid text;
+
