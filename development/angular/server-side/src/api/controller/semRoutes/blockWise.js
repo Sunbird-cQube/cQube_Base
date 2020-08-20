@@ -7,7 +7,7 @@ const s3File = require('../../lib/reads3File');
 router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- all blocks sem api ---');
-        let fileName = `semester/block_sem_opt_json_2.json`
+        let fileName = `semester/block_sem_opt_json_${req.body.sem}.json`
         var myData = await s3File.readS3File(fileName);
 
         let blockData = myData.data;
@@ -73,8 +73,8 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         var filterData = '';
-        logger.info('--- block wise attendance api ---');
-        let fileName = `semester/block_sem_opt_json_2.json`
+        logger.info('--- block wise sem api ---');
+        let fileName = `semester/block_sem_opt_json_${req.body.sem}.json`
         var myData = await s3File.readS3File(fileName);
 
         let blockData = myData.data;

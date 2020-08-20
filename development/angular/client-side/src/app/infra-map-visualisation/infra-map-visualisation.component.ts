@@ -1129,6 +1129,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           key.replace(
             /\w\S*/g,
             function (txt) {
+              txt = txt.replace(/_/g, ' ');
               return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
             })
           + "</b>" + ": " + object[key] + `</span>`;

@@ -4,12 +4,12 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allSchoolWise',auth.authController, async (req, res) => {
+router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- semseter all school wise api ---');
-        let fileName = `semester/school_sem_opt_json_2.json`
+        let fileName = `semester/school_sem_opt_json_${req.body.sem}.json`
         var myData = await s3File.readS3File(fileName);
-        
+
         let schoolData = myData.data;
 
         // input date range
@@ -81,7 +81,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
     try {
         var filterData = '';
         logger.info('--- school wise attendance api ---');
-        let fileName = `semester/school_sem_opt_json_2.json`
+        let fileName = `semester/school_sem_opt_json_${req.body.sem}.json`
         var myData = await s3File.readS3File(fileName);
 
         let schoolData = myData.data;
