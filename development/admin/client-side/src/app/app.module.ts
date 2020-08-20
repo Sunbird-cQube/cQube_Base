@@ -10,7 +10,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CreateUserComponent } from './create-user/create-user.component';
-import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
@@ -21,6 +20,7 @@ import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SummaryStatistictsComponent } from './summary-statisticts/summary-statisticts.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
+import { NifiShedularComponent } from './nifi-shedular/nifi-shedular.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -31,7 +31,6 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
   declarations: [
     AppComponent,
     CreateUserComponent,
-    LoginComponent,
     HomeComponent,
     ChangePasswordComponent,
     AllLogsComponent,
@@ -39,6 +38,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     S3FilesDownloadComponent,
     DashboardComponent,
     SummaryStatistictsComponent,
+    NifiShedularComponent
   ],
   imports: [
     FormsModule,

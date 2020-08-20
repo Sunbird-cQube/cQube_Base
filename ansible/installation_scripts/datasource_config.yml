@@ -1,0 +1,8 @@
+---
+nifi_crc: true
+nifi_static: true
+nifi_attendance: true
+nifi_semester: true
+nifi_infra: true
+nifi_diksha: true
+nifi_telemetry: true

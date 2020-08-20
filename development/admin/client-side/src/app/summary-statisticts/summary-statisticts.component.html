@@ -9,9 +9,12 @@
     <div class="row">
         <div class="col-sm-12">
             <h2 style="color: #284d8a">Student Attendance Summary:</h2>
-            <div style="border: 1px solid gray">
+            <div *ngIf="tableData.length > 0" style="border: 1px solid gray">
                 <table #DataTable id="table1" class="display nowrap" width="100%"
                     style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData.length === 0 " style="text-align: center; color: red;">
+                No Data Available
             </div>
         </div>
     </div>
@@ -19,9 +22,12 @@
     <div class="row">
         <div class="col-sm-12">
             <h2 style="color: #284d8a">Semester Report Summary:</h2>
-            <div style="border: 1px solid gray">
+            <div *ngIf="tableData1.length >0 " style="border: 1px solid gray">
                 <table #DataTable id="table2" class="display nowrap" width="100%"
                     style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData1.length === 0 " style="text-align: center; color: red;">
+                No Data Available
             </div>
         </div>
     </div>
@@ -29,9 +35,12 @@
     <div class="row">
         <div class="col-sm-12">
             <h2 style="color: #284d8a">CRC Report Summary:</h2>
-            <div style="border: 1px solid gray">
+            <div *ngIf="tableData2.length > 0 " style="border: 1px solid gray">
                 <table #DataTable id="table3" class="display nowrap" width="100%"
                     style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData2.length === 0 " style="text-align: center; color: red;">
+                No Data Available
             </div>
         </div>
     </div>
@@ -39,9 +48,12 @@
     <div class="row">
         <div class="col-sm-12">
             <h2 style="color: #284d8a">Infra Report Summary:</h2>
-            <div style="border: 1px solid gray">
+            <div *ngIf="tableData3.length > 0 " style="border: 1px solid gray">
                 <table #DataTable id="table4" class="display nowrap" width="100%"
                     style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData3.length === 0 " style="text-align: center; color: red;">
+                No Data Available
             </div>
         </div>
     </div>
@@ -49,9 +61,12 @@
     <div class="row">
         <div class="col-sm-12">
             <h2 style="color: #284d8a">Inspection Report Summary:</h2>
-            <div style="border: 1px solid gray">
+            <div *ngIf="tableData4.length > 0 " style="border: 1px solid gray">
                 <table #DataTable id="table5" class="display nowrap" width="100%"
                     style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData4.length === 0 " style="text-align: center; color: red;">
+                No Data Available
             </div>
         </div>
     </div>
@@ -60,9 +75,12 @@
     <div class="row">
         <div class="col-sm-12">
             <h2 style="color: #284d8a">Static district file Summary:</h2>
-            <div style="border: 1px solid gray">
+            <div *ngIf="tableData5.length > 0 " style="border: 1px solid gray">
                 <table #DataTable id="table6" class="display nowrap" width="100%"
                     style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData5.length === 0 " style="text-align: center; color: red;">
+                No Data Available
             </div>
         </div>
     </div>
@@ -71,9 +89,12 @@
     <div class="row">
         <div class="col-sm-12">
             <h2 style="color: #284d8a">Static block file Summary:</h2>
-            <div style="border: 1px solid gray">
+            <div *ngIf="tableData6.length > 0 " style="border: 1px solid gray">
                 <table #DataTable id="table7" class="display nowrap" width="100%"
                     style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData6.length === 0 " style="text-align: center; color: red;">
+                No Data Available
             </div>
         </div>
     </div>
@@ -82,9 +103,12 @@
     <div class="row">
         <div class="col-sm-12">
             <h2 style="color: #284d8a">Static cluster file Summary:</h2>
-            <div style="border: 1px solid gray">
+            <div *ngIf="tableData7.length >0 " style="border: 1px solid gray">
                 <table #DataTable id="table8" class="display nowrap" width="100%"
                     style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData7.length === 0 " style="text-align: center; color: red;">
+                No Data Available
             </div>
         </div>
     </div>
@@ -92,9 +116,12 @@
     <div class="row">
         <div class="col-sm-12">
             <h2 style="color: #284d8a">Static school file Summary:</h2>
-            <div style="border: 1px solid gray">
+            <div *ngIf="tableData8.length > 0 " style="border: 1px solid gray">
                 <table #DataTable id="table9" class="display nowrap" width="100%"
                     style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData8.length === 0 " style="text-align: center; color: red;">
+                No Data Available
             </div>
         </div>
     </div>

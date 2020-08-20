@@ -1,0 +1,138 @@
+<div class="container-fluid" style="font-family: Arial; width: 100%;">
+    <div class="row">
+        <div class="col-sm-7">
+            <div *ngIf='all'>
+                <p id="dist_level"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Textbook linked content usage: <span (click)="getAllData()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+            </div>
+            <div *ngIf='dist'>
+                <p id="block_level"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Textbook linked content usage: <span (click)="getAllData()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                        (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
+                        {{hierName}}</span> </p>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="row">
+                <div class="col-sm-6">
+                    <p id="errMsg"
+                        style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <div style="float: right; " id="select">
+                        <em class="fa fa-download" title="Download Report" id="download"
+                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                            (click)="downloadReportByType(downloadType)"></em>
+                        <select class="dwnld" id="downloader"
+                            style="padding: 3px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                            [(ngModel)]="downloadType" name="downloadType" (change)="onChange()">
+                            <option [value]="downloadType" disabled selected="selected"> Download Report</option>
+                            <option *ngFor="let type of usageByType, let i = index" [(ngValue)]="type.type">
+                                {{type.type}}
+                            </option>
+                        </select>
+                    </div>
+                    <em class="fa fa-home" id="home" title="Home"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        alt="Home" (click)="getAllData()"></em>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="row" style="margin-top: 5px;">
+            <div class="col-sm-2">
+                <select id="choose_dist"
+                    style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    [(ngModel)]="districtId" (change)="districtWise(districtId)">
+                    <option [value]="districtId" disabled selected="selected">Choose a District</option>
+                    <option *ngFor="let dist of districtsDetails" [(ngValue)]="dist.district_id"
+                        style="font-family: Arial; font-size: 11px;">
+                        {{dist.district_name}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <select id="time_range"
+                    style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    [(ngModel)]="timePeriod" name="timePeriod" (change)="timeRange(timePeriod)">
+                    <option [value]="timePeriod" disabled selected="selected">Choose Time Range
+                    </option>
+                    <option *ngFor="let time of timeDetails" [(ngValue)]="time.timeRange"
+                        style="font-family: Arial; font-size: 11px;">
+                        {{time.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 10px;" id="chart">
+        <div class="col-lg-6" id="r1">
+            <h3>Overall Usage</h3>
+            <div *ngIf="barChartData[0]['data'].length > 0">
+                <canvas height="140vh" baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                    [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                    [chartType]="barChartType" [colors]="barChartColors">
+                </canvas>
+            </div>
+            <div *ngIf="barChartData[0]['data'].length === 0"
+                style="position: absolute; left: 45%; top: 45%;color: red;">
+                No Data Available
+            </div>
+        </div>
+        <div class="col-lg-6" id="r2">
+            <h3>Usage by Others</h3>
+            <div *ngIf="barChartData3[0]['data'].length > 0">
+                <canvas height="140vh" baseChart [datasets]="barChartData3" [labels]="barChartLabels3"
+                    [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                    [chartType]="barChartType" [colors]="barChartColors3">
+                </canvas>
+            </div>
+            <div *ngIf="barChartData3[0]['data'].length === 0 "
+                style="position: absolute; left: 45%; top: 45%;color: red;">
+                No Data Available
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6" id="r4">
+            <h3>Usage by Teachers</h3>
+            <div *ngIf="barChartData1[0]['data'].length > 0">
+                <canvas height="140vh" baseChart [datasets]="barChartData1" [labels]="barChartLabels1"
+                    [options]="barChartOptions" [plugins]="barChartPlugins" [chartType]="barChartType"
+                    [colors]="barChartColors1">
+                </canvas>
+            </div>
+            <div *ngIf="barChartData1[0]['data'].length === 0 "
+                style="position: absolute; left: 45%; top: 45%;color: red;">
+                No Data Available
+            </div>
+        </div>
+        <div class="col-lg-6" id="r3">
+            <h3>Usage by Students</h3>
+            <div *ngIf="barChartData2[0]['data'].length > 0">
+                <canvas height="140vh" baseChart [datasets]="barChartData2" [labels]="barChartLabels2"
+                    [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                    [chartType]="barChartType" [colors]="barChartColors2">
+                </canvas>
+            </div>
+            <div *ngIf="barChartData2[0]['data'].length === 0 "
+                style="position: absolute; left: 45%; top: 45%;color: red;">
+                No Data Available
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+</div>
+<div id="spinner">
+    <div class="loading">Loading&#8230;</div>
+</div>

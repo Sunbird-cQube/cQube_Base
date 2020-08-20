@@ -4,20 +4,50 @@
   remote_user: root
   vars_files:
     - config.yml
+    - datasource_config.yml
+    - .version
 
   roles:
           - create_base_dir
-          - java
-          - python
+          - { role: java, tags: install }  
+          - { role: python, tags: install }
           - createdb
-          - keycloak
-          - grafana
           - python_flask
+          - keycloak
           - angular
           - angular_admin
-          - nifi_install
-          - nifi_crc
-          - nifi_static
-          - nifi_attendance
-          - nifi_semester
-          - nifi_infra
+          - prometheus
+          - { role: grafana, tags: install }
+          - { role: nifi_params, tags: install }
+          - nifi_install    
+
+          - role: nifi_crc
+            tags: install
+            when: nifi_crc
+
+          - role: nifi_static
+            tags: install
+            when: nifi_static
+
+          - role: nifi_attendance
+            tags: install
+            when: nifi_attendance
+
+          - role: nifi_semester
+            tags: install
+            when: nifi_semester
+
+          - role: nifi_infra
+            tags: install
+            when: nifi_infra
+
+          - role: nifi_diksha
+            tags: install
+            when: nifi_diksha
+
+          - role: nifi_telemetry
+            tags: install
+            when: nifi_telemetry
+
+          - { role: nifi_scheduler, tags: install }
+          

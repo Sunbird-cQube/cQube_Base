@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h4 id="heading" style="color: #284d8a;">Download missing data</h4>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 5%;">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" style=" background-color: rgb(223, 223, 223);padding: 2%;">
+            <table #DataTable id="table" class="display nowrap" width="100%"
+                style="font-size: 12px; text-align: center;">
+                <thead style="background-color: rgb(241, 241, 241);">
+                    <tr>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Missing school data (Geo-location)</td>
+                        <td><button class="btn btn-primary" style="padding: 0.5% 2% 0.5% 2%"
+                                (click)="school_Invalid_Data()">Download</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="spinner" style="display: none;">
+    <div class="loading">Loading&#8230;</div>
+</div>

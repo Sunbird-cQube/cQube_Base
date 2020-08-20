@@ -18,7 +18,12 @@ router.post('/stdAttendance', auth.authController, async (req, res) => {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
                 logger.info('--- attendance summary api response sent---');
-                res.send(summaryData)
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
+
             }
         });
     } catch (e) {
@@ -42,7 +47,11 @@ router.post('/sem', auth.authController, async (req, res) => {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
                 logger.info('--- semester summary api response sent---');
-                res.send(summaryData)
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
             }
         });
     } catch (e) {
@@ -66,7 +75,11 @@ router.post('/crc', auth.authController, async (req, res) => {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
                 logger.info('--- crc summary api response sent---');
-                res.send(summaryData)
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
             }
         });
     } catch (e) {
@@ -90,7 +103,11 @@ router.post('/infra', auth.authController, async (req, res) => {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
                 logger.info('--- infra summary api response sent---');
-                res.send(summaryData)
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
             }
         });
     } catch (e) {
@@ -114,7 +131,11 @@ router.post('/inspec', auth.authController, async (req, res) => {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
                 logger.info('--- inspection summary api response sent---');
-                res.send(summaryData)
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
             }
         });
     } catch (e) {
@@ -138,7 +159,11 @@ router.post('/stDist', auth.authController, async (req, res) => {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
                 logger.info('--- district static summary api response sent---');
-                res.send(summaryData)
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
             }
         });
     } catch (e) {
@@ -162,7 +187,11 @@ router.post('/stBlock', auth.authController, async (req, res) => {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
                 logger.info('--- block static summary api response sent---');
-                res.send(summaryData)
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
             }
         });
     } catch (e) {
@@ -186,7 +215,11 @@ router.post('/stCluster', auth.authController, async (req, res) => {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
                 logger.info('--- cluster static summary api response sent---');
-                res.send(summaryData)
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
             }
         });
     } catch (e) {
@@ -210,7 +243,11 @@ router.post('/stSchool', auth.authController, async (req, res) => {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
                 logger.info('--- school static summary api response sent---');
-                res.send(summaryData)
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
             }
         });
     } catch (e) {

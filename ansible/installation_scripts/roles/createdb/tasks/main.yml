@@ -1,4 +1,13 @@
 --- 
-- include_tasks: install_postgress.yml
+- include_tasks: install_postgres.yml
+  when: pg_install_flag
+  tags: install
+
+- include_tasks: install_postgres.yml
+  tags: update
+
 - include_tasks: keycloak_user.yml
+  tags: install
+
 - include_tasks: initiate_infra.yml
+  tags: [ install, update ]

@@ -1,0 +1,27 @@
+---
+- name: Creating realm admin user
+  shell: ./kcadm.sh create users -r {{ realm_name }} -s username={{ keycloak_adm_user }} -s enabled=true --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  tags: install
+
+- name: Reseting the password for realm admin user
+  shell: ./kcadm.sh set-password -r {{ realm_name }} --username {{ keycloak_adm_user }} --new-password {{ keycloak_adm_passwd }} --temporary --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  tags: install
+
+- name: Assigning roles to realm admin user
+  shell: ./kcadm.sh add-roles --uusername {{ keycloak_adm_user }} --rolename admin -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  tags: install
+
+- name: Removing default assigned roles to realm admin user
+  shell: ./kcadm.sh remove-roles --uusername {{ keycloak_adm_user }} --rolename {{ item }} -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  loop: 
+    - offline_access
+    - uma_authorization
+  tags: install

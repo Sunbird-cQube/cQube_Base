@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div *ngIf="skul; else ng_else" style="float: right; " id="select">
-                        <em class="fa fa-download" title="Download Report" id="download"
+                        <em class="fa fa-download" title="Download Report" id="download1"
                             style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
                             (click)="downloadReportofState(downloadType)"></em>
                         <select class="dwnld" id="downloader"
@@ -72,15 +72,28 @@
             </div>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-sm-12">
+            <p style="text-align: justify; font-size: 11px;">
+                <strong> About the dashboard:</strong> The dashboard here provides insights on selected infrastructure metrics
+                calculated using the UDISE data. A key feature of this dashboard is its ability to Zoom In and Out at
+                various administrative levels. The administrative levels include District, Block and Cluster. This has
+                been done to provide relevant insights at the appropriate administrative level. In addition to
+                visualising data, the dashboard also gives you the ability to download the data at various
+                administrative levels. This feature has been enabled to provide freedom to power users to derive
+                additional insights that may not be captured in this dashboard. You can download the data using the
+                dropdown option on the top right corner.
+            </p>
+        </div>
+    </div>
     <div class="col-sm-12">
-        <div class="row" style="margin-top: 0.5%;">
+        <div class="row">
             <div class="col-sm-6">
             </div>
             <div class="col-sm-6">
             </div>
         </div>
-        <div class="row" style="margin-top: 5px; height: 80vh;">
+        <div class="row" style="height: 80vh;">
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-6">
@@ -110,13 +123,17 @@
                         </select>
                     </div>
                 </div>
+                <p style="text-align: justify; font-size: 11px;">
+                    <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
+                    dropdown below. You can alter the metrics to update the scatter plot.
+                </p>
                 <div class="row">
-                    <canvas id="myChart" height="210vh"></canvas>
+                    <canvas id="myChart" height="170vh"></canvas>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="row">
-                    <select
+                    <select id="choose_dist"
                         style="margin-right: 10px; padding: 1px;margin-left: 2%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                         <option [value]="myDistrict" disabled selected="selected">Choose a District
@@ -127,7 +144,7 @@
                         </option>
                     </select>
 
-                    <select [hidden]="blockHidden"
+                    <select [hidden]="blockHidden" id="choose_block"
                         style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                         <option [value]="myBlock" disabled selected="selected">Choose a Block
@@ -137,7 +154,7 @@
                         </option>
                     </select>
 
-                    <select [hidden]="clusterHidden"
+                    <select [hidden]="clusterHidden" id="choose_cluster"
                         style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
                         <option [value]="myCluster" disabled selected="selected">Choose a Cluster
@@ -149,6 +166,10 @@
                         </option>
                     </select>
                 </div>
+                <p style="text-align: justify; font-size: 11px;">
+                    <strong> NOTE:</strong> The table provides information about the various metrics. You can sort the
+                    entire table based on any metrics available in this table.
+                </p>
                 <div class="myDiv" style="margin-top: 2%;">
                     <table #dataTable id="table" class="display responsive cell-border"
                         style="font-size: 11px; text-align: center; width: 100%; border: 1px solid gray;">
@@ -159,6 +180,6 @@
         </div>
     </div>
 </div>
-<div id="spinner" style="display: none;">
+<div id="spinner" style="display: block;">
     <div id="loader" class="loading">Loading&#8230;</div>
 </div>

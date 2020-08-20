@@ -1,0 +1,3 @@
+---
+- include_tasks: nifi_scheduler.yml
+  tags: [ install, update ]

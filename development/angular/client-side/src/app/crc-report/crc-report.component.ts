@@ -104,6 +104,7 @@ export class CrcReportComponent implements OnInit {
 
   myData;
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
+    service.logoutOnTokenExpire();
     localStorage.removeItem('resData');
   }
 
@@ -172,7 +173,7 @@ export class CrcReportComponent implements OnInit {
       let a = this.result.schoolsVisitedCount
       this.result = this.result.visits;
 
-      this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
+      this.modes = ['Dist Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
 
       this.reportData = this.crcDistrictsNames = this.result;
       for (var i = 0; i < this.result.length; i++) {
@@ -241,7 +242,7 @@ export class CrcReportComponent implements OnInit {
         let a = this.result.schoolsVisitedCount
         this.result = this.result.visits;
 
-        this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
+        this.modes = ['Dist Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
 
         if (this.result.length > 0) {
           var labels = [];
@@ -784,16 +785,16 @@ export class CrcReportComponent implements OnInit {
 
   public downloadType: string;
   downloadReportofState(downloadType) {
-    if (downloadType === 'Dist_Wise') {
+    if (downloadType == 'Dist Wise') {
       this.distWise();
     }
-    if (downloadType === 'Block_Wise') {
+    if (downloadType == 'Block Wise') {
       this.blockWise();
     }
-    if (downloadType === 'Cluster_Wise') {
+    if (downloadType == 'Cluster Wise') {
       this.clusterWise();
     }
-    if (downloadType === 'School_Wise') {
+    if (downloadType == 'School Wise') {
       this.schoolWise();
     }
   }

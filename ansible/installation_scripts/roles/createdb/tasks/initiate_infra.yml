@@ -1,23 +1,30 @@
-- name: ansible create directory with mode setting example
+- name: Create directory with mode setting 
   file:
     path: /tmp/postgres
+    owner: postgres
     state: directory
-    mode: "u=rw,g=wx,o=rwx"
+    mode: "1755"
+  tags: install
 
 - name: copy csv to /tmp/postgres
   copy:
     src: infrastructure_master.csv
     dest: /tmp/postgres
-
+    owner: postgres
+    mode: "0644"
+  tags: [ install, update ]
+ 
 - name: Run queries from SQL script
   become: true
   become_user: postgres
   postgresql_query:
     db: "{{ db_name }}"
     path_to_script: cQube.sql
+  tags: [ install, update ]
 
 - name: Copying table structure from csv file
   shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy infrastructure_staging_init(infrastructure_name,infrastructure_category,status) from '/tmp/postgres/infrastructure_master.csv' delimiter ',' csv header;"
+  tags: [ install, update ]
 
 - name: Run queries from SQL script
   become: true
@@ -25,5 +32,6 @@
   postgresql_query:
     db: "{{ db_name }}"
     path_to_script: config.sql
-
-
+  tags: [ install, update ]  
+  notify:
+   - restart postgresql

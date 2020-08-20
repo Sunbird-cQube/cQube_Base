@@ -1,0 +1,10 @@
+[Unit]
+Description=node_exporter daemon
+After=network.target
+
+[Service]
+WorkingDirectory={{ base_dir }}/cqube/admin_dashboard/node_exporter/
+ExecStart={{ base_dir }}/cqube/admin_dashboard/node_exporter/node_exporter 
+
+[Install]
+WantedBy=multi-user.target

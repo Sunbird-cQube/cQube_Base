@@ -5,8 +5,28 @@ const cluster_wise_data = require('./controller/attendanceRoutes/cluster_wise_da
 const school_wise_data = require('./controller/attendanceRoutes/school_wise_data');
 const getDateRange = require('./controller/attendanceRoutes/getDateRange');
 
-const roleLogin = require('./controller/users/roleBasedLogin');
 const changePasswd = require('./controller/users/changePassword');
+
+//deeksha
+const deekshaData = require('./controller/diksha/diksha');
+const dikshaTable = require('./controller/diksha/dikshaTable');
+const diskhaBarChart =  require('./controller/diksha/diksha-bar-chart');
+
+//Show telemetry
+const showDistTelemetry = require('./controller/telemetry/showTelemetry/distTelemetryData');
+const showBlockTelemetry = require('./controller/telemetry/showTelemetry/blockTelemetryData');
+const showClusterTelemetry = require('./controller/telemetry/showTelemetry/clusterTelemetryData');
+const showSchoolTelemetry = require('./controller/telemetry/showTelemetry/schoolTelemetryData');
+
+//completion report...
+const sem_completionDist = require('./controller/completionReports/semester/districtWise')
+const sem_completionBlock = require('./controller/completionReports/semester/blockWise')
+const sem_completionCluster = require('./controller/completionReports/semester/clusterWise')
+const sem_completionSchool = require('./controller/completionReports/semester/schoolWise')
+
+const school_invalid = require('./controller/completionReports/school_invalid');
+
+const telemetryData = require('../api/controller/telemetry/telemetryData');
 
 // const crcData = require('./controller/users/crcData');
 // crc files
@@ -50,7 +70,6 @@ router.use('/attendance', school_wise_data);
 router.use('/attendance', getDateRange)
 
 // user details routes
-router.use('/roleBasedLogin', roleLogin);
 router.use('/changePassword', changePasswd);
 
 // Infra
@@ -63,5 +82,25 @@ router.use('/infraMap', infraMapDistWise);
 router.use('/infraMap', infraMapBlockWise);
 router.use('/infraMap', infraMapClusterWise);
 router.use('/infraMap', infraMapSchoolWise);
+
+router.use('/deeksha', deekshaData);
+router.use('/telemetry', telemetryData);
+router.use('/diksha', deekshaData);
+router.use('/dikshaTable', dikshaTable);
+router.use('/dikshaBarChart', diskhaBarChart);
+
+// Semester completion report
+router.use('/semCompDist', sem_completionDist);
+router.use('/semCompBlock', sem_completionBlock);
+router.use('/semCompCluster', sem_completionCluster);
+router.use('/semCompSchool', sem_completionSchool);
+
+router.use('/school_invalid', school_invalid);
+
+//show telemetry
+router.use('/showDistTelemetry', showDistTelemetry);
+router.use('/showBlockTelemetry', showBlockTelemetry);
+router.use('/showClusterTelemetry', showClusterTelemetry);
+router.use('/showSchoolTelemetry', showSchoolTelemetry);
 
 module.exports = router;

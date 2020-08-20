@@ -1,0 +1,71 @@
+---
+- name: Checking the realm
+  shell: ./kcadm.sh get realms --fields realm,enabled --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  register: result
+  tags: install
+
+- name: Parsing the output
+  set_fact:
+    realm_created: True
+  loop: '{{ result.stdout }}'
+  when: item.realm == "cQube"
+  tags: install
+
+- name: Deleting the existing realm
+  shell: ./kcadm.sh delete realms/{{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  when: realm_created
+  tags: install
+
+- name: Creating a kc_templates directory
+  file:
+    path: "{{ base_dir }}/cqube/keycloak/kc_templates"
+    state: directory
+  tags: [ install, update ]
+
+- name: Converting the OTP option to boolean
+  set_fact: 
+    temp_config_otp: true 
+  when: keycloak_config_otp | bool
+  tags: [ install, update ]
+
+- name: Converting the OTP option to boolean
+  set_fact:
+    temp_config_otp: false
+  when: not keycloak_config_otp | bool
+  tags: [ install, update ]
+  
+- name: Creating the template for realm
+  template:
+    src: cQube_realm.json.j2
+    dest: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm.json"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    mode: '0644'
+  tags: install
+
+- name: Creating the realm
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create realms -f {{ cQube_realm_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    executable: /bin/bash
+  tags: install
+
+# updating the config_otp
+
+- name: Creating the json for config_otp option
+  template:
+    src: cQube_realm_config_otp.json.j2
+    dest: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm_config_otp.json"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    mode: '0644'
+  tags: update
+
+- name: Updating the config_otp option to realm
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh update 'authentication/required-actions/CONFIGURE_TOTP' -r {{ realm_name }} -f {{ cQube_realm_config_otp_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    executable: /bin/bash
+  tags: update

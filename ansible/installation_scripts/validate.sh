@@ -17,6 +17,12 @@ if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
 fi
 }
 
+check_kc_config_otp(){
+if ! [[ $2 == "true" || $2 == "false" ]]; then
+    echo "Error - Please enter either true or false for $1"; fail=1
+fi
+}
+
 check_s3_bucket_naming()
 {
 s3_bucket_naming_status=0
@@ -54,10 +60,12 @@ echo """1. Skip the Postgres installation (Will backup the data locally for futu
                 pg_dump -h localhost -U $bk_db_uname -W -F t $bk_db_name > `date +%Y%m%d%H%M`$bk_db_name.tar
                 if [[ ! $? == 0 ]]; then
                     echo "There is a problem dumping the database"; tput sgr0 ; fail=1; break;
-                fi
-                echo "Backed up the database..."
-                echo "Backup file will be uploaded to S3 bucket, once the installation completes."
-		sudo sed -i "s/- include_tasks: install_postgress.yml/#&/g" roles/createdb/tasks/main.yml
+		    exit 1
+	        else
+                  echo "Database backup is completed"
+	        fi
+		      #sudo sed -i "s/- include_tasks: install_postgress.yml/#&/g" roles/createdb/tasks/main.yml
+          sudo sed -i "s/^pg_install_flag:.*/pg_install_flag: false/g" roles/createdb/vars/main.yml
         break
         ;;
             2 )
@@ -136,7 +144,7 @@ else
 fi
 
 #addition of all memories
-if [[ $(($final_java_arg_2+$final_java_arg_3+$final_work_mem+$final_share_mem)) -ge $mb ]] ; then
+if [[ $(($final_java_arg_3+$final_work_mem+$final_share_mem)) -ge $mb ]] ; then
     echo "Error - Memory values are more than the RAM size" ; fail=1
 fi
 
@@ -149,9 +157,8 @@ fi
 }
 
 check_sys_user(){
-    who | grep $2 > /dev/null 2>&1
-    result=$?
-    if [[ `egrep -i ^$2: /etc/passwd ; echo $?` != 0 && $result != 0 ]]; then 
+    result=`who | head -1 | awk '{print $1}'`
+    if [[ `egrep -i ^$2: /etc/passwd ; echo $?` != 0 && $result != $2 ]]; then 
         echo "Error - Please check the system_user_name."; fail=1
     fi
 }
@@ -200,13 +207,6 @@ if [[ $aws_key_status == 0 ]]; then
             echo "Error: [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in config.yml"; fail=1
         fi
 fi
-}
-
-check_nifi_port(){
-    port_status=$(sudo lsof -i:$2)
-    if [ $? == 0 ]; then
-        echo "Error - Port $2 is already running. Please change the port."; fail=1
-    fi
 }
 
 check_db_naming(){
@@ -277,10 +277,9 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "nifi_port" "s3_access_key" "s3_secret_key" \
+declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" "shared_buffers" "work_mem" "java_arg_2" "java_arg_3" \
-		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "db_connection_url" "db_driver_dir" \
-		"db_driver_class_name" "nifi_error_dir") 
+		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp") 
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -294,6 +293,9 @@ shared_buffers=$(awk ''/^shared_buffers:' /{ if ($2 !~ /#.*/) {print $2}}' confi
 work_mem=$(awk ''/^work_mem:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 java_arg_2=$(awk ''/^java_arg_2:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 java_arg_3=$(awk ''/^java_arg_3:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+
+# Making default postgres install true
+sudo sed -i "s/^pg_install_flag:.*/pg_install_flag: true/g" roles/createdb/vars/main.yml
 
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}
@@ -360,13 +362,6 @@ case $key in
           check_ip $key $value
        fi
        ;;
-   nifi_port)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       else
-          check_nifi_port $key $value
-       fi
-       ;;
    db_user)
        if [[ $value == "" ]]; then
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
@@ -396,6 +391,13 @@ case $key in
           check_db_password $key $value
        fi
        ;;
+   keycloak_config_otp)
+       if [[ $value == "" ]]; then
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+       else
+          check_kc_config_otp $key $value
+       fi
+       ;;
    db_password)
        if [[ $value == "" ]]; then
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
@@ -408,21 +410,6 @@ case $key in
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
           check_api_endpoint $key $value
-       fi
-       ;;
-   db_connection_url)
-       if [[ ! "$value" =~ ^(jdbc:postgresql://localhost:5432/)$ ]]; then
-          echo "Error - Valid values for $key is jdbc:postgresql://localhost:5432/"; fail=1
-       fi
-       ;;
-   db_driver_dir)
-       if [[ ! "$value" =~ ^(jars/postgresql-42.2.10.jar)$ ]]; then
-          echo "Error - Valid values for $key is jars/postgresql-42.2.10.jar"; fail=1
-       fi
-       ;;
-   db_driver_class_name)
-       if [[ ! "$value" =~ ^(org.postgresql.Driver)$ ]]; then
-          echo "Error - Valid values for $key is org.postgresql.Driver"; fail=1
        fi
        ;;
    shared_buffers)
@@ -445,11 +432,6 @@ case $key in
           echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
        else
            check_mem_variables $shared_buffers $work_mem $java_arg_2 $java_arg_3
-       fi
-       ;;
-   nifi_error_dir)
-       if [[ ! "$value" =~ ^(/cqube/nifi/nifi_errors)$ ]]; then
-          echo "Error - Valid values for $key is /cqube/nifi/nifi_errors"; fail=1
        fi
        ;;
    aws_default_region)

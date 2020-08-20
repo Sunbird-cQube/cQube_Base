@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { ExportToCsv } from 'export-to-csv';
 import * as data from './../../assets/india.json';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
-
+import { KeycloakSecurityService } from '../keycloak-security.service';
 var globalMap;
 
 @Component({
@@ -15,7 +15,33 @@ var globalMap;
   styleUrls: ['./student-attendance.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudengtAttendanceComponent implements OnInit {
+export class StudengtAttendanceComponent implements OnInit, OnDestroy {
+  impressionId = Math.floor(100000 + Math.random() * 900000);
+  pageId = "Student_attendance";
+  userId;
+  type = "";
+  date = new Date();
+  edate;
+  end_time;
+  public btnId;
+  start_time = Math.floor(this.date.getTime() / 1000.0);
+  public telemData = {}
+
+  ngOnDestroy() {
+    // this.edate = new Date();
+    // // this.end_time = Math.floor(this.edate.getTime() / 1000.0);
+
+    // var dateObj = {
+    //   year: this.edate.getFullYear(),
+    //   month: this.edate.getMonth() + 1,
+    //   date: this.edate.getDate()
+    // }
+
+    // this.service.telemetry(dateObj).subscribe(res => {
+    //   console.log(res);
+    // });
+  }
+
   public disabled = false;
   public title: string = '';
   public titleName: string = '';
@@ -71,7 +97,8 @@ export class StudengtAttendanceComponent implements OnInit {
   public month;
   public element;
 
-  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
+  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef) {
+    service.logoutOnTokenExpire();
     service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -93,6 +120,10 @@ export class StudengtAttendanceComponent implements OnInit {
           month: this.month,
           year: this.year
         };
+        // var eventType = "pageLoad";
+        // this.btnId = '';
+        // var date = new Date();
+        // this.trackInteract(date, this.btnId, eventType, undefined);
         this.districtWise();
       }
 
@@ -160,7 +191,41 @@ export class StudengtAttendanceComponent implements OnInit {
   public fileName: any;
   public reportData: any = [];
 
-  downloadRoport() {
+  globalId;
+
+  downloadRoport(event) {
+    if (this.globalId == this.myDistrict) {
+      var distData = {};
+      this.districtData.find(a => {
+        if (a.id == this.myDistrict) {
+          distData = a;
+        }
+      });
+      this.getTelemetryData(distData, event.target.id, "district");
+    }
+    if (this.globalId == this.myBlock) {
+      var blockData = {};
+      this.blockData.find(a => {
+        if (a.id == this.myBlock) {
+          blockData = a;
+        }
+      });
+      this.getTelemetryData(blockData, event.target.id, "block");
+    }
+    if (this.globalId == this.myCluster) {
+      var clusterData = {};
+      this.clusterData.find(a => {
+        if (a.id == this.myCluster) {
+          clusterData = a;
+        }
+      });
+      this.getTelemetryData(clusterData, event.target.id, "cluster");
+    }
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
+
     if (this.reportData.length > 0) {
       const options = {
         fieldSeparator: ',',
@@ -176,31 +241,36 @@ export class StudengtAttendanceComponent implements OnInit {
       };
       const csvExporter = new ExportToCsv(options);
       csvExporter.generateCsv(this.reportData);
+
     } else {
       this.loaderAndErr();
     }
   }
 
   public month_year;
-  getMonth() {
+  getMonth(event) {
     var month = this.getMonthYear[`${this.year}`].find(a => a.month === this.month);
     this.dateRange = `${month.data_from_date} to ${month.data_upto_date}`;
     this.month_year = {
       month: this.month,
       year: this.year
     };
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
     if (this.skul) {
       if (this.levelWise === "District") {
         this.districtWise();
       }
       if (this.levelWise === "Block") {
-        this.blockWise();
+        this.blockWise(event);
       }
       if (this.levelWise === "Cluster") {
-        this.clusterWise();
+        this.clusterWise(event);
       }
       if (this.levelWise === "School") {
-        this.schoolWise();
+        this.schoolWise(event);
       }
     } else {
       if (this.dist && this.myDistrict !== null) {
@@ -230,6 +300,23 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   public myData;
+  homeClick(event) {
+    this.globalId = undefined;
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
+    this.districtWise();
+  }
+  distHierarchy(event) {
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
+    this.districtWise();
+  }
+
+  districtData = [];
   async districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
@@ -240,7 +327,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res['distData'];
+        this.districtData = this.mylatlngData = res['distData'];
         var sorted = this.mylatlngData.sort((a, b) => (a.label > b.label) ? 1 : -1);
         let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
@@ -263,7 +350,6 @@ export class StudengtAttendanceComponent implements OnInit {
               "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
             );
             markerIcon.addTo(globalMap).bindPopup(popup);
-
             this.popups(markerIcon, this.markers[i]);
           }
         }
@@ -299,7 +385,13 @@ export class StudengtAttendanceComponent implements OnInit {
     document.getElementById('home').style.display = 'none';
   }
 
-  blockWise() {
+  blockWise(event) {
+    // console.log(event.target.id);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
+
     this.commonAtStateLevel();
     this.levelWise = "Block";
     if (this.months.length > 0) {
@@ -371,7 +463,12 @@ export class StudengtAttendanceComponent implements OnInit {
     ;
   }
 
-  schoolWise() {
+  schoolWise(event) {
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
+
     this.commonAtStateLevel();
     this.levelWise = "School";
     if (this.months.length > 0) {
@@ -412,9 +509,11 @@ export class StudengtAttendanceComponent implements OnInit {
             markerIcon.on('mouseover', function (e) {
               this.openPopup();
             });
+
             markerIcon.on('mouseout', function (e) {
               this.closePopup();
             });
+            markerIcon.on('click', this.onClickSchool, this);
 
             this.layerMarkers.addLayer(markerIcon);
             markerIcon.myJsonData = this.markers[i];
@@ -450,7 +549,13 @@ export class StudengtAttendanceComponent implements OnInit {
     ;
   }
 
-  clusterWise() {
+
+  clusterWise(event) {
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, undefined);
+
     this.commonAtStateLevel();
 
     this.levelWise = "Cluster";
@@ -565,14 +670,23 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
 
-  clickedMarker(label) {
+  clickedMarker(event, label) {
+    var level;
+
+    // var eventType = event.type;
+    // this.btnId = 'marker';
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, label.id);
+
     if (this.districtsIds.includes(label.id)) {
+      level = "district";
       localStorage.setItem('dist', label.name);
       localStorage.setItem('distId', label.id);
       this.myDistData(label.id);
     }
 
     if (this.blocksIds.includes(label.id)) {
+      level = "block";
       if (this.skul) {
         localStorage.setItem('dist', label.dist);
         localStorage.setItem('distId', label.distId);
@@ -586,13 +700,24 @@ export class StudengtAttendanceComponent implements OnInit {
     }
 
     if (this.clusterIds.includes(label.id)) {
+      level = "cluster";
       localStorage.setItem('dist', label.dist);
       localStorage.setItem('distId', label.distId);
       localStorage.setItem('block', label.block);
       localStorage.setItem('blockId', label.blockId);
       localStorage.setItem('cluster', label.name);
       localStorage.setItem('clusterId', label.id);
+
       this.myClusterData(label.id);
+    }
+    if (event.latlng) {
+      var obj = {
+        id: label.id,
+        name: label.name,
+        lat: event.latlng.lat,
+        lng: event.latlng.lng
+      }
+      this.getTelemetryData(obj, event.type, level);
     }
   };
 
@@ -609,24 +734,42 @@ export class StudengtAttendanceComponent implements OnInit {
     }
   }
 
-
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('dist');
-    localStorage.removeItem('distId');
-    localStorage.removeItem('block');
-    localStorage.removeItem('blockId');
-    localStorage.removeItem('schStd');
-    this.router.navigate(['/']);
+  onClickSchool(event) {
+    var level = "school";
+    if (event.latlng) {
+      var obj = {
+        id: event.target.myJsonData.id,
+        name: event.target.myJsonData.name,
+        lat: event.target.myJsonData.lat,
+        lng: event.target.myJsonData.lng
+      }
+      this.getTelemetryData(obj, event.type, level);
+    }
   }
 
   onClick_Marker(event) {
     var marker = event.target;
     this.markerData = marker.myJsonData;
-    this.clickedMarker(marker.myJsonData);
+    this.clickedMarker(event, marker.myJsonData);
   }
 
+  distSelect(event, data) {
+    var distData = {};
+    this.districtData.find(a => {
+      if (a.id == data) {
+        distData = a;
+      }
+    });
+    this.getTelemetryData(distData, event.type, "district");
 
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, data);
+    this.myDistData(data);
+  }
+
+  blockData = [];
   myDistData(data) {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -653,7 +796,7 @@ export class StudengtAttendanceComponent implements OnInit {
       localStorage.setItem('dist', obj.name);
       localStorage.setItem('distId', data);
 
-      this.myDistrict = data;
+      this.globalId = this.myDistrict = data;
       this.myBlock = null;
 
       this.month_year['id'] = data;
@@ -662,7 +805,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
-        this.mylatlngData = res['blockData'];
+        this.blockData = this.mylatlngData = res['blockData'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['id'] === current['id']);
           if (object.length == 0) previous.push(current);
@@ -729,6 +872,22 @@ export class StudengtAttendanceComponent implements OnInit {
     globalMap.addLayer(this.layerMarkers);
   }
 
+  blockSelect(event, data) {
+    var blockData = {};
+    this.blockData.find(a => {
+      if (a.id == data) {
+        blockData = a;
+      }
+    });
+    this.getTelemetryData(blockData, event.type, "block");
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, data);
+    this.myBlockData(data);
+  }
+
+  clusterData = [];
   myBlockData(data) {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -764,7 +923,7 @@ export class StudengtAttendanceComponent implements OnInit {
       this.blockName = { id: data, name: obj.name };
       this.hierName = obj.name;
 
-      this.myBlock = data;
+      this.globalId = this.myBlock = data;
       this.myDistrict = Number(localStorage.getItem('distId'));
       this.myCluster = null;
 
@@ -773,7 +932,7 @@ export class StudengtAttendanceComponent implements OnInit {
       }
       this.month_year['id'] = data;
       this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
-        this.mylatlngData = res['clusterDetails'];
+        this.clusterData = this.mylatlngData = res['clusterDetails'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['id'] === current['id']);
           if (object.length == 0) previous.push(current);
@@ -847,6 +1006,21 @@ export class StudengtAttendanceComponent implements OnInit {
     document.getElementById('home').style.display = 'block';
   }
 
+
+  clusterSelect(event, data) {
+    var clusterData = {};
+    this.clusterData.find(a => {
+      if (a.id == data) {
+        clusterData = a;
+      }
+    });
+    this.getTelemetryData(clusterData, event.type, "cluster");
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType, data);
+    this.myClusterData(data);
+  }
   myClusterData(data) {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -909,7 +1083,7 @@ export class StudengtAttendanceComponent implements OnInit {
       this.clustName = { id: data };
       this.hierName = obj.name;
 
-      this.myCluster = data;
+      this.globalId = this.myCluster = data;
       this.myBlock = blockId;
       this.myDistrict = Number(localStorage.getItem('distId'));
 
@@ -956,6 +1130,8 @@ export class StudengtAttendanceComponent implements OnInit {
           markerIcon.on('mouseout', function (e) {
             this.closePopup();
           });
+
+          markerIcon.on('click', this.onClickSchool, this);
 
           this.layerMarkers.addLayer(markerIcon);
           markerIcon.myJsonData = this.markers[i];
@@ -1089,6 +1265,67 @@ export class StudengtAttendanceComponent implements OnInit {
     return {
       generateGradient
     };
+  }
+
+  // trackInteract(date, eventId, type, id) {
+  //   var timeStamp = Math.floor(date.getTime() / 1000.0);
+  //   this.telemData.interact.push(
+  //     {
+  //       eventId: eventId, // id of the interaction like button_id, dropdown_id etc
+  //       uid: this.userId, // userid
+  //       type: type, // click,select,search
+  //       id: id,
+  //       pageId: this.telemData.impression.pageId, // unique id of the page where user is interacting
+  //       impressionId: this.telemData.impression.impressionId,
+  //       timestamp: timeStamp
+  //     }
+  //   );
+  // }
+  getTelemetryData(data, event, level) {
+    this.service.telemetryData = [];
+    var obj = {};
+    if (data.id != undefined) {
+      if (event == 'download') {
+        obj = {
+          pageId: "student_attendance",
+          uid: this.keyCloakSevice.kc.tokenParsed.sub,
+          event: event,
+          level: level,
+          locationid: data.id,
+          locationname: data.name,
+          lat: data.lat,
+          lng: data.lng,
+          download: 1
+        }
+        this.service.telemetryData.push(obj);
+      } else {
+        obj = {
+          pageId: "student_attendance",
+          uid: this.keyCloakSevice.kc.tokenParsed.sub,
+          event: event,
+          level: level,
+          locationid: data.id,
+          locationname: data.name,
+          lat: data.lat,
+          lng: data.lng,
+          download: 0
+        }
+        this.service.telemetryData.push(obj);
+      }
+
+      this.edate = new Date();
+      var dateObj = {
+        year: this.edate.getFullYear(),
+        month: ("0" + (this.edate.getMonth() + 1)).slice(-2),
+        date: ("0" + (this.edate.getDate())).slice(-2),
+        hour: ("0" + (this.edate.getHours())).slice(-2),
+      }
+
+      this.service.telemetry(dateObj).subscribe(res => {
+      }, err => {
+        console.log(err);
+      });
+    }
   }
 
 }

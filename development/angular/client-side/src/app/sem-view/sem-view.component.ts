@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { ExportToCsv } from 'export-to-csv';
 import * as data from '../../assets/india.json';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
+import { KeycloakSecurityService } from '../keycloak-security.service';
 
 var globalMap;
 
@@ -15,7 +16,29 @@ var globalMap;
   styleUrls: ['./sem-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SemViewComponent implements OnInit {
+export class SemViewComponent implements OnInit, OnDestroy {
+
+  impressionId = Math.floor(100000 + Math.random() * 900000);
+  pageId = "Semester";
+  userId;
+  type = "";
+  public btnId;
+  date = new Date();
+  edate;
+  end_time;
+  start_time = Math.floor(this.date.getTime() / 1000.0);
+  // public telemData = {
+  //   impression: {
+  //     pageId: this.pageId,
+  //     impressionId: this.impressionId, // unique id of the page
+  //     uid: this.userId, // userid
+  //     type: this.type, // click,select,search
+  //     startTime: this.start_time, // starttime when user comes to that page
+  //     endTime: this.end_time
+  //   },
+  //   interact: []
+  // }
+
   public title: string = '';
   public titleName: string = '';
   public colors: any;
@@ -66,16 +89,46 @@ export class SemViewComponent implements OnInit {
   public blockId: any = '';
   public clusterId: any = '';
 
+  public semesters = [{ id: 1, name: "Semester 1" }, { id: 2, name: "Semester 2" }];
+  public semester = 2;
+  public levelWise = '';
+
   public myData;
 
   constructor(
     public http: HttpClient,
     public service: AppServiceComponent,
     public router: Router,
+    public keyCloakSevice: KeycloakSecurityService,
     private changeDetection: ChangeDetectorRef,
-  ) { }
+  ) {
+    service.logoutOnTokenExpire();
+    // this.userId = this.telemData.impression.uid = keyCloakSevice.kc.tokenParsed.sub;
+    // service.telemetryData[1].Semester.push(this.telemData);
+  }
+
+  ngOnDestroy() {
+    // this.edate = new Date();
+    // this.end_time = Math.floor(this.edate.getTime() / 1000.0);
+    // this.telemData.impression.endTime = this.end_time;
+
+    // var dateObj = {
+    //   year: this.edate.getFullYear(),
+    //   month: this.edate.getMonth() + 1,
+    //   date: this.edate.getDate()
+    // }
+
+    // this.service.telemetry(dateObj).subscribe(res => {
+    //   console.log(res);
+    // });
+  }
 
   ngOnInit() {
+    var eventType = "pageLoad";
+    this.btnId = "";
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     document.getElementById('backBtn').style.display = "none";
     this.initMap();
     this.districtWise();
@@ -126,15 +179,52 @@ export class SemViewComponent implements OnInit {
     document.getElementById('spinner').style.marginTop = '3%';
   }
 
+  homeClick(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+    this.semester = 2;
+    this.districtWise();
+  }
+
+  semSelect() {
+    if (this.skul) {
+      if (this.levelWise === "district") {
+        this.districtWise();
+      }
+      if (this.levelWise === "block") {
+        this.blockWise(event);
+      }
+      if (this.levelWise === "cluster") {
+        this.clusterWise(event);
+      }
+      if (this.levelWise === "school") {
+        this.schoolWise(event);
+      }
+    } else {
+      if (this.dist && this.districtId !== undefined) {
+        this.onDistrictSelect(this.districtId);
+      }
+      if (this.blok && this.blockId !== undefined) {
+        this.onBlockSelect(this.blockId);
+      }
+      if (this.clust && this.clusterId !== undefined) {
+        this.onClusterSelect(this.clusterId);
+      }
+    }
+  }
+
   // to load all the districts for state data on the map
   districtWise() {
     try {
+
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
       this.errMsg();
-
+      this.levelWise = "district";
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -149,7 +239,7 @@ export class SemViewComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_dist_sem_data().subscribe(res => {
+      this.myData = this.service.all_dist_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res;
         // to show only in dropdowns
         this.districtMarkers = this.data['sortedData'];
@@ -182,12 +272,18 @@ export class SemViewComponent implements OnInit {
   }
 
   // to load all the blocks for state data on the map
-  blockWise() {
+  blockWise(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.levelWise = "block";
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -205,7 +301,7 @@ export class SemViewComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_block_sem_data().subscribe(res => {
+      this.myData = this.service.all_block_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: 7,
@@ -268,7 +364,7 @@ export class SemViewComponent implements OnInit {
             this.studentCount = this.data['totalValues'].totalStudents;
 
             this.blockMarkers.forEach(schoolData => {
-              this.fileName = "Block_wise_report"
+              this.fileName = "Block_wise_report_sem_"
               let obj = {
                 DistrictId: schoolData.districtId,
                 DistrictName: schoolData.districtName,
@@ -302,12 +398,17 @@ export class SemViewComponent implements OnInit {
   }
 
   // to load all the clusters for state data on the map
-  clusterWise() {
+  clusterWise(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.levelWise = "cluster";
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -327,7 +428,7 @@ export class SemViewComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_cluster_sem_data().subscribe(res => {
+      this.myData = this.service.all_cluster_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: 7,
@@ -391,7 +492,7 @@ export class SemViewComponent implements OnInit {
             this.studentCount = this.data['totalValues'].totalStudents;
 
             this.clusterMarkers.forEach(schoolData => {
-              this.fileName = "Cluster_wise_report"
+              this.fileName = "Cluster_wise_report_sem_"
               let obj = {
                 DistrictId: schoolData.districtId,
                 DistrictName: schoolData.districtName,
@@ -427,12 +528,18 @@ export class SemViewComponent implements OnInit {
   }
 
   // to load all the schools for state data on the map
-  schoolWise() {
+  schoolWise(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.levelWise = "school";
       this.reportData = [];
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -448,7 +555,7 @@ export class SemViewComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_school_sem_data().subscribe(res => {
+      this.myData = this.service.all_school_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: 7,
@@ -509,7 +616,7 @@ export class SemViewComponent implements OnInit {
             this.studentCount = this.data['totalValues'].totalStudents;
 
             this.schoolMarkers.forEach(schoolData => {
-              this.fileName = "School_wise_report"
+              this.fileName = "School_wise_report_sem_"
               let obj = {
                 DistrictId: schoolData.districtId,
                 DistrictName: schoolData.districtName,
@@ -546,6 +653,13 @@ export class SemViewComponent implements OnInit {
     }
   }
 
+  distSelect(event, districtId) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+    this.onDistrictSelect(districtId);
+  }
   // to load all the blocks for selected district for state data on the map
   onDistrictSelect(districtId) {
     // to clear the existing data on the map layer  
@@ -562,7 +676,7 @@ export class SemViewComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.block_wise_sem_data(districtId).subscribe(res => {
+    this.myData = this.service.block_wise_sem_data(districtId, { sem: this.semester }).subscribe(res => {
       this.data = res;
 
       this.blockMarkers = this.data['sortedData'];
@@ -601,8 +715,28 @@ export class SemViewComponent implements OnInit {
     document.getElementById('home').style.display = 'block';
   }
 
+  blockSelect(event, blockId) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+    this.onBlockSelect(blockId);
+  }
+
   // to load all the clusters for selected block for state data on the map
   onBlockSelect(blockId) {
+    // var date = new Date();
+    // var timeStamp = Math.floor(date.getTime() / 1000.0);
+    // this.telemData.interact.push(
+    //   {
+    //     selectId: 'block select', // id of the interaction like button_id, dropdown_id etc
+    //     uid: this.userId, // userid
+    //     type: 'select', // click,select,search
+    //     pageid: this.telemData.impression.pageId, // unique id of the page where user is interacting
+    //     impressionId: this.telemData.impression.impressionId,
+    //     timestamp: timeStamp
+    //   }
+    // );
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -617,7 +751,7 @@ export class SemViewComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.cluster_wise_sem_data(this.districtHierarchy.distId, blockId).subscribe(res => {
+    this.myData = this.service.cluster_wise_sem_data(this.districtHierarchy.distId, blockId, { sem: this.semester }).subscribe(res => {
       this.data = res;
       this.clusterMarkers = this.data['sortedData'];
       var myBlocks = [];
@@ -670,8 +804,27 @@ export class SemViewComponent implements OnInit {
     document.getElementById('home').style.display = 'block';
   }
 
+  clusterSelect(event, clusterId) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+    this.onClusterSelect(clusterId);
+  }
   // to load all the schools for selected cluster for state data on the map
   onClusterSelect(clusterId) {
+    // var date = new Date();
+    // var timeStamp = Math.floor(date.getTime() / 1000.0);
+    // this.telemData.interact.push(
+    //   {
+    //     selectId: 'cluster select', // id of the interaction like button_id, dropdown_id etc
+    //     uid: this.userId, // userid
+    //     type: 'select', // click,select,search
+    //     pageid: this.telemData.impression.pageId, // unique id of the page where user is interacting
+    //     impressionId: this.telemData.impression.impressionId,
+    //     timestamp: timeStamp
+    //   }
+    // );
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -683,8 +836,8 @@ export class SemViewComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.all_block_sem_data().subscribe(result => {
-      this.myData = this.service.school_wise_sem_data(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
+    this.myData = this.service.all_block_sem_data({ sem: this.semester }).subscribe(result => {
+      this.myData = this.service.school_wise_sem_data(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { sem: this.semester }).subscribe(res => {
         this.data = res;
         this.schoolMarkers = this.data['sortedData'];
 
@@ -808,7 +961,7 @@ export class SemViewComponent implements OnInit {
           markerIcon.addTo(globalMap).bindPopup(popup);
 
           // to download the report
-          this.fileName = "District_wise_report";
+          this.fileName = "District_wise_report_sem_";
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
@@ -843,7 +996,7 @@ export class SemViewComponent implements OnInit {
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
           markerIcon.addTo(globalMap).bindPopup(popup);
-          this.fileName = "Block_Per_dist_report"
+          this.fileName = "Block_Per_dist_report_sem_"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
@@ -881,7 +1034,7 @@ export class SemViewComponent implements OnInit {
             "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
           );
           markerIcon.addTo(globalMap).bindPopup(popup);
-          this.fileName = "Cluster_per_block_report"
+          this.fileName = "Cluster_per_block_report_sem_"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
@@ -918,7 +1071,7 @@ export class SemViewComponent implements OnInit {
           );
           markerIcon.addTo(globalMap).bindPopup(popup);
 
-          this.fileName = "School_per_cluster_report"
+          this.fileName = "School_per_cluster_report_sem_"
           let obj = {
             DistrictId: this.markers[i].districtId,
             DistrictName: this.markers[i].districtName,
@@ -983,6 +1136,11 @@ export class SemViewComponent implements OnInit {
 
   // drilldown/ click functionality on markers
   onClick_Marker(event) {
+    var eventType = event.type;
+    this.btnId = 'marker';
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     var data = event.target.myJsonData;
     if (data.districtId && !data.blockId && !data.clusterId) {
       this.stateLevel = 1;
@@ -1006,7 +1164,12 @@ export class SemViewComponent implements OnInit {
   }
 
   // to download the excel report
-  downloadReport() {
+  downloadReport(event) {
+    var eventType = event.type;
+    this.btnId = event.target.id;
+    var date = new Date();
+    this.trackInteract(date, this.btnId, eventType);
+
     const options = {
       fieldSeparator: ',',
       quoteStrings: '"',
@@ -1017,12 +1180,11 @@ export class SemViewComponent implements OnInit {
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,
-      filename: this.fileName
+      filename: this.fileName + this.semester
     };
     const csvExporter = new ExportToCsv(options);
-
-
     csvExporter.generateCsv(this.reportData);
+
   }
 
   // to generate the color gradient from red to green based on the attendance percentage values
@@ -1090,5 +1252,20 @@ export class SemViewComponent implements OnInit {
       generateGradient
     };
   }
+
+  trackInteract(date, id, type) {
+    // var timeStamp = Math.floor(date.getTime() / 1000.0);
+    // this.telemData.interact.push(
+    //   {
+    //     eventId: id, // id of the interaction like button_id, dropdown_id etc
+    //     uid: this.userId, // userid
+    //     type: type, // click,select,search
+    //     pageid: this.telemData.impression.pageId, // unique id of the page where user is interacting
+    //     impressionId: this.telemData.impression.impressionId,
+    //     timestamp: timeStamp
+    //   }
+    // );
+  }
+
 
 }

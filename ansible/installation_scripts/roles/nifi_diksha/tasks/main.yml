@@ -1,0 +1,2 @@
+- include_tasks: nifi_diksha.yml
+  tags: [ install, update ]

@@ -1,0 +1,62 @@
+---
+- name: Getting the client ID for emission app 
+  shell: ./kcadm.sh get clients -r {{realm_name}} --fields id,clientId --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}   
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  register: result
+  tags: install
+
+- name: Regenerating the client's secret
+  shell: ./kcadm.sh create clients/{{ item[1].id }}/client-secret -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  when: item[1].clientId == item[0]
+  with_nested:
+    - [ 'account', 'broker', 'realm-management' ]
+    - '{{ result.stdout }}'
+  no_log: true
+  tags: install
+
+# Regenerate the emission_app client's secret. 
+# Get the update emission_app client's secret.
+# Update the secret in emission_appp env.py file
+# Restart the emission_app using gunicorn
+
+- name: Parsing the output
+  set_fact:
+    emi_client_id: "{{item.id}}"
+  loop: '{{ result.stdout }}'
+  when: item.clientId == emission_app_client_id
+  no_log: true
+  tags: install
+
+- name: Regenerating the emission app client's secret
+  shell: ./kcadm.sh create clients/{{ emi_client_id }}/client-secret -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  tags: install
+
+- name: Getting the emission app client's secret
+  shell: ./kcadm.sh get clients/{{ emi_client_id }}/client-secret -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  register: result
+  tags: install
+
+- name: setting variable
+  set_fact:
+    emi_new_secret: "{{ (result.stdout|from_json).value}}"
+  tags: install
+
+- name: Updating the emi_new_secret to env.py - emission app
+  lineinfile:
+    path: "{{ base_dir }}/cqube/emission_app/python/env.py"
+    regexp: '^CLIENT_SECRET='
+    line: CLIENT_SECRET= "{{ emi_new_secret }}"
+  tags: install
+
+- name: Restarting the emission_app service
+  service: 
+    name: gunicorn
+    state: restarted
+  tags: install

@@ -1,0 +1,51 @@
+---
+- name: Upgrading cQube
+  hosts: localhost
+  remote_user: root
+  vars_files:
+    - upgradation_config.yml  
+    - datasource_config.yml
+    - .version
+    
+  roles:
+          - createdb
+          - python_flask
+          - keycloak
+          - angular
+          - angular_admin
+          - prometheus
+          - { role: nifi_clear, tags: update }
+          - nifi_install
+          - { role: nifi_params, tags: update }
+
+          - role: nifi_crc
+            tags: update
+            when: nifi_crc
+
+          - role: nifi_static
+            tags: update
+            when: nifi_static
+
+          - role: nifi_attendance
+            tags: update
+            when: nifi_attendance
+
+          - role: nifi_semester
+            tags: update
+            when: nifi_semester
+
+          - role: nifi_infra
+            tags: update
+            when: nifi_infra
+
+          - role: nifi_diksha
+            tags: update
+            when: nifi_diksha
+
+          - role: nifi_telemetry
+            tags: update
+            when: nifi_telemetry
+            
+          - { role: nifi_scheduler, tags: update }
+
+          - create_base_dir

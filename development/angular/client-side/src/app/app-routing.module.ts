@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { StudengtAttendanceComponent } from './student-attendance/student-attendance.component';
 import { HomeComponent } from './home/home.component';
@@ -13,6 +12,12 @@ import { SchoolInfrastructureComponent } from './school-infrastructure/school-in
 import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
+import { DikshaTableComponent } from './diksha-table/diksha-table.component';
+import { SemesterExceptionComponent } from './semester-exception/semester-exception.component';
+import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
+import { DikshaBarChartComponent } from './diksha-bar-chart/diksha-bar-chart.component';
+import { MissingDataComponent } from './missing-data/missing-data.component';
 
 const routes: Routes = [
   {
@@ -46,13 +51,31 @@ const routes: Routes = [
       },
       {
         path: 'school-infra-map', component: InfraMapVisualisationComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'diksha-chart', component: DikshaChartComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'diksha-table', component: DikshaTableComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'diksha-column-chart', component: DikshaBarChartComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'sem-exception', component: SemesterExceptionComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'telemetry', component: TelemetryDataComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'download-missing-data', component: MissingDataComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
   ,
   {
     path: 'user-view', component: UserViewComponent
-  },
+  }
 ];
 
 @NgModule({

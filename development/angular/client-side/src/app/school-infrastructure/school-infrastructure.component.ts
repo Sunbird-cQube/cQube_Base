@@ -55,11 +55,13 @@ export class SchoolInfrastructureComponent implements OnInit {
   public myData;
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, private changeDetection: ChangeDetectorRef) {
+    service.logoutOnTokenExpire();
     localStorage.removeItem('resData');
   }
 
   ngOnInit() {
     this.districtWise();
+    document.getElementById('spinner').style.display = 'block';
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
   }
@@ -102,7 +104,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
     this.myDistrict = '';
     this.downloadType = '';
-    this.modes = ['Dist_Wise', 'Block_Wise', 'Cluster_Wise', 'School_Wise'];
+    this.modes = ['Dist Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
 
     this.dist = false;
     this.blok = false;
@@ -416,8 +418,8 @@ export class SchoolInfrastructureComponent implements OnInit {
       l = 6;
     }
     for (i = l; i < Object.keys(result[0]).length; i++) {
-      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
-      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].toLocaleUpperCase() });
+      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').toLocaleUpperCase() });
+      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').toLocaleUpperCase() });
     }
 
     var labels = [];
@@ -503,7 +505,7 @@ export class SchoolInfrastructureComponent implements OnInit {
           || column.data == 'school'
           || column.data == 'total_schools'
           || column.data == 'infra_score'
-          || column.data == 'total_schools_data_received') ? 'rowspan="2" style = "text-transform:capitalize;"' : 'colspan="2" style = "text-transform:capitalize;"'}>${column.data}</th>`
+          || column.data == 'total_schools_data_received') ? 'rowspan="2" style = "text-transform:capitalize;"' : 'colspan="2" style = "text-transform:capitalize;"'}>${column.data.replace(/_/g, ' ')}</th>`
         if (column.data != 'district'
           && column.data != 'block'
           && column.data != 'cluster'
@@ -554,7 +556,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       $("#table").append(body);
       $('#table').DataTable({
         destroy: true, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: "58vh", scrollX: true,
+        bPaginate: false, scrollY: "48vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: false,
         fixedColumns: {
           leftColumns: 1
@@ -660,23 +662,23 @@ export class SchoolInfrastructureComponent implements OnInit {
       newData.push(newObj);
     })
     this.reportData = newData
-    if (this.downloadType === 'Dist_Wise' || this.downloadType === 'Block_Wise' || this.downloadType === 'Cluster_Wise' || this.downloadType === 'School_Wise') {
+    if (this.downloadType === 'Dist Wise' || this.downloadType === 'Block Wise' || this.downloadType === 'Cluster Wise' || this.downloadType === 'School Wise') {
       this.downloadRoport();
     }
   }
 
   public downloadType: string;
   downloadReportofState(downloadType) {
-    if (downloadType === 'Dist_Wise') {
+    if (downloadType === 'Dist Wise') {
       this.distWise();
     }
-    if (downloadType === 'Block_Wise') {
+    if (downloadType === 'Block Wise') {
       this.blockWise();
     }
-    if (downloadType === 'Cluster_Wise') {
+    if (downloadType === 'Cluster Wise') {
       this.clusterWise();
     }
-    if (downloadType === 'School_Wise') {
+    if (downloadType === 'School Wise') {
       this.schoolWise();
     }
   }

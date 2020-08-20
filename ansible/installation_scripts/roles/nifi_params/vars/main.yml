@@ -1,0 +1,7 @@
+---
+#Constant Parameters ( PLEASE DO NOT CHANGE )
+db_driver_class_name: org.postgresql.Driver
+db_connection_url: jdbc:postgresql://localhost:5432/
+db_driver_dir: jars/postgresql-42.2.10.jar       # ex: /<path_of_cloned_directory/cQube/development/nifi/jars/postgresql-42.2.10.jar
+nifi_port: 8096
+nifi_error_dir: /cqube/nifi/nifi_errors    # This location will be prefixed with base_dir ( Example: in this case /opt/cqube/nifi/nifi_errors )

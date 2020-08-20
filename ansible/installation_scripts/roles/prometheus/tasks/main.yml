@@ -1,0 +1,107 @@
+---
+- name: Installing curl
+  apt: name=curl
+  tags: install
+
+- name: Downloading Prometheus
+  get_url:
+    url: https://github.com/prometheus/prometheus/releases/download/v2.19.2/prometheus-2.19.2.linux-amd64.tar.gz
+    dest: /tmp
+  tags: install
+
+- name: Creating Directory
+  file:
+    path: "{{ base_dir }}/cqube/admin_dashboard/"
+    state: directory
+  tags: install 
+
+- name: Extract prometheus 
+  unarchive:
+    src: "/tmp/prometheus-2.19.2.linux-amd64.tar.gz"
+    dest: "{{ base_dir }}/cqube/admin_dashboard/"
+  tags: install
+
+- name: Remove prometheus directory, if exists
+  file: 
+    path: "{{ base_dir }}/cqube/admin_dashboard/prometheus"
+    state: absent
+  tags: install
+
+- name: Rename the extracted folder
+  shell: mv {{ base_dir }}/cqube/admin_dashboard/prometheus* {{ base_dir }}/cqube/admin_dashboard/prometheus
+  tags: install
+
+- name: Configuring the prometheus.yml
+  template:
+    src: prometheus.yml.j2
+    dest: "{{ base_dir }}/cqube/admin_dashboard/prometheus/prometheus.yml"
+  tags: install
+
+- name: Downloading node_exporter
+  get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
+    dest: /tmp
+  tags: install
+
+- name: Extract node_exporter 
+  unarchive:
+    src: "/tmp/node_exporter-1.0.1.linux-amd64.tar.gz"
+    dest: "{{ base_dir }}/cqube/admin_dashboard/"
+  tags: install
+
+- name: Remove node_exported directory, if exists
+  file:
+    path: "{{ base_dir }}/cqube/admin_dashboard/node_exporter"
+    state: absent
+  tags: install
+
+- name: Rename the extracted folder
+  shell: mv {{ base_dir }}/cqube/admin_dashboard/node_exporter* {{ base_dir }}/cqube/admin_dashboard/node_exporter
+  tags: install
+
+- name: changing ownership
+  file:
+    path: "{{ base_dir }}/cqube/admin_dashboard"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+  tags: install
+
+- name: Kill the port of prometheus and node_exporter
+  shell: sudo fuser -k {{ item }}/tcp
+  loop:
+    - 9090
+    - 9100
+  tags: update
+
+- name: prometheus systemd setup
+  template:
+    owner: root
+    group: root
+    mode: 0644
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
+  tags: [ install, update ]
+
+- name: node exporter systemd setup
+  template:
+    owner: root
+    group: root
+    mode: 0644
+    src: node_exporter.service.j2
+    dest: /etc/systemd/system/node_exporter.service
+  tags: [ install, update ]
+
+- name: reload systemd
+  shell: sudo systemctl daemon-reload
+  tags: [ install, update ]
+
+- name: Starting the prometheus and node_exporter service
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  loop:
+    - prometheus
+    - node_exporter
+  tags: [ install, update ]

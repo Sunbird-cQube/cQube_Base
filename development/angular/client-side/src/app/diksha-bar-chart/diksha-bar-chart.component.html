@@ -1,0 +1,102 @@
+<div class="container-fluid" style="font-family: Arial; width: 100%;">
+    <div class="row">
+        <div class="col-sm-7">
+            <div *ngIf='all'>
+                <p id="dist_level"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    {{header}} content usage: <span (click)="linkClick()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+            </div>
+            <!-- <div *ngIf='dist'>
+                <p id="block_level"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Diksha Report: <span (click)="getAllData()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                        (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
+                        {{hierName}}</span> </p>
+            </div> -->
+        </div>
+        <div class="col-sm-5">
+            <div class="row">
+                <div class="col-sm-6">
+                    <p id="errMsg"
+                        style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <em class="fa fa-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                        (click)="downloadRoport()"></em>
+
+                    <em class="fa fa-home" id="home" title="Home"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        alt="Home" (click)="homeClick()"></em>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="row" style="margin-top: 5px;">
+            <div class="col-sm-2">
+                <span style="font-size: 12px;">Choose collection type ↴ </span>
+                <select id="coll_type"
+                    style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    [(ngModel)]="collection_type" name="collection_type" (change)="getAllData()">
+                    <option [value]="collection_type" disabled selected="selected">Choose collection type</option>
+                    <option *ngFor="let collection of collectioTypes" [(ngValue)]="collection.id"
+                        style="font-family: Arial; font-size: 11px;">
+                        {{collection.type}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <span style="font-size: 12px;">Choose time range ↴ </span> <select id="time_range"
+                    style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    [(ngModel)]="timePeriod" name="timePeriod" (change)="chooseTimeRange()">
+                    <option [value]="timePeriod" disabled selected="selected">Choose Time Range
+                    </option>
+                    <option *ngFor="let time of timeDetails" [(ngValue)]="time.id"
+                        style="font-family: Arial; font-size: 11px;">
+                        {{time.name}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <span style="font-size: 12px;">Choose collection name ↴ </span> <select id="coll_name"
+                    style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    [(ngModel)]="collectionName" name="collectionName" (change)="getDataBasedOnCollections()">
+                    <option [value]="collectionName" disabled selected="selected">Choose collection name
+                    </option>
+                    <option *ngFor="let collectionName of collectionNames; let i = index"
+                        [(ngValue)]="collectionNames[i]" style="font-family: Arial; font-size: 11px;">
+                        {{collectionNames[i]}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 10px;" id="chart">
+            <div class="col-lg-1">
+
+            </div>
+            <div class="col-lg-10" id="r1">
+                <div *ngIf="barChartData[0]['data'].length > 0">
+                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                        [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType"
+                        [colors]="barChartColors">
+                    </canvas>
+                </div>
+                <div *ngIf="barChartData[0]['data'].length === 0"
+                    style="position: absolute; left: 40%; top: 120px;color: red;">
+                    No Data Available
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
+    </div>
+    <div id="spinner">
+        <div class="loading">Loading&#8230;</div>
+    </div>
