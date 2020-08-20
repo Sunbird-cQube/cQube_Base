@@ -7,7 +7,7 @@ const s3File = require('../../lib/reads3File');
 router.post('/districtWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- district wise sem api ---');
-        let fileName = `semester/district_sem_opt_json_2.json`
+        let fileName = `semester/district_sem_opt_json_${req.body.sem}.json`
         var myData = await s3File.readS3File(fileName);
 
         let districtData = myData.data;

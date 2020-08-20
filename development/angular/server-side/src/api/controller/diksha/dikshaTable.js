@@ -26,6 +26,13 @@ router.post('/dikshaAllTableData', auth.authController, async (req, res) => {
         var collectionType = req.body.collectionType;
         let fileName = `diksha/table_reports/${collectionType}/All.json`
         var tableData = await s3File.readS3File(fileName);
+        tableData = tableData.filter(obj => {
+            if (obj.district_id == "All" && obj.district_name == '') {
+                delete obj.district_id
+                delete obj.district_name
+                return obj
+            }
+        })
         logger.info('--- dikshaAllTableData api response sent ---');
         res.send(tableData)
     } catch (e) {
@@ -57,12 +64,22 @@ router.post('/dikshaTimeRangeTableData', auth.authController, async (req, res) =
         var distId = req.body.districtId;
         var timePeriod = req.body.timePeriod;
         var fileName;
+        var tableData;
         if (distId) {
             fileName = `diksha/table_reports/${collectionType}/${timePeriod}/${distId}.json`;
+            tableData = await s3File.readS3File(fileName);
         } else {
             fileName = `diksha/table_reports/${collectionType}/${timePeriod}/All.json`;
+            tableData = await s3File.readS3File(fileName);
+            tableData = tableData.filter(obj => {
+                if (obj.district_id == "All" && obj.district_name == '') {
+                    delete obj.district_id
+                    delete obj.district_name
+                    return obj
+                }
+            })
         }
-        var tableData = await s3File.readS3File(fileName);
+
         logger.info('--- dikshaTimeRangeTableData api response sent ---');
         res.send(tableData)
     } catch (e) {
