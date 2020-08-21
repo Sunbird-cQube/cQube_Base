@@ -64,7 +64,8 @@ echo """1. Skip the Postgres installation (Will backup the data locally for futu
 	        else
                   echo "Database backup is completed"
 	        fi
-		sudo sed -i "s/- include_tasks: install_postgress.yml/#&/g" roles/createdb/tasks/main.yml
+		      #sudo sed -i "s/- include_tasks: install_postgress.yml/#&/g" roles/createdb/tasks/main.yml
+          sudo sed -i "s/^pg_install_flag:.*/pg_install_flag: false/g" roles/createdb/vars/main.yml
         break
         ;;
             2 )
@@ -292,6 +293,9 @@ shared_buffers=$(awk ''/^shared_buffers:' /{ if ($2 !~ /#.*/) {print $2}}' confi
 work_mem=$(awk ''/^work_mem:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 java_arg_2=$(awk ''/^java_arg_2:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 java_arg_3=$(awk ''/^java_arg_3:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+
+# Making default postgres install true
+sudo sed -i "s/^pg_install_flag:.*/pg_install_flag: true/g" roles/createdb/vars/main.yml
 
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}

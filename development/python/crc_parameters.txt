@@ -577,5 +577,6 @@ from flowfile where has_records = non_empty_records''',
  }
 
 ]
-'''
+''',
+"crc_inspec_count_qry":'''select count(*) from crc_inspection_trans'''
 }
