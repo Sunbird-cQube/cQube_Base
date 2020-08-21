@@ -124,6 +124,18 @@
                 No Data Available
             </div>
         </div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 style="color: #284d8a">Diksha data Summary:</h2>
+            <div *ngIf="tableData9.length > 0 " style="border: 1px solid gray">
+                <table #DataTable id="table10" class="display nowrap" width="100%"
+                    style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData9.length === 0 " style="text-align: center; color: red;">
+                No Data Available
+            </div>
+        </div>
     </div>
 
 </div>

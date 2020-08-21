@@ -256,5 +256,33 @@ router.post('/stSchool', auth.authController, async (req, res) => {
     }
 });
 
+router.post('/summaryDiksha', auth.authController, async (req, res) => {
+    try {
+        logger.info('---diksha summary api ---');
+        const_data['getParams']['Key'] = 'log_summary/log_summary_diksha.json';
+        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
+            if (err) {
+                logger.error(err);
+                res.status(500).json({ errMsg: "Something went wrong" });
+            } else if (!data) {
+                logger.error("No data found in s3 file");
+                res.status(403).json({ errMsg: "No such data found" });
+            } else {
+                let summaryData = data.Body.toString();
+                summaryData = JSON.parse(summaryData);
+                logger.info('--- diksha summary api response sent---');
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
+            }
+        });
+    } catch (e) {
+        logger.error(`Error :: ${e}`);
+        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
+    }
+});
+
 
 module.exports = router

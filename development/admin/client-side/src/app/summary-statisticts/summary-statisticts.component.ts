@@ -19,6 +19,7 @@ export class SummaryStatistictsComponent implements OnInit {
   tableData6: any = [];
   tableData7: any = [];
   tableData8: any = [];
+  tableData9: any = [];
   constructor(private router: Router, private service: AppService) {
     service.logoutOnTokenExpire();
   }
@@ -134,6 +135,18 @@ export class SummaryStatistictsComponent implements OnInit {
           }
         });
         this.tableWithSubHeaders(this.tableData8, "table9");
+        document.getElementById('spinner').style.display = 'none';
+      }
+    });
+    this.service.getDikshaSummary().subscribe((res: any) => {
+      this.tableData9 = res;
+      if (this.tableData9.length > 0) {
+        this.tableData9.forEach(element => {
+          if (element.total_records == null) {
+            element.total_records = 0;
+          }
+        });
+        this.tableWithSubHeaders(this.tableData9, "table10");
         document.getElementById('spinner').style.display = 'none';
       }
     });
