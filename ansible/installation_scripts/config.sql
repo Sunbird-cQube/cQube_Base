@@ -14,6 +14,11 @@ drop function IF exists semester_no_schools;
 drop function IF exists insert_diksha_trans;
 drop function IF exists insert_diksha_agg;
 
+/*Infra clean*/
+truncate table infrastructure_master;
+truncate table infrastructure_staging_init;
+truncate table infrastructure_staging_score;
+
 /* Insert master infrastructure */
 
 CREATE OR REPLACE FUNCTION insert_infra_master()
@@ -1018,3 +1023,4 @@ Execute agg_insert;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+

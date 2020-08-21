@@ -16549,8 +16549,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>29efff21-9782-3b6c-0000-000000000000</id>
-<type>PROCESSOR</type>
+<id>3bd25c1f-24c3-3dcc-0000-000000000000</id>
+<type>FUNNEL</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
                             <labelIndex>1</labelIndex>
@@ -39968,5 +39968,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/20/2020 17:02:01 IST</timestamp>
+    <timestamp>08/20/2020 21:32:34 IST</timestamp>
 </template>

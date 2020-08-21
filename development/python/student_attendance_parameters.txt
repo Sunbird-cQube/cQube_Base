@@ -165,8 +165,6 @@ students_count=a.students_count
 ''',
 "save-to-school_student_total_att_select_query":"select * from school_student_total_attendance limit 1",
 "save-to-stud_att_temp_tb_name":"student_attendance_temp",
-"stud_att_month":'select distinct("month") from flowfile limit 1',
-"stud_att_year":'select distinct("year") from flowfile limit 1',
 "stud_att_district-wise-per":'''SELECT district_id AS x_axis,INITCAP(district_name) AS district_name, 
 Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS x_value,
 'latitude' AS y_axis,district_latitude AS y_value,'longitude' AS z_axis,district_longitude AS z_value,
