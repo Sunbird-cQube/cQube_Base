@@ -200,7 +200,7 @@ router.post('/stBlock', auth.authController, async (req, res) => {
     }
 });
 
-router.post('/stCluster', auth.authController, async (req, res) => {
+router.post('/stCluster',  async (req, res) => {
     try {
         logger.info('---cluster static summary api ---');
         const_data['getParams']['Key'] = 'log_summary/static/log_summary_cluster.json';
