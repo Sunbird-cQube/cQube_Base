@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const bcrypt = require('bcrypt');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const axios = require('axios');
@@ -7,17 +8,29 @@ const qs = require('querystring');
 const dotenv = require('dotenv');
 dotenv.config();
 
+var requestData = {
+    username: process.env.KEYCLOAK_USER,
+    password: process.env.PASSWORD,
+    grant_type: process.env.GRANT_TYPE,
+    client_id: process.env.CLIENT_ID
+}
+
 var host = process.env.KEYCLOAK_HOST;
 var realm = process.env.KEYCLOAK_REALM;
+
 
 router.post('/', auth.authController, async function (req, res) {
     try {
         logger.info('---Create user api ---');
 
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
+        var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        var access_token = response.data.access_token;
+
         var usersUrl = `${host}/auth/admin/realms/${realm}/users`;
         var headers = {
             "Content-Type": "application/json",
-            "Authorization": req.headers.token
+            "Authorization": "Bearer" + " " + access_token
         }
 
         var userDetails = {
@@ -53,10 +66,14 @@ router.post('/getAllUsers', auth.authController, async (req, res) => {
     try {
         logger.info('---get all user api ---');
 
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
+        var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        var access_token = response.data.access_token;
+
         var usersUrl = `${host}/auth/admin/realms/${realm}/users`;
         var headers = {
             "Content-Type": "application/json",
-            "Authorization": req.headers.token
+            "Authorization": "Bearer" + " " + access_token
         }
 
         var users = await axios.get(usersUrl, { headers: headers });
@@ -75,11 +92,15 @@ router.post('/getAllUsers', auth.authController, async (req, res) => {
 router.post('/setRoles', auth.authController, async (req, res) => {
     try {
         logger.info('---set roles api ---');
+        // generate the accesstoken for keycloak apis
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
+        var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        var access_token = response.data.access_token;
 
         var userId = req.body.userId;
         var headers = {
             "Content-Type": "application/json",
-            "Authorization": req.headers.token
+            "Authorization": "Bearer" + " " + access_token
         }
 
         // check the default required actions enable for keycloak
@@ -141,10 +162,15 @@ router.post('/setRoles', auth.authController, async (req, res) => {
 router.get('/roles', auth.authController, async (req, res) => {
     try {
         logger.info('---get roles api ---');
+
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
+        var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        var access_token = response.data.access_token;
+
         var usersUrl = `${host}/auth/admin/realms/${realm}/roles`;
         var headers = {
             "Content-Type": "application/json",
-            "Authorization": req.headers.token
+            "Authorization": "Bearer" + " " + access_token
         }
         axios.get(usersUrl, { headers: headers }).then(resp => {
             var roles = resp.data.filter(role => {

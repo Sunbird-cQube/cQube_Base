@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const bcrypt = require('bcrypt');
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 
@@ -7,18 +8,29 @@ const qs = require('querystring');
 const dotenv = require('dotenv');
 dotenv.config();
 
+var requestData = {
+    username: process.env.KEYCLOAK_USER,
+    password: process.env.PASSWORD,
+    grant_type: process.env.GRANT_TYPE,
+    client_id: process.env.CLIENT_ID
+}
+
 var host = process.env.KEYCLOAK_HOST;
 var realm = process.env.KEYCLOAK_REALM;
 
 router.post('/:id', auth.authController, async function (req, res) {
     try {
         logger.info('---change password api ---');
+
+        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
+        var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        var access_token = response.data.access_token;
         var userId = req.params.id;
 
         var usersUrl = `${host}/auth/admin/realms/${realm}/users/${userId}/reset-password`;
         var headers = {
             "Content-Type": "application/json",
-            "Authorization": req.headers.token
+            "Authorization": "Bearer" + " " + access_token
         }
         var newPass = {
             type: "password",
