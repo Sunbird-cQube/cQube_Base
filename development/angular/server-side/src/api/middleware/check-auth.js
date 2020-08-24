@@ -1,6 +1,5 @@
 const request = require("request");
 const dotenv = require('dotenv');
-const { log } = require("winston");
 dotenv.config();
 
 const keycloakHost = process.env.KEYCLOAK_HOST;

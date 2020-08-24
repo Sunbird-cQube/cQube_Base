@@ -19,6 +19,7 @@ export class SummaryStatistictsComponent implements OnInit {
   tableData6: any = [];
   tableData7: any = [];
   tableData8: any = [];
+  tableData9: any = [];
   constructor(private router: Router, private service: AppService) {
     service.logoutOnTokenExpire();
   }
@@ -30,33 +31,18 @@ export class SummaryStatistictsComponent implements OnInit {
     this.service.getAttendanceSummary().subscribe((res: any) => {
       this.tableData = res;
       if (this.tableData.length > 0) {
-        this.tableData.forEach(element => {
-          if (element.total_records == null) {
-            element.total_records = 0;
-          }
-        });
         this.tableWithSubHeaders(this.tableData, "table1");
       }
     });
     this.service.getSemSummary().subscribe((res: any) => {
       this.tableData1 = res;
       if (this.tableData1.length > 0) {
-        this.tableData1.forEach(element => {
-          if (element.total_records == null) {
-            element.total_records = 0;
-          }
-        });
         this.tableWithSubHeaders(this.tableData1, "table2");
       }
     });
     this.service.getCrcSummary().subscribe((res: any) => {
       this.tableData2 = res;
       if (this.tableData2.length > 0) {
-        this.tableData2.forEach(element => {
-          if (element.total_records == null) {
-            element.total_records = 0;
-          }
-        });
         this.tableWithSubHeaders(this.tableData2, "table3");
       }
     });
@@ -64,11 +50,6 @@ export class SummaryStatistictsComponent implements OnInit {
     this.service.getInfraSummary().subscribe((res: any) => {
       this.tableData3 = res;
       if (this.tableData3.length > 0) {
-        this.tableData3.forEach(element => {
-          if (element.total_records == null) {
-            element.total_records = 0;
-          }
-        });
         this.tableWithSubHeaders(this.tableData3, "table4");
       }
     });
@@ -76,11 +57,6 @@ export class SummaryStatistictsComponent implements OnInit {
     this.service.getInspecSummary().subscribe((res: any) => {
       this.tableData4 = res;
       if (this.tableData4.length > 0) {
-        this.tableData4.forEach(element => {
-          if (element.total_records == null) {
-            element.total_records = 0;
-          }
-        });
         this.tableWithSubHeaders(this.tableData4, "table5");
       }
     });
@@ -88,39 +64,18 @@ export class SummaryStatistictsComponent implements OnInit {
     this.service.getstDistSummary().subscribe((res: any) => {
       this.tableData5 = res;
       if (this.tableData5.length > 0) {
-        this.tableData5.forEach(element => {
-          if (element.total_records == null) {
-            element.total_records = 0;
-          }
-        });
         this.tableWithSubHeaders(this.tableData5, "table6");
       }
     });
     this.service.getstBlockSummary().subscribe((res: any) => {
       this.tableData6 = res;
       if (this.tableData6.length > 0) {
-        this.tableData6.forEach(element => {
-          if (element.total_records == null) {
-            element.total_records = 0;
-          }
-        });
         this.tableWithSubHeaders(this.tableData6, "table7");
       }
     });
     this.service.getstClusterSummary().subscribe((res: any) => {
       this.tableData7 = res;
       if (this.tableData7.length > 0) {
-        this.tableData7.forEach(element => {
-          if (element.total_records == null) {
-            element.total_records = 0;
-          }
-          if (element.category == null) {
-            element.category = 0;
-          }
-          if (element.processed_records == null) {
-            element.processed_records = 0;
-          }
-        });
         this.tableWithSubHeaders(this.tableData7, "table8");
       }
 
@@ -128,12 +83,14 @@ export class SummaryStatistictsComponent implements OnInit {
     this.service.getstSchoolSummary().subscribe((res: any) => {
       this.tableData8 = res;
       if (this.tableData8.length > 0) {
-        this.tableData8.forEach(element => {
-          if (element.total_records == null) {
-            element.total_records = 0;
-          }
-        });
         this.tableWithSubHeaders(this.tableData8, "table9");
+        document.getElementById('spinner').style.display = 'none';
+      }
+    });
+    this.service.getDikshaSummary().subscribe((res: any) => {
+      this.tableData9 = res;
+      if (this.tableData9.length > 0) {
+        this.tableWithSubHeaders(this.tableData9, "table10");
         document.getElementById('spinner').style.display = 'none';
       }
     });

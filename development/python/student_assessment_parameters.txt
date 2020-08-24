@@ -31,10 +31,11 @@ from student_semester_temp
 group by student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid
 HAVING  COUNT(*) > 1
 ''',
-"distinct_sem_records":'''SELECT student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid
-FROM (select student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid, 
-	row_number() over (partition by student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid) as rn 
-	from student_semester_temp) sq where rn=1
+"distinct_sem_records":'''insert into student_semester_staging(student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid)
+SELECT student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid
+FROM (select student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid,
+    row_number() over (partition by student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid) as rn
+    from student_semester_temp) sq where rn=1
 ''',
 "same_id_sem_db":'''select AadhaarUID AS "student_uid",SchoolId AS "school_id",
 Sem AS "semester",studyingclass AS "grade",gujarati AS "subject_2",maths AS "subject_3",es AS "subject_1",science AS subject_6,ss AS "subject_7",hindi AS "subject_5",
@@ -952,36 +953,92 @@ group by district_id ,district_name,block_id,block_name,cluster_id,cluster_name,
 ]
 
 ''',
-"sem_transform_cluster_wise_completion":'''[{
-        "operation": "shift",
-        "spec": {
-            "*": {
-                "district_id": "data.[&1].district_id",
-                "district_name": "data.[&1].district_name",
-                "block_id": "data.[&1].block_id",
-                "block_name": "data.[&1].block_name",
-               "cluster_id": "data.[&1].cluster_id",
-                "cluster_name": "data.[&1].cluster_name",
-              "cluster_latitude": "data.[&1].cluster_latitude",
-                "cluster_longitude": "data.[&1].cluster_longitude",
-                "total_schools": "data.[&1].total_schools",
-                "semester": "data.[&1].semester",
-                "percentage_schools_not_received": "data.[&1].percentage_schools_not_received",
-                "@total_schools_not_received": "data.[&1].total_schools_not_received",
-                "total_schools_not_received": "allClustersFooter.total_schools_not_received[]"
- 
-            }
-        }
-    }, {
-        "operation": "modify-overwrite-beta",
-        "spec": {
-            "*": {
-                "total_schools_not_received": "=intSum(@(1,total_schools_not_received))"
- 
-            }
-        }
+"sem_transform_cluster_wise_completion":'''[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "cluster_latitude": "data.[&1].cluster_latitude",
+        "cluster_longitude": "data.[&1].cluster_longitude",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "cluster_id": "data.[&1].cluster_id",
+        "cluster_name": "data.[&1].cluster_name",
+        "total_schools": "data.[&1].total_schools",
+        "semester": "data.[&1].semester",
+        "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
+        "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+        "total_schools_with_missing_data": "footer.@(1,block_id).total_schools_with_missing_data"
+      }
     }
- ]
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "cluster_latitude": "data.[&1].cluster_latitude",
+          "cluster_longitude": "data.[&1].cluster_longitude",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "cluster_id": "data.[&1].cluster_id",
+          "cluster_name": "data.[&1].cluster_name",
+          "total_schools": "data.[&1].total_schools",
+          "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "total_schools_with_missing_data": "allClustersFooter.total_schools_with_missing_data[]",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
+          "semester": "data.[&1].semester"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "cluster_latitude": "data.[&1].cluster_latitude",
+          "cluster_longitude": "data.[&1].cluster_longitude",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "cluster_id": "data.[&1].cluster_id",
+          "cluster_name": "data.[&1].cluster_name",
+          "total_schools": "data.[&1].total_schools",
+          "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
+          "semester": "data.[&1].semester"
+        }
+      },
+      "footer": "&",
+      "allClustersFooter": "&"
+    }
+  }
+]
 ''',
 "sem_transform_school_wise_completion":'''[{
     "operation": "modify-overwrite-beta",
