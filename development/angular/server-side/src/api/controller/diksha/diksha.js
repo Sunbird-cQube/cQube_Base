@@ -9,8 +9,9 @@ router.post('/dikshaAllData', auth.authController, async (req, res) => {
         var timePeriod = req.body.timePeriod;
         let fileName = `diksha/stack_bar_reports/${timePeriod}/All.json`
         var data = await s3File.readS3File(fileName);
+        var footer = data['footer'];
         let a = []
-        data['All'][req.body.login_type].forEach(element => {
+        data.data['All'][req.body.login_type].forEach(element => {
             if (element.content_gradelevel == 'Class 1') {
                 element['content_gradelevel'] = 'Class  1'
             }
@@ -42,7 +43,7 @@ router.post('/dikshaAllData', auth.authController, async (req, res) => {
         });
         data = a.sort((a, b) => (a.content_gradelevel) > (b.content_gradelevel) ? 1 : -1)
         let funRes = await getData(data)
-        res.status(200).send(funRes)
+        res.status(200).send({ funRes, footer: footer.total_content_plays });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -59,9 +60,10 @@ router.post('/dikshaData', auth.authController, async (req, res) => {
             fileName = `diksha/stack_bar_reports/${req.body.districtId}.json`
         }
         var data = await s3File.readS3File(fileName);
-        if (data[req.body.districtId][req.body.login_type]) {
-            let a = []
-            data = data[req.body.districtId][req.body.login_type]
+        var footer = data['footer'];
+        if (data.data[req.body.districtId][req.body.login_type]) {
+            let a = [];
+            data = data.data[req.body.districtId][req.body.login_type];
             data.forEach(element => {
                 if (element.content_gradelevel == 'Class 1') {
                     element['content_gradelevel'] = 'Class  1'
@@ -95,7 +97,7 @@ router.post('/dikshaData', auth.authController, async (req, res) => {
             data = a.sort((a, b) => (a.content_gradelevel) > (b.content_gradelevel) ? 1 : -1)
             let funRes = await getData(data)
             logger.info('--- dikshaData district & time range api response sent ---');
-            res.status(200).send(funRes)
+            res.status(200).send({ funRes, footer: footer.total_content_plays })
         } else {
             logger.info('--- dikshaData district & time range api no data found response sent ---');
             res.send({ msg: "No data found" })
@@ -111,7 +113,6 @@ router.get('/dikshaMetaData', auth.authController, async (req, res) => {
         logger.info('--- dikshaMetaData api ---');
         let fileName = `diksha/stack_bar_reports/diksha_metadata.json`;
         var tableData = await s3File.readS3File(fileName);
-        // console.log(tableData);
         if (tableData.districtDetails != null) {
             var sortedData = tableData.districtDetails.sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1)
             tableData['districtDetails'] = sortedData
@@ -178,11 +179,11 @@ router.post('/dikshaDataDownload', auth.authController, async (req, res) => {
         if (districtId == '' && timePeriod != '') {
             let fileName = `diksha/stack_bar_reports/${timePeriod}/All.json`;
             data = await s3File.readS3File(fileName);
-            res.status(200).send(data);
+            res.status(200).send(data.data);
         } else {
             let fileName = `diksha/stack_bar_reports/${timePeriod}/${districtId}.json`;
             data = await s3File.readS3File(fileName);
-            res.status(200).send(data);
+            res.status(200).send(data.data);
         }
 
     } catch (e) {
