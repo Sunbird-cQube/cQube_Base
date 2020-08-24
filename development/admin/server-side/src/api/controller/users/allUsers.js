@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
-var cron = require('node-cron');
 const axios = require('axios');
 const qs = require('querystring');
 var const_data = require('../../lib/config');
