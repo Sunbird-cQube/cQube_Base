@@ -64,22 +64,9 @@ export class S3FilesDownloadComponent implements OnInit {
     })
   }
 
-  // listFiles() {
-    // this.fileHidden = false;
-    // this.fileNames = [];
-    // this.service.listFolders(this.bucketName).subscribe(res => {
-
-    //   this.fileNames = res['Key'];
-    //   this.fileNames.forEach(element => {
-    //     element['checked'] = false;
-    //   });
-    // })
-  // }
-
   checkedList() {
     var element = <HTMLBodyElement>document.getElementById('btn');
     element['disabled'] = false;
-    console.log(element);
     this.list = this.fileNames.filter(item => item.checked);
   }
 

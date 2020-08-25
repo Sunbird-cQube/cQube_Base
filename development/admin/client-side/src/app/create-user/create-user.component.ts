@@ -65,11 +65,9 @@ export class CreateUserComponent implements OnInit {
     }, err => {
       this.errMail = undefined; this.errUsername = undefined;
       if (err.error['errMsg'] == "User exists with same username") {
-        console.log(err.error['errMsg'], ":::::::::;");
         this.errUsername = err.error['errMsg'];
       } else if (err.error['errMsg'] == "User exists with same email") {
         this.errMail = err.error['errMsg'];
-        console.log(this.errMail);
       } else {
         this.err = err.error['errMsg'];
       }

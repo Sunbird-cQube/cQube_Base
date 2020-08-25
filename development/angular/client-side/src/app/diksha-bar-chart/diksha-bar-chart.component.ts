@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -9,7 +9,8 @@ import { Label, Color } from 'ng2-charts';
 @Component({
   selector: 'app-diksha-bar-chart',
   templateUrl: './diksha-bar-chart.component.html',
-  styleUrls: ['./diksha-bar-chart.component.css']
+  styleUrls: ['./diksha-bar-chart.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DikshaBarChartComponent implements OnInit {
   chart: boolean = false;
@@ -42,6 +43,7 @@ export class DikshaBarChartComponent implements OnInit {
   public collectioTypes: any = [{ id: "all", type: "Overall" }, { id: "course", type: "Course" }, { id: "textbook", type: "TextBook" }, { id: "others", type: "Others" }];
   public collectionNames: any = [];
   collectionName = '';
+  footer;
 
   downloadType;
   fileName: any;
@@ -102,6 +104,7 @@ export class DikshaBarChartComponent implements OnInit {
     this.errMsg();
     this.timePeriod = '';
     this.collectionName = '';
+    this.footer = '';
     this.fileName = `collectionType_${this.collection_type}_data`;
     this.result = [];
     this.all = true
@@ -115,6 +118,7 @@ export class DikshaBarChartComponent implements OnInit {
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
       this.result = result['chartData'];
       this.reportData = result['downloadData'];
+      this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.createChart(this.result);
       if (result['data']) {
         this.chart = (result['data'][0].length > 0);
@@ -131,6 +135,7 @@ export class DikshaBarChartComponent implements OnInit {
   listCollectionNames() {
     this.errMsg();
     this.collectionName = '';
+    this.footer = '';
     this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod }).subscribe(res => {
       this.collectionNames = [];
       this.collectionNames = res['uniqueCollections'];
@@ -140,6 +145,7 @@ export class DikshaBarChartComponent implements OnInit {
         this.result = [];
         this.emptyChart();
         this.result = res['chartData'];
+        this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.createChart(this.result);
         this.reportData = res['downloadData'];
       }
@@ -161,12 +167,14 @@ export class DikshaBarChartComponent implements OnInit {
     document.getElementById('home').style.display = "block";
     this.errMsg();
     this.fileName = `collectionType_${this.collection_type}_data_of_${this.collectionName}`;
+    this.footer = '';
     this.result = [];
     this.all = true
     this.dist = false
     this.service.getDataByCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod, collection_name: this.collectionName }).subscribe(res => {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
+      this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.createChart(this.result);
       document.getElementById('spinner').style.display = 'none';
     }, err => {
