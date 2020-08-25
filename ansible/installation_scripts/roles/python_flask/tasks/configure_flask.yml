@@ -9,7 +9,8 @@
   tags: [ install, update ]
 
 - name: reload systemd
-  shell: sudo systemctl daemon-reload
+  become: yes
+  shell: systemctl daemon-reload
   tags: [ install, update ]
 
 - name: Stopping the emission_app service

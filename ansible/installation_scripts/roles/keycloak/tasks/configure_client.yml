@@ -4,7 +4,7 @@
   args:
     chdir: "{{ base_dir }}/cqube/keycloak/bin/"
   register: result
-  tags: install
+  tags: [ install, update ]
 
 - name: Regenerating the client's secret
   shell: ./kcadm.sh create clients/{{ item[1].id }}/client-secret -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
@@ -28,35 +28,35 @@
   loop: '{{ result.stdout }}'
   when: item.clientId == emission_app_client_id
   no_log: true
-  tags: install
+  tags: [ install, update ]
 
 - name: Regenerating the emission app client's secret
   shell: ./kcadm.sh create clients/{{ emi_client_id }}/client-secret -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
   args:
     chdir: "{{ base_dir }}/cqube/keycloak/bin/"
-  tags: install
+  tags: [ install, update ]
 
 - name: Getting the emission app client's secret
   shell: ./kcadm.sh get clients/{{ emi_client_id }}/client-secret -r {{ realm_name }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
   args:
     chdir: "{{ base_dir }}/cqube/keycloak/bin/"
   register: result
-  tags: install
+  tags: [ install, update ]
 
 - name: setting variable
   set_fact:
     emi_new_secret: "{{ (result.stdout|from_json).value}}"
-  tags: install
+  tags: [ install, update ]
 
 - name: Updating the emi_new_secret to env.py - emission app
   lineinfile:
     path: "{{ base_dir }}/cqube/emission_app/python/env.py"
     regexp: '^CLIENT_SECRET='
     line: CLIENT_SECRET= "{{ emi_new_secret }}"
-  tags: install
+  tags: [ install, update ]
 
 - name: Restarting the emission_app service
   service: 
     name: gunicorn
     state: restarted
-  tags: install
+  tags: [ install, update ]

@@ -48,4 +48,4 @@
             
           - { role: nifi_scheduler, tags: update }
 
-          - create_base_dir
+          - cqube_version
