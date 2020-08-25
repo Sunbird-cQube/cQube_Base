@@ -1,20 +1,11 @@
 const router = require('express').Router();
 const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
-var cron = require('node-cron');
 const axios = require('axios');
-const qs = require('querystring');
 var const_data = require('../../lib/config');
 
 const dotenv = require('dotenv');
 dotenv.config();
-
-var requestData = {
-    username: process.env.KEYCLOAK_USER,
-    password: process.env.PASSWORD,
-    grant_type: process.env.GRANT_TYPE,
-    client_id: process.env.CLIENT_ID
-}
 
 var host = process.env.KEYCLOAK_HOST;
 var realm = process.env.KEYCLOAK_REALM;
@@ -23,13 +14,10 @@ var realm = process.env.KEYCLOAK_REALM;
 router.post('/', auth.authController, async function (req, res) {
     try {
         logger.info('---users api ---');
-        var url = `${host}/auth/realms/master/protocol/openid-connect/token`;
-        var response = await axios.post(url, qs.stringify(requestData), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
-        var access_token = response.data.access_token;
         var usersUrl = `${host}/auth/admin/realms/${realm}/users`;
         var headers = {
             "Content-Type": "application/json",
-            "Authorization": "Bearer" + " " + access_token
+            "Authorization": req.headers.token
         }
 
         var allUsers = [];

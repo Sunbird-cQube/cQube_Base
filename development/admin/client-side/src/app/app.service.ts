@@ -210,6 +210,13 @@ export class AppService {
         });
     }
 
+    getDikshaSummary() {
+        this.logoutOnTokenExpire();
+        return this.http.post(`${this.baseUrl}/summary/summaryDiksha`, {}, {
+            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+        });
+    }
+
     //nifi scheduler
     nifiGetProcessorId() {
         this.logoutOnTokenExpire();
