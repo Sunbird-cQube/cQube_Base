@@ -1,1 +1,3 @@
+---
 nifi_version: 1.11.4
+nifi_port: 8096

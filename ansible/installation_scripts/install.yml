@@ -50,4 +50,5 @@
             when: nifi_telemetry
 
           - { role: nifi_scheduler, tags: install }
+          - cqube_version
           
