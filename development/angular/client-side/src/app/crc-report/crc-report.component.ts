@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ declare const $;
   templateUrl: './crc-report.component.html',
   styleUrls: ['./crc-report.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class CrcReportComponent implements OnInit {
   dataTable: any;
@@ -164,12 +165,10 @@ export class CrcReportComponent implements OnInit {
     this.tableData = [];
 
     this.dateRange = localStorage.getItem('dateRange');
-    // if (this.result.length > 0) {
     if (JSON.parse(localStorage.getItem('resData')) !== null) {
       this.chartData = [];
       var labels = [];
       this.result = JSON.parse(localStorage.getItem('resData'));
-      // console.log(this.result);
       let a = this.result.schoolsVisitedCount
       this.result = this.result.visits;
 
@@ -264,7 +263,6 @@ export class CrcReportComponent implements OnInit {
           }
 
           this.createChart(labels, this.chartData, this.tableHead, obj);
-          // console.log(this.result);
           this.tableData = this.result;
           this.dtOptions = {
             data: this.tableData,
@@ -447,7 +445,6 @@ export class CrcReportComponent implements OnInit {
         }
 
         this.createChart(labels, this.chartData, this.tableHead, obj);
-        // console.log(this.crcBlocksNames);
         this.tableData = this.crcBlocksNames;
         this.dtOptions = {
           data: this.tableData,
@@ -555,7 +552,6 @@ export class CrcReportComponent implements OnInit {
       }
 
       this.createChart(labels, this.chartData, this.tableHead, obj);
-      // console.log(this.crcClusterNames);
       this.tableData = this.crcClusterNames;
       this.dtOptions = {
         data: this.tableData,

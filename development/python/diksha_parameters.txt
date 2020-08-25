@@ -87,14 +87,29 @@ where diksha_null_col.ff_uuid = log_summary.ff_uuid
               "blank_lines": "[&1].blank_lines",
               "duplicate_records": "[&1].duplicate_records",
               "datatype_mismatch": "[&1].datatype_mismatch",
-              "attendance_id": "[&1].records_with_null_value.attendance_id",
-              "student_id": "[&1].records_with_null_value.student_id",
-              "school_id": "[&1].records_with_null_value.school_id",
-              "year": "[&1].records_with_null_value.year",
-              "month": "[&1].records_with_null_value.month",
+              "content_view_date": "[&1].records_with_null_value.content_view_date" ,
+              "dimensions_pdata_id": "[&1].records_with_null_value.dimensions_pdata_id",
+              "dimensions_pdata_pid" : "[&1].records_with_null_value.dimensions_pdata_pid",
+              "content_name": "[&1].records_with_null_value.content_name",
+              "content_board": "[&1].records_with_null_value.content_board",
+              "content_mimetype" : "[&1].records_with_null_value.content_mimetype", 
+              "content_medium": "[&1].records_with_null_value.content_medium",
+              "content_gradelevel": "[&1].records_with_null_value.content_gradelevel",
+              "content_subject": "[&1].records_with_null_value.content_subject",
+              "content_created_f": "[&1].records_with_null_value.content_created_f", 
+              "object_id": "[&1].records_with_null_value.object_id",
+              "object_rollup_l1": "[&1].records_with_null_value.object_rollup_l1", 
+              "derived_loc_state": "[&1].records_with_null_value.derived_loc_state",
+              "derived_loc_district": "[&1].records_with_null_value.derived_loc_dIStrict",
+              "user_signin_type": "[&1].records_with_null_value.user_signin_type", 
+              "user_login_type": "[&1].records_with_null_value.user_login_type", 
+              "collection_type" : "[&1].records_with_null_value.collection_type",
+              "collection_created_f": "[&1].records_with_null_value.collection_created_f",
+              "total_count": "[&1].records_with_null_value.total_count",
+              "total_time_spent": "[&1].records_with_null_value.total_time_spent", 
               "processed_records": "[&1].processed_records",
               "process_start_time": "[&1].process_start_time",
-              "process_end_time": "[&1].process_end_time"             
+              "process_end_time": "[&1].process_end_time"
 			}
 		}
 	}
@@ -586,6 +601,15 @@ and district_id is not null
 and content_view_date = (select max(content_view_date) from diksha_total_content)
 group by district_id,district_name,collection_type 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
+    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+and content_view_date = (select max(content_view_date) from diksha_total_content)
+group by collection_name
+    )
 ''',
 "diksha_barc_crs_last_7_days_qry":'''(select 
 district_id,district_name,'all_collections' as type,collection_name,
@@ -608,6 +632,15 @@ and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' fr
 (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,collection_type 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
+    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
+group by collection_name)
 ''',
 "diksha_barc_crs_last_30_days_qry":'''(select 
 district_id,district_name,'all_collections' as type,collection_name,
@@ -630,6 +663,15 @@ and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' f
 (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,collection_type 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
+    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
+group by collection_name)
 ''',
 "diksha_barc_all_qry":'''(select
 district_id,district_name,collection_type,collection_name,
@@ -653,7 +695,7 @@ order by 1,3)
 district_id,district_name,'all_collections' as type,collection_name,
 sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA' and district_name is not null
+and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 and content_view_date = (select max(content_view_date) from diksha_total_content)
 group by district_id,district_name,collection_name,
@@ -663,17 +705,25 @@ union
 district_id,district_name,'all_districts' as type,'All' as collection_name,
 sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA' and district_name is not null
+and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 and content_view_date = (select max(content_view_date) from diksha_total_content)
 group by district_id,district_name 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
+from diksha_total_content where user_login_type is not null and collection_type is not null 
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+and content_view_date = (select max(content_view_date) from diksha_total_content)
+group by collection_name)
 ''',
 "diksha_barc_overall_last_7_days_qry":'''(select 
 district_id,district_name,'all_collections' as type,collection_name,
 sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA' and district_name is not null
+and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
 (select max(content_view_date) from diksha_total_content )
@@ -683,18 +733,27 @@ union
 district_id,district_name,'all_districts' as type,'All' as collection_name,
 sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA' and district_name is not null
+and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
 (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
+from diksha_total_content where user_login_type is not null and collection_type is not null 
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
+group by collection_name)
 ''',
 "diksha_barc_overall_last_30_days_qry":'''(select 
 district_id,district_name,collection_name,'all_collections' as type,
 sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA' and district_name is not null
+and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
 (select max(content_view_date) from diksha_total_content )
@@ -704,18 +763,27 @@ union
 district_id,district_name,'All' as collection_name,'all_districts' as type,
 sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA' and district_name is not null
+and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
 (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,collection_name,'collection_footer' as type,sum(total_count) as Total_content_plays
+from diksha_total_content where user_login_type is not null and collection_type is not null 
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
+group by collection_name)
 ''',
 "diksha_barc_overall_all_qry":'''(select 
 district_id,district_name,collection_name,'all_collections' as type,
 sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA' and district_name is not null
+and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 group by district_id,district_name,collection_name order by 1,3)
 union
@@ -723,10 +791,18 @@ union
 district_id,district_name,'All' as collection_name,'all_districts' as type,
 sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA' and district_name is not null
+and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 group by district_id,district_name 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,collection_name,'collection_footer' as type,sum(total_count) as Total_content_plays
+from diksha_total_content where user_login_type is not null and collection_type is not null 
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+group by collection_name
+    )
 ''',
 "diksha_table_txt_bk_last_day_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
     collection_name as Textbook,object_id as content_id,content_name as Content_Name,content_subject as Subject,
@@ -811,12 +887,19 @@ and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 group by district_id,district_name,collection_type 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
+    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+group by collection_name)
 ''',
 "diksha_barc_txt_bk_last_day_qry":'''(select 
 district_id,district_name,'all_collections' as type,collection_name,
 sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
+and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
 and content_view_date = (select max(content_view_date) from diksha_total_content)
 group by district_id,district_name,collection_name,
@@ -826,11 +909,19 @@ union
 district_id,district_name,'all_districts' as type,'All' as collection_name,
 sum(total_count) as Total_content_plays 
 from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
+and user_login_type <> 'NA' and district_name is not null
 and district_id is not null
 and content_view_date = (select max(content_view_date) from diksha_total_content)
 group by district_id,district_name,collection_type 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
+    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+and content_view_date = (select max(content_view_date) from diksha_total_content)
+group by collection_name)
 ''',
 "diksha_barc_txt_bk_last_7_days_qry":'''(select 
 district_id,district_name,'all_collections' as type,collection_name,
@@ -853,6 +944,16 @@ and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' fr
 (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,collection_type 
 order by 1,3)
+union
+(select 
+1 as district_id,'' as district_name,'collection_footer' as type,collection_name,
+sum(total_count) as Total_content_plays 
+from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
+group by collection_name)
 ''',
 "diksha_barc_txt_bk_last_30_days_qry":'''(select 
 district_id,district_name,'all_collections' as type,collection_name,
@@ -875,6 +976,15 @@ and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' f
 (select max(content_view_date) from diksha_total_content )
 group by district_id,district_name,collection_type 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
+    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
+(select max(content_view_date) from diksha_total_content )
+group by collection_name)
 ''',
 "diksha_barc_txt_bk_all_qry":'''(select 
 district_id,district_name,'all_collections' as type,collection_name,
@@ -893,6 +1003,13 @@ and user_login_type <> 'NA'and district_name is not null
 and district_id is not null
 group by district_id,district_name,collection_type 
 order by 1,3)
+union
+(
+    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
+    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
+and user_login_type <> 'NA'and district_name is not null
+and district_id is not null
+group by collection_name)
 ''',
 "diksha_table_txt_bk_last_day_query":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
     collection_name as Textbook,content_name as Content_Name,sum(total_count) as Total_content_plays,object_id as content_id,content_subject as Subject,
@@ -909,5 +1026,35 @@ from diksha_total_content
 where collection_type='TextBook' and
 content_view_date = (select max(content_view_date) from diksha_total_content )
 group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
+''',
+"diksha_stack_jolt":'''[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "@": "data.@(1,district_id).@(1,user_login_type)[]",
+        "user_login_type": {
+          "All": {
+            "@(2,total_content_plays)": "footer.total_content_plays[]"
+          }
+        }
+      }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "total_content_plays": "=intSum(@(1,total_content_plays))"
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "*": "&"
+    }
+  }
+]
 '''
 }

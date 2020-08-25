@@ -33,10 +33,6 @@ export class UserViewComponent implements OnInit {
     ).addTo(globalMap);
   }
   constructor() {
-    // this.getPosition().then(res => {
-    //   this.lat = res.lat;
-    //   this.lng = res.lng;
-    // })
   }
 
   ngOnInit() {
