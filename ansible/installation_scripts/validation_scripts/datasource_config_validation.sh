@@ -21,7 +21,7 @@ else
    core_install="NA"
 fi
 
-echo -e "\e[0;33m${bold}Validating the config file...${normal}"
+echo "Validating the Datasource config file..."
 
 # An array of mandatory values
 declare -a arr=("nifi_crc" "nifi_static" "nifi_attendance" "nifi_semester" "nifi_infra" "nifi_diksha" "nifi_telemetry")
