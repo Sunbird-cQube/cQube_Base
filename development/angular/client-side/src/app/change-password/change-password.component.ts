@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
@@ -9,7 +9,8 @@ declare const $;
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.css']
+  styleUrls: ['./change-password.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ChangePasswordComponent implements OnInit {
   public changePasswdData: any = {};

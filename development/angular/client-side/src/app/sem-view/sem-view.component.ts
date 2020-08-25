@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -14,7 +14,8 @@ var globalMap;
   selector: 'app-sem-view',
   templateUrl: './sem-view.component.html',
   styleUrls: ['./sem-view.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class SemViewComponent implements OnInit, OnDestroy {
 
@@ -103,25 +104,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
     private changeDetection: ChangeDetectorRef,
   ) {
     service.logoutOnTokenExpire();
-    // this.userId = this.telemData.impression.uid = keyCloakSevice.kc.tokenParsed.sub;
-    // service.telemetryData[1].Semester.push(this.telemData);
   }
 
-  ngOnDestroy() {
-    // this.edate = new Date();
-    // this.end_time = Math.floor(this.edate.getTime() / 1000.0);
-    // this.telemData.impression.endTime = this.end_time;
-
-    // var dateObj = {
-    //   year: this.edate.getFullYear(),
-    //   month: this.edate.getMonth() + 1,
-    //   date: this.edate.getDate()
-    // }
-
-    // this.service.telemetry(dateObj).subscribe(res => {
-    //   console.log(res);
-    // });
-  }
+  ngOnDestroy() { }
 
   ngOnInit() {
     var eventType = "pageLoad";
