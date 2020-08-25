@@ -27,9 +27,6 @@ else
         installed_version=$(cut -d "=" -f2 <<< "$installed_ver")
          echo "cQube $installed_version version is already installed. Follow Upgradtion process if you want to upgrade."
          exit 1
-    else
-       echo "Error - Invalid base_dir";
-       exit 1
    fi
 fi
 }
