@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { KeycloakSecurityService } from '../keycloak-security.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
@@ -6,7 +6,8 @@ import { AppServiceComponent } from '../app.service';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.css']
+  styleUrls: ['./home-page.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HomePageComponent implements OnInit {
   adminUrl;
