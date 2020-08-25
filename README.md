@@ -19,6 +19,8 @@ The following ports have to be configured in the nginix server with reverse prox
 2) Port 4201 should be open from openvpn to the cQube server
 3) Port 3001 should be open from openvpn to the cQube server
 
+Note: For <b>Installation:</b> follow the below steps directly, for upgradation follow the <b>Upgradation:</b> steps mentioned in the last section.
+
 <b>Installation:</b>
 - Open Terminal
 - Navigate to the directory where cQube has been downloaded or cloned 
@@ -133,3 +135,37 @@ cqube_emission
 python3 client.py
 ```
 - Finally see the output in ```https://<domain_name>```
+
+
+<b>Upgradation:</b>
+- Open Terminal
+- Navigate to the directory where cQube has been downloaded or cloned
+```
+cd cQube/ansible/installation_scripts/
+git checkout release-1.2
+```
+- Copy the upgradation_config.yml.template to upgradation_config.yml 
+`cp upgradation_config.yml.template upgradation_config.yml`
+- This script will update the below cQube components:
+  - Creates & Updates table,sequence,index in postgresql database
+  - Updates NodeJS server side code
+  - Updates Angular and Chart JS client side code
+  - Updates & configure Apache Nifi template
+  - Updates & configure Keycloak
+- Fill the configuration details in `upgradation_config.yml` (* all the values are mandatory, make sure to fill the same configuration details which were used during installation)
+- Edit using `nano upgradation_config.yml`
+- Save and Close the file
+
+- Give the following permission to the install.sh file
+```
+chmod u+x upgrade.sh
+```
+- Run the script to update cQube using the non-root user with sudo privilege
+- Start the upgradation by running upgrade.sh shell script file as mentioned below:
+```
+sudo ./upgrade.sh
+```
+Configuration filled in `upgradation_config.yml` will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the upgradation will be aborted. Refer the error message and solve the errors appropriately. Restart the upgradation process`sudo ./upgrade.sh`
+
+Once upgradation is completed without any errors, you will be prompted the following message. 
+```CQube upgraded successfully!!```
