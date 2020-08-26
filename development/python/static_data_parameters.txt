@@ -49,8 +49,8 @@ from flowfile)
 ''',
 "static_school_check_if_null":'''select * from flowfile except(select * from flowfile 
 where school is not NULL
-AND latitude > 0
-AND longitude > 0)
+or latitude > 0
+or longitude > 0)
 ''',
 "static_school_not_null":'''select * from flowfile 
 where school is not NULL

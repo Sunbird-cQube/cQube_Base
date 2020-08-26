@@ -53,7 +53,7 @@ else
         installed_ver=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_VERSION )
         installed_version=$(cut -d "=" -f2 <<< "$installed_ver")
     else
-       echo "Error - Invalid base_dir";
+       echo "Error - Invalid base_dir or Unable to find the cQube in given base_dir";
        exit 1
     fi
 fi
@@ -63,16 +63,20 @@ if [[ -e ".version" ]]; then
     this_version=$(awk ''/^cqube_version:' /{ if ($2 !~ /#.*/) {print $2}}' .version)
 
     if [[ $this_version == "" ]] || [[ ! `echo $this_version | grep -E '^[0-9]{1,2}\.[0-9]{1,2}\.?[0-9]{1,2}?$'` ]]; then
-       echo "Error - cQube's constant variables changed. Re-clone the repository again";
+       echo "Error - cQube's constant settings are affected. Re-clone the repository again";
        exit 1 
     fi
 else
-   echo "Error - cQube's constant variables changed. Re-clone the repository again";
+   echo "Error - cQube's constant settings are affected. Re-clone the repository again";
    exit 1
 fi
 
 if [[ ! $installed_version < $this_version ]]; then
-   echo "Error - cQube is already upgraded to this version.";
+   echo "cQube is already upgraded to $this_version version.";
+   exit 1
+fi
+if [[ ! $installed_version == "1.2" ]]; then
+   echo "Version $this_version is only upgradeable from 1.2 version";
    exit 1
 fi
 }
