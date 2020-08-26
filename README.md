@@ -21,12 +21,13 @@ The following ports have to be configured in the nginix server with reverse prox
 
 Note: For <b>Installation:</b> follow the below steps directly, for upgradation follow the <b>Upgradation:</b> steps mentioned in the last section.
 
-<b>Installation:</b>
+<h2>Installation:</h2>
+
 - Open Terminal
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout cQube-release-new
+git checkout release-1.2.1
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
@@ -34,7 +35,6 @@ git checkout cQube-release-new
   - Installs Ansible
   - Installs Openjdk
   - Installs Python, pip and flask
-  - Creates S3 buckets
   - Installs Postgresql
   - Installs NodeJS
   - Installs Angular and Chart JS
@@ -70,7 +70,7 @@ Once installation is completed without any errors, you will be prompted the foll
 
 <b>Steps Post Installation:</b>
 
-<b>Uploading data to S3 Emission bucket:</b>
+<h4>Uploading data to S3 Emission bucket:</h4>
 - 
 Create `cqube_emission` directory and place the data files as shown in file structure below inside the cqube_emission folder.
 
@@ -137,12 +137,13 @@ python3 client.py
 - Finally see the output in ```https://<domain_name>```
 
 
-<b>Upgradation:</b>
+<h2>Upgradation:</h2>
+
 - Open Terminal
 - Navigate to the directory where cQube has been downloaded or cloned
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.2
+git checkout release-1.2.1
 ```
 - Copy the upgradation_config.yml.template to upgradation_config.yml 
 `cp upgradation_config.yml.template upgradation_config.yml`
