@@ -4,7 +4,7 @@
     owner: postgres
     state: directory
     mode: "1755"
-  tags: install
+  tags: [ install, update ]
 
 - name: copy csv to /tmp/postgres
   copy:

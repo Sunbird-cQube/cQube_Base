@@ -6,7 +6,7 @@
   tags: [ install, update ]
 
 - include_tasks: configure_client.yml
-  tags: install
+  tags: [ install, update ]
 
 - include_tasks: configure_user.yml
   tags: install

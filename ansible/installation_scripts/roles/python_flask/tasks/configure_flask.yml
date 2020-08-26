@@ -9,7 +9,8 @@
   tags: [ install, update ]
 
 - name: reload systemd
-  shell: sudo systemctl daemon-reload
+  become: yes
+  shell: systemctl daemon-reload
   tags: [ install, update ]
 
 - name: Stopping the emission_app service
@@ -30,6 +31,7 @@
   copy:
     src: requirements.txt
     dest: "{{ base_dir }}/cqube/emission_app/requirements.txt"
+    mode: "0644"
   tags: [ install, update ]
 
 - name: Copying python files
@@ -46,6 +48,7 @@
   template:
     src: env.py.j2
     dest: "{{ base_dir }}/cqube/emission_app/python/env.py"
+    mode: "0644"
   tags: [ install, update ]
 
 - name: create a virtual environment directory

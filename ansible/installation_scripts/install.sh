@@ -16,7 +16,6 @@ sudo apt update -y
 sudo apt install python -y
 sudo apt-get install python-apt -y
 sudo apt-get install python3-pip -y
-sudo pip3 install glob2
 chmod u+x validate.sh
 sudo apt install unzip -y
 
@@ -30,7 +29,7 @@ fi
 . "$INS_DIR/validation_scripts/datasource_config_validation.sh"
 
 sudo apt-get install software-properties-common -y
-sudo apt-add-repository ppa:ansible/ansible -y
+sudo apt-add-repository ppa:ansible/ansible-2.9 -y
 sudo apt-get update -y
 sudo apt install ansible -y
 

@@ -19,6 +19,7 @@
     repo: deb https://packages.grafana.com/oss/deb stable main
     state: present
     update_cache: true
+    mode: "0644"
 
 - name: Install Grafana
   apt:

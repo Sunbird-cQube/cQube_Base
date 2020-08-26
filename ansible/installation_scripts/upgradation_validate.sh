@@ -62,7 +62,7 @@ fi
 if [[ -e ".version" ]]; then
     this_version=$(awk ''/^cqube_version:' /{ if ($2 !~ /#.*/) {print $2}}' .version)
 
-    if [[ $this_version == "" ]] || [[ ! `echo $this_version | grep -E '^[0-9]{1,2}\.[0-9]{1,2}$'` ]]; then
+    if [[ $this_version == "" ]] || [[ ! `echo $this_version | grep -E '^[0-9]{1,2}\.[0-9]{1,2}\.?[0-9]{1,2}?$'` ]]; then
        echo "Error - cQube's constant variables changed. Re-clone the repository again";
        exit 1 
     fi
