@@ -45,7 +45,7 @@
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
     mode: '0644'
-  tags: [ install, update ]
+  tags: install
 
 - name: Creating the realm
   shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create realms -f {{ cQube_realm_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
@@ -53,8 +53,14 @@
     executable: /bin/bash
   tags: install
 
-- name: Updating the config_otp option to realm
-  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create partialImport -r {{ realm_name }} -s ifResourceExists=OVERWRITE -o -f {{ cQube_realm_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+- name: Adding the client roles to admin realm role
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh add-roles -r {{ realm_name }} --rname {{ admin_role }} --cclientid realm-management --rolename manage-users --rolename manage-realm --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:
     executable: /bin/bash
-  tags: update 
+  tags: [ install, update ]
+
+- name: Adding the client roles to report_viewer realm role
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh add-roles -r {{ realm_name }} --rname {{ report_viewer_role }} --cclientid realm-management --rolename manage-users --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    executable: /bin/bash
+  tags: [ install, update ]
