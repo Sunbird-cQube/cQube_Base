@@ -258,7 +258,7 @@ export class DikshaTableComponent implements OnInit {
         var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
-        headers += `<th> ${col}</th>`;
+        headers += `<th style="font-size: 14px"> ${col}</th>`;
       });
 
       let newArr = [];
