@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -8,7 +8,8 @@ declare const $;
 @Component({
   selector: 'app-diksha-table',
   templateUrl: './diksha-table.component.html',
-  styleUrls: ['./diksha-table.component.css']
+  styleUrls: ['./diksha-table.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DikshaTableComponent implements OnInit {
   public result: any = [];
@@ -257,7 +258,7 @@ export class DikshaTableComponent implements OnInit {
         var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
-        headers += `<th> ${col}</th>`;
+        headers += `<th style="font-size: 14px"> ${col}</th>`;
       });
 
       let newArr = [];

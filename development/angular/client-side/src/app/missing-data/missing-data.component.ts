@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ExportToCsv } from 'export-to-csv';
 import { Router } from '@angular/router';
 import { AppServiceComponent } from '../app.service';
@@ -7,7 +7,8 @@ declare const $;
 @Component({
   selector: 'app-missing-data',
   templateUrl: './missing-data.component.html',
-  styleUrls: ['./missing-data.component.css']
+  styleUrls: ['./missing-data.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MissingDataComponent implements OnInit {
   fileName: any;

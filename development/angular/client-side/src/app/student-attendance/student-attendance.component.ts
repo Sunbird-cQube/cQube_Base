@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -13,7 +13,8 @@ var globalMap;
   selector: 'app-student-attendance',
   templateUrl: './student-attendance.component.html',
   styleUrls: ['./student-attendance.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   impressionId = Math.floor(100000 + Math.random() * 900000);

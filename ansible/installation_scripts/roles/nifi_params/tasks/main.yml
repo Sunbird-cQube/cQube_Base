@@ -1,8 +1,9 @@
 ---
-- name: creating the {{ item }} params json
+- name: creating the parameter json files
   template:
     src: "{{ item }}_params.json.j2"
     dest: nifi_json_files/{{ item }}.json
+    mode: "0644"
   loop:
     - assessment
     - attendance

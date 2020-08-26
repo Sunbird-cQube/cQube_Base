@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -9,7 +9,8 @@ import { Label, Color } from 'ng2-charts';
 @Component({
   selector: 'app-diksha-chart',
   templateUrl: './diksha-chart.component.html',
-  styleUrls: ['./diksha-chart.component.css']
+  styleUrls: ['./diksha-chart.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DikshaChartComponent implements OnInit {
   chart1: boolean = false;
@@ -64,7 +65,7 @@ export class DikshaChartComponent implements OnInit {
   fileName: any;
   reportData: any = [];
   y_axisValue;
-
+  footer;
 
   constructor(
     public http: HttpClient,
@@ -132,6 +133,7 @@ export class DikshaChartComponent implements OnInit {
     document.getElementById('home').style.display = "none";
     this.errMsg();
     this.districtId = '';
+    this.footer = '';
     this.hierName = undefined;
     this.timePeriod = 'last_30_days';
 
@@ -140,8 +142,9 @@ export class DikshaChartComponent implements OnInit {
     this.dist = false
     this.service.dikshaAllData('All', this.timePeriod).subscribe(async result => {
       var arr = [];
+      this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       var maxValue = 0;
-      await result['data'].forEach(element => {
+      await result['funRes']['data'].forEach(element => {
         arr.push(element.score.map(Number));
       });
       var array = arr;
@@ -149,32 +152,32 @@ export class DikshaChartComponent implements OnInit {
       maxValue = Math.max(...result1);
       this.y_axisValue = maxValue;
 
-      this.createChart(result, "barChartData");
-      if (result['data']) {
-        this.chart1 = (result['data'][0].length > 0);
+      this.createChart(result['funRes'], "barChartData");
+      if (result['funRes']['data']) {
+        this.chart1 = (result['funRes']['data'][0].length > 0);
       }
 
       this.service.dikshaAllData('Teacher', this.timePeriod).subscribe(result => {
-        this.createChart(result, "barChartData1");
-        if (result['data']) {
-          this.chart2 = (result['data'][0].length > 0);
+        this.createChart(result['funRes'], "barChartData1");
+        if (result['funRes']['data']) {
+          this.chart2 = (result['funRes']['data'][0].length > 0);
         }
       }, err => {
         this.loaderAndErr();
       })
       this.service.dikshaAllData('Student', this.timePeriod).subscribe(result => {
-        this.createChart(result, "barChartData2");
-        if (result['data']) {
-          this.chart3 = (result['data'][0].length > 0);
+        this.createChart(result['funRes'], "barChartData2");
+        if (result['funRes']['data']) {
+          this.chart3 = (result['funRes']['data'][0].length > 0);
         }
       }, err => {
         this.loaderAndErr();
       })
       this.service.dikshaAllData('Other', this.timePeriod).subscribe(result => {
 
-        this.createChart(result, "barChartData3");
-        if (result['data']) {
-          this.chart4 = (result['data'][0].length > 0);
+        this.createChart(result['funRes'], "barChartData3");
+        if (result['funRes']['data']) {
+          this.chart4 = (result['funRes']['data'][0].length > 0);
         }
         document.getElementById('spinner').style.display = 'none';
       }, err => {
@@ -193,88 +196,15 @@ export class DikshaChartComponent implements OnInit {
     document.getElementById('home').style.display = "Block";
     this.districtId = districtId
     this.hierName = undefined;
-    if (this.timePeriod !== '') {
-      this.all = false
-      this.dist = true
-      let d = this.districtsDetails.filter(item => {
-        if (item.district_id == districtId)
-          return item.district_name
-      })
-      this.hierName = d[0].district_name;
-      this.timeRange(this.timePeriod);
-    } else {
-
-      if (districtId == '') {
-        this.all = true
-        this.dist = false
-      } else {
-        this.all = false
-        this.dist = true
-        let d = this.districtsDetails.filter(item => {
-          if (item.district_id == districtId)
-            return item.district_name
-        })
-        this.hierName = d[0].district_name;
-      }
-
-
-      this.result = [];
-      this.service.dikshaDistData(districtId, 'All', this.timePeriod).subscribe(async result => {
-        var arr = [];
-        var maxValue = 0;
-        await result['data'].forEach(element => {
-          arr.push(element.score.map(Number));
-        });
-        var array = arr;
-        var result1 = array.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);
-        maxValue = Math.max(...result1);
-        this.y_axisValue = maxValue;
-        this.createChart(result, "barChartData");
-        if (result['data']) {
-          this.chart1 = (result['data'][0].length > 0);
-        }
-
-        this.service.dikshaDistData(districtId, 'Teacher', this.timePeriod).subscribe(result => {
-          if (result['data']) {
-            this.chart2 = (result['data'][0].length > 0);
-          }
-
-          this.createChart(result, "barChartData1");
-        }, err => {
-          this.loaderAndErr();
-          console.log(err);
-        })
-        this.service.dikshaDistData(districtId, 'Student', this.timePeriod).subscribe(result => {
-          this.createChart(result, "barChartData2");
-          if (result['data']) {
-            this.chart3 = (result['data'][0].length > 0);
-          }
-
-        }, err => {
-          this.loaderAndErr();
-          console.log(err);
-        })
-        this.service.dikshaDistData(districtId, 'Other', this.timePeriod).subscribe(result => {
-
-          this.createChart(result, "barChartData3");
-          if (result['data']) {
-            this.chart4 = (result['data'][0].length > 0);
-          }
-
-          document.getElementById('spinner').style.display = 'none';
-        }, err => {
-          this.loaderAndErr();
-          console.log(err);
-        })
-      }, err => {
-        this.loaderAndErr();
-        this.result = [];
-        this.showAllChart = (this.result.length! > 0);
-        this.allDataNotFound = err.error.errMsg;
-      })
-
-    }
-
+    this.footer = '';
+    this.all = false
+    this.dist = true
+    let d = this.districtsDetails.filter(item => {
+      if (item.district_id == districtId)
+        return item.district_name
+    })
+    this.hierName = d[0].district_name;
+    this.timeRange(this.timePeriod);
   }
 
   timeRange(timePeriod) {
@@ -285,6 +215,7 @@ export class DikshaChartComponent implements OnInit {
     this.errMsg();
     // this.hierName = undefined;
     this.result = [];
+    this.footer = '';
     if (this.districtId == '') {
       this.districtId = 'All'
     }
@@ -293,7 +224,8 @@ export class DikshaChartComponent implements OnInit {
     this.service.dikshaDistData(this.districtId, 'All', this.timePeriod).subscribe(async result => {
       var arr = [];
       var maxValue = 0;
-      await result['data'].forEach(element => {
+      this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      await result['funRes']['data'].forEach(element => {
         arr.push(element.score.map(Number));
       });
       var array = arr;
@@ -301,16 +233,16 @@ export class DikshaChartComponent implements OnInit {
       maxValue = Math.max(...result1);
       this.y_axisValue = maxValue;
 
-      this.createChart(result, "barChartData");
-      if (result['data']) {
-        this.chart1 = (result['data'][0].length > 0);
+      this.createChart(result['funRes'], "barChartData");
+      if (result['funRes']['data']) {
+        this.chart1 = (result['funRes']['data'][0].length > 0);
       }
 
 
       this.service.dikshaDistData(this.districtId, 'Teacher', this.timePeriod).subscribe(result => {
-        this.createChart(result, "barChartData1");
-        if (result['data']) {
-          this.chart2 = (result['data'][0].length > 0);
+        this.createChart(result['funRes'], "barChartData1");
+        if (result['funRes']['data']) {
+          this.chart2 = (result['funRes']['data'][0].length > 0);
         }
 
       }, err => {
@@ -318,9 +250,9 @@ export class DikshaChartComponent implements OnInit {
         console.log(err);
       })
       this.service.dikshaDistData(this.districtId, 'Student', this.timePeriod).subscribe(result => {
-        this.createChart(result, "barChartData2");
-        if (result['data']) {
-          this.chart3 = (result['data'][0].length > 0);
+        this.createChart(result['funRes'], "barChartData2");
+        if (result['funRes']['data']) {
+          this.chart3 = (result['funRes']['data'][0].length > 0);
         }
 
       }, err => {
@@ -329,9 +261,9 @@ export class DikshaChartComponent implements OnInit {
       })
       this.service.dikshaDistData(this.districtId, 'Other', this.timePeriod).subscribe(result => {
 
-        this.createChart(result, "barChartData3");
-        if (result['data']) {
-          this.chart4 = (result['data'][0].length > 0);
+        this.createChart(result['funRes'], "barChartData3");
+        if (result['funRes']['data']) {
+          this.chart4 = (result['funRes']['data'][0].length > 0);
         }
 
         document.getElementById('spinner').style.display = 'none';

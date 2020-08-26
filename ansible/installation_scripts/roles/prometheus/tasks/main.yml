@@ -7,6 +7,7 @@
   get_url:
     url: https://github.com/prometheus/prometheus/releases/download/v2.19.2/prometheus-2.19.2.linux-amd64.tar.gz
     dest: /tmp
+    mode: "0644"
   tags: install
 
 - name: Creating Directory
@@ -41,6 +42,7 @@
   get_url:
     url: https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
     dest: /tmp
+    mode: "0644"
   tags: install
 
 - name: Extract node_exporter 
@@ -68,7 +70,8 @@
   tags: install
 
 - name: Kill the port of prometheus and node_exporter
-  shell: sudo fuser -k {{ item }}/tcp
+  become: yes
+  shell: fuser -k {{ item }}/tcp
   loop:
     - 9090
     - 9100
@@ -93,7 +96,8 @@
   tags: [ install, update ]
 
 - name: reload systemd
-  shell: sudo systemctl daemon-reload
+  become: yes
+  shell: systemctl daemon-reload
   tags: [ install, update ]
 
 - name: Starting the prometheus and node_exporter service

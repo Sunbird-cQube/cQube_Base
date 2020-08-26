@@ -167,6 +167,7 @@
   template:
     src: update_nifi_params.py.j2
     dest: "{{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
+    mode: "0644"
 
 - name: Run python code
   shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"

@@ -10,6 +10,7 @@
   get_url:
     url: https://archive.apache.org/dist/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.tar.gz
     dest: ~/nifi
+    mode: "0644"
   tags: install
 
 - name: Check if nifi is present in destination
@@ -48,6 +49,7 @@
   get_url:
     url: https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.10/postgresql-42.2.10.jar
     dest: "{{ base_dir }}/cqube/nifi/jars"
+    mode: "0644"
   tags: install
 
 - name: Touch a file
@@ -104,6 +106,8 @@
 
 - name: start NiFi
   shell: "{{ base_dir }}/cqube/nifi/bin/nifi.sh start"
+  tags: install
+
 - pause:
     minutes: 3
     prompt: "nifi is starting, kindly do not press any key"
@@ -111,6 +115,8 @@
 
 - name: Restart NiFi
   shell: "{{ base_dir }}/cqube/nifi/bin/nifi.sh restart"
+  tags: update
+
 - pause:
     minutes: 3
     prompt: "nifi is restarting, kindly do not press any key"

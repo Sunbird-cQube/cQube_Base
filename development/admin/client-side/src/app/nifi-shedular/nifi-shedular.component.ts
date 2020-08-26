@@ -81,8 +81,6 @@ export class NifiShedularComponent implements OnInit {
   }
 
   onClickSchedule(data) {
-    console.log(data);
-
     if (this.selectedDuration != '' && this.selectedShedule != '') {
       this.service.nifiScheduleProcessor(data.id, { state: data.state, time: this.selectedShedule, stopTime: this.selectedDuration }).subscribe(res => {
         if (res['msg']) {

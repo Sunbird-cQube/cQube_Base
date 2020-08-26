@@ -62,33 +62,70 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
             timeToStop = timeToStop % 24;
             timeToStop = timeToStop < 0 ? 24 + timeToStop : +timeToStop;
         }
-
         let url = `${process.env.NIFI_URL}/flow/process-groups/${groupId}`
 
-        await schedule.scheduleJob(`${mins} ${hours} * * *`, async function () {
-            logger.info(`--- ${groupId} Job scheduling started ---`);
-            let result = await axios.put(url, {
-                id: groupId,
-                state: state,
-                disconnectedNodeAcknowledged: false
+        var job = await schedule.scheduledJobs[groupId];
+        if (job != undefined) {
+            job.cancel();
+            await schedule.scheduleJob(groupId, `${mins}  ${hours} * * *`, async function () {
+                // logger.info(`re schedule processor ${groupId} for new time ::::::: ${hours} : ${mins}`);
+                logger.info(`--- ${groupId} - Nifi processor group re-scheduling started ---`);
+                let response = await startFun()
+                logger.info(JSON.stringify(response))
+                logger.info(`--- ${groupId} - Nifi processor group re-scheduling completed ---`);
             });
-            logger.info(JSON.stringify(result.data))
-            logger.info(`--- ${groupId} Job scheduling completed ---`);
-        });
-
-        await schedule.scheduleJob(`${mins} ${timeToStop} * * *`, async function () {
-            logger.info(`--- ${groupId} Job stopping started ---`);
-            let result = await axios.put(url, {
-                id: groupId,
-                state: 'STOPPED',
-                disconnectedNodeAcknowledged: false
+            await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
+                logger.info(`--- ${groupId} - Nifi processor group re-scheduling stopping initiated ---`);
+                let response = await stopFun()
+                logger.info(JSON.stringify(response))
+                logger.info(`--- ${groupId} - Nifi processor group re-scheduling stopping completed ---`);
             });
-            logger.info(JSON.stringify(result.data))
-            logger.info(`--- ${groupId} Job stopping completed ---`);
-        });
-
+        } else {
+            await schedule.scheduleJob(groupId, `${mins}  ${hours} * * *`, async function () {
+                // logger.info(`schedule processor ${groupId} for default time ::::::: ${hours} : ${mins}`);
+                logger.info(`--- ${groupId} - Nifi processor group scheduling started ---`);
+                let response = await startFun()
+                logger.info(JSON.stringify(response))
+                logger.info(`--- ${groupId} - Nifi processor group scheduling completed ---`);
+            });
+            await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
+                // logger.info(`schedule processor ${groupId} stop time ::::::: ${timeToStop} : ${mins}`);
+                logger.info(`--- ${groupId} - Nifi processor group scheduling stopping initiated ---`);
+                let response = await stopFun()
+                logger.info(JSON.stringify(response))
+                logger.info(`--- ${groupId} - Nifi processor group scheduling stopping completed ---`);
+            });
+        }
+        const startFun = () => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    let result = await axios.put(url, {
+                        id: groupId,
+                        state: state,
+                        disconnectedNodeAcknowledged: false
+                    });
+                    resolve(result.data)
+                } catch (e) {
+                    reject(e)
+                }
+            })
+        }
+        const stopFun = () => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    let result = await axios.put(url, {
+                        id: groupId,
+                        state: 'STOPPED',
+                        disconnectedNodeAcknowledged: false
+                    });
+                    resolve(result.data)
+                } catch (e) {
+                    reject(e)
+                }
+            })
+        }
         logger.info('--- schedule processor api response sent ---')
-        res.send({ msg: `Job scheduled successfully at ${req.body.time} every day` })
+        res.send({ msg: `Job rescheduled successfully at ${req.body.time} every day` })
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
@@ -97,7 +134,7 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
 
 router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
     try {
-        logger.info('--- schedule processor api ---')
+        logger.info('---default schedule nifi processor api ---')
         let groupId = req.params.id
         let state = req.body.state
         let timeToSchedule = req.body.time
@@ -111,37 +148,75 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
             timeToStop = timeToStop % 24;
             timeToStop = timeToStop < 0 ? 24 + timeToStop : +timeToStop;
         }
-
         let url = `${process.env.NIFI_URL}/flow/process-groups/${groupId}`
 
-        await schedule.scheduleJob(`${mins} ${hours} * * *`, async function () {
-            logger.info(`--- ${groupId} Job scheduling started ---`);
-            let result = await axios.put(url, {
-                id: groupId,
-                state: state,
-                disconnectedNodeAcknowledged: false
+        var job = await schedule.scheduledJobs[groupId];
+        if (job != undefined) {
+            job.cancel();
+            await schedule.scheduleJob(groupId, `${mins}  ${hours} * * *`, async function () {
+                // logger.info(`re schedule processor ${groupId} for new time ::::::: ${hours} : ${mins}`);
+                logger.info(`--- ${groupId} - Nifi processor group re-scheduling started ---`);
+                let response = await startFun()
+                logger.info(JSON.stringify(response))
+                logger.info(`--- ${groupId} - Nifi processor group re-scheduling completed ---`);
             });
-            logger.info(JSON.stringify(result.data))
-            logger.info(`--- ${groupId} Job scheduling completed ---`);
-        });
-
-        await schedule.scheduleJob(`${mins} ${timeToStop} * * *`, async function () {
-            logger.info(`--- ${groupId} Job stopping started ---`);
-            let result = await axios.put(url, {
-                id: groupId,
-                state: 'STOPPED',
-                disconnectedNodeAcknowledged: false
+            await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
+                logger.info(`--- ${groupId} - Nifi processor group re-scheduling stopping initiated ---`);
+                let response = await stopFun()
+                logger.info(JSON.stringify(response))
+                logger.info(`--- ${groupId} - Nifi processor group re-scheduling stopping completed ---`);
             });
-            logger.info(JSON.stringify(result.data))
-            logger.info(`--- ${groupId} Job stopping completed ---`);
-        });
-
-        logger.info('--- schedule processor api response sent ---')
-        res.send({ msg: `Job scheduled successfully at ${req.body.time} every day` })
+        } else {
+            await schedule.scheduleJob(groupId, `${mins}  ${hours} * * *`, async function () {
+                // logger.info(`schedule processor ${groupId} for default time ::::::: ${hours} : ${mins}`);
+                logger.info(`--- ${groupId} - Nifi processor group scheduling started ---`);
+                let response = await startFun()
+                logger.info(JSON.stringify(response))
+                logger.info(`--- ${groupId} - Nifi processor group scheduling completed ---`);
+            });
+            await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
+                // logger.info(`schedule processor ${groupId} stop time ::::::: ${timeToStop} : ${mins}`);
+                logger.info(`--- ${groupId} - Nifi processor group scheduling stopping initiated ---`);
+                let response = await stopFun()
+                logger.info(JSON.stringify(response))
+                logger.info(`--- ${groupId} - Nifi processor group scheduling stopping completed ---`);
+            });
+        }
+        const startFun = () => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    let result = await axios.put(url, {
+                        id: groupId,
+                        state: state,
+                        disconnectedNodeAcknowledged: false
+                    });
+                    resolve(result.data)
+                } catch (e) {
+                    reject(e)
+                }
+            })
+        }
+        const stopFun = () => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    let result = await axios.put(url, {
+                        id: groupId,
+                        state: 'STOPPED',
+                        disconnectedNodeAcknowledged: false
+                    });
+                    resolve(result.data)
+                } catch (e) {
+                    reject(e)
+                }
+            })
+        }
+        logger.info('---default schedule nifi processor api response sent ---')
+        res.send({ msg: `Job rescheduled successfully at ${req.body.time} every day` })
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 })
+
 
 module.exports = router;
