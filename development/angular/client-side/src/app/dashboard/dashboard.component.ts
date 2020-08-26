@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { AppServiceComponent } from '../app.service';
 
@@ -6,7 +6,6 @@ import { AppServiceComponent } from '../app.service';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit {
   hiddenPass = false;
