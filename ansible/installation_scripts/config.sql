@@ -16,7 +16,6 @@ drop function IF exists insert_diksha_agg;
 
 /*Infra clean*/
 truncate table infrastructure_master;
-truncate table infrastructure_staging_init;
 truncate table infrastructure_staging_score;
 
 /* Insert master infrastructure */
@@ -1023,4 +1022,8 @@ Execute agg_insert;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
+/*truncate infra init tables*/
+
+truncate table infrastructure_staging_init;
 

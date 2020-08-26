@@ -3,6 +3,7 @@
   file:
     path: "{{ base_dir }}/cqube/logs"
     state: absent
+  tags: install
 
 - name: Creating a Directory to store the log files
   file: 
@@ -11,6 +12,7 @@
     group: "{{ system_user_name }}"
     recurse: yes
     state: directory
+  tags: install
 
 - name: Create a symbolic link
   shell: ln -s "{{ item.src }}" "{{ base_dir }}/cqube/logs/{{ item.dest }}"
@@ -33,3 +35,4 @@
     - { src: "/var/log/syslog", dest: "syslog"}
     - { src: "{{base_dir}}/cqube/keycloak/standalone/log/server.log", dest: "server.log"}
     - { src: "{{base_dir}}/cqube/keycloak/standalone/log/audit.log", dest: "audit.log"}
+  tags: install
