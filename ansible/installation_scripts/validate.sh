@@ -17,6 +17,20 @@ if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
 fi
 }
 
+check_version(){
+if [[ ! "$base_dir" = /* ]] || [[ ! -d $base_dir ]]; then
+    echo "Error - Please enter the absolute path or make sure the directory is present.";
+    exit 1
+else
+   if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
+        installed_ver=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_VERSION )
+        installed_version=$(cut -d "=" -f2 <<< "$installed_ver")
+         echo "cQube $installed_version version is already installed. Follow Upgradtion process if you want to upgrade."
+         exit 1
+   fi
+fi
+}
+
 check_kc_config_otp(){
 if ! [[ $2 == "true" || $2 == "false" ]]; then
     echo "Error - Please enter either true or false for $1"; fail=1
@@ -288,11 +302,16 @@ declare -A vals
 aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
+# Getting base_dir
+base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+
 # Getting memory args
 shared_buffers=$(awk ''/^shared_buffers:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 work_mem=$(awk ''/^work_mem:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 java_arg_2=$(awk ''/^java_arg_2:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 java_arg_3=$(awk ''/^java_arg_3:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+
+check_version 
 
 # Making default postgres install true
 sudo sed -i "s/^pg_install_flag:.*/pg_install_flag: true/g" roles/createdb/vars/main.yml
