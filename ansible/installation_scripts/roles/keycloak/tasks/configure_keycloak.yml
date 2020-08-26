@@ -59,8 +59,23 @@
     executable: /bin/bash
   tags: [ install, update ]
 
+- name: Getting the Role ID
+  shell: ./kcadm.sh get roles -r {{realm_name}} --fields id,name --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}   
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  register: result
+  tags: [ install, update ]
+
+- name: Parsing the output
+  set_fact:
+    report_viewer_id: "{{item.id}}"
+  loop: '{{ result.stdout }}'
+  when: item.name == report_viewer_role
+  no_log: true
+  tags: [ install, update ]
+
 - name: Adding the client roles to report_viewer realm role
-  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh add-roles -r {{ realm_name }} --rname {{ report_viewer_role }} --cclientid realm-management --rolename manage-users --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh add-roles -r {{ realm_name }} --rid {{ report_viewer_id }} --cclientid realm-management --rolename manage-users --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:
     executable: /bin/bash
   tags: [ install, update ]
