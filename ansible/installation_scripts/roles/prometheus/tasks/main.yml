@@ -70,7 +70,8 @@
   tags: install
 
 - name: Kill the port of prometheus and node_exporter
-  shell: sudo fuser -k {{ item }}/tcp
+  become: yes
+  shell: fuser -k {{ item }}/tcp
   loop:
     - 9090
     - 9100
@@ -95,7 +96,8 @@
   tags: [ install, update ]
 
 - name: reload systemd
-  shell: sudo systemctl daemon-reload
+  become: yes
+  shell: systemctl daemon-reload
   tags: [ install, update ]
 
 - name: Starting the prometheus and node_exporter service

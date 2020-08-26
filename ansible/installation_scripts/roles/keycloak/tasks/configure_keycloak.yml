@@ -45,24 +45,13 @@
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
     mode: '0644'
-  tags: install
+  tags: [ install, update ]
 
 - name: Creating the realm
   shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create realms -f {{ cQube_realm_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:
     executable: /bin/bash
   tags: install
-
-# updating the config_otp
-
-- name: Creating the json for config_otp option
-  template:
-    src: cQube_realm_config_otp.json.j2
-    dest: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm_config_otp.json"
-    owner: "{{ system_user_name }}"
-    group: "{{ system_user_name }}"
-    mode: '0644'
-  tags: update
 
 - name: Updating the config_otp option to realm
   shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh create partialImport -r {{ realm_name }} -s ifResourceExists=OVERWRITE -o -f {{ cQube_realm_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
