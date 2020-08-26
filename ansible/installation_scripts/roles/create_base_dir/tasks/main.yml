@@ -7,3 +7,8 @@
     recurse: yes
     state: directory
   tags: install
+
+- name: Setting timezone to IST
+  timezone:
+    name: Asia/Kolkata
+  tags: [ install, update ]
