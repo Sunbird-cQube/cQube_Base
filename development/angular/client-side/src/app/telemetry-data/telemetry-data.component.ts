@@ -1,12 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppServiceComponent } from '../app.service';
+import { AppServiceComponent, globalMap } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
-import * as data from './../../assets/india.json';
-var globalMap;
 
 @Component({
   selector: 'app-telemetry-data',
@@ -82,7 +80,7 @@ export class TelemetryDataComponent implements OnInit {
   ngOnInit() {
     this.timePeriod = 'overall';
     document.getElementById('backBtn').style.display = "none";
-    this.initMap();
+    this.service.initMap('map');
     this.districtWise();
     document.getElementById('homeBtn').style.display = "Block";
   }
@@ -90,31 +88,6 @@ export class TelemetryDataComponent implements OnInit {
   getDaysInMonth = function (month, year) {
     return new Date(year, month, 0).getDate();
   };
-
-  //Initialisation of Map  
-  initMap() {
-    const lat = 22.3660414123535;
-    const lng = 71.48396301269531;
-    globalMap = L.map('map', { zoomControl: false }).setView([lat, lng], 7);
-    applyCountryBorder(globalMap);
-    function applyCountryBorder(map) {
-      L.geoJSON(data['features'][0], {
-        color: "#a9a9a9",
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0.0
-      }).addTo(map);
-    }
-    L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
-      {
-        token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
-        id: 'mapbox.streets',
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-        minZoom: 4,
-        maxZoom: 18,
-      }
-    ).addTo(globalMap);
-  }
 
   // to load and hide the spinner 
   loaderAndErr() {

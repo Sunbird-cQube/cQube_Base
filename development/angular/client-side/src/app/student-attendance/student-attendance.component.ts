@@ -1,13 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppServiceComponent } from '../app.service';
+import { AppServiceComponent, globalMap } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
-import * as data from './../../assets/india.json';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { KeycloakSecurityService } from '../keycloak-security.service';
-var globalMap;
 
 @Component({
   selector: 'app-student-attendance',
@@ -27,8 +25,10 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   public btnId;
   start_time = Math.floor(this.date.getTime() / 1000.0);
   public telemData = {}
+  globalMap = this.service.map;
 
   ngOnDestroy() {
+
     // this.edate = new Date();
     // // this.end_time = Math.floor(this.edate.getTime() / 1000.0);
 
@@ -78,6 +78,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   public clustName: any;
   public markerData;
   public layerMarkers: any = new L.layerGroup();
+  public markersList = new L.FeatureGroup();
   public levelWise: any;
 
   // google maps zoom level
@@ -140,35 +141,9 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     this.skul = true;
     this.element = <HTMLFormElement>document.getElementById('month');
     this.element.disabled = false;
-    this.initMap();
+    this.service.initMap('mapContainer');
     document.getElementById('homeBtn').style.display = "Block";
   }
-
-  //Initialisation of Map  
-  initMap() {
-    const lat = 22.3660414123535;
-    const lng = 71.48396301269531;
-    globalMap = L.map('mapContainer', { zoomControl: false }).setView([lat, lng], 7);
-    applyCountryBorder(globalMap);
-    function applyCountryBorder(map) {
-      L.geoJSON(data['features'][0], {
-        color: "#a9a9a9",
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0.0
-      }).addTo(map);
-    }
-    L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
-      {
-        token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
-        id: 'mapbox.streets',
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-        minZoom: 4,
-        maxZoom: 18,
-      }
-    ).addTo(globalMap);
-  }
-  public markersList = new L.FeatureGroup();
 
   loaderAndErr() {
     if (this.markers.length !== 0) {
