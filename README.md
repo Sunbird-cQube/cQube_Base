@@ -10,14 +10,16 @@
 <b>Reverse proxy rules</b>
 The following ports have to be configured in the nginix server with reverse proxy:
 1) Port 4200 should be proxied to the '/' 
-2) Port 8080 should be proxied to the '/auth'
+2) Port 8080 should be proxied to the '/auth' 
 3) Port 3000 should be proxied to the '/api'
 4) Port 5000 should be proxied to the '/data'
+5) For security reason '/auth/realms/master' needs to be blocked or can be redirected to cQube home page
 
 <b>Openvpn - cQube server firewall configuration</b>
 1) Port 9000 should be open from openvpn to the cQube server
 2) Port 4201 should be open from openvpn to the cQube server
 3) Port 3001 should be open from openvpn to the cQube server
+
 
 <b>Note:</b> For <b>Installation:</b> follow the below steps directly, for upgradation follow the <b>Upgradation:</b> steps mentioned in the last section. 
 If you already have previous version of cQube installed, you have to upgrade to the next version of cQube.
