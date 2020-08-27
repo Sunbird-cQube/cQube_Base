@@ -19,8 +19,8 @@
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <bends>
-                        <x>-1072.0</x>
-                        <y>488.0</y>
+                        <x>832.0</x>
+                        <y>472.0</y>
                     </bends>
                     <destination>
                         <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
@@ -2833,8 +2833,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>696.0</x>
-<y>1800.0</y>
+<x>640.0</x>
+<y>1792.0</y>
                             </bends>
                             <destination>
 <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
@@ -10938,7 +10938,7 @@ same id data validation of file:${filename} started</value>
     </entry>
     <entry>
         <key>putsql-sql-statement</key>
-        <value>#{sem_delete_staging}</value>
+        <value>delete from student_semester_staging where ff_uuid='${files_uuid}'</value>
     </entry>
     <entry>
         <key>Support Fragmented Transactions</key>
@@ -33080,5 +33080,5 @@ WHERE ff_uuid = '${source.uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/20/2020 17:02:16 IST</timestamp>
+    <timestamp>08/27/2020 00:59:28 IST</timestamp>
 </template>
