@@ -19,7 +19,8 @@ The following ports have to be configured in the nginix server with reverse prox
 2) Port 4201 should be open from openvpn to the cQube server
 3) Port 3001 should be open from openvpn to the cQube server
 
-Note: For <b>Installation:</b> follow the below steps directly, for upgradation follow the <b>Upgradation:</b> steps mentioned in the last section.
+<b>Note:</b> For <b>Installation:</b> follow the below steps directly, for upgradation follow the <b>Upgradation:</b> steps mentioned in the last section. 
+If you already have previous version of cQube installed, you have to upgrade to the next version of cQube.
 
 <h2>Installation:</h2>
 
