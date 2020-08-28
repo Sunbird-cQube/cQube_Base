@@ -1,10 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppServiceComponent, globalMap } from '../app.service';
+import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
+import { CommonService, globalMap } from '../common-services/common.service';
+
 
 @Component({
   selector: 'app-telemetry-data',
@@ -72,6 +74,7 @@ export class TelemetryDataComponent implements OnInit {
   constructor(
     public http: HttpClient,
     public service: AppServiceComponent,
+    public commonService: CommonService,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
@@ -80,7 +83,7 @@ export class TelemetryDataComponent implements OnInit {
   ngOnInit() {
     this.timePeriod = 'overall';
     document.getElementById('backBtn').style.display = "none";
-    this.service.initMap('map');
+    this.commonService.initMap('map');
     this.districtWise();
     document.getElementById('homeBtn').style.display = "Block";
   }

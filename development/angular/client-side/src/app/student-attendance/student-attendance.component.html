@@ -4,13 +4,13 @@
             <div *ngIf='skul'>
                 <p id="dist"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Attendance report for: <span id="state" (click)="distHierarchy($event)"
+                    Attendance report for: <span id="state" (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Attendance report for: <span id="state" (click)="distHierarchy($event)"
+                    Attendance report for: <span id="state" (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span>
                     <span id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -20,7 +20,7 @@
             <div *ngIf="blok">
                 <p id="cluster"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Attendance report for: <span id="state" (click)="distHierarchy($event)"
+                    Attendance report for: <span id="state" (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span id="dist"
                         (click)="clickedMarker($event,distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span id="block" (click)="clickedMarker($event,blockName)"
@@ -31,7 +31,7 @@
             <div *ngIf="clust">
                 <p id="school"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Attendance report for: <span id="state" (click)="distHierarchy($event)"
+                    Attendance report for: <span id="state" (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span>
                     <span id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -54,7 +54,7 @@
                         (click)="downloadRoport($event)"></em>
                     <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
-                        alt="Home" (click)="homeClick($event)"></em>
+                        alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
         </div>

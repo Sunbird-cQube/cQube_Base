@@ -1,11 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppServiceComponent, globalMap } from '../app.service';
+import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { KeycloakSecurityService } from '../keycloak-security.service';
+import { CommonService, globalMap } from '../common-services/common.service';
 
 @Component({
   selector: 'app-student-attendance',
@@ -14,34 +15,10 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class StudengtAttendanceComponent implements OnInit, OnDestroy {
-  impressionId = Math.floor(100000 + Math.random() * 900000);
-  pageId = "Student_attendance";
-  userId;
-  type = "";
-  date = new Date();
+export class StudengtAttendanceComponent implements OnInit {
   edate;
-  end_time;
-  public btnId;
-  start_time = Math.floor(this.date.getTime() / 1000.0);
   public telemData = {}
   globalMap = this.service.map;
-
-  ngOnDestroy() {
-
-    // this.edate = new Date();
-    // // this.end_time = Math.floor(this.edate.getTime() / 1000.0);
-
-    // var dateObj = {
-    //   year: this.edate.getFullYear(),
-    //   month: this.edate.getMonth() + 1,
-    //   date: this.edate.getDate()
-    // }
-
-    // this.service.telemetry(dateObj).subscribe(res => {
-    //   console.log(res);
-    // });
-  }
 
   public disabled = false;
   public title: string = '';
@@ -99,7 +76,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   public month;
   public element;
 
-  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef) {
+  constructor(public http: HttpClient, public service: AppServiceComponent, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: CommonService) {
     service.logoutOnTokenExpire();
     service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
@@ -122,10 +99,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
           month: this.month,
           year: this.year
         };
-        // var eventType = "pageLoad";
-        // this.btnId = '';
-        // var date = new Date();
-        // this.trackInteract(date, this.btnId, eventType, undefined);
+
         this.districtWise();
       }
 
@@ -141,7 +115,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     this.skul = true;
     this.element = <HTMLFormElement>document.getElementById('month');
     this.element.disabled = false;
-    this.service.initMap('mapContainer');
+    this.commonService.initMap('mapContainer');
     document.getElementById('homeBtn').style.display = "Block";
   }
 
@@ -197,10 +171,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       });
       this.getTelemetryData(clusterData, event.target.id, "cluster");
     }
-    // var eventType = event.type;
-    // this.btnId = event.target.id;
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, undefined);
 
     if (this.reportData.length > 0) {
       const options = {
@@ -231,10 +201,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       month: this.month,
       year: this.year
     };
-    // var eventType = event.type;
-    // this.btnId = event.target.id;
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, undefined);
+
     if (this.skul) {
       if (this.levelWise === "District") {
         this.districtWise();
@@ -276,23 +243,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   }
 
   public myData;
-  homeClick(event) {
-    this.globalId = undefined;
-    // var eventType = event.type;
-    // this.btnId = event.target.id;
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, undefined);
-    this.districtWise();
-  }
-  distHierarchy(event) {
-    // var eventType = event.type;
-    // this.btnId = event.target.id;
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, undefined);
-    this.districtWise();
-  }
-
   districtData = [];
+
   async districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
@@ -304,8 +256,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       }
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
         this.districtData = this.mylatlngData = res['distData'];
-        var sorted = this.mylatlngData.sort((a, b) => (a.label > b.label) ? 1 : -1);
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
+        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         var distNames = [];
@@ -315,18 +267,10 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         this.markers = sorted;
         if (this.markers.length > 0) {
           for (var i = 0; i < this.markers.length; i++) {
-            this.districtsIds.push(this.markers[i]['id']);
-            distNames.push({ id: this.markers[i]['id'], name: this.markers[i]['name'] });
-
-            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0);
-            const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-              "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
-              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].name +
-              "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-            );
-            markerIcon.addTo(globalMap).bindPopup(popup);
-            this.popups(markerIcon, this.markers[i]);
+            this.districtsIds.push(this.markers[i]['district_id']);
+            distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
+            var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0, this.levelWise);
+            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
           }
         }
 
@@ -336,17 +280,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
-        this.markers.forEach(dist => {
-          var obj = {
-            DistrictId: dist.id,
-            DistrictName: dist.name,
-            Attendance: dist.label + " %",
-            TotalSchools: Number(dist.schCount.replace(/\,/g, '')),
-            TotalStudents: Number(dist.stdCount.replace(/\,/g, ''))
-          }
-          this.reportData.push(obj);
-        });
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       }, err => {
@@ -362,12 +295,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   }
 
   blockWise(event) {
-    // console.log(event.target.id);
-    // var eventType = event.type;
-    // this.btnId = event.target.id;
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, undefined);
-
     this.commonAtStateLevel();
     this.levelWise = "Block";
     if (this.months.length > 0) {
@@ -379,8 +306,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       }
       this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
         this.mylatlngData = res['blockData'];
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1);
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
+        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         var blockNames = [];
@@ -390,39 +317,19 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         this.markers = sorted;
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
-            this.blocksIds.push(this.markers[i]['id']);
-            blockNames.push({ id: this.markers[i]['id'], name: this.markers[i]['name'], distId: this.markers[i]['dist'] });
+            this.blocksIds.push(this.markers[i]['block_id']);
+            blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
 
-            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
-
+            var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0, this.levelWise);
             globalMap.setZoom(7);
-            const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-              "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + " %" +
-              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-              "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].name +
-              "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-            );
-            markerIcon.addTo(globalMap).bindPopup(popup);
-            this.popups(markerIcon, this.markers[i]);
+            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
           this.blocksNames = blockNames;
           globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
-          // var schStdCount = JSON.parse(localStorage.getItem('schStd'));
+
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.markers.forEach(block => {
-            var obj = {
-              BlockId: block.id,
-              BlockName: block.name,
-              DistrictName: block.dist,
-              Attendance: block.label + " %",
-              TotalSchools: Number(block.schCount.replace(/\,/g, '')),
-              TotalStudents: Number(block.stdCount.replace(/\,/g, ''))
-            }
-            this.reportData.push(obj);
-          });
           this.loaderAndErr();
           this.changeDetection.markForCheck();
         }
@@ -438,102 +345,9 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     document.getElementById('home').style.display = 'block';
     ;
   }
-
-  schoolWise(event) {
-    // var eventType = event.type;
-    // this.btnId = event.target.id;
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, undefined);
-
-    this.commonAtStateLevel();
-    this.levelWise = "School";
-    if (this.months.length > 0) {
-      var month = this.months.find(a => a.id === this.month);
-      this.fileName = `School_wise_report_${month.name.trim()}_${this.year}`
-
-      if (this.myData) {
-        this.myData.unsubscribe();
-      }
-      this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res['schoolData'];
-        this.lat = 22.3660414123535;
-        this.lng = 71.48396301269531;
-
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
-
-        this.studentCount = res['studentCount'];
-        this.schoolCount = res['schoolCount'];
-
-        this.markers = sorted;
-        if (this.markers.length !== 0) {
-          for (let i = 0; i < this.markers.length; i++) {
-            this.districtsIds.push(sorted[i]['id']);
-            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 0, 0, 0);
-
-            const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-              "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
-              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-              "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-              "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].cluster +
-              "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
-              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-            );
-            markerIcon.addTo(globalMap).bindPopup(popup);
-
-            markerIcon.on('mouseover', function (e) {
-              this.openPopup();
-            });
-
-            markerIcon.on('mouseout', function (e) {
-              this.closePopup();
-            });
-            markerIcon.on('click', this.onClickSchool, this);
-
-            this.layerMarkers.addLayer(markerIcon);
-            markerIcon.myJsonData = this.markers[i];
-          }
-          globalMap.setView(new L.LatLng(this.lat, this.lng), 7.3);
-          this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.markers.forEach(school => {
-            var obj = {
-              SchoolId: school.id,
-              SchoolName: school.name,
-              ClusterName: school.cluster,
-              BlockName: school.block,
-              DistrictName: school.dist,
-              Attendance: school.label + " %",
-              TotalStudents: Number(school.stdCount.replace(/\,/g, ''))
-            }
-            this.reportData.push(obj);
-          });
-          this.loaderAndErr();
-          this.changeDetection.markForCheck();
-        }
-      }, err => {
-        this.markers = [];
-        this.loaderAndErr();
-      });
-    } else {
-      this.markers = [];
-      this.loaderAndErr();
-    }
-    globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
-    ;
-  }
-
 
   clusterWise(event) {
-    // var eventType = event.type;
-    // this.btnId = event.target.id;
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, undefined);
-
     this.commonAtStateLevel();
-
     this.levelWise = "Cluster";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
@@ -547,8 +361,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         this.lat = 22.3660414123535;
         this.lng = 71.48396301269531;
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         var clustNames = [];
@@ -560,26 +374,16 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         this.markers = sorted;
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
-            this.clusterIds.push(this.markers[i]['id']);
-            this.blocksIds.push(this.markers[i]['blockId']);
-            if (this.markers[i]['name'] !== null) {
-              clustNames.push({ id: this.markers[i]['id'], name: this.markers[i]['name'], blockId: this.markers[i]['blockId'] });
+            this.clusterIds.push(this.markers[i]['cluster_id']);
+            this.blocksIds.push(this.markers[i]['block_id']);
+            if (this.markers[i]['cluster_name'] !== null) {
+              clustNames.push({ id: this.markers[i]['cluster_id'], name: this.markers[i]['cluster_name'], blockId: this.markers[i]['block_id'] });
             } else {
-              clustNames.push({ id: this.markers[i]['id'], name: 'NO NAME FOUND', blockId: this.markers[i]['blockId'] });
+              clustNames.push({ id: this.markers[i]['cluster_id'], name: 'NO NAME FOUND', blockId: this.markers[i]['block_id'] });
             }
-            blockNames.push({ id: this.markers[i]['blockId'], name: this.markers[i]['block'], distId: this.markers[i]['distId'] });
-            var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 1, 0.01, 0);
-            const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-              "<b>Attendance: </b>" + "&nbsp;" + this.markers[i].label + "  %" +
-              "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-              "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-              "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].name +
-              "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-              "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-            );
-            markerIcon.addTo(globalMap).bindPopup(popup);
-
-            this.popups(markerIcon, this.markers[i]);
+            blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
+            var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 1, 0.01, 0, this.levelWise);
+            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
           }
 
           clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -587,21 +391,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
           this.blocksNames = blockNames;
           globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
-          // var schStdCount = JSON.parse(localStorage.getItem('schStd'));
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.markers.forEach(cluster => {
-            var obj = {
-              ClusterId: cluster.id,
-              ClusterName: cluster.name,
-              BlockName: cluster.block,
-              DistrictName: cluster.dist,
-              Attendance: cluster.label + " %",
-              TotalSchools: Number(cluster.schCount.replace(/\,/g, '')),
-              TotalStudents: Number(cluster.stdCount.replace(/\,/g, ''))
-            }
-            this.reportData.push(obj);
-          });
           this.loaderAndErr();
           this.changeDetection.markForCheck();
         }
@@ -617,6 +408,54 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     document.getElementById('home').style.display = 'block';
     ;
     this.cluster = [];
+  }
+
+  schoolWise(event) {
+    this.commonAtStateLevel();
+    this.levelWise = "School";
+    if (this.months.length > 0) {
+      var month = this.months.find(a => a.id === this.month);
+      this.fileName = `School_wise_report_${month.name.trim()}_${this.year}`
+
+      if (this.myData) {
+        this.myData.unsubscribe();
+      }
+      this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
+        this.mylatlngData = res['schoolData'];
+        this.lat = 22.3660414123535;
+        this.lng = 71.48396301269531;
+
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        this.colors = colors;
+
+        this.studentCount = res['studentCount'];
+        this.schoolCount = res['schoolCount'];
+
+        this.markers = sorted;
+        if (this.markers.length !== 0) {
+          for (let i = 0; i < this.markers.length; i++) {
+            this.districtsIds.push(sorted[i]['district_id']);
+            var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 0, 0, 0, this.levelWise);
+            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
+          }
+          globalMap.setView(new L.LatLng(this.lat, this.lng), 7.3);
+          this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.loaderAndErr();
+          this.changeDetection.markForCheck();
+        }
+      }, err => {
+        this.markers = [];
+        this.loaderAndErr();
+      });
+    } else {
+      this.markers = [];
+      this.loaderAndErr();
+    }
+    globalMap.addLayer(this.layerMarkers);
+    document.getElementById('home').style.display = 'block';
+    ;
   }
 
   commonAtStateLevel() {
@@ -648,43 +487,37 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
 
   clickedMarker(event, label) {
     var level;
-
-    // var eventType = event.type;
-    // this.btnId = 'marker';
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, label.id);
-
-    if (this.districtsIds.includes(label.id)) {
+    if (this.districtsIds.includes(label.district_id)) {
       level = "district";
-      localStorage.setItem('dist', label.name);
-      localStorage.setItem('distId', label.id);
-      this.myDistData(label.id);
+      localStorage.setItem('dist', label.district_name);
+      localStorage.setItem('distId', label.district_id);
+      this.myDistData(label.district_id);
     }
 
-    if (this.blocksIds.includes(label.id)) {
+    if (this.blocksIds.includes(label.block_id)) {
       level = "block";
       if (this.skul) {
-        localStorage.setItem('dist', label.dist);
-        localStorage.setItem('distId', label.distId);
+        localStorage.setItem('dist', label.district_name);
+        localStorage.setItem('distId', label.district_id);
       } else {
         localStorage.setItem('dist', localStorage.getItem('dist'));
         localStorage.setItem('distId', localStorage.getItem('distId'));
       }
-      localStorage.setItem('block', label.name);
-      localStorage.setItem('blockId', label.id);
-      this.myBlockData(label.id);
+      localStorage.setItem('block', label.block_name);
+      localStorage.setItem('blockId', label.block_id);
+      this.myBlockData(label.block_id);
     }
 
-    if (this.clusterIds.includes(label.id)) {
+    if (this.clusterIds.includes(label.cluster_id)) {
       level = "cluster";
-      localStorage.setItem('dist', label.dist);
-      localStorage.setItem('distId', label.distId);
-      localStorage.setItem('block', label.block);
-      localStorage.setItem('blockId', label.blockId);
-      localStorage.setItem('cluster', label.name);
-      localStorage.setItem('clusterId', label.id);
+      localStorage.setItem('dist', label.district_name);
+      localStorage.setItem('distId', label.district_id);
+      localStorage.setItem('block', label.block_name);
+      localStorage.setItem('blockId', label.block_id);
+      localStorage.setItem('cluster', label.cluster_name);
+      localStorage.setItem('clusterId', label.cluster_id);
 
-      this.myClusterData(label.id);
+      this.myClusterData(label.cluster_id);
     }
     if (event.latlng) {
       var obj = {
@@ -695,7 +528,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       }
       this.getTelemetryData(obj, event.type, level);
     }
-  };
+  }
 
   //Showing tooltips on markers on mouse hover...
   onMouseOver(m, infowindow) {
@@ -737,16 +570,12 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       }
     });
     this.getTelemetryData(distData, event.type, "district");
-
-    // var eventType = event.type;
-    // this.btnId = event.target.id;
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, data);
     this.myDistData(data);
   }
 
   blockData = [];
   myDistData(data) {
+    this.levelWise = "Block";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -767,7 +596,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       this.fileName = `Block_per_district_report_${month.name.trim()}_${this.year}`;
-      this.distName = { id: data, name: obj.name };
+      this.distName = { district_id: data, district_name: obj.name };
       this.hierName = obj.name;
       localStorage.setItem('dist', obj.name);
       localStorage.setItem('distId', data);
@@ -783,7 +612,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
         this.blockData = this.mylatlngData = res['blockData'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-          var object = previous.filter(object => object['id'] === current['id']);
+          var object = previous.filter(object => object['block_id'] === current['block_id']);
           if (object.length == 0) previous.push(current);
           return previous;
         }, []);
@@ -793,8 +622,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
 
         var blokName = [];
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         this.markers = sorted;
@@ -802,20 +631,10 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         this.schoolCount = res['schoolCount'];
 
         for (var i = 0; i < this.markers.length; i++) {
-          this.blocksIds.push(this.markers[i]['id']);
-          blokName.push({ id: this.markers[i]['id'], name: this.markers[i]['name'] });
-
-          var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
-
-          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-            "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].name +
-            "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-          );
-          markerIcon.addTo(globalMap).bindPopup(popup);
-          this.popups(markerIcon, this.markers[i]);
+          this.blocksIds.push(this.markers[i]['block_id']);
+          blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
+          var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0, this.levelWise);
+          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
         }
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         this.blocksNames = blokName;
@@ -823,17 +642,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         globalMap.setView(new L.LatLng(this.lat, this.lng), 8.3);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.markers.forEach(block => {
-          var obj = {
-            BlockId: block.id,
-            BlockName: block.name,
-            DistrictName: block.dist,
-            Attendance: block.label + " %",
-            TotalSchools: block.schCount,
-            TotalStudents: block.stdCount
-          }
-          this.reportData.push(obj);
-        });
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       }, err => {
@@ -856,15 +664,12 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       }
     });
     this.getTelemetryData(blockData, event.type, "block");
-    // var eventType = event.type;
-    // this.btnId = event.target.id;
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, data);
     this.myBlockData(data);
   }
 
   clusterData = [];
   myBlockData(data) {
+    this.levelWise = "Cluster";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -895,8 +700,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       localStorage.setItem('block', obj.name);
       localStorage.setItem('blockId', data);
       this.titleName = localStorage.getItem('dist');
-      this.distName = { id: Number(localStorage.getItem('distId')), name: this.titleName };
-      this.blockName = { id: data, name: obj.name };
+      this.distName = { district_id: Number(localStorage.getItem('distId')), district_name: this.titleName };
+      this.blockName = { block_id: data, block_name: obj.name };
       this.hierName = obj.name;
 
       this.globalId = this.myBlock = data;
@@ -910,7 +715,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
         this.clusterData = this.mylatlngData = res['clusterDetails'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-          var object = previous.filter(object => object['id'] === current['id']);
+          var object = previous.filter(object => object['cluster_id'] === current['cluster_id']);
           if (object.length == 0) previous.push(current);
           return previous;
         }, []);
@@ -919,8 +724,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         this.lng = Number(this.mylatlngData[0]['lng']);
         var clustNames = [];
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         this.markers = [];
@@ -929,26 +734,15 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         // sorted.pop();
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
-          this.clusterIds.push(sorted[i]['id']);
+          this.clusterIds.push(sorted[i]['cluster_id']);
           if (sorted[i]['name'] !== null) {
-            clustNames.push({ id: sorted[i]['id'], name: sorted[i]['name'], blockId: sorted[i]['blockId'] });
+            clustNames.push({ id: sorted[i]['cluster_id'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
           } else {
-            clustNames.push({ id: sorted[i]['id'], name: 'NO NAME FOUND', blockId: sorted[i]['blockId'] });
+            clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
           }
-          var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
-
-          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-            "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-            "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].name +
-            "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-          );
-          markerIcon.addTo(globalMap).bindPopup(popup);
-          this.popups(markerIcon, this.markers[i]);
-
-        };
+          var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0, this.levelWise);
+          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
+        }
 
         clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         this.clusterNames = clustNames;
@@ -956,18 +750,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         globalMap.setView(new L.LatLng(this.lat, this.lng), 10);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.markers.forEach(cluster => {
-          var obj = {
-            ClusterId: cluster.id,
-            ClusterName: cluster.name,
-            BlockName: cluster.block,
-            DistrictName: cluster.dist,
-            Attendance: cluster.label + " %",
-            TotalSchools: cluster.schCount,
-            TotalStudents: cluster.stdCount
-          }
-          this.reportData.push(obj);
-        });
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       }, err => {
@@ -991,13 +773,10 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       }
     });
     this.getTelemetryData(clusterData, event.type, "cluster");
-    // var eventType = event.type;
-    // this.btnId = event.target.id;
-    // var date = new Date();
-    // this.trackInteract(date, this.btnId, eventType, data);
     this.myClusterData(data);
   }
   myClusterData(data) {
+    this.levelWise = "School";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -1054,9 +833,9 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       this.title = localStorage.getItem('block');
       this.titleName = localStorage.getItem('dist');
       var blockId = Number(localStorage.getItem('blockId'));
-      this.distName = { id: Number(localStorage.getItem('distId')), name: this.titleName };
-      this.blockName = { id: blockId, name: this.title, distId: this.distName.id, dist: this.distName.name }
-      this.clustName = { id: data };
+      this.distName = { district_id: Number(localStorage.getItem('distId')), district_name: this.titleName };
+      this.blockName = { block_id: blockId, block_name: this.title, district_id: this.distName.id, district_name: this.distName.name }
+      this.clustName = { cluster_id: data };
       this.hierName = obj.name;
 
       this.globalId = this.myCluster = data;
@@ -1071,7 +850,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
         this.mylatlngData = res['schoolsDetails'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-          var object = previous.filter(object => object['id'] === current['id']);
+          var object = previous.filter(object => object['school_id'] === current['school_id']);
           if (object.length == 0) previous.push(current);
           return previous;
         }, []);
@@ -1079,8 +858,8 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
         this.lat = Number(this.mylatlngData[0]['lat']);
         this.lng = Number(this.mylatlngData[0]['lng']);
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.label) > parseInt(b.label)) ? 1 : -1)
-        let colors = this.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
 
         this.markers = [];
@@ -1089,44 +868,12 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
 
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
-          var markerIcon = this.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0);
-
-          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Attendance : </b>" + "&nbsp;" + this.markers[i].label + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].dist +
-            "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].block +
-            "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].cluster +
-            "<br><b>School: </b>" + "&nbsp;" + this.markers[i].name +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].stdCount
-          );
-          markerIcon.addTo(globalMap).bindPopup(popup);
-          markerIcon.on('mouseover', function (e) {
-            this.openPopup();
-          });
-          markerIcon.on('mouseout', function (e) {
-            this.closePopup();
-          });
-
-          markerIcon.on('click', this.onClickSchool, this);
-
-          this.layerMarkers.addLayer(markerIcon);
-          markerIcon.myJsonData = this.markers[i];
-        };
+          var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 3.5, 0.1, 1, this.levelWise);
+          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
+        }
         globalMap.setView(new L.LatLng(this.lat, this.lng), 12);
         this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.markers.forEach(school => {
-          var obj = {
-            SchoolId: school.id,
-            SchoolName: school.name,
-            ClusterName: school.cluster,
-            BlockName: school.block,
-            DistrictName: school.dist,
-            Attendance: school.label + " %",
-            TotalStudents: school.stdCount
-          }
-          this.reportData.push(obj);
-        });
         this.loaderAndErr();
         this.changeDetection.markForCheck();
       }, err => {
@@ -1141,7 +888,7 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     document.getElementById('home').style.display = 'block';
   }
 
-  popups(markerIcon, markers) {
+  popups(markerIcon, markers, onClick_Marker, layerMarkers, levelWise) {
     markerIcon.on('mouseover', function (e) {
       this.openPopup();
     });
@@ -1149,114 +896,36 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       this.closePopup();
     });
 
-    this.layerMarkers.addLayer(markerIcon);
-    markerIcon.on('click', this.onClick_Marker, this);
-
+    layerMarkers.addLayer(markerIcon);
+    if (levelWise != "School") {
+      markerIcon.on('click', onClick_Marker, this);
+    }
     markerIcon.myJsonData = markers;
   }
 
-  initMarkers(markers, color, radius, strokeWeight, weight) {
-    var markerIcon;
-    if (this.levelWise !== "School") {
-      markerIcon = L.circleMarker([markers.lat, markers.lng], {
-        radius: radius,
-        color: color,
-        fillColor: color,
-        fillOpacity: 1,
-        strokeWeight: strokeWeight,
-      });
-    } else {
-      markerIcon = L.circleMarker([markers.lat, markers.lng], {
-        radius: radius,
-        color: color,
-        fillColor: color,
-        fillOpacity: 1,
-        strokeWeight: strokeWeight,
-        weight: weight
-      });
-    }
-    return markerIcon;
+  //Generate dynamic tool-tip
+  generateToolTip(markerIcon, markers, onClick_Marker, layerMarkers, levelWise, reportData) {
+    this.popups(markerIcon, markers, onClick_Marker, layerMarkers, levelWise);
+    var details = {};
+    var orgObject = {};
+    Object.keys(markers).forEach(key => {
+      if (key !== "lat") {
+        details[key] = markers[key];
+      }
+    });
+    Object.keys(details).forEach(key => {
+      if (key !== "lng") {
+        orgObject[key] = details[key];
+      }
+    });
+
+    var yourData = this.commonService.getInfoFrom(orgObject, "attendance", levelWise, reportData).join(" <br>");
+    const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
+      yourData);
+    markerIcon.addTo(globalMap).bindPopup(popup);
   }
 
 
-  color() {
-    // Converts a #ffffff hex string into an [r,g,b] array
-    function hex2rgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-      ] : null;
-    }
-
-    // Inverse of the above
-    function rgb2hex(rgb) {
-      return '#' + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
-    }
-
-    // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
-
-    function _interpolateRgb(color1, color2, factor) {
-      if (arguments.length < 3) { factor = 0.5; }
-
-      let result = color1.slice();
-
-      for (let i = 0; i < 3; i++) {
-        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
-      }
-      return result;
-    }
-
-    function generateGradient(color1, color2, total, interpolation) {
-      const colorStart = typeof color1 === 'string' ? hex2rgb(color1) : color1;
-      const colorEnd = typeof color2 === 'string' ? hex2rgb(color2) : color2;
-
-      // will the gradient be via RGB or HSL
-      switch (interpolation) {
-        case 'rgb':
-          return colorsToGradientRgb(colorStart, colorEnd, total);
-        case 'hsl':
-        //   return colorsToGradientHsl(colorStart, colorEnd, total);
-        default:
-          return false;
-      }
-    }
-
-    function colorsToGradientRgb(startColor, endColor, steps) {
-      // returns array of hex values for color, since rgb would be an array of arrays and not strings, easier to handle hex strings
-      let arrReturnColors = [];
-      let interimColorRGB;
-      let interimColorHex;
-      const totalColors = steps;
-      const factorStep = 1 / (totalColors - 1);
-
-      for (let idx = 0; idx < totalColors; idx++) {
-        interimColorRGB = _interpolateRgb(startColor, endColor, factorStep * idx);
-        interimColorHex = rgb2hex(interimColorRGB);
-        arrReturnColors.push(interimColorHex);
-      }
-      return arrReturnColors;
-    }
-    return {
-      generateGradient
-    };
-  }
-
-  // trackInteract(date, eventId, type, id) {
-  //   var timeStamp = Math.floor(date.getTime() / 1000.0);
-  //   this.telemData.interact.push(
-  //     {
-  //       eventId: eventId, // id of the interaction like button_id, dropdown_id etc
-  //       uid: this.userId, // userid
-  //       type: type, // click,select,search
-  //       id: id,
-  //       pageId: this.telemData.impression.pageId, // unique id of the page where user is interacting
-  //       impressionId: this.telemData.impression.impressionId,
-  //       timestamp: timeStamp
-  //     }
-  //   );
-  // }
   getTelemetryData(data, event, level) {
     this.service.telemetryData = [];
     var obj = {};
