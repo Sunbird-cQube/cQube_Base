@@ -549,6 +549,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           }
         });
         this.blockMarkers = myBlocks;
+        this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));
 
         var myCluster = [];
         this.clusterMarkers.forEach(element => {
