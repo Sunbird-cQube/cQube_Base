@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewEnca
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
-import { ExportToCsv } from 'export-to-csv';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { CommonService, globalMap } from '../common-services/common.service';
@@ -188,60 +187,24 @@ export class SemesterExceptionComponent implements OnInit {
           mapZoom: 7,
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
+          level: "Block"
         }
         if (this.data['data'].length > 0) {
           let result = this.data['data']
           this.blockMarkers = [];
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
           this.blockMarkers = result;
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude], {
-                // renderer: myRenderer,
-                radius: 3.5,
-                color: this.colors[i],
-                fillColor: this.colors[i],
-                fillOpacity: 1,
-                strokeWeight: 0.01
-              }).addTo(globalMap);
-
-              var details = {};
-              var orgObject = {};
-              Object.keys(this.blockMarkers[i]).forEach(key => {
-                if (key !== "block_latitude") {
-                  details[key] = this.blockMarkers[i][key];
-                }
-              });
-              Object.keys(details).forEach(key => {
-                if (key !== "block_longitude") {
-                  orgObject[key] = details[key];
-                }
-              });
-              //Generate dynamic tool-tip
-              var yourData = this.getInfoFrom(orgObject).join(" <br>");
-              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                yourData);
-              markerIcon.addTo(globalMap).bindPopup(popup);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.colors[i], 3.5, 0.1, undefined, options.level);
+              this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "block_latitude", "block_longitude");
 
               // to download the report
               this.fileName = "Block_wise_report";
-              var obj = { ...this.blockMarkers[i] };
-              this.reportData.push(obj);
-
-              markerIcon.on('mouseover', function (e) {
-                this.openPopup();
-              });
-              markerIcon.on('mouseout', function (e) {
-                this.closePopup();
-              });
-              markerIcon.on('click', this.onClick_Marker, this);
-
-              this.layerMarkers.addLayer(markerIcon);
-              markerIcon.myJsonData = this.blockMarkers[i];
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -295,60 +258,25 @@ export class SemesterExceptionComponent implements OnInit {
           mapZoom: 7,
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
+          level: "Cluster"
         }
         if (this.data['data'].length > 0) {
           let result = this.data['data'];
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           this.clusterMarkers = [];
           // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
           this.clusterMarkers = result;
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude], {
-                // renderer: myRenderer,
-                radius: 1,
-                color: this.colors[i],
-                fillColor: this.colors[i],
-                fillOpacity: 1,
-                strokeWeight: 0.01
-              }).addTo(globalMap);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.colors[i], 1, 0.01, undefined, options.level);
 
-              var details = {};
-              var orgObject = {};
-              Object.keys(this.clusterMarkers[i]).forEach(key => {
-                if (key !== "cluster_latitude") {
-                  details[key] = this.clusterMarkers[i][key];
-                }
-              });
-              Object.keys(details).forEach(key => {
-                if (key !== "cluster_longitude") {
-                  orgObject[key] = details[key];
-                }
-              });
-              //Generate dynamic tool-tip
-              var yourData = this.getInfoFrom(orgObject).join(" <br>");
-              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                yourData);
-              markerIcon.addTo(globalMap).bindPopup(popup);
+              this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "cluster_latitude", "cluster_longitude");
 
               // to download the report
               this.fileName = "Cluster_wise_report";
-              var obj = { ...this.clusterMarkers[i] };
-              this.reportData.push(obj);
-
-              markerIcon.on('mouseover', function (e) {
-                this.openPopup();
-              });
-              markerIcon.on('mouseout', function (e) {
-                this.closePopup();
-              });
-              markerIcon.on('click', this.onClick_Marker, this);
-
-              this.layerMarkers.addLayer(markerIcon);
-              markerIcon.myJsonData = this.clusterMarkers[i];
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -398,66 +326,25 @@ export class SemesterExceptionComponent implements OnInit {
           mapZoom: 7,
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
+          level: 'school'
         }
         this.schoolMarkers = [];
         if (this.data['data'].length > 0) {
           let result = this.data['data']
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
 
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude], {
-                // renderer: myRenderer,
-                radius: 0,
-                color: "#fc5e03",
-                fillColor: "#fc5e03",
-                fillOpacity: 1,
-                weight: 1.5,
-                strokeWeight: 1
-              }).addTo(globalMap);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 1, 1, 1.5, options.level);
 
-              var details = {};
-              var orgObject = {};
-              var detailSchool = {};
-              Object.keys(this.schoolMarkers[i]).forEach(key => {
-                if (key !== "school_latitude") {
-                  details[key] = this.schoolMarkers[i][key];
-                }
-              });
-              Object.keys(details).forEach(key => {
-                if (key !== "school_longitude") {
-                  orgObject[key] = details[key];
-                }
-              });
-              Object.keys(orgObject).forEach(key => {
-                if (key !== "total_schools_with_missing_data") {
-                  detailSchool[key] = orgObject[key];
-                }
-              });
-              //Generate dynamic tool-tip
-              var yourData = this.getInfoFrom(detailSchool).join(" <br>");
-              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                yourData);
-              markerIcon.addTo(globalMap).bindPopup(popup);
+              this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "school_latitude", "school_longitude");
 
               // to download the report
               this.fileName = "School_wise_report";
-              var obj = { ...this.schoolMarkers[i] };
-              this.reportData.push(obj);
-
-              markerIcon.on('mouseover', function (e) {
-                this.openPopup();
-              });
-              markerIcon.on('mouseout', function (e) {
-                this.closePopup();
-              });
-
-              this.layerMarkers.addLayer(markerIcon);
-              markerIcon.myJsonData = this.schoolMarkers[i];
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -692,7 +579,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.markers = data['data']
       this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
       // generate color gradient
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
+      let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
       this.colors = colors;
 
       // attach values to markers
@@ -725,64 +612,19 @@ export class SemesterExceptionComponent implements OnInit {
 
         var markerIcon;
         if (options.weight) {
-          markerIcon = L.circleMarker([lat, lng], {
-            radius: options.radius,
-            color: "#fc5e03",
-            fillColor: "#fc5e03",
-            fillOpacity: options.fillOpacity,
-            strokeWeight: options.strokeWeight,
-            weight: options.weight
-          })
+          markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
         } else {
-          markerIcon = L.circleMarker([lat, lng], {
-            radius: options.radius,
-            color: this.colors[i],
-            fillColor: this.colors[i],
-            fillOpacity: options.fillOpacity,
-            strokeWeight: options.strokeWeight
-          })
+          markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, undefined, options.level);
         }
 
         globalMap.setZoom(options.mapZoom);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {
-          var details = {};
-          var orgObject = {};
-          Object.keys(this.markers[i]).forEach(key => {
-            if (key !== strLat) {
-              details[key] = this.markers[i][key];
-            }
-          });
-          Object.keys(details).forEach(key => {
-            if (key !== strLng) {
-              orgObject[key] = details[key];
-            }
-          });
-          var detailSchool = {};
-          var yourData;
-          if (options.level == "school") {
-            Object.keys(orgObject).forEach(key => {
-              if (key !== "total_schools_with_missing_data") {
-                detailSchool[key] = orgObject[key];
-              }
-            });
-            yourData = this.getInfoFrom(detailSchool).join(" <br>");
-          } else {
-            yourData = this.getInfoFrom(orgObject).join(" <br>");
-
-          }
-          //Generate dynamic tool-tip
-          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            yourData);
-          markerIcon.addTo(globalMap).bindPopup(popup);
-
+          this.generateToolTip(this.markers[i], options.level, markerIcon, strLat, strLng);
           // to download the report
           this.fileName = fileName;
-          var obj = { ...this.markers[i] };
-          this.reportData.push(obj);
         }
-        this.popups(markerIcon, this.markers[i], options);
       }
 
       this.loaderAndErr();
@@ -792,7 +634,7 @@ export class SemesterExceptionComponent implements OnInit {
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
-  popups(markerIcon, markers, options) {
+  popups(markerIcon, markers, level) {
     for (var i = 0; i < this.markers.length; i++) {
       markerIcon.on('mouseover', function (e) {
         this.openPopup();
@@ -802,7 +644,7 @@ export class SemesterExceptionComponent implements OnInit {
       });
 
       this.layerMarkers.addLayer(markerIcon);
-      if (options.level != 'school') {
+      if (level != 'school') {
         markerIcon.on('click', this.onClick_Marker, this)
       }
       markerIcon.myJsonData = markers;
@@ -848,119 +690,39 @@ export class SemesterExceptionComponent implements OnInit {
 
   // to download the excel report
   downloadReport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-
-
-    csvExporter.generateCsv(this.reportData);
+    this.commonService.download(this.fileName, this.reportData);
   }
 
-  // to generate the color gradient from red to green based on the attendance percentage values
-  color() {
-    // Converts a #ffffff hex string into an [r,g,b] array
-    function hex2rgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-      ] : null;
-    }
-
-    // Inverse of the above
-    function rgb2hex(rgb) {
-      return '#' + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
-    }
-
-    // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
-    // Taken from the awesome ROT.js roguelike dev library at
-    // https://github.com/ondras/rot.js
-    function _interpolateRgb(color1, color2, factor) {
-      if (arguments.length < 3) { factor = 0.5; }
-
-      let result = color1.slice();
-
-      for (let i = 0; i < 3; i++) {
-        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+  generateToolTip(markers, level, markerIcon, lat, lng) {
+    this.popups(markerIcon, markers, level);
+    var details = {};
+    var orgObject = {};
+    Object.keys(markers).forEach(key => {
+      if (key !== lat) {
+        details[key] = markers[key];
       }
-      return result;
-    }
-
-    function generateGradient(color1, color2, total, interpolation) {
-      const colorStart = typeof color1 === 'string' ? hex2rgb(color1) : color1;
-      const colorEnd = typeof color2 === 'string' ? hex2rgb(color2) : color2;
-
-      // will the gradient be via RGB or HSL
-      switch (interpolation) {
-        case 'rgb':
-          return colorsToGradientRgb(colorStart, colorEnd, total);
-        // case 'hsl':
-        //   return colorsToGradientHsl(colorStart, colorEnd, total);
-        default:
-          return false;
+    });
+    Object.keys(details).forEach(key => {
+      if (key !== lng) {
+        orgObject[key] = details[key];
       }
-    }
-
-    function colorsToGradientRgb(startColor, endColor, steps) {
-      // returns array of hex values for color, since rgb would be an array of arrays and not strings, easier to handle hex strings
-      let arrReturnColors = [];
-      let interimColorRGB;
-      let interimColorHex;
-      const totalColors = steps;
-      const factorStep = 1 / (totalColors - 1);
-
-      for (let idx = 0; idx < totalColors; idx++) {
-        interimColorRGB = _interpolateRgb(startColor, endColor, factorStep * idx);
-        interimColorHex = rgb2hex(interimColorRGB);
-        arrReturnColors.push(interimColorHex);
-      }
-      return arrReturnColors;
-    }
-    return {
-      generateGradient
-    };
-  }
-
-  //map tooltip automation
-  public getInfoFrom(object) {
-    var popupFood = [];
-    var stringLine;
-    for (var key in object) {
-      if (object.hasOwnProperty(key)) {
-        if (key == "percentage_schools_with_missing_data") {
-          stringLine = "<b>" +
-            key.replace(
-              /\w\S*/g,
-              function (txt) {
-                txt = txt.replace(/_/g, ' ');
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-              })
-            + "</b>" + ": " + object[key] + " %" + `</span>`;
-        } else {
-          stringLine = "<b>" +
-            key.replace(
-              /\w\S*/g,
-              function (txt) {
-                txt = txt.replace(/_/g, ' ');
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-              })
-            + "</b>" + ": " + object[key] + `</span>`;
+    });
+    var detailSchool = {};
+    var yourData;
+    if (level == "school") {
+      Object.keys(orgObject).forEach(key => {
+        if (key !== "total_schools_with_missing_data") {
+          detailSchool[key] = orgObject[key];
         }
+      });
+      yourData = this.commonService.getInfoFrom(detailSchool, "percentage_schools_with_missing_data", level, this.reportData, "sem-exception", undefined, undefined).join(" <br>");
+    } else {
+      yourData = this.commonService.getInfoFrom(orgObject, "percentage_schools_with_missing_data", level, this.reportData, "sem-exception", undefined, undefined).join(" <br>");
 
-      }
-      popupFood.push(stringLine);
     }
-    return popupFood;
+    //Generate dynamic tool-tip
+    const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
+      yourData);
+    markerIcon.addTo(globalMap).bindPopup(popup);
   }
 }

@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestro
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
-import { ExportToCsv } from 'export-to-csv';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { KeycloakSecurityService } from '../keycloak-security.service';
@@ -213,10 +212,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
           centerLng: 71.48396301269531,
           level: 'district'
         }
-        this.genericFun(this.data, options);
+        this.fileName = "district_wise"
+        this.genericFun(this.data, options, this.fileName);
 
         // sort the districtname alphabetically
-        this.districtMarkers.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
+        this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
       }, err => {
         this.data = [];
         this.loaderAndErr();
@@ -271,50 +271,14 @@ export class SemViewComponent implements OnInit, OnDestroy {
           let result = this.data['sortedData']
           this.blockMarkers = [];
           // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
           this.blockMarkers = result;
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.blockMarkers[i].lat, this.blockMarkers[i].lng], {
-                // renderer: myRenderer,
-                radius: 3.5,
-                color: this.colors[i],
-                fillColor: this.colors[i],
-                fillOpacity: 1,
-                strokeWeight: 0.01
-              }).addTo(globalMap);
-
-              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                "<b>Semester Performance: </b>" + "&nbsp;" + this.blockMarkers[i].assesmentPercentage + " %" +
-                "<br><b>District: </b>" + "&nbsp;" + this.blockMarkers[i].districtName +
-                "<br><b>Block: </b>" + "&nbsp;" + this.blockMarkers[i].blockName +
-                "<br><b>Grade 3:</b>" + "&nbsp;" + this.blockMarkers[i].grade_3 + " %" +
-                "<br><b>Grade 4:</b>" + "&nbsp;" + this.blockMarkers[i].grade_4 + " %" +
-                "<br><b>Grade 5:</b>" + "&nbsp;" + this.blockMarkers[i].grade_5 + " %" +
-                "<br><b>Grade 6:</b>" + "&nbsp;" + this.blockMarkers[i].grade_6 + " %" +
-                "<br><b>Grade 7:</b>" + "&nbsp;" + this.blockMarkers[i].grade_7 + " %" +
-                "<br><b>Grade 8:</b>" + "&nbsp;" + this.blockMarkers[i].grade_8 + " %" +
-                "<br><b>Number of schools:</b>" + "&nbsp;" + this.blockMarkers[i].schoolsCount +
-                "<br><b>Number of students:</b>" + "&nbsp;" + this.blockMarkers[i].studentsCount +
-                "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.blockMarkers[i].percent_below_33 + " %" + ` (${this.blockMarkers[i].value_below_33} out of ${this.blockMarkers[i].schoolsCount})` +
-                "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.blockMarkers[i].percent_between_33_60 + " %" + ` (${this.blockMarkers[i].value_between_33_60} out of ${this.blockMarkers[i].schoolsCount})` +
-                "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.blockMarkers[i].percent_between_60_75 + " %" + ` (${this.blockMarkers[i].value_between_60_75} out of ${this.blockMarkers[i].schoolsCount})` +
-                "<br><b>% above 75%:</b>" + "&nbsp;" + this.blockMarkers[i].percent_above_75 + " %" + ` (${this.blockMarkers[i].value_above_75} out of ${this.blockMarkers[i].schoolsCount})`
-              );
-              markerIcon.addTo(globalMap).bindPopup(popup);
-
-              markerIcon.on('mouseover', function (e) {
-                this.openPopup();
-              });
-              markerIcon.on('mouseout', function (e) {
-                this.closePopup();
-              });
-              markerIcon.on('click', this.onClick_Marker, this);
-
-              this.layerMarkers.addLayer(markerIcon);
-              markerIcon.myJsonData = this.blockMarkers[i];
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, this.colors[i], 3.5, 1, 0.01, this.levelWise);
+              this.generateToolTip(markerIcon, this.blockMarkers[i], this.levelWise, this.reportData);
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -322,25 +286,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
             this.schoolCount = this.data['totalValues'].totalSchools;
             this.studentCount = this.data['totalValues'].totalStudents;
 
-            this.blockMarkers.forEach(schoolData => {
-              this.fileName = "Block_wise_report_sem_"
-              let obj = {
-                DistrictId: schoolData.districtId,
-                DistrictName: schoolData.districtName,
-                BlockId: schoolData.blockId,
-                BlockName: schoolData.blockName,
-                Semester_Performance: schoolData.assesmentPercentage + " %",
-                Grade3: schoolData.grade_3 + " %",
-                Grade4: schoolData.grade_4 + " %",
-                Grade5: schoolData.grade_5 + " %",
-                Grade6: schoolData.grade_6 + " %",
-                Grade7: schoolData.grade_7 + " %",
-                Grade8: schoolData.grade_8 + " %",
-                TotalSchools: Number(schoolData.schoolsCount.replace(/\,/g, '')),
-                TotalStudents: Number(schoolData.studentsCount.replace(/\,/g, ''))
-              }
-              this.reportData.push(obj);
-            });
             this.loaderAndErr();
             this.changeDetection.markForCheck();
           }
@@ -398,51 +343,14 @@ export class SemViewComponent implements OnInit, OnDestroy {
           let result = this.data['sortedData']
           this.clusterMarkers = [];
           // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
           this.clusterMarkers = result;
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.clusterMarkers[i].lat, this.clusterMarkers[i].lng], {
-                // renderer: myRenderer,
-                radius: 0,
-                color: this.colors[i],
-                fillColor: this.colors[i],
-                fillOpacity: 1,
-                strokeWeight: 0.01
-              }).addTo(globalMap);
-
-              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                "<b>Semester Performance: </b>" + "&nbsp;" + this.clusterMarkers[i].assesmentPercentage + " %" +
-                "<br><b>District: </b>" + "&nbsp;" + this.clusterMarkers[i].districtName +
-                "<br><b>Block: </b>" + "&nbsp;" + this.clusterMarkers[i].blockName +
-                "<br><b>Cluster: </b>" + "&nbsp;" + this.clusterMarkers[i].clusterName +
-                "<br><b>Grade 3:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_3 + " %" +
-                "<br><b>Grade 4:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_4 + " %" +
-                "<br><b>Grade 5:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_5 + " %" +
-                "<br><b>Grade 6:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_6 + " %" +
-                "<br><b>Grade 7:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_7 + " %" +
-                "<br><b>Grade 8:</b>" + "&nbsp;" + this.clusterMarkers[i].grade_8 + " %" +
-                "<br><b>Number of schools:</b>" + "&nbsp;" + this.clusterMarkers[i].schoolsCount +
-                "<br><b>Number of students:</b>" + "&nbsp;" + this.clusterMarkers[i].studentsCount +
-                "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_below_33 + " %" + ` (${this.clusterMarkers[i].value_below_33} out of ${this.clusterMarkers[i].schoolsCount})` +
-                "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_between_33_60 + " %" + ` (${this.clusterMarkers[i].value_between_33_60} out of ${this.clusterMarkers[i].schoolsCount})` +
-                "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_between_60_75 + " %" + ` (${this.clusterMarkers[i].value_between_60_75} out of ${this.clusterMarkers[i].schoolsCount})` +
-                "<br><b>% above 75%:</b>" + "&nbsp;" + this.clusterMarkers[i].percent_above_75 + " %" + ` (${this.clusterMarkers[i].value_above_75} out of ${this.clusterMarkers[i].schoolsCount})`
-              );
-              markerIcon.addTo(globalMap).bindPopup(popup);
-
-              markerIcon.on('mouseover', function (e) {
-                this.openPopup();
-              });
-              markerIcon.on('mouseout', function (e) {
-                this.closePopup();
-              });
-              markerIcon.on('click', this.onClick_Marker, this);
-
-              this.layerMarkers.addLayer(markerIcon);
-              markerIcon.myJsonData = this.clusterMarkers[i];
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, this.colors[i], 0, 1, 0.01, this.levelWise);
+              this.generateToolTip(markerIcon, this.clusterMarkers[i], this.levelWise, this.reportData);
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -450,27 +358,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
             this.schoolCount = this.data['totalValues'].totalSchools;
             this.studentCount = this.data['totalValues'].totalStudents;
 
-            this.clusterMarkers.forEach(schoolData => {
-              this.fileName = "Cluster_wise_report_sem_"
-              let obj = {
-                DistrictId: schoolData.districtId,
-                DistrictName: schoolData.districtName,
-                BlockId: schoolData.blockId,
-                BlockName: schoolData.blockName,
-                ClusterId: schoolData.clusterId,
-                ClusterName: schoolData.clusterName,
-                Semester_Performance: schoolData.assesmentPercentage + " %",
-                Grade3: schoolData.grade_3 + " %",
-                Grade4: schoolData.grade_4 + " %",
-                Grade5: schoolData.grade_5 + " %",
-                Grade6: schoolData.grade_6 + " %",
-                Grade7: schoolData.grade_7 + " %",
-                Grade8: schoolData.grade_8 + " %",
-                TotalSchools: Number(schoolData.schoolsCount.replace(/\,/g, '')),
-                TotalStudents: Number(schoolData.studentsCount.replace(/\,/g, ''))
-              }
-              this.reportData.push(obj);
-            });
             this.loaderAndErr();
             this.changeDetection.markForCheck();
           }
@@ -526,76 +413,22 @@ export class SemViewComponent implements OnInit, OnDestroy {
           let result = this.data['sortedData']
 
           // generate color gradient
-          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
 
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var markerIcon = L.circleMarker([this.schoolMarkers[i].lat, this.schoolMarkers[i].lng], {
-                // renderer: myRenderer,
-                radius: 0,
-                color: this.colors[i],
-                fillColor: this.colors[i],
-                fillOpacity: 1,
-                weight: 0,
-                strokeWeight: 0
-              }).addTo(globalMap);
-
-              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                "<b>Semester Performance: </b>" + "&nbsp;" + this.schoolMarkers[i].assesmentPercentage + " %" +
-                "<br><b>District: </b>" + "&nbsp;" + this.schoolMarkers[i].districtName +
-                "<br><b>Block: </b>" + "&nbsp;" + this.schoolMarkers[i].blockName +
-                "<br><b>Cluster: </b>" + "&nbsp;" + this.schoolMarkers[i].clusterName +
-                "<br><b>School: </b>" + "&nbsp;" + this.schoolMarkers[i].schoolName +
-                "<br><b>Grade 3:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_3 + " %" +
-                "<br><b>Grade 4:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_4 + " %" +
-                "<br><b>Grade 5:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_5 + " %" +
-                "<br><b>Grade 6:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_6 + " %" +
-                "<br><b>Grade 7:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_7 + " %" +
-                "<br><b>Grade 8:</b>" + "&nbsp;" + this.schoolMarkers[i].grade_8 + " %" +
-                "<br><b>Number of students:</b>" + "&nbsp;" + this.schoolMarkers[i].studentsCount
-              );
-              markerIcon.addTo(globalMap).bindPopup(popup);
-
-              markerIcon.on('mouseover', function (e) {
-                this.openPopup();
-              });
-              markerIcon.on('mouseout', function (e) {
-                this.closePopup();
-              });
-
-              this.layerMarkers.addLayer(markerIcon);
-              markerIcon.myJsonData = this.schoolMarkers[i];
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, this.colors[i], 0, 0, 0, this.levelWise);
+              this.generateToolTip(markerIcon, this.schoolMarkers[i], this.levelWise, this.reportData);
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
+
             this.schoolCount = this.data['totalValues'].totalSchools;
             this.studentCount = this.data['totalValues'].totalStudents;
 
-            this.schoolMarkers.forEach(schoolData => {
-              this.fileName = "School_wise_report_sem_"
-              let obj = {
-                DistrictId: schoolData.districtId,
-                DistrictName: schoolData.districtName,
-                BlockId: schoolData.blockId,
-                BlockName: schoolData.blockName,
-                ClusterId: schoolData.clusterId,
-                ClusterName: schoolData.clusterName,
-                SchoolId: schoolData.schoolId,
-                SchoolName: schoolData.schoolName,
-                Semester_Performance: schoolData.assesmentPercentage + " %",
-                Grade3: schoolData.grade_3 + " %",
-                Grade4: schoolData.grade_4 + " %",
-                Grade5: schoolData.grade_5 + " %",
-                Grade6: schoolData.grade_6 + " %",
-                Grade7: schoolData.grade_7 + " %",
-                Grade8: schoolData.grade_8 + " %",
-                TotalStudents: Number(schoolData.studentsCount.replace(/\,/g, ''))
-              }
-              this.reportData.push(obj);
-            });
             this.loaderAndErr();
             this.changeDetection.markForCheck();
           }
@@ -613,10 +446,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
   }
 
   distSelect(event, districtId) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType);
     this.onDistrictSelect(districtId);
   }
   // to load all the blocks for selected district for state data on the map
@@ -641,8 +474,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.blockMarkers = this.data['sortedData'];
       // set hierarchy values
       this.districtHierarchy = {
-        distId: this.data['sortedData'][0].districtId,
-        districtName: this.data['sortedData'][0].districtName
+        distId: this.data['sortedData'][0].district_id,
+        districtName: this.data['sortedData'][0].district_name
       }
 
       this.districtId = districtId;
@@ -663,7 +496,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
         centerLng: this.data['sortedData'][0].lng,
         level: 'block'
       }
-      this.genericFun(this.data, options);
+      this.fileName = "Blocks_per_district";
+      this.genericFun(this.data, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
     }, err => {
@@ -675,10 +509,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
   }
 
   blockSelect(event, blockId) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType);
     this.onBlockSelect(blockId);
   }
 
@@ -715,25 +549,20 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.clusterMarkers = this.data['sortedData'];
       var myBlocks = [];
       this.blockMarkers.forEach(element => {
-        if (element.districtId === this.districtHierarchy.distId) {
+        if (element.district_id === this.districtHierarchy.distId) {
           myBlocks.push(element);
         }
       });
       this.blockMarkers = myBlocks;
 
-      this.clusterMarkers.forEach(element => {
-        // if (element.clusterName == null) {
-        //   element.clusterName = 'NO NAME FOUND';
-        // }
-      });
       // set hierarchy values
       this.blockHierarchy = {
-        distId: this.data['sortedData'][0].districtId,
-        districtName: this.data['sortedData'][0].districtName,
-        blockId: this.data['sortedData'][0].blockId,
-        blockName: this.data['sortedData'][0].blockName
+        distId: this.data['sortedData'][0].district_id,
+        districtName: this.data['sortedData'][0].district_name,
+        blockId: this.data['sortedData'][0].block_id,
+        blockName: this.data['sortedData'][0].block_name
       }
-      this.districtId = this.data['sortedData'][0].districtId;
+      this.districtId = this.data['sortedData'][0].district_id;
       this.blockId = blockId;
 
       // these are for showing the hierarchy names based on selection
@@ -752,7 +581,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
         centerLng: this.data['sortedData'][0].lng,
         level: 'cluster'
       }
-      this.genericFun(this.data, options);
+      this.fileName = "clusters_per_block";
+      this.genericFun(this.data, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
     }, err => {
@@ -764,10 +594,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
   }
 
   clusterSelect(event, clusterId) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType);
     this.onClusterSelect(clusterId);
   }
   // to load all the schools for selected cluster for state data on the map
@@ -803,7 +633,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         var markers = result['sortedData'];
         var myBlocks = [];
         markers.forEach(element => {
-          if (element.districtId === this.blockHierarchy.distId) {
+          if (element.district_id === this.blockHierarchy.distId) {
             myBlocks.push(element);
           }
         });
@@ -811,7 +641,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
         var myCluster = [];
         this.clusterMarkers.forEach(element => {
-          if (element.blockId === this.blockHierarchy.blockId) {
+          if (element.block_id === this.blockHierarchy.blockId) {
             myCluster.push(element);
           }
         });
@@ -819,20 +649,20 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
         // set hierarchy values
         this.clusterHierarchy = {
-          distId: this.data['sortedData'][0].districtId,
-          districtName: this.data['sortedData'][0].districtName,
-          blockId: this.data['sortedData'][0].blockId,
-          blockName: this.data['sortedData'][0].blockName,
-          clusterId: this.data['sortedData'][0].clusterId,
-          clusterName: this.data['sortedData'][0].clusterName,
+          distId: this.data['sortedData'][0].district_id,
+          districtName: this.data['sortedData'][0].district_name,
+          blockId: this.data['sortedData'][0].block_id,
+          blockName: this.data['sortedData'][0].block_name,
+          clusterId: this.data['sortedData'][0].cluster_id,
+          clusterName: this.data['sortedData'][0].cluster_name,
         }
 
         this.districtHierarchy = {
-          distId: this.data['sortedData'][0].districtId
+          distId: this.data['sortedData'][0].district_id
         }
 
-        this.districtId = this.data['sortedData'][0].districtId;
-        this.blockId = this.data['sortedData'][0].blockId;
+        this.districtId = this.data['sortedData'][0].district_id;
+        this.blockId = this.data['sortedData'][0].block_id;
         this.clusterId = clusterId;
 
         // these are for showing the hierarchy names based on selection
@@ -849,9 +679,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
           mapZoom: 12,
           centerLat: this.data['sortedData'][0].lat,
           centerLng: this.data['sortedData'][0].lng,
-          level: 'school'
+          level: "school"
         }
-        this.genericFun(this.data, options);
+        this.fileName = "Schools_per_cluster";
+        this.genericFun(this.data, options, this.fileName);
       }, err => {
         this.data = [];
         this.loaderAndErr();
@@ -865,194 +696,25 @@ export class SemViewComponent implements OnInit, OnDestroy {
   }
 
   // common function for all the data to show in the map
-  genericFun(data, options) {
+  genericFun(data, options, fileName) {
     this.reportData = [];
     if (data['sortedData'].length > 0) {
       this.markers = data['sortedData']
 
       // generate color gradient
-      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
+      let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
       this.colors = colors;
 
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-        // this.dateRange = this.markers[i]['data_from_date'] + " to " + this.markers[i]['data_upto_date'];
-        var markerIcon;
-        if (options.weight) {
-          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
-            radius: options.radius,
-            color: this.colors[i],
-            fillColor: this.colors[i],
-            fillOpacity: options.fillOpacity,
-            strokeWeight: options.strokeWeight,
-            weight: options.weight
-          })
-        } else {
-          markerIcon = L.circleMarker([this.markers[i].lat, this.markers[i].lng], {
-            radius: options.radius,
-            color: this.colors[i],
-            fillColor: this.colors[i],
-            fillOpacity: options.fillOpacity,
-            strokeWeight: options.strokeWeight
-          })
-        }
-
+        var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], options.radius, options.strokeWeight, 1, options.level);
         globalMap.setZoom(options.mapZoom);
 
         // data to show on the tooltip for the desired levels
-        if (options.level == 'district') {
-          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
-            "<br><b>Grade 3:</b>" + "&nbsp;" + this.markers[i].grade_3 + " %" +
-            "<br><b>Grade 4:</b>" + "&nbsp;" + this.markers[i].grade_4 + " %" +
-            "<br><b>Grade 5:</b>" + "&nbsp;" + this.markers[i].grade_5 + " %" +
-            "<br><b>Grade 6:</b>" + "&nbsp;" + this.markers[i].grade_6 + " %" +
-            "<br><b>Grade 7:</b>" + "&nbsp;" + this.markers[i].grade_7 + " %" +
-            "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
-            "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schoolsCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount +
-            "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.markers[i].percent_below_33 + " %" + ` (${this.markers[i].value_below_33} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.markers[i].percent_between_33_60 + " %" + ` (${this.markers[i].value_between_33_60} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
-          );
-          markerIcon.addTo(globalMap).bindPopup(popup);
-
-          // to download the report
-          this.fileName = "District_wise_report_sem_";
-          let obj = {
-            DistrictId: this.markers[i].districtId,
-            DistrictName: this.markers[i].districtName,
-            Semester_Performance: this.markers[i].assesmentPercentage + " %",
-            Grade3: this.markers[i].grade_3 + " %",
-            Grade4: this.markers[i].grade_4 + " %",
-            Grade5: this.markers[i].grade_5 + " %",
-            Grade6: this.markers[i].grade_6 + " %",
-            Grade7: this.markers[i].grade_7 + " %",
-            Grade8: this.markers[i].grade_8 + " %",
-            TotalSchools: Number(this.markers[i].schoolsCount.replace(/\,/g, '')),
-            TotalStudents: Number(this.markers[i].studentsCount.replace(/\,/g, ''))
-          }
-          this.reportData.push(obj);
-
-        } else if (options.level == 'block') {
-          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
-            "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
-            "<br><b>Grade 3:</b>" + "&nbsp;" + this.markers[i].grade_3 + " %" +
-            "<br><b>Grade 4:</b>" + "&nbsp;" + this.markers[i].grade_4 + " %" +
-            "<br><b>Grade 5:</b>" + "&nbsp;" + this.markers[i].grade_5 + " %" +
-            "<br><b>Grade 6:</b>" + "&nbsp;" + this.markers[i].grade_6 + " %" +
-            "<br><b>Grade 7:</b>" + "&nbsp;" + this.markers[i].grade_7 + " %" +
-            "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
-            "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schoolsCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount +
-            "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.markers[i].percent_below_33 + " %" + ` (${this.markers[i].value_below_33} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.markers[i].percent_between_33_60 + " %" + ` (${this.markers[i].value_between_33_60} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
-          );
-          markerIcon.addTo(globalMap).bindPopup(popup);
-          this.fileName = "Block_Per_dist_report_sem_"
-          let obj = {
-            DistrictId: this.markers[i].districtId,
-            DistrictName: this.markers[i].districtName,
-            BlockId: this.markers[i].blockId,
-            BlockName: this.markers[i].blockName,
-            Semester_Performance: this.markers[i].assesmentPercentage + " %",
-            Grade3: this.markers[i].grade_3 + " %",
-            Grade4: this.markers[i].grade_4 + " %",
-            Grade5: this.markers[i].grade_5 + " %",
-            Grade6: this.markers[i].grade_6 + " %",
-            Grade7: this.markers[i].grade_7 + " %",
-            Grade8: this.markers[i].grade_8 + " %",
-            TotalSchools: Number(this.markers[i].schoolsCount.replace(/\,/g, '')),
-            TotalStudents: Number(this.markers[i].studentsCount.replace(/\,/g, ''))
-          }
-          this.reportData.push(obj);
-
-        } else if (options.level == 'cluster') {
-          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
-            "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
-            "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].clusterName +
-            "<br><b>Grade 3:</b>" + "&nbsp;" + this.markers[i].grade_3 + " %" +
-            "<br><b>Grade 4:</b>" + "&nbsp;" + this.markers[i].grade_4 + " %" +
-            "<br><b>Grade 5:</b>" + "&nbsp;" + this.markers[i].grade_5 + " %" +
-            "<br><b>Grade 6:</b>" + "&nbsp;" + this.markers[i].grade_6 + " %" +
-            "<br><b>Grade 7:</b>" + "&nbsp;" + this.markers[i].grade_7 + " %" +
-            "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
-            "<br><b>Number of schools:</b>" + "&nbsp;" + this.markers[i].schoolsCount +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount +
-            "<br><b>% of less than 33%:</b>" + "&nbsp;" + this.markers[i].percent_below_33 + " %" + ` (${this.markers[i].value_below_33} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% of 33% to 60%:</b>" + "&nbsp;" + this.markers[i].percent_between_33_60 + " %" + ` (${this.markers[i].value_between_33_60} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% of 60% to 75%:</b>" + "&nbsp;" + this.markers[i].percent_between_60_75 + " %" + ` (${this.markers[i].value_between_60_75} out of ${this.markers[i].schoolsCount})` +
-            "<br><b>% above 75%:</b>" + "&nbsp;" + this.markers[i].percent_above_75 + " %" + ` (${this.markers[i].value_above_75} out of ${this.markers[i].schoolsCount})`
-          );
-          markerIcon.addTo(globalMap).bindPopup(popup);
-          this.fileName = "Cluster_per_block_report_sem_"
-          let obj = {
-            DistrictId: this.markers[i].districtId,
-            DistrictName: this.markers[i].districtName,
-            BlockId: this.markers[i].blockId,
-            BlockName: this.markers[i].blockName,
-            ClusterId: this.markers[i].clusterId,
-            ClusterName: this.markers[i].clusterName,
-            Semester_Performance: this.markers[i].assesmentPercentage + " %",
-            Grade3: this.markers[i].grade_3 + " %",
-            Grade4: this.markers[i].grade_4 + " %",
-            Grade5: this.markers[i].grade_5 + " %",
-            Grade6: this.markers[i].grade_6 + " %",
-            Grade7: this.markers[i].grade_7 + " %",
-            Grade8: this.markers[i].grade_8 + " %",
-            TotalSchools: Number(this.markers[i].schoolsCount.replace(/\,/g, '')),
-            TotalStudents: Number(this.markers[i].studentsCount.replace(/\,/g, ''))
-          }
-          this.reportData.push(obj);
-
-        } else if (options.level == 'school') {
-          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b>Semester Performance: </b>" + "&nbsp;" + this.markers[i].assesmentPercentage + " %" +
-            "<br><b>District: </b>" + "&nbsp;" + this.markers[i].districtName +
-            "<br><b>Block: </b>" + "&nbsp;" + this.markers[i].blockName +
-            "<br><b>Cluster: </b>" + "&nbsp;" + this.markers[i].clusterName +
-            "<br><b>School: </b>" + "&nbsp;" + this.markers[i].schoolName +
-            "<br><b>Grade 3:</b>" + "&nbsp;" + this.markers[i].grade_3 + " %" +
-            "<br><b>Grade 4:</b>" + "&nbsp;" + this.markers[i].grade_4 + " %" +
-            "<br><b>Grade 5:</b>" + "&nbsp;" + this.markers[i].grade_5 + " %" +
-            "<br><b>Grade 6:</b>" + "&nbsp;" + this.markers[i].grade_6 + " %" +
-            "<br><b>Grade 7:</b>" + "&nbsp;" + this.markers[i].grade_7 + " %" +
-            "<br><b>Grade 8:</b>" + "&nbsp;" + this.markers[i].grade_8 + " %" +
-            "<br><b>Number of students:</b>" + "&nbsp;" + this.markers[i].studentsCount
-          );
-          markerIcon.addTo(globalMap).bindPopup(popup);
-
-          this.fileName = "School_per_cluster_report_sem_"
-          let obj = {
-            DistrictId: this.markers[i].districtId,
-            DistrictName: this.markers[i].districtName,
-            BlockId: this.markers[i].blockId,
-            BlockName: this.markers[i].blockName,
-            ClusterId: this.markers[i].clusterId,
-            ClusterName: this.markers[i].clusterName,
-            SchoolId: this.markers[i].schoolId,
-            SchoolName: this.markers[i].schoolName,
-            Semester_Performance: this.markers[i].assesmentPercentage + " %",
-            Grade3: this.markers[i].grade_3 + " %",
-            Grade4: this.markers[i].grade_4 + " %",
-            Grade5: this.markers[i].grade_5 + " %",
-            Grade6: this.markers[i].grade_6 + " %",
-            Grade7: this.markers[i].grade_7 + " %",
-            Grade8: this.markers[i].grade_8 + " %",
-            TotalStudents: Number(this.markers[i].studentsCount.replace(/\,/g, ''))
-          }
-          this.reportData.push(obj);
+        if (options.level) {
+          this.generateToolTip(markerIcon, this.markers[i], options.level, this.reportData);
+          this.fileName = fileName;
         }
-
-        this.popups(markerIcon, this.markers[i], options);
       }
 
       this.loaderAndErr();
@@ -1063,7 +725,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
-  popups(markerIcon, markers, options) {
+  popups(markerIcon, markers, level) {
     for (var i = 0; i < this.markers.length; i++) {
       markerIcon.on('mouseover', function (e) {
         this.openPopup();
@@ -1073,12 +735,35 @@ export class SemViewComponent implements OnInit, OnDestroy {
       });
 
       this.layerMarkers.addLayer(markerIcon);
-      if (options.level != 'school') {
+      if (level != "school") {
         markerIcon.on('click', this.onClick_Marker, this)
       }
       markerIcon.myJsonData = markers;
     }
   }
+
+  //Generate dynamic tool-tip
+  generateToolTip(markerIcon, markers, levelWise, reportData) {
+    this.popups(markerIcon, markers, levelWise);
+    var details = {};
+    var orgObject = {};
+    Object.keys(markers).forEach(key => {
+      if (key !== "lat") {
+        details[key] = markers[key];
+      }
+    });
+    Object.keys(details).forEach(key => {
+      if (key !== "lng") {
+        orgObject[key] = details[key];
+      }
+    });
+
+    var yourData = this.commonService.getInfoFrom(orgObject, "semester_performance", levelWise, reportData, "std-attd", undefined, undefined).join(" <br>");
+    const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
+      yourData);
+    markerIcon.addTo(globalMap).bindPopup(popup);
+  }
+
 
   //Showing tooltips on markers on mouse hover...
   onMouseOver(m, infowindow) {
@@ -1101,117 +786,35 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.trackInteract(date, this.btnId, eventType);
 
     var data = event.target.myJsonData;
-    if (data.districtId && !data.blockId && !data.clusterId) {
+    if (data.district_id && !data.block_id && !data.cluster_id) {
       this.stateLevel = 1;
-      this.onDistrictSelect(data.districtId)
+      this.onDistrictSelect(data.district_id)
     }
-    if (data.districtId && data.blockId && !data.clusterId) {
+    if (data.district_id && data.block_id && !data.cluster_id) {
       this.stateLevel = 1;
       this.districtHierarchy = {
-        distId: data.districtId
+        distId: data.district_id
       }
-      this.onBlockSelect(data.blockId)
+      this.onBlockSelect(data.block_id)
     }
-    if (data.districtId && data.blockId && data.clusterId) {
+    if (data.district_id && data.block_id && data.cluster_id) {
       this.stateLevel = 1;
       this.blockHierarchy = {
-        distId: data.districtId,
-        blockId: data.blockId
+        distId: data.district_id,
+        blockId: data.block_id
       }
-      this.onClusterSelect(data.clusterId)
+      this.onClusterSelect(data.cluster_id)
     }
   }
 
   // to download the excel report
   downloadReport(event) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
-
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName + this.semester
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
-
+    // var eventType = event.type;
+    // this.btnId = event.target.id;
+    // var date = new Date();
+    // this.trackInteract(date, this.btnId, eventType);
+    this.commonService.download(this.fileName, this.reportData);
   }
-
-  // to generate the color gradient from red to green based on the attendance percentage values
-  color() {
-    // Converts a #ffffff hex string into an [r,g,b] array
-    function hex2rgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-      ] : null;
-    }
-
-    // Inverse of the above
-    function rgb2hex(rgb) {
-      return '#' + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
-    }
-
-    // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
-    // Taken from the awesome ROT.js roguelike dev library at
-    // https://github.com/ondras/rot.js
-    function _interpolateRgb(color1, color2, factor) {
-      if (arguments.length < 3) { factor = 0.5; }
-
-      let result = color1.slice();
-
-      for (let i = 0; i < 3; i++) {
-        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
-      }
-      return result;
-    }
-
-    function generateGradient(color1, color2, total, interpolation) {
-      const colorStart = typeof color1 === 'string' ? hex2rgb(color1) : color1;
-      const colorEnd = typeof color2 === 'string' ? hex2rgb(color2) : color2;
-
-      // will the gradient be via RGB or HSL
-      switch (interpolation) {
-        case 'rgb':
-          return colorsToGradientRgb(colorStart, colorEnd, total);
-        // case 'hsl':
-        //   return colorsToGradientHsl(colorStart, colorEnd, total);
-        default:
-          return false;
-      }
-    }
-
-    function colorsToGradientRgb(startColor, endColor, steps) {
-      // returns array of hex values for color, since rgb would be an array of arrays and not strings, easier to handle hex strings
-      let arrReturnColors = [];
-      let interimColorRGB;
-      let interimColorHex;
-      const totalColors = steps;
-      const factorStep = 1 / (totalColors - 1);
-
-      for (let idx = 0; idx < totalColors; idx++) {
-        interimColorRGB = _interpolateRgb(startColor, endColor, factorStep * idx);
-        interimColorHex = rgb2hex(interimColorRGB);
-        arrReturnColors.push(interimColorHex);
-      }
-      return arrReturnColors;
-    }
-    return {
-      generateGradient
-    };
-  }
-
   trackInteract(date, id, type) {
     // var timeStamp = Math.floor(date.getTime() / 1000.0);
     // this.telemData.interact.push(

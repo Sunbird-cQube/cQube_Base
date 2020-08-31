@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewEnca
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
-import { ExportToCsv } from 'export-to-csv';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { KeycloakSecurityService } from '../keycloak-security.service';
@@ -173,21 +172,7 @@ export class StudengtAttendanceComponent implements OnInit {
     }
 
     if (this.reportData.length > 0) {
-      const options = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        showTitle: false,
-        title: 'My Awesome CSV',
-        useTextFile: false,
-        useBom: true,
-        useKeysAsHeaders: true,
-        filename: this.fileName
-      };
-      const csvExporter = new ExportToCsv(options);
-      csvExporter.generateCsv(this.reportData);
-
+      this.commonService.download(this.fileName, this.reportData);
     } else {
       this.loaderAndErr();
     }
@@ -212,7 +197,7 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.levelWise === "Cluster") {
         this.clusterWise(event);
       }
-      if (this.levelWise === "School") {
+      if (this.levelWise === "school") {
         this.schoolWise(event);
       }
     } else {
@@ -269,7 +254,7 @@ export class StudengtAttendanceComponent implements OnInit {
           for (var i = 0; i < this.markers.length; i++) {
             this.districtsIds.push(this.markers[i]['district_id']);
             distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 5, 0.01, 0, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 5, 0.01, 0, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
           }
         }
@@ -320,7 +305,7 @@ export class StudengtAttendanceComponent implements OnInit {
             this.blocksIds.push(this.markers[i]['block_id']);
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
 
-            var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 0, this.levelWise);
             globalMap.setZoom(7);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
           }
@@ -382,7 +367,7 @@ export class StudengtAttendanceComponent implements OnInit {
               clustNames.push({ id: this.markers[i]['cluster_id'], name: 'NO NAME FOUND', blockId: this.markers[i]['block_id'] });
             }
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 1, 0.01, 0, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 1, 0.01, 0, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
           }
 
@@ -412,7 +397,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   schoolWise(event) {
     this.commonAtStateLevel();
-    this.levelWise = "School";
+    this.levelWise = "school";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       this.fileName = `School_wise_report_${month.name.trim()}_${this.year}`
@@ -436,7 +421,7 @@ export class StudengtAttendanceComponent implements OnInit {
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             this.districtsIds.push(sorted[i]['district_id']);
-            var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 0, 0, 0, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 0, 0, 0, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
           }
           globalMap.setView(new L.LatLng(this.lat, this.lng), 7.3);
@@ -633,7 +618,7 @@ export class StudengtAttendanceComponent implements OnInit {
         for (var i = 0; i < this.markers.length; i++) {
           this.blocksIds.push(this.markers[i]['block_id']);
           blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
-          var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 0, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
         }
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -740,7 +725,7 @@ export class StudengtAttendanceComponent implements OnInit {
           } else {
             clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
           }
-          var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 3.5, 0.01, 0, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 0, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
         }
 
@@ -776,7 +761,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.myClusterData(data);
   }
   myClusterData(data) {
-    this.levelWise = "School";
+    this.levelWise = "school";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -868,7 +853,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
-          var markerIcon = this.commonService.initMarkers(this.markers[i], this.colors[i], 3.5, 0.1, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.1, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
         }
         globalMap.setView(new L.LatLng(this.lat, this.lng), 12);
@@ -897,7 +882,7 @@ export class StudengtAttendanceComponent implements OnInit {
     });
 
     layerMarkers.addLayer(markerIcon);
-    if (levelWise != "School") {
+    if (levelWise != "school") {
       markerIcon.on('click', onClick_Marker, this);
     }
     markerIcon.myJsonData = markers;
@@ -919,7 +904,7 @@ export class StudengtAttendanceComponent implements OnInit {
       }
     });
 
-    var yourData = this.commonService.getInfoFrom(orgObject, "attendance", levelWise, reportData).join(" <br>");
+    var yourData = this.commonService.getInfoFrom(orgObject, "attendance", levelWise, reportData, "std-attd", undefined, undefined).join(" <br>");
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);

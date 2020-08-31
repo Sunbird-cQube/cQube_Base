@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as data from './../../assets/india.json';
 import * as L from 'leaflet';
+import { ExportToCsv } from 'export-to-csv';
 export var globalMap;
 
 @Injectable({
@@ -9,6 +10,23 @@ export var globalMap;
 export class CommonService {
 
   constructor() { }
+
+  // to load and hide the spinner 
+  loaderAndErr(data) {
+    if (data.length !== 0) {
+      document.getElementById('spinner').style.display = 'none';
+    } else {
+      document.getElementById('spinner').style.display = 'none';
+      document.getElementById('errMsg').style.color = 'red';
+      document.getElementById('errMsg').style.display = 'block';
+      document.getElementById('errMsg').innerHTML = 'No data found';
+    }
+  }
+  errMsg() {
+    document.getElementById('errMsg').style.display = 'none';
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('spinner').style.marginTop = '3%';
+  }
 
   //Initialisation of Map  
   initMap(map) {
@@ -37,10 +55,10 @@ export class CommonService {
 
 
   //Initialise markers.....
-  public initMarkers(markers, color, radius, strokeWeight, weight, levelWise) {
+  public initMarkers(lat, lng, color, radius, strokeWeight, weight, levelWise) {
     var markerIcon;
-    if (levelWise !== "School") {
-      markerIcon = L.circleMarker([markers.lat, markers.lng], {
+    if (levelWise !== "school") {
+      markerIcon = L.circleMarker([lat, lng], {
         radius: radius,
         color: color,
         fillColor: color,
@@ -48,7 +66,7 @@ export class CommonService {
         strokeWeight: strokeWeight,
       });
     } else {
-      markerIcon = L.circleMarker([markers.lat, markers.lng], {
+      markerIcon = L.circleMarker([lat, lng], {
         radius: radius,
         color: color,
         fillColor: color,
@@ -62,9 +80,10 @@ export class CommonService {
 
 
   //map tooltip automation
-  public getInfoFrom(object, value, levelWise, reportData) {
+  public getInfoFrom(object, value, levelWise, reportData, reportType, infraName, colorText) {
     var popupFood = [];
     var stringLine;
+    var selected = '';
     for (var key in object) {
       if (object.hasOwnProperty(key)) {
         if (key == value) {
@@ -77,7 +96,10 @@ export class CommonService {
               })
             + "</b>" + ": " + object[key] + " %" + `</span>`;
         } else {
-          stringLine = "<b>" +
+          if (reportType == "infra-map") {
+            selected = `<span ${infraName == key ? colorText : ''}>`
+          }
+          stringLine = selected + "<b>" +
             key.replace(
               /\w\S*/g,
               function (txt) {
@@ -89,12 +111,36 @@ export class CommonService {
       }
       popupFood.push(stringLine);
     }
-    if (levelWise != "School") {
-      object.number_of_schools = Number(object.number_of_schools.replace(/\,/g, ''));
+    if (reportType != "infra-map") {
+      if (reportType != "sem-exception") {
+        if (reportType != "telemetry") {
+          if (levelWise != "school") {
+            object.number_of_schools = Number(object.number_of_schools.replace(/\,/g, ''));
+          }
+          object.number_of_students = Number(object.number_of_students.replace(/\,/g, ''));
+        }
+      }
+      reportData.push(object);
     }
-    object.number_of_students = Number(object.number_of_students.replace(/\,/g, ''));
-    reportData.push(object);
     return popupFood;
+  }
+
+  //Download reports....
+  download(fileName, reportData) {
+    const options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true,
+      showTitle: false,
+      title: 'My Awesome CSV',
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true,
+      filename: fileName
+    };
+    const csvExporter = new ExportToCsv(options);
+    csvExporter.generateCsv(reportData);
   }
 
   //color gredient generation....

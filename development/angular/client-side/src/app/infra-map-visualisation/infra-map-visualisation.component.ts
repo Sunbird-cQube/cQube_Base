@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewEnca
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
-import { ExportToCsv } from 'export-to-csv';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { CommonService, globalMap } from '../common-services/common.service';
@@ -91,25 +90,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
   }
-
-  // to load and hide the spinner 
-  loaderAndErr() {
-    if (this.data.length !== 0) {
-      document.getElementById('spinner').style.display = 'none';
-    } else {
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('errMsg').style.color = 'red';
-      document.getElementById('errMsg').style.display = 'block';
-      document.getElementById('errMsg').innerHTML = 'No data found';
-    }
-  }
-
-  errMsg() {
-    document.getElementById('errMsg').style.display = 'none';
-    document.getElementById('spinner').style.display = 'block';
-    document.getElementById('spinner').style.marginTop = '3%';
-  }
-
   // to load all the districts for state data on the map
   districtWise() {
     try {
@@ -117,7 +97,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
-      this.errMsg();
+      this.commonService.errMsg();
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -130,28 +110,8 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.clusterHidden = true;
       // api call to get all the districts data
       if (this.myDistData != undefined) {
-        this.infraFilter = [];
         this.data = this.myDistData['data'];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
-          val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
-        }
-
-        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
-
-        var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infrastructure_score';
-        });
-
-        this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infrastructure_score';
-        });
-
-        this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-        this.infraFilter.splice(0, 0, infraKey[0]);
-
-
+        this.gettingInfraFilters(this.data);
         // to show only in dropdowns
         this.districtMarkers = this.myDistData['data'];
         // options to set for markers in the map
@@ -175,28 +135,9 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.myData.unsubscribe();
         }
         this.myData = this.service.infraMapDistWise().subscribe(res => {
-
           this.myDistData = res;
-          this.infraFilter = [];
           this.data = res['data'];
-          for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-            let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
-            val = val.replace('Percent', '(%)')
-            this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
-          }
-
-          this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
-
-          var infraKey = this.infraFilter.filter(function (obj) {
-            return obj.key == 'infrastructure_score';
-          });
-
-          this.infraFilter = this.infraFilter.filter(function (obj) {
-            return obj.key !== 'infrastructure_score';
-          });
-
-          this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-          this.infraFilter.splice(0, 0, infraKey[0]);
+          this.gettingInfraFilters(this.data);
 
           // to show only in dropdowns
           this.districtMarkers = this.data;
@@ -221,7 +162,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
         }, err => {
           this.data = [];
-          this.loaderAndErr();
+          this.commonService.loaderAndErr(this.data);
         });
       }
 
@@ -240,7 +181,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.errMsg();
+      this.commonService.errMsg();
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -260,28 +201,8 @@ export class InfraMapVisualisationComponent implements OnInit {
       }
       this.myData = this.service.infraMapAllBlockWise().subscribe(res => {
         this.myBlockData = res['data'];
-        //=================================
-        this.infraFilter = [];
         this.data = res['data'];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
-          val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
-        }
-
-        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
-
-        var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infrastructure_score';
-        });
-
-        this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infrastructure_score';
-        });
-
-        this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-        this.infraFilter.splice(0, 0, infraKey[0]);
-        //=================================
+        this.gettingInfraFilters(this.data);
         let options = {
           mapZoom: 7,
           centerLat: 22.3660414123535,
@@ -301,53 +222,10 @@ export class InfraMapVisualisationComponent implements OnInit {
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               this.colorGredient(this.blockMarkers[i], this.infraData);
-              var markerIcon = L.circleMarker([this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude], {
-                radius: 3.5,
-                color: this.setColor,
-                fillColor: this.setColor,
-                fillOpacity: 1,
-                strokeWeight: 0.01
-              }).addTo(globalMap);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, this.setColor, 3.5, 0.01, undefined, options.level);
 
-              var infraName = this.infraData;
-              let colorText = `style='color:blue !important;'`;
-              var details = {};
-              var orgObject = {};
-              Object.keys(this.blockMarkers[i].details).forEach(key => {
-                if (key !== "latitude") {
-                  details[key] = this.blockMarkers[i].details[key];
-                }
-              });
-              Object.keys(details).forEach(key => {
-                if (key !== "longitude") {
-                  orgObject[key] = details[key];
-                }
-              });
-              var yourData = this.getInfoFrom(this.blockMarkers[i].metrics, infraName, colorText, options.level).join(" <br>");
-              var yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
-
-              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                "<b><u>Details</u></b>" +
-                "<br>" + yourData1 +
-                "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
-                "<br>" + yourData);
-              markerIcon.addTo(globalMap).bindPopup(popup);
-
-              markerIcon.on('mouseover', function (e) {
-                this.openPopup();
-              });
-              markerIcon.on('mouseout', function (e) {
-                this.closePopup();
-              });
-              markerIcon.on('click', this.onClick_Marker, this);
-
-              this.layerMarkers.addLayer(markerIcon);
-              markerIcon.myJsonData = this.blockMarkers[i];
-
-              //download report
-              var obj = {};
-              obj = { ...orgObject, ...this.blockMarkers[i].metrics };
-              this.reportData.push(obj);
+              this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
+              this.getDownloadableData(this.blockMarkers[i], options.level);
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -357,13 +235,13 @@ export class InfraMapVisualisationComponent implements OnInit {
             this.schoolCount = res['footer'];
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
-            this.loaderAndErr();
+            this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
         }
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
@@ -378,7 +256,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.errMsg();
+      this.commonService.errMsg();
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -400,27 +278,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       }
       this.myData = this.service.infraMapAllClusterWise().subscribe(res => {
         this.data = res['data']
-        //=================================
-        this.infraFilter = [];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
-          val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
-        }
-
-        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
-
-        var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infrastructure_score';
-        });
-
-        this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infrastructure_score';
-        });
-
-        this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-        this.infraFilter.splice(0, 0, infraKey[0]);
-        //=================================
+        this.gettingInfraFilters(this.data);
         let options = {
           mapZoom: 7,
           centerLat: 22.3660414123535,
@@ -438,53 +296,10 @@ export class InfraMapVisualisationComponent implements OnInit {
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               this.colorGredient(this.clusterMarkers[i], this.infraData);
-              var markerIcon = L.circleMarker([this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude], {
-                radius: 0,
-                color: this.setColor,
-                fillColor: this.setColor,
-                fillOpacity: 1,
-                strokeWeight: 0.01
-              }).addTo(globalMap);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, this.setColor, 0, 0.01, undefined, options.level);
 
-              var infraName = this.infraData;
-              let colorText = `style='color:blue !important;'`;
-              var details = {};
-              var orgObject = {};
-              Object.keys(this.clusterMarkers[i].details).forEach(key => {
-                if (key !== "latitude") {
-                  details[key] = this.clusterMarkers[i].details[key];
-                }
-              });
-              Object.keys(details).forEach(key => {
-                if (key !== "longitude") {
-                  orgObject[key] = details[key];
-                }
-              });
-              var yourData = this.getInfoFrom(this.clusterMarkers[i].metrics, infraName, colorText, options.level).join(" <br>");
-              var yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
-
-              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                "<b><u>Details</u></b>" +
-                "<br>" + yourData1 +
-                "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
-                "<br>" + yourData);
-              markerIcon.addTo(globalMap).bindPopup(popup);
-
-              markerIcon.on('mouseover', function (e) {
-                this.openPopup();
-              });
-              markerIcon.on('mouseout', function (e) {
-                this.closePopup();
-              });
-              markerIcon.on('click', this.onClick_Marker, this);
-
-              this.layerMarkers.addLayer(markerIcon);
-              markerIcon.myJsonData = this.clusterMarkers[i];
-
-              //download report
-              var obj = {};
-              obj = { ...orgObject, ...this.clusterMarkers[i].metrics };
-              this.reportData.push(obj);
+              this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
+              this.getDownloadableData(this.clusterMarkers[i], options.level);
             }
 
             //schoolCount
@@ -493,13 +308,13 @@ export class InfraMapVisualisationComponent implements OnInit {
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
-            this.loaderAndErr();
+            this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
         }
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
@@ -514,7 +329,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.errMsg();
+      this.commonService.errMsg();
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -536,27 +351,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       }
       this.myData = this.service.infraMapAllSchoolWise().subscribe(res => {
         this.data = res['data']
-        //=================================
-        this.infraFilter = [];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
-          val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
-        }
-
-        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
-
-        var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infrastructure_score';
-        });
-
-        this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infrastructure_score';
-        });
-
-        this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-        this.infraFilter.splice(0, 0, infraKey[0]);
-        //=================================
+        this.gettingInfraFilters(this.data);
         let options = {
           mapZoom: 7,
           centerLat: 22.3660414123535,
@@ -573,65 +368,10 @@ export class InfraMapVisualisationComponent implements OnInit {
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               this.colorGredient(this.schoolMarkers[i], this.infraData);
-              var markerIcon = L.circleMarker([this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude], {
-                // renderer: myRenderer,
-                radius: 0,
-                color: this.setColor,
-                fillColor: this.setColor,
-                fillOpacity: 1,
-                weight: 0,
-                strokeWeight: 0
-              }).addTo(globalMap);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, this.setColor, 0, 0, undefined, options.level);
 
-              var infraName = this.infraData;
-              let colorText = `style='color:blue !important;'`;
-              var details = {};
-              var orgObject = {};
-              Object.keys(this.schoolMarkers[i].details).forEach(key => {
-                if (key !== "latitude") {
-                  details[key] = this.schoolMarkers[i].details[key];
-                }
-              });
-              Object.keys(details).forEach(key => {
-                if (key !== "longitude") {
-                  orgObject[key] = details[key];
-                }
-              });
-              var detailSchool = {};
-              var yourData1;
-              if (options.level == "school") {
-                Object.keys(orgObject).forEach(key => {
-                  if (key !== "total_schools_data_received") {
-                    detailSchool[key] = details[key];
-                  }
-                });
-                yourData1 = this.getInfoFrom(detailSchool, infraName, colorText, options.level).join(" <br>");
-              } else {
-                yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
-              }
-              var yourData = this.getInfoFrom(this.schoolMarkers[i].metrics, infraName, colorText, options.level).join(" <br>");
-
-              const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-                "<b><u>Details</u></b>" +
-                "<br>" + yourData1 +
-                "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
-                "<br>" + yourData);
-              markerIcon.addTo(globalMap).bindPopup(popup);
-
-              markerIcon.on('mouseover', function (e) {
-                this.openPopup();
-              });
-              markerIcon.on('mouseout', function (e) {
-                this.closePopup();
-              });
-
-              this.layerMarkers.addLayer(markerIcon);
-              markerIcon.myJsonData = this.schoolMarkers[i];
-
-              //download report
-              var obj = {};
-              obj = { ...detailSchool, ...this.schoolMarkers[i].metrics };
-              this.reportData.push(obj);
+              this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
+              this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -640,13 +380,13 @@ export class InfraMapVisualisationComponent implements OnInit {
             this.schoolCount = res['footer'];
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
-            this.loaderAndErr();
+            this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
         }
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
 
       globalMap.addLayer(this.layerMarkers);
@@ -661,7 +401,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     // to clear the existing data on the map layer  
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.errMsg();
+    this.commonService.errMsg();
     this.blockId = undefined;
 
     // to show and hide the dropdowns
@@ -674,26 +414,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
     this.myData = this.service.infraMapBlockWise(districtId).subscribe(res => {
       this.data = res['data'];
-      this.infraFilter = [];
-      for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-        let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
-        val = val.replace('Percent', '(%)')
-        this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
-      }
-
-      this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
-
-      var infraKey = this.infraFilter.filter(function (obj) {
-        return obj.key == 'infrastructure_score';
-      });
-
-      this.infraFilter = this.infraFilter.filter(function (obj) {
-        return obj.key !== 'infrastructure_score';
-      });
-
-      this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-      this.infraFilter.splice(0, 0, infraKey[0]);
-      //=================================
+      this.gettingInfraFilters(this.data);
 
       this.blockMarkers = this.data;
       // set hierarchy values
@@ -727,7 +448,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));
     }, err => {
       this.data = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -738,7 +459,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.errMsg();
+    this.commonService.errMsg();
     this.clusterId = undefined;
 
     // to show and hide the dropdowns
@@ -751,27 +472,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
     this.myData = this.service.infraMapClusterWise(this.districtHierarchy.distId, blockId).subscribe(res => {
       this.data = res['data'];
-      //=================================
-      this.infraFilter = [];
-      for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-        let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
-        val = val.replace('Percent', '(%)')
-        this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
-      }
-
-      this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
-
-      var infraKey = this.infraFilter.filter(function (obj) {
-        return obj.key == 'infrastructure_score';
-      });
-
-      this.infraFilter = this.infraFilter.filter(function (obj) {
-        return obj.key !== 'infrastructure_score';
-      });
-
-      this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-      this.infraFilter.splice(0, 0, infraKey[0]);
-      //=================================
+      this.gettingInfraFilters(this.data);
 
       this.clusterMarkers = this.data;
       var myBlocks = [];
@@ -815,7 +516,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.clusterMarkers.sort((a, b) => (a.details.cluster_name > b.details.cluster_name) ? 1 : ((b.details.cluster_name > a.details.cluster_name) ? -1 : 0));
     }, err => {
       this.data = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -826,7 +527,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.errMsg();
+    this.commonService.errMsg();
 
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -837,27 +538,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     this.myData = this.service.infraMapAllBlockWise().subscribe((result: any) => {
       this.myData = this.service.infraMapSchoolWise(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
         this.data = res['data'];
-        //=================================
-        this.infraFilter = [];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
-          val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
-        }
-
-        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
-
-        var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infrastructure_score';
-        });
-
-        this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infrastructure_score';
-        });
-
-        this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-        this.infraFilter.splice(0, 0, infraKey[0]);
-        //=================================
+        this.gettingInfraFilters(this.data);
 
         this.schoolMarkers = this.data;
         var markers = result['data'];
@@ -909,18 +590,18 @@ export class InfraMapVisualisationComponent implements OnInit {
           mapZoom: 12,
           centerLat: this.data[0].details.latitude,
           centerLng: this.data[0].details.longitude,
-          level: 'school'
+          level: "school"
         }
         this.level = options.level;
-        var fileName = "School_per_block_report";
+        var fileName = "School_per_cluster_report";
         this.genericFun(res, options, fileName);
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
     }, err => {
       this.data = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -936,83 +617,18 @@ export class InfraMapVisualisationComponent implements OnInit {
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         this.colorGredient(this.markers[i], this.infraData);
-        var markerIcon: any;
-        if (options.weight) {
-          markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
-            radius: options.radius,
-            color: this.setColor,
-            fillColor: this.setColor,
-            fillOpacity: options.fillOpacity,
-            strokeWeight: options.strokeWeight,
-            weight: options.weight
-          })
-        } else {
-          markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
-            radius: options.radius,
-            color: this.setColor,
-            fillColor: this.setColor,
-            fillOpacity: options.fillOpacity,
-            strokeWeight: options.strokeWeight
-          })
-        }
-
+        // var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, this.setColor, options.radius, options.strokeWeight, undefined, options.level);
+        var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, this.setColor, options.radius, options.strokeWeight, 1, options.level);
         globalMap.setZoom(options.mapZoom);
 
         // data to show on the tooltip for the desired levels
-        if (options.level) {
-          var infraName = this.infraData;
+        this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
 
-          //Generate dynamic tool-tip
-          let colorText = `style='color:blue !important;'`;
-          var details = {};
-          var orgObject = {};
-          Object.keys(this.markers[i].details).forEach(key => {
-            if (key !== "latitude") {
-              details[key] = this.markers[i].details[key];
-            }
-          });
-          Object.keys(details).forEach(key => {
-            if (key !== "longitude") {
-              orgObject[key] = details[key];
-            }
-          });
-          var detailSchool = {};
-          var yourData1;
-          if (options.level == "school") {
-            Object.keys(orgObject).forEach(key => {
-              if (key !== "total_schools_data_received") {
-                detailSchool[key] = details[key];
-              }
-            });
-            yourData1 = this.getInfoFrom(detailSchool, infraName, colorText, options.level).join(" <br>");
-          } else {
-            yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
-          }
-          var yourData = this.getInfoFrom(this.markers[i].metrics, infraName, colorText, options.level).join(" <br>");
-
-
-          const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-            "<b><u>Details</u></b>" +
-            "<br>" + yourData1 +
-            "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
-            "<br>" + yourData);
-          markerIcon.addTo(globalMap).bindPopup(popup);
-
-          // to download the report
-          this.fileName = fileName;
-          var obj = {};
-          if (options.level == "school") {
-            obj = { ...detailSchool, ...this.markers[i].metrics };
-          } else {
-            obj = { ...orgObject, ...this.markers[i].metrics };
-          }
-          this.reportData.push(obj);
-
-        }
-        this.popups(markerIcon, this.markers[i], options);
+        // to download the report
+        this.fileName = fileName;
+        this.getDownloadableData(this.markers[i], options.level);
       }
-
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
       this.changeDetection.markForCheck();
     }
     //schoolCount
@@ -1020,6 +636,29 @@ export class InfraMapVisualisationComponent implements OnInit {
     this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+  }
+
+  //infra filters.....
+  gettingInfraFilters(data) {
+    this.infraFilter = [];
+    for (var i = 0; i < Object.keys(data[0].metrics).length; i++) {
+      let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+      val = val.replace('Percent', '(%)')
+      this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+    }
+
+    this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+
+    var infraKey = this.infraFilter.filter(function (obj) {
+      return obj.key == 'infrastructure_score';
+    });
+
+    this.infraFilter = this.infraFilter.filter(function (obj) {
+      return obj.key !== 'infrastructure_score';
+    });
+
+    this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+    this.infraFilter.splice(0, 0, infraKey[0]);
   }
 
   public infraData = 'infrastructure_score';
@@ -1093,27 +732,47 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
   }
 
-  //map tooltip automation
-  public getInfoFrom(object, infraName, colorText, level) {
-    var popupFood = [];
-    var stringLine;
-    for (var key in object) {
-      if (object.hasOwnProperty(key)) {
-        stringLine = `<span ${infraName == key ? colorText : ''}>` + "<b>" +
-          key.replace(
-            /\w\S*/g,
-            function (txt) {
-              txt = txt.replace(/_/g, ' ');
-              return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            })
-          + "</b>" + ": " + object[key] + `</span>`;
+  generateToolTip(markers, level, markerIcon, lat, lng) {
+    this.popups(markerIcon, markers, level);
+    var infraName = this.infraData;
+    let colorText = `style='color:blue !important;'`;
+    var details = {};
+    var orgObject = {};
+    Object.keys(markers.details).forEach(key => {
+      if (key !== lat) {
+        details[key] = markers.details[key];
       }
-      popupFood.push(stringLine);
+    });
+    Object.keys(details).forEach(key => {
+      if (key !== lng) {
+        orgObject[key] = details[key];
+      }
+    });
+
+    var detailSchool = {};
+    var yourData1;
+    if (level == "school") {
+      Object.keys(orgObject).forEach(key => {
+        if (key !== "total_schools_data_received") {
+          detailSchool[key] = details[key];
+        }
+      });
+      yourData1 = this.commonService.getInfoFrom(detailSchool, "", level, this.reportData, "infra-map", infraName, colorText).join(" <br>");
+    } else {
+      yourData1 = this.commonService.getInfoFrom(orgObject, "", level, this.reportData, "infra-map", infraName, colorText).join(" <br>");
     }
-    return popupFood;
+    var yourData = this.commonService.getInfoFrom(markers.metrics, "", level, this.reportData, "infra-map", infraName, colorText).join(" <br>");
+
+
+    const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
+      "<b><u>Details</u></b>" +
+      "<br>" + yourData1 +
+      "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
+      "<br>" + yourData);
+    markerIcon.addTo(globalMap).bindPopup(popup);
   }
 
-  popups(markerIcon, markers, options) {
+  popups(markerIcon, markers, level) {
     for (var i = 0; i < this.markers.length; i++) {
       markerIcon.on('mouseover', function (e) {
         this.openPopup();
@@ -1123,7 +782,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       });
 
       this.layerMarkers.addLayer(markerIcon);
-      if (options.level != 'school') {
+      if (level != 'school') {
         markerIcon.on('click', this.onClick_Marker, this);
       }
       markerIcon.myJsonData = markers;
@@ -1176,21 +835,37 @@ export class InfraMapVisualisationComponent implements OnInit {
     );
   }
 
-  // to download the excel report
+  // to download the csv report
   downloadReport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
+    this.commonService.download(this.fileName, this.reportData);
+  }
+
+  // getting data to download........
+  getDownloadableData(markers, level) {
+    var details = {};
+    var orgObject = {};
+    Object.keys(markers.details).forEach(key => {
+      if (key !== "latitude") {
+        details[key] = markers.details[key];
+      }
+    });
+    Object.keys(details).forEach(key => {
+      if (key !== "longitude") {
+        orgObject[key] = details[key];
+      }
+    });
+    var obj = {};
+    if (level == "school") {
+      var detailSchool = {};
+      Object.keys(orgObject).forEach(key => {
+        if (key !== "total_schools_data_received") {
+          detailSchool[key] = details[key];
+        }
+      });
+      obj = { ...detailSchool, ...markers.metrics };
+    } else {
+      obj = { ...orgObject, ...markers.metrics };
+    }
+    this.reportData.push(obj);
   }
 }
