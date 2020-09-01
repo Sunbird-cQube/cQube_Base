@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 class Data():
     login = "kc-login"
@@ -11,14 +12,10 @@ class Data():
     fieldReq = "/html/body/app-root/app-login/div[1]/div[2]/div[2]/form/div[2]/div/label"
 
     loginbtn = "//button[@type='submit']"
-    # loginbtn ="login"
     # admin login
-
     cuser ="//a[1]"
     cpass ="//a[2]"
     dashboard_options = "//a/div/td[2]"
-    reportuser =""
-    reportpass = ""
     back_btn ="//div[@class='col-sm-6']/a"
 
     dots = "leaflet-interactive"
@@ -26,7 +23,7 @@ class Data():
     hyper_link = "//p/span"
     directory = "//p[contains(text(),' Semester report for:')]/span"
     Download = "download"
-    value1 = "Ahmedabad"
+    Download_scator ='download1'
 
     # Dash board
     Dashboard = "menu"
@@ -45,28 +42,7 @@ class Data():
     sc_block = "//select[@name='myBlock']/option[2]"
     sc_cluster = "//select[@name='myCluster']/option[2]"
 
-    x_axis = "//select[@id='x_axis']/option"
-    x_Total_Schools = "//select[@id='x_axis']/option[2]"
-    x_Total_Data = "//select[@id='x_axis']/option[3]"
-    x_Average_parameters = "//select[@id='x_axis']/option[4]"
-    x_Handwash = "//select[@id='x_axis']/option[5]"
-    x_Solar_Panel = "//select[@id='x_axis']/option[6]"
-    x_Library = "//select[@id='x_axis']/option[7]"
-    x_Drinking_Water = "//select[@id='x_axis']/option[8]"
-    x_Tap_Water = "//select[@id='x_axis']/option[9]"
-    x_Hand_Pump = "//select[@id='x_axis']/option[10]"
-    x_PlayGround = "//select[@id='x_axis']/option[11]"
-    x_News_Paper = "//select[@id='x_axis']/option[12]"
-    x_Digital_Board = "//select[@id='x_axis']/option[13]"
-    x_Electricity = "//select[@id='x_axis']/option[14]"
-    x_Total_Toilets = "//select[@id='x_axis']/option[15]"
-    x_Boys_Toilet = "//select[@id='x_axis']/option[16]"
-    x_Girls_Toilet = "//select[@id='x_axis']/option[17]"
-    x_CWSN_Boys = "//select[@id='x_axis']/option[18]"
-    x_CWSN_Girls = "//select[@id='x_axis']/option[19]"
-    x_Boys_Urinals = "//select[@id='x_axis']/option[20]"
-    x_Girls_Urinals = "//select[@id='x_axis']/option[21]"
-    infra_hyperlink = "//p[@id='dist']/span"
+
 
     # hyper     ="//*[@id='dist_level']/span"
     hyper = "//p/span"
@@ -75,32 +51,12 @@ class Data():
     # block_hyper = "//*[@id='block_level']/span[]"
     cluster_hyper = "//*[@id='cluster_level']/span[3]"
 
-    y_axis = "//select[@id='y_axis']/option"
-    y_Total_Schools = "//select[@id='y_axis']/option[2]"
-    y_Total_Data = "//select[@id='y_axis']/option[3]"
-    y_Average_parameters = "//select[@id='y_axis']/option[4]"
-    y_Handwash = "//select[@id='y_axis']/option[5]"
-    y_Solar_Panel = "//select[@id='y_axis']/option[6]"
-    y_Library = "//select[@id='y_axis']/option[7]"
-    y_Drinking_Water = "//select[@id='y_axis']/option[8]"
-    y_Tap_Water = "//select[@id='y_axis']/option[9]"
-    y_Hand_Pump = "//select[@id='y_axis']/option[10]"
-    y_PlayGround = "//select[@id='y_axis']/option[11]"
-    y_News_Paper = "//select[@id='y_axis']/option[12]"
-    y_Digital_Board = "//select[@id='y_axis']/option[13]"
-    y_Electricity = "//select[@id='y_axis']/option[14]"
-    y_Total_Toilets = "//select[@id='y_axis']/option[15]"
-    y_Boys_Toilet = "//select[@id='y_axis']/option[16]"
-    y_Girls_Toilet = "//select[@id='y_axis']/option[17]"
-    y_CWSN_Boys = "//select[@id='y_axis']/option[18]"
-    y_CWSN_Girls = "//select[@id='y_axis']/option[19]"
-    y_Boys_Urinals = "//select[@id='y_axis']/option[20]"
-    y_Girls_Urinals = "//select[@id='y_axis']/option[21]"
+
     x = "x_axis"
     y = "y_axis"
     s_dist = "//select[@name='myDistrict']/option[2]"
     # sc_Reportmap
-    School_infra = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list/mat-list-item/div/mat-icon"
+    School_infra = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[4]/mat-list-item/div/mat-icon"
     Reportmap = "mapReport"
     Report = "tblReport"
     scm_block = "block"
@@ -112,6 +68,16 @@ class Data():
     sc_infrascores = "//select[@id='choose_infra']/option"
     sc_no_of_schools = "schools"
 
+    diksha ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[6]/mat-list-item/div/mat-icon"
+    diksha_graph ="chrtReport"
+    diksha_table = "dtblReport"
+
+    exception_click ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[1]/mat-list-item/div/mat-icon"
+    sem_exception = "SemException"
+
+
+    sem_exe ="SemExp"
+
     scm_dist = "//select[@id='choose_dist']/option[2]"
     scm_blk = "//select[@id='choose_block']/option[2]"
     scm_clust = "//select[@id='choose_cluster']/option[2]"
@@ -120,7 +86,7 @@ class Data():
     d_names = "//th[contains(text(),'district')]"
     t_head = "//th[contains(text(),'District Name')]"
     login_in = "//span[@class='span']"
-    SAR = "SAR"
+    SAR = "stdReport"
     Logout = "logout"
     Home_icon = "//i[@id='home']"
     select_district = 'myDistrict'
@@ -170,9 +136,9 @@ class Data():
     errormsg = "//p"
 
     # for SAR_2
-    SAR_Blocks_btn = "block"
-    SAR_Clusters_btn = "cluster"
-    SAR_Schools_btn = "school"
+    SAR_Blocks_btn = "allBlock"
+    SAR_Clusters_btn = "allCluster"
+    SAR_Schools_btn = "allSchool"
     # footer
     schoolcount = "schools"
     students = "students"
@@ -208,7 +174,7 @@ class Data():
     # Dash board
     TAR = "tar"
     SR = "sr"
-    CRC = "crcr"
+    CRC = "crcReport"
 
     # xpath of Dashboard
 
@@ -238,10 +204,6 @@ class Data():
     clusterwise = "//select[@name='downloadType']/option[4]"
     schoolwise = "//select[@name='downloadType']/option[5]"
 
-    # X axis and Y axis
-    xaxis = "//select[@name='xAxis']/option"
-    yaxis = "//select[@name='yAxis']/option"
-
     crcdistrict = "//select[@name='myDistrict']/option"
     selecttype = "//*[@id='select']/select/option"
 
@@ -263,9 +225,7 @@ class Data():
     # CRC
 
     CRD1 = "//*[@id='dist']/option[2]"
-
     CRB1 = "//*[@id='block']/option[2]"
-
     CRC1 = "//*[@id='cluster']/option[2]"
 
 
@@ -283,18 +243,17 @@ class Data():
    #semester Report
     sr_by_xpath = "//*[@id='sr']"
     sr_by_id = "sr"
-    sr_block_btn= "block"
-    sr_cluster_btn = "cluster"
-    sr_schools_btn = "school"
-
+    sr_block_btn= "allBlock"
+    sr_cluster_btn = "allCluster"
+    sr_schools_btn = "allSchool"
+    block_btn ="block"
+    cluster_btn="cluster"
+    schoolbtn="school"
     sr_district = "choose_dist"
     sr_block = "choose_block"
     sr_cluster = "choose_cluster"
-
-    #hyper = "//*[@id='dist_level']/span"
     sr_dist_hyper = "//*[@id='block']/span[1]"
     sr_school_hyper = "//*[@id='school']/span[5]"
-    # block_hyper = "//*[@id='block_level']/span[]"
     sr_cluster_hyper = "//*[@id='cluster']/span[3]"
 
 

@@ -14,7 +14,6 @@ class MyTestSuite(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.data = GetData()
-        self.logger = self.data.get_regression_log("schoolinframap")
         self.driver = self.data.get_driver()
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
@@ -26,7 +25,6 @@ class MyTestSuite(unittest.TestCase):
         if self.errMsg.text == 'No data found':
             print("No data in the school infrastructure map report page")
         else:
-            self.logger.info("school infra map report execution started")
             regression_test = unittest.TestSuite()
             regression_test.addTests([
                 # file name .class name
@@ -44,7 +42,6 @@ class MyTestSuite(unittest.TestCase):
 
             runner1.run(regression_test)
             outfile.close()
-            self.logger.info("school infra map report execution ended")
 
 
 

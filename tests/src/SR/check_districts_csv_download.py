@@ -25,7 +25,7 @@ class DistrictCsvDownload():
             self.driver.find_element_by_id('download').click()
             time.sleep(3)
             p = pwd()
-            self.filename = p.get_download_dir() + "/Block_Per_dist_report.csv"
+            self.filename = p.get_download_dir() + "/Block_Per_dist_report_sem_2.csv"
             if os.path.isfile(self.filename) != True:
                 print("District" + select_district.first_selected_option.text + "csv is not downloaded")
                 count = count + 1
