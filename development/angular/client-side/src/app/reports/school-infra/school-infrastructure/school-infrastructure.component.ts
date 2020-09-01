@@ -4,6 +4,7 @@ import { SchoolInfraService } from '../../../services/school-infra.service';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
 import { ExportToCsv } from 'export-to-csv';
+import { CommonService } from 'src/app/common-services/common.service';
 declare const $;
 
 @Component({
@@ -55,7 +56,7 @@ export class SchoolInfrastructureComponent implements OnInit {
   public reportData: any;
   public myData;
 
-  constructor(public http: HttpClient, public service: SchoolInfraService, public router: Router, private changeDetection: ChangeDetectorRef) {
+  constructor(public http: HttpClient, public service: SchoolInfraService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: CommonService,) {
     localStorage.removeItem('resData');
   }
 
@@ -64,23 +65,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
-  }
-
-  loaderAndErr() {
-    if (this.result.length !== 0) {
-      document.getElementById('spinner').style.display = 'none';
-    } else {
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('errMsg').style.color = 'red';
-      document.getElementById('errMsg').style.display = 'block';
-      document.getElementById('errMsg').innerHTML = 'No data found';
-    }
-  }
-
-  errMsg() {
-    document.getElementById('errMsg').style.display = 'none';
-    document.getElementById('spinner').style.display = 'block';
-    document.getElementById('spinner').style.marginTop = '3%';
   }
 
   public tableHead: any;
@@ -110,7 +94,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.blok = false;
     this.clust = false;
     this.skul = true;
-    this.errMsg();
+    this.commonService.errMsg();
     this.blockHidden = true;
     this.clusterHidden = true;
 
@@ -130,13 +114,13 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.createTable(dataSet);
       //========================
       this.SchoolInfrastructureDistrictsNames.sort((a, b) => (a.district.value > b.district.value) ? 1 : ((b.district.value > a.district.value) ? -1 : 0));
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     });
   }
 
@@ -154,7 +138,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.blok = false;
     this.clust = false;
     this.skul = false;
-    this.errMsg();
+    this.commonService.errMsg();
     this.myBlock = '';
     this.downloadType = '';
     this.modes = [];
@@ -187,13 +171,13 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.createTable(dataSet);
       //========================
 
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     });
   }
 
@@ -206,7 +190,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.downloadLevel = 'cluster';
     this.tableHead = "Cluster Name";
     this.fileName = "clusterPerBlock_report";
-    this.errMsg();
+    this.commonService.errMsg();
     this.dist = false;
     this.blok = true;
     this.clust = false;
@@ -247,13 +231,13 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.createTable(dataSet);
       //========================
 
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     });
   }
 
@@ -271,7 +255,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.blok = false;
     this.clust = true;
     this.skul = false;
-    this.errMsg();
+    this.commonService.errMsg();
     this.modes = [];
 
     this.title = JSON.parse(localStorage.getItem('block'));
@@ -304,19 +288,19 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.createTable(dataSet);
       //========================
 
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
       this.changeDetection.markForCheck();
     }, err => {
       this.result = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     });
   }
 
   distWise() {
     this.reportData = [];
-    this.errMsg();
+    this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     element1[0].disabled = true;
     this.fileName = "Dist_level_Infra_Report";
@@ -333,13 +317,13 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     });
   }
 
   blockWise() {
     this.reportData = [];
-    this.errMsg();
+    this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     element1[0].disabled = true;
     this.fileName = "Block_level_Infra_Report";
@@ -356,13 +340,13 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     });
   }
 
   clusterWise() {
     this.reportData = [];
-    this.errMsg();
+    this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     element1[0].disabled = true;
     this.fileName = "Cluster_level_Infra_Report";
@@ -379,13 +363,13 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     });
   }
 
   schoolWise() {
     this.reportData = [];
-    this.errMsg();
+    this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     element1[0].disabled = true;
     this.fileName = "School_level_Infra_Report";
@@ -402,7 +386,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     });
   }
 

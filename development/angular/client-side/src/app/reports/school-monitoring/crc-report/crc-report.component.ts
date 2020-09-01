@@ -4,6 +4,7 @@ import { CrcReportService } from '../../../services/crc-report.service';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
 import { ExportToCsv } from 'export-to-csv';
+import { CommonService } from 'src/app/common-services/common.service';
 declare const $;
 
 @Component({
@@ -104,7 +105,7 @@ export class CrcReportComponent implements OnInit {
   ]
 
   myData;
-  constructor(public http: HttpClient, public service: CrcReportService, public router: Router, private changeDetection: ChangeDetectorRef) {
+  constructor(public http: HttpClient, public service: CrcReportService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: CommonService,) {
     localStorage.removeItem('resData');
   }
 
@@ -113,23 +114,6 @@ export class CrcReportComponent implements OnInit {
     this.createChart(["clg"], [], '', {});
     this.districtWise();
     document.getElementById('homeBtn').style.display = "Block";
-  }
-
-  loaderAndErr() {
-    if (this.chartData.length !== 0) {
-      document.getElementById('spinner').style.display = 'none';
-    } else {
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('errMsg').style.color = 'red';
-      document.getElementById('errMsg').style.display = 'block';
-      document.getElementById('errMsg').innerHTML = 'No data found';
-    }
-  }
-
-  errMsg() {
-    document.getElementById('errMsg').style.display = 'none';
-    document.getElementById('spinner').style.display = 'block';
-    document.getElementById('spinner').style.marginTop = '3%';
   }
 
   public tableHead: any;
@@ -151,7 +135,7 @@ export class CrcReportComponent implements OnInit {
     this.visitedSchools = 0;
     this.notVisitedSchools = 0;
     this.myDistrict = '';
-    this.errMsg();
+    this.commonService.errMsg();
     this.dist = false;
     this.blok = false;
     this.clust = false;
@@ -224,7 +208,7 @@ export class CrcReportComponent implements OnInit {
       };
       this.dataTable = $(this.table.nativeElement);
       this.dataTable.DataTable(this.dtOptions);
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.chartData);
 
     } else {
       this.schoolCount = 0;
@@ -294,14 +278,14 @@ export class CrcReportComponent implements OnInit {
           this.dataTable = $(this.table.nativeElement);
           this.dataTable.DataTable(this.dtOptions);
 
-          this.loaderAndErr();
+          this.commonService.loaderAndErr(this.chartData);
           this.changeDetection.markForCheck();
         }
       }, err => {
         this.chartData = [];
         this.createChart(["clg"], [], '', {});
         $('#table').empty();
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.chartData);
       });
     }
   }
@@ -320,7 +304,7 @@ export class CrcReportComponent implements OnInit {
 
   blockWise() {
     this.reportData = [];
-    this.errMsg();
+    this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     element1[0].disabled = true;
     this.fileName = "Block_level_CRC_Report";
@@ -337,13 +321,13 @@ export class CrcReportComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.chartData);
     });
   }
 
   clusterWise() {
     this.reportData = [];
-    this.errMsg();
+    this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     element1[0].disabled = true;
     this.fileName = "Cluster_level_CRC_Report";
@@ -360,13 +344,13 @@ export class CrcReportComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.chartData);
     });
   }
 
   schoolWise() {
     this.reportData = [];
-    this.errMsg();
+    this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     element1[0].disabled = true;
     this.fileName = "School_level_CRC_Report";
@@ -383,7 +367,7 @@ export class CrcReportComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.chartData);
     });
   }
 
@@ -400,7 +384,7 @@ export class CrcReportComponent implements OnInit {
     this.crcBlocksNames = [];
     this.visitedSchools = 0;
     this.notVisitedSchools = 0;
-    this.errMsg();
+    this.commonService.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
     this.tableData = [];
@@ -479,13 +463,13 @@ export class CrcReportComponent implements OnInit {
 
 
         this.changeDetection.markForCheck();
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.chartData);
       }
     }, err => {
       this.chartData = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.chartData);
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
     document.getElementById('home').style.display = 'block';;
@@ -503,7 +487,7 @@ export class CrcReportComponent implements OnInit {
     this.crcClusterNames = [];
     this.visitedSchools = 0;
     this.notVisitedSchools = 0;
-    this.errMsg();
+    this.commonService.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
     this.tableData = [];
@@ -586,12 +570,12 @@ export class CrcReportComponent implements OnInit {
       this.dataTable.DataTable(this.dtOptions);
 
       this.changeDetection.markForCheck();
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.chartData);
     }, err => {
       this.chartData = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.chartData);
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
     document.getElementById('home').style.display = 'block';;
@@ -603,7 +587,7 @@ export class CrcReportComponent implements OnInit {
     this.modes = [];
     this.downloadType = '';
     this.tableHead = "School Name";
-    this.errMsg();
+    this.commonService.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
     this.fileName = "School_level_CRC_Report"
@@ -693,13 +677,13 @@ export class CrcReportComponent implements OnInit {
       this.dataTable = $(this.table.nativeElement);
       this.dataTable.DataTable(this.dtOptions);
 
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.chartData);
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.chartData);
     });
     document.getElementById('home').style.display = 'block';
   }

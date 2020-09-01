@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
+import { CommonService } from 'src/app/common-services/common.service';
 
 @Component({
   selector: 'app-diksha-bar-chart',
@@ -50,10 +51,10 @@ export class DikshaBarChartComponent implements OnInit {
   reportData: any = [];
   y_axisValue;
 
-
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
+    public commonService: CommonService,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
@@ -64,21 +65,7 @@ export class DikshaBarChartComponent implements OnInit {
     document.getElementById('homeBtn').style.display = "Block";
     this.getAllData();
   }
-  loaderAndErr() {
-    if (this.result.length !== 0) {
-      document.getElementById('spinner').style.display = 'none';
-    } else {
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('errMsg').style.color = 'red';
-      document.getElementById('errMsg').style.display = 'block';
-    }
-  }
-
-  errMsg() {
-    document.getElementById('errMsg').style.display = 'none';
-    document.getElementById('spinner').style.display = 'block';
-    document.getElementById('spinner').style.marginTop = '3%';
-  }
+ 
   emptyChart() {
     this.barChartData = [
       { data: [], label: '' }
@@ -100,7 +87,7 @@ export class DikshaBarChartComponent implements OnInit {
     if (this.collection_type != "all") {
       document.getElementById('home').style.display = "block";
     }
-    this.errMsg();
+    this.commonService.errMsg();
     this.timePeriod = '';
     this.collectionName = '';
     this.footer = '';
@@ -126,13 +113,13 @@ export class DikshaBarChartComponent implements OnInit {
     }, err => {
       this.result = [];
       this.emptyChart();
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     });
 
   }
 
   listCollectionNames() {
-    this.errMsg();
+    this.commonService.errMsg();
     this.collectionName = '';
     this.footer = '';
     this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod }).subscribe(res => {
@@ -153,7 +140,7 @@ export class DikshaBarChartComponent implements OnInit {
       this.collectionNames = [];
       this.result = [];
       this.emptyChart();
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     })
   }
 
@@ -164,7 +151,7 @@ export class DikshaBarChartComponent implements OnInit {
   getDataBasedOnCollections() {
     this.emptyChart();
     document.getElementById('home').style.display = "block";
-    this.errMsg();
+    this.commonService.errMsg();
     this.fileName = `collectionType_${this.collection_type}_data_of_${this.collectionName}`;
     this.footer = '';
     this.result = [];
@@ -177,7 +164,7 @@ export class DikshaBarChartComponent implements OnInit {
       this.createChart(this.result);
       document.getElementById('spinner').style.display = 'none';
     }, err => {
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.result);
     });
   }
 

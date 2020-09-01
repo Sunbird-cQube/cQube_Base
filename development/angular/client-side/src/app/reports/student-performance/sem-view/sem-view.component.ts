@@ -117,25 +117,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
     document.getElementById('homeBtn').style.display = "Block";
   }
 
-
-  // to load and hide the spinner 
-  loaderAndErr() {
-    if (this.data.length !== 0) {
-      document.getElementById('spinner').style.display = 'none';
-    } else {
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('errMsg').style.color = 'red';
-      document.getElementById('errMsg').style.display = 'block';
-      document.getElementById('errMsg').innerHTML = 'No data found';
-    }
-  }
-
-  errMsg() {
-    document.getElementById('errMsg').style.display = 'none';
-    document.getElementById('spinner').style.display = 'block';
-    document.getElementById('spinner').style.marginTop = '3%';
-  }
-
   homeClick(event) {
     var eventType = event.type;
     this.btnId = event.target.id;
@@ -180,7 +161,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
-      this.errMsg();
+      this.commonService.errMsg();
       this.levelWise = "district";
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -218,7 +199,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
       // adding the markers to the map layers
       globalMap.addLayer(this.layerMarkers);
@@ -240,7 +221,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.errMsg();
+      this.commonService.errMsg();
       this.levelWise = "block";
       this.reportData = [];
       this.districtId = undefined;
@@ -285,13 +266,13 @@ export class SemViewComponent implements OnInit, OnDestroy {
             this.schoolCount = this.data['totalValues'].totalSchools;
             this.studentCount = this.data['totalValues'].totalStudents;
 
-            this.loaderAndErr();
+            this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
         }
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
@@ -310,7 +291,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.errMsg();
+      this.commonService.errMsg();
       this.levelWise = "cluster";
       this.reportData = [];
       this.districtId = undefined;
@@ -357,13 +338,13 @@ export class SemViewComponent implements OnInit, OnDestroy {
             this.schoolCount = this.data['totalValues'].totalSchools;
             this.studentCount = this.data['totalValues'].totalStudents;
 
-            this.loaderAndErr();
+            this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
         }
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
@@ -383,7 +364,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.errMsg();
+      this.commonService.errMsg();
       this.levelWise = "school";
       this.reportData = [];
       // these are for showing the hierarchy names based on selection
@@ -428,13 +409,13 @@ export class SemViewComponent implements OnInit, OnDestroy {
             this.schoolCount = this.data['totalValues'].totalSchools;
             this.studentCount = this.data['totalValues'].totalStudents;
 
-            this.loaderAndErr();
+            this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
         }
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
 
       globalMap.addLayer(this.layerMarkers);
@@ -456,7 +437,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     // to clear the existing data on the map layer  
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.errMsg();
+    this.commonService.errMsg();
     this.blockId = undefined;
 
     // to show and hide the dropdowns
@@ -501,7 +482,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.blockMarkers.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
     }, err => {
       this.data = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -532,7 +513,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.errMsg();
+    this.commonService.errMsg();
     this.clusterId = undefined;
 
     // to show and hide the dropdowns
@@ -586,7 +567,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.clusterMarkers.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
     }, err => {
       this.data = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -616,7 +597,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.errMsg();
+    this.commonService.errMsg();
 
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -684,11 +665,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
         this.genericFun(this.data, options, this.fileName);
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
     }, err => {
       this.data = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -716,7 +697,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         }
       }
 
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
       this.changeDetection.markForCheck();
     }
     this.schoolCount = this.data['totalValues'].totalSchools;

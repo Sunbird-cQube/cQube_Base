@@ -102,36 +102,15 @@ export class StudengtAttendanceComponent implements OnInit {
     }, err => {
       document.getElementById('home').style.display = 'none';
       this.getMonthYear = {};
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
   ngOnInit() {
     document.getElementById('backBtn').style.display = "none";
     this.skul = true;
-    this.element = <HTMLFormElement>document.getElementById('month');
-    this.element.disabled = false;
     this.commonService.initMap('mapContainer');
     document.getElementById('homeBtn').style.display = "Block";
-  }
-
-  loaderAndErr() {
-    if (this.markers.length !== 0) {
-      document.getElementById('spinner').style.display = 'none';
-      this.disabled = true;
-    } else {
-      this.disabled = false;
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('errMsg').style.color = 'red';
-      document.getElementById('errMsg').style.display = 'block';
-      document.getElementById('errMsg').innerHTML = 'No data found';
-    }
-  }
-
-  errMsg() {
-    document.getElementById('errMsg').style.display = 'none';
-    document.getElementById('spinner').style.display = 'block';
-    document.getElementById('spinner').style.marginTop = '3%';
   }
 
   public fileName: any;
@@ -171,7 +150,7 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.reportData.length > 0) {
       this.commonService.download(this.fileName, this.reportData);
     } else {
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.markers);
     }
   }
 
@@ -262,15 +241,15 @@ export class StudengtAttendanceComponent implements OnInit {
         globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
         this.markers = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
       });
     } else {
       this.markers = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'none';
@@ -312,16 +291,16 @@ export class StudengtAttendanceComponent implements OnInit {
 
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.loaderAndErr();
+          this.commonService.loaderAndErr(this.markers);
           this.changeDetection.markForCheck();
         }
       }, err => {
         this.markers = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
       });
     } else {
       this.markers = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -375,16 +354,16 @@ export class StudengtAttendanceComponent implements OnInit {
           globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.loaderAndErr();
+          this.commonService.loaderAndErr(this.markers);
           this.changeDetection.markForCheck();
         }
       }, err => {
         this.markers = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
       });
     } else {
       this.markers = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.markersList);
     document.getElementById('home').style.display = 'block';
@@ -424,16 +403,16 @@ export class StudengtAttendanceComponent implements OnInit {
           globalMap.setView(new L.LatLng(this.lat, this.lng), 7.3);
           this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.loaderAndErr();
+          this.commonService.loaderAndErr(this.markers);
           this.changeDetection.markForCheck();
         }
       }, err => {
         this.markers = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
       });
     } else {
       this.markers = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -443,7 +422,7 @@ export class StudengtAttendanceComponent implements OnInit {
   commonAtStateLevel() {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.errMsg();
+    this.commonService.errMsg();
     this.reportData = [];
     this.markers = [];
     this.studentCount = 0;
@@ -562,7 +541,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.markers = [];
     this.reportData = [];
-    this.errMsg();
+    this.commonService.errMsg();
     this.studentCount = 0;
     this.schoolCount = 0;
     this.markerData = null;
@@ -624,15 +603,15 @@ export class StudengtAttendanceComponent implements OnInit {
         globalMap.setView(new L.LatLng(this.lat, this.lng), 8.3);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
         this.markers = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
       });
     } else {
       this.markers = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.markers);
     }
     document.getElementById('home').style.display = 'block';
     globalMap.addLayer(this.layerMarkers);
@@ -656,7 +635,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.markers = [];
     this.reportData = [];
-    this.errMsg();
+    this.commonService.errMsg();
     this.markerData = null;
 
     this.dist = false;
@@ -732,15 +711,15 @@ export class StudengtAttendanceComponent implements OnInit {
         globalMap.setView(new L.LatLng(this.lat, this.lng), 10);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
         this.markers = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
       });
     } else {
       this.markers = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -763,7 +742,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.markers = [];
     this.reportData = [];
-    this.errMsg();
+    this.commonService.errMsg();
     this.studentCount = 0;
     this.schoolCount = 0;
     this.markerData = null;
@@ -856,15 +835,15 @@ export class StudengtAttendanceComponent implements OnInit {
         globalMap.setView(new L.LatLng(this.lat, this.lng), 12);
         this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
         this.markers = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.markers);
       });
     } else {
       this.markers = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
