@@ -1,23 +1,23 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UserViewComponent } from './user-view/user-view.component';
-import { StudengtAttendanceComponent } from './student-attendance/student-attendance.component';
 import { HomeComponent } from './home/home.component';
-import { TeacherAttendanceComponent } from './teacher-attendance/teacher-attendance.component';
-import { SemViewComponent } from './sem-view/sem-view.component';
-import { CrcReportComponent } from './crc-report/crc-report.component';
 import { AuthGuard } from './auth.guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
-import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
-import { DikshaTableComponent } from './diksha-table/diksha-table.component';
-import { SemesterExceptionComponent } from './semester-exception/semester-exception.component';
-import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
-import { DikshaBarChartComponent } from './diksha-bar-chart/diksha-bar-chart.component';
-import { MissingDataComponent } from './missing-data/missing-data.component';
+import { StudengtAttendanceComponent } from './reports/attendance/student-attendance/student-attendance.component';
+import { TeacherAttendanceComponent } from './reports/attendance/teacher-attendance/teacher-attendance.component';
+import { SemViewComponent } from './reports/student-performance/sem-view/sem-view.component';
+import { SchoolInfrastructureComponent } from './reports/school-infra/school-infrastructure/school-infrastructure.component';
+import { CrcReportComponent } from './reports/school-monitoring/crc-report/crc-report.component';
+import { InfraMapVisualisationComponent } from './reports/school-infra/infra-map-visualisation/infra-map-visualisation.component';
+import { DikshaChartComponent } from './reports/diksha/diksha-chart/diksha-chart.component';
+import { DikshaTableComponent } from './reports/diksha/diksha-table/diksha-table.component';
+import { DikshaBarChartComponent } from './reports/diksha/diksha-bar-chart/diksha-bar-chart.component';
+import { SemesterExceptionComponent } from './reports/exception-list/semester-exception/semester-exception.component';
+import { TelemetryDataComponent } from './reports/telemetry/telemetry-data/telemetry-data.component';
+import { MissingDataComponent } from './reports/exception-list/missing-data/missing-data.component';
 
 const routes: Routes = [
   {

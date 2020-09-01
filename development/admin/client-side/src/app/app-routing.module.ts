@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CreateUserComponent } from './create-user/create-user.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
-import { ChangePasswordComponent } from './change-password/change-password.component';
-import { AllLogsComponent } from './allLogs/allLogs.component';
-import { UsersComponent } from './users/users.component';
-import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SummaryStatistictsComponent } from './summary-statisticts/summary-statisticts.component';
-import { NifiShedularComponent } from './nifi-shedular/nifi-shedular.component';
+import { CreateUserComponent } from './components/create-user/create-user.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { AllLogsComponent } from './components/allLogs/allLogs.component';
+import { UsersComponent } from './components/users/users.component';
+import { S3FilesDownloadComponent } from './components/s3-files-download/s3-files-download.component';
+import { SummaryStatistictsComponent } from './components/summary-statisticts/summary-statisticts.component';
+import { NifiShedularComponent } from './components/nifi-shedular/nifi-shedular.component';
 
 const routes: Routes = [
   {
