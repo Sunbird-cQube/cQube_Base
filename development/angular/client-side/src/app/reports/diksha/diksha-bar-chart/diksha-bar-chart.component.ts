@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
-import { CommonService } from 'src/app/common-services/common.service';
+import { AppServiceComponent } from '../../../app.service';
 
 @Component({
   selector: 'app-diksha-bar-chart',
@@ -54,7 +54,7 @@ export class DikshaBarChartComponent implements OnInit {
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
-    public commonService: CommonService,
+    public commonService: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {

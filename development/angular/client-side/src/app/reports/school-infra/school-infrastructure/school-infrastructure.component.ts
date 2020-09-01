@@ -4,7 +4,7 @@ import { SchoolInfraService } from '../../../services/school-infra.service';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
 import { ExportToCsv } from 'export-to-csv';
-import { CommonService } from 'src/app/common-services/common.service';
+import { AppServiceComponent } from 'src/app/app.service';
 declare const $;
 
 @Component({
@@ -56,7 +56,7 @@ export class SchoolInfrastructureComponent implements OnInit {
   public reportData: any;
   public myData;
 
-  constructor(public http: HttpClient, public service: SchoolInfraService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: CommonService,) {
+  constructor(public http: HttpClient, public service: SchoolInfraService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent,) {
     localStorage.removeItem('resData');
   }
 

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { KeycloakSecurityService } from '../../../keycloak-security.service';
-import { CommonService, globalMap } from '../../../common-services/common.service';
+import { AppServiceComponent, globalMap } from '../../../app.service';
 
 @Component({
   selector: 'app-student-attendance',
@@ -73,7 +73,7 @@ export class StudengtAttendanceComponent implements OnInit {
   public month;
   public element;
 
-  constructor(public http: HttpClient, public service: AttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: CommonService) {
+  constructor(public http: HttpClient, public service: AttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent) {
     service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { KeycloakSecurityService } from '../../../keycloak-security.service';
-import { CommonService, globalMap } from '../../../common-services/common.service';
+import { AppServiceComponent, globalMap } from '../../../app.service';
 
 @Component({
   selector: 'app-sem-view',
@@ -96,7 +96,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
   constructor(
     public http: HttpClient,
     public service: SemesterReportService,
-    public commonService: CommonService,
+    public commonService: AppServiceComponent,
     public router: Router,
     public keyCloakSevice: KeycloakSecurityService,
     private changeDetection: ChangeDetectorRef,

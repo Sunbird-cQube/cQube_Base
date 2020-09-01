@@ -4,7 +4,7 @@ import { TelemetryService } from '../../../services/telemetry.service';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
-import { CommonService, globalMap } from '../../../common-services/common.service';
+import { AppServiceComponent, globalMap } from '../../../app.service';
 
 
 @Component({
@@ -73,7 +73,7 @@ export class TelemetryDataComponent implements OnInit {
   constructor(
     public http: HttpClient,
     public service: TelemetryService,
-    public commonService: CommonService,
+    public commonService: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {

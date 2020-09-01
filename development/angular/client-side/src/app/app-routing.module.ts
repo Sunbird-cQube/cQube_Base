@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserViewComponent } from './user-view/user-view.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
-import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ChangePasswordComponent } from './reports/users/change-password/change-password.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { StudengtAttendanceComponent } from './reports/attendance/student-attendance/student-attendance.component';
@@ -71,10 +70,6 @@ const routes: Routes = [
         path: 'download-missing-data', component: MissingDataComponent, canActivateChild: [AuthGuard]
       }
     ]
-  }
-  ,
-  {
-    path: 'user-view', component: UserViewComponent
   }
 ];
 

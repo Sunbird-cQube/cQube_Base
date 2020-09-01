@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UsersService } from '../../services/users.service';
+import { UsersService } from '../../../services/users.service';
 declare const $;
 
 @Component({
   selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  templateUrl: './list-users.component.html',
+  styleUrls: ['./list-users.component.css']
 })
-export class UsersComponent implements OnInit {
+export class ListUsersComponent implements OnInit {
   result: any = [];
   tableData: any = [];
   user_status = 1;

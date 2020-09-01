@@ -4,7 +4,7 @@ import { SchoolInfraService } from '../../../services/school-infra.service';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
-import { CommonService, globalMap } from '../../../common-services/common.service';
+import { AppServiceComponent, globalMap } from '../../../app.service';
 
 @Component({
   selector: 'app-infra-map-visualisation',
@@ -77,7 +77,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   constructor(
     public http: HttpClient,
     public service: SchoolInfraService,
-    public commonService: CommonService,
+    public commonService: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {

@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { UsersService } from '../../services/users.service';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { AppServiceComponent } from '../../../app.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { KeycloakSecurityService } from '../../keycloak-security.service';
+import { KeycloakSecurityService } from '../../../keycloak-security.service';
 import { environment } from 'src/environments/environment';
 declare const $;
 
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.css']
+  styleUrls: ['./change-password.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ChangePasswordComponent implements OnInit {
   public changePasswdData: any = {};
@@ -17,7 +18,8 @@ export class ChangePasswordComponent implements OnInit {
   public successMsg;
   public isDisabled;
 
-  constructor(public service: UsersService, public router: Router, public keycloakService: KeycloakSecurityService) {
+  constructor(public service: AppServiceComponent, public router: Router, public keycloakService: KeycloakSecurityService) {
+    service.logoutOnTokenExpire();
     this.changePasswdData['userName'] = localStorage.getItem('userName');
   }
 
@@ -58,5 +60,4 @@ export class ChangePasswordComponent implements OnInit {
       document.getElementById('spinner').style.display = 'none';
     }
   }
-
 }

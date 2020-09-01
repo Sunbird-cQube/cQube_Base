@@ -14,9 +14,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
-import { CreateUserComponent } from './components/create-user/create-user.component';
-import { ChangePasswordComponent } from './components/change-password/change-password.component';
-import { UsersComponent } from './components/users/users.component';
+import { CreateUserComponent } from './components/users/create-user/create-user.component';
+import { ChangePasswordComponent } from './components/users/change-password/change-password.component';
+import { ListUsersComponent } from './components/users/list-users/list-users.component';
 import { AllLogsComponent } from './components/allLogs/allLogs.component';
 import { S3FilesDownloadComponent } from './components/s3-files-download/s3-files-download.component';
 import { SummaryStatistictsComponent } from './components/summary-statisticts/summary-statisticts.component';
@@ -34,7 +34,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     HomeComponent,
     ChangePasswordComponent,
     AllLogsComponent,
-    UsersComponent,
+    ListUsersComponent,
     S3FilesDownloadComponent,
     DashboardComponent,
     SummaryStatistictsComponent,
