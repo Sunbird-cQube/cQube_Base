@@ -14,6 +14,7 @@ class cQube_home_page(unittest.TestCase):
         self.driver.implicitly_wait(30)
 
     def test_SAR(self):
+        self.data.page_loading(self.driver)
         self.driver.find_element_by_id("sar").click()
         self.data.page_loading(self.driver)
         if "attendance-report" in self.driver.current_url:
@@ -21,7 +22,6 @@ class cQube_home_page(unittest.TestCase):
         else:
             print("Student attendance report is not exist")
         self.driver.find_element_by_id("homeBtn").click()
-        self.data.page_loading(self.driver)
 
     def test_CRC(self):
         self.driver.find_element_by_id("crcr").click()
@@ -31,7 +31,6 @@ class cQube_home_page(unittest.TestCase):
         else:
             print("CRC report is not exist")
         self.driver.find_element_by_id("homeBtn").click()
-        self.data.page_loading(self.driver)
 
     def test_Semester(self):
         self.driver.find_element_by_id("sr").click()
@@ -41,7 +40,6 @@ class cQube_home_page(unittest.TestCase):
         else:
             print("Semester report is not exist")
         self.driver.find_element_by_id("homeBtn").click()
-        self.data.page_loading(self.driver)
 
     def test_TAR(self):
         self.data.page_loading(self.driver)
@@ -52,7 +50,6 @@ class cQube_home_page(unittest.TestCase):
         else:
             print(" Teacher coming soon page is not exist")
         self.driver.find_element_by_id("homeBtn").click()
-        self.data.page_loading(self.driver)
 
     def test_school_map(self):
         self.driver.find_element_by_id("imr").click()
@@ -62,7 +59,6 @@ class cQube_home_page(unittest.TestCase):
         else:
             print("School infra map based report is not exist")
         self.driver.find_element_by_id("homeBtn").click()
-        self.data.page_loading(self.driver)
 
     def test_school_chart(self):
         self.driver.find_element_by_id("icr").click()
@@ -72,7 +68,6 @@ class cQube_home_page(unittest.TestCase):
         else:
             print("School infra chart based report is not exist")
         self.driver.find_element_by_id("homeBtn").click()
-        self.data.page_loading(self.driver)
 
     @classmethod
     def tearDown(cls):

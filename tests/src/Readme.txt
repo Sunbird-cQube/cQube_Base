@@ -1,8 +1,6 @@
 
 cQube Release_1.2.1
 
-README.md
-cQube
 Prerequisites:
   Google Chrome 84.0.4147.135 need to be installed in the server or local machine.
   Chrome driver 84.0.4147.30 need to be downloaded 
@@ -26,9 +24,8 @@ Steps to Download the selenium Grid
    Open the terminal and navigate to the selenium grid jar
    Run the command in the terminal : java -jar selenium-server-standalone
 
-Note : Java jdk1.8 need to be already installed in the machine
-
-Note:  execution of Admin console scripts , i.e  create_user.py script should provide the username and password in sendkeys
+Note : Java jdk1.8 need to be already installed in the machine, and download geckodriver and place it in Driver folder.
+Note:  execution of Admin console scripts , i.e  create_user.py script should provide the username and password in sendkeys.
 
 Steps to execute the test script
 
@@ -37,35 +34,38 @@ Steps to execute the test script
 	3.sudo apt install python3-pip
 	4.Execute the Requirement.txt in the terminal (Requirement.txt file present in the cQubeTesting Folder) [mandatory]
 	    pip3 install -r Requirement.txt 
-	5.Fill the config.ini file (config.ini file present in the cQubeTesting Folder)
+	5.Fill the config.ini file (config.ini file present in the cQubeTesting Folder).
 
 	  [config]
-	  domain=   #Enter the url of the cqube application ex: https://<domainname>/ or http://<ip>:4200
+	  domain= #Enter the url of the cqube application ex: https://<domainname>/ or http://<ip>:4200
 	  username= #Enter the username of report viewer  
 	  password= #Enter the password of report viewer
-	 
+	  admin_username = #Enter the admin user name 
+	  admin_password = #Enter the admin password
 	  
-note: 
-Before running pytest ,please start the selenium grid by using command: java -jar selenium-server-standalone-3.14.jar  
+Note: Before running pytest ,please start the selenium grid by using command: java -jar selenium-server-standalone-3.14.jar  
 
-For Execution of Diksha Reports fallow the commands 
-	pytest -s -v Diksha_reports/Testsuit/Diksha_suit.py
+	For Execution of Diksha Reports fallow the commands 
+		pytest -s -v Diksha_reports/Testsuit/Diksha_suit.py
 
 For Executing the Regression Test suites using pytest 
-	pytest -n <no of testscripts count> --html = Regression.html --self-contained-html pytest_regression_testing/student_attendance_regression_testing.py
-	pytest -n <no of testscripts count> --html = Regression.html --self-contained-html pytest_regression_testing/crc_report_regression_testing.py
-	pytest -n <no of testscripts count> --html = Regression.html --self-contained-html pytest_regression_testing/semester_report_regression_testing.py
-	pytest -n <no of testscripts count> --html = Regression.html --self-contained-html pytest_regression_testing/School_Map_regression_testing.py
-	pytest -n <no of testscripts count> --html = Regression.html --self-contained-html pytest_regression_testing/School_report_regression_testing.py
-	pytest -n <no of testscripts count> --html = Regression.html --self-contained-html pytest_regression_testing/diksha_table_regression_testing.py
-	pytest -n <no of testscripts count> --html = Regression.html --self-contained-html pytest_regression_testing/diksha_chart_Regression_testing.py
-	pytest -n <no of testscripts count> --html = Regression.html --self-contained-html pytest_regression_testing/telemetry_regression_testing.py
-	pytest -n <no of testscripts count> --html = Regression.html --self-contained-html pytest_regression_testing/exception_regression_testing.py
+	pytest -n 20 --html = Regression.html --self-contained-html pytest_regression_testing/student_attendance_regression_testing.py
+	pytest -n 25 --html = Regression.html --self-contained-html pytest_regression_testing/crc_report_regression_testing.py  
+	pytest -n 20 --html = Regression.html --self-contained-html pytest_regression_testing/semester_report_regression_testing.py
+	pytest -n 30 --html = Regression.html --self-contained-html pytest_regression_testing/School_Map_regression_testing.py
+	pytest -n 22 --html = Regression.html --self-contained-html pytest_regression_testing/School_report_regression_testing.py
+	pytest -n 20 --html = Regression.html --self-contained-html pytest_regression_testing/diksha_table_regression_testing.py
+	pytest -n 15 --html = Regression.html --self-contained-html pytest_regression_testing/diksha_chart_Regression_testing.py
+	pytest -n 20 --html = Regression.html --self-contained-html pytest_regression_testing/telemetry_regression_testing.py
+	pytest -n 20 --html = Regression.html --self-contained-html pytest_regression_testing/exception_regression_testing.py
 
-For Executin the Smoke Test suites
-	pytest -s -v --html=smoke_test.html --html-contained-html TestSuites/SmokeTestSuite/Smoke_Testing.py
+	For Execution of Admin console please fallow the commands 
+		python3 -m unittest Testsuites/Unittest_regression_suite/Admin_console.py
+
+	For Executing the Smoke Test suites
+		pytest -s -v --html=smoke_test.html --html-contained-html TestSuites/SmokeTestSuite/Smoke_Testing.py
 	  
-	  please fallow the steps for run testscripts for admin console
+	Please follow the steps for run testscripts for admin console
 	  	1> open vpn based url in browser 
 		   click on advanced --> open unsecured link --> login to openvpn access server  
 		2> click on user-profile and starts downloading client.ovpn 
@@ -79,17 +79,9 @@ For Executin the Smoke Test suites
 	6.To Run the Test scripts
 	    Navigate to cQubeTesting Directory in the terminal (ex cd /home/ubuntu/cQubeTesting)
 		
-	7.To Run Regression Testing Suite using unittest 
 
-		python3 -m unittest TestSuites/RegressionTestSuite/Run_Login_And_LandingPage.py
-		python3 -m unittest TestSuites/RegressionTestSuite/Run_StudentAttendance.py
-		python3 -m unittest TestSuites/RegressionTestSuite/Run_Crc.py
-		python3 -m unittest TestSuites/RegressionTestSuite/Run_Semester_Report.py
-		python3 -m unittest TestSuites/RegressionTestSuite/Run_SchoolInfraMap.py
-		python3 -m unittest TestSuites/RegressionTestSuite/Run_SchoolInfraReport.py
 		
-Note :
-Each Single scripts takes more than 2 hours, you can execute the multiple test scripts by opening the terminal and navigating to the cQubeTesting folder and running the above testing suite.
+	Note: Each Single scripts takes more than 1 hour, you can execute the multiple test scripts by opening the terminal and navigating to the cQubeTesting folder and running the above testing suite. 
 
 
 

@@ -7,7 +7,7 @@ metadata==1.10.0
 html == 2.1.1 
 forked == 1.2.0
 xdist == 1.33.0
-metadata==1.10.0,
 html==2.1.1
 forked==1.2.0 
 xdist==1.33.0
+pytest==1.2.0
