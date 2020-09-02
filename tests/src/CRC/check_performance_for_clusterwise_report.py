@@ -19,7 +19,7 @@ class download_clusterwise_csv():
         self.p.page_loading(self.driver)
         p =pwd()
         District_wise=Select(self.driver.find_element_by_id("downloader"))
-        District_wise.select_by_visible_text(" Cluster_Wise Report ")
+        District_wise.select_by_visible_text(" Cluster Wise Report ")
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(5)
         self.filename = p.get_download_dir() + "/Cluster_level_CRC_Report.csv"
