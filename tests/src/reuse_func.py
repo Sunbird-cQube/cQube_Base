@@ -1,7 +1,7 @@
+
 import configparser
 import os
 import time
-import logging
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
@@ -15,115 +15,6 @@ class GetData():
     def __init__(self):
         self.p = pwd()
 
-    def get_smoke_log(self):
-        logging.basicConfig(filename=self.p.get_smoke_testing_log_dir(), filemode='w', format='%(asctime)s  %(levelname)s  %(message)s',
-                            datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-        logger = logging.getLogger()
-        return logger
-
-    def get_integration_log(self):
-        logging.basicConfig(filename=self.p.get_smoke_testing_log_dir(), filemode='w',
-                            format='%(asctime)s  %(levelname)s  %(message)s',
-                            datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-        logger = logging.getLogger()
-        return logger
-
-    # def get_functional_log(self):
-    #     logging.basicConfig(filename=self.p.get_functional_testing_log_dir(), filemode='w', format='%(asctime)s  %(levelname)s  %(message)s',
-    #                         datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-    #     logger = logging.getLogger()
-    #     return logger
-
-    def get_sanity_log(self):
-        logging.basicConfig(filename=self.p.get_sanity_testing_log_dir(), filemode='w', format='%(asctime)s  %(levelname)s  %(message)s',
-                            datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-        logger = logging.getLogger()
-        return logger
-
-    #regression testing logs
-    def get_regression_log(self,log):
-        # logging.basicConfig(filename=self.p.get_regression_testing_log_dir(), filemode='w', format='%(asctime)s  %(levelname)s  %(message)s',
-        #                     datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-        # logger = logging.getLogger()
-        # return logger
-        if log == "login":
-            logging.basicConfig(filename=self.p.get_regression_testing_login_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-        elif log == "sar":
-            logging.basicConfig(filename=self.p.get_regression_testing_student_attendance_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-        elif log == "crc":
-            logging.basicConfig(filename=self.p.get_regression_testing_crc_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-        elif log == "sr":
-            logging.basicConfig(filename=self.p.get_regression_testing_semester_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-        elif log == "schoolinframap":
-            logging.basicConfig(filename=self.p.get_regression_testing_schoolinfra_map_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-        elif log == "schoolinfrareport":
-            logging.basicConfig(filename=self.p.get_regression_testing_schoolinfra_report_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-
-    def get_functional_log(self,log):
-        # logging.basicConfig(filename=self.p.get_regression_testing_log_dir(), filemode='w', format='%(asctime)s  %(levelname)s  %(message)s',
-        #                     datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-        # logger = logging.getLogger()
-        # return logger
-        if log == "login":
-            logging.basicConfig(filename=self.p.get_functional_testing_login_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-        elif log == "sar":
-            logging.basicConfig(filename=self.p.get_functional_testing_student_attendance_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-        elif log == "crc":
-            logging.basicConfig(filename=self.p.get_functional_testing_crc_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-        elif log == "sr":
-            logging.basicConfig(filename=self.p.get_functional_testing_semester_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-        elif log == "schoolinframap":
-            logging.basicConfig(filename=self.p.get_functional_testing_schoolinfra_map_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
-        elif log == "schoolinfrareport":
-            logging.basicConfig(filename=self.p.get_functional_testing_schoolinfra_report_log_dir(), filemode='w',
-                                format='%(asctime)s  %(levelname)s  %(message)s',
-                                datefmt='%d-%m-%Y %I:%M:%S %p', level=logging.INFO)
-            logger = logging.getLogger()
-            return logger
 
     def get_domain_name(self):
         config = configparser.ConfigParser()
@@ -140,6 +31,16 @@ class GetData():
         config.read(self.p.get_config_ini_path())
         return config['config']['password']
 
+    def get_admin_username(self):
+        config = configparser.ConfigParser()
+        config.read(self.p.get_config_ini_path())
+        return config['config']['admin_username']
+
+    def get_admin_password(self):
+        config = configparser.ConfigParser()
+        config.read(self.p.get_config_ini_path())
+        return config['config']['admin_password']
+
     def get_driver(self):
         options = webdriver.ChromeOptions()
         prefs = {'download.default_directory': self.p.get_download_dir()}
@@ -147,6 +48,19 @@ class GetData():
         options.add_argument('--headless')
         self.driver=webdriver.Chrome(options=options,executable_path=self.p.get_driver_path())
         return self.driver
+
+    # if you using selenium grid , please use below get_driver method
+    # def get_driver(self):
+    #     options = webdriver.ChromeOptions()
+    #     prefs = {'download.default_directory': self.p.get_download_dir()}
+    #     options.add_experimental_option('prefs', prefs)
+    #     self.driver = webdriver.Remote(
+    #         command_executor="http://localhost:4444/wd/hub",
+    #         desired_capabilities={
+    #             "browserName": "chrome",
+    #         },options=options)
+    #     return self.driver
+
 
     def open_cqube_appln(self,driver):
         self.driver = driver
@@ -161,8 +75,27 @@ class GetData():
         self.driver.find_element_by_id(Data.passwd).send_keys(self.get_password())
         self.driver.find_element_by_id(Data.login).click()
         self.page_loading(self.driver)
-        #self.driver.find_element_by_tag_name('button').click()
-        #self.page_loading(self.driver)
+        self.driver.find_element_by_tag_name('button').click()
+        self.page_loading(self.driver)
+
+    def login_to_adminconsole(self,driver):
+        self.driver = driver
+        self.driver.implicitly_wait(60)
+        self.driver.find_element_by_id(Data.email).send_keys(self.get_admin_username())
+        self.driver.find_element_by_id(Data.passwd).send_keys(self.get_admin_password())
+        self.driver.find_element_by_id(Data.login).click()
+        self.page_loading(self.driver)
+        self.driver.find_element_by_tag_name('a').click()
+        self.page_loading(self.driver)
+
+    def navigate_to_telemetry(self):
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath(Data.telmetry_report).click()
+        time.sleep(2)
+        self.driver.find_element_by_id("telemReport").click()
+        self.page_loading(self.driver)
+
 
     def page_loading(self,driver):
         try:
@@ -199,9 +132,11 @@ class GetData():
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(3)
+        self.driver.find_element_by_xpath(Data.attendance).click()
+        time.sleep(2)
         self.driver.find_element_by_id(Data.SAR).click()
         time.sleep(6)
-        # self.driver.find_element_by_xpath("//*[@id='SAR']")
+
     def navigate_to_school_infrastructure(self):
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
@@ -209,6 +144,7 @@ class GetData():
         self.driver.find_element_by_xpath(Data.School_infra).click()
         time.sleep(3)
         self.driver.find_element_by_id(Data.Report).click()
+        time.sleep(5)
 
     def navigate_to_school_infrastructure_map(self):
         self.driver.implicitly_wait(30)
@@ -217,6 +153,7 @@ class GetData():
         self.driver.find_element_by_xpath(Data.School_infra).click()
         time.sleep(2)
         self.driver.find_element_by_id(Data.Reportmap).click()
+        time.sleep(5)
 
     def select_month_year(self,y,m):
         year = Select(self.driver.find_element_by_id(Data.sar_year))
@@ -231,8 +168,9 @@ class GetData():
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(3)
-        # self.driver.find_element_by_xpath("//a[@id='sr']/div/td[2]").click()
-        self.driver.find_element_by_xpath("//*[@id='sr']").click()
+        self.driver.find_element_by_xpath(Data.semester_sel).click()
+        time.sleep(2)
+        self.driver.find_element_by_id("semReport").click()
         time.sleep(5)
 
 
@@ -240,7 +178,47 @@ class GetData():
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(3)
+        self.driver.find_element_by_xpath(Data.crc_report).click()
+        time.sleep(2)
         self.driver.find_element_by_id(Data.CRC).click()
+
+    def navigate_to_diksha_graph(self):
+        self.driver.implicitly_wait(30)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath(Data.diksha).click()
+        time.sleep(2)
+        self.driver.find_element_by_id(Data.diksha_graph).click()
+        time.sleep(6)
+
+    def navigate_to_diksha_table(self):
+        self.driver.implicitly_wait(30)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(3)
+        self.driver.find_element_by_xpath(Data.diksha).click()
+        time.sleep(2)
+        self.driver.find_element_by_id(Data.diksha_table).click()
+        time.sleep(6)
+
+    def navigate_to_diksha_column_chart(self):
+        self.driver.implicitly_wait(30)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath(Data.diksha).click()
+        time.sleep(2)
+        self.driver.find_element_by_id(Data.column_report).click()
+        time.sleep(6)
+
+
+
+    def navigate_to_semester_exception(self):
+        self.driver.implicitly_wait(20)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath(Data.exception_click).click()
+        time.sleep(2)
+        self.driver.find_element_by_id(Data.sem_exception).click()
+        time.sleep(5)
 
     def Details_text(self):
         Details = self.driver.find_elements_by_xpath(Data.details)
@@ -274,18 +252,6 @@ class GetData():
             count = len(lists) - 1
             print(distnames[i].text, ":", count)
 
-    def X_Yaxis(self):
-        x_axis = self.driver.find_elements_by_xpath(Data.xaxis)
-        time.sleep(2)
-        print("X axis menu list...")
-        for i in range(len(x_axis)):
-            print(x_axis[i].text)
-        print("Y axis menu list...")
-        time.sleep(2)
-        y_axis = self.driver.find_elements_by_xpath(Data.yaxis)
-        for i in range(len(y_axis)):
-            print(y_axis[i].text)
-
     def crcclusters_click(self):
         clu = self.driver.find_elements_by_xpath(Data.clusterlist)
         for i in range(len(clu)):
@@ -299,25 +265,19 @@ class GetData():
             print(cluster[i].text)
             time.sleep(5)
 
-    def X_axis(self):
-        xvalues = self.driver.find_elements_by_xpath(Data.xaxis)
-        for i in range(len(xvalues)):
-            xvalues[i].click()
-            time.sleep(3)
-
     def get_driver_path(self):
         os.chdir('../cQube_Components/')
         executable_path = os.path.join(os.getcwd(), 'Driver/chromedriver1')
         return executable_path
 
     def crc_downloadwise(self):
-        self.driver.find_element_by_xpath("//*[@id='select']/select/option[2]").click()
+        self.driver.find_element_by_xpath(Data.crc_sel2).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath("//*[@id='select']/select/option[3]").click()
+        self.driver.find_element_by_xpath(Data.crc_sel3).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath("//*[@id='select']/select/option[4]").click()
+        self.driver.find_element_by_xpath(Data.crc_sel4).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath("//*[@id='select']/select/option[5]").click()
+        self.driver.find_element_by_xpath(Data.crc_sel5).click()
         time.sleep(3)
     def crc_table_value(self):
         rows = self.driver.find_elements_by_xpath(Data.distrows)
@@ -380,26 +340,11 @@ class GetData():
             print(footer[i].text)
             time.sleep(5)
 
-
-    def x_yaxis(self):
-        xaxis_lists = self.driver.find_elements_by_xpath(Data.xaxis)
-        yaxis_lists = self.driver.find_elements_by_xpath(Data.yaxis)
-        for i in range(len(xaxis_lists)):
-            xaxis_lists[i].click()
-            print(xaxis_lists[i].text)
-            time.sleep(3)
-            for j in range(len(yaxis_lists)):
-                yaxis_lists[i].click()
-                print(yaxis_lists[j].text)
-                time.sleep(4)
-
     def CRC_dist_Clicks(self):
         dist = self.driver.find_elements_by_xpath(Data.CRC_Districts)
         for i in range(len(dist)):
             dist[i].click()
             time.sleep(3)
-            # driver = cqube(self.driver)
-            # driver.CRC_footers()
 
     #Admin login separation
     def get_admin_domain_name(self):
@@ -407,20 +352,6 @@ class GetData():
         config.read(self.p.get_config_ini_path())
         return config['config']['admin_domain']
 
-    def get_admin_username(self):
-        config = configparser.ConfigParser()
-        config.read(self.p.get_config_ini_path())
-        return config['config']['admin_username']
-
-    def get_admin_password(self):
-        config = configparser.ConfigParser()
-        config.read(self.p.get_config_ini_path())
-        return config['config']['admin_password']
-
-    def get_vpn_cqube(self):
-        config = configparser.ConfigParser()
-        config.read(self.p.get_config_ini_path())
-        return config['config']['admin_cqube_domain']
 
     def open_admin_appln(self,driver):
         self.driver = driver
@@ -436,8 +367,221 @@ class GetData():
         self.driver.find_element_by_id(Data.login).click()
         time.sleep(3)
 
-    def open_vpn_cqube(self,driver):
-        self.driver = driver
-        self.driver.maximize_window()
-        self.driver.get(self.get_vpn_cqube())
-        self.driver.implicitly_wait(60)
+    def get_driver_SAR_Download1(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SAR_Download1()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            },options=options)
+        return self.driver
+
+    def get_driver_SAR_Download2(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SAR_Download2()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            },options=options)
+        return self.driver
+
+    def get_driver_SAR_Download3(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SAR_Download3()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            },options=options)
+        return self.driver
+
+    def get_driver_SAR_Download4(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SAR_Download4()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            },options=options)
+        return self.driver
+
+    def get_driver_SR_Download1(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SR_Download1()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            },options=options)
+        return self.driver
+    def get_driver_SR_Download2(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SR_Download2()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            },options=options)
+        return self.driver
+
+    def get_driver_SR_Download3(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SR_Download3()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            },options=options)
+        return self.driver
+
+    def get_driver_SR_Download4(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SR_Download4()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            },options=options)
+        return self.driver
+
+    def get_driver_CRC_Download1(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_CRC_Download1()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            },options=options)
+        return self.driver
+
+    def get_driver_CRC_Download2(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_CRC_Download2()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver
+
+    def get_driver_CRC_Download3(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_CRC_Download3()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver
+
+    def get_driver_CRC_Download4(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_CRC_Download4()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver
+
+    def get_driver_SI_Download1(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SI_Download1()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver
+
+    def get_driver_SI_Download2(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SI_Download2()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver
+
+    def get_driver_SI_Download3(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SI_Download3()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver
+
+    def get_driver_SI_Download4(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SI_Download4()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver
+
+    def get_driver_SIMAP_Download1(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SI_MAP_Download1()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver
+
+    def get_driver_SIMAP_Download2(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SI_MAP_Download2()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver
+
+    def get_driver_SIMAP_Download3(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SI_MAP_Download3()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver
+
+    def get_driver_SIMAP_Download4(self):
+        options = webdriver.ChromeOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir_SI_MAP_Download4()}
+        options.add_experimental_option('prefs', prefs)
+        self.driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            desired_capabilities={
+                "browserName": "chrome",
+            }, options=options)
+        return self.driver

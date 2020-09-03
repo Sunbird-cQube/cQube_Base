@@ -1167,7 +1167,6 @@ do update set year=excluded.year,student_uid=excluded.student_uid,school_id=excl
 semester=excluded.semester,grade=excluded.grade,subject_1=excluded.subject_1,subject_2=excluded.subject_2,
 subject_3=excluded.subject_3,subject_4=excluded.subject_4,subject_5=excluded.subject_5,subject_6=excluded.subject_6,
 subject_7=excluded.subject_7,subject_8=excluded.subject_8,updated_on=now()''',
-"sem_delete_staging":"delete from student_semester_staging where ff_uuid='${files_uuid}'",
 "sem_delete_temp":"delete from student_semester_temp where ff_uuid='${files_uuid}'",
 "get_semester_value":"select distinct(semester) from flowfile",
 "temp_to_staging_sem":'''insert into student_semester_staging(student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid)

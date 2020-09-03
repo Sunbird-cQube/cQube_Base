@@ -29,7 +29,7 @@ class sc_map_districtwise():
             else:
                 self.driver.find_element_by_id(Data.Download).click()
                 time.sleep(3)
-                self.filename = p.get_download_dir() + "/Block_Per_dist_report.csv"
+                self.filename = p.get_download_dir() + "/Block_per_dist_report.csv"
                 with open(self.filename) as fin:
                     csv_reader = csv.reader(fin, delimiter=',')
                     header = next(csv_reader)

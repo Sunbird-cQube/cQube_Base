@@ -1,0 +1,5 @@
+ 
+HTMLTestRunner-Python3==0.8.0
+configparser==5.0.0
+psycopg2==2.8.5
+pandas==1.1.1

@@ -128,7 +128,7 @@ FROM flowfile
 "crc_inspec_trans_table_name":"crc_inspection_trans",
 "crc_loc_trans_table_name":"crc_location_trans",
 "crc_loc_trans_table_name":"crc_location_trans",
-"crc_trans_to_crc_visits_frequency_pre_query":'''create or replace view crc_trans_to_aggregate as
+"crc_trans_to_crc_visits_frequency_pre_query":'''create or replace view crc_trans_to_aggregate as 
 select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b.district_name)as district_name,b.block_id,
   INITCAP(b.block_name)as block_name,b.cluster_id,
   INITCAP(b.cluster_name)as cluster_name ,INITCAP(b.crc_name)as crc_name,
@@ -142,18 +142,7 @@ select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b
   where a.school_id<>0 and a.inspection_id<>0 and b.cluster_name is not null
   group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id,
   b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year;
-
-insert into crc_visits_frequency as a (year,month,school_id,school_name,district_id,district_name,
-block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on)
-select year,month,school_id,school_name,district_id,district_name,
-block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on from crc_trans_to_aggregate
-on conflict (month,year,school_id)
-do update set year= excluded.year,month=excluded.month,school_id=excluded.school_id,school_name=excluded.school_name,
-district_id=excluded.district_id,district_name=excluded.district_name,
-block_id=excluded.block_id,block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
-visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,updated_on=now(),created_on=excluded.created_on
 ''',
-"crc_trans_to_crc_visits_frequency_select_query":"select * from crc_visits_frequency limit 1",
 "crc_district_agg":'''select spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(spd.visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(spd.visited_school_count,0)) as not_visited_school_count,
@@ -582,5 +571,15 @@ from flowfile where has_records = non_empty_records''',
 
 ]
 ''',
-"crc_inspec_count_qry":'''select count(*) from crc_inspection_trans'''
+"crc_inspec_count_qry":'''select count(*) from crc_inspection_trans''',
+"crc_trans_to_crc_visits_frequency_insert_query":'''insert into crc_visits_frequency as a (year,month,school_id,school_name,district_id,district_name,
+block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on)
+select year,month,school_id,school_name,district_id,district_name,
+block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on from crc_trans_to_aggregate
+on conflict (month,year,school_id)
+do update set year= excluded.year,month=excluded.month,school_id=excluded.school_id,school_name=excluded.school_name,
+district_id=excluded.district_id,district_name=excluded.district_name,
+block_id=excluded.block_id,block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
+visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,updated_on=now(),created_on=excluded.created_on
+'''
 }

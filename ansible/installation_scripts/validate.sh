@@ -25,7 +25,7 @@ else
    if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
         installed_ver=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_VERSION )
         installed_version=$(cut -d "=" -f2 <<< "$installed_ver")
-         echo "cQube $installed_version version is already installed. Follow Upgradtion process if you want to upgrade."
+         echo "Currently cQube $installed_version version is installed in this machine. Follow Upgradtion process if you want to upgrade."
          exit 1
    fi
 fi

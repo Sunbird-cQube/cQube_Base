@@ -8,6 +8,7 @@
     - .version
     
   roles:
+          - create_base_dir
           - createdb
           - python_flask
           - keycloak

@@ -19,7 +19,7 @@ class donwload_blockwise_csv():
         self.driver.find_element_by_xpath(Data.hyper).click()
         self.cal.page_loading(self.driver)
         District_wise=Select(self.driver.find_element_by_id("downloader"))
-        District_wise.select_by_visible_text(" Block_Wise Report ")
+        District_wise.select_by_visible_text(" Block Wise Report ")
         self.cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(2)
