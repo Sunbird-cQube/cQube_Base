@@ -1077,11 +1077,11 @@ export class UdiseReportComponent implements OnInit {
   colorGredient(data, infraData) {
     console.log(infraData);
     var dataSet = {};
-    if (infraData == 'community_participation') {
-      dataSet = data.details;
-    } else {
-      dataSet = data.metrics;
-    }
+    // if (infraData == 'community_participation') {
+    //   dataSet = data.details;
+    // } else {
+    dataSet = data.metrics;
+    // }
 
     if (dataSet[infraData] <= 10) {
       this.setColor = '#a50026';
