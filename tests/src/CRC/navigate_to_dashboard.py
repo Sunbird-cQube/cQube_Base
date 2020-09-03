@@ -14,9 +14,8 @@ class Dashboard_menu():
         self.driver.implicitly_wait(20)
         self.driver.find_element_by_xpath(Data.hyper).click()
         self.p.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.Dashboard).click()
         title = self.driver.find_element_by_id(Data.Dashboard).text
-        self.driver.find_element_by_id(Data.CRC).click()
+        self.p.navigate_to_crc_report()
         self.p.page_loading(self.driver)
         return title
 

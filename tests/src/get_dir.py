@@ -1,6 +1,4 @@
-import configparser
 import os
-from pathlib import Path
 
 
 class pwd():
@@ -12,6 +10,16 @@ class pwd():
     def get_admin_login_path(self):
         cwd = os.path.dirname(__file__)
         report_path = os.path.join(cwd, 'Reports/admin_screens_report.html')
+        return report_path
+
+    def get_admin_console_path(self):
+        cwd = os.path.dirname(__file__)
+        report_path = os.path.join(cwd, 'Reports/admin_console_report.html')
+        return report_path
+
+    def get_semester_exception_download_path(self):
+        cwd = os.path.dirname(__file__)
+        report_path = os.path.join(cwd, 'Reports/semester_exception.html')
         return report_path
 
     def get_report_path(self):
@@ -31,12 +39,12 @@ class pwd():
 
     def get_smoke_report_path(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/SmokeReports/smoke_testing_report.html')
+        report_path = os.path.join(cwd, 'Reports/SmokeReports/Smoke_Report.html')
         return report_path
 
     def get_functional_report_path(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/functional_scattor_report.html')
+        report_path = os.path.join(cwd, 'Reports/Landing_page.html')
         return report_path
 
     def get_integration_report_path(self):
@@ -54,6 +62,11 @@ class pwd():
         ini = os.path.join(cwd, 'config.ini')
         return ini
 
+    def get_keycloak_ini_path(self):
+        cwd = os.path.dirname(__file__)
+        key = os.path.join(cwd, 'keycloak.ini')
+        return key
+
     def get_driver_path(self):
         cwd = os.path.dirname(__file__)
         driver_path = os.path.join(cwd, 'Driver/chromedriver')
@@ -67,6 +80,104 @@ class pwd():
     def get_download_dir(self):
         cwd = os.path.dirname(__file__)
         download_path = os.path.join(cwd, 'Downloads')
+        return download_path
+
+    def get_download_dir_SAR_Download1(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SAR_Download1')
+        return download_path
+
+    def get_download_dir_SAR_Download2(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SAR_Download2')
+        return download_path
+
+    def get_download_dir_SAR_Download3(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SAR_Download3')
+        return download_path
+
+    def get_download_dir_SAR_Download4(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SAR_Download4')
+        return download_path
+
+    def get_download_dir_SR_Download1(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SR_Download1')
+        return download_path
+
+    def get_download_dir_SR_Download2(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SR_Download2')
+        return download_path
+    def get_download_dir_SR_Download3(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SR_Download3')
+        return download_path
+
+    def get_download_dir_SR_Download4(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SR_Download4')
+        return download_path
+
+    def get_download_dir_CRC_Download1(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/CRC_Download1')
+        return download_path
+
+    def get_download_dir_CRC_Download2(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/CRC_Download2')
+        return download_path
+    def get_download_dir_CRC_Download3(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/CRC_Download3')
+        return download_path
+
+    def get_download_dir_CRC_Download4(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/CRC_Download4')
+        return download_path
+
+    def get_download_dir_SI_Download1(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SI_Download1')
+        return download_path
+
+    def get_download_dir_SI_Download2(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SI_Download2')
+        return download_path
+
+    def get_download_dir_SI_Download3(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SI_Download3')
+        return download_path
+
+    def get_download_dir_SI_Download4(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SI_Download4')
+        return download_path
+
+    def get_download_dir_SI_MAP_Download1(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SI_MAP_Download1')
+        return download_path
+
+    def get_download_dir_SI_MAP_Download2(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SI_MAP_Download2')
+        return download_path
+
+    def get_download_dir_SI_MAP_Download3(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SI_MAP_Download3')
+        return download_path
+
+    def get_download_dir_SI_MAP_Download4(self):
+        cwd = os.path.dirname(__file__)
+        download_path = os.path.join(cwd, 'Downloads/SI_MAP_Download4')
         return download_path
 
     # def get_functional_testing_log_dir(self):

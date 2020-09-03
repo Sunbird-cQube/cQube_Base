@@ -1,7 +1,6 @@
 import time
 import unittest
 
-from selenium.common import exceptions
 
 from SI.MAP.Click_on_School_infra import click_schoolinfra
 from SI.MAP.check_infrascore_with_download_functionality import SchoolInfra_scores
@@ -9,7 +8,6 @@ from SI.MAP.check_with_districts_from_select_box import District_names
 from SI.MAP.check_with_map_on_schoolinfra import check_markers_on_map
 from SI.MAP.check_with_schoolinfra_options import School_infra_options
 
-from SI.MAP.check_with_scinfra_logout import Logout_from_school_infra
 
 from SI.MAP.click_on_Dashboard import click_dashboard
 from SI.MAP.click_on_District_block_and_clusters import select_Dist_block_cluster
