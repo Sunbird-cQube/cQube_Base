@@ -30,7 +30,7 @@ class ClusterPerBlockCsvDownload():
                 self.driver.find_element_by_id('download').click()
                 time.sleep(3)
                 p= pwd()
-                self.filename = p.get_download_dir() + "/Cluster_per_block_report.csv"
+                self.filename = p.get_download_dir() + "/Cluster_per_block_report_sem_2.csv"
                 if os.path.isfile(self.filename) != True:
                     print("District" + select_district.first_selected_option.text + "Block " + select_block.first_selected_option.text   + "csv is not downloaded")
                     count = count + 1

@@ -18,7 +18,7 @@ class download_district_wise_csv():
         District_wise=Select(self.driver.find_element_by_name("downloadType"))
         District_wise.select_by_index(1)
         self.cal.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.Download).click()
+        self.driver.find_element_by_id(Data.Download_scator).click()
         self.cal.page_loading(self.driver)
         self.filename = p.get_download_dir() + "/Dist_level_Infra_Report.csv"
         self.cal.page_loading(self.driver)

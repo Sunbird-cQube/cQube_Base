@@ -1,10 +1,8 @@
 import time
 
 from selenium.webdriver.support.select import Select
-
 from Data.parameters import Data
 from reuse_func import GetData
-
 
 class blockwise_graph():
     def __init__(self,driver):
