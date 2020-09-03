@@ -12,7 +12,6 @@ class MyTestSuite(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.data = GetData()
-        self.logger = self.data.get_functional_log("crc")
         self.driver = self.data.get_driver()
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
@@ -26,7 +25,6 @@ class MyTestSuite(unittest.TestCase):
         if self.errMsg.text == 'No data found':
             print("No data in the crc report page")
         else:
-            self.logger.info("crc report execution started")
 
             functional_test = unittest.TestSuite()
             functional_test.addTests([
@@ -44,7 +42,6 @@ class MyTestSuite(unittest.TestCase):
 
             runner1.run(functional_test)
             outfile.close()
-            self.logger.info("crc report execution ended")
 
 
     @classmethod

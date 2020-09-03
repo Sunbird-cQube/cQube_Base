@@ -22,7 +22,7 @@ class ClusterwiseCsv():
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(3)
         p = pwd()
-        self.filename = p.get_download_dir() + "/Cluster_wise_report.csv"
+        self.filename = p.get_download_dir() + "/Cluster_wise_report_sem_2.csv"
         if os.path.isfile(self.filename) != True:
             return "File Not Downloaded"
         if os.path.isfile(self.filename) == True:
