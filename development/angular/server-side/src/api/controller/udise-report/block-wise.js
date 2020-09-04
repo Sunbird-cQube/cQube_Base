@@ -20,7 +20,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                     latitude: 23.636197222,
                     longitude: 68.754551929,
                     district_rank: "4/32",
-                    block_rank: 3
+                    block_rank: "3/253"
                 },
                 metrics: {
                     enrolment: 10,
@@ -62,7 +62,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                         "latitude": 23.636197222,
                         "longitude": 68.754551929,
                         district_rank: "4/32",
-                        block_rank: 3
+                        block_rank: "3/253"
                     },
                     metrics: {
                         enrolment: 10,

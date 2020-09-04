@@ -23,9 +23,9 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                     "latitude": 23.6720399,
                     "longitude": 69.078736111,
                     district_rank: "4/32",
-                    block_rank: 3,
-                    cluster_rank: 2,
-                    school_rank: 1
+                    block_rank: "3/253",
+                    cluster_rank: "2/2400",
+                    school_rank: "1/20120"
                 },
                 metrics: {
                     enrolment: 10,
@@ -71,9 +71,9 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                         "latitude": 23.6720399,
                         "longitude": 69.078736111,
                         district_rank: "4/32",
-                        block_rank: 3,
-                        cluster_rank: 2,
-                        school_rank: 1
+                        block_rank: "3/253",
+                        cluster_rank: "2/2400",
+                        school_rank: "1/20120"
                     },
                     metrics: {
                         enrolment: 10,

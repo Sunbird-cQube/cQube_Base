@@ -21,8 +21,8 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                     "latitude": 23.670072222,
                     "longitude": 69.127680556,
                     district_rank: "4/32",
-                    block_rank: 3,
-                    cluster_rank: 2
+                    block_rank: "3/253",
+                    cluster_rank: "2/2400"
                 },
                 metrics: {
                     enrolment: 10,
@@ -66,8 +66,8 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                         "latitude": 23.670072222,
                         "longitude": 69.127680556,
                         district_rank: "4/32",
-                        block_rank: 3,
-                        cluster_rank: 2
+                        block_rank: "3/253",
+                        cluster_rank: "2/2400"
                     },
                     metrics: {
                         enrolment: 10,
