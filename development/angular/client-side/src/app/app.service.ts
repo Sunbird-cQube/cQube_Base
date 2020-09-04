@@ -63,9 +63,8 @@ export class AppServiceComponent {
         function applyCountryBorder(map) {
             L.geoJSON(data['features'][0], {
                 color: "#a9a9a9",
-                weight: 2,
-                opacity: 1,
-                fillOpacity: 0.0
+                weight: 1,
+                fillOpacity: 0
             }).addTo(map);
         }
         L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
