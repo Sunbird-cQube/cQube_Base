@@ -13,16 +13,18 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         var mydata = [
             {
                 details: {
-                    district_id: 2401,
+                    district_id: 2407,
                     district_name: "Kachchh",
-                    block_id: 240101,
+                    block_id: 240712,
                     block_name: "Lakhapat",
                     latitude: 23.636197222,
-                    longitude: 68.754551929,
-                    district_rank: "4/32",
-                    block_rank: "3/253"
+                    longitude: 68.754551929
                 },
-                metrics: {
+                rank: {
+                    district_rank: "4 out of 32",
+                    block_rank: "3 out of 253"
+                },
+                indices: {
                     enrolment: 10,
                     school_operation: 70,
                     policy_implementation: 85,
@@ -55,16 +57,18 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
             data: [
                 {
                     details: {
-                        district_id: 2401,
+                        district_id: 2407,
                         district_name: "Kachchh",
-                        block_id: 240101,
+                        block_id: 240712,
                         block_name: "Lakhapat",
                         "latitude": 23.636197222,
-                        "longitude": 68.754551929,
-                        district_rank: "4/32",
-                        block_rank: "3/253"
+                        "longitude": 68.754551929
                     },
-                    metrics: {
+                    "rank": {
+                        district_rank: "4 out of 32",
+                        block_rank: "3 out of 253"
+                    },
+                    indices: {
                         enrolment: 10,
                         school_operation: 70,
                         policy_implementation: 85,

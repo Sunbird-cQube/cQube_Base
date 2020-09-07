@@ -15,20 +15,22 @@ router.post('/distWise', auth.authController, async (req, res) => {
         var mydata = [
             {
                 "details": {
-                    district_id: 2401,
+                    district_id: 2407,
                     district_name: "Kachchh",
                     latitude: 23.3362,
-                    longitude: 69.709941667,
-                    district_rank: "4/32"
+                    longitude: 69.709941667
                 },
-                "metrics": {
+                "rank": {
+                    district_rank: "4 out of 32"
+                },
+                "indices": {
                     enrolment: 10,
                     school_operation: 70,
                     policy_implementation: 85,
                     infrastructure: 60,
                     school_inspection: 98,
                     community_participation: 66,
-                    teacher_profile: "",
+                    teacher_profile: 68,
                     school_performance: 58,
                     grant_expenditure: 70,
                     vocational_education: 80,

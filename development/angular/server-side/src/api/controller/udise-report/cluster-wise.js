@@ -12,19 +12,21 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         var mydata = [
             {
                 details: {
-                    district_id: 2401,
+                    district_id: 2407,
                     district_name: "Kachchh",
-                    block_id: 240101,
+                    block_id: 240712,
                     block_name: "Lakhapat",
-                    cluster_id: 2401010001,
+                    cluster_id: 2407120012,
                     cluster_name: "Baranda",
-                    "latitude": 23.670072222,
-                    "longitude": 69.127680556,
-                    district_rank: "4/32",
-                    block_rank: "3/253",
-                    cluster_rank: "2/2400"
+                    latitude: 23.670072222,
+                    longitude: 69.127680556,
                 },
-                metrics: {
+                rank: {
+                    district_rank: "4 out of 32",
+                    block_rank: "3 out of 253",
+                    cluster_rank: "2 out of 2400"
+                },
+                indices: {
                     enrolment: 10,
                     school_operation: 70,
                     policy_implementation: 85,
@@ -56,20 +58,22 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         var clusterData = {
             data: [
                 {
-                    details: {
-                        district_id: 2401,
+                    "details": {
+                        district_id: 2407,
                         district_name: "Kachchh",
-                        block_id: 240101,
+                        block_id: 240712,
                         block_name: "Lakhapat",
-                        cluster_id: 2401010001,
+                        cluster_id: 2407120012,
                         cluster_name: "Baranda",
-                        "latitude": 23.670072222,
-                        "longitude": 69.127680556,
-                        district_rank: "4/32",
-                        block_rank: "3/253",
-                        cluster_rank: "2/2400"
+                        latitude: 23.670072222,
+                        longitude: 69.127680556,
                     },
-                    metrics: {
+                    "rank": {
+                        district_rank: "4 out of 32",
+                        block_rank: "3 out of 253",
+                        cluster_rank: "2 out of 2400"
+                    },
+                    "indices": {
                         enrolment: 10,
                         school_operation: 70,
                         policy_implementation: 85,

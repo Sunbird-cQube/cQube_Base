@@ -157,24 +157,24 @@ export class UdiseReportComponent implements OnInit {
       if (this.myDistData != undefined) {
         this.infraFilter = [];
         this.data = this.myDistData['data'];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
-        // this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
 
-        // var infraKey = this.infraFilter.filter(function (obj) {
-        //   return obj.key == 'infrastructure_score';
-        // });
+        var infraKey = this.infraFilter.filter(function (obj) {
+          return obj.key == 'infrastructure_score';
+        });
 
-        // this.infraFilter = this.infraFilter.filter(function (obj) {
-        //   return obj.key !== 'infrastructure_score';
-        // });
+        this.infraFilter = this.infraFilter.filter(function (obj) {
+          return obj.key !== 'infrastructure_score';
+        });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-        // this.infraFilter.splice(0, 0, this.infraFilter[0]);
+        this.infraFilter.splice(0, 0, infraKey[0]);
 
 
         // to show only in dropdowns
@@ -203,24 +203,24 @@ export class UdiseReportComponent implements OnInit {
           this.myDistData = res;
           this.infraFilter = [];
           this.data = res['data'];
-          for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-            let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+          for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+            let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
             val = val.replace('Percent', '(%)')
-            this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+            this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
           }
 
-          // this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+          this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
 
-          // var infraKey = this.infraFilter.filter(function (obj) {
-          //   return obj.key == 'infrastructure_score';
-          // });
+          var infraKey = this.infraFilter.filter(function (obj) {
+            return obj.key == 'infrastructure_score';
+          });
 
-          // this.infraFilter = this.infraFilter.filter(function (obj) {
-          //   return obj.key !== 'infrastructure_score';
-          // });
+          this.infraFilter = this.infraFilter.filter(function (obj) {
+            return obj.key !== 'infrastructure_score';
+          });
 
           this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-          // this.infraFilter.splice(0, 0, this.infraFilter[0]);
+          this.infraFilter.splice(0, 0, infraKey[0]);
 
           // to show only in dropdowns
           this.districtMarkers = this.data;
@@ -287,24 +287,24 @@ export class UdiseReportComponent implements OnInit {
         //=================================
         this.infraFilter = [];
         this.data = res['data'];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
-        // this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
 
-        // var infraKey = this.infraFilter.filter(function (obj) {
-        //   return obj.key == 'infrastructure_score';
-        // });
+        var infraKey = this.infraFilter.filter(function (obj) {
+          return obj.key == 'infrastructure_score';
+        });
 
-        // this.infraFilter = this.infraFilter.filter(function (obj) {
-        //   return obj.key !== 'infrastructure_score';
-        // });
+        this.infraFilter = this.infraFilter.filter(function (obj) {
+          return obj.key !== 'infrastructure_score';
+        });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-        // this.infraFilter.splice(0, 0, this.infraFilter[0]);
+        this.infraFilter.splice(0, 0, infraKey[0]);
         //=================================
         let options = {
           mapZoom: 7,
@@ -347,13 +347,16 @@ export class UdiseReportComponent implements OnInit {
                   orgObject[key] = details[key];
                 }
               });
-              var yourData = this.getInfoFrom(this.blockMarkers[i].metrics, infraName, colorText, options.level).join(" <br>");
+              var yourData = this.getInfoFrom(this.blockMarkers[i].indices, infraName, colorText, options.level).join(" <br>");
               var yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
+              var yourData2 = this.getInfoFrom(this.blockMarkers[i].rank, infraName, colorText, options.level).join(" <br>");
 
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b><u>Details</u></b>" +
                 "<br>" + yourData1 +
-                "<br><br><b><u>All Indicies (%)</u></b>" +
+                "<br><br><b><u>Rank</u></b>" +
+                "<br>" + yourData2 +
+                "<br><br><b><u>All Indices (%)</u></b>" +
                 "<br>" + yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -370,7 +373,7 @@ export class UdiseReportComponent implements OnInit {
 
               //download report
               var obj = {};
-              obj = { ...orgObject, ...this.blockMarkers[i].metrics };
+              obj = { ...orgObject, ...this.blockMarkers[i].indices };
               this.reportData.push(obj);
             }
 
@@ -426,24 +429,24 @@ export class UdiseReportComponent implements OnInit {
         this.data = res['data']
         //=================================
         this.infraFilter = [];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
-        // this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
 
-        // var infraKey = this.infraFilter.filter(function (obj) {
-        //   return obj.key == 'infrastructure_score';
-        // });
+        var infraKey = this.infraFilter.filter(function (obj) {
+          return obj.key == 'infrastructure_score';
+        });
 
-        // this.infraFilter = this.infraFilter.filter(function (obj) {
-        //   return obj.key !== 'infrastructure_score';
-        // });
+        this.infraFilter = this.infraFilter.filter(function (obj) {
+          return obj.key !== 'infrastructure_score';
+        });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-        // this.infraFilter.splice(0, 0, this.infraFilter[0]);
+        this.infraFilter.splice(0, 0, infraKey[0]);
         //=================================
         let options = {
           mapZoom: 7,
@@ -484,13 +487,16 @@ export class UdiseReportComponent implements OnInit {
                   orgObject[key] = details[key];
                 }
               });
-              var yourData = this.getInfoFrom(this.clusterMarkers[i].metrics, infraName, colorText, options.level).join(" <br>");
+              var yourData = this.getInfoFrom(this.clusterMarkers[i].indices, infraName, colorText, options.level).join(" <br>");
               var yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
+              var yourData2 = this.getInfoFrom(this.clusterMarkers[i].rank, infraName, colorText, options.level).join(" <br>");
 
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b><u>Details</u></b>" +
                 "<br>" + yourData1 +
-                "<br><br><b><u>All Indicies (%)</u></b>" +
+                "<br><br><b><u>Rank</u></b>" +
+                "<br>" + yourData2 +
+                "<br><br><b><u>All Indices (%)</u></b>" +
                 "<br>" + yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -507,7 +513,7 @@ export class UdiseReportComponent implements OnInit {
 
               //download report
               var obj = {};
-              obj = { ...orgObject, ...this.clusterMarkers[i].metrics };
+              obj = { ...orgObject, ...this.clusterMarkers[i].indices };
               this.reportData.push(obj);
             }
 
@@ -562,24 +568,24 @@ export class UdiseReportComponent implements OnInit {
         this.data = res['data']
         //=================================
         this.infraFilter = [];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
-        // this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
 
-        // var infraKey = this.infraFilter.filter(function (obj) {
-        //   return obj.key == 'infrastructure_score';
-        // });
+        var infraKey = this.infraFilter.filter(function (obj) {
+          return obj.key == 'infrastructure_score';
+        });
 
-        // this.infraFilter = this.infraFilter.filter(function (obj) {
-        //   return obj.key !== 'infrastructure_score';
-        // });
+        this.infraFilter = this.infraFilter.filter(function (obj) {
+          return obj.key !== 'infrastructure_score';
+        });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-        // this.infraFilter.splice(0, 0, this.infraFilter[0]);
+        this.infraFilter.splice(0, 0, infraKey[0]);
         //=================================
         let options = {
           mapZoom: 7,
@@ -633,12 +639,15 @@ export class UdiseReportComponent implements OnInit {
               } else {
                 yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
               }
-              var yourData = this.getInfoFrom(this.schoolMarkers[i].metrics, infraName, colorText, options.level).join(" <br>");
+              var yourData = this.getInfoFrom(this.schoolMarkers[i].indices, infraName, colorText, options.level).join(" <br>");
+              var yourData2 = this.getInfoFrom(this.schoolMarkers[i].rank, infraName, colorText, options.level).join(" <br>");
 
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b><u>Details</u></b>" +
                 "<br>" + yourData1 +
-                "<br><br><b><u>All Indicies (%)</u></b>" +
+                "<br><br><b><u>Rank</u></b>" +
+                "<br>" + yourData2 +
+                "<br><br><b><u>All Indices (%)</u></b>" +
                 "<br>" + yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -654,7 +663,7 @@ export class UdiseReportComponent implements OnInit {
 
               //download report
               var obj = {};
-              obj = { ...detailSchool, ...this.schoolMarkers[i].metrics };
+              obj = { ...detailSchool, ...this.schoolMarkers[i].indices };
               this.reportData.push(obj);
             }
 
@@ -699,24 +708,24 @@ export class UdiseReportComponent implements OnInit {
     this.myData = this.service.udise_blocks_per_dist(districtId).subscribe(res => {
       this.data = res['data'];
       this.infraFilter = [];
-      for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-        let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+      for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+        let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
         val = val.replace('Percent', '(%)')
-        this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+        this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
       }
 
-      // this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+      this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
 
-      // var infraKey = this.infraFilter.filter(function (obj) {
-      //   return obj.key == 'infrastructure_score';
-      // });
+      var infraKey = this.infraFilter.filter(function (obj) {
+        return obj.key == 'infrastructure_score';
+      });
 
-      // this.infraFilter = this.infraFilter.filter(function (obj) {
-      //   return obj.key !== 'infrastructure_score';
-      // });
+      this.infraFilter = this.infraFilter.filter(function (obj) {
+        return obj.key !== 'infrastructure_score';
+      });
 
       this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-      // this.infraFilter.splice(0, 0, this.infraFilter[0]);
+      this.infraFilter.splice(0, 0, infraKey[0]);
       //=================================
 
       this.blockMarkers = this.data;
@@ -777,24 +786,24 @@ export class UdiseReportComponent implements OnInit {
       this.data = res['data'];
       //=================================
       this.infraFilter = [];
-      for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-        let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+      for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+        let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
         val = val.replace('Percent', '(%)')
-        this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+        this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
       }
 
-      // this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+      this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
 
-      // var infraKey = this.infraFilter.filter(function (obj) {
-      //   return obj.key == 'infrastructure_score';
-      // });
+      var infraKey = this.infraFilter.filter(function (obj) {
+        return obj.key == 'infrastructure_score';
+      });
 
-      // this.infraFilter = this.infraFilter.filter(function (obj) {
-      //   return obj.key !== 'infrastructure_score';
-      // });
+      this.infraFilter = this.infraFilter.filter(function (obj) {
+        return obj.key !== 'infrastructure_score';
+      });
 
       this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-      // this.infraFilter.splice(0, 0, this.infraFilter[0]);
+      this.infraFilter.splice(0, 0, infraKey[0]);
       //=================================
 
       this.clusterMarkers = this.data;
@@ -863,24 +872,24 @@ export class UdiseReportComponent implements OnInit {
         this.data = res['data'];
         //=================================
         this.infraFilter = [];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
-        // this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
 
-        // var infraKey = this.infraFilter.filter(function (obj) {
-        //   return obj.key == 'infrastructure_score';
-        // });
+        var infraKey = this.infraFilter.filter(function (obj) {
+          return obj.key == 'infrastructure_score';
+        });
 
-        // this.infraFilter = this.infraFilter.filter(function (obj) {
-        //   return obj.key !== 'infrastructure_score';
-        // });
+        this.infraFilter = this.infraFilter.filter(function (obj) {
+          return obj.key !== 'infrastructure_score';
+        });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-        // this.infraFilter.splice(0, 0, this.infraFilter[0]);
+        this.infraFilter.splice(0, 0, infraKey[0]);
         //=================================
 
         this.schoolMarkers = this.data;
@@ -1012,13 +1021,16 @@ export class UdiseReportComponent implements OnInit {
           } else {
             yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
           }
-          var yourData = this.getInfoFrom(this.markers[i].metrics, infraName, colorText, options.level).join(" <br>");
+          var yourData = this.getInfoFrom(this.markers[i].indices, infraName, colorText, options.level).join(" <br>");
+          var yourData2 = this.getInfoFrom(this.markers[i].rank, infraName, colorText, options.level).join(" <br>");
 
 
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b><u>Details</u></b>" +
             "<br>" + yourData1 +
-            "<br><br><b><u>All Indicies (%)</u></b>" +
+            "<br><br><b><u>Rank</u></b>" +
+            "<br>" + yourData2 +
+            "<br><br><b><u>All Indices (%)</u></b>" +
             "<br>" + yourData);
           markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -1026,9 +1038,9 @@ export class UdiseReportComponent implements OnInit {
           this.fileName = fileName;
           var obj = {};
           if (options.level == "school") {
-            obj = { ...detailSchool, ...this.markers[i].metrics };
+            obj = { ...detailSchool, ...this.markers[i].indices };
           } else {
-            obj = { ...orgObject, ...this.markers[i].metrics };
+            obj = { ...orgObject, ...this.markers[i].indices };
           }
           this.reportData.push(obj);
 
@@ -1046,7 +1058,7 @@ export class UdiseReportComponent implements OnInit {
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
-  public infraData = 'community_participation';
+  public infraData = 'infrastructure_score';
   public level = '';
   oninfraSelect(data) {
     this.infraData = data;
@@ -1075,13 +1087,12 @@ export class UdiseReportComponent implements OnInit {
   }
 
   colorGredient(data, infraData) {
-    console.log(infraData);
     var dataSet = {};
-    // if (infraData == 'community_participation') {
-    //   dataSet = data.details;
-    // } else {
-    dataSet = data.metrics;
-    // }
+    if (infraData == 'infrastructure_score') {
+      dataSet = data.details;
+    } else {
+      dataSet = data.indices;
+    }
 
     if (dataSet[infraData] <= 10) {
       this.setColor = '#a50026';
