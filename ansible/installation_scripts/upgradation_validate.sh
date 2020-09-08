@@ -180,8 +180,37 @@ check_aws_default_region(){
     fi
 }
 
+check_mem(){
+mem_total=`grep MemTotal /proc/meminfo | awk '{print $2}'`
+if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
+  min_shared_mem=$(echo $mem_total*11.5/100 | bc)
+  min_work_mem=$(echo $mem_total*2/100 | bc)
+  min_java_arg_2=$(echo $mem_total*52/100 | bc)
+  min_java_arg_3=$(echo $mem_total*71.5/100 | bc)
+  echo """---
+shared_buffers: ${min_shared_mem}MB
+work_mem: ${min_work_mem}MB
+java_arg_2: -Xms${min_java_arg_2}m
+java_arg_3: -Xmx${min_java_arg_3}m""" > memory_config.yml
+
+elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
+  max_shared_mem=$(echo $mem_total*10/100 | bc)
+  max_work_mem=$(echo $mem_total*3/100 | bc)
+  max_java_arg_2=$(echo $mem_total*40/100 | bc)
+  max_java_arg_3=$(echo $mem_total*57/100 | bc)
+  echo """---
+shared_buffers: ${max_shared_mem}MB
+work_mem: ${max_work_mem}MB
+java_arg_2: -Xms${max_java_arg_2}m
+java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
+else
+  echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
+  exit 1
+fi
+}
+
 check_mem_variables(){
-kb=`head -1 /proc/meminfo | awk '{ print $2 }'` #reading RAM size in kb
+kb=`grep MemAvailable /proc/meminfo | awk '{ print $2 }'` #reading RAM size in kb
 mb=`echo "scale=0; $kb / 1024" | bc` # to MB    #converting RAM size to mb
 
 java_arg_2=$3
@@ -268,8 +297,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 # An array of mandatory values
 declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
-		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" \
-    "shared_buffers" "work_mem" "java_arg_2" "java_arg_3")
+		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" )
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -299,6 +327,7 @@ work_mem=$(awk ''/^work_mem:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_confi
 java_arg_2=$(awk ''/^java_arg_2:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 java_arg_3=$(awk ''/^java_arg_3:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 
+check_mem
 # Check the version before starting validation
 check_version
 
@@ -420,28 +449,6 @@ case $key in
           echo "Error - Value for $key cannot be empty. Please fill this value. Recommended value is ap-south-1"; fail=1
        else
            check_aws_default_region
-       fi
-       ;;
-   shared_buffers)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       fi
-       ;;
-   work_mem)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       fi
-       ;;
-   java_arg_2)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       fi
-       ;;
-   java_arg_3)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       else
-           check_mem_variables $shared_buffers $work_mem $java_arg_2 $java_arg_3
        fi
        ;;
    *)

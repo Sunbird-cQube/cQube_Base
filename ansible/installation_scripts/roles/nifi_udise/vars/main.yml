@@ -1,0 +1,4 @@
+---
+
+parameter_name: udise_parameters
+parameter_path: "{{ base_dir }}/cqube/emission_app/python/udise_parameters.txt"
