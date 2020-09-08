@@ -92,10 +92,12 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
     }
-    if (this.result.length! > 0) {
+
+    if (this.result.length != 0) {
       $('#table').DataTable().destroy();
       $('#table').empty();
     }
+
     this.xAxisFilter = [];
     this.yAxisFilter = [];
     this.downloadLevel = 'dist';
@@ -137,6 +139,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.result = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
+      $('#table').DataTable().destroy();
       this.loaderAndErr();
     });
   }
@@ -159,6 +162,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.myBlock = '';
     this.downloadType = '';
     this.modes = [];
+    this.reportData = [];
 
     this.distName = data;
     let obj = this.districtsNames.find(o => o.id == data);
@@ -194,6 +198,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.result = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
+      $('#table').DataTable().destroy();
       this.loaderAndErr();
     });
   }
@@ -216,6 +221,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.myCluster = '';
     this.downloadType = '';
     this.modes = [];
+    this.reportData = [];
 
     localStorage.setItem('blockId', data);
     this.titleName = localStorage.getItem('dist');
@@ -254,6 +260,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.result = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
+      $('#table').DataTable().destroy();
       this.loaderAndErr();
     });
   }
@@ -274,6 +281,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.skul = false;
     this.errMsg();
     this.modes = [];
+    this.reportData = [];
 
     this.title = JSON.parse(localStorage.getItem('block'));
     this.titleName = localStorage.getItem('dist');
@@ -311,6 +319,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.result = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
+      $('#table').DataTable().destroy();
       this.loaderAndErr();
     });
   }
@@ -319,7 +328,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "Dist_level_Infra_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -333,8 +342,10 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.funToDownload(this.reportData);
       this.changeDetection.markForCheck();
     }, err => {
+      alert("No data fount to download");
       this.chartData = [];
-      this.loaderAndErr();
+      document.getElementById('spinner').style.display = 'none';
+      // this.loaderAndErr();
     });
   }
 
@@ -342,7 +353,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "Block_level_Infra_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -356,8 +367,10 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.funToDownload(this.reportData);
       this.changeDetection.markForCheck();
     }, err => {
+      alert("No data fount to download");
       this.chartData = [];
-      this.loaderAndErr();
+      document.getElementById('spinner').style.display = 'none';
+      // this.loaderAndErr();
     });
   }
 
@@ -365,7 +378,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "Cluster_level_Infra_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -379,8 +392,10 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.funToDownload(this.reportData);
       this.changeDetection.markForCheck();
     }, err => {
+      alert("No data fount to download");
       this.chartData = [];
-      this.loaderAndErr();
+      document.getElementById('spinner').style.display = 'none';
+      // this.loaderAndErr();
     });
   }
 
@@ -388,7 +403,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "School_level_Infra_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -402,8 +417,10 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.funToDownload(this.reportData);
       this.changeDetection.markForCheck();
     }, err => {
+      alert("No data fount to download");
       this.chartData = [];
-      this.loaderAndErr();
+      document.getElementById('spinner').style.display = 'none';
+      // this.loaderAndErr();
     });
   }
 
@@ -685,19 +702,23 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   downloadRoport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
+    if (this.reportData.length <= 0) {
+      alert("No data fount to download");
+    } else {
+      const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        title: 'My Awesome CSV',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        filename: this.fileName
+      };
+      const csvExporter = new ExportToCsv(options);
+      csvExporter.generateCsv(this.reportData);
+    }
   }
 }

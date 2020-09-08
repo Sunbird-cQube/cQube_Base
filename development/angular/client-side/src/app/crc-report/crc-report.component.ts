@@ -242,7 +242,7 @@ export class CrcReportComponent implements OnInit {
         this.result = this.result.visits;
 
         this.modes = ['Dist Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
-
+        this.reportData = [];
         if (this.result.length > 0) {
           var labels = [];
           this.reportData = this.crcDistrictsNames = this.result;
@@ -316,6 +316,8 @@ export class CrcReportComponent implements OnInit {
       this.result = this.result.visits;
       this.reportData = this.result;
       this.downloadRoport();
+    } else {
+      alert("No data fount to download");
     }
   }
 
@@ -323,7 +325,7 @@ export class CrcReportComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "Block_level_CRC_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -337,8 +339,10 @@ export class CrcReportComponent implements OnInit {
       this.downloadRoport();
       this.changeDetection.markForCheck();
     }, err => {
+      alert("No data fount to download");
       this.chartData = [];
-      this.loaderAndErr();
+      document.getElementById('spinner').style.display = 'none';
+      // this.loaderAndErr();
     });
   }
 
@@ -346,7 +350,7 @@ export class CrcReportComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "Cluster_level_CRC_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -360,8 +364,10 @@ export class CrcReportComponent implements OnInit {
       this.downloadRoport();
       this.changeDetection.markForCheck();
     }, err => {
+      alert("No data fount to download");
       this.chartData = [];
-      this.loaderAndErr();
+      document.getElementById('spinner').style.display = 'none';
+      // this.loaderAndErr();
     });
   }
 
@@ -369,7 +375,7 @@ export class CrcReportComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "School_level_CRC_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -383,8 +389,10 @@ export class CrcReportComponent implements OnInit {
       this.downloadRoport();
       this.changeDetection.markForCheck();
     }, err => {
+      alert("No data fount to download");
       this.chartData = [];
-      this.loaderAndErr();
+      document.getElementById('spinner').style.display = 'none';
+      // this.loaderAndErr();
     });
   }
 
@@ -406,6 +414,7 @@ export class CrcReportComponent implements OnInit {
     this.visitCount = 0;
     this.tableData = [];
     this.chartData = [];
+    this.reportData = [];
     this.tableHead = "Block Name";
     this.dist = true;
     this.blok = false;
@@ -509,6 +518,7 @@ export class CrcReportComponent implements OnInit {
     this.visitCount = 0;
     this.tableData = [];
     this.chartData = [];
+    this.reportData = [];
     this.tableHead = "Cluster Name";
     this.dist = false;
     this.blok = true;
@@ -617,6 +627,7 @@ export class CrcReportComponent implements OnInit {
     this.skul = false;
     this.tableData = [];
     this.chartData = [];
+    this.reportData = [];
     this.title = JSON.parse(localStorage.getItem('block'));
     this.titleName = localStorage.getItem('dist');
     var distId = JSON.parse(localStorage.getItem('distId'));
@@ -796,20 +807,24 @@ export class CrcReportComponent implements OnInit {
   }
 
   downloadRoport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
+    if (this.reportData.length <= 0) {
+      alert("No data fount to download");
+    } else {
+      const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        title: 'My Awesome CSV',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        filename: this.fileName
+      };
+      const csvExporter = new ExportToCsv(options);
+      csvExporter.generateCsv(this.reportData);
+    }
   }
 
   selectAxis() {
