@@ -3,22 +3,23 @@
   get_url: 
     url: "{{ keycloak_url }}"
     dest: /tmp
+    mode: "0644"
   tags: install
 
 - name: Removing existing keycloak files, if any
   file:
-    path: "{{ keycloak_dir }}/keycloak"
+    path: "{{ base_dir }}/cqube/keycloak"
     state: absent
   tags: install
 
 - name: unpacking keycloak
   unarchive: 
     src: "/tmp/{{keycloak_archive}}"
-    dest: "{{ keycloak_dir }}"
+    dest: "{{ base_dir }}/cqube"
   tags: install
 
 - name: Rename the extracted folder
-  shell: mv {{ keycloak_dir }}/keycloak* {{ keycloak_dir }}/keycloak
+  shell: mv {{ base_dir }}/cqube/keycloak* {{ base_dir }}/cqube/keycloak
   tags: install
 
 - name: keycloak systemd setup
@@ -31,7 +32,8 @@
   tags: install
 
 - name: reload systemd
-  shell: sudo systemctl daemon-reload
+  become: yes
+  shell: systemctl daemon-reload
   tags: install
 
 - name: keycloak systemd service enable and start
@@ -51,12 +53,14 @@
   template:
     src: module.xml.j2
     dest: "{{ base_dir }}/cqube/keycloak/modules/system/layers/keycloak/org/postgresql/main/module.xml"
+    mode: "0644"
   tags: install
 
 - name: Download Jar file
   get_url:
     url: https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.10/postgresql-42.2.10.jar
     dest: "{{ base_dir }}/cqube/keycloak/modules/system/layers/keycloak/org/postgresql/main/"
+    mode: "0644"
   tags: install
 
 - name: changing configuration in standalone xml

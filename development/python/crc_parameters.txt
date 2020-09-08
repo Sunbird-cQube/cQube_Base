@@ -128,7 +128,7 @@ FROM flowfile
 "crc_inspec_trans_table_name":"crc_inspection_trans",
 "crc_loc_trans_table_name":"crc_location_trans",
 "crc_loc_trans_table_name":"crc_location_trans",
-"crc_trans_to_crc_visits_frequency_pre_query":'''create or replace view crc_trans_to_aggregate as
+"crc_trans_to_crc_visits_frequency_pre_query":'''create or replace view crc_trans_to_aggregate as 
 select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b.district_name)as district_name,b.block_id,
   INITCAP(b.block_name)as block_name,b.cluster_id,
   INITCAP(b.cluster_name)as cluster_name ,INITCAP(b.crc_name)as crc_name,
@@ -142,18 +142,7 @@ select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b
   where a.school_id<>0 and a.inspection_id<>0 and b.cluster_name is not null
   group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id,
   b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year;
-
-insert into crc_visits_frequency as a (year,month,school_id,school_name,district_id,district_name,
-block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on)
-select year,month,school_id,school_name,district_id,district_name,
-block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on from crc_trans_to_aggregate
-on conflict (month,year,school_id)
-do update set year= excluded.year,month=excluded.month,school_id=excluded.school_id,school_name=excluded.school_name,
-district_id=excluded.district_id,district_name=excluded.district_name,
-block_id=excluded.block_id,block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
-visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,updated_on=now(),created_on=excluded.created_on
 ''',
-"crc_trans_to_crc_visits_frequency_select_query":"select * from crc_visits_frequency limit 1",
 "crc_district_agg":'''select spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(spd.visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(spd.visited_school_count,0)) as not_visited_school_count,
@@ -163,9 +152,9 @@ coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_o
 coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
 from (
 (select district_id,district_name,count(distinct school_id) as total_schools,
-    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2)) as no_of_schools_per_crc
+    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2)) as no_of_schools_per_crc 
     from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-    group by district_id,district_name) s left join
+    group by district_id,district_name) s left join 
 (select district_id as dist_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
 sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
 coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
@@ -175,9 +164,10 @@ select district_id,visit_count,count(school_id)*visit_count as school_count,
 case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
 case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
 case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
-case when visit_count >=10 then count(school_id) end as schools_10
+case when visit_count >10 then count(school_id) end as schools_10
 from crc_visits_frequency
-where month=3 and visit_count>0 and crc_name is not null and cluster_name is not null
+where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1)
+ and visit_count>0 and crc_name is not null and cluster_name is not null
 group by district_id,visit_count) d group by district_id) t on s.district_id=t.dist_id) spd
 ''',
 "crc_block_agg":'''select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.total_schools,
@@ -189,9 +179,9 @@ coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_o
 coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
 from (
 (select district_id,district_name,block_id,block_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
     from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null
-     group by district_id,district_name,block_id,block_name) s left join
+     group by district_id,district_name,block_id,block_name) s left join 
 (select block_id as blk_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
 sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
 coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
@@ -201,9 +191,10 @@ select block_id,visit_count,count(school_id)*visit_count as school_count,
 case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
 case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
 case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
-case when visit_count >=10 then count(school_id) end as schools_10
+case when visit_count >10 then count(school_id) end as schools_10
 from crc_visits_frequency
-where month=3 and visit_count>0 and crc_name is not null and cluster_name is not null
+where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1)
+and visit_count>0 and crc_name is not null and cluster_name is not null
 group by block_id,visit_count) d group by block_id) t on s.block_id=t.blk_id) spd
 ''',
 "crc_cluster_agg":'''select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.cluster_id,
@@ -218,7 +209,7 @@ from (
 (select district_id,district_name,block_id,block_name,cluster_id,cluster_name,count(distinct school_id) as total_schools,
     round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc
      from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null
-      group by district_id,district_name,block_id,block_name,cluster_id,cluster_name) s left join
+      group by district_id,district_name,block_id,block_name,cluster_id,cluster_name) s left join 
 (select cluster_id as clt_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
 sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
 coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
@@ -228,9 +219,10 @@ select cluster_id,visit_count,count(school_id)*visit_count as school_count,
 case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
 case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
 case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
-case when visit_count >=10 then count(school_id) end as schools_10
+case when visit_count >10 then count(school_id) end as schools_10
 from crc_visits_frequency
-where month=3 and visit_count>0 and crc_name is not null and cluster_name is not null
+where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1)
+and visit_count>0 and crc_name is not null and cluster_name is not null
 group by cluster_id,visit_count) d group by cluster_id) t on s.cluster_id=t.clt_id) spd
 ''',
 "crc_schools_agg":'''select spd.district_id,initcap(spd.district_name)as district_name,spd.block_id,initcap(spd.block_name) as block_name,spd.cluster_id,initcap(spd.cluster_name)as cluster_name,spd.school_id,
@@ -243,9 +235,9 @@ coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_o
 coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
 from (
 (select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
     from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null
-    group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name) s left join
+    group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name) s left join 
 (select school_id as schl_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
 sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
 coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
@@ -255,9 +247,10 @@ select school_id,visit_count,count(school_id)*visit_count as school_count,
 case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
 case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
 case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
-case when visit_count >=10 then count(school_id) end as schools_10
+case when visit_count >10 then count(school_id) end as schools_10
 from crc_visits_frequency
-where month=3 and visit_count>0 and crc_name is not null and cluster_name is not null
+where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1) 
+and visit_count>0 and crc_name is not null and cluster_name is not null
 group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id) spd
 ''',
 "crc_transform_district_wise_jolt":'''[{
@@ -578,5 +571,15 @@ from flowfile where has_records = non_empty_records''',
 
 ]
 ''',
-"crc_inspec_count_qry":'''select count(*) from crc_inspection_trans'''
+"crc_inspec_count_qry":'''select count(*) from crc_inspection_trans''',
+"crc_trans_to_crc_visits_frequency_insert_query":'''insert into crc_visits_frequency as a (year,month,school_id,school_name,district_id,district_name,
+block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on)
+select year,month,school_id,school_name,district_id,district_name,
+block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on from crc_trans_to_aggregate
+on conflict (month,year,school_id)
+do update set year= excluded.year,month=excluded.month,school_id=excluded.school_id,school_name=excluded.school_name,
+district_id=excluded.district_id,district_name=excluded.district_name,
+block_id=excluded.block_id,block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
+visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,updated_on=now(),created_on=excluded.created_on
+'''
 }

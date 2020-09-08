@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
@@ -9,7 +9,8 @@ import { Label, Color } from 'ng2-charts';
 @Component({
   selector: 'app-diksha-bar-chart',
   templateUrl: './diksha-bar-chart.component.html',
-  styleUrls: ['./diksha-bar-chart.component.css']
+  styleUrls: ['./diksha-bar-chart.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DikshaBarChartComponent implements OnInit {
   chart: boolean = false;
@@ -27,7 +28,7 @@ export class DikshaBarChartComponent implements OnInit {
   ]
   public barChartData: ChartDataSets[] = [];
 
-  collection_type = 'course';
+  collection_type = 'all';
 
   public result: any = [];
   public timePeriod = '';

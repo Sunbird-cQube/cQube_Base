@@ -11,6 +11,11 @@ angular_app_client_id: cqube_app
 admin_app_client_id: cqube_admin 
 emission_app_client_id: cqube_flask
 
+# Realm Roles
+admin_role: admin
+report_viewer_role: report_viewer
+emission_role: emission
+
 realm_created: False
 cQube_realm_json: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm.json"
 cQube_realm_config_otp_json: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm_config_otp.json"

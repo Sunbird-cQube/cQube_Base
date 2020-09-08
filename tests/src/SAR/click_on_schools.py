@@ -1,3 +1,4 @@
+import time
 
 from Data.parameters import Data
 from reuse_func import GetData
@@ -10,6 +11,7 @@ class Schools():
     def check_markers_on_clusters_map(self):
         self.driver.find_element_by_id(Data.SAR_Schools_btn).click()
         cal = GetData()
+        time.sleep(5)
         cal.page_loading(self.driver)
         result = self.driver.find_elements_by_class_name(Data.dots)
         return   result

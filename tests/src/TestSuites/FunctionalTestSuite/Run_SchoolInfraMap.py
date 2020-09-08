@@ -1,8 +1,6 @@
 import time
 from get_dir import pwd
-from CRC import crc_report_functional_testing
 from SI.MAP import School_Map_functional_testing
-from SI.Report import School_report_functional_testing
 
 import unittest
 from HTMLTestRunner import HTMLTestRunner
@@ -15,7 +13,6 @@ class MyTestSuite(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.data = GetData()
-        self.logger = self.data.get_functional_log("schoolinframap")
         self.driver = self.data.get_driver()
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
@@ -27,7 +24,6 @@ class MyTestSuite(unittest.TestCase):
         if self.errMsg.text == 'No data found':
             print("No data in the school infra map page")
         else:
-            self.logger.info("school infrastructure map report execution started")
             functional_test = unittest.TestSuite()
             functional_test.addTests([
                 # file name .class name
@@ -44,7 +40,6 @@ class MyTestSuite(unittest.TestCase):
 
             runner1.run(functional_test)
             outfile.close()
-            self.logger.info("school infra map report execution ended")
 
     @classmethod
     def tearDownClass(self):

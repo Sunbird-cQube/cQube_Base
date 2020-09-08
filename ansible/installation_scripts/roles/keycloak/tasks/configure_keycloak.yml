@@ -53,19 +53,29 @@
     executable: /bin/bash
   tags: install
 
-# updating the config_otp
-
-- name: Creating the json for config_otp option
-  template:
-    src: cQube_realm_config_otp.json.j2
-    dest: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm_config_otp.json"
-    owner: "{{ system_user_name }}"
-    group: "{{ system_user_name }}"
-    mode: '0644'
-  tags: update
-
-- name: Updating the config_otp option to realm
-  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh update 'authentication/required-actions/CONFIGURE_TOTP' -r {{ realm_name }} -f {{ cQube_realm_config_otp_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+- name: Adding the client roles to admin realm role
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh add-roles -r {{ realm_name }} --rname {{ admin_role }} --cclientid realm-management --rolename manage-users --rolename manage-realm --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:
     executable: /bin/bash
-  tags: update
+  tags: [ install, update ]
+
+- name: Getting the Role ID
+  shell: ./kcadm.sh get roles -r {{realm_name}} --fields id,name --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}   
+  args:
+    chdir: "{{ base_dir }}/cqube/keycloak/bin/"
+  register: result
+  tags: [ install, update ]
+
+- name: Parsing the output
+  set_fact:
+    report_viewer_id: "{{item.id}}"
+  loop: '{{ result.stdout }}'
+  when: item.name == report_viewer_role
+  no_log: true
+  tags: [ install, update ]
+
+- name: Adding the client roles to report_viewer realm role
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh add-roles -r {{ realm_name }} --rid {{ report_viewer_id }} --cclientid realm-management --rolename manage-users --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    executable: /bin/bash
+  tags: [ install, update ]

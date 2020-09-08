@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
           redirectUri: environment.appUrl
         }
         window.location.href = environment.appUrl;
-        // this.keycloakService.kc.logout(options);
       }
     }
 

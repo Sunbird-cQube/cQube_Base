@@ -8,6 +8,7 @@
     - .version
     
   roles:
+          - create_base_dir
           - createdb
           - python_flask
           - keycloak
@@ -48,4 +49,4 @@
             
           - { role: nifi_scheduler, tags: update }
 
-          - create_base_dir
+          - cqube_version

@@ -10,23 +10,27 @@
 <b>Reverse proxy rules</b>
 The following ports have to be configured in the nginix server with reverse proxy:
 1) Port 4200 should be proxied to the '/' 
-2) Port 8080 should be proxied to the '/auth'
+2) Port 8080 should be proxied to the '/auth' 
 3) Port 3000 should be proxied to the '/api'
 4) Port 5000 should be proxied to the '/data'
+5) For security reason '/auth/realms/master' needs to be blocked or can be redirected to cQube home page
 
 <b>Openvpn - cQube server firewall configuration</b>
 1) Port 9000 should be open from openvpn to the cQube server
 2) Port 4201 should be open from openvpn to the cQube server
 3) Port 3001 should be open from openvpn to the cQube server
 
-Note: For <b>Installation:</b> follow the below steps directly, for upgradation follow the <b>Upgradation:</b> steps mentioned in the last section.
 
-<b>Installation:</b>
+<b>Note:</b> For <b>Installation:</b> follow the below steps directly, for upgradation follow the <b>Upgradation:</b> steps mentioned in the last section. 
+If you already have previous version of cQube installed, you have to upgrade to the next version of cQube.
+
+<h2>Installation:</h2>
+
 - Open Terminal
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout cQube-release-new
+git checkout release-1.2.1
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
@@ -34,7 +38,6 @@ git checkout cQube-release-new
   - Installs Ansible
   - Installs Openjdk
   - Installs Python, pip and flask
-  - Creates S3 buckets
   - Installs Postgresql
   - Installs NodeJS
   - Installs Angular and Chart JS
@@ -70,7 +73,7 @@ Once installation is completed without any errors, you will be prompted the foll
 
 <b>Steps Post Installation:</b>
 
-<b>Uploading data to S3 Emission bucket:</b>
+<h4>Uploading data to S3 Emission bucket:</h4>
 - 
 Create `cqube_emission` directory and place the data files as shown in file structure below inside the cqube_emission folder.
 
@@ -137,12 +140,13 @@ python3 client.py
 - Finally see the output in ```https://<domain_name>```
 
 
-<b>Upgradation:</b>
+<h2>Upgradation:</h2>
+
 - Open Terminal
 - Navigate to the directory where cQube has been downloaded or cloned
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.2
+git checkout release-1.2.1
 ```
 - Copy the upgradation_config.yml.template to upgradation_config.yml 
 `cp upgradation_config.yml.template upgradation_config.yml`

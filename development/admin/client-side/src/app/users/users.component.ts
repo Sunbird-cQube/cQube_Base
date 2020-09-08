@@ -49,22 +49,4 @@ export class UsersComponent implements OnInit {
     })
   }
 
-  // changeUserStatus(id, usrStatus) {
-  //   if (id != localStorage.getItem('user_id')) {
-  //     if (usrStatus == 1) {
-  //       var status = confirm("Are you sure to deactivate user?");
-  //     } else {
-  //       status = confirm("Are you sure to activate user?");
-  //     }
-  //     if (status == true) {
-  //       document.getElementById('spinner').style.display = 'block';
-  //       var updaterId = localStorage.getItem('user_id');
-  //       this.service.changeStatus(id, updaterId).subscribe(res => {
-  //         this.showUsers();
-  //       });
-  //     }
-  //   } else {
-  //     alert("Logged in user can not change his own status...")
-  //   }
-  // }
 }

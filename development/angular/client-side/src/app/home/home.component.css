@@ -42,20 +42,6 @@ img{
   color:#ffffff;
   text-decoration: none;
 }
-.abc:hover{
-  background-color:  #337ab7; 
-  color:#ffffff;
-  text-decoration: none;
-}
-.abc{
-  padding: 4px 2px 4px 0px;
-  background-color: #ffffff;
-  text-decoration: none;
-  font-size: 16px;
-  color: #3553d8;
-  display: block;
-  transition: .3s;
-}
 
 .abc1:hover{
   background-color:  #337ab7; 
@@ -133,6 +119,12 @@ img{
   transition: 300ms ease-in-out;
   height: 0;
 }
+
+.submenu8 {
+  overflow-y: hidden;
+  transition: 300ms ease-in-out;
+  height: 0;
+}
 .submenu.expanded {
   height: 48px;
 }
@@ -162,6 +154,9 @@ img{
 }
 
 .submenu7.expanded {
+  height: 48px;
+}
+.submenu8.expanded {
   height: 48px;
 }
 
