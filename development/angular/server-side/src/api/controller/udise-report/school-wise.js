@@ -5,12 +5,12 @@ const s3File = require('../../lib/reads3File');
 
 router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
-        logger.info('---udise school wise api ---');
+        logger.info('---UDISE school wise api ---');
         let fileName = `udise/udise_school_wise.json`;
         var schoolData = await s3File.readS3File(fileName);
         var mydata = schoolData.data;
-        logger.info('---udise school wise api response sent---');
-        res.status(200).send({ data: mydata, footer: 150 });
+        logger.info('---UDISE school wise api response sent---');
+        res.status(200).send({ data: mydata, footer: schoolData.allSchoolsFooter.totalSchools });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -19,17 +19,16 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
-        logger.info('---udise schoolPerCluster api ---');
+        logger.info('---UDISE schoolPerCluster api ---');
         let fileName = `udise/udise_school_wise.json`;
         var schoolData = await s3File.readS3File(fileName);
-
         let clusterId = req.params.clusterId;
 
         let filterData = schoolData.data.filter(obj => {
             return (obj.details.cluster_id == clusterId)
         })
         let mydata = filterData;
-        logger.info('---udise schoolPerCluster api response sent---');
+        logger.info('---UDISE schoolPerCluster api response sent---');
         res.status(200).send({ data: mydata, footer: schoolData.footer[`${clusterId}`].totalSchools });
 
 

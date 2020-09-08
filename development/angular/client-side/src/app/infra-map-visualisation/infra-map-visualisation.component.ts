@@ -372,9 +372,19 @@ export class InfraMapVisualisationComponent implements OnInit {
               markerIcon.myJsonData = this.blockMarkers[i];
 
               //download report
-              var obj = {};
-              obj = { ...orgObject, ...this.blockMarkers[i].metrics };
-              this.reportData.push(obj);
+              if (this.infraData !== 'infrastructure_score') {
+                let obj = {
+                  district_id: this.blockMarkers[i].details.district_id,
+                  district_name: this.blockMarkers[i].details.district_name,
+                  block_id: this.blockMarkers[i].details.block_id,
+                  block_name: this.blockMarkers[i].details.block_name,
+                  [this.infraData]: this.blockMarkers[i].metrics[`${this.infraData}`] + "%"
+                }
+                this.reportData.push(obj);
+              } else {
+                let myobj = { ...orgObject, ...this.blockMarkers[i].metrics }
+                this.reportData.push(myobj);
+              }
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -509,9 +519,21 @@ export class InfraMapVisualisationComponent implements OnInit {
               markerIcon.myJsonData = this.clusterMarkers[i];
 
               //download report
-              var obj = {};
-              obj = { ...orgObject, ...this.clusterMarkers[i].metrics };
-              this.reportData.push(obj);
+              if (this.infraData !== 'infrastructure_score') {
+                let obj = {
+                  district_id: this.clusterMarkers[i].details.district_id,
+                  district_name: this.clusterMarkers[i].details.district_name,
+                  block_id: this.clusterMarkers[i].details.block_id,
+                  block_name: this.clusterMarkers[i].details.block_name,
+                  cluster_id: this.clusterMarkers[i].details.cluster_id,
+                  cluster_name: this.clusterMarkers[i].details.cluster_name,
+                  [this.infraData]: this.clusterMarkers[i].metrics[`${this.infraData}`] + "%"
+                }
+                this.reportData.push(obj);
+              } else {
+                let myobj = { ...orgObject, ...this.clusterMarkers[i].metrics }
+                this.reportData.push(myobj);
+              }
             }
 
             //schoolCount
@@ -656,9 +678,23 @@ export class InfraMapVisualisationComponent implements OnInit {
               markerIcon.myJsonData = this.schoolMarkers[i];
 
               //download report
-              var obj = {};
-              obj = { ...detailSchool, ...this.schoolMarkers[i].metrics };
-              this.reportData.push(obj);
+              if (this.infraData !== 'infrastructure_score') {
+                let obj = {
+                  district_id: this.schoolMarkers[i].details.district_id,
+                  district_name: this.schoolMarkers[i].details.district_name,
+                  block_id: this.schoolMarkers[i].details.block_id,
+                  block_name: this.schoolMarkers[i].details.block_name,
+                  cluster_id: this.schoolMarkers[i].details.cluster_id,
+                  cluster_name: this.schoolMarkers[i].details.cluster_name,
+                  school_id: this.schoolMarkers[i].details.school_id,
+                  school_name: this.schoolMarkers[i].details.school_name,
+                  [this.infraData]: this.schoolMarkers[i].metrics[`${this.infraData}`] + "%"
+                }
+                this.reportData.push(obj);
+              } else {
+                let myobj = { ...detailSchool, ...this.schoolMarkers[i].metrics }
+                this.reportData.push(myobj);
+              }
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -1027,13 +1063,68 @@ export class InfraMapVisualisationComponent implements OnInit {
 
           // to download the report
           this.fileName = fileName;
-          var obj = {};
-          if (options.level == "school") {
-            obj = { ...detailSchool, ...this.markers[i].metrics };
-          } else {
-            obj = { ...orgObject, ...this.markers[i].metrics };
+          if (options.level == "district") {
+            if (this.infraData !== 'infrastructure_score') {
+              let obj = {
+                district_id: this.markers[i].details.district_id,
+                district_name: this.markers[i].details.district_name,
+                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+              }
+              this.reportData.push(obj);
+            } else {
+              let myobj = { ...orgObject, ...this.markers[i].metrics }
+              this.reportData.push(myobj);
+            }
+          } else if (options.level == "block") {
+            if (this.infraData !== 'infrastructure_score') {
+              let obj = {
+                district_id: this.markers[i].details.district_id,
+                district_name: this.markers[i].details.district_name,
+                block_id: this.markers[i].details.block_id,
+                block_name: this.markers[i].details.block_name,
+                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+              }
+              this.reportData.push(obj);
+            } else {
+              let myobj = { ...orgObject, ...this.markers[i].metrics }
+              this.reportData.push(myobj);
+            }
           }
-          this.reportData.push(obj);
+          else if (options.level == "cluster") {
+            if (this.infraData !== 'infrastructure_score') {
+              let obj = {
+                district_id: this.markers[i].details.district_id,
+                district_name: this.markers[i].details.district_name,
+                block_id: this.markers[i].details.block_id,
+                block_name: this.markers[i].details.block_name,
+                cluster_id: this.markers[i].details.cluster_id,
+                cluster_name: this.markers[i].details.cluster_name,
+                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+              }
+              this.reportData.push(obj);
+            } else {
+              let myobj = { ...orgObject, ...this.markers[i].metrics }
+              this.reportData.push(myobj);
+            }
+          } else if (options.level == "school") {
+            if (this.infraData !== 'infrastructure_score') {
+              let obj = {
+                district_id: this.markers[i].details.district_id,
+                district_name: this.markers[i].details.district_name,
+                block_id: this.markers[i].details.block_id,
+                block_name: this.markers[i].details.block_name,
+                cluster_id: this.markers[i].details.cluster_id,
+                cluster_name: this.markers[i].details.cluster_name,
+                school_id: this.markers[i].details.school_id,
+                school_name: this.markers[i].details.school_name,
+                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+              }
+              this.reportData.push(obj);
+            } else {
+              let myobj = { ...detailSchool, ...this.markers[i].metrics }
+              this.reportData.push(myobj);
+            }
+          }
 
         }
         this.popups(markerIcon, this.markers[i], options);

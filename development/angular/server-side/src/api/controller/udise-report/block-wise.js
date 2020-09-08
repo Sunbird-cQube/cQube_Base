@@ -5,42 +5,12 @@ const s3File = require('../../lib/reads3File');
 
 router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
-        // logger.info('--- all blocks infra api ---');
-        // let fileName = `infra/infra_block_map.json`
-        // var blockData = await s3File.readS3File(fileName);
-        // var mydata = blockData.data;
-        // logger.info('--- blocks infra api response sent---');
-        var mydata = [
-            {
-                details: {
-                    district_id: 2407,
-                    district_name: "Kachchh",
-                    block_id: 240712,
-                    block_name: "Lakhapat",
-                    latitude: 23.636197222,
-                    longitude: 68.754551929
-                },
-                rank: {
-                    district_rank: "4 out of 32",
-                    block_rank: "3 out of 253"
-                },
-                indices: {
-                    enrolment: 10,
-                    school_operation: 70,
-                    policy_implementation: 85,
-                    infrastructure: 60,
-                    school_inspection: 98,
-                    community_participation: 66,
-                    teacher_profile: "",
-                    school_performance: 58,
-                    grant_expenditure: 70,
-                    vocational_education: 80,
-                    NEP: 75,
-                    school_infrastructure_score: 50
-                }
-            }
-        ]
-        res.status(200).send({ data: mydata, footer: 150 });
+        logger.info('--- all blocks UDISE api ---');
+        let fileName = `udise/udise_block_wise.json`
+        var blockData = await s3File.readS3File(fileName);
+        var mydata = blockData.data;
+        logger.info('--- blocks UDISE api response sent---');
+        res.status(200).send({ data: mydata, footer: blockData.allBlocksFooter.totalSchools });
 
     } catch (e) {
         logger.error(`Error :: ${e}`);
@@ -50,50 +20,17 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
 
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
-        // logger.info('--- block wise infra api ---');
-        // let fileName = `infra/infra_block_map.json`
-        // var blockData = await s3File.readS3File(fileName);
-        var blockData = {
-            data: [
-                {
-                    details: {
-                        district_id: 2407,
-                        district_name: "Kachchh",
-                        block_id: 240712,
-                        block_name: "Lakhapat",
-                        "latitude": 23.636197222,
-                        "longitude": 68.754551929
-                    },
-                    "rank": {
-                        district_rank: "4 out of 32",
-                        block_rank: "3 out of 253"
-                    },
-                    indices: {
-                        enrolment: 10,
-                        school_operation: 70,
-                        policy_implementation: 85,
-                        infrastructure: 60,
-                        school_inspection: 98,
-                        community_participation: 66,
-                        teacher_profile: "",
-                        school_performance: 58,
-                        grant_expenditure: 70,
-                        vocational_education: 80,
-                        NEP: 75,
-                        school_infrastructure_score: 50
-                    }
-                }
-            ]
-        }
-
+        logger.info('--- block wise UDISE api ---');
+        let fileName = `udise/udise_block_wise.json`
+        var blockData = await s3File.readS3File(fileName);
         let distId = req.params.distId
 
         let filterData = blockData.data.filter(obj => {
             return (obj.details.district_id == distId)
         })
         let mydata = filterData;
-        logger.info('--- block per dist infra api response sent---');
-        res.status(200).send({ data: mydata, footer: 50 });
+        logger.info('--- block per dist UDISE api response sent---');
+        res.status(200).send({ data: mydata, footer: blockData.footer[`${distId}`].totalSchools });
 
     } catch (e) {
         logger.error(e);
