@@ -4,6 +4,7 @@ import { AppServiceComponent } from '../app.service';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
 import { ExportToCsv } from 'export-to-csv';
+import { report } from 'process';
 declare const $;
 
 @Component({
@@ -92,10 +93,6 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
     }
-    if (this.result.length > 0) {
-      $('#table').DataTable().destroy();
-      $('#table').empty();
-    }
 
     this.xAxisFilter = [];
     this.yAxisFilter = [];
@@ -115,6 +112,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.errMsg();
     this.blockHidden = true;
     this.clusterHidden = true;
+    this.reportData = [];
 
     document.getElementById('home').style.display = 'none';
 
@@ -160,6 +158,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.myBlock = '';
     this.downloadType = '';
     this.modes = [];
+    this.reportData = [];
 
     this.distName = data;
     let obj = this.districtsNames.find(o => o.id == data);
@@ -183,8 +182,8 @@ export class SchoolInfrastructureComponent implements OnInit {
       //====================================
       this.SchoolInfrastructureBlocksNames.sort((a, b) => (a.block.value > b.block.value) ? 1 : ((b.block.value > a.block.value) ? -1 : 0));
       // for table data
-      $('#table').DataTable().destroy();
-      $('#table').empty();
+      // $('#table').DataTable().destroy();
+      // $('#table').empty();
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================
@@ -217,6 +216,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.myCluster = '';
     this.downloadType = '';
     this.modes = [];
+    this.reportData = [];
 
     localStorage.setItem('blockId', data);
     this.titleName = localStorage.getItem('dist');
@@ -243,8 +243,8 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.SchoolInfrastructureClusterNames.sort((a, b) => (a.cluster.value > b.cluster.value) ? 1 : ((b.cluster.value > a.cluster.value) ? -1 : 0));
 
       // for table data
-      $('#table').DataTable().destroy();
-      $('#table').empty();
+      // $('#table').DataTable().destroy();
+      // $('#table').empty();
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================
@@ -275,6 +275,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.skul = false;
     this.errMsg();
     this.modes = [];
+    this.reportData = [];
 
     this.title = JSON.parse(localStorage.getItem('block'));
     this.titleName = localStorage.getItem('dist');
@@ -301,7 +302,6 @@ export class SchoolInfrastructureComponent implements OnInit {
 
       // for table data
       $('#table').DataTable().destroy();
-      // $('#table').empty();
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================
@@ -320,7 +320,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "Dist_level_Infra_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -335,6 +335,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
+      this.downloadRoport();
       this.loaderAndErr();
     });
   }
@@ -343,7 +344,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "Block_level_Infra_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -358,6 +359,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
+      this.downloadRoport();
       this.loaderAndErr();
     });
   }
@@ -366,7 +368,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "Cluster_level_Infra_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -381,6 +383,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
+      this.downloadRoport();
       this.loaderAndErr();
     });
   }
@@ -389,7 +392,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.reportData = [];
     this.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
-    element1[0].disabled = true;
+    // element1[0].disabled = true;
     this.fileName = "School_level_Infra_Report";
     if (this.myData) {
       this.myData.unsubscribe();
@@ -404,6 +407,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
+      this.downloadRoport();
       this.loaderAndErr();
     });
   }
@@ -487,6 +491,10 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   createTable(dataSet) {
+    if ($.fn.DataTable.isDataTable('#table')) {
+      $('#table').DataTable().destroy();
+      $('#table').empty();
+    }
     var my_columns = [];
     $.each(dataSet[0], function (key, value) {
       var my_item = {};
@@ -553,7 +561,6 @@ export class SchoolInfrastructureComponent implements OnInit {
       subheader += '</tr>'
       headers += `</tr>${subheader}</thead>`
       body += '</tr></tbody>';
-      $("#table").empty();
       $("#table").append(headers);
       $("#table").append(body);
       $('#table').DataTable({
@@ -686,19 +693,23 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   downloadRoport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
+    if (this.reportData.length == 0) {
+      alert("No data fount to download");
+    } else {
+      const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        title: 'My Awesome CSV',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        filename: this.fileName
+      };
+      const csvExporter = new ExportToCsv(options);
+      csvExporter.generateCsv(this.reportData);
+    }
   }
 }
