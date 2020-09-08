@@ -183,7 +183,7 @@ export class UdiseReportComponent implements OnInit {
         let options = {
           radius: 5,
           fillOpacity: 1,
-          strokeWeight: 0.01,
+          strokeWeight: 0.05,
           mapZoom: 7,
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
@@ -203,6 +203,7 @@ export class UdiseReportComponent implements OnInit {
           this.myDistData = res;
           this.infraFilter = [];
           this.data = res['data'];
+          console.log(this.data[0].indices);
           for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
             let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
             val = val.replace('Percent', '(%)')
@@ -327,10 +328,11 @@ export class UdiseReportComponent implements OnInit {
               this.colorGredient(this.blockMarkers[i], this.infraData);
               var markerIcon = L.circleMarker([this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude], {
                 radius: 3.5,
-                color: this.setColor,
+                color: "gray",
                 fillColor: this.setColor,
                 fillOpacity: 1,
-                strokeWeight: 0.01
+                strokeWeight: 0.01,
+                weight: 1.5
               }).addTo(globalMap);
 
               var infraName = this.infraData;
@@ -476,11 +478,12 @@ export class UdiseReportComponent implements OnInit {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               this.colorGredient(this.clusterMarkers[i], this.infraData);
               var markerIcon = L.circleMarker([this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude], {
-                radius: 0,
-                color: this.setColor,
+                radius: 2,
+                color: "gray",
                 fillColor: this.setColor,
                 fillOpacity: 1,
-                strokeWeight: 0.01
+                strokeWeight: 0.01,
+                weight: 0.5
               }).addTo(globalMap);
 
               var infraName = this.infraData;
@@ -627,11 +630,11 @@ export class UdiseReportComponent implements OnInit {
               this.colorGredient(this.schoolMarkers[i], this.infraData);
               var markerIcon = L.circleMarker([this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude], {
                 // renderer: myRenderer,
-                radius: 0,
-                color: this.setColor,
+                radius: 1,
+                color: "gray",
                 fillColor: this.setColor,
                 fillOpacity: 1,
-                weight: 0,
+                weight: 0.3,
                 strokeWeight: 0
               }).addTo(globalMap);
 
@@ -1009,7 +1012,7 @@ export class UdiseReportComponent implements OnInit {
         if (options.weight) {
           markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
             radius: options.radius,
-            color: this.setColor,
+            color: "gray",
             fillColor: this.setColor,
             fillOpacity: options.fillOpacity,
             strokeWeight: options.strokeWeight,
@@ -1018,10 +1021,11 @@ export class UdiseReportComponent implements OnInit {
         } else {
           markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
             radius: options.radius,
-            color: this.setColor,
+            color: "gray",
             fillColor: this.setColor,
             fillOpacity: options.fillOpacity,
-            strokeWeight: options.strokeWeight
+            strokeWeight: options.strokeWeight,
+            weight: 1.5
           })
         }
 
