@@ -6,18 +6,16 @@ import { ExportToCsv } from 'export-to-csv';
 import * as data from '../../assets/india.json';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
-
 var globalMap;
 
 @Component({
-  selector: 'app-infra-map-visualisation',
-  templateUrl: './infra-map-visualisation.component.html',
-  styleUrls: ['./infra-map-visualisation.component.css'],
+  selector: 'app-udise-report',
+  templateUrl: './udise-report.component.html',
+  styleUrls: ['./udise-report.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
-
 })
-export class InfraMapVisualisationComponent implements OnInit {
+export class UdiseReportComponent implements OnInit {
   public title: string = '';
   public titleName: string = '';
   public colors: any;
@@ -159,10 +157,10 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myDistData != undefined) {
         this.infraFilter = [];
         this.data = this.myDistData['data'];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
         this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
@@ -201,15 +199,14 @@ export class InfraMapVisualisationComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.infraMapDistWise().subscribe(res => {
-
+        this.myData = this.service.udise_dist_wise().subscribe(res => {
           this.myDistData = res;
           this.infraFilter = [];
           this.data = res['data'];
-          for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-            let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+          for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+            let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
             val = val.replace('Percent', '(%)')
-            this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+            this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
           }
 
           this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
@@ -285,15 +282,15 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.infraMapAllBlockWise().subscribe(res => {
+      this.myData = this.service.udise_block_wise().subscribe(res => {
         this.myBlockData = res['data'];
         //=================================
         this.infraFilter = [];
         this.data = res['data'];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
         this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
@@ -350,13 +347,16 @@ export class InfraMapVisualisationComponent implements OnInit {
                   orgObject[key] = details[key];
                 }
               });
-              var yourData = this.getInfoFrom(this.blockMarkers[i].metrics, infraName, colorText, options.level).join(" <br>");
+              var yourData = this.getInfoFrom(this.blockMarkers[i].indices, infraName, colorText, options.level).join(" <br>");
               var yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
+              var yourData2 = this.getInfoFrom(this.blockMarkers[i].rank, infraName, colorText, options.level).join(" <br>");
 
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b><u>Details</u></b>" +
                 "<br>" + yourData1 +
-                "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
+                "<br><br><b><u>Rank</u></b>" +
+                "<br>" + yourData2 +
+                "<br><br><b><u>All Indices (%)</u></b>" +
                 "<br>" + yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -378,11 +378,11 @@ export class InfraMapVisualisationComponent implements OnInit {
                   district_name: this.blockMarkers[i].details.district_name,
                   block_id: this.blockMarkers[i].details.block_id,
                   block_name: this.blockMarkers[i].details.block_name,
-                  [this.infraData]: this.blockMarkers[i].metrics[`${this.infraData}`] + "%"
+                  [this.infraData]: this.blockMarkers[i].indices[`${this.infraData}`] + "%"
                 }
                 this.reportData.push(obj);
               } else {
-                let myobj = { ...orgObject, ...this.blockMarkers[i].metrics }
+                let myobj = { ...orgObject, ...this.blockMarkers[i].indices }
                 this.reportData.push(myobj);
               }
             }
@@ -435,14 +435,14 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.infraMapAllClusterWise().subscribe(res => {
+      this.myData = this.service.udise_cluster_wise().subscribe(res => {
         this.data = res['data']
         //=================================
         this.infraFilter = [];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
         this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
@@ -497,13 +497,16 @@ export class InfraMapVisualisationComponent implements OnInit {
                   orgObject[key] = details[key];
                 }
               });
-              var yourData = this.getInfoFrom(this.clusterMarkers[i].metrics, infraName, colorText, options.level).join(" <br>");
+              var yourData = this.getInfoFrom(this.clusterMarkers[i].indices, infraName, colorText, options.level).join(" <br>");
               var yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
+              var yourData2 = this.getInfoFrom(this.clusterMarkers[i].rank, infraName, colorText, options.level).join(" <br>");
 
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b><u>Details</u></b>" +
                 "<br>" + yourData1 +
-                "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
+                "<br><br><b><u>Rank</u></b>" +
+                "<br>" + yourData2 +
+                "<br><br><b><u>All Indices (%)</u></b>" +
                 "<br>" + yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -527,11 +530,11 @@ export class InfraMapVisualisationComponent implements OnInit {
                   block_name: this.clusterMarkers[i].details.block_name,
                   cluster_id: this.clusterMarkers[i].details.cluster_id,
                   cluster_name: this.clusterMarkers[i].details.cluster_name,
-                  [this.infraData]: this.clusterMarkers[i].metrics[`${this.infraData}`] + "%"
+                  [this.infraData]: this.clusterMarkers[i].indices[`${this.infraData}`] + "%"
                 }
                 this.reportData.push(obj);
               } else {
-                let myobj = { ...orgObject, ...this.clusterMarkers[i].metrics }
+                let myobj = { ...orgObject, ...this.clusterMarkers[i].indices }
                 this.reportData.push(myobj);
               }
             }
@@ -583,14 +586,14 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.infraMapAllSchoolWise().subscribe(res => {
+      this.myData = this.service.udise_school_wise().subscribe(res => {
         this.data = res['data']
         //=================================
         this.infraFilter = [];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
         this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
@@ -658,12 +661,15 @@ export class InfraMapVisualisationComponent implements OnInit {
               } else {
                 yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
               }
-              var yourData = this.getInfoFrom(this.schoolMarkers[i].metrics, infraName, colorText, options.level).join(" <br>");
+              var yourData = this.getInfoFrom(this.schoolMarkers[i].indices, infraName, colorText, options.level).join(" <br>");
+              var yourData2 = this.getInfoFrom(this.schoolMarkers[i].rank, infraName, colorText, options.level).join(" <br>");
 
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
                 "<b><u>Details</u></b>" +
                 "<br>" + yourData1 +
-                "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
+                "<br><br><b><u>Rank</u></b>" +
+                "<br>" + yourData2 +
+                "<br><br><b><u>All Indices (%)</u></b>" +
                 "<br>" + yourData);
               markerIcon.addTo(globalMap).bindPopup(popup);
 
@@ -688,11 +694,11 @@ export class InfraMapVisualisationComponent implements OnInit {
                   cluster_name: this.schoolMarkers[i].details.cluster_name,
                   school_id: this.schoolMarkers[i].details.school_id,
                   school_name: this.schoolMarkers[i].details.school_name,
-                  [this.infraData]: this.schoolMarkers[i].metrics[`${this.infraData}`] + "%"
+                  [this.infraData]: this.schoolMarkers[i].indices[`${this.infraData}`] + "%"
                 }
                 this.reportData.push(obj);
               } else {
-                let myobj = { ...detailSchool, ...this.schoolMarkers[i].metrics }
+                let myobj = { ...detailSchool, ...this.schoolMarkers[i].indices }
                 this.reportData.push(myobj);
               }
             }
@@ -735,13 +741,13 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraMapBlockWise(districtId).subscribe(res => {
+    this.myData = this.service.udise_blocks_per_dist(districtId).subscribe(res => {
       this.data = res['data'];
       this.infraFilter = [];
-      for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-        let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+      for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+        let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
         val = val.replace('Percent', '(%)')
-        this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+        this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
       }
 
       this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
@@ -812,14 +818,14 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraMapClusterWise(this.districtHierarchy.distId, blockId).subscribe(res => {
+    this.myData = this.service.udise_cluster_per_block(this.districtHierarchy.distId, blockId).subscribe(res => {
       this.data = res['data'];
       //=================================
       this.infraFilter = [];
-      for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-        let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+      for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+        let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
         val = val.replace('Percent', '(%)')
-        this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+        this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
       }
 
       this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
@@ -897,15 +903,15 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraMapAllBlockWise().subscribe((result: any) => {
-      this.myData = this.service.infraMapSchoolWise(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
+    this.myData = this.service.udise_block_wise().subscribe((result: any) => {
+      this.myData = this.service.udise_school_per_cluster(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
         this.data = res['data'];
         //=================================
         this.infraFilter = [];
-        for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
+        for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
+          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
-          this.infraFilter.push({ key: Object.keys(this.data[0].metrics)[i], value: val });
+          this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
         this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
@@ -1051,28 +1057,30 @@ export class InfraMapVisualisationComponent implements OnInit {
           } else {
             yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
           }
-          var yourData = this.getInfoFrom(this.markers[i].metrics, infraName, colorText, options.level).join(" <br>");
+          var yourData = this.getInfoFrom(this.markers[i].indices, infraName, colorText, options.level).join(" <br>");
+          var yourData2 = this.getInfoFrom(this.markers[i].rank, infraName, colorText, options.level).join(" <br>");
 
 
           const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
             "<b><u>Details</u></b>" +
             "<br>" + yourData1 +
-            "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
+            "<br><br><b><u>Rank</u></b>" +
+            "<br>" + yourData2 +
+            "<br><br><b><u>All Indices (%)</u></b>" +
             "<br>" + yourData);
           markerIcon.addTo(globalMap).bindPopup(popup);
 
-          // to download the report
           this.fileName = fileName;
           if (options.level == "district") {
             if (this.infraData !== 'infrastructure_score') {
               let obj = {
                 district_id: this.markers[i].details.district_id,
                 district_name: this.markers[i].details.district_name,
-                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+                [this.infraData]: this.markers[i].indices[`${this.infraData}`] + "%"
               }
               this.reportData.push(obj);
             } else {
-              let myobj = { ...orgObject, ...this.markers[i].metrics }
+              let myobj = { ...orgObject, ...this.markers[i].indices }
               this.reportData.push(myobj);
             }
           } else if (options.level == "block") {
@@ -1082,11 +1090,11 @@ export class InfraMapVisualisationComponent implements OnInit {
                 district_name: this.markers[i].details.district_name,
                 block_id: this.markers[i].details.block_id,
                 block_name: this.markers[i].details.block_name,
-                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+                [this.infraData]: this.markers[i].indices[`${this.infraData}`] + "%"
               }
               this.reportData.push(obj);
             } else {
-              let myobj = { ...orgObject, ...this.markers[i].metrics }
+              let myobj = { ...orgObject, ...this.markers[i].indices }
               this.reportData.push(myobj);
             }
           }
@@ -1099,11 +1107,11 @@ export class InfraMapVisualisationComponent implements OnInit {
                 block_name: this.markers[i].details.block_name,
                 cluster_id: this.markers[i].details.cluster_id,
                 cluster_name: this.markers[i].details.cluster_name,
-                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+                [this.infraData]: this.markers[i].indices[`${this.infraData}`] + "%"
               }
               this.reportData.push(obj);
             } else {
-              let myobj = { ...orgObject, ...this.markers[i].metrics }
+              let myobj = { ...orgObject, ...this.markers[i].indices }
               this.reportData.push(myobj);
             }
           } else if (options.level == "school") {
@@ -1117,11 +1125,11 @@ export class InfraMapVisualisationComponent implements OnInit {
                 cluster_name: this.markers[i].details.cluster_name,
                 school_id: this.markers[i].details.school_id,
                 school_name: this.markers[i].details.school_name,
-                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+                [this.infraData]: this.markers[i].indices[`${this.infraData}`] + "%"
               }
               this.reportData.push(obj);
             } else {
-              let myobj = { ...detailSchool, ...this.markers[i].metrics }
+              let myobj = { ...detailSchool, ...this.markers[i].indices }
               this.reportData.push(myobj);
             }
           }
@@ -1173,7 +1181,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (infraData == 'infrastructure_score') {
       dataSet = data.details;
     } else {
-      dataSet = data.metrics;
+      dataSet = data.indices;
     }
 
     if (dataSet[infraData] <= 10) {
@@ -1311,4 +1319,5 @@ export class InfraMapVisualisationComponent implements OnInit {
     const csvExporter = new ExportToCsv(options);
     csvExporter.generateCsv(this.reportData);
   }
+
 }

@@ -10,7 +10,7 @@ const changePasswd = require('./controller/users/changePassword');
 //deeksha
 const deekshaData = require('./controller/diksha/diksha');
 const dikshaTable = require('./controller/diksha/dikshaTable');
-const diskhaBarChart =  require('./controller/diksha/diksha-bar-chart');
+const diskhaBarChart = require('./controller/diksha/diksha-bar-chart');
 
 //Show telemetry
 const showDistTelemetry = require('./controller/telemetry/showTelemetry/distTelemetryData');
@@ -50,6 +50,14 @@ const semDistrictWise = require('../api/controller/semRoutes/districtWise');
 const semBlockWise = require('../api/controller/semRoutes/blockWise');
 const semClusterWise = require('../api/controller/semRoutes/clusterWise');
 const semSchoolWise = require('../api/controller/semRoutes/schoolWise');
+
+//UDISE report
+
+const UDISE_dist_wise = require('./controller/udise-report/dist-wise');
+const UDISE_block_wise = require('./controller/udise-report/block-wise');
+const UDISE_cluster_wise = require('./controller/udise-report/cluster-wise');
+const UDISE_school_wise = require('./controller/udise-report/school-wise');
+
 // sem routes
 router.use('/sem', semDistrictWise);
 router.use('/sem', semBlockWise);
@@ -102,5 +110,11 @@ router.use('/showDistTelemetry', showDistTelemetry);
 router.use('/showBlockTelemetry', showBlockTelemetry);
 router.use('/showClusterTelemetry', showClusterTelemetry);
 router.use('/showSchoolTelemetry', showSchoolTelemetry);
+
+//Udise......
+router.use('/udise', UDISE_dist_wise);
+router.use('/udise', UDISE_block_wise);
+router.use('/udise', UDISE_cluster_wise);
+router.use('/udise', UDISE_school_wise);
 
 module.exports = router;
