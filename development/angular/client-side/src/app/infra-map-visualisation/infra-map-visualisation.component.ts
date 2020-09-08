@@ -726,6 +726,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.errMsg();
     this.blockId = undefined;
+    this.reportData = [];
 
     // to show and hide the dropdowns
     this.blockHidden = false;
@@ -803,6 +804,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.errMsg();
     this.clusterId = undefined;
+    this.reportData = [];``
 
     // to show and hide the dropdowns
     this.blockHidden = false;
@@ -890,6 +892,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.errMsg();
+    this.reportData = [];
 
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -1296,19 +1299,23 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   // to download the excel report
   downloadReport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
+    if (this.reportData.length <= 0) {
+      alert("No data fount to download");
+    } else {
+      const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        title: 'My Awesome CSV',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        filename: this.fileName
+      };
+      const csvExporter = new ExportToCsv(options);
+      csvExporter.generateCsv(this.reportData);
+    }
   }
 }
