@@ -31,6 +31,16 @@ class GetData():
         config.read(self.p.get_config_ini_path())
         return config['config']['password']
 
+    def get_admin_username(self):
+        config = configparser.ConfigParser()
+        config.read(self.p.get_config_ini_path())
+        return config['config']['admin_username']
+
+    def get_admin_password(self):
+        config = configparser.ConfigParser()
+        config.read(self.p.get_config_ini_path())
+        return config['config']['admin_password']
+
     def get_driver(self):
         options = webdriver.ChromeOptions()
         prefs = {'download.default_directory': self.p.get_download_dir()}
@@ -39,6 +49,7 @@ class GetData():
         self.driver=webdriver.Chrome(options=options,executable_path=self.p.get_driver_path())
         return self.driver
 
+    # if you using selenium grid , please use below get_driver method
     # def get_driver(self):
     #     options = webdriver.ChromeOptions()
     #     prefs = {'download.default_directory': self.p.get_download_dir()}
@@ -70,8 +81,8 @@ class GetData():
     def login_to_adminconsole(self,driver):
         self.driver = driver
         self.driver.implicitly_wait(60)
-        self.driver.find_element_by_id(Data.email).send_keys(self.get_username())
-        self.driver.find_element_by_id(Data.passwd).send_keys(self.get_password())
+        self.driver.find_element_by_id(Data.email).send_keys(self.get_admin_username())
+        self.driver.find_element_by_id(Data.passwd).send_keys(self.get_admin_password())
         self.driver.find_element_by_id(Data.login).click()
         self.page_loading(self.driver)
         self.driver.find_element_by_tag_name('a').click()
@@ -80,7 +91,7 @@ class GetData():
     def navigate_to_telemetry(self):
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(2)
-        self.driver.find_element_by_xpath("/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[7]/mat-list-item/div/mat-icon").click()
+        self.driver.find_element_by_xpath(Data.telmetry_report).click()
         time.sleep(2)
         self.driver.find_element_by_id("telemReport").click()
         self.page_loading(self.driver)
@@ -121,7 +132,7 @@ class GetData():
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath('/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[3]/mat-list-item/div/mat-icon').click()
+        self.driver.find_element_by_xpath(Data.attendance).click()
         time.sleep(2)
         self.driver.find_element_by_id(Data.SAR).click()
         time.sleep(6)
@@ -157,7 +168,7 @@ class GetData():
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath('/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[5]/mat-list-item/div/mat-icon').click()
+        self.driver.find_element_by_xpath(Data.semester_sel).click()
         time.sleep(2)
         self.driver.find_element_by_id("semReport").click()
         time.sleep(5)
@@ -167,7 +178,7 @@ class GetData():
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath('/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[2]/mat-list-item/div/mat-icon').click()
+        self.driver.find_element_by_xpath(Data.crc_report).click()
         time.sleep(2)
         self.driver.find_element_by_id(Data.CRC).click()
 
@@ -195,7 +206,7 @@ class GetData():
         time.sleep(2)
         self.driver.find_element_by_xpath(Data.diksha).click()
         time.sleep(2)
-        self.driver.find_element_by_id("clmnReport").click()
+        self.driver.find_element_by_id(Data.column_report).click()
         time.sleep(6)
 
 
@@ -241,18 +252,6 @@ class GetData():
             count = len(lists) - 1
             print(distnames[i].text, ":", count)
 
-    def X_Yaxis(self):
-        x_axis = self.driver.find_elements_by_xpath(Data.xaxis)
-        time.sleep(2)
-        print("X axis menu list...")
-        for i in range(len(x_axis)):
-            print(x_axis[i].text)
-        print("Y axis menu list...")
-        time.sleep(2)
-        y_axis = self.driver.find_elements_by_xpath(Data.yaxis)
-        for i in range(len(y_axis)):
-            print(y_axis[i].text)
-
     def crcclusters_click(self):
         clu = self.driver.find_elements_by_xpath(Data.clusterlist)
         for i in range(len(clu)):
@@ -266,25 +265,19 @@ class GetData():
             print(cluster[i].text)
             time.sleep(5)
 
-    def X_axis(self):
-        xvalues = self.driver.find_elements_by_xpath(Data.xaxis)
-        for i in range(len(xvalues)):
-            xvalues[i].click()
-            time.sleep(3)
-
     def get_driver_path(self):
         os.chdir('../cQube_Components/')
         executable_path = os.path.join(os.getcwd(), 'Driver/chromedriver1')
         return executable_path
 
     def crc_downloadwise(self):
-        self.driver.find_element_by_xpath("//*[@id='select']/select/option[2]").click()
+        self.driver.find_element_by_xpath(Data.crc_sel2).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath("//*[@id='select']/select/option[3]").click()
+        self.driver.find_element_by_xpath(Data.crc_sel3).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath("//*[@id='select']/select/option[4]").click()
+        self.driver.find_element_by_xpath(Data.crc_sel4).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath("//*[@id='select']/select/option[5]").click()
+        self.driver.find_element_by_xpath(Data.crc_sel5).click()
         time.sleep(3)
     def crc_table_value(self):
         rows = self.driver.find_elements_by_xpath(Data.distrows)
@@ -347,26 +340,11 @@ class GetData():
             print(footer[i].text)
             time.sleep(5)
 
-
-    def x_yaxis(self):
-        xaxis_lists = self.driver.find_elements_by_xpath(Data.xaxis)
-        yaxis_lists = self.driver.find_elements_by_xpath(Data.yaxis)
-        for i in range(len(xaxis_lists)):
-            xaxis_lists[i].click()
-            print(xaxis_lists[i].text)
-            time.sleep(3)
-            for j in range(len(yaxis_lists)):
-                yaxis_lists[i].click()
-                print(yaxis_lists[j].text)
-                time.sleep(4)
-
     def CRC_dist_Clicks(self):
         dist = self.driver.find_elements_by_xpath(Data.CRC_Districts)
         for i in range(len(dist)):
             dist[i].click()
             time.sleep(3)
-            # driver = cqube(self.driver)
-            # driver.CRC_footers()
 
     #Admin login separation
     def get_admin_domain_name(self):
@@ -374,20 +352,6 @@ class GetData():
         config.read(self.p.get_config_ini_path())
         return config['config']['admin_domain']
 
-    def get_admin_username(self):
-        config = configparser.ConfigParser()
-        config.read(self.p.get_config_ini_path())
-        return config['config']['admin_username']
-
-    def get_admin_password(self):
-        config = configparser.ConfigParser()
-        config.read(self.p.get_config_ini_path())
-        return config['config']['admin_password']
-
-    def get_vpn_cqube(self):
-        config = configparser.ConfigParser()
-        config.read(self.p.get_config_ini_path())
-        return config['config']['admin_cqube_domain']
 
     def open_admin_appln(self,driver):
         self.driver = driver
@@ -402,12 +366,6 @@ class GetData():
         self.driver.find_element_by_id(Data.passwd).send_keys(self.get_admin_password())
         self.driver.find_element_by_id(Data.login).click()
         time.sleep(3)
-
-    def open_vpn_cqube(self,driver):
-        self.driver = driver
-        self.driver.maximize_window()
-        self.driver.get(self.get_vpn_cqube())
-        self.driver.implicitly_wait(60)
 
     def get_driver_SAR_Download1(self):
         options = webdriver.ChromeOptions()

@@ -1,0 +1,590 @@
+{
+"udise_scl_facility_dup_tb_name":"udise_sch_facility_dup",
+"udise_school_facility_same_record_check_qry":'''SELECT udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,
+clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,
+toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,
+drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,
+othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,
+bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,
+handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,
+staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,
+math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,
+biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,
+desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,
+projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,
+generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs
+,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,
+clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,
+toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,
+drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,
+othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,
+bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,
+handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,
+staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,
+math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,
+biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,
+desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,
+projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,
+generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs
+HAVING  COUNT(*) > 1
+''',
+"distinct_udise_school_facility_same_record_qry":'''select udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,
+clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,
+toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,
+drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,
+othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,
+bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,
+handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,
+staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,
+math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,
+biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,
+desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,
+projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,
+generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs
+from (select udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,
+clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,
+toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,
+drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,
+othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,
+bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,
+handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,
+staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,
+math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,
+biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,
+desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,
+projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,
+generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs
+,row_number() over (partition by udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,
+clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,
+toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,
+drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,
+othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,
+bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,
+handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,
+staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,
+math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,
+biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,
+desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,
+projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,
+generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs
+) as rn from flowfile) sq Where rn =1
+''',
+"udise_sum_of_dup":'''select sum(num_of_times) from flowfile''',
+"udise_school_facility_same_id_check_qry":'''SELECT b.udise_sch_code,b.ac_year,b.bld_status,b.bld_blk_tot,b.bld_blk,b.bld_blk_ppu,b.bld_blk_kuc,b.bld_blk_tnt,b.bld_blk_dptd,b.bld_blk_undcons,b.bndrywall_type,b.clsrms_inst,b.clsrms_und_cons,b.clsrms_dptd,b.clsrms_pre_pri,b.clsrms_pri,b.clsrms_upr,b.clsrms_sec,b.clsrms_hsec,b.othrooms,b.clsrms_gd,b.clsrms_gd_ppu,b.clsrms_gd_kuc,b.clsrms_gd_tnt,b.clsrms_min,b.clsrms_min_ppu,b.clsrms_min_kun,b.clsrms_min_tnt,b.clsrms_maj,b.clsrms_maj_ppu,b.clsrms_maj_kuc,b.clsrms_maj_tnt,b.land_avl_yn,b.hm_room_yn,b.toilet_yn,b.toiletb,b.toiletb_fun,b.toiletg,b.toiletg_fun,b.
+toiletb_cwsn,b.toiletb_cwsn_fun,b.toiletg_cwsn,b.toiletg_cwsn_fun,b.urinalsb,b.urinalsb_fun,b.urinalsg,b.urinalsg_fun,b.toiletb_fun_water,b.toiletg_fun_water,b.handwash_yn,b.incinerator_yn,b.drink_water_yn,b.hand_pump_tot,b.hand_pump_fun,b.well_prot_tot,b.well_prot_fun,b.well_unprot_tot,b.well_unprot_fun,b.tap_tot,b.tap_fun,b.pack_water,b.pack_water_fun,b.othsrc_tot,b.othsrc_fun,b.
+othsrc_name,b.water_purifier_yn,b.water_tested_yn,b.rain_harvest_yn,b.handwash_meal_yn,b.handwash_meal_tot,b.electricity_yn,b.solarpanel_yn,b.library_yn,b.lib_books,b.lib_books_ncert,b.bookbank_yn,b.bkbnk_books,b.bkbnk_books_ncert,b.readcorner_yn,b.readcorner_books,b.librarian_yn,b.newspaper_yn,b.playground_yn,b.playground_alt_yn,b.medchk_yn,b.medchk_tot,b.dewormtab_yn,b.irontab_yn,b.ramps_yn,b.handrails_yn,b.spl_educator_yn,b.kitchen_garden_yn,b.dstbn_clsrms_yn,b.dstbn_toilet_yn,b.dstbn_kitchen_yn,b.stus_hv_furnt,b.ahmvp_room_yn,b.comroom_g_yn,b.staff_room_yn,b.craft_room_yn,b.
+staff_qtr_yn,b.integrated_lab_yn,b.library_room_yn,b.comp_room_yn,b.tinkering_lab_yn,b.phy_lab_yn,b.phy_lab_cond,b.chem_lab_yn,b.chem_lab_cond,b.boi_lab_yn,b.bio_lab_cond,b.math_lab_yn,b.math_lab_cond,b.lang_lab_yn,b.lang_lab_cond,b.geo_lab_yn,b.geo_lab_cond,b.homesc_lab_yn,b.home_sc_lab_cond,b.psycho_lab_yn,b.psycho_lab_cond,b.audio_system_yn,b.sciencekit_yn,b.mathkit_yn,b.biometric_dev_yn,b.comp_lab_type,b.ict_impl_year,b.ictlab_fun_yn,b.ict_model_impl,b.ict_instr_type,b.laptop_yn,b.laptop_tot,b.laptop_fun,b.tablets_yn,b.tablets_tot,b.tablets_fun,b.desktop_yn,b.desktop_tot,b.desktop_fun,b.teachdev_yn,b.teachdev_tot,b.teachdev_fun,b.digi_board_yn,b.digi_board_tot,b.digi_board_fun,b.server_yn,b.server_tot,b.server_fun,b.projector_yn,b.projector_tot,b.projector_fun,b.led_yn,b.led_tot,b.led_fun,b.printer_yn,b.printer_tot,b.printer_fun,b.scanner_yn,b.scanner_tot,b.scanner_fun,b.webcam_yn,b.webcam_tot,b.webcam_fun,b.generator_yn,b.generator_tot,b.generator_fun,b.internet_yn,b.dth_yn,b.digi_res_yn,b.tech_soln_yn,b.ict_tools_yn,
+b.ict_teach_hrs,count(*) num_of_times  from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.bld_status,b.bld_blk_tot,b.bld_blk,b.bld_blk_ppu,b.bld_blk_kuc,b.bld_blk_tnt,b.bld_blk_dptd,b.bld_blk_undcons,b.bndrywall_type,b.clsrms_inst,b.clsrms_und_cons,b.clsrms_dptd,b.clsrms_pre_pri,b.clsrms_pri,b.clsrms_upr,b.clsrms_sec,b.clsrms_hsec,b.othrooms,b.clsrms_gd,b.clsrms_gd_ppu,b.clsrms_gd_kuc,b.clsrms_gd_tnt,b.clsrms_min,b.clsrms_min_ppu,b.clsrms_min_kun,b.clsrms_min_tnt,b.clsrms_maj,b.clsrms_maj_ppu,b.clsrms_maj_kuc,b.clsrms_maj_tnt,b.land_avl_yn,b.hm_room_yn,b.toilet_yn,b.toiletb,b.toiletb_fun,b.toiletg,b.toiletg_fun,b.
+toiletb_cwsn,b.toiletb_cwsn_fun,b.toiletg_cwsn,b.toiletg_cwsn_fun,b.urinalsb,b.urinalsb_fun,b.urinalsg,b.urinalsg_fun,b.toiletb_fun_water,b.toiletg_fun_water,b.handwash_yn,b.incinerator_yn,b.drink_water_yn,b.hand_pump_tot,b.hand_pump_fun,b.well_prot_tot,b.well_prot_fun,b.well_unprot_tot,b.well_unprot_fun,b.tap_tot,b.tap_fun,b.pack_water,b.pack_water_fun,b.othsrc_tot,b.othsrc_fun,b.
+othsrc_name,b.water_purifier_yn,b.water_tested_yn,b.rain_harvest_yn,b.handwash_meal_yn,b.handwash_meal_tot,b.electricity_yn,b.solarpanel_yn,b.library_yn,b.lib_books,b.lib_books_ncert,b.bookbank_yn,b.bkbnk_books,b.bkbnk_books_ncert,b.readcorner_yn,b.readcorner_books,b.librarian_yn,b.newspaper_yn,b.playground_yn,b.playground_alt_yn,b.medchk_yn,b.medchk_tot,b.dewormtab_yn,b.irontab_yn,b.ramps_yn,b.handrails_yn,b.spl_educator_yn,b.kitchen_garden_yn,b.dstbn_clsrms_yn,b.dstbn_toilet_yn,b.dstbn_kitchen_yn,b.stus_hv_furnt,b.ahmvp_room_yn,b.comroom_g_yn,b.staff_room_yn,b.craft_room_yn,b.
+staff_qtr_yn,b.integrated_lab_yn,b.library_room_yn,b.comp_room_yn,b.tinkering_lab_yn,b.phy_lab_yn,b.phy_lab_cond,b.chem_lab_yn,b.chem_lab_cond,b.boi_lab_yn,b.bio_lab_cond,b.math_lab_yn,b.math_lab_cond,b.lang_lab_yn,b.lang_lab_cond,b.geo_lab_yn,b.geo_lab_cond,b.homesc_lab_yn,b.home_sc_lab_cond,b.psycho_lab_yn,b.psycho_lab_cond,b.audio_system_yn,b.sciencekit_yn,b.mathkit_yn,b.biometric_dev_yn,b.comp_lab_type,b.ict_impl_year,b.ictlab_fun_yn,b.ict_model_impl,b.ict_instr_type,b.laptop_yn,b.laptop_tot,b.laptop_fun,b.tablets_yn,b.tablets_tot,b.tablets_fun,b.desktop_yn,b.desktop_tot,b.desktop_fun,b.teachdev_yn,b.teachdev_tot,b.teachdev_fun,b.digi_board_yn,b.digi_board_tot,b.digi_board_fun,b.server_yn,b.server_tot,b.server_fun,b.projector_yn,b.projector_tot,b.projector_fun,b.led_yn,b.led_tot,b.led_fun,b.printer_yn,b.printer_tot,b.printer_fun,b.scanner_yn,b.scanner_tot,b.scanner_fun,b.webcam_yn,b.webcam_tot,b.webcam_fun,b.generator_yn,b.generator_tot,b.generator_fun,b.internet_yn,b.dth_yn,b.digi_res_yn,b.tech_soln_yn,b.ict_tools_yn,b.ict_teach_hrs
+''',
+"distinct_udise_school_facility_same_id_qry":'''SELECT udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,
+clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,
+toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,
+drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,
+othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,
+bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,
+handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,
+staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,
+math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,
+biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,
+desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,
+projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,
+generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs from 
+(SELECT udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,
+clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,
+toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,
+drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,
+othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,
+bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,
+handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,
+staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,
+math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,
+biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,
+desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,
+projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,
+generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1
+''',
+"udise_school_facility_table_name":'''udise_sch_facility''',
+"udise_sch_facility_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+''',
+"udise_sch_facility_not_null":"select * from flowfile where UPPER(udise_sch_code) <> 'NULL'",
+"udise_sch_facility_count_null":'''(select SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code from flowfile)''',
+"udise_null_column_table_name":"udise_null_col",
+"udise_nsqf_plcmnt_c12_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(sector_no) <> 'NULL'
+or UPPER(item_id) <> 'NULL')
+''',
+"udise_nsqf_plcmnt_c12_dup_tb_name":'''udise_nsqf_plcmnt_c12_dup''',
+"udise_nsqf_plcmnt_c12_table_name":"udise_nsqf_plcmnt_c12",
+"select_columns_nsqf_plcmnt_c12_qry":'''select udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g from flowfile
+''',
+"select_columns_nsqf_plcmnt_c10_qry":'''select udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g from flowfile
+''',
+"udise_nsqf_plcmnt_c10_dup_tb_name":"udise_nsqf_plcmnt_c10_dup",
+"select_columns_nsqf_class_cond_qry":'''select udise_sch_code,ac_year,sector_no,class_type_id,c9,c10,c11,c12 from flowfile''',
+"udise_nsqf_class_cond_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(sector_no) <> 'NULL'
+or UPPER(class_type_id) <> 'NULL')
+''',
+"udise_nsqf_class_cond_not_null":"select * from flowfile where UPPER(udise_sch_code) <> 'NULL' and UPPER(sector_no) <> 'NULL' and UPPER(class_type_id) <> 'NULL'",
+"select_columns_sch_exmres_c12_qry":'''select udise_sch_code,ac_year,item_id,stream_id,gen_app_b,gen_app_g,obc_app_b,obc_app_g,
+sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g from flowfile
+''',
+"select_columns_sch_incentives_qry":'''select udise_sch_code,ac_year,grade_pri_upr,incentive_type,gen_b,gen_g,sc_b,sc_g,st_b,st_g,obc_b,obc_g,min_muslim_b,min_muslim_g,min_oth_b,min_oth_g from flowfile''',
+"select_columns_sch_exmres_c10_qry":'''select udise_sch_code,ac_year,item_id,gen_app_b,gen_app_g,obc_app_b,
+obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g from flowfile
+''',
+"select_columns_sch_exmres_c5_qry":'''select udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,
+gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g from flowfile
+''',
+"select_columns_sch_incen_cwsn_qry":'''select udise_sch_code,ac_year,item_id,tot_pre_pri_b,tot_pre_pri_g,tot_pry_b,tot_pry_g,tot_upr_b,tot_upr_g,tot_sec_b,tot_sec_g,tot_hsec_b,tot_hsec_g from flowfile''',
+"select_columns_sch_enr_by_stream_qry":'''select udise_sch_code,ac_year,stream_id,caste_id,ec11_b,ec11_g,ec12_b,ec12_g,rc11_b,rc11_g,rc12_b,rc12_g from flowfile''',
+"udise_sch_exmres_c12_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(item_id) <> 'NULL'
+or UPPER(stream_id) <> 'NULL')
+''',
+"udise_sch_exmres_c12_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and UPPER(item_id) <> 'NULL'
+and UPPER(stream_id) <> 'NULL'""",
+"udise_sch_exmres_c12_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id,
+SUM(CASE when stream_id IS NULL THEN 1 ELSE 0 END) AS count_null_stream_id
+from flowfile)
+''',
+"udise_sch_exmres_c10_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id
+from flowfile)
+''',
+"udise_sch_exmres_c10_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and UPPER(item_id) <> 'NULL'
+""",
+"udise_sch_exmres_c10_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(item_id) <> 'NULL')
+''',
+"udise_sch_exmres_c5_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+''',
+"udise_sch_exmres_c5_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+""",
+"udise_sch_exmres_c5_count_null":'''select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+''',
+"udise_sch_incen_cwsn_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+''',
+"udise_sch_incen_cwsn_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and UPPER(item_id) <> 'NULL'
+""",
+"udise_sch_incen_cwsn_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(item_id) <> 'NULL')
+''',
+"udise_sch_incentives_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(grade_pri_upr) <> 'NULL'
+or UPPER(incentive_type) <> 'NULL')
+''',
+"udise_sch_incentives_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and  UPPER(grade_pri_upr) <> 'NULL'
+and  UPPER(incentive_type) <> 'NULL'
+""",
+"udise_sch_incentives_count_null":'''select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when grade_pri_upr IS NULL THEN 1 ELSE 0 END) AS count_null_grade_pri_upr,
+SUM(CASE when incentive_type IS NULL THEN 1 ELSE 0 END) AS count_null_incentive_type
+from flowfile)
+''',
+"udise_sch_enr_by_stream_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(stream_id) <> 'NULL'
+or UPPER(caste_id) <> 'NULL')
+''',
+"udise_sch_enr_by_stream_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and  UPPER(stream_id) <> 'NULL'
+and  UPPER(caste_id) <> 'NULL'
+""",
+"udise_sch_enr_by_stream_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when stream_id IS NULL THEN 1 ELSE 0 END) AS count_null_stream_id,
+SUM(CASE when caste_id IS NULL THEN 1 ELSE 0 END) AS count_null_caste_id
+from flowfile)
+''',
+"select_columns_sch_enr_cwsn_qry":'''select udise_sch_code,ac_year,disability_type,cpp_b,cpp_g,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from flowfile''',
+"udise_sch_enr_cwsn_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(disability_type) <> 'NULL')
+''',
+"udise_sch_enr_cwsn_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and  UPPER(or UPPER(disability_type) <> 'NULL'
+""",
+"udise_sch_enr_cwsn_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when disability_type IS NULL THEN 1 ELSE 0 END) AS count_null_disability_type
+from flowfile)
+''',
+"select_columns_sch_enr_by_stream_qry":'''select udise_sch_code,ac_year,stream_id,caste_id,ec11_b,ec11_g,ec12_b,ec12_g,rc11_b,rc11_g,rc12_b,rc12_g from flowfile''',
+"select_columns_sch_enr_medinstr_qry":'''select udise_sch_code,ac_year,medinstr_seq,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,
+c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from flowfile
+''',
+"select_columns_sch_enr_age_qry":'''select 
+udise_sch_code,ac_year,age_id,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,
+c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g
+from flowfile
+''',
+"select_columns_sch_enr_reptr_qry":'''select udise_sch_code,ac_year,item_group,item_id,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,
+c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from flowfile
+''',
+"select_columns_sch_enr_fresh_qry":'''select udise_sch_code,ac_year,item_group,item_id,cpp_b,cpp_g,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from flowfile
+''',
+"select_columns_sch_enr_newadm_qry":'''select udise_sch_code,ac_year,age4_b,age4_g,age5_b,age5_g,age6_b,age6_g,age7_b,age7_g,
+age8_b,age8_g,same_sch_b,same_sch_g,oth_sch_b,oth_sch_g,anganwadi_b,anganwadi_g from flowfile
+''',
+"select_columns_sch_profile_qry":'''select udise_sch_code, ac_year,address,stdcode ,phone, mobile, stdcode_resp, phone_resp, mobile_resp, website , email,  resp_name,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smc_bnk_name,smc_bnk_br,smc_bnkac_no,smc_bnkac_ifsc,smc_bnkac_name,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,smdc_sdp_yn,smdc_bnkac_yn,smdc_bnk_name,smdc_bnk_br,smdc_bnkac_no,smdc_bnkac_ifsc,smdc_bnkac_name,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting from flowfile
+''',
+"select_columns_sch_staff_posn_qry":'''select udise_sch_code,ac_year,tch_regular,tch_contract,tch_part_time,nontch_accnt,nontch_lib_asst,nontch_lab_asst,nontch_udc,nontch_ldc,nontch_peon,nontch_watchman,tch_hav_adhr from flowfile''',
+"select_columns_tch_profile_qry":'''select udise_sch_code,tch_code,name,gender,dob,social_cat,tch_type,nature_of_appt,doj_service,qual_acad,qual_prof,class_taught,
+appt_sub,sub_taught1,sub_taught2,trn_brc,trn_crc,trn_diet,trn_other,trng_rcvd,trng_needed,nontch_days,math_upto,science_upto,english_upto,
+lang_study_upto,soc_study_upto,yoj_pres_sch,disability_type,trained_cwsn,trained_comp from flowfile
+''',
+"select_columns_sch_exmmarks_c10_qry":'''select udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from flowfile''',
+"select_columns_sch_exmmarks_c12_qry":'''select udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from flowfile''',
+"select_columns_sch_recp_exp_qry":'''select udise_sch_code,ac_year,dev_grt_r,dev_grt_e,maint_grt_r,maint_grt_e,tlm_grt_r,tlm_grt_e,cw_grt_r,cw_grt_e,anl_grt_r,anl_grt_e,
+minrep_grt_r,minrep_grt_e,labrep_grt_r,labrep_grt_e,book_grt_r,book_grt_e,elec_grt_r,elec_grt_e,oth_grt_r,oth_grt_e,compo_grt_r,compo_grt_e,
+lib_grt_r,lib_grt_e,sport_grt_r,sport_grt_e,media_grt_r,media_grt_e,smc_grt_r,smc_grt_e,presch_grt_r,presch_grt_e,ngo_asst_yn,ngo_asst_name,
+ngo_asst_rcvd,psu_asst_yn,psu_asst_name,psu_asst_rcvd,comm_asst_yn,comm_asst_rcvd,comm_asst_name,oth_asst_yn,oth_asst_name,oth_asst_rcvd,
+ict_reg_yn,sport_reg_yn,lib_reg_yn from flowfile
+''',
+"select_columns_nsqf_basic_info_qry":'''select udise_sch_code,ac_year,nsqf_yn,voc_course_yn,sec1_sub,sec1_year,sec2_sub,sec2_year from flowfile''',
+"select_columns_nsqf_enr_caste_qry":'''select udise_sch_code,ac_year,sector_no,item_id,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from flowfile''',
+"select_columns_nsqf_enr_sub_sec_qry":'''select udise_sch_code,ac_year,sub_sector_id,sector_no,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from flowfile''',
+"select_columns_nsqf_exmres_c10_qry":'''select udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from flowfile''',
+"select_columns_nsqf_exmres_c12_qry":'''select udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from flowfile''',
+"select_columns_nsqf_trng_prov_qry":'''select udise_sch_code,ac_year,agency_name,sector_no,cert_no,cert_agency from flowfile''',
+"select_columns_nsqf_faculty_qry":'''select nsqf_faculty_id,udise_sch_code,ac_year,faculty_code,name,gender,dob,soc_cat,nature_of_appt,qual_acad,qual_prof,industry_exp,training_exp,class_taught,appt_sec,induc_trg_rcvd,inserv_trg_rcvd from flowfile''',
+"select_columns_sch_pgi_details_qry":'''select udise_sch_code,ac_year,tch_adhr_seed,stu_atndnc_yn,tch_atndnc_yn,sch_eval_yn,improv_plan_yn,sch_pfms_yn from flowfile''',
+"select_columns_sch_safety_qry":'''select udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained from flowfile''',
+"select_columns_sch_exmres_c8_qry":'''select udise_sch_code,academic_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g from flowfile''',
+"udise_sch_enr_medinstr_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(medinstr_seq) <> 'NULL')
+''',
+"udise_sch_enr_medinstr_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and  UPPER(or UPPER(medinstr_seq) <> 'NULL' 
+""",
+"udise_sch_enr_medinstr_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when medinstr_seq IS NULL THEN 1 ELSE 0 END) AS count_null_medinstr_seq
+from flowfile)
+''',
+"udise_sch_enr_reptr_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(item_group) <> 'NULL'
+or UPPER(item_id) <> 'NULL')
+''',
+"udise_sch_enr_reptr_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and  UPPER(or UPPER(item_group) <> 'NULL' 
+and  UPPER(or UPPER(item_id) <> 'NULL' 
+""",
+"udise_sch_enr_reptr_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when item_group IS NULL THEN 1 ELSE 0 END) AS count_null_item_group,
+SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id
+from flowfile)
+''',
+"udise_sch_enr_fresh_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(item_group) <> 'NULL'
+or UPPER(item_id) <> 'NULL')
+''',
+"udise_sch_enr_fresh_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and  UPPER(or UPPER(item_group) <> 'NULL' 
+and  UPPER(or UPPER(item_id) <> 'NULL' 
+""",
+"udise_sch_enr_fresh_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when item_group IS NULL THEN 1 ELSE 0 END) AS count_null_item_group,
+SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id
+from flowfile)
+''',
+"udise_sch_enr_newadm_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+''',
+"udise_sch_enr_newadm_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+""",
+"udise_sch_enr_newadm_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+''',
+"udise_sch_profile_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+''',
+"udise_sch_profile_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+""",
+"udise_sch_profile_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+''',
+"udise_sch_staff_posn_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+''',
+"udise_sch_staff_posn_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+""",
+"udise_sch_staff_posn_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+""",
+"udise_tch_profile_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+''',
+"udise_tch_profile_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+""",
+"udise_tch_profile_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+''',
+"udise_sch_exmmarks_c10_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(item_id) <> 'NULL' 
+or  UPPER(marks_range_id) <> 'NULL' )
+''',
+"udise_sch_exmmarks_c10_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and UPPER(item_id) <> 'NULL'
+and UPPER(marks_range_id) <> 'NULL' 
+""",
+"udise_sch_exmmarks_c10_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id,
+SUM(CASE when marks_range_id IS NULL THEN 1 ELSE 0 END) AS count_null_marks_range_id
+from flowfile)
+""",
+"udise_sch_exmmarks_c12_check_if_null":"""select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(item_id) <> 'NULL' 
+or  UPPER(marks_range_id) <> 'NULL' )
+""",
+"udise_sch_exmmarks_c12_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and UPPER(item_id) <> 'NULL'
+and UPPER(marks_range_id) <> 'NULL' 
+""",
+"udise_sch_exmmarks_c12_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id,
+SUM(CASE when marks_range_id IS NULL THEN 1 ELSE 0 END) AS count_null_marks_range_id
+from flowfile)
+''',
+"udise_sch_recp_exp_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+''',
+"udise_sch_recp_exp_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+""",
+"udise_sch_recp_exp_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+''',
+"udise_nsqf_basic_info_check_if_null":"""select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+""",
+"udise_nsqf_basic_info_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+""",
+"udise_nsqf_basic_info_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+""",
+"udise_nsqf_enr_caste_check_if_null":"""select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(sector_no) <> 'NULL'
+or UPPER(item_id) <> 'NULL')
+""",
+"udise_nsqf_enr_caste_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and UPPER(sector_no) <> 'NULL'
+and UPPER(item_id) <> 'NULL'
+""",
+"udise_nsqf_enr_caste_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no,
+SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id
+from flowfile)
+''',
+"udise_nsqf_enr_sub_sec_check_if_null":"""select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(sector_no) <> 'NULL')
+""",
+"udise_nsqf_enr_sub_sec_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and UPPER(sector_no) <> 'NULL'
+""",
+"udise_nsqf_enr_sub_sec_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no
+from flowfile)
+""",
+"udise_nsqf_exmres_c10_check_if_null":"""elect * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(sector_no) <> 'NULL')
+or UPPER(marks_range_id) <> 'NULL')
+""",
+"udise_nsqf_exmres_c10_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and UPPER(sector_no) <> 'NULL'
+and UPPER(marks_range_id) <> 'NULL'
+""",
+"udise_nsqf_exmres_c10_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no,
+SUM(CASE when marks_range_id IS NULL THEN 1 ELSE 0 END) AS count_null_marks_range_id
+from flowfile)
+""",
+"udise_nsqf_exmres_c12_check_if_null":'''select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(sector_no) <> 'NULL')
+or UPPER(marks_range_id) <> 'NULL')
+''',
+"udise_nsqf_exmres_c12_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and UPPER(sector_no) <> 'NULL'
+and UPPER(marks_range_id) <> 'NULL'
+""",
+"udise_nsqf_exmres_c12_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no,
+SUM(CASE when marks_range_id IS NULL THEN 1 ELSE 0 END) AS count_null_marks_range_id
+from flowfile)
+""",
+"udise_nsqf_trng_prov_check_if_null":"""select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(sector_no) <> 'NULL')
+""",
+"udise_nsqf_trng_prov_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and UPPER(sector_no) <> 'NULL'
+""",
+"udise_nsqf_trng_prov_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no
+from flowfile)
+""",
+"udise_nsqf_faculty_check_if_null":"""select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or  UPPER(nsqf_faculty_id) <> 'NULL')""",
+"udise_nsqf_faculty_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and  UPPER(nsqf_faculty_id) <> 'NULL'""",
+"udise_nsqf_faculty_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when nsqf_faculty_id IS NULL THEN 1 ELSE 0 END) AS count_null_nsqf_faculty_id
+from flowfile)
+""",
+"udise_sch_pgi_details_check_if_null":"""select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+""",
+"udise_sch_pgi_details_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+""",
+"udise_sch_pgi_details_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+""",
+"udise_sch_safety_check_if_null":"""select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+""",
+"udise_sch_safety_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+""",
+"udise_sch_safety_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+""",
+"udise_sch_exmres_c8_check_if_null":"""select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL')
+""",
+"udise_sch_exmres_c8_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+""",
+"udise_sch_exmres_c8_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
+from flowfile)
+""",
+"udise_sch_enr_age_not_null":"""select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+and  UPPER(or UPPER(age_id) <> 'NULL'
+""",
+"udise_sch_enr_age_check_if_null":"""select * from flowfile except(select * from flowfile
+where UPPER(udise_sch_code) <> 'NULL'
+or UPPER(age_id) <> 'NULL')
+""",
+"udise_sch_enr_age_count_null":"""(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when age_id IS NULL THEN 1 ELSE 0 END) AS count_null_age_id
+from flowfile)
+""",
+"udise_nsqf_plcmnt_c10_table_name":"udise_nsqf_plcmnt_c10",
+"udise_nsqf_plcmnt_c12_table_name":"udise_nsqf_plcmnt_c12",
+"udise_nsqf_class_cond_table_name":"udise_nsqf_class_cond",
+"udise_sch_exmres_c12_table_name":"udise_sch_exmres_c12",
+"udise_sch_exmres_c10_table_name":"udise_sch_exmres_c10",
+"udise_sch_exmres_c5_table_name":"udise_sch_exmres_c5",
+"udise_sch_incen_cwsn_table_name":"udise_sch_incen_cwsn",
+"udise_sch_enr_by_stream_table_name":"udise_sch_enr_by_stream",
+"udise_sch_enr_cwsn_table_name":"udise_sch_enr_cwsn",
+"udise_sch_enr_medinstr_table_name":"udise_sch_enr_medinstr",
+"udise_sch_enr_age_table_name":"udise_sch_enr_age",
+"udise_sch_enr_reptr_table_name":"udise_sch_enr_reptr",
+"udise_sch_enr_fresh_table_name":"udise_sch_enr_fresh",
+"udise_sch_enr_newadm_table_name":"udise_sch_enr_newadm",
+"udise_sch_staff_posn_table_name":"udise_sch_staff_posn",
+"udise_sch_exmmarks_c10_table_name":"udise_sch_exmmarks_c10",
+"udise_sch_exmmarks_c12_table_name":"udise_sch_exmmarks_c12",
+"udise_nsqf_exmres_c10_table_name":"udise_nsqf_exmres_c10",
+"udise_nsqf_exmres_c12_table_name":"udise_nsqf_exmres_c2",
+"udise_nsqf_trng_prov_table_name":"udise_nsqf_trng_prov",
+"udise_nsqf_faculty_table_name":"udise_nsqf_faculty",
+"udise_sch_exmres_c8_table_name":"udise_sch_exmres_c8",
+"udise_sch_incentives_table_name":"udise_sch_incentives",
+"udise_sch_profile_table_name":"udise_sch_profile",
+"udise_tch_profile_table_name":"udise_tch_profile",
+"udise_sch_recp_ex_table_name":"udise_sch_recp_ex",
+"udise_nsqf_basic_info_table_name":"udise_nsqf_basic_info",
+"udise_nsqf_enr_caste_table_name":"udise_nsqf_enr_caste",
+"udise_nsqf_enr_sub_sec_table_name":"udise_nsqf_enr_sub_sec",
+"udise_sch_pgi_details_table_name":"udise_sch_pgi_details",
+"udise_sch_safety_table_name":"udise_sch_safety"
+}

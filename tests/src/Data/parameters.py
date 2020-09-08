@@ -239,7 +239,7 @@ class Data():
     sar_district ="choose_dist"
     sar_block ="choose_block"
     sar_cluster="choose_cluster"
-
+    column_report ="clmnReport"
    #semester Report
     sr_by_xpath = "//*[@id='sr']"
     sr_by_id = "sr"
@@ -256,5 +256,12 @@ class Data():
     sr_school_hyper = "//*[@id='school']/span[5]"
     sr_cluster_hyper = "//*[@id='cluster']/span[3]"
 
-
-
+    #Dashboards
+    telmetry_report ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[7]/mat-list-item/div/mat-icon"
+    attendance = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[3]/mat-list-item/div/mat-icon"
+    semester_sel = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[5]/mat-list-item/div/mat-icon"
+    crc_report = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[2]/mat-list-item/div/mat-icon"
+    crc_sel2 ="//*[@id='select']/select/option[2]"
+    crc_sel3 ="//*[@id='select']/select/option[3]"
+    crc_sel4 ="//*[@id='select']/select/option[4]"
+    crc_sel5 = "//*[@id='select']/select/option[5]"
