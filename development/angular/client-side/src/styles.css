@@ -21,5 +21,40 @@ table {
   display: none;
 }
 
+/* .custom-popup {
+  border-radius: 2px;
+  color: #504e4e;
+  font-family: 'Molengo', sans-serif;
+  font-size: 12px;
+  line-height: 10px;
+  height: 10 px ;
+  max-height: 300px;
+  }
+
+.custom-popup, .leaflet-popup-tip {
+  background: #e7e7e7;
+  border: none;
+  box-shadow: none;
+  }
+
+.leaflet-popup-content-wrapper {
+ background: #e7e7e7;
+ border-radius: 2px;
+ }
+
+.leaflet-popup {
+  position: absolute;
+  text-align: center;
+  }
+
+.leaflet-popup-content {
+  margin-top: 20px;
+  margin-right: 2px;
+  padding-right: 12px;
+  min-width: 100 px !important;
+  max-height: 300px;
+  overflow: auto;
+  } */
+
 
 
