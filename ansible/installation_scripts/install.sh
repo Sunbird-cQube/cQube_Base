@@ -33,6 +33,10 @@ sudo apt-add-repository ppa:ansible/ansible-2.9 -y
 sudo apt-get update -y
 sudo apt install ansible -y
 
+if [ -e /etc/ansible/ansible.cfg ]; then
+	sudo sed -i 's/^#log_path/log_path/g' /etc/ansible/ansible.cfg
+fi
+
 echo '127.0.0.0' >> /etc/ansible/hosts
 
 if [ ! $? = 0 ]; then

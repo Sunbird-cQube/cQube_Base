@@ -53,6 +53,21 @@
     executable: /bin/bash
   tags: install
 
+- name: Creating the template to remove the defaultRoles 
+  template:
+    src: cQube_realm_defaultRoles.json.j2
+    dest: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm_defaultRoles.json"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    mode: '0644'
+  tags: [ install, update ]
+
+- name: Removing the defaultRoles from the list
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh update realms/{{ realm_name }} -f {{ cQube_realm_defaultRoles_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    executable: /bin/bash
+  tags: [ install, update ] 
+
 - name: Adding the client roles to admin realm role
   shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh add-roles -r {{ realm_name }} --rname {{ admin_role }} --cclientid realm-management --rolename manage-users --rolename manage-realm --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:

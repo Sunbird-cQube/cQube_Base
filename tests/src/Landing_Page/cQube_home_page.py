@@ -9,7 +9,6 @@ class cQube_Home(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.data = GetData()
-        self.logger = self.data.get_functional_log("login")
         self.driver = self.data.get_driver()
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
@@ -44,6 +43,22 @@ class cQube_Home(unittest.TestCase):
         b =cQube_landing_page(self.driver)
         result = b.test_school_chart()
         self.data.page_loading(self.driver)
+
+    def test_diksha_chart_icon(self):
+        b = cQube_landing_page(self.driver)
+        result = b.test_diksha_chart()
+        self.data.page_loading(self.driver)
+
+    def test_telemetry_icon(self):
+        b = cQube_landing_page(self.driver)
+        result = b.test_telemetry_report()
+        self.data.page_loading(self.driver)
+
+    def test_sem_exception(self):
+        b = cQube_landing_page(self.driver)
+        res = b.test_semester_exception()
+        self.data.page_loading(self.driver)
+
 
     @classmethod
     def tearDownClass(cls):
