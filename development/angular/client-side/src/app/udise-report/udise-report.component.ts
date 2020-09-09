@@ -160,7 +160,7 @@ export class UdiseReportComponent implements OnInit {
       if (this.myDistData != undefined) {
         this.data = this.myDistData['data'];
         for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
+          let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
           val = val.replace('Percent', '(%)')
           this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
@@ -204,7 +204,7 @@ export class UdiseReportComponent implements OnInit {
           this.myDistData = res;
           this.data = res['data'];
           for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
-            let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
+            let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
             val = val.replace('Percent', '(%)')
             this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
           }
@@ -290,7 +290,7 @@ export class UdiseReportComponent implements OnInit {
         //=================================
         this.data = res['data'];
         for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
+          let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
           val = val.replace('Percent', '(%)')
           this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
@@ -338,6 +338,8 @@ export class UdiseReportComponent implements OnInit {
               let colorText = `style='color:blue !important;'`;
               var details = {};
               var orgObject = {};
+              var data1 = {};
+              var data2 = {};
               Object.keys(this.blockMarkers[i].details).forEach(key => {
                 if (key !== "latitude") {
                   details[key] = this.blockMarkers[i].details[key];
@@ -348,8 +350,18 @@ export class UdiseReportComponent implements OnInit {
                   orgObject[key] = details[key];
                 }
               });
+              Object.keys(orgObject).forEach(key => {
+                if (key !== "district_id") {
+                  data1[key] = orgObject[key];
+                }
+              });
+              Object.keys(data1).forEach(key => {
+                if (key !== "block_id") {
+                  data2[key] = data1[key];
+                }
+              });
               var yourData = this.getInfoFrom(this.blockMarkers[i].indices, infraName, colorText, options.level).join(" <br>");
-              var yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
+              var yourData1 = this.getInfoFrom(data2, infraName, colorText, options.level).join(" <br>");
               var yourData2 = this.getInfoFrom(this.blockMarkers[i].rank, infraName, colorText, options.level).join(" <br>");
 
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
@@ -443,7 +455,7 @@ export class UdiseReportComponent implements OnInit {
         this.data = res['data']
         //=================================
         for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
+          let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
           val = val.replace('Percent', '(%)')
           this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
@@ -489,6 +501,9 @@ export class UdiseReportComponent implements OnInit {
               let colorText = `style='color:blue !important;'`;
               var details = {};
               var orgObject = {};
+              var data1 = {};
+              var data2 = {};
+              var data3 = {};
               Object.keys(this.clusterMarkers[i].details).forEach(key => {
                 if (key !== "latitude") {
                   details[key] = this.clusterMarkers[i].details[key];
@@ -499,8 +514,23 @@ export class UdiseReportComponent implements OnInit {
                   orgObject[key] = details[key];
                 }
               });
+              Object.keys(orgObject).forEach(key => {
+                if (key !== "district_id") {
+                  data1[key] = orgObject[key];
+                }
+              });
+              Object.keys(data1).forEach(key => {
+                if (key !== "block_id") {
+                  data2[key] = data1[key];
+                }
+              });
+              Object.keys(data2).forEach(key => {
+                if (key !== "cluster_id") {
+                  data3[key] = data2[key];
+                }
+              });
               var yourData = this.getInfoFrom(this.clusterMarkers[i].indices, infraName, colorText, options.level).join(" <br>");
-              var yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
+              var yourData1 = this.getInfoFrom(data3, infraName, colorText, options.level).join(" <br>");
               var yourData2 = this.getInfoFrom(this.clusterMarkers[i].rank, infraName, colorText, options.level).join(" <br>");
 
               const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
@@ -595,7 +625,7 @@ export class UdiseReportComponent implements OnInit {
         this.data = res['data']
         //=================================
         for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
+          let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
           val = val.replace('Percent', '(%)')
           this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
@@ -641,6 +671,9 @@ export class UdiseReportComponent implements OnInit {
               let colorText = `style='color:blue !important;'`;
               var details = {};
               var orgObject = {};
+              var schoolData1 = {};
+              var schoolData2 = {};
+              var schoolData3 = {};
               Object.keys(this.schoolMarkers[i].details).forEach(key => {
                 if (key !== "latitude") {
                   details[key] = this.schoolMarkers[i].details[key];
@@ -653,16 +686,28 @@ export class UdiseReportComponent implements OnInit {
               });
               var detailSchool = {};
               var yourData1;
-              if (options.level == "school") {
-                Object.keys(orgObject).forEach(key => {
-                  if (key !== "total_schools_data_received") {
-                    detailSchool[key] = details[key];
-                  }
-                });
-                yourData1 = this.getInfoFrom(detailSchool, infraName, colorText, options.level).join(" <br>");
-              } else {
-                yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
-              }
+              Object.keys(orgObject).forEach(key => {
+                if (key !== "total_schools_data_received") {
+                  detailSchool[key] = orgObject[key];
+                }
+              });
+              Object.keys(detailSchool).forEach(key => {
+                if (key !== "district_id") {
+                  schoolData1[key] = detailSchool[key];
+                }
+              });
+              Object.keys(schoolData1).forEach(key => {
+                if (key !== "block_id") {
+                  schoolData2[key] = schoolData1[key];
+                }
+              });
+              Object.keys(schoolData2).forEach(key => {
+                if (key !== "cluster_id") {
+                  schoolData3[key] = schoolData2[key];
+                }
+              });
+              yourData1 = this.getInfoFrom(schoolData3, infraName, colorText, options.level).join(" <br>");
+
               var yourData = this.getInfoFrom(this.schoolMarkers[i].indices, infraName, colorText, options.level).join(" <br>");
               var yourData2 = this.getInfoFrom(this.schoolMarkers[i].rank, infraName, colorText, options.level).join(" <br>");
 
@@ -747,7 +792,7 @@ export class UdiseReportComponent implements OnInit {
     this.myData = this.service.udise_blocks_per_dist(districtId).subscribe(res => {
       this.data = res['data'];
       for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
-        let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
+        let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
         val = val.replace('Percent', '(%)')
         this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
       }
@@ -828,7 +873,7 @@ export class UdiseReportComponent implements OnInit {
       this.data = res['data'];
       //=================================
       for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
-        let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
+        let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
         val = val.replace('Percent', '(%)')
         this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
       }
@@ -918,7 +963,7 @@ export class UdiseReportComponent implements OnInit {
         this.data = res['data'];
         //=================================
         for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
-          let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
+          let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
           val = val.replace('Percent', '(%)')
           this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
@@ -1047,6 +1092,9 @@ export class UdiseReportComponent implements OnInit {
           let colorText = `style='color:blue !important;'`;
           var details = {};
           var orgObject = {};
+          var data1 = {};
+          var data2 = {};
+          var data3 = {};
           Object.keys(this.markers[i].details).forEach(key => {
             if (key !== "latitude") {
               details[key] = this.markers[i].details[key];
@@ -1057,17 +1105,70 @@ export class UdiseReportComponent implements OnInit {
               orgObject[key] = details[key];
             }
           });
-          var detailSchool = {};
+
+          var schoolData = {};
+          var schoolData1 = {};
+          var schoolData2 = {};
+          var schoolData3 = {};
           var yourData1;
           if (options.level == "school") {
             Object.keys(orgObject).forEach(key => {
               if (key !== "total_schools_data_received") {
-                detailSchool[key] = details[key];
+                schoolData[key] = details[key];
               }
             });
-            yourData1 = this.getInfoFrom(detailSchool, infraName, colorText, options.level).join(" <br>");
-          } else {
-            yourData1 = this.getInfoFrom(orgObject, infraName, colorText, options.level).join(" <br>");
+            Object.keys(schoolData).forEach(key => {
+              if (key !== "district_id") {
+                schoolData1[key] = schoolData[key];
+              }
+            });
+            Object.keys(schoolData1).forEach(key => {
+              if (key !== "block_id") {
+                schoolData2[key] = schoolData1[key];
+              }
+            });
+            Object.keys(schoolData2).forEach(key => {
+              if (key !== "cluster_id") {
+                schoolData3[key] = schoolData2[key];
+              }
+            });
+            yourData1 = this.getInfoFrom(schoolData3, infraName, colorText, options.level).join(" <br>");
+          } else if (options.level == 'district') {
+            Object.keys(orgObject).forEach(key => {
+              if (key !== "district_id") {
+                data1[key] = orgObject[key];
+              }
+            });
+            yourData1 = this.getInfoFrom(data1, infraName, colorText, options.level).join(" <br>");
+          } else if (options.level == 'block') {
+            Object.keys(orgObject).forEach(key => {
+              if (key !== "district_id") {
+                data1[key] = orgObject[key];
+              }
+            });
+            Object.keys(data1).forEach(key => {
+              if (key !== "block_id") {
+                data2[key] = data1[key];
+              }
+            });
+            yourData1 = this.getInfoFrom(data2, infraName, colorText, options.level).join(" <br>");
+          } else if (options.level == 'cluster') {
+            Object.keys(orgObject).forEach(key => {
+              if (key !== "district_id") {
+                data1[key] = orgObject[key];
+              }
+            });
+            Object.keys(data1).forEach(key => {
+              if (key !== "block_id") {
+                data2[key] = data1[key];
+              }
+            });
+            Object.keys(data2).forEach(key => {
+              if (key !== "cluster_id") {
+                data3[key] = data2[key];
+              }
+            });
+            yourData1 = this.getInfoFrom(data3, infraName, colorText, options.level).join(" <br>");
           }
           var yourData = this.getInfoFrom(this.markers[i].indices, infraName, colorText, options.level).join(" <br>");
           var yourData2 = this.getInfoFrom(this.markers[i].rank, infraName, colorText, options.level).join(" <br>");
@@ -1141,7 +1242,7 @@ export class UdiseReportComponent implements OnInit {
               }
               this.reportData.push(obj);
             } else {
-              let myobj = { ...detailSchool, ...this.markers[i].indices }
+              let myobj = { ...schoolData, ...this.markers[i].indices }
               this.reportData.push(myobj);
             }
           }
