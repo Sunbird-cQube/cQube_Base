@@ -157,7 +157,7 @@ check_ip()
             echo "Error - Invalid value for $key"; fail=1
             ip_pass=0
         fi
-        is_local_ip=`ip a | grep $2` > /dev/null 2>&1
+        is_local_ip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'` > /dev/null 2>&1
         if [[ $ip_pass == 0 && $is_local_ip != *$2* ]]; then
             echo "Error - Invalid value for $key. Please enter the local ip of this system."; fail=1 
         fi
@@ -209,20 +209,17 @@ check_db_password(){
 }
 
 check_api_endpoint(){
-if [[ ! $2 =~ ^[0-9] ]]; then
-        if [[ (( $2 =~ \-{2,} ))  ||  (( $2 =~ \.{2,} )) ]]; then
-          echo "Error - Please provide the proper api endpoint for $1"; fail=1
-  else
-   if [[ $2 =~ ^[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
+if [[ (( $2 =~ \-{2,} ))  ||  (( $2 =~ \.{2,} )) ]]; then
+    echo "Error - Please provide the proper api endpoint for $1"; fail=1
+else
+    if [[ $2 =~ ^[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
         if ! [[ ${#2} -le 255 ]]; then
-         echo "Error - FQDN exceeding 255 characters. Please provide the proper api endpoint for $1"; fail=1
+          echo "Error - FQDN exceeding 255 characters. Please provide the proper api endpoint for $1"; fail=1
         fi
     else
         echo "Error - Please provide the proper api point for $1"; fail=1
     fi
-    fi
 fi
-
 }
 
 check_aws_default_region(){
@@ -287,61 +284,61 @@ value=${vals[$key]}
 case $key in
    system_user_name)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_sys_user $key $value
        fi
        ;;
    base_dir)	 
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_base_dir $key $value
        fi
        ;;
    s3_access_key)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        fi
        ;;
    s3_secret_key)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
       else
           check_aws_key $aws_access_key $aws_secret_key
        fi
        ;;
    s3_input_bucket)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    s3_output_bucket)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    s3_emission_bucket)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    local_ipv4_address)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_ip $key $value
        fi
        ;;
    db_user)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
 	        check_postgres
           check_db_naming $key $value
@@ -349,49 +346,49 @@ case $key in
        ;;
    db_name)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_naming $key $value
        fi
        ;;
    keycloak_adm_user)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_naming $key $value
        fi
        ;;
    keycloak_adm_passwd)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_password $key $value
        fi
        ;;
    keycloak_config_otp)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_kc_config_otp $key $value
        fi
        ;;
    db_password)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_password $key $value
        fi
        ;;
    api_endpoint)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_api_endpoint $key $value
        fi
        ;;
    aws_default_region)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value. Recommended value is ap-south-1"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check. Recommended value is ap-south-1"; fail=1
        else
            check_aws_default_region
        fi
