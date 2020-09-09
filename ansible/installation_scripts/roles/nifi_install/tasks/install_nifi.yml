@@ -122,6 +122,12 @@
     prompt: "nifi is restarting, kindly do not press any key"
   tags: update
 
+- name: checking for nifi port, waiting until it starts... 
+  wait_for:
+    port: "{{ nifi_port }}"
+    delay: 15
+  tags: [ install, update ]
+
 - name: Get configuration details
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/controller/config
