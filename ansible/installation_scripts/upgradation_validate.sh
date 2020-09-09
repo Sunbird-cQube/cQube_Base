@@ -75,8 +75,8 @@ if [[ ! $installed_version < $this_version ]]; then
    echo "cQube is already upgraded to $this_version version.";
    exit 1
 fi
-if [[ ! $installed_version == "1.2" ]]; then
-   echo "Version $this_version is only upgradeable from 1.2 version";
+if [[ ! $installed_version == "1.2.1" ]]; then
+   echo "Version $this_version is only upgradeable from 1.2.1 version";
    exit 1
 fi
 }
@@ -139,7 +139,7 @@ if [[ $aws_key_status == 0 ]]; then
         bucketstatus=`aws s3api head-bucket --bucket "${2}" 2>&1`
         if [ ! $? == 0 ]
         then
-            echo "Error: [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in upgradation_config.yml"; fail=1
+            echo "Error - [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in upgradation_config.yml"; fail=1
         fi
 fi
 }
@@ -181,7 +181,8 @@ check_aws_default_region(){
 }
 
 check_mem(){
-mem_total=`grep MemTotal /proc/meminfo | awk '{print $2}'`
+mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
+mem_total=$(($mem_total_kb/1024))
 if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
   min_shared_mem=$(echo $mem_total*11.5/100 | bc)
   min_work_mem=$(echo $mem_total*2/100 | bc)
@@ -206,74 +207,6 @@ java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
 else
   echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
   exit 1
-fi
-}
-
-check_mem_variables(){
-kb=`grep MemAvailable /proc/meminfo | awk '{ print $2 }'` #reading RAM size in kb
-mb=`echo "scale=0; $kb / 1024" | bc` # to MB    #converting RAM size to mb
-
-java_arg_2=$3
-java_arg_3=$4
-share_mem=$1 
-work_mem=$2
-java_arg_check=0
-if [[ $4 =~ ^-Xmx[0-9]+[m|g]$ ]]; then
-    raw_java_arg_3="$( echo "$4" | sed -e 's/^-Xmx//; s/[m|g]$//' )"
-    if [[ $4 =~ g$ ]]; then 
-        final_java_arg_3=$(($raw_java_arg_3*1024))
-    else
-        final_java_arg_3=$raw_java_arg_3
-    fi
-else
-    echo "Error - Please enter the proper value in java_arg_3"; fail=1
-    java_arg_check=1
-fi
-
-if [[ $3 =~ ^-Xms[0-9]+[m|g]$ ]]; then
-    raw_java_arg_2="$( echo "$3" | sed -e 's/^-Xms//; s/[m|g]$//' )"
-    if [[ $3 =~ g$ ]]; then
-        final_java_arg_2=$(($raw_java_arg_2*1024))
-    else
-        final_java_arg_2=$raw_java_arg_2
-    fi
-else
-    echo "Error - Please enter the proper value in java_arg_2"; fail=1
-    java_arg_check=1
-fi
-
-if [[ $2 =~ ^[0-9]+(GB|MB)$ ]]; then
-    raw_work_mem="$(echo $2 | sed -e 's/\(GB\|MB\)$//')"
-    if [[ $2 =~ GB$ ]]; then
-        final_work_mem=$(($raw_work_mem*1024))
-    else
-        final_work_mem=$raw_work_mem
-    fi
-else
-    echo "Error - Please enter the proper value in work_memory"; fail=1
-fi
-
-if [[ $1 =~ ^[0-9]+(GB|MB)$ ]]; then
-    raw_share_mem="$(echo $1 | sed -e 's/\(GB\|MB\)$//')"
-    if [[ $1 =~ GB$ ]]; then
-        final_share_mem=$(($raw_share_mem*1024))
-    else
-        final_share_mem=$raw_share_mem
-    fi
-else
-    echo "Error - Please enter the proper value in share_memory"; fail=1
-fi
-
-#addition of all memories
-if [[ $(($final_java_arg_3+$final_work_mem+$final_share_mem)) -ge $mb ]] ; then
-    echo "Error - Memory values are more than the RAM size" ; fail=1
-fi
-
-#comparing if java2 is greater than java3
-if [[ $java_arg_check == 0 ]]; then
-    if [[ $final_java_arg_2 -ge $final_java_arg_3 ]]  ; then
-       echo "Error - java_arg_2 should be less than java_arg_3"; fail=1
-    fi
 fi
 }
 
@@ -320,12 +253,6 @@ keycloak_adm_passwd=$(awk ''/^keycloak_adm_passwd:' /{ if ($2 !~ /#.*/) {print $
 db_user=$(awk ''/^db_user:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 db_name=$(awk ''/^db_name:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-
-# Getting memory args
-shared_buffers=$(awk ''/^shared_buffers:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-work_mem=$(awk ''/^work_mem:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-java_arg_2=$(awk ''/^java_arg_2:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-java_arg_3=$(awk ''/^java_arg_3:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 
 check_mem
 # Check the version before starting validation
