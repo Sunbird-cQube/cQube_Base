@@ -327,7 +327,7 @@ export class UdiseReportComponent implements OnInit {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               this.colorGredient(this.blockMarkers[i], this.infraData);
               var markerIcon = L.circleMarker([this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude], {
-                radius: 3.5,
+                radius: 4,
                 color: "gray",
                 fillColor: this.setColor,
                 fillOpacity: 1,
@@ -784,7 +784,7 @@ export class UdiseReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3.5,
+        radius: 4.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: 8.3,
@@ -872,7 +872,7 @@ export class UdiseReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3,
+        radius: 4.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: 10,
@@ -975,7 +975,7 @@ export class UdiseReportComponent implements OnInit {
 
         // options to set for markers in the map
         let options = {
-          radius: 3.5,
+          radius: 4.5,
           fillOpacity: 1,
           strokeWeight: 0.01,
           mapZoom: 12,
