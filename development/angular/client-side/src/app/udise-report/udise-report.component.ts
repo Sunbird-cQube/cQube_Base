@@ -203,7 +203,6 @@ export class UdiseReportComponent implements OnInit {
         this.myData = this.service.udise_dist_wise().subscribe(res => {
           this.myDistData = res;
           this.data = res['data'];
-          console.log(this.data[0].indices);
           for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
             let val = this.changeingStringCases(Object.keys(this.data[0].indices)[i].replace(/_/g, ' '));
             val = val.replace('Percent', '(%)')
