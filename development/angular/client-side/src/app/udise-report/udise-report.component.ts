@@ -181,7 +181,7 @@ export class UdiseReportComponent implements OnInit {
         this.districtMarkers = this.myDistData['data'];
         // options to set for markers in the map
         let options = {
-          radius: 5,
+          radius: 6,
           fillOpacity: 1,
           strokeWeight: 0.05,
           mapZoom: 7,
@@ -228,7 +228,7 @@ export class UdiseReportComponent implements OnInit {
 
           // options to set for markers in the map
           let options = {
-            radius: 5,
+            radius: 6,
             fillOpacity: 1,
             strokeWeight: 0.01,
             mapZoom: 7,
