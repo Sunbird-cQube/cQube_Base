@@ -13,7 +13,15 @@
     owner: postgres
     mode: "0644"
   tags: [ install, update ]
- 
+
+- name: copy csv to /tmp/postgres
+  copy:
+    src: udise_config.csv
+    dest: /tmp/postgres
+    owner: postgres
+    mode: "0644"
+  tags: [ install, update ]
+
 - name: Run queries from SQL script
   become: true
   become_user: postgres
@@ -24,6 +32,10 @@
 
 - name: Copying table structure from csv file
   shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy infrastructure_staging_init(infrastructure_name,infrastructure_category,status) from '/tmp/postgres/infrastructure_master.csv' delimiter ',' csv header;"
+  tags: [ install, update ]
+
+- name: Copying table structure from csv file
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy udise_config(id,description,column_name,type,indice_id,status,score) from '/tmp/postgres/udise_config.csv' delimiter '|' csv header;"
   tags: [ install, update ]
 
 - name: Run queries from SQL script
