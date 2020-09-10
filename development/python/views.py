@@ -102,7 +102,7 @@ def api_login():
         abort(401, f'User unauthorized')
 
 def validate_role(token):
-    user_role = token.get("realm_access") 
+    user_role = token.get("realm_access")
     if "admin" in user_role["roles"]:
         return "Valid role"
     else:
@@ -115,6 +115,14 @@ def validate_emission_role(token):
     else:
         abort(401, f'Invalid user roles to access api')
 
+def add_timestamp(file):
+    if '.' in file:
+        fn=file.split('.')
+        file='.'.join(fn[0:-1])+'_'+datetime.now().strftime('%Y%m%d%H%M%S')+'.'+fn[-1]
+    else:
+        file=str(file)+'_'+datetime.now().strftime('%Y%m%d%H%M%S')
+    return file
+
 @app.route('/upload-url',methods=['POST'])
 @oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_upload_url():
@@ -122,8 +130,10 @@ def aws_upload_url():
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
     args = parser.parse_args()
-    if args["filename"]:
-        return create_presigned_post(EMISSION_BUCKET_NAME,str(args["filename"]))
+    file=args["filename"]
+    if file:
+        file=add_timestamp(file)
+        return create_presigned_post(EMISSION_BUCKET_NAME,str(file))
     else:
         abort(400, f'Bad request, validate the payload')
 

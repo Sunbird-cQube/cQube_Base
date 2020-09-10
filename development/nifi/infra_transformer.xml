@@ -2611,7 +2611,7 @@ VALUES
 (
 	'${s3.key}',
 	'${filename}',
-	'${uuid}',
+	'${files_uuid}',
 	'IN_PROGRESS'
 );</value>
     </entry>
@@ -19830,8 +19830,8 @@ where ff_uuid= '${zip_identifier}'</value>
                             <id>7096f297-9501-30ec-0000-000000000000</id>
                             <parentGroupId>08f846bd-cb1b-3676-0000-000000000000</parentGroupId>
                             <position>
-<x>6464.0</x>
-<y>-1424.0</y>
+<x>6632.0</x>
+<y>-1456.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
@@ -28875,5 +28875,5 @@ same id data validation of file:${filename} started</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/08/2020 15:02:00 IST</timestamp>
+    <timestamp>09/08/2020 22:50:27 IST</timestamp>
 </template>

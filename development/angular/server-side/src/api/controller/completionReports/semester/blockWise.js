@@ -19,7 +19,6 @@ router.get('/allBlockWise', auth.authController, async (req, res) => {
 
 router.get('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
-        console.log(req.params);
         logger.info('--- block wise semester_completion api ---');
         let fileName = `exception_list/semester_completion/block_sem_completion_2.json`
         var blockData = await s3File.readS3File(fileName);

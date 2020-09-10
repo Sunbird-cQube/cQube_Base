@@ -102,6 +102,7 @@ export class DikshaBarChartComponent implements OnInit {
       document.getElementById('home').style.display = "block";
     }
     this.errMsg();
+    this.reportData = [];
     this.timePeriod = '';
     this.collectionName = '';
     this.footer = '';
@@ -134,6 +135,7 @@ export class DikshaBarChartComponent implements OnInit {
 
   listCollectionNames() {
     this.errMsg();
+    this.reportData = [];
     this.collectionName = '';
     this.footer = '';
     this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod }).subscribe(res => {
@@ -164,6 +166,7 @@ export class DikshaBarChartComponent implements OnInit {
 
   getDataBasedOnCollections() {
     this.emptyChart();
+    this.reportData = [];
     document.getElementById('home').style.display = "block";
     this.errMsg();
     this.fileName = `collectionType_${this.collection_type}_data_of_${this.collectionName}`;
@@ -253,20 +256,24 @@ export class DikshaBarChartComponent implements OnInit {
   }
 
   downloadRoport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
+    if (this.reportData.length <= 0) {
+      alert("No data fount to download");
+    } else {
+      const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        title: 'My Awesome CSV',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        filename: this.fileName
+      };
+      const csvExporter = new ExportToCsv(options);
+      csvExporter.generateCsv(this.reportData);
+    }
   }
 
   changeingStringCases(str) {

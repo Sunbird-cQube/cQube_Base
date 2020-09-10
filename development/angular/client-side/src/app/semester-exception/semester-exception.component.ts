@@ -256,7 +256,7 @@ export class SemesterExceptionComponent implements OnInit {
 
               // to download the report
               this.fileName = "Block_wise_report";
-              var obj = { ...this.blockMarkers[i] };
+              var obj = { ...orgObject };
               this.reportData.push(obj);
 
               markerIcon.on('mouseover', function (e) {
@@ -363,7 +363,7 @@ export class SemesterExceptionComponent implements OnInit {
 
               // to download the report
               this.fileName = "Cluster_wise_report";
-              var obj = { ...this.clusterMarkers[i] };
+              var obj = { ...orgObject };
               this.reportData.push(obj);
 
               markerIcon.on('mouseover', function (e) {
@@ -473,7 +473,7 @@ export class SemesterExceptionComponent implements OnInit {
 
               // to download the report
               this.fileName = "School_wise_report";
-              var obj = { ...this.schoolMarkers[i] };
+              var obj = { ...detailSchool };
               this.reportData.push(obj);
 
               markerIcon.on('mouseover', function (e) {
@@ -806,7 +806,7 @@ export class SemesterExceptionComponent implements OnInit {
 
           // to download the report
           this.fileName = fileName;
-          var obj = { ...this.markers[i] };
+          var obj = { ...orgObject };
           this.reportData.push(obj);
         }
         this.popups(markerIcon, this.markers[i], options);
@@ -875,22 +875,24 @@ export class SemesterExceptionComponent implements OnInit {
 
   // to download the excel report
   downloadReport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-
-
-    csvExporter.generateCsv(this.reportData);
+    if (this.reportData.length <= 0) {
+      alert("No data fount to download");
+    } else {
+      const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        title: 'My Awesome CSV',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        filename: this.fileName
+      };
+      const csvExporter = new ExportToCsv(options);
+      csvExporter.generateCsv(this.reportData);
+    }
   }
 
   // to generate the color gradient from red to green based on the attendance percentage values
