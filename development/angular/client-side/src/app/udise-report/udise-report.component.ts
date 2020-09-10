@@ -161,18 +161,21 @@ export class UdiseReportComponent implements OnInit {
         this.data = this.myDistData['data'];
         for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
           let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
+          if (val.includes("Index")) {
+            val = val.replace('Index', '')
+          }
           val = val.replace('Percent', '(%)')
           this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
-        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+        this.infraFilter.unshift({ key: "Infrastructure_Score", value: "Infrastructure Score" });
 
         var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infrastructure_score';
+          return obj.key == 'Infrastructure_Score';
         });
 
         this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infrastructure_score';
+          return obj.key !== 'Infrastructure_Score';
         });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
@@ -193,7 +196,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.genericFun(this.myDistData, options, fileName);
         // sort the districtname alphabetically
-        this.districtMarkers.sort((a, b) => (a.details.district_name > b.details.district_name) ? 1 : ((b.details.district_name > a.details.district_name) ? -1 : 0));
+        this.districtMarkers.sort((a, b) => (a.details.District_Name > b.details.District_Name) ? 1 : ((b.details.District_Name > a.details.District_Name) ? -1 : 0));
 
       } else {
 
@@ -205,18 +208,21 @@ export class UdiseReportComponent implements OnInit {
           this.data = res['data'];
           for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
             let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
+            if (val.includes("Index")) {
+              val = val.replace('Index', '')
+            }
             val = val.replace('Percent', '(%)')
             this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
           }
 
-          this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+          this.infraFilter.unshift({ key: "Infrastructure_Score", value: "Infrastructure Score" });
 
           var infraKey = this.infraFilter.filter(function (obj) {
-            return obj.key == 'infrastructure_score';
+            return obj.key == 'Infrastructure_Score';
           });
 
           this.infraFilter = this.infraFilter.filter(function (obj) {
-            return obj.key !== 'infrastructure_score';
+            return obj.key !== 'Infrastructure_Score';
           });
 
           this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
@@ -240,7 +246,7 @@ export class UdiseReportComponent implements OnInit {
           this.genericFun(this.myDistData, options, fileName);
 
           // sort the districtname alphabetically
-          this.districtMarkers.sort((a, b) => (a.details.district_name > b.details.district_name) ? 1 : ((b.details.district_name > a.details.district_name) ? -1 : 0));
+          this.districtMarkers.sort((a, b) => (a.details.District_Name > b.details.District_Name) ? 1 : ((b.details.District_Name > a.details.District_Name) ? -1 : 0));
 
         }, err => {
           this.data = [];
@@ -291,18 +297,21 @@ export class UdiseReportComponent implements OnInit {
         this.data = res['data'];
         for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
           let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
+          if (val.includes("Index")) {
+            val = val.replace('Index', '')
+          }
           val = val.replace('Percent', '(%)')
           this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
-        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+        this.infraFilter.unshift({ key: "Infrastructure_Score", value: "Infrastructure Score" });
 
         var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infrastructure_score';
+          return obj.key == 'Infrastructure_Score';
         });
 
         this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infrastructure_score';
+          return obj.key !== 'Infrastructure_Score';
         });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
@@ -385,12 +394,12 @@ export class UdiseReportComponent implements OnInit {
               markerIcon.myJsonData = this.blockMarkers[i];
 
               //download report
-              if (this.infraData !== 'infrastructure_score') {
+              if (this.infraData !== 'Infrastructure_Score') {
                 let obj = {
                   district_id: this.blockMarkers[i].details.district_id,
-                  district_name: this.blockMarkers[i].details.district_name,
+                  district_name: this.blockMarkers[i].details.District_Name,
                   block_id: this.blockMarkers[i].details.block_id,
-                  block_name: this.blockMarkers[i].details.block_name,
+                  block_name: this.blockMarkers[i].details.Block_Name,
                   [this.infraData]: this.blockMarkers[i].indices[`${this.infraData}`] + "%"
                 }
                 this.reportData.push(obj);
@@ -456,18 +465,21 @@ export class UdiseReportComponent implements OnInit {
         //=================================
         for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
           let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
+          if (val.includes("Index")) {
+            val = val.replace('Index', '')
+          }
           val = val.replace('Percent', '(%)')
           this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
-        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+        this.infraFilter.unshift({ key: "Infrastructure_Score", value: "Infrastructure Score" });
 
         var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infrastructure_score';
+          return obj.key == 'Infrastructure_Score';
         });
 
         this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infrastructure_score';
+          return obj.key !== 'Infrastructure_Score';
         });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
@@ -554,14 +566,14 @@ export class UdiseReportComponent implements OnInit {
               markerIcon.myJsonData = this.clusterMarkers[i];
 
               //download report
-              if (this.infraData !== 'infrastructure_score') {
+              if (this.infraData !== 'Infrastructure_Score') {
                 let obj = {
                   district_id: this.clusterMarkers[i].details.district_id,
-                  district_name: this.clusterMarkers[i].details.district_name,
+                  district_name: this.clusterMarkers[i].details.District_Name,
                   block_id: this.clusterMarkers[i].details.block_id,
-                  block_name: this.clusterMarkers[i].details.block_name,
+                  block_name: this.clusterMarkers[i].details.Block_Name,
                   cluster_id: this.clusterMarkers[i].details.cluster_id,
-                  cluster_name: this.clusterMarkers[i].details.cluster_name,
+                  cluster_name: this.clusterMarkers[i].details.Cluster_Name,
                   [this.infraData]: this.clusterMarkers[i].indices[`${this.infraData}`] + "%"
                 }
                 this.reportData.push(obj);
@@ -626,18 +638,21 @@ export class UdiseReportComponent implements OnInit {
         //=================================
         for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
           let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
+          if (val.includes("Index")) {
+            val = val.replace('Index', '')
+          }
           val = val.replace('Percent', '(%)')
           this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
-        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+        this.infraFilter.unshift({ key: "Infrastructure_Score", value: "Infrastructure Score" });
 
         var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infrastructure_score';
+          return obj.key == 'Infrastructure_Score';
         });
 
         this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infrastructure_score';
+          return obj.key !== 'Infrastructure_Score';
         });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
@@ -731,16 +746,16 @@ export class UdiseReportComponent implements OnInit {
               markerIcon.myJsonData = this.schoolMarkers[i];
 
               //download report
-              if (this.infraData !== 'infrastructure_score') {
+              if (this.infraData !== 'Infrastructure_Score') {
                 let obj = {
                   district_id: this.schoolMarkers[i].details.district_id,
-                  district_name: this.schoolMarkers[i].details.district_name,
+                  district_name: this.schoolMarkers[i].details.District_Name,
                   block_id: this.schoolMarkers[i].details.block_id,
-                  block_name: this.schoolMarkers[i].details.block_name,
+                  block_name: this.schoolMarkers[i].details.Block_Name,
                   cluster_id: this.schoolMarkers[i].details.cluster_id,
-                  cluster_name: this.schoolMarkers[i].details.cluster_name,
+                  cluster_name: this.schoolMarkers[i].details.Cluster_Name,
                   school_id: this.schoolMarkers[i].details.school_id,
-                  school_name: this.schoolMarkers[i].details.school_name,
+                  school_name: this.schoolMarkers[i].details.School_Name,
                   [this.infraData]: this.schoolMarkers[i].indices[`${this.infraData}`] + "%"
                 }
                 this.reportData.push(obj);
@@ -793,18 +808,21 @@ export class UdiseReportComponent implements OnInit {
       this.data = res['data'];
       for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
         let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
+        if (val.includes("Index")) {
+          val = val.replace('Index', '')
+        }
         val = val.replace('Percent', '(%)')
         this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
       }
 
-      this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+      this.infraFilter.unshift({ key: "Infrastructure_Score", value: "Infrastructure Score" });
 
       var infraKey = this.infraFilter.filter(function (obj) {
-        return obj.key == 'infrastructure_score';
+        return obj.key == 'Infrastructure_Score';
       });
 
       this.infraFilter = this.infraFilter.filter(function (obj) {
-        return obj.key !== 'infrastructure_score';
+        return obj.key !== 'Infrastructure_Score';
       });
 
       this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
@@ -815,7 +833,7 @@ export class UdiseReportComponent implements OnInit {
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data[0].details.district_id,
-        districtName: this.data[0].details.district_name
+        districtName: this.data[0].details.District_Name
       }
 
       this.districtId = districtId;
@@ -843,7 +861,7 @@ export class UdiseReportComponent implements OnInit {
 
       this.genericFun(res, options, fileName);
       // sort the blockname alphabetically
-      this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));
+      this.blockMarkers.sort((a, b) => (a.details.Block_Name > b.details.Block_Name) ? 1 : ((b.details.Block_Name > a.details.Block_Name) ? -1 : 0));
     }, err => {
       this.data = [];
       this.loaderAndErr();
@@ -874,18 +892,21 @@ export class UdiseReportComponent implements OnInit {
       //=================================
       for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
         let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
+        if (val.includes("Index")) {
+          val = val.replace('Index', '')
+        }
         val = val.replace('Percent', '(%)')
         this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
       }
 
-      this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+      this.infraFilter.unshift({ key: "Infrastructure_Score", value: "Infrastructure Score" });
 
       var infraKey = this.infraFilter.filter(function (obj) {
-        return obj.key == 'infrastructure_score';
+        return obj.key == 'Infrastructure_Score';
       });
 
       this.infraFilter = this.infraFilter.filter(function (obj) {
-        return obj.key !== 'infrastructure_score';
+        return obj.key !== 'Infrastructure_Score';
       });
 
       this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
@@ -904,9 +925,9 @@ export class UdiseReportComponent implements OnInit {
       // set hierarchy values
       this.blockHierarchy = {
         distId: this.data[0].details.district_id,
-        districtName: this.data[0].details.district_name,
+        districtName: this.data[0].details.District_Name,
         blockId: this.data[0].details.block_id,
-        blockName: this.data[0].details.block_name
+        blockName: this.data[0].details.Block_Name
       }
 
       // to show and hide the dropdowns
@@ -935,7 +956,7 @@ export class UdiseReportComponent implements OnInit {
 
       this.genericFun(res, options, fileName);
       // sort the clusterName alphabetically
-      this.clusterMarkers.sort((a, b) => (a.details.cluster_name > b.details.cluster_name) ? 1 : ((b.details.cluster_name > a.details.cluster_name) ? -1 : 0));
+      this.clusterMarkers.sort((a, b) => (a.details.Cluster_Name > b.details.Cluster_Name) ? 1 : ((b.details.Cluster_Name > a.details.Cluster_Name) ? -1 : 0));
     }, err => {
       this.data = [];
       this.loaderAndErr();
@@ -964,18 +985,21 @@ export class UdiseReportComponent implements OnInit {
         //=================================
         for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
           let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
+          if (val.includes("Index")) {
+            val = val.replace('Index', '')
+          }
           val = val.replace('Percent', '(%)')
           this.infraFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
         }
 
-        this.infraFilter.unshift({ key: "infrastructure_score", value: "Infrastructure Score" });
+        this.infraFilter.unshift({ key: "Infrastructure_Score", value: "Infrastructure Score" });
 
         var infraKey = this.infraFilter.filter(function (obj) {
-          return obj.key == 'infrastructure_score';
+          return obj.key == 'Infrastructure_Score';
         });
 
         this.infraFilter = this.infraFilter.filter(function (obj) {
-          return obj.key !== 'infrastructure_score';
+          return obj.key !== 'Infrastructure_Score';
         });
 
         this.infraFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
@@ -1003,11 +1027,11 @@ export class UdiseReportComponent implements OnInit {
         // set hierarchy values
         this.clusterHierarchy = {
           distId: this.data[0].details.district_id,
-          districtName: this.data[0].details.district_name,
+          districtName: this.data[0].details.District_Name,
           blockId: this.data[0].details.block_id,
-          blockName: this.data[0].details.block_name,
+          blockName: this.data[0].details.Block_Name,
           clusterId: this.data[0].details.cluster_id,
-          clusterName: this.data[0].details.cluster_name,
+          clusterName: this.data[0].details.Cluster_Name,
         }
 
         this.blockHidden = false;
@@ -1185,10 +1209,10 @@ export class UdiseReportComponent implements OnInit {
 
           this.fileName = fileName;
           if (options.level == "district") {
-            if (this.infraData !== 'infrastructure_score') {
+            if (this.infraData !== 'Infrastructure_Score') {
               let obj = {
                 district_id: this.markers[i].details.district_id,
-                district_name: this.markers[i].details.district_name,
+                district_name: this.markers[i].details.District_Name,
                 [this.infraData]: this.markers[i].indices[`${this.infraData}`] + "%"
               }
               this.reportData.push(obj);
@@ -1197,12 +1221,12 @@ export class UdiseReportComponent implements OnInit {
               this.reportData.push(myobj);
             }
           } else if (options.level == "block") {
-            if (this.infraData !== 'infrastructure_score') {
+            if (this.infraData !== 'Infrastructure_Score') {
               let obj = {
                 district_id: this.markers[i].details.district_id,
-                district_name: this.markers[i].details.district_name,
+                district_name: this.markers[i].details.District_Name,
                 block_id: this.markers[i].details.block_id,
-                block_name: this.markers[i].details.block_name,
+                block_name: this.markers[i].details.Block_Name,
                 [this.infraData]: this.markers[i].indices[`${this.infraData}`] + "%"
               }
               this.reportData.push(obj);
@@ -1212,14 +1236,14 @@ export class UdiseReportComponent implements OnInit {
             }
           }
           else if (options.level == "cluster") {
-            if (this.infraData !== 'infrastructure_score') {
+            if (this.infraData !== 'Infrastructure_Score') {
               let obj = {
                 district_id: this.markers[i].details.district_id,
-                district_name: this.markers[i].details.district_name,
+                district_name: this.markers[i].details.District_Name,
                 block_id: this.markers[i].details.block_id,
-                block_name: this.markers[i].details.block_name,
+                block_name: this.markers[i].details.Block_Name,
                 cluster_id: this.markers[i].details.cluster_id,
-                cluster_name: this.markers[i].details.cluster_name,
+                cluster_name: this.markers[i].details.Cluster_Name,
                 [this.infraData]: this.markers[i].indices[`${this.infraData}`] + "%"
               }
               this.reportData.push(obj);
@@ -1228,16 +1252,16 @@ export class UdiseReportComponent implements OnInit {
               this.reportData.push(myobj);
             }
           } else if (options.level == "school") {
-            if (this.infraData !== 'infrastructure_score') {
+            if (this.infraData !== 'Infrastructure_Score') {
               let obj = {
                 district_id: this.markers[i].details.district_id,
-                district_name: this.markers[i].details.district_name,
+                district_name: this.markers[i].details.District_Name,
                 block_id: this.markers[i].details.block_id,
-                block_name: this.markers[i].details.block_name,
+                block_name: this.markers[i].details.Block_Name,
                 cluster_id: this.markers[i].details.cluster_id,
-                cluster_name: this.markers[i].details.cluster_name,
+                cluster_name: this.markers[i].details.Cluster_Name,
                 school_id: this.markers[i].details.school_id,
-                school_name: this.markers[i].details.school_name,
+                school_name: this.markers[i].details.School_Name,
                 [this.infraData]: this.markers[i].indices[`${this.infraData}`] + "%"
               }
               this.reportData.push(obj);
@@ -1261,7 +1285,7 @@ export class UdiseReportComponent implements OnInit {
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
-  public infraData = 'infrastructure_score';
+  public infraData = 'Infrastructure_Score';
   public level = '';
   oninfraSelect(data) {
     this.infraData = data;
@@ -1291,7 +1315,7 @@ export class UdiseReportComponent implements OnInit {
 
   colorGredient(data, infraData) {
     var dataSet = {};
-    if (infraData == 'infrastructure_score') {
+    if (infraData == 'Infrastructure_Score') {
       dataSet = data.details;
     } else {
       dataSet = data.indices;
@@ -1342,8 +1366,10 @@ export class UdiseReportComponent implements OnInit {
           key.replace(
             /\w\S*/g,
             function (txt) {
-              txt = txt.replace(/_/g, ' ');
-              return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+              if (txt.includes("Index")) {
+                txt = txt.replace('Index', '')
+              }
+              return txt.replace(/_/g, ' ');
             })
           + "</b>" + ": " + object[key] + `</span>`;
       }
@@ -1405,15 +1431,6 @@ export class UdiseReportComponent implements OnInit {
       }
       this.onClusterSelect(data.cluster_id)
     }
-  }
-
-  changeingStringCases(str) {
-    return str.replace(
-      /\w\S*/g,
-      function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      }
-    );
   }
 
   // to download the excel report
