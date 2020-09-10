@@ -594,97 +594,33 @@ from flowfile)
 "udise_block_wise_qry":'''select * from udise_block_score''',
 "udise_cluster_wise_qry":'''select * from udise_cluster_score''',
 "udise_school_wise_qry":'''select * from udise_school_score''',
-"udise_district_jolt_spec":'''[
-	{
-		"operation": "shift",
-		"spec": {
-			"*": {
-				"district_id": "data.[&1].details.district_id",
-				"district_name": "data.[&1].details.district_name",
-				"district_latitude": "data.[&1].details.latitude",
-				"district_longitude": "data.[&1].details.longitude",
-				"infrastructure_score": "data.[&1].details.infrastructure_score",
-				"ict_lab_index": "data.[&1].indices.ict_lab",
-				"medical_index": "data.[&1].indices.medical",
-				"school_infrastructure": "data.[&1].indices.school_infrastructure",
-				"science_lab_index": "data.[&1].indices.science_lab",
-				"arts_lab_index": "data.[&1].indices.arts_lab",
-				"school_performance": "data.[&1].indices.school_performance",
-				"administration": "data.[&1].indices.administration",
-				"community_participation": "data.[&1].indices.community_participation",
-				"enrollment": "data.[&1].indices.enrollment",
-				"nsqf": "data.[&1].indices.nsqf",
-				"policy_implementation": "data.[&1].indices.policy_implementation",
-				"safety": "data.[&1].indices.safety",
-				"school_inspection": "data.[&1].indices.school_inspection",
-				"teacher_profile": "data.[&1].indices.teacher_profile",
-				"district_wise_rank": "data.[&1].rank.district_rank",
-				"@total_schools": "data.[&1].total_schools",
-				"total_schools": "allDistrictsFooter.totalSchools[]"
-			}
-		}
-	}, {
-		"operation": "shift",
-		"spec": {
-			"data": {
-				"*": {
-					"details": "data.[&1].&",
-					"indices": "data.[&1].&",
-					"rank": "data.[&1].&",
-					"@total_schools": "allDistrictsFooter.totalSchools[]"
-				}
-			}
-		}
-	},
-	{
-		"operation": "modify-overwrite-beta",
-		"spec": {
-			"*": {
-				"totalSchools": "=intSum(@(1,totalSchools))"
-			}
-		}
-	}, {
-		"operation": "sort",
-		"spec": {
-			"indices": {
-				"*": ""
-			}
-		}
-	}
-]
-''',
-"udise_block_jolt_spec":'''
-[
-
-  {
+"udise_district_jolt_spec":'''[{
     "operation": "shift",
     "spec": {
       "*": {
         "district_id": "data.[&1].details.district_id",
         "district_name": "data.[&1].details.district_name",
-        "block_id": "data.[&1].details.block_id",
-        "block_name": "data.[&1].details.block_name",
-        "block_latitude": "data.[&1].details.latitude",
-        "block_longitude": "data.[&1].details.longitude",
-        "infrastructure_score": "data.[&1].details.infrastructure_score",
-        "arts_lab_index": "data.[&1].indices.arts_lab",
-        "ict_lab_index": "data.[&1].indices.ict_lab",
-        "medical_index": "data.[&1].indices.medical",
-        "school_infrastructure": "data.[&1].indices.school_infrastructure",
-        "science_lab_index": "data.[&1].indices.science_lab",
-        "school_performance": "data.[&1].indices.school_performance",
-        "administration": "data.[&1].indices.administration",
-        "community_participation": "data.[&1].indices.community_participation",
-        "enrollment": "data.[&1].indices.enrollment",
-        "nsqf": "data.[&1].indices.nsqf",
-        "policy_implementation": "data.[&1].indices.policy_implementation",
-        "safety": "data.[&1].indices.safety",
-        "school_inspection": "data.[&1].indices.school_inspection",
-        "teacher_profile": "data.[&1].indices.teacher_profile",
+        "district_latitude": "data.[&1].details.latitude",
+        "district_longitude": "data.[&1].details.longitude",
+        "Infrastructure_Score": "data.[&1].details.Infrastructure_Score",
+        "Administration": "data.[&1].indices.Administration",
+        "Arts_Lab_Index": "data.[&1].indices.Arts_Lab_Index",
+        "Community_Participation": "data.[&1].indices.Community_Participation",
+        "Enrollment": "data.[&1].indices.Enrollment",
+        "Grant_Expenditure": "data.[&1].indices.Grant_Expenditure",
+        "ICT_Lab_Index": "data.[&1].indices.ICT_Lab_Index",
+        "Medical_Index": "data.[&1].indices.Medical_Index",
+        "NSQF": "data.[&1].indices.NSQF",
+        "Policy_Implementation": "data.[&1].indices.Policy_Implementation",
+        "Safety": "data.[&1].indices.Safety",
+        "School_Infrastructure": "data.[&1].indices.School_Infrastructure",
+        "School_Inspection": "data.[&1].indices.School_Inspection",
+        "School_Performance": "data.[&1].indices.School_Performance",
+        "Science_Lab_Index": "data.[&1].indices.Science_Lab_Index",
+        "Teacher_Profile": "data.[&1].indices.Teacher_Profile",
         "district_wise_rank": "data.[&1].rank.district_rank",
-        "block_wise_rank": "data.[&1].rank.block_rank",
         "@total_schools": "data.[&1].total_schools",
-        "total_schools": "footer.@(1,district_id).totalSchools[]"
+        "total_schools": "allDistrictsFooter.totalSchools[]"
       }
     }
 	}, {
@@ -695,7 +631,219 @@ from flowfile)
           "details": "data.[&1].&",
           "indices": "data.[&1].&",
           "rank": "data.[&1].&",
-          "@total_schools": "allBlocksFooter.totalSchools[]"
+          "@total_schools": "allDistrictsFooter.totalSchools[]"
+        }
+      }
+    }
+	},
+{
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "totalSchools": "=intSum(@(1,totalSchools))"
+      }
+    }
+	}
+]
+''',
+"udise_block_jolt_spec":'''
+[
+
+	{
+		"operation": "shift",
+		"spec": {
+			"*": {
+				"district_id": "data.[&1].details.district_id",
+				"district_name": "data.[&1].details.district_name",
+				"block_id": "data.[&1].details.block_id",
+				"block_name": "data.[&1].details.block_name",
+				"block_latitude": "data.[&1].details.latitude",
+				"block_longitude": "data.[&1].details.longitude",
+				"Infrastructure_Score": "data.[&1].details.Infrastructure_Score",
+				"Administration": "data.[&1].indices.Administration",
+				"Arts_Lab_Index": "data.[&1].indices.Arts_Lab_Index",
+				"Community_Participation": "data.[&1].indices.Community_Participation",
+				"Enrollment": "data.[&1].indices.Enrollment",
+				"Grant_Expenditure": "data.[&1].indices.Grant_Expenditure",
+				"ICT_Lab_Index": "data.[&1].indices.ICT_Lab_Index",
+				"Medical_Index": "data.[&1].indices.Medical_Index",
+				"NSQF": "data.[&1].indices.NSQF",
+				"Policy_Implementation": "data.[&1].indices.Policy_Implementation",
+				"Safety": "data.[&1].indices.Safety",
+				"School_Infrastructure": "data.[&1].indices.School_Infrastructure",
+				"School_Inspection": "data.[&1].indices.School_Inspection",
+				"School_Performance": "data.[&1].indices.School_Performance",
+				"Science_Lab_Index": "data.[&1].indices.Science_Lab_Index",
+				"Teacher_Profile": "data.[&1].indices.Teacher_Profile",
+				"district_wise_rank": "data.[&1].rank.district_rank",
+				"block_wise_rank": "data.[&1].rank.block_rank",
+				"@total_schools": "data.[&1].total_schools",
+				"total_schools": "footer.@(1,district_id).totalSchools[]"
+			}
+		}
+	}, {
+		"operation": "shift",
+		"spec": {
+			"data": {
+				"*": {
+					"details": "data.[&1].&",
+					"indices": "data.[&1].&",
+					"rank": "data.[&1].&",
+					"@total_schools": "allBlocksFooter.totalSchools[]"
+				}
+			},
+			"footer": "&"
+		}
+	},
+
+	{
+		"operation": "modify-overwrite-beta",
+		"spec": {
+			"footer": {
+				"*": {
+					"totalSchools": "=intSum(@(1,totalSchools))"
+				}
+			}
+		}
+	}, {
+		"operation": "modify-overwrite-beta",
+		"spec": {
+			"*": {
+				"totalSchools": "=intSum(@(1,totalSchools))"
+			}
+		}
+	}
+
+]
+''',
+"udise_cluster_jolt_spec":'''[
+
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "district_id": "data.[&1].details.district_id",
+        "district_name": "data.[&1].details.district_name",
+        "block_id": "data.[&1].details.block_id",
+        "block_name": "data.[&1].details.block_name",
+        "cluster_id": "data.[&1].details.cluster_id",
+        "cluster_name": "data.[&1].details.cluster_name",
+        "cluster_latitude": "data.[&1].details.latitude",
+        "cluster_longitude": "data.[&1].details.longitude",
+        "Infrastructure_Score": "data.[&1].details.Infrastructure_Score",
+        "Administration": "data.[&1].indices.Administration",
+        "Arts_Lab_Index": "data.[&1].indices.Arts_Lab_Index",
+        "Community_Participation": "data.[&1].indices.Community_Participation",
+        "Enrollment": "data.[&1].indices.Enrollment",
+        "Grant_Expenditure": "data.[&1].indices.Grant_Expenditure",
+        "ICT_Lab_Index": "data.[&1].indices.ICT_Lab_Index",
+        "Medical_Index": "data.[&1].indices.Medical_Index",
+        "NSQF": "data.[&1].indices.NSQF",
+        "Policy_Implementation": "data.[&1].indices.Policy_Implementation",
+        "Safety": "data.[&1].indices.Safety",
+        "School_Infrastructure": "data.[&1].indices.School_Infrastructure",
+        "School_Inspection": "data.[&1].indices.School_Inspection",
+        "School_Performance": "data.[&1].indices.School_Performance",
+        "Science_Lab_Index": "data.[&1].indices.Science_Lab_Index",
+        "Teacher_Profile": "data.[&1].indices.Teacher_Profile",
+        "district_wise_rank": "data.[&1].rank.district_rank",
+        "block_wise_rank": "data.[&1].rank.block_rank",
+        "cluster_wise_rank": "data.[&1].rank.cluster_rank",
+        "@total_schools": "data.[&1].total_schools",
+        "total_schools": "footer.@(1,block_id).totalSchools[]"
+      }
+    }
+	}, {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "details": "data.[&1].&",
+          "indices": "data.[&1].&",
+          "rank": "data.[&1].&",
+          "@total_schools": "allClustersFooter.totalSchools[]"
+        }
+      },
+      "footer": "&"
+    }
+	},
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "totalSchools": "=intSum(@(1,totalSchools))"
+        }
+      }
+    }
+	},
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "totalSchools": "=intSum(@(1,totalSchools))"
+      }
+    }
+	}
+]
+''',
+"udise_school_jolt_spec":'''[{
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "cluster_id": ["=toString", null]
+      }
+    }
+	},
+
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "district_id": "data.[&1].details.district_id",
+        "district_name": "data.[&1].details.district_name",
+        "block_id": "data.[&1].details.block_id",
+        "block_name": "data.[&1].details.block_name",
+        "cluster_id": "data.[&1].details.cluster_id",
+        "cluster_name": "data.[&1].details.cluster_name",
+        "udise_school_id": "data.[&1].details.school_id",
+        "school_name": "data.[&1].details.school_name",
+        "school_latitude": "data.[&1].details.latitude",
+        "school_longitude": "data.[&1].details.longitude",
+        "Infrastructure_Score": "data.[&1].details.Infrastructure_Score",
+        "Administration": "data.[&1].indices.Administration",
+        "Arts_Lab_Index": "data.[&1].indices.Arts_Lab_Index",
+        "Community_Participation": "data.[&1].indices.Community_Participation",
+        "Enrollment": "data.[&1].indices.Enrollment",
+        "Grant_Expenditure": "data.[&1].indices.Grant_Expenditure",
+        "ICT_Lab_Index": "data.[&1].indices.ICT_Lab_Index",
+        "Medical_Index": "data.[&1].indices.Medical_Index",
+        "NSQF": "data.[&1].indices.NSQF",
+        "Policy_Implementation": "data.[&1].indices.Policy_Implementation",
+        "Safety": "data.[&1].indices.Safety",
+        "School_Infrastructure": "data.[&1].indices.School_Infrastructure",
+        "School_Inspection": "data.[&1].indices.School_Inspection",
+        "School_Performance": "data.[&1].indices.School_Performance",
+        "Science_Lab_Index": "data.[&1].indices.Science_Lab_Index",
+        "Teacher_Profile": "data.[&1].indices.Teacher_Profile",
+        "district_wise_rank": "data.[&1].rank.district_rank",
+        "block_wise_rank": "data.[&1].rank.block_rank",
+        "cluster_wise_rank": "data.[&1].rank.cluster_rank",
+        "school_wise_rank": "data.[&1].rank.school_rank",
+        "@total_schools": "data.[&1].total_schools",
+        "total_schools": "footer.@(1,cluster_id).totalSchools[]"
+      }
+    }
+	}, {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "details": "data.[&1].&",
+          "indices": "data.[&1].&",
+          "rank": "data.[&1].&",
+          "@total_schools": "allSchoolsFooter.totalSchools[]"
         }
       },
       "footer": "&"
@@ -721,153 +869,23 @@ from flowfile)
 	}
 ]
 ''',
-"udise_cluster_jolt_spec":'''[
-
-	{
-		"operation": "shift",
-		"spec": {
-			"*": {
-				"district_id": "data.[&1].details.district_id",
-				"district_name": "data.[&1].details.district_name",
-				"block_id": "data.[&1].details.block_id",
-				"block_name": "data.[&1].details.block_name",
-				"cluster_id": "data.[&1].details.cluster_id",
-				"cluster_name": "data.[&1].details.cluster_name",
-				"cluster_latitude": "data.[&1].details.latitude",
-				"cluster_longitude": "data.[&1].details.longitude",
-				"infrastructure_score": "data.[&1].details.infrastructure_score",
-				"arts_lab_index": "data.[&1].indices.arts_lab",
-				"ict_lab_index": "data.[&1].indices.ict_lab",
-				"medical_index": "data.[&1].indices.medical",
-				"school_infrastructure": "data.[&1].indices.school_infrastructure",
-				"science_lab_index": "data.[&1].indices.science_lab",
-				"school_performance": "data.[&1].indices.school_performance",
-				"administration": "data.[&1].indices.administration",
-				"community_participation": "data.[&1].indices.community_participation",
-				"enrollment": "data.[&1].indices.enrollment",
-				"nsqf": "data.[&1].indices.nsqf",
-				"policy_implementation": "data.[&1].indices.policy_implementation",
-				"safety": "data.[&1].indices.safety",
-				"school_inspection": "data.[&1].indices.school_inspection",
-				"teacher_profile": "data.[&1].indices.teacher_profile",
-				"district_wise_rank": "data.[&1].rank.district_rank",
-				"block_wise_rank": "data.[&1].rank.block_rank",
-				"cluster_wise_rank": "data.[&1].rank.cluster_rank",
-				"@total_schools": "data.[&1].total_schools",
-				"total_schools": "footer.@(1,block_id).totalSchools[]"
-			}
-		}
-	}, {
-		"operation": "shift",
-		"spec": {
-			"data": {
-				"*": {
-					"details": "data.[&1].&",
-					"indices": "data.[&1].&",
-					"rank": "data.[&1].&",
-					"@total_schools": "allClustersFooter.totalSchools[]"
-				}
-			},
-			"footer": "&"
-		}
-	},
-
-	{
-		"operation": "modify-overwrite-beta",
-		"spec": {
-			"footer": {
-				"*": {
-					"totalSchools": "=intSum(@(1,totalSchools))"
-				}
-			}
-		}
-	}, {
-		"operation": "modify-overwrite-beta",
-		"spec": {
-			"*": {
-				"totalSchools": "=intSum(@(1,totalSchools))"
-			}
-		}
-	}
-]
+"udise_insert_agg_qry":'''select insert_udise_metrics_agg()''',
+"udise_update_metrics_range_qry":'''select update_metrics_range()''',
+"udise_insert_temp_qry":'''select insert_udise_temp()''',
+"udise_insert_trans_qry":'''select insert_udise_trans()''',
+"udise_select_metrics_range_qry":'''Select udise_metrics_range()''',
+"udise_drop_views":'''drop view if exists udise_district_score cascade;
+drop view if exists udise_block_score cascade;
+drop view if exists udise_cluster_score cascade;
+drop view if exists udise_school_score cascade;
 ''',
-"udise_school_jolt_spec":'''[{
-		"operation": "modify-overwrite-beta",
-		"spec": {
-			"*": {
-				"cluster_id": ["=toString", null]
-			}
-		}
-	},
-
-	{
-		"operation": "shift",
-		"spec": {
-			"*": {
-				"district_id": "data.[&1].details.district_id",
-				"district_name": "data.[&1].details.district_name",
-				"block_id": "data.[&1].details.block_id",
-				"block_name": "data.[&1].details.block_name",
-				"cluster_id": "data.[&1].details.cluster_id",
-				"cluster_name": "data.[&1].details.cluster_name",
-				"udise_school_id": "data.[&1].details.school_id",
-				"school_name": "data.[&1].details.school_name",
-				"school_latitude": "data.[&1].details.latitude",
-				"school_longitude": "data.[&1].details.longitude",
-				"infrastructure_score": "data.[&1].details.infrastructure_score",
-				"arts_lab_index": "data.[&1].indices.arts_lab",
-				"ict_lab_index": "data.[&1].indices.ict_lab",
-				"medical_index": "data.[&1].indices.medical",
-				"school_infrastructure": "data.[&1].indices.school_infrastructure",
-				"science_lab_index": "data.[&1].indices.science_lab",
-				"school_performance": "data.[&1].indices.school_performance",
-				"administration": "data.[&1].indices.administration",
-				"community_participation": "data.[&1].indices.community_participation",
-				"enrollment": "data.[&1].indices.enrollment",
-				"nsqf": "data.[&1].indices.nsqf",
-				"policy_implementation": "data.[&1].indices.policy_implementation",
-				"safety": "data.[&1].indices.safety",
-				"school_inspection": "data.[&1].indices.school_inspection",
-				"teacher_profile": "data.[&1].indices.teacher_profile",
-				"district_wise_rank": "data.[&1].rank.district_rank",
-				"block_wise_rank": "data.[&1].rank.block_rank",
-				"cluster_wise_rank": "data.[&1].rank.cluster_rank",
-				"school_wise_rank": "data.[&1].rank.school_rank",
-				"@total_schools": "data.[&1].total_schools",
-				"total_schools": "footer.@(1,cluster_id).totalSchools[]"
-			}
-		}
-	}, {
-		"operation": "shift",
-		"spec": {
-			"data": {
-				"*": {
-					"details": "data.[&1].&",
-					"indices": "data.[&1].&",
-					"rank": "data.[&1].&",
-					"@total_schools": "allSchoolsFooter.totalSchools[]"
-				}
-			},
-			"footer": "&"
-		}
-	},
-	{
-		"operation": "modify-overwrite-beta",
-		"spec": {
-			"footer": {
-				"*": {
-					"totalSchools": "=intSum(@(1,totalSchools))"
-				}
-			}
-		}
-	}, {
-		"operation": "modify-overwrite-beta",
-		"spec": {
-			"*": {
-				"totalSchools": "=intSum(@(1,totalSchools))"
-			}
-		}
-	}
-]
-'''
+"udise_select_fun":'''Select udise_district_score();
+Select udise_block_score();
+Select udise_cluster_score();
+Select udise_school_score();
+''',
+"udise_jolt_district":"select * from udise_jolt_district;",
+"udise_jolt_block":"select * from udise_jolt_block;",
+"udise_jolt_cluster":"select * from udise_jolt_cluster;",
+"udise_jolt_school":"select * from udise_jolt_school;"
 }
