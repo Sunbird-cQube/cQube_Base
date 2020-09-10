@@ -75,8 +75,8 @@ if [[ ! $installed_version < $this_version ]]; then
    echo "cQube is already upgraded to $this_version version.";
    exit 1
 fi
-if [[ ! $installed_version == "1.2" ]]; then
-   echo "Version $this_version is only upgradeable from 1.2 version";
+if [[ ! $installed_version == "1.2.1" ]]; then
+   echo "Version $this_version is only upgradeable from 1.2.1 version";
    exit 1
 fi
 }
@@ -116,7 +116,7 @@ check_ip()
             echo "Error - Invalid value for $key"; fail=1
             ip_pass=0
         fi
-        is_local_ip=`ip a | grep $2` > /dev/null 2>&1
+        is_local_ip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'` > /dev/null 2>&1
         if [[ $ip_pass == 0 && $is_local_ip != *$2* ]]; then
             echo "Error - Invalid value for $key. Please enter the local ip of this system."; fail=1 
         fi
@@ -139,7 +139,7 @@ if [[ $aws_key_status == 0 ]]; then
         bucketstatus=`aws s3api head-bucket --bucket "${2}" 2>&1`
         if [ ! $? == 0 ]
         then
-            echo "Error: [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in upgradation_config.yml"; fail=1
+            echo "Error - [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in upgradation_config.yml"; fail=1
         fi
 fi
 }
@@ -180,71 +180,33 @@ check_aws_default_region(){
     fi
 }
 
-check_mem_variables(){
-kb=`head -1 /proc/meminfo | awk '{ print $2 }'` #reading RAM size in kb
-mb=`echo "scale=0; $kb / 1024" | bc` # to MB    #converting RAM size to mb
+check_mem(){
+mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
+mem_total=$(($mem_total_kb/1024))
+if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
+  min_shared_mem=$(echo $mem_total*11.5/100 | bc)
+  min_work_mem=$(echo $mem_total*2/100 | bc)
+  min_java_arg_2=$(echo $mem_total*52/100 | bc)
+  min_java_arg_3=$(echo $mem_total*71.5/100 | bc)
+  echo """---
+shared_buffers: ${min_shared_mem}MB
+work_mem: ${min_work_mem}MB
+java_arg_2: -Xms${min_java_arg_2}m
+java_arg_3: -Xmx${min_java_arg_3}m""" > memory_config.yml
 
-java_arg_2=$3
-java_arg_3=$4
-share_mem=$1 
-work_mem=$2
-java_arg_check=0
-if [[ $4 =~ ^-Xmx[0-9]+[m|g]$ ]]; then
-    raw_java_arg_3="$( echo "$4" | sed -e 's/^-Xmx//; s/[m|g]$//' )"
-    if [[ $4 =~ g$ ]]; then 
-        final_java_arg_3=$(($raw_java_arg_3*1024))
-    else
-        final_java_arg_3=$raw_java_arg_3
-    fi
+elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
+  max_shared_mem=$(echo $mem_total*10/100 | bc)
+  max_work_mem=$(echo $mem_total*3/100 | bc)
+  max_java_arg_2=$(echo $mem_total*40/100 | bc)
+  max_java_arg_3=$(echo $mem_total*57/100 | bc)
+  echo """---
+shared_buffers: ${max_shared_mem}MB
+work_mem: ${max_work_mem}MB
+java_arg_2: -Xms${max_java_arg_2}m
+java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
 else
-    echo "Error - Please enter the proper value in java_arg_3"; fail=1
-    java_arg_check=1
-fi
-
-if [[ $3 =~ ^-Xms[0-9]+[m|g]$ ]]; then
-    raw_java_arg_2="$( echo "$3" | sed -e 's/^-Xms//; s/[m|g]$//' )"
-    if [[ $3 =~ g$ ]]; then
-        final_java_arg_2=$(($raw_java_arg_2*1024))
-    else
-        final_java_arg_2=$raw_java_arg_2
-    fi
-else
-    echo "Error - Please enter the proper value in java_arg_2"; fail=1
-    java_arg_check=1
-fi
-
-if [[ $2 =~ ^[0-9]+(GB|MB)$ ]]; then
-    raw_work_mem="$(echo $2 | sed -e 's/\(GB\|MB\)$//')"
-    if [[ $2 =~ GB$ ]]; then
-        final_work_mem=$(($raw_work_mem*1024))
-    else
-        final_work_mem=$raw_work_mem
-    fi
-else
-    echo "Error - Please enter the proper value in work_memory"; fail=1
-fi
-
-if [[ $1 =~ ^[0-9]+(GB|MB)$ ]]; then
-    raw_share_mem="$(echo $1 | sed -e 's/\(GB\|MB\)$//')"
-    if [[ $1 =~ GB$ ]]; then
-        final_share_mem=$(($raw_share_mem*1024))
-    else
-        final_share_mem=$raw_share_mem
-    fi
-else
-    echo "Error - Please enter the proper value in share_memory"; fail=1
-fi
-
-#addition of all memories
-if [[ $(($final_java_arg_3+$final_work_mem+$final_share_mem)) -ge $mb ]] ; then
-    echo "Error - Memory values are more than the RAM size" ; fail=1
-fi
-
-#comparing if java2 is greater than java3
-if [[ $java_arg_check == 0 ]]; then
-    if [[ $final_java_arg_2 -ge $final_java_arg_3 ]]  ; then
-       echo "Error - java_arg_2 should be less than java_arg_3"; fail=1
-    fi
+  echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
+  exit 1
 fi
 }
 
@@ -268,8 +230,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 # An array of mandatory values
 declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
-		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" \
-    "shared_buffers" "work_mem" "java_arg_2" "java_arg_3")
+		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" )
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -293,12 +254,7 @@ db_user=$(awk ''/^db_user:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.
 db_name=$(awk ''/^db_name:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 
-# Getting memory args
-shared_buffers=$(awk ''/^shared_buffers:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-work_mem=$(awk ''/^work_mem:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-java_arg_2=$(awk ''/^java_arg_2:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-java_arg_3=$(awk ''/^java_arg_3:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-
+check_mem
 # Check the version before starting validation
 check_version
 
@@ -315,61 +271,61 @@ value=${vals[$key]}
 case $key in
    system_user_name)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_sys_user $key $value
        fi
        ;;
    base_dir)	 
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_base_dir $key $value
        fi
        ;;
    s3_access_key)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        fi
        ;;
    s3_secret_key)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
       else
           check_aws_key $aws_access_key $aws_secret_key
        fi
        ;;
    s3_input_bucket)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    s3_output_bucket)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    s3_emission_bucket)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    local_ipv4_address)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_ip $key $value
        fi
        ;;
    db_user)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
 	        check_postgres
           check_db_naming $key $value CQUBE_DB_USER
@@ -377,71 +333,49 @@ case $key in
        ;;
    db_name)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_naming $key $value CQUBE_DB_NAME
        fi
        ;;
    keycloak_adm_user)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        fi
        ;;
    keycloak_adm_passwd)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_keycloak_credentials $keycloak_adm_user $keycloak_adm_passwd
        fi
        ;;
    keycloak_config_otp)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_kc_config_otp $key $value
        fi
        ;;
    db_password)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_password $db_name $db_user $db_password
        fi
        ;;
    api_endpoint)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_api_endpoint $key $value
        fi
        ;;
    aws_default_region)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value. Recommended value is ap-south-1"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check. Recommended value is ap-south-1"; fail=1
        else
            check_aws_default_region
-       fi
-       ;;
-   shared_buffers)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       fi
-       ;;
-   work_mem)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       fi
-       ;;
-   java_arg_2)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       fi
-       ;;
-   java_arg_3)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       else
-           check_mem_variables $shared_buffers $work_mem $java_arg_2 $java_arg_3
        fi
        ;;
    *)

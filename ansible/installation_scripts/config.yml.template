@@ -43,9 +43,3 @@ local_ipv4_address:                         # enter the private ip of this serve
 keycloak_adm_user:                          # enter the keycloak admin user to be created 
 keycloak_adm_passwd:                        # enter the keycloak admin password
 keycloak_config_otp:                        # enter true or false to enable OTP authentication for all users 
-
-#Please change the below parameters based on your system requirements
-shared_buffers: 4GB                         # Postgres buffer memory. Minimum usage: use 4GB for 32GB RAM system memory
-work_mem: 512MB                             # Postgres working memory. Minimum usage: use 512MB for 16GB RAM system memory
-java_arg_2: -Xms16g                          # Minimum RAM size for Apache NIFI  Minimum usage: use -Xms16g for 32GB RAM system memory 
-java_arg_3: -Xmx24g                          # Maximum RAM size for Apache NIFI  Minimum usage: use -Xmx24g for 32GB RAM system memory 

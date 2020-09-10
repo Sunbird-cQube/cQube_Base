@@ -18,7 +18,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
     }
 });
 
-router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
+router.post('/schoolWise/:distId/:blockId/:clusterId',  async (req, res) => {
     try {
         logger.info('---Infra schoolPerCluster api ---');
         let fileName = `infra/infra_school_map.json`;

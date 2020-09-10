@@ -116,7 +116,7 @@ over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1
 "udise_sch_facility_check_if_null":'''select * from flowfile except(select * from flowfile
 where UPPER(udise_sch_code) <> 'NULL')
 ''',
-"udise_sch_facility_not_null":"select * from flowfile where UPPER(udise_sch_code) <> 'NULL'",
+"udise_sch_facility_not_null":"select * from flowfile where udise_sch_code IS NOT NULL",
 "udise_sch_facility_count_null":'''(select SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code from flowfile)''',
 "udise_null_column_table_name":"udise_null_col",
 "udise_nsqf_plcmnt_c12_check_if_null":'''select * from flowfile except(select * from flowfile
@@ -139,7 +139,11 @@ where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(sector_no) <> 'NULL'
 or UPPER(class_type_id) <> 'NULL')
 ''',
-"udise_nsqf_class_cond_not_null":"select * from flowfile where UPPER(udise_sch_code) <> 'NULL' and UPPER(sector_no) <> 'NULL' and UPPER(class_type_id) <> 'NULL'",
+"udise_nsqf_class_cond_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and sector_no IS NOT NULL
+and class_type_id IS NOT NULL
+''',
 "select_columns_sch_exmres_c12_qry":'''select udise_sch_code,ac_year,item_id,stream_id,gen_app_b,gen_app_g,obc_app_b,obc_app_g,
 sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g from flowfile
 ''',
@@ -157,10 +161,11 @@ where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(item_id) <> 'NULL'
 or UPPER(stream_id) <> 'NULL')
 ''',
-"udise_sch_exmres_c12_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and UPPER(item_id) <> 'NULL'
-and UPPER(stream_id) <> 'NULL'""",
+"udise_sch_exmres_c12_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and item_id IS NOT NULL
+and stream_id IS NOT NULL
+''',
 "udise_sch_exmres_c12_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
 SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id,
@@ -172,10 +177,10 @@ SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_
 SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id
 from flowfile)
 ''',
-"udise_sch_exmres_c10_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and UPPER(item_id) <> 'NULL'
-""",
+"udise_sch_exmres_c10_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and item_id IS NOT NULL
+''',
 "udise_sch_exmres_c10_check_if_null":'''select * from flowfile except(select * from flowfile
 where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(item_id) <> 'NULL')
@@ -183,9 +188,7 @@ or UPPER(item_id) <> 'NULL')
 "udise_sch_exmres_c5_check_if_null":'''select * from flowfile except(select * from flowfile
 where UPPER(udise_sch_code) <> 'NULL')
 ''',
-"udise_sch_exmres_c5_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-""",
+"udise_sch_exmres_c5_not_null":"select * from flowfile where udise_sch_code IS NOT NULL",
 "udise_sch_exmres_c5_count_null":'''select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
 from flowfile)
@@ -194,10 +197,10 @@ from flowfile)
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
 from flowfile)
 ''',
-"udise_sch_incen_cwsn_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and UPPER(item_id) <> 'NULL'
-""",
+"udise_sch_incen_cwsn_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and item_id IS NOT NULL
+''',
 "udise_sch_incen_cwsn_check_if_null":'''select * from flowfile except(select * from flowfile
 where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(item_id) <> 'NULL')
@@ -207,11 +210,11 @@ where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(grade_pri_upr) <> 'NULL'
 or UPPER(incentive_type) <> 'NULL')
 ''',
-"udise_sch_incentives_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and  UPPER(grade_pri_upr) <> 'NULL'
-and  UPPER(incentive_type) <> 'NULL'
-""",
+"udise_sch_incentives_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and  grade_pri_upr IS NOT NULL
+and  incentive_type IS NOT NULL
+''',
 "udise_sch_incentives_count_null":'''select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
 SUM(CASE when grade_pri_upr IS NULL THEN 1 ELSE 0 END) AS count_null_grade_pri_upr,
@@ -223,11 +226,11 @@ where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(stream_id) <> 'NULL'
 or UPPER(caste_id) <> 'NULL')
 ''',
-"udise_sch_enr_by_stream_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and  UPPER(stream_id) <> 'NULL'
-and  UPPER(caste_id) <> 'NULL'
-""",
+"udise_sch_enr_by_stream_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and  stream_id IS NOT NULL
+and  caste_id IS NOT NULL
+''',
 "udise_sch_enr_by_stream_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
 SUM(CASE when stream_id IS NULL THEN 1 ELSE 0 END) AS count_null_stream_id,
@@ -239,10 +242,10 @@ from flowfile)
 where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(disability_type) <> 'NULL')
 ''',
-"udise_sch_enr_cwsn_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and  UPPER(or UPPER(disability_type) <> 'NULL'
-""",
+"udise_sch_enr_cwsn_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and disability_type IS NOT NULL
+''',
 "udise_sch_enr_cwsn_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
 SUM(CASE when disability_type IS NULL THEN 1 ELSE 0 END) AS count_null_disability_type
@@ -290,15 +293,15 @@ ict_reg_yn,sport_reg_yn,lib_reg_yn from flowfile
 "select_columns_nsqf_faculty_qry":'''select nsqf_faculty_id,udise_sch_code,ac_year,faculty_code,name,gender,dob,soc_cat,nature_of_appt,qual_acad,qual_prof,industry_exp,training_exp,class_taught,appt_sec,induc_trg_rcvd,inserv_trg_rcvd from flowfile''',
 "select_columns_sch_pgi_details_qry":'''select udise_sch_code,ac_year,tch_adhr_seed,stu_atndnc_yn,tch_atndnc_yn,sch_eval_yn,improv_plan_yn,sch_pfms_yn from flowfile''',
 "select_columns_sch_safety_qry":'''select udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained from flowfile''',
-"select_columns_sch_exmres_c8_qry":'''select udise_sch_code,academic_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g from flowfile''',
+"select_columns_sch_exmres_c8_qry":'''select udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g from flowfile''',
 "udise_sch_enr_medinstr_check_if_null":'''select * from flowfile except(select * from flowfile
 where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(medinstr_seq) <> 'NULL')
 ''',
-"udise_sch_enr_medinstr_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and  UPPER(or UPPER(medinstr_seq) <> 'NULL' 
-""",
+"udise_sch_enr_medinstr_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and   medinstr_seq IS NOT NULL 
+''',
 "udise_sch_enr_medinstr_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
 SUM(CASE when medinstr_seq IS NULL THEN 1 ELSE 0 END) AS count_null_medinstr_seq
@@ -309,11 +312,11 @@ where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(item_group) <> 'NULL'
 or UPPER(item_id) <> 'NULL')
 ''',
-"udise_sch_enr_reptr_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and  UPPER(or UPPER(item_group) <> 'NULL' 
-and  UPPER(or UPPER(item_id) <> 'NULL' 
-""",
+"udise_sch_enr_reptr_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and   item_group IS NOT NULL 
+and   item_id IS NOT NULL 
+''',
 "udise_sch_enr_reptr_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
 SUM(CASE when item_group IS NULL THEN 1 ELSE 0 END) AS count_null_item_group,
@@ -326,9 +329,9 @@ or UPPER(item_group) <> 'NULL'
 or UPPER(item_id) <> 'NULL')
 ''',
 "udise_sch_enr_fresh_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and  UPPER(or UPPER(item_group) <> 'NULL' 
-and  UPPER(or UPPER(item_id) <> 'NULL' 
+where udise_sch_code IS NOT NULL
+and   item_group IS NOT NULL 
+and   item_id IS NOT NULL 
 """,
 "udise_sch_enr_fresh_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
@@ -340,7 +343,7 @@ from flowfile)
 where UPPER(udise_sch_code) <> 'NULL')
 ''',
 "udise_sch_enr_newadm_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
+where udise_sch_code IS NOT NULL
 """,
 "udise_sch_enr_newadm_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
@@ -350,7 +353,7 @@ from flowfile)
 where UPPER(udise_sch_code) <> 'NULL')
 ''',
 "udise_sch_profile_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
+where udise_sch_code IS NOT NULL
 """,
 "udise_sch_profile_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
@@ -360,7 +363,7 @@ from flowfile)
 where UPPER(udise_sch_code) <> 'NULL')
 ''',
 "udise_sch_staff_posn_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
+where udise_sch_code IS NOT NULL
 """,
 "udise_sch_staff_posn_count_null":"""(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
@@ -370,7 +373,7 @@ from flowfile)
 where UPPER(udise_sch_code) <> 'NULL')
 ''',
 "udise_tch_profile_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
+where udise_sch_code IS NOT NULL
 """,
 "udise_tch_profile_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
@@ -382,9 +385,9 @@ or UPPER(item_id) <> 'NULL'
 or  UPPER(marks_range_id) <> 'NULL' )
 ''',
 "udise_sch_exmmarks_c10_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and UPPER(item_id) <> 'NULL'
-and UPPER(marks_range_id) <> 'NULL' 
+where udise_sch_code IS NOT NULL
+and item_id IS NOT NULL
+and marks_range_id IS NOT NULL 
 """,
 "udise_sch_exmmarks_c10_count_null":"""(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
@@ -398,9 +401,9 @@ or UPPER(item_id) <> 'NULL'
 or  UPPER(marks_range_id) <> 'NULL' )
 """,
 "udise_sch_exmmarks_c12_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and UPPER(item_id) <> 'NULL'
-and UPPER(marks_range_id) <> 'NULL' 
+where udise_sch_code IS NOT NULL
+and item_id IS NOT NULL
+and marks_range_id IS NOT NULL 
 """,
 "udise_sch_exmmarks_c12_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
@@ -412,7 +415,7 @@ from flowfile)
 where UPPER(udise_sch_code) <> 'NULL')
 ''',
 "udise_sch_recp_exp_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
+where udise_sch_code IS NOT NULL
 """,
 "udise_sch_recp_exp_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
@@ -422,7 +425,7 @@ from flowfile)
 where UPPER(udise_sch_code) <> 'NULL')
 """,
 "udise_nsqf_basic_info_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
+where udise_sch_code IS NOT NULL
 """,
 "udise_nsqf_basic_info_count_null":"""(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
@@ -434,9 +437,9 @@ or UPPER(sector_no) <> 'NULL'
 or UPPER(item_id) <> 'NULL')
 """,
 "udise_nsqf_enr_caste_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and UPPER(sector_no) <> 'NULL'
-and UPPER(item_id) <> 'NULL'
+where udise_sch_code IS NOT NULL
+and sector_no IS NOT NULL
+and item_id IS NOT NULL
 """,
 "udise_nsqf_enr_caste_count_null":'''(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
@@ -449,8 +452,8 @@ where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(sector_no) <> 'NULL')
 """,
 "udise_nsqf_enr_sub_sec_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and UPPER(sector_no) <> 'NULL'
+where udise_sch_code IS NOT NULL
+and sector_no IS NOT NULL
 """,
 "udise_nsqf_enr_sub_sec_count_null":"""(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
@@ -463,9 +466,9 @@ or UPPER(sector_no) <> 'NULL')
 or UPPER(marks_range_id) <> 'NULL')
 """,
 "udise_nsqf_exmres_c10_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and UPPER(sector_no) <> 'NULL'
-and UPPER(marks_range_id) <> 'NULL'
+where udise_sch_code IS NOT NULL
+and sector_no IS NOT NULL
+and marks_range_id IS NOT NULL
 """,
 "udise_nsqf_exmres_c10_count_null":"""(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
@@ -479,9 +482,9 @@ or UPPER(sector_no) <> 'NULL')
 or UPPER(marks_range_id) <> 'NULL')
 ''',
 "udise_nsqf_exmres_c12_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and UPPER(sector_no) <> 'NULL'
-and UPPER(marks_range_id) <> 'NULL'
+where udise_sch_code IS NOT NULL
+and sector_no IS NOT NULL
+and marks_range_id IS NOT NULL
 """,
 "udise_nsqf_exmres_c12_count_null":"""(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
@@ -517,7 +520,7 @@ from flowfile)
 where UPPER(udise_sch_code) <> 'NULL')
 """,
 "udise_sch_pgi_details_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
+where udise_sch_code IS NOT NULL
 """,
 "udise_sch_pgi_details_count_null":"""(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
@@ -543,10 +546,10 @@ where UPPER(udise_sch_code) <> 'NULL'
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
 from flowfile)
 """,
-"udise_sch_enr_age_not_null":"""select * from flowfile
-where UPPER(udise_sch_code) <> 'NULL'
-and  UPPER(or UPPER(age_id) <> 'NULL'
-""",
+"udise_sch_enr_age_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and   age_id IS NOT NULL
+''',
 "udise_sch_enr_age_check_if_null":"""select * from flowfile except(select * from flowfile
 where UPPER(udise_sch_code) <> 'NULL'
 or UPPER(age_id) <> 'NULL')
@@ -581,10 +584,290 @@ from flowfile)
 "udise_sch_incentives_table_name":"udise_sch_incentives",
 "udise_sch_profile_table_name":"udise_sch_profile",
 "udise_tch_profile_table_name":"udise_tch_profile",
-"udise_sch_recp_ex_table_name":"udise_sch_recp_ex",
 "udise_nsqf_basic_info_table_name":"udise_nsqf_basic_info",
 "udise_nsqf_enr_caste_table_name":"udise_nsqf_enr_caste",
 "udise_nsqf_enr_sub_sec_table_name":"udise_nsqf_enr_sub_sec",
 "udise_sch_pgi_details_table_name":"udise_sch_pgi_details",
-"udise_sch_safety_table_name":"udise_sch_safety"
+"udise_sch_safety_table_name":"udise_sch_safety",
+"udise_sch_recp_exp_table_name":"udise_sch_recp_exp",
+"udise_district_wise_qry":'''select * from udise_district_score''',
+"udise_block_wise_qry":'''select * from udise_block_score''',
+"udise_cluster_wise_qry":'''select * from udise_cluster_score''',
+"udise_school_wise_qry":'''select * from udise_school_score''',
+"udise_district_jolt_spec":'''[
+	{
+		"operation": "shift",
+		"spec": {
+			"*": {
+				"district_id": "data.[&1].details.district_id",
+				"district_name": "data.[&1].details.district_name",
+				"district_latitude": "data.[&1].details.latitude",
+				"district_longitude": "data.[&1].details.longitude",
+				"infrastructure_score": "data.[&1].details.infrastructure_score",
+				"ict_lab_index": "data.[&1].indices.ict_lab",
+				"medical_index": "data.[&1].indices.medical",
+				"school_infrastructure": "data.[&1].indices.school_infrastructure",
+				"science_lab_index": "data.[&1].indices.science_lab",
+				"arts_lab_index": "data.[&1].indices.arts_lab",
+				"school_performance": "data.[&1].indices.school_performance",
+				"administration": "data.[&1].indices.administration",
+				"community_participation": "data.[&1].indices.community_participation",
+				"enrollment": "data.[&1].indices.enrollment",
+				"nsqf": "data.[&1].indices.nsqf",
+				"policy_implementation": "data.[&1].indices.policy_implementation",
+				"safety": "data.[&1].indices.safety",
+				"school_inspection": "data.[&1].indices.school_inspection",
+				"teacher_profile": "data.[&1].indices.teacher_profile",
+				"district_wise_rank": "data.[&1].rank.district_rank",
+				"@total_schools": "data.[&1].total_schools",
+				"total_schools": "allDistrictsFooter.totalSchools[]"
+			}
+		}
+	}, {
+		"operation": "shift",
+		"spec": {
+			"data": {
+				"*": {
+					"details": "data.[&1].&",
+					"indices": "data.[&1].&",
+					"rank": "data.[&1].&",
+					"@total_schools": "allDistrictsFooter.totalSchools[]"
+				}
+			}
+		}
+	},
+	{
+		"operation": "modify-overwrite-beta",
+		"spec": {
+			"*": {
+				"totalSchools": "=intSum(@(1,totalSchools))"
+			}
+		}
+	}, {
+		"operation": "sort",
+		"spec": {
+			"indices": {
+				"*": ""
+			}
+		}
+	}
+]
+''',
+"udise_block_jolt_spec":'''
+[
+
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "district_id": "data.[&1].details.district_id",
+        "district_name": "data.[&1].details.district_name",
+        "block_id": "data.[&1].details.block_id",
+        "block_name": "data.[&1].details.block_name",
+        "block_latitude": "data.[&1].details.latitude",
+        "block_longitude": "data.[&1].details.longitude",
+        "infrastructure_score": "data.[&1].details.infrastructure_score",
+        "arts_lab_index": "data.[&1].indices.arts_lab",
+        "ict_lab_index": "data.[&1].indices.ict_lab",
+        "medical_index": "data.[&1].indices.medical",
+        "school_infrastructure": "data.[&1].indices.school_infrastructure",
+        "science_lab_index": "data.[&1].indices.science_lab",
+        "school_performance": "data.[&1].indices.school_performance",
+        "administration": "data.[&1].indices.administration",
+        "community_participation": "data.[&1].indices.community_participation",
+        "enrollment": "data.[&1].indices.enrollment",
+        "nsqf": "data.[&1].indices.nsqf",
+        "policy_implementation": "data.[&1].indices.policy_implementation",
+        "safety": "data.[&1].indices.safety",
+        "school_inspection": "data.[&1].indices.school_inspection",
+        "teacher_profile": "data.[&1].indices.teacher_profile",
+        "district_wise_rank": "data.[&1].rank.district_rank",
+        "block_wise_rank": "data.[&1].rank.block_rank",
+        "@total_schools": "data.[&1].total_schools",
+        "total_schools": "footer.@(1,district_id).totalSchools[]"
+      }
+    }
+	}, {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "details": "data.[&1].&",
+          "indices": "data.[&1].&",
+          "rank": "data.[&1].&",
+          "@total_schools": "allBlocksFooter.totalSchools[]"
+        }
+      },
+      "footer": "&"
+    }
+	},
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "totalSchools": "=intSum(@(1,totalSchools))"
+        }
+      }
+    }
+	}, {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "totalSchools": "=intSum(@(1,totalSchools))"
+      }
+    }
+	}
+]
+''',
+"udise_cluster_jolt_spec":'''[
+
+	{
+		"operation": "shift",
+		"spec": {
+			"*": {
+				"district_id": "data.[&1].details.district_id",
+				"district_name": "data.[&1].details.district_name",
+				"block_id": "data.[&1].details.block_id",
+				"block_name": "data.[&1].details.block_name",
+				"cluster_id": "data.[&1].details.cluster_id",
+				"cluster_name": "data.[&1].details.cluster_name",
+				"cluster_latitude": "data.[&1].details.latitude",
+				"cluster_longitude": "data.[&1].details.longitude",
+				"infrastructure_score": "data.[&1].details.infrastructure_score",
+				"arts_lab_index": "data.[&1].indices.arts_lab",
+				"ict_lab_index": "data.[&1].indices.ict_lab",
+				"medical_index": "data.[&1].indices.medical",
+				"school_infrastructure": "data.[&1].indices.school_infrastructure",
+				"science_lab_index": "data.[&1].indices.science_lab",
+				"school_performance": "data.[&1].indices.school_performance",
+				"administration": "data.[&1].indices.administration",
+				"community_participation": "data.[&1].indices.community_participation",
+				"enrollment": "data.[&1].indices.enrollment",
+				"nsqf": "data.[&1].indices.nsqf",
+				"policy_implementation": "data.[&1].indices.policy_implementation",
+				"safety": "data.[&1].indices.safety",
+				"school_inspection": "data.[&1].indices.school_inspection",
+				"teacher_profile": "data.[&1].indices.teacher_profile",
+				"district_wise_rank": "data.[&1].rank.district_rank",
+				"block_wise_rank": "data.[&1].rank.block_rank",
+				"cluster_wise_rank": "data.[&1].rank.cluster_rank",
+				"@total_schools": "data.[&1].total_schools",
+				"total_schools": "footer.@(1,block_id).totalSchools[]"
+			}
+		}
+	}, {
+		"operation": "shift",
+		"spec": {
+			"data": {
+				"*": {
+					"details": "data.[&1].&",
+					"indices": "data.[&1].&",
+					"rank": "data.[&1].&",
+					"@total_schools": "allClustersFooter.totalSchools[]"
+				}
+			},
+			"footer": "&"
+		}
+	},
+
+	{
+		"operation": "modify-overwrite-beta",
+		"spec": {
+			"footer": {
+				"*": {
+					"totalSchools": "=intSum(@(1,totalSchools))"
+				}
+			}
+		}
+	}, {
+		"operation": "modify-overwrite-beta",
+		"spec": {
+			"*": {
+				"totalSchools": "=intSum(@(1,totalSchools))"
+			}
+		}
+	}
+]
+''',
+"udise_school_jolt_spec":'''[{
+		"operation": "modify-overwrite-beta",
+		"spec": {
+			"*": {
+				"cluster_id": ["=toString", null]
+			}
+		}
+	},
+
+	{
+		"operation": "shift",
+		"spec": {
+			"*": {
+				"district_id": "data.[&1].details.district_id",
+				"district_name": "data.[&1].details.district_name",
+				"block_id": "data.[&1].details.block_id",
+				"block_name": "data.[&1].details.block_name",
+				"cluster_id": "data.[&1].details.cluster_id",
+				"cluster_name": "data.[&1].details.cluster_name",
+				"udise_school_id": "data.[&1].details.school_id",
+				"school_name": "data.[&1].details.school_name",
+				"school_latitude": "data.[&1].details.latitude",
+				"school_longitude": "data.[&1].details.longitude",
+				"infrastructure_score": "data.[&1].details.infrastructure_score",
+				"arts_lab_index": "data.[&1].indices.arts_lab",
+				"ict_lab_index": "data.[&1].indices.ict_lab",
+				"medical_index": "data.[&1].indices.medical",
+				"school_infrastructure": "data.[&1].indices.school_infrastructure",
+				"science_lab_index": "data.[&1].indices.science_lab",
+				"school_performance": "data.[&1].indices.school_performance",
+				"administration": "data.[&1].indices.administration",
+				"community_participation": "data.[&1].indices.community_participation",
+				"enrollment": "data.[&1].indices.enrollment",
+				"nsqf": "data.[&1].indices.nsqf",
+				"policy_implementation": "data.[&1].indices.policy_implementation",
+				"safety": "data.[&1].indices.safety",
+				"school_inspection": "data.[&1].indices.school_inspection",
+				"teacher_profile": "data.[&1].indices.teacher_profile",
+				"district_wise_rank": "data.[&1].rank.district_rank",
+				"block_wise_rank": "data.[&1].rank.block_rank",
+				"cluster_wise_rank": "data.[&1].rank.cluster_rank",
+				"school_wise_rank": "data.[&1].rank.school_rank",
+				"@total_schools": "data.[&1].total_schools",
+				"total_schools": "footer.@(1,cluster_id).totalSchools[]"
+			}
+		}
+	}, {
+		"operation": "shift",
+		"spec": {
+			"data": {
+				"*": {
+					"details": "data.[&1].&",
+					"indices": "data.[&1].&",
+					"rank": "data.[&1].&",
+					"@total_schools": "allSchoolsFooter.totalSchools[]"
+				}
+			},
+			"footer": "&"
+		}
+	},
+	{
+		"operation": "modify-overwrite-beta",
+		"spec": {
+			"footer": {
+				"*": {
+					"totalSchools": "=intSum(@(1,totalSchools))"
+				}
+			}
+		}
+	}, {
+		"operation": "modify-overwrite-beta",
+		"spec": {
+			"*": {
+				"totalSchools": "=intSum(@(1,totalSchools))"
+			}
+		}
+	}
+]
+'''
 }

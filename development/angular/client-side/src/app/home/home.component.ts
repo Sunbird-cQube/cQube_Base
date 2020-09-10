@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   showSubmenu5: any = false;
   showSubmenu6: any = false;
   showSubmenu7: any = false;
+  showSubmenu8: any = false;
   showsideMenu: boolean = false;
   isExpanded = true;
   showSubmenu: boolean = false;

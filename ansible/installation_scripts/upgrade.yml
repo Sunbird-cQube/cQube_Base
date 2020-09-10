@@ -5,6 +5,7 @@
   vars_files:
     - upgradation_config.yml  
     - datasource_config.yml
+    - memory_config.yml
     - .version
     
   roles:
@@ -46,6 +47,10 @@
           - role: nifi_telemetry
             tags: update
             when: nifi_telemetry
+
+          - role: nifi_udise
+            tags: update
+            when: nifi_udise
             
           - { role: nifi_scheduler, tags: update }
 
