@@ -3276,5 +3276,44 @@ updated_on timestamp,
 primary key(id)
 );
 
+/*log summary*/
+alter table log_summary add COLUMN if not exists udise_sch_code int;
+alter table log_summary add COLUMN if not exists sector_no int;
+alter table log_summary add COLUMN if not exists item_id int;
+alter table log_summary add COLUMN if not exists class_type_id int;
+alter table log_summary add COLUMN if not exists stream_id int;
+alter table log_summary add COLUMN if not exists grade_pri_upr int;
+alter table log_summary add COLUMN if not exists incentive_type int;
+alter table log_summary add COLUMN if not exists caste_id int;
+alter table log_summary add COLUMN if not exists disability_type int;
+alter table log_summary add COLUMN if not exists medinstr_seq int;
+alter table log_summary add COLUMN if not exists age_id int;
+alter table log_summary add COLUMN if not exists item_group int;
+alter table log_summary add COLUMN if not exists tch_code int;
+alter table log_summary add COLUMN if not exists marks_range_id int;
+alter table log_summary add COLUMN if not exists nsqf_faculty_id int;
+
+/*udise null table*/
+
+create table if not exists udise_null_col(
+filename varchar(200),
+ff_uuid varchar(200),
+count_null_udise_sch_code int,
+count_null_item_id int,
+count_null_stream_id int,
+count_null_sector_no int,
+count_null_class_type_id int,
+count_null_grade_pri_upr int,
+count_null_incentive_type int,
+count_null_caste_id int,
+count_null_disability_type int,
+count_null_medinstr_seq int,
+count_null_age_id int,
+count_null_item_group int,
+count_null_tch_code int,
+count_null_marks_range_id int,
+count_null_nsqf_faculty_id int
+);
+
 
 
