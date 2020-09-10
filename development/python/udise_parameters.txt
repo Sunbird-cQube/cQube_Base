@@ -887,5 +887,237 @@ Select udise_school_score();
 "udise_jolt_district":"select * from udise_jolt_district;",
 "udise_jolt_block":"select * from udise_jolt_block;",
 "udise_jolt_cluster":"select * from udise_jolt_cluster;",
-"udise_jolt_school":"select * from udise_jolt_school;"
+"udise_jolt_school":"select * from udise_jolt_school;",
+"udise_update_null_count_sch_facility_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_nsqf_plcmnt_c12_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+item_id=udise_null_col.count_null_item_id,
+sector_no=udise_null_col.count_null_sector_no
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_nsqf_plcmnt_c10_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+item_id=udise_null_col.count_null_item_id,
+sector_no=udise_null_col.count_null_sector_no
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_nsqf_class_cond_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+class_type_id=udise_null_col.count_null_class_type_id,
+sector_no=udise_null_col.count_null_sector_no
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_exmres_c12_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+item_id=udise_null_col.count_null_item_id,
+stream_id=udise_null_col.count_null_stream_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_exmres_c10_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+item_id=udise_null_col.count_null_item_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_exmres_c5_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_incen_cwsn_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+item_id=udise_null_col.count_null_item_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_enr_by_stream_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+stream_id=udise_null_col.count_null_stream_id,
+caste_id=udise_null_col.count_null_caste_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_enr_cwsn_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+disability_type=udise_null_col.count_null_disability_type
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_enr_medinstr_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+medinstr_seq=udise_null_col.count_null_medinstr_seq
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_enr_age_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+age_id=udise_null_col.count_null_age_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_enr_reptr_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+item_group=udise_null_col.count_null_item_group,
+item_id=udise_null_col.count_null_item_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_enr_fresh_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+item_group=udise_null_col.count_null_item_group,
+item_id=udise_null_col.count_null_item_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_enr_newadm_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_staff_posn_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_exmmarks_c10_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+item_id = udise_null_col.count_null_item_id,
+marks_range_id = udise_null_col.count_null_marks_range_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_exmmarks_c12_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+item_id = udise_null_col.count_null_item_id,
+marks_range_id = udise_null_col.count_null_marks_range_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_nsqf_exmres_c10_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+sector_no = udise_null_col.count_null_sector_no,
+marks_range_id = udise_null_col.count_null_marks_range_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_nsqf_exmres_c12_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+sector_no = udise_null_col.count_null_sector_no,
+marks_range_id = udise_null_col.count_null_marks_range_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_nsqf_trng_prov_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+sector_no = udise_null_col.count_null_sector_no
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_nsqf_faculty_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+nsqf_faculty_id = udise_null_col.count_null_nsqf_faculty_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_exmres_c8_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_profile_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_tch_profile_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_recp_exp_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_nsqf_basic_info_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_nsqf_enr_caste_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+sector_no = udise_null_col.count_null_sector_no,
+item_id = udise_null_col.count_null_item_id
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_nsqf_enr_sub_sec_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+sector_no = udise_null_col.count_null_sector_no
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_pgi_details_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_safety_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"udise_update_null_count_sch_incentives_qry":'''update log_summary
+SET udise_sch_code = udise_null_col.count_null_udise_sch_code,
+grade_pri_upr=udise_null_col.count_null_grade_pri_upr,
+incentive_type=udise_null_col.count_null_incentive_type
+from udise_null_col
+where udise_null_col.ff_uuid = log_summary.ff_uuid
+''',
+"select_columns_sch_facility_qry":'''select udise_sch_code,    ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs from flowfile''',
+"udise_nsqf_plcmnt_c12_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and sector_no IS NOT NULL
+and item_id IS NOT NULL
+''',
+"udise_nsqf_plcmnt_c10_not_null":'''select * from flowfile
+where udise_sch_code IS NOT NULL
+and sector_no IS NOT NULL
+and item_id IS NOT NULL 
+''',
+"udise_nsqf_plcmnt_c12_check_if_null":'''select * from flowfile
+where udise_sch_code IS NULL
+or sector_no IS NULL
+or item_id IS NULL
+''',
+"udise_nsqf_plcmnt_c12_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id,
+SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no
+from flowfile)
+''',
+"udise_nsqf_plcmnt_c10_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when item_id IS NULL THEN 1 ELSE 0 END) AS count_null_item_id,
+SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no
+from flowfile)
+''',
+"udise_nsqf_class_cond_count_null":'''(select
+SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
+SUM(CASE when class_type_id IS NULL THEN 1 ELSE 0 END) AS count_null_class_type_id,
+SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no
+from flowfile)
+''',
+"udise_nsqf_plcmnt_c10_check_if_null":'''select * from flowfile
+where udise_sch_code IS NULL
+or sector_no IS NULL
+or item_id IS NULL
+'''
 }
