@@ -6,7 +6,7 @@ After=network.target
 User={{ system_user_name }}
 Group=www-data
 WorkingDirectory={{ base_dir }}/cqube/emission_app/python
-ExecStart={{ base_dir }}/cqube/emission_app/flaskenv/bin/gunicorn -w 3 -b 0.0.0.0:5000 server:application 
+ExecStart={{ base_dir }}/cqube/emission_app/flaskenv/bin/gunicorn -w 3 -b 0.0.0.0:5000 server:application --access-logfile access.log --error-logfile error.log
 
 [Install]
 WantedBy=multi-user.target

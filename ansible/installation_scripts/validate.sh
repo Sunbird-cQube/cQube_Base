@@ -84,10 +84,10 @@ echo """1. Skip the Postgres installation (Will backup the data locally for futu
         ;;
             2 )
                 echo "Removing Postgres..."
+                sudo systemctl stop keycloak.service > /dev/null 2>&1
+                sleep 5
+                sudo systemctl stop postgresql
                 sudo apt-get --purge remove postgresql* -y
-                dpkg -l | grep postgres
-                sudo apt-get --purge remove postgresql* -y
-                sudo apt autoremove -y
                 echo "Done."
 	break	
         ;;
