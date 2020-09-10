@@ -63,10 +63,12 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <p style="text-align: justify; font-size: 11px;line-height: 0.8em;">
-                <strong> About the dashboard:</strong> The UDISE dashboard visualises the data on school
-                infrastructure
-                metrics for Gujarat based on the data collected through UDISE 2019.
+            <p style="text-align: justify; font-size: 11px;">
+                <strong> About the dashboard:</strong> The dashboard visualises data on various indices calculated using
+                the metrics captured in the UDISE 2019 for Gujarat. Each of the indices has been derived using multiple
+                metrics that have been normalised and benchmarked for a fair comparison. The data here can be broken at
+                multiple administrative levels (i.e. District, Block, Cluster and School) and you can view and download
+                the data for any of the available indices.
             </p>
         </div>
     </div>
@@ -127,11 +129,11 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div #mapContainer id="infraMap" class="active" style="width: 100%; height: 73vh"></div>
+            <div #mapContainer id="infraMap" class="active" style="width: 100%; height: 90vh"></div>
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
+        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;margin-top: 5%;">
         <div class="col-sm-6">
             <span id="schools" style="text-align: center;">Number of schools: {{schoolCount}}</span>
         </div>
