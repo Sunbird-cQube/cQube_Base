@@ -1637,7 +1637,7 @@ create or replace view udise_district_score as
 select b.*,
 ((rank () over ( order by Infrastructure_Score desc))||'' out of ''||(select count(distinct(district_id)) from udise_school_metrics_agg)) as district_wise_rank 
 from 
-(select district_id,district_name,district_latitude,district_longitude,sum(total_schools)as total_schools,
+(select district_id,initcap(district_name)as district_name,district_latitude,district_longitude,sum(total_schools)as total_schools,
 	sum(total_clusters)as total_clusters,sum(total_blocks)as total_blocks,'||indices_cols||','||infra_score_cols||'
 from 
 (select district_id,district_name,district_latitude,district_longitude,count(distinct(udise_school_id)) as total_schools,
@@ -1648,8 +1648,6 @@ Execute district_score;
 return 0;
 END;
 $$LANGUAGE plpgsql;
-
-/*Udise block score*/
 
 CREATE OR REPLACE FUNCTION udise_block_score()
 RETURNS text AS
@@ -1681,7 +1679,8 @@ select b.*,
 (rank () over ( partition by b.district_id order by infrastructure_score desc))||'' out of ''||(c.total_blocks) as block_wise_rank 
 ,c.district_wise_rank
 from 
-(select block_id,block_name,block_latitude,block_longitude,district_id,district_name,sum(total_schools)as total_schools,sum(total_clusters)as total_clusters,
+(select block_id,initcap(block_name)as block_name,block_latitude,block_longitude,district_id,initcap(district_name)as district_name
+,sum(total_schools)as total_schools,sum(total_clusters)as total_clusters,
 '||indices_cols||','||infra_score_cols||'
 from 
 (select block_id,block_name,block_latitude,block_longitude,district_id,district_name,count(distinct(udise_school_id)) as total_schools,
@@ -1694,7 +1693,6 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-/*udise cluster score*/
 
 CREATE OR REPLACE FUNCTION udise_cluster_score()
 RETURNS text AS
@@ -1726,7 +1724,8 @@ select b.*,
 (rank () over ( partition by b.block_id order by infrastructure_score desc))
 ||'' out of ''||(c.total_clusters) as cluster_wise_rank ,
 c.district_wise_rank as district_wise_rank,c.block_wise_rank as block_wise_rank from 
-(select cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,block_name,district_id,district_name,sum(total_schools)as total_schools,
+(select cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,block_id,initcap(block_name)as block_name,
+district_id,initcap(district_name)as district_name,sum(total_schools)as total_schools,
 '||indices_cols||','||infra_score_cols||'
 from 
 (select cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,block_name,district_id,district_name,count(distinct(udise_school_id)) as total_schools,
@@ -1738,7 +1737,6 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-/*udise school score*/
 
 CREATE OR REPLACE FUNCTION udise_school_score()
 RETURNS text AS
@@ -1771,8 +1769,8 @@ select b.*,
 ||'' out of ''||(c.total_schools) as school_wise_rank ,
 c.district_wise_rank as district_wise_rank,c.block_wise_rank as block_wise_rank,c.cluster_wise_rank as cluster_wise_rank
 from 
-(select udise_school_id,school_name,school_latitude,school_longitude,cluster_id,cluster_name,
-	block_id,block_name,district_id,district_name,sum(total_schools)as total_schools,
+(select udise_school_id,initcap(school_name)as school_name,school_latitude,school_longitude,cluster_id,initcap(cluster_name)as cluster_name,
+	block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,sum(total_schools)as total_schools,
 '||indices_cols||','||infra_score_cols||'
 from 
 (select udise_school_id,school_name,school_latitude,school_longitude,
@@ -1784,6 +1782,7 @@ Execute district_score;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
 
 /*Udise jolt spec*/
 
@@ -1806,12 +1805,12 @@ select ''
     "spec": {
       "*": {
         "district_id": "data.[&1].details.district_id",
-        "district_name": "data.[&1].details.district_name",
+        "district_name": "data.[&1].details.District_Name",
         "district_latitude": "data.[&1].details.latitude",
         "district_longitude": "data.[&1].details.longitude",
-        "infrastructure_score": "data.[&1].details.infrastructure_score",
+        "infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-        "district_wise_rank": "data.[&1].rank.district_rank",
+        "district_wise_rank": "data.[&1].rank.District_Rank",
         "@total_schools": "data.[&1].total_schools",
         "total_schools": "allDistrictsFooter.totalSchools[]"
       }
@@ -1849,15 +1848,15 @@ as select ''
 		"spec": {
 			"*": {
 				"district_id": "data.[&1].details.district_id",
-				"district_name": "data.[&1].details.district_name",
+				"district_name": "data.[&1].details.District_Name",
 				"block_id": "data.[&1].details.block_id",
-				"block_name": "data.[&1].details.block_name",
+				"block_name": "data.[&1].details.Block_Name",
 				"block_latitude": "data.[&1].details.latitude",
 				"block_longitude": "data.[&1].details.longitude",
-				"infrastructure_score": "data.[&1].details.infrastructure_score",
+				"infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-				"district_wise_rank": "data.[&1].rank.district_rank",
-				"block_wise_rank": "data.[&1].rank.block_rank",
+				"district_wise_rank": "data.[&1].rank.District_Rank",
+				"block_wise_rank": "data.[&1].rank.Block_Rank",
 				"@total_schools": "data.[&1].total_schools",
 				"total_schools": "footer.@(1,district_id).totalSchools[]"
 			}
@@ -1906,18 +1905,18 @@ as select ''
     "spec": {
       "*": {
         "district_id": "data.[&1].details.district_id",
-        "district_name": "data.[&1].details.district_name",
+        "district_name": "data.[&1].details.District_Name",
         "block_id": "data.[&1].details.block_id",
-        "block_name": "data.[&1].details.block_name",
+        "block_name": "data.[&1].details.Block_Name",
         "cluster_id": "data.[&1].details.cluster_id",
-        "cluster_name": "data.[&1].details.cluster_name",
+        "cluster_name": "data.[&1].details.Cluster_Name",
         "cluster_latitude": "data.[&1].details.latitude",
         "cluster_longitude": "data.[&1].details.longitude",
-        "infrastructure_score": "data.[&1].details.infrastructure_score",
+        "infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-        "district_wise_rank": "data.[&1].rank.district_rank",
-        "block_wise_rank": "data.[&1].rank.block_rank",
-        "cluster_wise_rank": "data.[&1].rank.cluster_rank",
+        "district_wise_rank": "data.[&1].rank.District_Rank",
+        "block_wise_rank": "data.[&1].rank.Block_Rank",
+        "cluster_wise_rank": "data.[&1].rank.Cluster_Rank",
         "@total_schools": "data.[&1].total_schools",
         "total_schools": "footer.@(1,block_id).totalSchools[]"
       }
@@ -1973,21 +1972,21 @@ as select ''
     "spec": {
       "*": {
         "district_id": "data.[&1].details.district_id",
-        "district_name": "data.[&1].details.district_name",
+        "district_name": "data.[&1].details.District_Name",
         "block_id": "data.[&1].details.block_id",
-        "block_name": "data.[&1].details.block_name",
+        "block_name": "data.[&1].details.Block_Name",
         "cluster_id": "data.[&1].details.cluster_id",
-        "cluster_name": "data.[&1].details.cluster_name",
+        "cluster_name": "data.[&1].details.Cluster_Name",
         "udise_school_id": "data.[&1].details.school_id",
-        "school_name": "data.[&1].details.school_name",
+        "school_name": "data.[&1].details.School_Name",
         "school_latitude": "data.[&1].details.latitude",
         "school_longitude": "data.[&1].details.longitude",
-        "infrastructure_score": "data.[&1].details.infrastructure_score",
+        "infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-        "district_wise_rank": "data.[&1].rank.district_rank",
-        "block_wise_rank": "data.[&1].rank.block_rank",
-        "cluster_wise_rank": "data.[&1].rank.cluster_rank",
-        "school_wise_rank": "data.[&1].rank.school_rank",
+        "district_wise_rank": "data.[&1].rank.District_Rank",
+        "block_wise_rank": "data.[&1].rank.Block_Rank",
+        "cluster_wise_rank": "data.[&1].rank.Cluster_Rank",
+        "school_wise_rank": "data.[&1].rank.School_Rank",
         "@total_schools": "data.[&1].total_schools",
         "total_schools": "footer.@(1,cluster_id).totalSchools[]"
       }
@@ -2033,5 +2032,6 @@ return 0;
 END;
 $$
 LANGUAGE plpgsql;
+
 
 select udise_jolt_spec();
