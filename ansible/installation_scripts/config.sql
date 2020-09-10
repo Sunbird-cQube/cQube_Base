@@ -1027,3 +1027,4 @@ $$LANGUAGE plpgsql;
 
 truncate table infrastructure_staging_init;
 
+
