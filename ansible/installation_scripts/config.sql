@@ -1649,8 +1649,6 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-select udise_district_score();
-
 /*Udise block score*/
 
 CREATE OR REPLACE FUNCTION udise_block_score()
@@ -1696,8 +1694,6 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-select udise_block_score();
-
 /*udise cluster score*/
 
 CREATE OR REPLACE FUNCTION udise_cluster_score()
@@ -1741,8 +1737,6 @@ Execute district_score;
 return 0;
 END;
 $$LANGUAGE plpgsql;
-
-select udise_cluster_score();
 
 /*udise school score*/
 
@@ -1791,15 +1785,13 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-select udise_school_score();
-
 /*Udise jolt spec*/
 
 create or replace function udise_jolt_spec()
     RETURNS text AS
     $$
     declare
-indices text:='select string_agg(''"''||column_name||''": "data.[&1].indices.''||column_name||''"'','','')
+indices text:='select string_agg(''"''||lower(column_name)||''": "data.[&1].indices.''||column_name||''"'','','')
   from udise_config where status = ''1'' and type=''indice''';
 indices_cols text;
 query text;
