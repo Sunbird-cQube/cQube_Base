@@ -30,12 +30,24 @@
     path_to_script: cQube.sql
   tags: [ install, update ]
 
+- name: checking for infra table
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "select case when (select count(*) from infrastructure_master)=0 then 0 else 1 end;"
+  register: output_infra
+  tags: [ install, update ]
+
 - name: Copying table structure from csv file
   shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy infrastructure_staging_init(infrastructure_name,infrastructure_category,status) from '/tmp/postgres/infrastructure_master.csv' delimiter ',' csv header;"
+  when: output_infra.stdout_lines[2].strip() == "0"
+  tags: [ install, update ]
+
+- name: checking for udise table
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "select case when (select count(*) from udise_config)=0 then 0 else 1 end;"
+  register: output_udise
   tags: [ install, update ]
 
 - name: Copying table structure from csv file
   shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy udise_config(id,description,column_name,type,indice_id,status,score) from '/tmp/postgres/udise_config.csv' delimiter '|' csv header;"
+  when: output_udise.stdout_lines[2].strip() == "0"
   tags: [ install, update ]
 
 - name: Run queries from SQL script
