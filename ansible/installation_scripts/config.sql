@@ -2053,16 +2053,24 @@ query text:='select ''select udise_school_id,''||string_agg(column_name,'','')||
 from udise_config where exists (select 1 from udise_config where status=true and column_name=''School_Performance'') 
 and column_name in (''perf_class_10_passed'',''perf_class_12_passed'')';
 cols text; 
-list text;
+null_list text;
 data text;
 BEGIN
 Execute query into cols;
 IF cols <> '' THEN 
-list='create or replace view udise_scl_perf_exception as
+null_list='
+create or replace view udise_scl_perf_no_lat_long as 
+select a.*,b.school_name,b.cluster_id,b.cluster_name,b.block_id,b.block_name,b.district_id,b.district_name from 	
+(select udise_sch_code as school_id from (select udise_sch_code from udise_sch_exmres_c10 UNION select udise_sch_code from udise_sch_exmres_c12)as d 
+where udise_sch_code not in (select school_id from school_geo_master where school_latitude>0 and school_longitude>0 and cluster_latitude>0 and cluster_longitude>0)) as a
+left join school_hierarchy_details as b on a.school_id=b.school_id;
+create or replace view udise_scl_perf_null_records as
 select b.school_name,b.cluster_id,b.cluster_name,b.block_id,b.block_name,b.district_id,b.district_name,a.*
- from('||cols||')as a
-right join school_hierarchy_details as b on a.udise_school_id=b.school_id';
-Execute list; 
+ from('||cols||' and udise_school_id in (select school_id from udise_scl_perf_no_lat_long))as a
+right join school_hierarchy_details as b on a.udise_school_id=b.school_id 
+where a.udise_school_id in (select udise_sch_code from udise_sch_exmres_c10 UNION select udise_sch_code from udise_sch_exmres_c12)
+';
+Execute null_list; 
 END IF;
 return 0;
 END;
