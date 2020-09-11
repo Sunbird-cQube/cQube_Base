@@ -60,44 +60,12 @@ if [ $temp == 0 ]; then
     if [ $version>=10.12 ]
     then
         echo "WARNING: Postgres found."
-        echo "Please select any option."
-echo """1. Skip the Postgres installation (Will backup the data locally for future reference)
-2. Re-install the Postgres (current database will not be backed-up )
-3. Exit the installation
-        """
-  while true; do
-      read -p "Enter the option: " answer
-      case $answer in
-          1 )
-                read -p "Enter the database name: " bk_db_name
-                read -p "Enter the Username: " bk_db_uname
-                pg_dump -h localhost -U $bk_db_uname -W -F t $bk_db_name > `date +%Y%m%d%H%M`$bk_db_name.tar
-                if [[ ! $? == 0 ]]; then
-                    echo "There is a problem dumping the database"; tput sgr0 ; fail=1; break;
-		    exit 1
-	        else
-                  echo "Database backup is completed"
-	        fi
-		      #sudo sed -i "s/- include_tasks: install_postgress.yml/#&/g" roles/createdb/tasks/main.yml
-          sudo sed -i "s/^pg_install_flag:.*/pg_install_flag: false/g" roles/createdb/vars/main.yml
-        break
-        ;;
-            2 )
-                echo "Removing Postgres..."
-                sudo systemctl stop keycloak.service > /dev/null 2>&1
-                sleep 5
-                sudo systemctl stop postgresql
-                sudo apt-get --purge remove postgresql* -y
-                echo "Done."
-	break	
-        ;;
-            3 )
-                tput setaf 1; echo "Please backup the database and rerun the installation"; tput sgr0 ; fail=1; break;
-                exit;
-            ;;
-      * )     ;;
-        esac
-        done
+        echo "Removing Postgres..."
+        sudo systemctl stop keycloak.service > /dev/null 2>&1
+        sleep 5
+        sudo systemctl stop postgresql
+        sudo apt-get --purge remove postgresql* -y
+        echo "Done"
      fi
 fi
 }
