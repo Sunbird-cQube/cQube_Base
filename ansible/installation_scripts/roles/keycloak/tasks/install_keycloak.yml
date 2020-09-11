@@ -73,12 +73,12 @@
   service:
     name: keycloak
     state: restarted
-  tags: install
+  tags: [ install, update ]
 
 - name: Waiting for keycloak to started.. 10 seconds
   pause:
     seconds: 10
-  tags: install
+  tags: [ install, update ]
  
 - name: add-user-keycloak
   shell: ./add-user-keycloak.sh -u {{ keycloak_adm_user }} -p {{ keycloak_adm_passwd }}

@@ -6,10 +6,10 @@ from Data.parameters import Data
 from reuse_func import GetData
 
 
-class home_button():
+class home():
     def __init__(self,driver):
         self.driver = driver
-    def test_home(self):
+    def test_homeicon(self):
         self.p = GetData()
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_xpath(Data.hyper).click()
@@ -21,4 +21,17 @@ class home_button():
         time.sleep(4)
         self.driver.find_element_by_id(Data.homeicon).click()
 
+    def test_homebtn(self):
+        count = 0
+        self.data = GetData()
+        self.driver.find_element_by_xpath(Data.hyper).click()
+        self.data.page_loading(self.driver)
+        if 'home' in self.driver.current_url:
+            print("Landing page is displayed ")
+        else:
+            print('Home button is not working ')
+            count = count + 1
+        self.data.navigate_to_school_infrastructure()
+        self.data.page_loading(self.driver)
+        return count
 

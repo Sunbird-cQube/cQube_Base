@@ -18,14 +18,17 @@ class overall_timeperiod():
             print('Selected catagory  has no records')
         else:
             self.driver.find_element_by_id('block').click()
+            self.data.page_loading(self.driver)
             markers = self.driver.find_elements_by_class_name(Data.dots)
             bcount = len(markers)
             self.data.page_loading(self.driver)
             self.driver.find_element_by_id('cluster').click()
+            self.data.page_loading(self.driver)
             markers = self.driver.find_elements_by_class_name(Data.dots)
             ccount = len(markers) - 1
             self.data.page_loading(self.driver)
             self.driver.find_element_by_id('school').click()
+            self.data.page_loading(self.driver)
             markers = self.driver.find_elements_by_class_name(Data.dots)
             scount = len(markers)
             self.data.page_loading(self.driver)

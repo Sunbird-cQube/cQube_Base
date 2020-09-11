@@ -287,9 +287,10 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   }
 
   getYear() {
+    this.months = [];
+    this.month = undefined;
     var allMonths = [];
     allMonths = this.getMonthYear[`${this.year}`];
-    this.months = [];
     allMonths.forEach(month => {
       var obj = {
         name: month.month_name,

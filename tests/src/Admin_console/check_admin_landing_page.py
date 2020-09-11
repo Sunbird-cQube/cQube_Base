@@ -18,7 +18,7 @@ class Test_admin_landing_page(unittest.TestCase):
 
     def test_click_on_createuser(self):
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_xpath("//*[@id='crtUsr']/img").click()
+        self.driver.find_element_by_xpath("//img[@alt='addUser']").click()
         self.data.page_loading(self.driver)
         if "create-user" in self.driver.current_url:
             print("Create user screen is present ")
@@ -29,7 +29,7 @@ class Test_admin_landing_page(unittest.TestCase):
 
 
     def test_click_on_changepwd(self):
-        self.driver.find_element_by_id("chPass").click()
+        self.driver.find_element_by_xpath("//img[@alt='changePassword']").click()
         self.data.page_loading(self.driver)
         if "change-password" in self.driver.current_url:
             print("Change password screen is present ")
@@ -40,7 +40,7 @@ class Test_admin_landing_page(unittest.TestCase):
 
 
     def test_click_on_logs(self):
-        self.driver.find_element_by_xpath("//*[@id='logs']/img").click()
+        self.driver.find_element_by_xpath("//img[@alt='logs']").click()
         self.data.page_loading(self.driver)
         if "all-logs" in self.driver.current_url:
             print(" logs  screen is present ")
@@ -52,7 +52,7 @@ class Test_admin_landing_page(unittest.TestCase):
 
 
     def test_click_on_allusers(self):
-        self.driver.find_element_by_xpath("").click()
+        self.driver.find_element_by_xpath("//img[@alt='usersList']").click()
         self.data.page_loading(self.driver)
         if "users" in self.driver.current_url:
             print(" all user  screen is present ")

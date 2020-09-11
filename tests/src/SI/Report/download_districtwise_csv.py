@@ -11,7 +11,7 @@ class download_district_wise_csv():
 
     def test_districtwise(self):
         self.cal = GetData()
-        self.driver.implicitly_wait(20)  # seconds
+        self.driver.implicitly_wait(20)
         self.driver.find_element_by_xpath(Data.hyper).click()
         self.cal.page_loading(self.driver)
         p =pwd()
