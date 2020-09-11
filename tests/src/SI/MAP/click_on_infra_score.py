@@ -10,6 +10,7 @@ class click_on_infrascores():
         self.driver=driver
     def test_infrascores(self):
         self.p = GetData()
+        self.p.page_loading(self.driver)
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.p.page_loading(self.driver)
         chooseinfra = Select(self.driver.find_element_by_id('choose_infra'))
@@ -17,5 +18,6 @@ class click_on_infrascores():
         self.p.page_loading(self.driver)
         for x in range(1, len(chooseinfra.options)):
             chooseinfra.select_by_index(x)
+            print(chooseinfra.options[x].text ,'is selected')
             self.p.page_loading(self.driver)
         return count

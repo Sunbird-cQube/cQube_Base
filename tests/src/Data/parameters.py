@@ -13,11 +13,13 @@ class Data():
 
     loginbtn = "//button[@type='submit']"
     # admin login
+    home ="homeBtn"
+    userlist="user"
     cuser ="//a[1]"
     cpass ="//a[2]"
     dashboard_options = "//a/div/td[2]"
     back_btn ="//div[@class='col-sm-6']/a"
-
+    createusericon ="//img[@alt='addUser']"
     dots = "leaflet-interactive"
     SAR_Details = "//div[@class='row']/div[@class='col-sm-4']/span"
     hyper_link = "//p/span"
@@ -265,3 +267,10 @@ class Data():
     crc_sel3 ="//*[@id='select']/select/option[3]"
     crc_sel4 ="//*[@id='select']/select/option[4]"
     crc_sel5 = "//*[@id='select']/select/option[5]"
+
+    #admin console
+    createuser_icon ="//*[@id='crtUsr']/img"
+    changepassword ="chPass"
+    logs_icon ="//*[@id='logs']/img"
+    summary ="//*[@id='summary']/img"
+    monitor= "//*[@id='moniter']/a/img"

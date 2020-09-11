@@ -28,10 +28,10 @@ class crc_schoolevel_records():
         select_block = Select(self.driver.find_element_by_name('myBlock'))
         select_cluster = Select(self.driver.find_element_by_name('myCluster'))
         count = 0
-        for x in range(1, int(len(select_district.options)/4)):
+        for x in range(int(len(select_district.options))-1, int(len(select_district.options))):
             select_district.select_by_index(x)
             self.cal.page_loading(self.driver)
-            for y in range(1, len(select_block.options)):
+            for y in range(len(select_block.options)-1, len(select_block.options)):
                 select_block.select_by_index(y)
                 self.cal.page_loading(self.driver)
                 for z in range(1, len(select_cluster.options)):
@@ -44,7 +44,7 @@ class crc_schoolevel_records():
                     else:
                         self.driver.find_element_by_id(Data.Download).click()
                         time.sleep(3)
-                        self.filename = p.get_download_dir_CRC_Download1() + "/School_level_CRC_Report.csv"
+                        self.filename = p.get_download_dir() + "/School_level_CRC_Report.csv"
                         if not os.path.isfile(self.filename):
                             print(select_cluster.options[z].text ," csv file not downloaded")
                         else:
@@ -67,12 +67,15 @@ class crc_schoolevel_records():
                                 if int(tsc) != tschools:
                                     print(select_district.options[x].text, ":", "total no of schools  :", tschools,
                                           int(tsc), "records are mismatch found")
+                                    count = count + 1
                                 if int(vs) != vsts:
                                     print(select_district.options[x].text, ":", "total no of visits  :", int(vs), vsts,
                                           "records are mismatch found")
+                                    count = count + 1
                                 if int(vd) != vstd:
                                     print(select_district.options[x].text, ":", "total no of visits  :", int(vd), vstd,
                                           "records are mismatch found")
+                                    count = count + 1
 
                             self.remove_csv1()
 
