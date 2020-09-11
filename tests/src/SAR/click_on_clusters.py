@@ -1,3 +1,4 @@
+import time
 
 from Data.parameters import Data
 from reuse_func import GetData
@@ -11,5 +12,6 @@ class Clusters():
         self.driver.find_element_by_id(Data.SAR_Clusters_btn).click()
         cal = GetData()
         cal.page_loading(self.driver)
+        time.sleep(5)
         dots = self.driver.find_elements_by_class_name(Data.dots)
         return dots

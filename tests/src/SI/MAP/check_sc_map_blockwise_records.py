@@ -24,7 +24,7 @@ class school_map_blockwise():
         select_district = Select(self.driver.find_element_by_id('choose_dist'))
         select_block = Select(self.driver.find_element_by_id('choose_block'))
         count = 0
-        for x in range(1, len(select_district.options)):
+        for x in range(len(select_district.options)-1, len(select_district.options)):
             select_district.select_by_index(x)
             self.cal.page_loading(self.driver)
             print(select_district.options[x].text)

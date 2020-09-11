@@ -4,7 +4,7 @@ import unittest
 
 from CRC.check_crc_block_per_district_csv_download import blockwise
 from CRC.check_crc_tabledata_by_districtwise import schoolwise_tabledata
-from CRC.check_homebtn import Homebutton
+from CRC.check_homebtn import Homeicon
 from CRC.check_performance_for_blockwise_report import download_blockwise_csv
 from CRC.check_table_data_order import Check_order_of_tabledata
 
@@ -119,7 +119,7 @@ class cQube_CRC_Report(unittest.TestCase):
 
     def test_homeicon(self):
         print("check home button is working or not")
-        b=Homebutton(self.driver)
+        b=Homeicon(self.driver)
         result = b.test_homeicon()
         self.assertTrue(result,msg="Home button not working ")
 

@@ -42,6 +42,16 @@ if [[ $base_dir_status == 1 ]]; then
 fi
 }
 
+check_s3_bucket(){
+
+s3_bucket=$(cat $base_dir/cqube/.cqube_config | grep $3 )
+s3_bucket_name=$(cut -d "=" -f2 <<< "$s3_bucket")
+if [[ ! "$2" == "$s3_bucket_name" ]]; then
+    echo "Error - $1 must be same as previously used bucket"; fail=1
+fi
+
+}
+
 check_version(){
 
 # getting the installed version
@@ -133,15 +143,6 @@ check_aws_key(){
     if [ ! $? -eq 0 ]; then echo "Error - Invalid aws access or secret keys"; fail=1
         aws_key_status=1
     fi
-}
-check_s3_bucket(){
-if [[ $aws_key_status == 0 ]]; then
-        bucketstatus=`aws s3api head-bucket --bucket "${2}" 2>&1`
-        if [ ! $? == 0 ]
-        then
-            echo "Error - [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in upgradation_config.yml"; fail=1
-        fi
-fi
 }
 
 check_db_naming(){
@@ -299,21 +300,21 @@ case $key in
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_s3_bucket $key $value 
+          check_s3_bucket $key $value "CQUBE_S3_INPUT"
        fi
        ;;
    s3_output_bucket)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_s3_bucket $key $value 
+          check_s3_bucket $key $value "CQUBE_S3_OUTPUT"
        fi
        ;;
    s3_emission_bucket)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_s3_bucket $key $value 
+          check_s3_bucket $key $value "CQUBE_S3_EMISSION"
        fi
        ;;
    local_ipv4_address)

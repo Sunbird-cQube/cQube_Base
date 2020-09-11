@@ -7,7 +7,7 @@ from SI.MAP.click_on_Dashboard import click_dashboard
 from SI.MAP.click_on_anydistrict_and_download_csv import download_icon
 
 from SI.MAP.click_on_blk_clus_school_and_home import click_on_home
-from SI.MAP.click_on_block_cluster_school_and_check_schoolscount import Block_school_count
+from SI.MAP.click_on_block_cluster_school_and_check_schoolscount import Block_cluster_school_count
 from SI.MAP.click_on_blocks import click_on_blocks
 from SI.MAP.click_on_clusters import cluster_button
 from SI.MAP.click_on_district_options import District_options
@@ -82,8 +82,8 @@ class cQube_SI_Map_Report(unittest.TestCase):
 
     def test_no_of_schools(self):
         print("check with no of school values ")
-        b = Block_school_count(self.driver)
-        r, r1, r2, r3 = b.test_counter()
+        b = Block_cluster_school_count(self.driver)
+        r, r1, r2, r3 = b.test_check_total_schoolvalue()
         self.assertEqual(int(r), int(r1), msg="mis match found in no of school in block level")
         self.assertEqual(int(r), int(r2), msg="mis match found in no of school in cluster level")
         self.assertEqual(int(r), int(r3), msg="mis match found in no of school in school level")

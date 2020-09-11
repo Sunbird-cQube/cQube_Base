@@ -13,7 +13,7 @@ check_length(){
 
 check_base_dir(){
 if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
-  echo "Error - Please enter the absolute path or make sure the directory is present."; fail=1
+  echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
 fi
 }
 
