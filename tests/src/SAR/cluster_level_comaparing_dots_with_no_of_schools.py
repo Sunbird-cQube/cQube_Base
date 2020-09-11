@@ -19,7 +19,7 @@ class ClusterDotsWithNoOfSchools():
         select_block = Select(self.driver.find_element_by_name('myBlock'))
         select_cluster = Select(self.driver.find_element_by_name('myCluster'))
         count = 0
-        for x in range(1, len(select_district.options)):
+        for x in range(len(select_district.options)-1, len(select_district.options)):
             select_district.select_by_index(x)
             cal.page_loading(self.driver)
             for y in range(1, len(select_block.options)):
@@ -28,6 +28,7 @@ class ClusterDotsWithNoOfSchools():
                 for z in range(1, len(select_cluster.options)):
                     select_cluster.select_by_index(z)
                     cal.page_loading(self.driver)
+                    time.sleep(3)
                     list = self.driver.find_elements_by_class_name(Data.dots)
                     elem = self.driver.find_element_by_id(Data.schoolcount).text
                     res = re.sub("\D", "", elem)

@@ -20,8 +20,9 @@ class BlockwiseCsv():
         cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.SAR_Blocks_btn).click()
         cal.page_loading(self.driver)
+        time.sleep(5)
         self.driver.find_element_by_id(Data.Download).click()
-        time.sleep(2)
+        time.sleep(5)
         p = pwd()
         self.filename = p.get_download_dir() + "/Block_wise_report_" + self.month + "_" + self.year + ".csv"
         return os.path.isfile(self.filename)

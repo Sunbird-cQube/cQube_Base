@@ -1,5 +1,5 @@
 
-cQube Release_1.2.1
+cQube Release_1.2
 
 Prerequisites:
   Google Chrome 84.0.4147.135 need to be installed in the server or local machine.
@@ -24,7 +24,7 @@ Steps to Download the selenium Grid
    Open the terminal and navigate to the selenium grid jar
    Run the command in the terminal : java -jar selenium-server-standalone
 
-Note : Java jdk1.8 need to be already installed in the machine, and download geckodriver and place it in Driver folder.
+Note : Java jdk1.8 need to be already installed in the machine
 Note:  execution of Admin console scripts , i.e  create_user.py script should provide the username and password in sendkeys.
 
 Steps to execute the test script
@@ -81,7 +81,7 @@ For Executing the Regression Test suites using pytest
 		
 
 		
-	Note: Each Single scripts takes more than 1 hour, you can execute the multiple test scripts by opening the terminal and navigating to the cQubeTesting folder and running the above testing suite. 
+	Note: Each Single scripts takes more than 1 hour, you can execute the multiple test scripts by opening the terminal and navigating to the cQubeTesting folder and running the above testing suite.
 
 
 
