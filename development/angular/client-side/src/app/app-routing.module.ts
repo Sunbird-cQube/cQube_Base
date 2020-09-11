@@ -18,6 +18,7 @@ import { SemesterExceptionComponent } from './semester-exception/semester-except
 import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
 import { DikshaBarChartComponent } from './diksha-bar-chart/diksha-bar-chart.component';
 import { MissingDataComponent } from './missing-data/missing-data.component';
+import { UdiseReportComponent } from './udise-report/udise-report.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,9 @@ const routes: Routes = [
       },
       {
         path: 'download-missing-data', component: MissingDataComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'udise-report', component: UdiseReportComponent, canActivateChild: [AuthGuard]
       }
     ]
   }

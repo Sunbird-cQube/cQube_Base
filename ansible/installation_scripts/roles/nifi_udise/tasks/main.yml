@@ -1,0 +1,2 @@
+- include_tasks: nifi_udise.yml
+  tags: [ install, update ]

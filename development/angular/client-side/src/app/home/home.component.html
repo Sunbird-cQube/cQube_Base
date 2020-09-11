@@ -152,6 +152,21 @@
           </div>
         </mat-nav-list>
 
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu8 = !showSubmenu8" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+            <span class="full-width" id="telemetry" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">UDISE
+            </span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu8}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu8" [ngClass]="{'expanded' : showSubmenu8}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['udise-report']" (click)="sidenav.toggle() " id="udiseReport"
+              (click)="showSubmenu8 = !showSubmenu8"><span style="margin-left: 50px;">UDISE report</span></a>
+          </div>
+        </mat-nav-list>
+
         <mat-nav-list *ngIf="showUser">
           <mat-list-item (click)="showSubmenu1 = !showSubmenu1" class="abc1"
             style="font-family: Arial; border-bottom: 1px solid lightgray;">
@@ -171,8 +186,8 @@
       </div>
 
     </mat-nav-list>
-    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.2.1 </span>
-    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 26/08/2020</span>
+    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.3 </span>
+    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 11/09/2020</span>
   </mat-sidenav>
 
   <mat-sidenav-content>

@@ -145,6 +145,9 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
       this.errMsg();
+      this.infraFilter = [];
+      this.level = 'district';
+      var fileName = "District_wise_report";
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -157,7 +160,6 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.clusterHidden = true;
       // api call to get all the districts data
       if (this.myDistData != undefined) {
-        this.infraFilter = [];
         this.data = this.myDistData['data'];
         for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
           let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
@@ -191,8 +193,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           centerLng: 71.48396301269531,
           level: 'district'
         }
-        this.level = options.level;
-        var fileName = "District_wise_report";
+
         this.genericFun(this.myDistData, options, fileName);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.details.district_name > b.details.district_name) ? 1 : ((b.details.district_name > a.details.district_name) ? -1 : 0));
@@ -204,7 +205,6 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.myData = this.service.infraMapDistWise().subscribe(res => {
 
           this.myDistData = res;
-          this.infraFilter = [];
           this.data = res['data'];
           for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
             let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
@@ -238,9 +238,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             centerLng: 71.48396301269531,
             level: 'district'
           }
-          this.level = options.level;
           this.data.sort((a, b) => (`${a[this.infraData]}` > `${b[this.infraData]}`) ? 1 : ((`${b[this.infraData]}` > `${a[this.infraData]}`) ? -1 : 0));
-          var fileName = "District_wise_report";
           this.genericFun(this.myDistData, options, fileName);
 
           // sort the districtname alphabetically
@@ -268,9 +266,13 @@ export class InfraMapVisualisationComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.infraFilter = [];
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
+      this.level = 'block_wise';
+      this.fileName = "Block_wise_report";
+
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -288,7 +290,6 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.myData = this.service.infraMapAllBlockWise().subscribe(res => {
         this.myBlockData = res['data'];
         //=================================
-        this.infraFilter = [];
         this.data = res['data'];
         for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
           let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
@@ -315,8 +316,6 @@ export class InfraMapVisualisationComponent implements OnInit {
           centerLng: 71.48396301269531,
           level: "block"
         }
-        this.level = 'block_wise';
-        this.fileName = "Block_wise_report";
 
         if (this.data.length > 0) {
           let result = this.data
@@ -372,9 +371,19 @@ export class InfraMapVisualisationComponent implements OnInit {
               markerIcon.myJsonData = this.blockMarkers[i];
 
               //download report
-              var obj = {};
-              obj = { ...orgObject, ...this.blockMarkers[i].metrics };
-              this.reportData.push(obj);
+              if (this.infraData !== 'infrastructure_score') {
+                let obj = {
+                  district_id: this.blockMarkers[i].details.district_id,
+                  district_name: this.blockMarkers[i].details.district_name,
+                  block_id: this.blockMarkers[i].details.block_id,
+                  block_name: this.blockMarkers[i].details.block_name,
+                  [this.infraData]: this.blockMarkers[i].metrics[`${this.infraData}`] + "%"
+                }
+                this.reportData.push(obj);
+              } else {
+                let myobj = { ...orgObject, ...this.blockMarkers[i].metrics }
+                this.reportData.push(myobj);
+              }
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -406,10 +415,13 @@ export class InfraMapVisualisationComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.infraFilter = [];
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
       this.clusterId = undefined;
+      this.level = "cluster_wise";
+      this.fileName = "Cluster_wise_report";
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -428,7 +440,6 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.myData = this.service.infraMapAllClusterWise().subscribe(res => {
         this.data = res['data']
         //=================================
-        this.infraFilter = [];
         for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
           let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
@@ -454,8 +465,6 @@ export class InfraMapVisualisationComponent implements OnInit {
           centerLng: 71.48396301269531,
           level: "cluster"
         }
-        this.level = "cluster_wise";
-        this.fileName = "Cluster_wise_report";
 
         if (this.data.length > 0) {
           let result = this.data
@@ -509,9 +518,21 @@ export class InfraMapVisualisationComponent implements OnInit {
               markerIcon.myJsonData = this.clusterMarkers[i];
 
               //download report
-              var obj = {};
-              obj = { ...orgObject, ...this.clusterMarkers[i].metrics };
-              this.reportData.push(obj);
+              if (this.infraData !== 'infrastructure_score') {
+                let obj = {
+                  district_id: this.clusterMarkers[i].details.district_id,
+                  district_name: this.clusterMarkers[i].details.district_name,
+                  block_id: this.clusterMarkers[i].details.block_id,
+                  block_name: this.clusterMarkers[i].details.block_name,
+                  cluster_id: this.clusterMarkers[i].details.cluster_id,
+                  cluster_name: this.clusterMarkers[i].details.cluster_name,
+                  [this.infraData]: this.clusterMarkers[i].metrics[`${this.infraData}`] + "%"
+                }
+                this.reportData.push(obj);
+              } else {
+                let myobj = { ...orgObject, ...this.clusterMarkers[i].metrics }
+                this.reportData.push(myobj);
+              }
             }
 
             //schoolCount
@@ -542,10 +563,13 @@ export class InfraMapVisualisationComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.errMsg();
+      this.infraFilter = [];
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
       this.clusterId = undefined;
+      this.level = 'school_wise';
+      this.fileName = "School_wise_report";
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -564,7 +588,6 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.myData = this.service.infraMapAllSchoolWise().subscribe(res => {
         this.data = res['data']
         //=================================
-        this.infraFilter = [];
         for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
           let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
@@ -590,8 +613,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           centerLng: 71.48396301269531,
           level: "school"
         }
-        this.level = 'school_wise';
-        this.fileName = "School_wise_report";
+
         this.schoolMarkers = [];
         if (this.data.length > 0) {
           let result = this.data
@@ -656,9 +678,23 @@ export class InfraMapVisualisationComponent implements OnInit {
               markerIcon.myJsonData = this.schoolMarkers[i];
 
               //download report
-              var obj = {};
-              obj = { ...detailSchool, ...this.schoolMarkers[i].metrics };
-              this.reportData.push(obj);
+              if (this.infraData !== 'infrastructure_score') {
+                let obj = {
+                  district_id: this.schoolMarkers[i].details.district_id,
+                  district_name: this.schoolMarkers[i].details.district_name,
+                  block_id: this.schoolMarkers[i].details.block_id,
+                  block_name: this.schoolMarkers[i].details.block_name,
+                  cluster_id: this.schoolMarkers[i].details.cluster_id,
+                  cluster_name: this.schoolMarkers[i].details.cluster_name,
+                  school_id: this.schoolMarkers[i].details.school_id,
+                  school_name: this.schoolMarkers[i].details.school_name,
+                  [this.infraData]: this.schoolMarkers[i].metrics[`${this.infraData}`] + "%"
+                }
+                this.reportData.push(obj);
+              } else {
+                let myobj = { ...detailSchool, ...this.schoolMarkers[i].metrics }
+                this.reportData.push(myobj);
+              }
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -685,15 +721,15 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   // to load all the blocks for selected district for state data on the map
   onDistrictSelect(districtId) {
+    this.infraFilter = [];
     // to clear the existing data on the map layer  
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.errMsg();
     this.blockId = undefined;
-
-    // to show and hide the dropdowns
-    this.blockHidden = false;
-    this.clusterHidden = true;
+    this.reportData = [];
+    this.level = 'block';
+    var fileName = "Block_per_dist_report";
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -701,7 +737,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
     this.myData = this.service.infraMapBlockWise(districtId).subscribe(res => {
       this.data = res['data'];
-      this.infraFilter = [];
       for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
         let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
         val = val.replace('Percent', '(%)')
@@ -729,6 +764,10 @@ export class InfraMapVisualisationComponent implements OnInit {
         districtName: this.data[0].details.district_name
       }
 
+      // to show and hide the dropdowns
+      this.blockHidden = false;
+      this.clusterHidden = true;
+
       this.districtId = districtId;
 
       // these are for showing the hierarchy names based on selection
@@ -747,8 +786,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         centerLng: this.data[0].details.longitude,
         level: 'block'
       }
-      this.level = options.level;
-      var fileName = "Block_per_dist_report";
+
       this.genericFun(res, options, fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));
@@ -762,15 +800,15 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   // to load all the clusters for selected block for state data on the map
   onBlockSelect(blockId) {
+    this.infraFilter = [];
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.errMsg();
     this.clusterId = undefined;
-
-    // to show and hide the dropdowns
-    this.blockHidden = false;
-    this.clusterHidden = false;
+    this.reportData = [];
+    this.level = 'cluster';
+    var fileName = "Cluster_per_block_report";
 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
@@ -779,7 +817,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     this.myData = this.service.infraMapClusterWise(this.districtHierarchy.distId, blockId).subscribe(res => {
       this.data = res['data'];
       //=================================
-      this.infraFilter = [];
       for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
         let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
         val = val.replace('Percent', '(%)')
@@ -816,6 +853,11 @@ export class InfraMapVisualisationComponent implements OnInit {
         blockId: this.data[0].details.block_id,
         blockName: this.data[0].details.block_name
       }
+
+      // to show and hide the dropdowns
+      this.blockHidden = false;
+      this.clusterHidden = false;
+
       this.districtId = this.data[0].details.district_id;
       this.blockId = blockId;
 
@@ -835,8 +877,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         centerLng: this.data[0].details.longitude,
         level: 'cluster'
       }
-      this.level = options.level;
-      var fileName = "Cluster_per_block_report";
+
       this.genericFun(res, options, fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.details.cluster_name > b.details.cluster_name) ? 1 : ((b.details.cluster_name > a.details.cluster_name) ? -1 : 0));
@@ -850,13 +891,15 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   // to load all the schools for selected cluster for state data on the map
   onClusterSelect(clusterId) {
+    this.infraFilter = [];
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.errMsg();
+    this.reportData = [];
+    this.level = 'school';
+    var fileName = "School_per_block_report";
 
-    this.blockHidden = false;
-    this.clusterHidden = false;
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
@@ -865,7 +908,6 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.myData = this.service.infraMapSchoolWise(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
         this.data = res['data'];
         //=================================
-        this.infraFilter = [];
         for (var i = 0; i < Object.keys(this.data[0].metrics).length; i++) {
           let val = this.changeingStringCases(Object.keys(this.data[0].metrics)[i].replace(/_/g, ' '));
           val = val.replace('Percent', '(%)')
@@ -914,6 +956,9 @@ export class InfraMapVisualisationComponent implements OnInit {
           clusterName: this.data[0].details.cluster_name,
         }
 
+        this.blockHidden = false;
+        this.clusterHidden = false;
+
         this.districtHierarchy = {
           distId: this.data[0].details.district_id
         }
@@ -938,8 +983,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           centerLng: this.data[0].details.longitude,
           level: 'school'
         }
-        this.level = options.level;
-        var fileName = "School_per_block_report";
+
         this.genericFun(res, options, fileName);
       }, err => {
         this.data = [];
@@ -1027,13 +1071,68 @@ export class InfraMapVisualisationComponent implements OnInit {
 
           // to download the report
           this.fileName = fileName;
-          var obj = {};
-          if (options.level == "school") {
-            obj = { ...detailSchool, ...this.markers[i].metrics };
-          } else {
-            obj = { ...orgObject, ...this.markers[i].metrics };
+          if (options.level == "district") {
+            if (this.infraData !== 'infrastructure_score') {
+              let obj = {
+                district_id: this.markers[i].details.district_id,
+                district_name: this.markers[i].details.district_name,
+                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+              }
+              this.reportData.push(obj);
+            } else {
+              let myobj = { ...orgObject, ...this.markers[i].metrics }
+              this.reportData.push(myobj);
+            }
+          } else if (options.level == "block") {
+            if (this.infraData !== 'infrastructure_score') {
+              let obj = {
+                district_id: this.markers[i].details.district_id,
+                district_name: this.markers[i].details.district_name,
+                block_id: this.markers[i].details.block_id,
+                block_name: this.markers[i].details.block_name,
+                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+              }
+              this.reportData.push(obj);
+            } else {
+              let myobj = { ...orgObject, ...this.markers[i].metrics }
+              this.reportData.push(myobj);
+            }
           }
-          this.reportData.push(obj);
+          else if (options.level == "cluster") {
+            if (this.infraData !== 'infrastructure_score') {
+              let obj = {
+                district_id: this.markers[i].details.district_id,
+                district_name: this.markers[i].details.district_name,
+                block_id: this.markers[i].details.block_id,
+                block_name: this.markers[i].details.block_name,
+                cluster_id: this.markers[i].details.cluster_id,
+                cluster_name: this.markers[i].details.cluster_name,
+                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+              }
+              this.reportData.push(obj);
+            } else {
+              let myobj = { ...orgObject, ...this.markers[i].metrics }
+              this.reportData.push(myobj);
+            }
+          } else if (options.level == "school") {
+            if (this.infraData !== 'infrastructure_score') {
+              let obj = {
+                district_id: this.markers[i].details.district_id,
+                district_name: this.markers[i].details.district_name,
+                block_id: this.markers[i].details.block_id,
+                block_name: this.markers[i].details.block_name,
+                cluster_id: this.markers[i].details.cluster_id,
+                cluster_name: this.markers[i].details.cluster_name,
+                school_id: this.markers[i].details.school_id,
+                school_name: this.markers[i].details.school_name,
+                [this.infraData]: this.markers[i].metrics[`${this.infraData}`] + "%"
+              }
+              this.reportData.push(obj);
+            } else {
+              let myobj = { ...detailSchool, ...this.markers[i].metrics }
+              this.reportData.push(myobj);
+            }
+          }
 
         }
         this.popups(markerIcon, this.markers[i], options);
@@ -1172,6 +1271,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   // drilldown/ click functionality on markers
   onClick_Marker(event) {
+    this.infraFilter = [];
     var data = event.target.myJsonData.details;
     if (data.district_id && !data.block_id && !data.cluster_id) {
       this.stateLevel = 1;
@@ -1205,19 +1305,23 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   // to download the excel report
   downloadReport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
+    if (this.reportData.length <= 0) {
+      alert("No data fount to download");
+    } else {
+      const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        title: 'My Awesome CSV',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        filename: this.fileName
+      };
+      const csvExporter = new ExportToCsv(options);
+      csvExporter.generateCsv(this.reportData);
+    }
   }
 }

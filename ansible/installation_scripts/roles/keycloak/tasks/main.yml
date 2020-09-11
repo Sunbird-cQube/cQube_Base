@@ -1,6 +1,6 @@
 ---
 - include_tasks: install_keycloak.yml
-  tags: install
+  tags: [ install, update ]
 
 - include_tasks: configure_keycloak.yml
   tags: [ install, update ]

@@ -32,6 +32,7 @@ import { SemesterExceptionComponent } from './semester-exception/semester-except
 import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
 import { DikshaBarChartComponent } from './diksha-bar-chart/diksha-bar-chart.component';
 import { MissingDataComponent } from './missing-data/missing-data.component';
+import { UdiseReportComponent } from './udise-report/udise-report.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -57,7 +58,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     SemesterExceptionComponent,
     TelemetryDataComponent,
     DikshaBarChartComponent,
-    MissingDataComponent
+    MissingDataComponent,
+    UdiseReportComponent
   ],
   imports: [
     BrowserModule,

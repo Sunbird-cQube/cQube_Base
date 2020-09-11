@@ -5,6 +5,7 @@
   vars_files:
     - config.yml
     - datasource_config.yml
+    - memory_config.yml
     - .version
 
   roles:
@@ -48,6 +49,10 @@
           - role: nifi_telemetry
             tags: install
             when: nifi_telemetry
+
+          - role: nifi_udise
+            tags: install
+            when: nifi_udise
 
           - { role: nifi_scheduler, tags: install }
           - cqube_version
