@@ -2041,5 +2041,31 @@ END;
 $$
 LANGUAGE plpgsql;
 
-
 select udise_jolt_spec();
+
+/*school performance exception list*/
+
+CREATE OR REPLACE FUNCTION udise_scl_perf_exception()
+RETURNS text as 
+$$
+DECLARE
+query text:='select ''select udise_school_id,''||string_agg(column_name,'','')||'' from udise_school_metrics_temp where ''||string_agg(column_name,'' is null or '')||'' is null''
+from udise_config where exists (select 1 from udise_config where status=true and column_name=''School_Performance'') 
+and column_name in (''perf_class_10_passed'',''perf_class_12_passed'')';
+cols text; 
+list text;
+data text;
+BEGIN
+Execute query into cols;
+IF cols <> '' THEN 
+list='create or replace view udise_scl_perf_exception as
+select b.school_name,b.cluster_id,b.cluster_name,b.block_id,b.block_name,b.district_id,b.district_name,a.*
+ from('||cols||')as a
+right join school_hierarchy_details as b on a.udise_school_id=b.school_id';
+Execute list; 
+END IF;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+select * from udise_scl_perf_exception();
