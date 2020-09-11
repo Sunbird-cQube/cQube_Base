@@ -8,6 +8,9 @@
 #
 #------------------------------------------------------#
 
+#NOTE: Please fill the value with a space between ":" and the value. 
+#Example-   `system_user_name: ubuntu`
+
 system_user_name:                          # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
 base_dir: /opt                            # provide the absolute path where cqube needs to be installed and served. Eg. /opt  ( in this case cqube will be installed under /opt/cqube)
 
@@ -41,5 +44,5 @@ aws_default_region: 'ap-south-1'            # aws default region for creation of
 api_endpoint:                               # enter domain.com ( Example: cqubeprojects.com )
 local_ipv4_address:                         # enter the private ip of this server. To find the ip address. Use `ip addr` or `ifconfig`
 keycloak_adm_user:                          # enter the keycloak admin user to be created 
-keycloak_adm_passwd:                        # enter the keycloak admin password
+keycloak_adm_passwd:                        # enter the keycloak admin password. password should contain atleast 1 lower,upper,number,special character and minimum 8 characters
 keycloak_config_otp:                        # enter true or false to enable OTP authentication for all users 

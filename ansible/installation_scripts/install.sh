@@ -12,6 +12,8 @@ fi
 INS_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 
+sudo apt-get install software-properties-common -y
+sudo apt-add-repository ppa:ansible/ansible-2.9 -y
 sudo apt update -y
 sudo apt install python -y
 sudo apt-get install python-apt -y
@@ -28,9 +30,6 @@ fi
 . "validate.sh"
 . "$INS_DIR/validation_scripts/datasource_config_validation.sh"
 
-sudo apt-get install software-properties-common -y
-sudo apt-add-repository ppa:ansible/ansible-2.9 -y
-sudo apt-get update -y
 sudo apt install ansible -y
 
 if [ -e /etc/ansible/ansible.cfg ]; then
