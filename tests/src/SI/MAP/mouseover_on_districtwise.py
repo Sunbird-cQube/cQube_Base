@@ -10,5 +10,9 @@ class mouseover():
         self.p = GetData()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.p.page_loading(self.driver)
+        markers = self.driver.find_elements_by_class_name(Data.dots)
+        count = len(markers)-1
         print("Mousehover on each markers..")
-        # self.data.test_mouse_over()
+        self.p.test_mouse_over()
+        self.p.page_loading(self.driver)
+        return count

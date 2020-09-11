@@ -14,17 +14,18 @@ class school_wise_donwload():
         self.driver = driver
 
     def test_schoolwise(self):
-        self.p = GetData()
+        self.data = GetData()
         self.driver.find_element_by_xpath(Data.hyper).click()
-        self.p.page_loading(self.driver)
+        self.data.page_loading(self.driver)
         try:
             p = pwd()
             District_wise=Select(self.driver.find_element_by_name("downloadType"))
             District_wise.select_by_index(4)
-            self.p.page_loading(self.driver)
-            self.driver.find_element_by_id(Data.Download).click()
-            time.sleep(2)
-            self.filename = p.get_download_dir() + "/School_level_CRC_Report.csv"
+            self.data.page_loading(self.driver)
+            self.driver.find_element_by_id(Data.Download_scator).click()
+            time.sleep(10)
+            self.filename = p.get_download_dir() + "/School_level_Infra_Report.csv"
+            time.sleep(3)
             return os.path.isfile(self.filename)
 
         except exceptions.NoSuchElementException:

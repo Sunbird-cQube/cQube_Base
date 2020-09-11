@@ -90,6 +90,32 @@ class cQube_landing_page():
         self.driver.find_element_by_id("homeBtn").click()
         self.cal.page_loading(self.driver)
 
+    def test_diksha_column(self):
+        self.cal = GetData()
+        self.cal.page_loading(self.driver)
+        self.driver.find_element_by_id("dcc").click()
+        self.cal.page_loading(self.driver)
+        if "diksha-column-chart" in self.driver.current_url:
+            print("Navigated to   diksha column based report")
+        else:
+            print(" diksha column based report is not exist")
+        self.driver.find_element_by_id("homeBtn").click()
+        self.cal.page_loading(self.driver)
+
+    def test_diksha_table(self):
+        self.cal = GetData()
+        self.cal.page_loading(self.driver)
+        self.driver.find_element_by_id("dtr").click()
+        self.cal.page_loading(self.driver)
+        if "diksha-table" in self.driver.current_url:
+            print("Navigated to   diksha table based report")
+        else:
+            print(" diksha table based report is not exist")
+        self.driver.find_element_by_id("homeBtn").click()
+        self.cal.page_loading(self.driver)
+
+
+
     def test_telemetry_report(self):
         self.cal = GetData()
         self.cal.page_loading(self.driver)
@@ -113,3 +139,16 @@ class cQube_landing_page():
             print(" Semester Exception  report is not exist")
         self.driver.find_element_by_id("homeBtn").click()
         self.cal.page_loading(self.driver)
+
+    def test_completionerror(self):
+        self.cal = GetData()
+        self.cal.page_loading(self.driver)
+        self.driver.find_element_by_id("isdata").click()
+        self.cal.page_loading(self.driver)
+        if "download-missing-data" in self.driver.current_url:
+            print("Navigated to completion error data page")
+        else:
+            print("completion error data page report is not exist")
+        self.driver.find_element_by_id("homeBtn").click()
+        self.cal.page_loading(self.driver)
+

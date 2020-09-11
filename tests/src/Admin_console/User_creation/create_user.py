@@ -3,7 +3,7 @@ import unittest
 
 from selenium.webdriver.support.select import Select
 
-from Data.key_parameters import Data
+from Data.parameters import Data
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -23,7 +23,7 @@ class Creating_users(unittest.TestCase):
 
     def test_createuser_icon(self):
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_xpath(Data.cuser_icon).click()
+        self.driver.find_element_by_xpath(Data.createusericon).click()
         head = self.driver.find_element_by_id('head').text
         self.assertEqual("Create User",head,msg="create user page is not exists")
         self.driver.find_element_by_id(Data.home).click()
