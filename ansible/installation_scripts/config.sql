@@ -1614,9 +1614,9 @@ select_query text:='select string_agg(''round(avg(''||column_name||''),2)
     *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
    (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
 indices text:='select string_agg(b.cols||c.column_name,'','') from                                                                   
- (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''and '')||''then null else '' 
+ (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
  ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) is null then ''''No Data'''' else ''
- ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''and '')||''then null else '' 
+ ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
  ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) end) as '' as cols                                   
  ,indice_id from (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
  group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
@@ -1658,9 +1658,9 @@ select_query text:='select string_agg(''round(avg(''||column_name||''),2)
     *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
    (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
 indices text:='select string_agg(b.cols||c.column_name,'','') from                                                                   
- (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''and '')||''then null else '' 
+ (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
  ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) is null then ''''No Data'''' else ''
- ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''and '')||''then null else '' 
+ ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
  ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) end) as '' as cols                                   
  ,indice_id from (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
  group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
@@ -1706,9 +1706,9 @@ select_query text:='select string_agg(''round(avg(''||column_name||''),2)
     *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
    (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
 indices text:='select string_agg(b.cols||c.column_name,'','') from                                                                   
- (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''and '')||''then null else '' 
+ (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
  ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) is null then ''''No Data'''' else ''
- ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''and '')||''then null else '' 
+ ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
  ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) end) as '' as cols                                   
  ,indice_id from (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
  group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
@@ -1753,9 +1753,9 @@ select_query text:='select string_agg(''round(avg(''||column_name||''),2)
     *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
    (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
 indices text:='select string_agg(b.cols||c.column_name,'','') from                                                                   
- (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''and '')||''then null else '' 
+ (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
  ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) is null then ''''No Data'''' else ''
- ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''and '')||''then null else '' 
+ ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
  ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) end) as '' as cols                                   
  ,indice_id from (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
  group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
@@ -1792,7 +1792,6 @@ Execute district_score;
 return 0;
 END;
 $$LANGUAGE plpgsql;
-
 /*Udise jolt spec*/
 
 create or replace function udise_jolt_spec()
