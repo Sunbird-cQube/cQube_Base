@@ -19,9 +19,9 @@ class donwload_clusterwise_csv():
         p =pwd()
         District_wise=Select(self.driver.find_element_by_name("downloadType"))
         District_wise.select_by_index(3)
-        self.p.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.Download).click()
-        time.sleep(2)
+        time.sleep(3)
+        self.driver.find_element_by_id(Data.Download_scator).click()
+        time.sleep(10)
         self.filename = p.get_download_dir() + "/Cluster_level_Infra_Report.csv"
         self.p.page_loading(self.driver)
         return os.path.isfile(self.filename)

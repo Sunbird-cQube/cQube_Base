@@ -17,7 +17,7 @@ router.get('/getDateRange', auth.authController, function (req, res) {
                 logger.error("No data found in s3 file");
                 res.status(403).json({ errMsg: "No such data found" });
             } else {
-                let dateObj = data.Body.toString();;
+                let dateObj = data.Body.toString();
                 dateObj = JSON.parse(dateObj);
                 let date = groupArray(dateObj, 'year')
                 logger.info('--- getDateRange response sent ---');

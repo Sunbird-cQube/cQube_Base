@@ -7,11 +7,11 @@ from Data.parameters import Data
 from reuse_func import GetData
 
 
-class Block_school_count():
+class Block_cluster_school_count():
     def __init__(self,driver):
         self.driver = driver
 
-    def test_counter(self):
+    def test_check_total_schoolvalue(self):
         self.p = GetData()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.p.page_loading(self.driver)
@@ -19,6 +19,7 @@ class Block_school_count():
             school = self.driver.find_element_by_id(Data.sc_no_of_schools).text
             res = re.sub('\D', "", school)
             self.p.page_loading(self.driver)
+
             self.driver.find_element_by_id(Data.scm_block).click()
             self.p.page_loading(self.driver)
             bschool = self.driver.find_element_by_id(Data.sc_no_of_schools).text
@@ -37,6 +38,7 @@ class Block_school_count():
             sschool = self.driver.find_element_by_id(Data.sc_no_of_schools).text
             sres = re.sub('\D', "", sschool)
             self.p.page_loading(self.driver)
+
             return res ,bres ,cres,sres
         except exceptions.ElementClickInterceptedException :
             print("no of schools are same ")

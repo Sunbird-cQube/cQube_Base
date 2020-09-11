@@ -18,7 +18,7 @@ class DotsOnDistrictsBlock():
         select_district = Select(self.driver.find_element_by_name('myDistrict'))
         select_block = Select(self.driver.find_element_by_name('myBlock'))
         count = 0
-        for x in range(1, len(select_district.options)):
+        for x in range(len(select_district.options)-1, len(select_district.options)):
             select_district.select_by_index(x)
             cal.page_loading(self.driver)
             for y in range(1, len(select_block.options)):

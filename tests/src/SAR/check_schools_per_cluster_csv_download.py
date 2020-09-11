@@ -18,6 +18,8 @@ class SchoolsPerClusterCsvDownload():
     def remove_csv1(self):
         os.remove(self.filename)
 
+
+
     def check_csv_download1(self):
         cal = GetData()
         cal.click_on_state(self.driver)
@@ -40,7 +42,6 @@ class SchoolsPerClusterCsvDownload():
                         print(
                             "District" + select_district.first_selected_option.text + "Block" + select_block.first_selected_option.text + "Cluster" + select_cluster.first_selected_option.text + "No data")
                         count = count + 1
-                    # assert (len(markers) - 1 != 0), "markers are not present on map"
                     time.sleep(2)
                     self.driver.find_element_by_id('download').click()
                     time.sleep(2)
@@ -73,8 +74,6 @@ class SchoolsPerClusterCsvDownload():
                                 print(
                                     "District" + select_district.first_selected_option.text + "Block" + select_block.first_selected_option.text + "Cluster" + select_cluster.first_selected_option.text + "school count mismatched")
                                 count = count + 1
-                            # assert (int(res) == total), "total students are not matching"
-                            # assert (int(sc) == len(markers) - 1 ), "total schools are not matching"
                         self.remove_csv1()
 
         return count
@@ -102,7 +101,6 @@ class SchoolsPerClusterCsvDownload():
                         print(
                             "District" + select_district.first_selected_option.text + "Block" + select_block.first_selected_option.text + "Cluster" + select_cluster.first_selected_option.text + "No data")
                         count = count + 1
-                    # assert (len(markers) - 1 != 0), "markers are not present on map"
                     time.sleep(2)
                     self.driver.find_element_by_id('download').click()
                     time.sleep(2)
@@ -135,8 +133,6 @@ class SchoolsPerClusterCsvDownload():
                                 print(
                                     "District" + select_district.first_selected_option.text + "Block" + select_block.first_selected_option.text + "Cluster" + select_cluster.first_selected_option.text + "school count mismatched")
                                 count = count + 1
-                            # assert (int(res) == total), "total students are not matching"
-                            # assert (int(sc) == len(markers) - 1 ), "total schools are not matching"
                         self.remove_csv2()
 
         return count
@@ -164,7 +160,6 @@ class SchoolsPerClusterCsvDownload():
                         print(
                             "District" + select_district.first_selected_option.text + "Block" + select_block.first_selected_option.text + "Cluster" + select_cluster.first_selected_option.text + "No data")
                         count = count + 1
-                    # assert (len(markers) - 1 != 0), "markers are not present on map"
                     time.sleep(2)
                     self.driver.find_element_by_id('download').click()
                     time.sleep(2)
@@ -197,8 +192,6 @@ class SchoolsPerClusterCsvDownload():
                                 print(
                                     "District" + select_district.first_selected_option.text + "Block" + select_block.first_selected_option.text + "Cluster" + select_cluster.first_selected_option.text + "school count mismatched")
                                 count = count + 1
-                            # assert (int(res) == total), "total students are not matching"
-                            # assert (int(sc) == len(markers) - 1 ), "total schools are not matching"
                         self.remove_csv3()
 
         return count
@@ -226,7 +219,6 @@ class SchoolsPerClusterCsvDownload():
                         print(
                             "District" + select_district.first_selected_option.text + "Block" + select_block.first_selected_option.text + "Cluster" + select_cluster.first_selected_option.text + "No data")
                         count = count + 1
-                    # assert (len(markers) - 1 != 0), "markers are not present on map"
                     time.sleep(2)
                     self.driver.find_element_by_id('download').click()
                     time.sleep(2)
@@ -259,8 +251,6 @@ class SchoolsPerClusterCsvDownload():
                                 print(
                                     "District" + select_district.first_selected_option.text + "Block" + select_block.first_selected_option.text + "Cluster" + select_cluster.first_selected_option.text + "school count mismatched")
                                 count = count + 1
-                            # assert (int(res) == total), "total students are not matching"
-                            # assert (int(sc) == len(markers) - 1 ), "total schools are not matching"
                         self.remove_csv4()
 
         return count

@@ -2,8 +2,6 @@ import csv
 import os
 import re
 import time
-import unittest
-
 from selenium.webdriver.support.select import Select
 
 from Data.parameters import Data
