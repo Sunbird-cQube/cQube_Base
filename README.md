@@ -90,7 +90,7 @@ Once installation is completed without any errors, you will be prompted the foll
 - Dashboard is succesfully imported to grafana with the name of cQube_Monitoring_Dashboard
 
 <h4>Uploading data to S3 Emission bucket:</h4>
-- Create ```cqube_emission``` directory and place the data files as shown in file structure below inside the cqube_emission folder.
+- Create cqube_emission directory and place the data files as shown in file structure below inside the cqube_emission folder.
 
 Master Files:
 ```
