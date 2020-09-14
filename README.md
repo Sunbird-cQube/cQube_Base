@@ -47,7 +47,7 @@ git checkout release-1.3
 
 - Save and Close the file
 
-  <b>Configuration of infrastructure attributes anf udise data indices, metrics:</b>
+  <b>Configuration of infrastructure attributes and udise data indices, metrics:</b>
 - Based on the number of infrastructure attributes required by the state, configure the infrastructure report by filling the required fields in the file `infrastructure_master.csv`:
 - To edit below mentioned infrastructure details `nano infrastructure_master.csv` 
 - Save and Close the file
