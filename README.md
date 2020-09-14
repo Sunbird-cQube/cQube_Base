@@ -10,19 +10,16 @@
 <b>Reverse proxy rules</b>
 The following ports have to be configured in the nginix server with reverse proxy:
 1) Port 4200 should be proxied to the '/' 
-2) Port 8080 should be proxied to the '/auth' 
+2) Port 8080 should be proxied to the '/auth'
 3) Port 3000 should be proxied to the '/api'
 4) Port 5000 should be proxied to the '/data'
-5) For security reason '/auth/realms/master' needs to be blocked or can be redirected to cQube home page
 
 <b>Openvpn - cQube server firewall configuration</b>
 1) Port 9000 should be open from openvpn to the cQube server
 2) Port 4201 should be open from openvpn to the cQube server
 3) Port 3001 should be open from openvpn to the cQube server
 
-
-<b>Note:</b> For <b>Installation:</b> follow the below steps directly, for upgradation follow the <b>Upgradation:</b> steps mentioned in the last section. 
-If you already have previous version of cQube installed, you have to upgrade to the next version of cQube.
+Note: For <b>Installation:</b> follow the below steps directly, for upgradation follow the <b>Upgradation:</b> steps mentioned in the last section.
 
 <h2>Installation:</h2>
 
@@ -30,11 +27,13 @@ If you already have previous version of cQube installed, you have to upgrade to 
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.2.1
+git checkout release-1.3
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
-- This script installs the cQube components in a sequence as mentioned below:
+- Edit using `nano config.yml`
+- Fill the configuration details for the below mentioned list in `config.yml` (* all the values are mandatory)
+- cQube installation process installs the components in a sequence as mentioned below:
   - Installs Ansible
   - Installs Openjdk
   - Installs Python, pip and flask
@@ -45,37 +44,53 @@ git checkout release-1.2.1
   - Installs Keycloak
   - Installs Grafana
   - Installs Prometheus and node exporter
-- Fill the configuration details for the above mentioned list in `config.yml` (* all the values are mandatory)
-- Edit using `nano config.yml`
+
 - Save and Close the file
 
-  <b>Configuration of infrastructure attributes:</b>
-- Based on the number of infrastructure attributes required by the state, configure the infrastructure report by filling in the following fields in the file `infrastructure_master.csv`:
-- Refer and use the file`nano infrastructure_master.csv` to edit the infrastructure details mentioned below. 
-    - Infrastructure name
-    - Infrastructure category 
-    - Infrastructure status (True/ False) 
+  <b>Configuration of infrastructure attributes anf udise data indices, metrics:</b>
+- Based on the number of infrastructure attributes required by the state, configure the infrastructure report by filling the required fields in the file `infrastructure_master.csv`:
+- To edit below mentioned infrastructure details `nano infrastructure_master.csv` 
 - Save and Close the file
+- Based on the number of udise attributes required by the state, configure the udise_config.csv file by filling the required fields in the file `udise_config.csv`:
+- To edit below mentioned UDISE details `nano udise_config.csv` 
+- Save and Close the file
+- For more information to configure the weights & columns for udise/infrastucture, please refer operational document.
 
 - Give the following permission to the install.sh file
 ```
 chmod u+x install.sh
 ```
 - Install cQube using the non-root user with sudo privilege
+- Configuration filled in `config.yml` will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the installation will be aborted. Refer the error message and solve the errors appropriately, then re-run the installation script `sudo ./install.sh`
 - Start the installation by running install.sh shell script file as mentioned below:
 ```
 sudo ./install.sh
 ```
-Configuration filled in `config.yml` will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the installation will be aborted. Refer the error message and solve the errors appropriately. Restart the installation process`sudo ./install.sh`
-
 Once installation is completed without any errors, you will be prompted the following message. 
-```CQube installed successfully!!``` 
+```CQube installed successfully!!```
 
 <b>Steps Post Installation:</b>
 
+<b>Steps to import Grafana dashboard</b>
+
+- Connect the VPN from local machine
+- Open `https://<domain_name>` from the browser and login with admin credentials
+- Click on Admin Console
+- Click on Monitoring details icon
+- New tab will be loaded with grafana login page on `http://<private_ip_of_cqube_server>:9000`
+- Default username is admin and password is admin
+- Once your logged in change the password as per the need
+- After logged in. Click on Settings icon from the left side menu. 
+- Click Data Sources 
+- Click on Add data source and select Prometheus 
+- In URL field, fill `http://<private_ip_of_cqube_server>:9090` Optionally configure the other settings.
+- Click on Save
+- On home page, click on '+' symbol and select Import
+- Click on `Upload JSON file` and select the json file which is located in git repository `cQube/development/grafana/cQube_Monitoring_Dashboard.json`  and click Import
+- Dashboard is succesfully imported to grafana with the name of cQube_Monitoring_Dashboard
+
 <h4>Uploading data to S3 Emission bucket:</h4>
-- 
-Create `cqube_emission` directory and place the data files as shown in file structure below inside the cqube_emission folder.
+- Create cqube_emission directory and place the data files as shown in file structure below inside the cqube_emission folder.
 
 Master Files:
 ```
@@ -84,19 +99,15 @@ cqube_emission
 ├── block_master
 │   └── block_mst.zip
 │       └── block_mst.csv
-│       └── manifest_datasource_block_mst.csv
 ├── cluster_master
 │   └── cluster_mst.zip
 │       └── cluster_mst.csv
-│       └── manifest_datasource_cluster_mst.csv
 ├── district_master
 │   └── district_mst.zip
 │       └── district_mst.csv
-│       └── manifest_datasource_district_mst.csv
 ├── school_master
 │   └── school_mst.zip
 │       └── school_mst.csv
-│       └── manifest_datasource_school_mst.csv
 ```
 
 Transactional Files:
@@ -106,25 +117,23 @@ cqube_emission
 ├── semester
 │   └── semester.zip
 │       └── semester.csv
-│       └── manifest_datasource_semester.csv
 ├── student_attendance
 │   └── student_attendance.zip
 │       └── student_attendance.csv
-│       └── manifest_datasource_student_attendance.csv
 ├── user_location_master
 │   └── user_location_master.zip
 │       └── user_location_master.csv
-│       └── manifest_datasource_user_location_master.csv
 ├── inspection_master
 │   └── inspection_master.zip
 │       └── inspection_master.csv
-│       └── manifest_datasource_inspection_master.csv
 ├── infra_trans
 │   └── infra_trans.zip
 │       └── infra_trans.csv
-│       └── manifest_datasource_infra_trans.csv
+├── diksha
+│   └── diksha.zip
+│       └── diksha.csv
 ```
-    
+- For udise data file structure, please refer the operational document.
 
 - After creating the emission user, Update the emission user details mentioned below in `cQube/development/python/client/config.py`.
   - emission username 
@@ -146,7 +155,7 @@ python3 client.py
 - Navigate to the directory where cQube has been downloaded or cloned
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.2.1
+git checkout release-1.3
 ```
 - Copy the upgradation_config.yml.template to upgradation_config.yml 
 `cp upgradation_config.yml.template upgradation_config.yml`
