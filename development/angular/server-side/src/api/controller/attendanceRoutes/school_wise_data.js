@@ -14,19 +14,18 @@ router.post('/schoolWise', auth.authController, async function (req, res) {
         var schoolData = [];
         for (let i = 0; i < schoolsAttendanceData.length; i++) {
             var obj = {
-                id: schoolsAttendanceData[i]['x_axis'],
-                cluster: schoolsAttendanceData[i]['cluster_name'],
-                clusterId: schoolsAttendanceData[i]['cluster_id'],
-                distId: schoolsAttendanceData[i]['district_id'],
-                blockId: schoolsAttendanceData[i]['block_id'],
-                dist: schoolsAttendanceData[i]['district_name'],
-                block: schoolsAttendanceData[i]['block_name'],
-                name: schoolsAttendanceData[i]['school_name'],
-                label: schoolsAttendanceData[i]['x_value'],
+                school_id: schoolsAttendanceData[i]['x_axis'],
+                school_name: schoolsAttendanceData[i]['school_name'],
+                cluster_id: schoolsAttendanceData[i]['cluster_id'],
+                cluster_name: schoolsAttendanceData[i]['cluster_name'],
+                block_id: schoolsAttendanceData[i]['block_id'],
+                block_name: schoolsAttendanceData[i]['block_name'],
+                district_id: schoolsAttendanceData[i]['district_id'],
+                district_name: schoolsAttendanceData[i]['district_name'],
+                attendance: schoolsAttendanceData[i]['x_value'],
                 lat: schoolsAttendanceData[i]['y_value'],
                 lng: schoolsAttendanceData[i]['z_value'],
-                stdCount: schoolsAttendanceData[i]['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                schCount: schoolsAttendanceData[i]['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_students: schoolsAttendanceData[i]['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
             }
             schoolData.push(obj);
         }
@@ -55,19 +54,18 @@ router.post('/schoolPerCluster', auth.authController, async (req, res) => {
         var schoolsAttendanceData = filterData;
         for (let i = 0; i < schoolsAttendanceData.length; i++) {
             var obj = {
-                id: schoolsAttendanceData[i]['x_axis'],
-                cluster: schoolsAttendanceData[i]['cluster_name'],
-                clusterId: schoolsAttendanceData[i]['cluster_id'],
-                distId: schoolsAttendanceData[i]['district_id'],
-                blockId: schoolsAttendanceData[i]['block_id'],
-                dist: schoolsAttendanceData[i]['district_name'],
-                block: schoolsAttendanceData[i]['block_name'],
-                name: schoolsAttendanceData[i]['school_name'],
-                label: schoolsAttendanceData[i]['x_value'],
+                school_id: schoolsAttendanceData[i]['x_axis'],
+                school_name: schoolsAttendanceData[i]['school_name'],
+                cluster_id: schoolsAttendanceData[i]['cluster_id'],
+                cluster_name: schoolsAttendanceData[i]['cluster_name'],
+                block_id: schoolsAttendanceData[i]['block_id'],
+                block_name: schoolsAttendanceData[i]['block_name'],
+                district_id: schoolsAttendanceData[i]['district_id'],
+                district_name: schoolsAttendanceData[i]['district_name'],
+                attendance: schoolsAttendanceData[i]['x_value'],
                 lat: schoolsAttendanceData[i]['y_value'],
                 lng: schoolsAttendanceData[i]['z_value'],
-                stdCount: (schoolsAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                schCount: (schoolsAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_students: schoolsAttendanceData[i]['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
             }
             schoolsDetails.push(obj);
         }
