@@ -133,7 +133,7 @@ cqube_emission
 │   └── diksha.zip
 │       └── diksha.csv
 ```
-    
+- For udise data file structure, please refer the operational document.
 
 - After creating the emission user, Update the emission user details mentioned below in `cQube/development/python/client/config.py`.
   - emission username 
