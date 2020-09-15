@@ -19,7 +19,6 @@ import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
-import { StudengtAttendanceComponent } from './reports/attendance/student-attendance/student-attendance.component';
 import { TeacherAttendanceComponent } from './reports/attendance/teacher-attendance/teacher-attendance.component';
 import { SemViewComponent } from './reports/student-performance/sem-view/sem-view.component';
 import { CrcReportComponent } from './reports/school-monitoring/crc-report/crc-report.component';
@@ -32,6 +31,7 @@ import { TelemetryDataComponent } from './reports/telemetry/telemetry-data/telem
 import { DikshaBarChartComponent } from './reports/diksha/diksha-bar-chart/diksha-bar-chart.component';
 import { MissingDataComponent } from './reports/exception-list/missing-data/missing-data.component';
 import { UdiseReportComponent } from './reports/UDISE/udise-report/udise-report.component';
+import { StudengtAttendanceComponent } from './reports/attendance/student-attendance/student-attendance.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();

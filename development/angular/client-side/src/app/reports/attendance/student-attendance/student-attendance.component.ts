@@ -118,7 +118,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   globalId;
 
-  downloadRoport(event) {
+  downloadReport(event) {
     if (this.globalId == this.myDistrict) {
       var distData = {};
       this.districtData.find(a => {
@@ -147,11 +147,11 @@ export class StudengtAttendanceComponent implements OnInit {
       this.getTelemetryData(clusterData, event.target.id, "cluster");
     }
 
-    if (this.reportData.length > 0) {
-      this.commonService.download(this.fileName, this.reportData);
-    } else {
-      this.commonService.loaderAndErr(this.markers);
-    }
+    // if (this.reportData.length > 0) {
+    this.commonService.download(this.fileName, this.reportData);
+    // } else {
+    //   this.commonService.loaderAndErr(this.markers);
+    // }
   }
 
   public month_year;

@@ -38,7 +38,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
 
 router.post('/clusterPerBlock', auth.authController, async (req, res) => {
     try {
-        logger.info('---Attendance clusterPerDist api ---');
+        logger.info('---Attendance clusterPerBlock api ---');
         var blockId = req.body.data.id;
         var month = req.body.data.month;
         var year = req.body.data.year;

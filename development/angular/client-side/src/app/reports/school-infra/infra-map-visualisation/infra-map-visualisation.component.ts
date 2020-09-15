@@ -626,7 +626,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         this.colorGredient(this.markers[i], this.infraData);
-        // var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, this.setColor, options.radius, options.strokeWeight, undefined, options.level);
+
         var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, this.setColor, options.radius, options.strokeWeight, 1, options.level);
         globalMap.setZoom(options.mapZoom);
 

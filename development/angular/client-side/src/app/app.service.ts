@@ -237,4 +237,50 @@ export class AppServiceComponent {
         };
     }
 
+    // color gredient based on intervals
+    colorGredient(data, infraData) {
+        var dataSet = {};
+        var setColor = '';
+        if (infraData == 'Infrastructure_Score') {
+            dataSet = data.details;
+        } else {
+            dataSet = data.indices;
+        }
+
+        if (dataSet[infraData] <= 10) {
+            setColor = '#a50026';
+        }
+        if (dataSet[infraData] >= 11 && dataSet[infraData] <= 20) {
+            setColor = '#d73027';
+        }
+        if (dataSet[infraData] >= 21 && dataSet[infraData] <= 30) {
+            setColor = '#f46d43';
+        }
+        if (dataSet[infraData] >= 31 && dataSet[infraData] <= 40) {
+            setColor = '#fdae61';
+        }
+        if (dataSet[infraData] >= 41 && dataSet[infraData] <= 50) {
+            setColor = '#ffff00';
+        }
+        if (dataSet[infraData] >= 51 && dataSet[infraData] <= 60) {
+            setColor = '#bbff33';
+        }
+        if (dataSet[infraData] >= 61 && dataSet[infraData] <= 70) {
+            setColor = '#4dff4d';
+        }
+        if (dataSet[infraData] >= 71 && dataSet[infraData] <= 80) {
+            setColor = '#66bd63';
+        }
+        if (dataSet[infraData] >= 81 && dataSet[infraData] <= 90) {
+            setColor = '#1a9850';
+        }
+        if (dataSet[infraData] >= 91 && dataSet[infraData] <= 99) {
+            setColor = '#00b300';
+        }
+        if (dataSet[infraData] == 100) {
+            setColor = '#006600';
+        }
+        return setColor;
+    }
+
 }
