@@ -18,6 +18,8 @@ import { SemesterExceptionComponent } from './reports/exception-list/semester-ex
 import { TelemetryDataComponent } from './reports/telemetry/telemetry-data/telemetry-data.component';
 import { MissingDataComponent } from './reports/exception-list/missing-data/missing-data.component';
 import { UdiseReportComponent } from './reports/UDISE/udise-report/udise-report.component';
+import { PATReportComponent } from './reports/PAT/pat-report/pat-report.component';
+import { CompositReportComponent } from './reports/composit/composit-report/composit-report.component';
 
 const routes: Routes = [
   {
@@ -72,6 +74,12 @@ const routes: Routes = [
       },
       {
         path: 'udise-report', component: UdiseReportComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'pat-report', component: PATReportComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'composit-report', component: CompositReportComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
