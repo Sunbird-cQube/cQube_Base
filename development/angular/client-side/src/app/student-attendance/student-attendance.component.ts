@@ -227,7 +227,9 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
     // var date = new Date();
     // this.trackInteract(date, this.btnId, eventType, undefined);
 
-    if (this.reportData.length > 0) {
+    if (this.reportData.length <= 0) {
+      alert("No data fount to download");
+    } else {
       const options = {
         fieldSeparator: ',',
         quoteStrings: '"',
@@ -243,8 +245,6 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
       const csvExporter = new ExportToCsv(options);
       csvExporter.generateCsv(this.reportData);
 
-    } else {
-      this.loaderAndErr();
     }
   }
 
@@ -287,9 +287,10 @@ export class StudengtAttendanceComponent implements OnInit, OnDestroy {
   }
 
   getYear() {
+    this.months = [];
+    this.month = undefined;
     var allMonths = [];
     allMonths = this.getMonthYear[`${this.year}`];
-    this.months = [];
     allMonths.forEach(month => {
       var obj = {
         name: month.month_name,

@@ -37,7 +37,10 @@ export class MissingDataComponent implements OnInit {
       this.downloadReport();
       document.getElementById('spinner').style.display = 'none';
     }, err => {
-      console.log(err);
+      alert('No data found, Unable to download');
+      document.getElementById('errMsg').style.color = 'red';
+      document.getElementById('errMsg').style.display = 'block';
+      document.getElementById('errMsg').innerHTML = 'No data found';
       document.getElementById('spinner').style.display = 'none';
     })
   }

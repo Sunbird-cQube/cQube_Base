@@ -214,20 +214,24 @@ export class DikshaTableComponent implements OnInit {
   }
 
   downloadRoport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
+    if (this.reportData.length <= 0) {
+      alert("No data fount to download");
+    } else {
+      const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        title: 'My Awesome CSV',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        filename: this.fileName
+      };
+      const csvExporter = new ExportToCsv(options);
+      csvExporter.generateCsv(this.reportData);
+    }
   }
   changeingStringCases(str) {
     return str.replace(

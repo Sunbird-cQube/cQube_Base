@@ -652,10 +652,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.layerMarkers.clearLayers();
     this.errMsg();
     this.blockId = undefined;
-
-    // to show and hide the dropdowns
-    this.blockHidden = false;
-    this.clusterHidden = true;
+    this.reportData = [];
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -665,6 +662,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.data = res;
 
       this.blockMarkers = this.data['sortedData'];
+
+      // to show and hide the dropdowns
+      this.blockHidden = false;
+      this.clusterHidden = true;
+
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data['sortedData'][0].districtId,
@@ -727,10 +729,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.layerMarkers.clearLayers();
     this.errMsg();
     this.clusterId = undefined;
-
-    // to show and hide the dropdowns
-    this.blockHidden = false;
-    this.clusterHidden = false;
+    this.reportData = [];
 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
@@ -747,11 +746,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
       });
       this.blockMarkers = myBlocks;
 
-      this.clusterMarkers.forEach(element => {
-        // if (element.clusterName == null) {
-        //   element.clusterName = 'NO NAME FOUND';
-        // }
-      });
+      // to show and hide the dropdowns
+      this.blockHidden = false;
+      this.clusterHidden = false;
+
       // set hierarchy values
       this.blockHierarchy = {
         distId: this.data['sortedData'][0].districtId,
@@ -814,9 +812,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.errMsg();
+    this.reportData = [];
 
-    this.blockHidden = false;
-    this.clusterHidden = false;
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
@@ -843,6 +840,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
         });
         this.clusterMarkers = myCluster;
 
+        this.blockHidden = false;
+        this.clusterHidden = false;
         // set hierarchy values
         this.clusterHierarchy = {
           distId: this.data['sortedData'][0].districtId,
@@ -1129,6 +1128,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     var data = event.target.myJsonData;
     if (data.districtId && !data.blockId && !data.clusterId) {
       this.stateLevel = 1;
+      this.districtId = data.districtId;
       this.onDistrictSelect(data.districtId)
     }
     if (data.districtId && data.blockId && !data.clusterId) {
@@ -1150,26 +1150,29 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
   // to download the excel report
   downloadReport(event) {
-    var eventType = event.type;
-    this.btnId = event.target.id;
-    var date = new Date();
-    this.trackInteract(date, this.btnId, eventType);
+    if (this.reportData.length <= 0) {
+      alert("No data fount to download");
+    } else {
+      var eventType = event.type;
+      this.btnId = event.target.id;
+      var date = new Date();
+      this.trackInteract(date, this.btnId, eventType);
 
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName + this.semester
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
-
+      const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        title: 'My Awesome CSV',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        filename: this.fileName + this.semester
+      };
+      const csvExporter = new ExportToCsv(options);
+      csvExporter.generateCsv(this.reportData);
+    }
   }
 
   // to generate the color gradient from red to green based on the attendance percentage values

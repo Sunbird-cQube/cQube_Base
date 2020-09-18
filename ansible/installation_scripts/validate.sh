@@ -13,7 +13,7 @@ check_length(){
 
 check_base_dir(){
 if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
-  echo "Error - Please enter the absolute path or make sure the directory is present."; fail=1
+  echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
 fi
 }
 
@@ -60,113 +60,43 @@ if [ $temp == 0 ]; then
     if [ $version>=10.12 ]
     then
         echo "WARNING: Postgres found."
-        echo "Please select any option."
-echo """1. Skip the Postgres installation (Will backup the data locally for future reference)
-2. Re-install the Postgres (current database will not be backed-up )
-3. Exit the installation
-        """
-  while true; do
-      read -p "Enter the option: " answer
-      case $answer in
-          1 )
-                read -p "Enter the database name: " bk_db_name
-                read -p "Enter the Username: " bk_db_uname
-                pg_dump -h localhost -U $bk_db_uname -W -F t $bk_db_name > `date +%Y%m%d%H%M`$bk_db_name.tar
-                if [[ ! $? == 0 ]]; then
-                    echo "There is a problem dumping the database"; tput sgr0 ; fail=1; break;
-		    exit 1
-	        else
-                  echo "Database backup is completed"
-	        fi
-		      #sudo sed -i "s/- include_tasks: install_postgress.yml/#&/g" roles/createdb/tasks/main.yml
-          sudo sed -i "s/^pg_install_flag:.*/pg_install_flag: false/g" roles/createdb/vars/main.yml
-        break
-        ;;
-            2 )
-                echo "Removing Postgres..."
-                sudo apt-get --purge remove postgresql -y
-                dpkg -l | grep postgres
-                sudo apt-get --purge remove postgresql postgresql-doc postgresql-common -y
-                sudo apt autoremove -y
-                echo "Done."
-	break	
-        ;;
-            3 )
-                tput setaf 1; echo "Please backup the database and rerun the installation"; tput sgr0 ; fail=1; break;
-                exit;
-            ;;
-      * )     ;;
-        esac
-        done
+        echo "Removing Postgres..."
+        sudo systemctl stop keycloak.service > /dev/null 2>&1
+        sleep 5
+        sudo systemctl stop postgresql
+        sudo apt-get --purge remove postgresql* -y
+        echo "Done"
      fi
 fi
 }
 
-check_mem_variables(){
-kb=`head -1 /proc/meminfo | awk '{ print $2 }'` #reading RAM size in kb
-mb=`echo "scale=0; $kb / 1024" | bc` # to MB    #converting RAM size to mb
+check_mem(){
+mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
+mem_total=$(($mem_total_kb/1024))
+if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
+  min_shared_mem=$(echo $mem_total*11.5/100 | bc)
+  min_work_mem=$(echo $mem_total*2/100 | bc)
+  min_java_arg_2=$(echo $mem_total*52/100 | bc)
+  min_java_arg_3=$(echo $mem_total*71.5/100 | bc)
+  echo """---
+shared_buffers: ${min_shared_mem}MB
+work_mem: ${min_work_mem}MB
+java_arg_2: -Xms${min_java_arg_2}m
+java_arg_3: -Xmx${min_java_arg_3}m""" > memory_config.yml
 
-java_arg_2=$3
-java_arg_3=$4
-share_mem=$1 
-work_mem=$2
-java_arg_check=0
-if [[ $4 =~ ^-Xmx[0-9]+[m|g]$ ]]; then
-    raw_java_arg_3="$( echo "$4" | sed -e 's/^-Xmx//; s/[m|g]$//' )"
-    if [[ $4 =~ g$ ]]; then 
-        final_java_arg_3=$(($raw_java_arg_3*1024))
-    else
-        final_java_arg_3=$raw_java_arg_3
-    fi
+elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
+  max_shared_mem=$(echo $mem_total*10/100 | bc)
+  max_work_mem=$(echo $mem_total*3/100 | bc)
+  max_java_arg_2=$(echo $mem_total*40/100 | bc)
+  max_java_arg_3=$(echo $mem_total*57/100 | bc)
+  echo """---
+shared_buffers: ${max_shared_mem}MB
+work_mem: ${max_work_mem}MB
+java_arg_2: -Xms${max_java_arg_2}m
+java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
 else
-    echo "Error - Please enter the proper value in java_arg_3"; fail=1
-    java_arg_check=1
-fi
-
-if [[ $3 =~ ^-Xms[0-9]+[m|g]$ ]]; then
-    raw_java_arg_2="$( echo "$3" | sed -e 's/^-Xms//; s/[m|g]$//' )"
-    if [[ $3 =~ g$ ]]; then
-        final_java_arg_2=$(($raw_java_arg_2*1024))
-    else
-        final_java_arg_2=$raw_java_arg_2
-    fi
-else
-    echo "Error - Please enter the proper value in java_arg_2"; fail=1
-    java_arg_check=1
-fi
-
-if [[ $2 =~ ^[0-9]+(GB|MB)$ ]]; then
-    raw_work_mem="$(echo $2 | sed -e 's/\(GB\|MB\)$//')"
-    if [[ $2 =~ GB$ ]]; then
-        final_work_mem=$(($raw_work_mem*1024))
-    else
-        final_work_mem=$raw_work_mem
-    fi
-else
-    echo "Error - Please enter the proper value in work_memory"; fail=1
-fi
-
-if [[ $1 =~ ^[0-9]+(GB|MB)$ ]]; then
-    raw_share_mem="$(echo $1 | sed -e 's/\(GB\|MB\)$//')"
-    if [[ $1 =~ GB$ ]]; then
-        final_share_mem=$(($raw_share_mem*1024))
-    else
-        final_share_mem=$raw_share_mem
-    fi
-else
-    echo "Error - Please enter the proper value in share_memory"; fail=1
-fi
-
-#addition of all memories
-if [[ $(($final_java_arg_3+$final_work_mem+$final_share_mem)) -ge $mb ]] ; then
-    echo "Error - Memory values are more than the RAM size" ; fail=1
-fi
-
-#comparing if java2 is greater than java3
-if [[ $java_arg_check == 0 ]]; then
-    if [[ $final_java_arg_2 -ge $final_java_arg_3 ]]  ; then
-       echo "Error - java_arg_2 should be less than java_arg_3"; fail=1
-    fi
+  echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
+  exit 1
 fi
 }
 
@@ -195,7 +125,7 @@ check_ip()
             echo "Error - Invalid value for $key"; fail=1
             ip_pass=0
         fi
-        is_local_ip=`ip a | grep $2` > /dev/null 2>&1
+        is_local_ip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'` > /dev/null 2>&1
         if [[ $ip_pass == 0 && $is_local_ip != *$2* ]]; then
             echo "Error - Invalid value for $key. Please enter the local ip of this system."; fail=1 
         fi
@@ -218,7 +148,7 @@ if [[ $aws_key_status == 0 ]]; then
         bucketstatus=`aws s3api head-bucket --bucket "${2}" 2>&1`
         if [ ! $? == 0 ]
         then
-            echo "Error: [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in config.yml"; fail=1
+            echo "Error - [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in config.yml"; fail=1
         fi
 fi
 }
@@ -239,28 +169,25 @@ check_db_password(){
     if test $len -ge 8 ; then
         echo "$2" | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@#$%^&*]" > /dev/null 2>&1
         if [[ ! $? -eq 0 ]]; then
-            echo "Error - Password should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
+            echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
         fi
     else
-        echo "Error - Password should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
+        echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
     fi
 }
 
 check_api_endpoint(){
-if [[ ! $2 =~ ^[0-9] ]]; then
-        if [[ (( $2 =~ \-{2,} ))  ||  (( $2 =~ \.{2,} )) ]]; then
-          echo "Error - Please provide the proper api endpoint for $1"; fail=1
-  else
-   if [[ $2 =~ ^[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
+if [[ (( $2 =~ \-{2,} ))  ||  (( $2 =~ \.{2,} )) ]]; then
+    echo "Error - Please provide the proper api endpoint for $1"; fail=1
+else
+    if [[ $2 =~ ^[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
         if ! [[ ${#2} -le 255 ]]; then
-         echo "Error - FQDN exceeding 255 characters. Please provide the proper api endpoint for $1"; fail=1
+          echo "Error - FQDN exceeding 255 characters. Please provide the proper api endpoint for $1"; fail=1
         fi
     else
         echo "Error - Please provide the proper api point for $1"; fail=1
     fi
-    fi
 fi
-
 }
 
 check_aws_default_region(){
@@ -292,7 +219,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 # An array of mandatory values
 declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
-		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" "shared_buffers" "work_mem" "java_arg_2" "java_arg_3" \
+		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
 		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp") 
 
 # Create and empty array which will store the key and value pair from config file
@@ -305,13 +232,9 @@ aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' config
 # Getting base_dir
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
-# Getting memory args
-shared_buffers=$(awk ''/^shared_buffers:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-work_mem=$(awk ''/^work_mem:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-java_arg_2=$(awk ''/^java_arg_2:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-java_arg_3=$(awk ''/^java_arg_3:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-
+check_mem
 check_version 
+
 
 # Making default postgres install true
 sudo sed -i "s/^pg_install_flag:.*/pg_install_flag: true/g" roles/createdb/vars/main.yml
@@ -329,133 +252,111 @@ value=${vals[$key]}
 case $key in
    system_user_name)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_sys_user $key $value
        fi
        ;;
    base_dir)	 
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_base_dir $key $value
        fi
        ;;
    s3_access_key)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        fi
        ;;
    s3_secret_key)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
       else
           check_aws_key $aws_access_key $aws_secret_key
        fi
        ;;
    s3_input_bucket)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    s3_output_bucket)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    s3_emission_bucket)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value 
        fi
        ;;
    local_ipv4_address)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_ip $key $value
        fi
        ;;
    db_user)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-	  check_postgres
+	        check_postgres
           check_db_naming $key $value
        fi
        ;;
    db_name)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_naming $key $value
        fi
        ;;
    keycloak_adm_user)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_naming $key $value
        fi
        ;;
    keycloak_adm_passwd)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_password $key $value
        fi
        ;;
    keycloak_config_otp)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_kc_config_otp $key $value
        fi
        ;;
    db_password)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_password $key $value
        fi
        ;;
    api_endpoint)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_api_endpoint $key $value
        fi
        ;;
-   shared_buffers)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       fi
-       ;;
-   work_mem)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       fi
-       ;;
-   java_arg_2)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       fi
-       ;;
-   java_arg_3)
-       if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
-       else
-           check_mem_variables $shared_buffers $work_mem $java_arg_2 $java_arg_3
-       fi
-       ;;
    aws_default_region)
        if [[ $value == "" ]]; then
-          echo "Error - Value for $key cannot be empty. Please fill this value. Recommended value is ap-south-1"; fail=1
+          echo "Error - in $key. Unable to get the value. Please check. Recommended value is ap-south-1"; fail=1
        else
            check_aws_default_region
        fi

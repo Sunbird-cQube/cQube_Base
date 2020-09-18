@@ -30,7 +30,8 @@ def nifi_params_config():
         'crc_parameters':'crc_parameters.txt',
         'student_attendance_parameters':'student_attendance_parameters.txt',
         'student_assessment_parameters':'student_assessment_parameters.txt',
-        'cqube_telemetry_parameters':'cqube_telemetry_parameters.txt'
+        'cqube_telemetry_parameters':'cqube_telemetry_parameters.txt',
+        'udise_parameters':'udise_parameters.txt'
     }
     for param_name,filename in params.items():
         with open(filename,'r') as fd:
