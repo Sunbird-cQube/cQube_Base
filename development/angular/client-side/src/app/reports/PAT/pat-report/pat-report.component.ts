@@ -669,7 +669,7 @@ export class PATReportComponent implements OnInit {
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       "<b><u>Details</u></b>" +
       "<br>" + yourData1 +
-      "<br><br><b><u>PAT Score (%)</u></b>" +
+      "<br><br><b><u>Periodic Exam Score (%)</u></b>" +
       "<br>" + yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);
   }
