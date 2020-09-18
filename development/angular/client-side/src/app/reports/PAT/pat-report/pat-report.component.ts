@@ -1,19 +1,19 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppServiceComponent, globalMap } from '../../../app.service';
-import { UdiseReportService } from '../../../services/udise-report.service';
+import { PatReportService } from '../../../services/pat-report.service';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
+import { AppServiceComponent, globalMap } from '../../../app.service';
 
 @Component({
-  selector: 'app-udise-report',
-  templateUrl: './udise-report.component.html',
-  styleUrls: ['./udise-report.component.css'],
+  selector: 'app-pat-report',
+  templateUrl: './pat-report.component.html',
+  styleUrls: ['./pat-report.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class UdiseReportComponent implements OnInit {
+export class PATReportComponent implements OnInit {
   public title: string = '';
   public titleName: string = '';
   public colors: any;
@@ -61,53 +61,33 @@ export class UdiseReportComponent implements OnInit {
   public reportData: any = [];
 
   // variables
-  public districtId: any;
-  public blockId: any;
-  public clusterId: any;
+  public districtId: any = '';
+  public blockId: any = '';
+  public clusterId: any = '';
 
   public myData;
-  public indiceFilter: any = [];
 
   public myDistData: any;
   public myBlockData: any = [];
   public myClusterData: any = [];
   public mySchoolData: any = [];
+  public level;
 
   constructor(
     public http: HttpClient,
+    public service: PatReportService,
     public commonService: AppServiceComponent,
-    public service: UdiseReportService,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
-    commonService.logoutOnTokenExpire();
   }
 
   ngOnInit() {
-    this.commonService.initMap('udisemap');
+    this.commonService.initMap('patMap');
     this.districtWise();
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
   }
-
-  // to load and hide the spinner 
-  loaderAndErr() {
-    if (this.data.length !== 0) {
-      document.getElementById('spinner').style.display = 'none';
-    } else {
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('errMsg').style.color = 'red';
-      document.getElementById('errMsg').style.display = 'block';
-      document.getElementById('errMsg').innerHTML = 'No data found';
-    }
-  }
-
-  errMsg() {
-    document.getElementById('errMsg').style.display = 'none';
-    document.getElementById('spinner').style.display = 'block';
-    document.getElementById('spinner').style.marginTop = '3%';
-  }
-
   // to load all the districts for state data on the map
   districtWise() {
     try {
@@ -115,11 +95,9 @@ export class UdiseReportComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
-      this.errMsg();
-      this.indiceFilter = [];
+      this.commonService.errMsg();
       this.level = 'district';
-      var fileName = "District_wise_report";
-
+      this.fileName = "Dist_wise_report";
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -132,40 +110,37 @@ export class UdiseReportComponent implements OnInit {
       // api call to get all the districts data
       if (this.myDistData != undefined) {
         this.data = this.myDistData['data'];
-        this.gettingIndiceFilters(this.data);
-
         // to show only in dropdowns
         this.districtMarkers = this.myDistData['data'];
         // options to set for markers in the map
         let options = {
-          radius: 6,
+          radius: 5,
           fillOpacity: 1,
-          strokeWeight: 0.05,
+          strokeWeight: 0.01,
           mapZoom: 7,
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
           level: 'district'
         }
-        this.genericFun(this.myDistData, options, fileName);
+
+        this.genericFun(this.myDistData, options, this.fileName);
         // sort the districtname alphabetically
-        this.districtMarkers.sort((a, b) => (a.details.District_Name > b.details.District_Name) ? 1 : ((b.details.District_Name > a.details.District_Name) ? -1 : 0));
+        this.districtMarkers.sort((a, b) => (a.details.district_name > b.details.district_name) ? 1 : ((b.details.district_name > a.details.district_name) ? -1 : 0));
 
       } else {
-
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.udise_dist_wise().subscribe(res => {
+        this.myData = this.service.PATDistWiseData().subscribe(res => {
           this.myDistData = res;
           this.data = res['data'];
-          this.gettingIndiceFilters(this.data);
 
           // to show only in dropdowns
           this.districtMarkers = this.data;
 
           // options to set for markers in the map
           let options = {
-            radius: 6,
+            radius: 5,
             fillOpacity: 1,
             strokeWeight: 0.01,
             mapZoom: 7,
@@ -173,16 +148,14 @@ export class UdiseReportComponent implements OnInit {
             centerLng: 71.48396301269531,
             level: 'district'
           }
-
-          this.data.sort((a, b) => (`${a[this.indiceData]}` > `${b[this.indiceData]}`) ? 1 : ((`${b[this.indiceData]}` > `${a[this.indiceData]}`) ? -1 : 0));
-          this.genericFun(this.myDistData, options, fileName);
+          this.genericFun(this.myDistData, options, this.fileName);
 
           // sort the districtname alphabetically
-          this.districtMarkers.sort((a, b) => (a.details.District_Name > b.details.District_Name) ? 1 : ((b.details.District_Name > a.details.District_Name) ? -1 : 0));
+          this.districtMarkers.sort((a, b) => (a.details.district_name > b.details.district_name) ? 1 : ((b.details.district_name > a.details.district_name) ? -1 : 0));
 
         }, err => {
           this.data = [];
-          this.loaderAndErr();
+          this.commonService.loaderAndErr(this.data);
         });
       }
 
@@ -201,9 +174,8 @@ export class UdiseReportComponent implements OnInit {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.errMsg();
+      this.commonService.errMsg();
       this.reportData = [];
-      this.indiceFilter = [];
       this.districtId = undefined;
       this.blockId = undefined;
       this.level = 'block_wise';
@@ -223,10 +195,9 @@ export class UdiseReportComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.udise_block_wise().subscribe(res => {
-        this.data = this.myBlockData = res['data'];
-        this.gettingIndiceFilters(this.data);
-
+      this.myData = this.service.PATBlockWiseData().subscribe(res => {
+        this.myBlockData = res['data'];
+        this.data = res['data'];
         let options = {
           mapZoom: 7,
           centerLat: 22.3660414123535,
@@ -237,43 +208,34 @@ export class UdiseReportComponent implements OnInit {
         if (this.data.length > 0) {
           let result = this.data
           this.blockMarkers = [];
-
           this.blockMarkers = result;
 
           this.schoolCount = 0;
-          if (this.blockMarkers.length !== 0) {
-            for (let i = 0; i < this.blockMarkers.length; i++) {
-              this.setColor = this.commonService.colorGredient(this.blockMarkers[i], this.indiceData);
-              var markerIcon = L.circleMarker([this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude], {
-                radius: 4,
-                color: "gray",
-                fillColor: this.setColor,
-                fillOpacity: 1,
-                strokeWeight: 0.01,
-                weight: 1.5
-              }).addTo(globalMap);
-
-              // data to show on the tooltip for the desired levels
-              this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
-
-              //download report
-              this.getDownloadableData(this.blockMarkers[i], options.level);
-            }
-
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
-
-
-            //schoolCount
-            this.schoolCount = res['footer'];
-            this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
-            this.loaderAndErr();
-            this.changeDetection.markForCheck();
+          this.blockMarkers.sort((a, b) => (a.pat_scores['School Performance'] > b.pat_scores['School Performance']) ? 1 : ((b.pat_scores['School Performance'] > a.pat_scores['School Performance']) ? -1 : 0));
+          // generate color gradient
+          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.blockMarkers.length, 'rgb');
+          this.colors = colors;
+          for (let i = 0; i < this.blockMarkers.length; i++) {
+            var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, this.colors[i], 3.5, 0.01, undefined, options.level);
+            this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
+            this.getDownloadableData(this.blockMarkers[i], options.level);
           }
+
+          globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+
+
+          //schoolCount
+          this.schoolCount = res['footer'].total_schools;
+          this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.studentCount = res['footer'].students_count;
+          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+
+          this.commonService.loaderAndErr(this.data);
+          this.changeDetection.markForCheck();
         }
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
@@ -288,9 +250,8 @@ export class UdiseReportComponent implements OnInit {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.errMsg();
+      this.commonService.errMsg();
       this.reportData = [];
-      this.indiceFilter = [];
       this.districtId = undefined;
       this.blockId = undefined;
       this.clusterId = undefined;
@@ -311,9 +272,8 @@ export class UdiseReportComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.udise_cluster_wise().subscribe(res => {
+      this.myData = this.service.PATClusterWiseData().subscribe(res => {
         this.data = res['data']
-        this.gettingIndiceFilters(this.data);
         let options = {
           mapZoom: 7,
           centerLat: 22.3660414123535,
@@ -327,37 +287,31 @@ export class UdiseReportComponent implements OnInit {
           this.clusterMarkers = result;
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
+            this.clusterMarkers.sort((a, b) => (a.pat_scores['School Performance'] > b.pat_scores['School Performance']) ? 1 : ((b.pat_scores['School Performance'] > a.pat_scores['School Performance']) ? -1 : 0));
+            // generate color gradient
+            let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.clusterMarkers.length, 'rgb');
+            this.colors = colors;
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              this.setColor = this.commonService.colorGredient(this.clusterMarkers[i], this.indiceData);
-              var markerIcon = L.circleMarker([this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude], {
-                radius: 2,
-                color: "gray",
-                fillColor: this.setColor,
-                fillOpacity: 1,
-                strokeWeight: 0.01,
-                weight: 0.5
-              }).addTo(globalMap);
-
-              // data to show on the tooltip for the desired levels
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, this.colors[i], 0, 0.01, undefined, options.level);
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
-
-              //download report
               this.getDownloadableData(this.clusterMarkers[i], options.level);
             }
 
             //schoolCount
-            this.schoolCount = res['footer'];
+            this.schoolCount = res['footer'].total_schools;
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.studentCount = res['footer'].students_count;
+            this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
-            this.loaderAndErr();
+            this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
         }
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
@@ -372,9 +326,8 @@ export class UdiseReportComponent implements OnInit {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.errMsg();
+      this.commonService.errMsg();
       this.reportData = [];
-      this.indiceFilter = [];
       this.districtId = undefined;
       this.blockId = undefined;
       this.clusterId = undefined;
@@ -395,53 +348,46 @@ export class UdiseReportComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.udise_school_wise().subscribe(res => {
+      this.myData = this.service.PATSchoolWiseData().subscribe(res => {
         this.data = res['data']
-        this.gettingIndiceFilters(this.data);
         let options = {
           mapZoom: 7,
           centerLat: 22.3660414123535,
           centerLng: 71.48396301269531,
           level: "school"
         }
+
         this.schoolMarkers = [];
         if (this.data.length > 0) {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
+            this.schoolMarkers.sort((a, b) => (a.pat_scores['School Performance'] > b.pat_scores['School Performance']) ? 1 : ((b.pat_scores['School Performance'] > a.pat_scores['School Performance']) ? -1 : 0));
+            // generate color gradient
+            let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.schoolMarkers.length, 'rgb');
+            this.colors = colors;
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              this.setColor = this.commonService.colorGredient(this.schoolMarkers[i], this.indiceData);
-              var markerIcon = L.circleMarker([this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude], {
-                // renderer: myRenderer,
-                radius: 1,
-                color: "gray",
-                fillColor: this.setColor,
-                fillOpacity: 1,
-                weight: 0.3,
-                strokeWeight: 0
-              }).addTo(globalMap);
-
-              // data to show on the tooltip for the desired levels
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, this.colors[i], 0, 0, undefined, options.level);
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
-
-              //download report
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
             //schoolCount
-            this.schoolCount = res['footer'];
+            this.schoolCount = res['footer'].total_schools;
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.studentCount = res['footer'].students_count;
+            this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
-            this.loaderAndErr();
+            this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
         }
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
 
       globalMap.addLayer(this.layerMarkers);
@@ -456,11 +402,9 @@ export class UdiseReportComponent implements OnInit {
     // to clear the existing data on the map layer  
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.errMsg();
+    this.commonService.errMsg();
     this.blockId = undefined;
     this.reportData = [];
-    this.indiceFilter = [];
-
     this.level = 'block';
     var fileName = "Block_per_dist_report";
 
@@ -468,22 +412,21 @@ export class UdiseReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.udise_blocks_per_dist(districtId).subscribe(res => {
-      this.data = res['data'];
-      this.gettingIndiceFilters(this.data);
+    this.myData = this.service.PATBlocksPerDistData(districtId).subscribe(res => {
+      this.data = res['data']
 
       this.blockMarkers = this.data;
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data[0].details.district_id,
-        districtName: this.data[0].details.District_Name
+        districtName: this.data[0].details.district_name
       }
-
-      this.districtId = districtId;
 
       // to show and hide the dropdowns
       this.blockHidden = false;
       this.clusterHidden = true;
+
+      this.districtId = districtId;
 
       // these are for showing the hierarchy names based on selection
       this.skul = false;
@@ -493,7 +436,7 @@ export class UdiseReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 4.5,
+        radius: 3.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: 8.3,
@@ -504,10 +447,10 @@ export class UdiseReportComponent implements OnInit {
 
       this.genericFun(res, options, fileName);
       // sort the blockname alphabetically
-      this.blockMarkers.sort((a, b) => (a.details.Block_Name > b.details.Block_Name) ? 1 : ((b.details.Block_Name > a.details.Block_Name) ? -1 : 0));
+      this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));
     }, err => {
       this.data = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -518,11 +461,9 @@ export class UdiseReportComponent implements OnInit {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.errMsg();
+    this.commonService.errMsg();
     this.clusterId = undefined;
     this.reportData = [];
-    this.indiceFilter = [];
-
     this.level = 'cluster';
     var fileName = "Cluster_per_block_report";
 
@@ -530,9 +471,8 @@ export class UdiseReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.udise_cluster_per_block(this.districtHierarchy.distId, blockId).subscribe(res => {
-      this.data = res['data'];
-      this.gettingIndiceFilters(this.data);
+    this.myData = this.service.PATClustersPerBlockData(this.districtHierarchy.distId, blockId).subscribe(res => {
+      this.data = res['data']
 
       this.clusterMarkers = this.data;
       var myBlocks = [];
@@ -546,9 +486,9 @@ export class UdiseReportComponent implements OnInit {
       // set hierarchy values
       this.blockHierarchy = {
         distId: this.data[0].details.district_id,
-        districtName: this.data[0].details.District_Name,
+        districtName: this.data[0].details.district_name,
         blockId: this.data[0].details.block_id,
-        blockName: this.data[0].details.Block_Name
+        blockName: this.data[0].details.block_name
       }
 
       // to show and hide the dropdowns
@@ -566,7 +506,7 @@ export class UdiseReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 4.5,
+        radius: 3,
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: 10,
@@ -577,10 +517,10 @@ export class UdiseReportComponent implements OnInit {
 
       this.genericFun(res, options, fileName);
       // sort the clusterName alphabetically
-      this.clusterMarkers.sort((a, b) => (a.details.Cluster_Name > b.details.Cluster_Name) ? 1 : ((b.details.Cluster_Name > a.details.Cluster_Name) ? -1 : 0));
+      this.clusterMarkers.sort((a, b) => (a.details.cluster_name > b.details.cluster_name) ? 1 : ((b.details.cluster_name > a.details.cluster_name) ? -1 : 0));
     }, err => {
       this.data = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -591,19 +531,15 @@ export class UdiseReportComponent implements OnInit {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.errMsg();
-    this.reportData = [];
-    this.indiceFilter = [];
-    this.level = 'school';
-    var fileName = "School_per_block_report";
+    this.commonService.errMsg();
+
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.udise_block_wise().subscribe((result: any) => {
-      this.myData = this.service.udise_school_per_cluster(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
+    this.myData = this.service.PATBlockWiseData().subscribe((result: any) => {
+      this.myData = this.service.PATSchoolssPerClusterData(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId).subscribe(res => {
         this.data = res['data'];
-        this.gettingIndiceFilters(this.data);
 
         this.schoolMarkers = this.data;
         var markers = result['data'];
@@ -614,6 +550,7 @@ export class UdiseReportComponent implements OnInit {
           }
         });
         this.blockMarkers = myBlocks;
+        this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));
 
         var myCluster = [];
         this.clusterMarkers.forEach(element => {
@@ -626,11 +563,11 @@ export class UdiseReportComponent implements OnInit {
         // set hierarchy values
         this.clusterHierarchy = {
           distId: this.data[0].details.district_id,
-          districtName: this.data[0].details.District_Name,
+          districtName: this.data[0].details.district_name,
           blockId: this.data[0].details.block_id,
-          blockName: this.data[0].details.Block_Name,
+          blockName: this.data[0].details.block_name,
           clusterId: this.data[0].details.cluster_id,
-          clusterName: this.data[0].details.Cluster_Name,
+          clusterName: this.data[0].details.cluster_name,
         }
 
         this.blockHidden = false;
@@ -652,23 +589,24 @@ export class UdiseReportComponent implements OnInit {
 
         // options to set for markers in the map
         let options = {
-          radius: 4.5,
+          radius: 3.5,
           fillOpacity: 1,
           strokeWeight: 0.01,
           mapZoom: 12,
           centerLat: this.data[0].details.latitude,
           centerLng: this.data[0].details.longitude,
-          level: 'school'
+          level: "school"
         }
-
+        this.level = options.level;
+        var fileName = "School_per_cluster_report";
         this.genericFun(res, options, fileName);
       }, err => {
         this.data = [];
-        this.loaderAndErr();
+        this.commonService.loaderAndErr(this.data);
       });
     }, err => {
       this.data = [];
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -681,64 +619,39 @@ export class UdiseReportComponent implements OnInit {
     var myData = data['data'];
     if (myData.length > 0) {
       this.markers = myData;
+      this.markers.sort((a, b) => (a.pat_scores['School Performance'] > b.pat_scores['School Performance']) ? 1 : ((b.pat_scores['School Performance'] > a.pat_scores['School Performance']) ? -1 : 0));
+      // generate color gradient
+      let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
+      this.colors = colors;
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-
-        this.setColor = this.commonService.colorGredient(this.markers[i], this.indiceData);
-        var markerIcon: any;
-        if (options.weight) {
-          markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
-            radius: options.radius,
-            color: "gray",
-            fillColor: this.setColor,
-            fillOpacity: options.fillOpacity,
-            strokeWeight: options.strokeWeight,
-            weight: options.weight
-          })
-        } else {
-          markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
-            radius: options.radius,
-            color: "gray",
-            fillColor: this.setColor,
-            fillOpacity: options.fillOpacity,
-            strokeWeight: options.strokeWeight,
-            weight: 1.5
-          })
-        }
-
+        var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, this.colors[i], options.radius, options.strokeWeight, 1, options.level);
         globalMap.setZoom(options.mapZoom);
 
         // data to show on the tooltip for the desired levels
-        if (options.level) {
-          // data to show on the tooltip for the desired levels
-          this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
+        this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
 
-          this.fileName = fileName;
-          this.getDownloadableData(this.markers[i], options.level);
-        }
+        // to download the report
+        this.fileName = fileName;
+        this.getDownloadableData(this.markers[i], options.level);
       }
-
-      this.loaderAndErr();
+      this.commonService.loaderAndErr(this.data);
       this.changeDetection.markForCheck();
     }
     //schoolCount
-    this.schoolCount = data['footer'];
+    this.schoolCount = data['footer'].total_schools;
     this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    this.studentCount = data['footer'].students_count;
+    this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
-  //generate tooltip........
   generateToolTip(markers, level, markerIcon, lat, lng) {
     this.popups(markerIcon, markers, level);
-    var indiceName = this.indiceData;
-
     let colorText = `style='color:blue !important;'`;
     var details = {};
     var orgObject = {};
-    var data1 = {};
-    var data2 = {};
-    var data3 = {};
     Object.keys(markers.details).forEach(key => {
       if (key !== lat) {
         details[key] = markers.details[key];
@@ -749,133 +662,16 @@ export class UdiseReportComponent implements OnInit {
         orgObject[key] = details[key];
       }
     });
-
-    var schoolData = {};
-    var schoolData1 = {};
-    var schoolData2 = {};
-    var schoolData3 = {};
-    var yourData1;
-    if (level == "school") {
-      Object.keys(orgObject).forEach(key => {
-        if (key !== "total_schools_data_received") {
-          schoolData[key] = details[key];
-        }
-      });
-      Object.keys(schoolData).forEach(key => {
-        if (key !== "district_id") {
-          schoolData1[key] = schoolData[key];
-        }
-      });
-      Object.keys(schoolData1).forEach(key => {
-        if (key !== "block_id") {
-          schoolData2[key] = schoolData1[key];
-        }
-      });
-      Object.keys(schoolData2).forEach(key => {
-        if (key !== "cluster_id") {
-          schoolData3[key] = schoolData2[key];
-        }
-      });
-      yourData1 = this.getInfoFrom(schoolData3, indiceName, colorText, level).join(" <br>");
-    } else if (level == 'district') {
-      Object.keys(orgObject).forEach(key => {
-        if (key !== "district_id") {
-          data1[key] = orgObject[key];
-        }
-      });
-      yourData1 = this.getInfoFrom(data1, indiceName, colorText, level).join(" <br>");
-    } else if (level == 'block') {
-      Object.keys(orgObject).forEach(key => {
-        if (key !== "district_id") {
-          data1[key] = orgObject[key];
-        }
-      });
-      Object.keys(data1).forEach(key => {
-        if (key !== "block_id") {
-          data2[key] = data1[key];
-        }
-      });
-      yourData1 = this.getInfoFrom(data2, indiceName, colorText, level).join(" <br>");
-    } else if (level == 'cluster') {
-      Object.keys(orgObject).forEach(key => {
-        if (key !== "district_id") {
-          data1[key] = orgObject[key];
-        }
-      });
-      Object.keys(data1).forEach(key => {
-        if (key !== "block_id") {
-          data2[key] = data1[key];
-        }
-      });
-      Object.keys(data2).forEach(key => {
-        if (key !== "cluster_id") {
-          data3[key] = data2[key];
-        }
-      });
-      yourData1 = this.getInfoFrom(data3, indiceName, colorText, level).join(" <br>");
-    }
-    var yourData = this.getInfoFrom(markers.indices, indiceName, colorText, level).join(" <br>");
-    var yourData2 = this.getInfoFrom(markers.rank, indiceName, colorText, level).join(" <br>");
+    var yourData1 = this.commonService.getInfoFrom(orgObject, "", level, this.reportData, "infra-map", '', colorText).join(" <br>");
+    var yourData = this.commonService.getInfoFrom(markers.pat_scores, "", level, this.reportData, "infra-map", '', colorText).join(" <br>");
 
 
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       "<b><u>Details</u></b>" +
       "<br>" + yourData1 +
-      "<br><br><b><u>Rank</u></b>" +
-      "<br>" + yourData2 +
-      "<br><br><b><u>All Indices (%)</u></b>" +
+      "<br><br><b><u>PAT Score (%)</u></b>" +
       "<br>" + yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);
-  }
-
-  public indiceData = 'Infrastructure_Score';
-  public level = '';
-  onIndiceSelect(data) {
-    this.indiceData = data;
-    if (this.level == 'district') {
-      this.districtWise();
-    }
-    if (this.level == 'block_wise') {
-      this.blockWise();
-    }
-    if (this.level == 'cluster_wise') {
-      this.clusterWise();
-    }
-    if (this.level == 'school_wise') {
-      this.schoolWise();
-    }
-
-    if (this.level == 'block') {
-      this.onDistrictSelect(this.districtId);
-    }
-    if (this.level == 'cluster') {
-      this.onBlockSelect(this.blockId);
-    }
-    if (this.level == 'school') {
-      this.onClusterSelect(this.clusterId);
-    }
-  }
-
-  //map tooltip automation
-  public getInfoFrom(object, indiceName, colorText, level) {
-    var popupFood = [];
-    var stringLine;
-    for (var key in object) {
-      if (object.hasOwnProperty(key)) {
-        stringLine = `<span ${indiceName == key ? colorText : ''}>` + "<b>" +
-          key.replace(
-            /\w\S*/g,
-            function (txt) {
-              if (txt.includes("Index")) {
-                txt = txt.replace('Index', '')
-              }
-              return txt.replace(/_/g, ' ');
-            })
-          + "</b>" + ": " + object[key] + `</span>`;
-      }
-      popupFood.push(stringLine);
-    }
-    return popupFood;
   }
 
   popups(markerIcon, markers, level) {
@@ -908,121 +704,8 @@ export class UdiseReportComponent implements OnInit {
     }
   }
 
-  //indice filters.....
-  gettingIndiceFilters(data) {
-    this.indiceFilter = [];
-    for (var i = 0; i < Object.keys(this.data[0].indices).length; i++) {
-      let val = Object.keys(this.data[0].indices)[i].replace(/_/g, ' ');
-      if (val.includes("Index")) {
-        val = val.replace('Index', '')
-      }
-      val = val.replace('Percent', '(%)')
-      this.indiceFilter.push({ key: Object.keys(this.data[0].indices)[i], value: val });
-    }
-
-    this.indiceFilter.unshift({ key: "Infrastructure_Score", value: "Infrastructure Score" });
-
-    var indiceKey = this.indiceFilter.filter(function (obj) {
-      return obj.key == 'Infrastructure_Score';
-    });
-
-    this.indiceFilter = this.indiceFilter.filter(function (obj) {
-      return obj.key !== 'Infrastructure_Score';
-    });
-
-    this.indiceFilter.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
-    this.indiceFilter.splice(0, 0, indiceKey[0]);
-  }
-
-  // getting data to download........
-  getDownloadableData(markers, level) {
-    var details = {};
-    var orgObject = {};
-    var detailSchool = {};
-    Object.keys(markers.details).forEach(key => {
-      if (key !== "latitude") {
-        details[key] = markers.details[key];
-      }
-    });
-    Object.keys(details).forEach(key => {
-      if (key !== "longitude") {
-        orgObject[key] = details[key];
-      }
-    });
-    if (level == "school") {
-      Object.keys(orgObject).forEach(key => {
-        if (key !== "total_schools_data_received") {
-          detailSchool[key] = details[key];
-        }
-      });
-    }
-    if (level == "district") {
-      if (this.indiceData !== 'Infrastructure_Score') {
-        let obj = {
-          district_id: markers.details.district_id,
-          district_name: markers.details.District_Name,
-          [this.indiceData]: markers.indices[`${this.indiceData}`] + "%"
-        }
-        this.reportData.push(obj);
-      } else {
-        let myobj = { ...orgObject, ...markers.indices }
-        this.reportData.push(myobj);
-      }
-    } else if (level == "block") {
-      if (this.indiceData !== 'Infrastructure_Score') {
-        let obj = {
-          district_id: markers.details.district_id,
-          district_name: markers.details.District_Name,
-          block_id: markers.details.block_id,
-          block_name: markers.details.Block_Name,
-          [this.indiceData]: markers.indices[`${this.indiceData}`] + "%"
-        }
-        this.reportData.push(obj);
-      } else {
-        let myobj = { ...orgObject, ...markers.indices }
-        this.reportData.push(myobj);
-      }
-    }
-    else if (level == "cluster") {
-      if (this.indiceData !== 'Infrastructure_Score') {
-        let obj = {
-          district_id: markers.details.district_id,
-          district_name: markers.details.District_Name,
-          block_id: markers.details.block_id,
-          block_name: markers.details.Block_Name,
-          cluster_id: markers.details.cluster_id,
-          cluster_name: markers.details.Cluster_Name,
-          [this.indiceData]: markers.indices[`${this.indiceData}`] + "%"
-        }
-        this.reportData.push(obj);
-      } else {
-        let myobj = { ...orgObject, ...markers.indices }
-        this.reportData.push(myobj);
-      }
-    } else if (level == "school") {
-      if (this.indiceData !== 'Infrastructure_Score') {
-        let obj = {
-          district_id: markers.details.district_id,
-          district_name: markers.details.District_Name,
-          block_id: markers.details.block_id,
-          block_name: markers.details.Block_Name,
-          cluster_id: markers.details.cluster_id,
-          cluster_name: markers.details.Cluster_Name,
-          school_id: markers.details.school_id,
-          school_name: markers.details.School_Name,
-          [this.indiceData]: markers.indices[`${this.indiceData}`] + "%"
-        }
-        this.reportData.push(obj);
-      } else {
-        let myobj = { ...detailSchool, ...markers.indices }
-        this.reportData.push(myobj);
-      }
-    }
-  }
-
   // drilldown/ click functionality on markers
   onClick_Marker(event) {
-    this.indiceFilter = [];
     var data = event.target.myJsonData.details;
     if (data.district_id && !data.block_id && !data.cluster_id) {
       this.stateLevel = 1;
@@ -1050,4 +733,23 @@ export class UdiseReportComponent implements OnInit {
     this.commonService.download(this.fileName, this.reportData);
   }
 
+  // getting data to download........
+  getDownloadableData(markers, level) {
+    var details = {};
+    var orgObject = {};
+    var myobj = {};
+    Object.keys(markers.details).forEach(key => {
+      if (key !== "latitude") {
+        details[key] = markers.details[key];
+      }
+    });
+    Object.keys(details).forEach(key => {
+      if (key !== "longitude") {
+        orgObject[key] = details[key];
+      }
+    });
+
+    myobj = { ...orgObject, ...markers.pat_scores }
+    this.reportData.push(myobj);
+  }
 }

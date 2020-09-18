@@ -20,6 +20,7 @@ export class SummaryStatistictsComponent implements OnInit {
   tableData7: any = [];
   tableData8: any = [];
   tableData9: any = [];
+  tableData10: any = [];
   constructor(private router: Router, private service: SummaryService) { }
 
   ngOnInit(): void {
@@ -89,6 +90,13 @@ export class SummaryStatistictsComponent implements OnInit {
       this.tableData9 = res;
       if (this.tableData9.length > 0) {
         this.tableWithSubHeaders(this.tableData9, "table10");
+        document.getElementById('spinner').style.display = 'none';
+      }
+    });
+    this.service.getDikshaSummary().subscribe((res: any) => {
+      this.tableData10 = res;
+      if (this.tableData10.length > 0) {
+        this.tableWithSubHeaders(this.tableData10, "table11");
         document.getElementById('spinner').style.display = 'none';
       }
     });
