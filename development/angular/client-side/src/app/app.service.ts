@@ -136,7 +136,15 @@ export class AppServiceComponent {
             }
             popupFood.push(stringLine);
         }
-        if (reportType != "infra-map") {
+        if (reportType == "patReport") {
+            if (object.students_count) {
+                if (levelWise != "school") {
+                    object.total_schools = parseInt(object.total_schools.replace(/\,/g, ''));
+                }
+                object.students_count = parseInt(object.students_count.replace(/\,/g, ''));
+            }
+            reportData.push(object);
+        } else if (reportType != "infra-map") {
             if (reportType != "sem-exception") {
                 if (reportType != "telemetry") {
                     if (levelWise != "school") {

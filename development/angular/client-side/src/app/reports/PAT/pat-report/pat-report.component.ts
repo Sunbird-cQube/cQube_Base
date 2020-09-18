@@ -662,9 +662,17 @@ export class PATReportComponent implements OnInit {
         orgObject[key] = details[key];
       }
     });
-    var yourData1 = this.commonService.getInfoFrom(orgObject, "", level, this.reportData, "infra-map", '', colorText).join(" <br>");
-    var yourData = this.commonService.getInfoFrom(markers.pat_scores, "", level, this.reportData, "infra-map", '', colorText).join(" <br>");
+    var ordered = {};
+    Object.keys(markers.pat_scores).sort().forEach(function (key) {
+      ordered[key] = markers.pat_scores[key];
+    });
+    if (level != 'school') {
+      orgObject['total_schools'] = orgObject['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
+    orgObject['students_count'] = orgObject['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
+    var yourData1 = this.commonService.getInfoFrom(orgObject, "", level, this.reportData, "patReport", '', colorText).join(" <br>");
+    var yourData = this.commonService.getInfoFrom(ordered, "", level, this.reportData, "patReport", '', colorText).join(" <br>");
 
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       "<b><u>Details</u></b>" +
@@ -749,7 +757,12 @@ export class PATReportComponent implements OnInit {
       }
     });
 
-    myobj = { ...orgObject, ...markers.pat_scores }
+    var ordered = {};
+    Object.keys(markers.pat_scores).sort().forEach(function (key) {
+      ordered[key] = markers.pat_scores[key];
+    });
+
+    myobj = { ...orgObject, ...ordered }
     this.reportData.push(myobj);
   }
 }
