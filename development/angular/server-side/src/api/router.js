@@ -58,6 +58,12 @@ const UDISE_block_wise = require('./controller/udise-report/block-wise');
 const UDISE_cluster_wise = require('./controller/udise-report/cluster-wise');
 const UDISE_school_wise = require('./controller/udise-report/school-wise');
 
+//PAT report
+const PAT_dist_wise = require('./controller/patRoutes/distWise');
+const PAT_block_wise = require('./controller/patRoutes/blockWise');
+const PAT_cluster_wise = require('./controller/patRoutes/clusterWise');
+const PAT_school_wise = require('./controller/patRoutes/schoolWise');
+
 // sem routes
 router.use('/sem', semDistrictWise);
 router.use('/sem', semBlockWise);
@@ -116,5 +122,11 @@ router.use('/udise', UDISE_dist_wise);
 router.use('/udise', UDISE_block_wise);
 router.use('/udise', UDISE_cluster_wise);
 router.use('/udise', UDISE_school_wise);
+
+//PAT......
+router.use('/pat', PAT_dist_wise);
+router.use('/pat', PAT_block_wise);
+router.use('/pat', PAT_cluster_wise);
+router.use('/pat', PAT_school_wise);
 
 module.exports = router;

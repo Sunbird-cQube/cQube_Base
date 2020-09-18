@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AppService } from '../app.service';
 import { environment } from '../../environments/environment'
 import { KeycloakSecurityService } from '../keycloak-security.service';
 
@@ -12,7 +10,7 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
 export class HomeComponent implements OnInit {
   public grafanaUrl = environment.grafanaEndPoint;
   logoutVar;
-  constructor(private router: Router, private service: AppService, public keyCloakService: KeycloakSecurityService) {
+  constructor(public keyCloakService: KeycloakSecurityService) {
   }
   email: any;
   role: any;
@@ -23,12 +21,6 @@ export class HomeComponent implements OnInit {
   isShowing = false;
   showLogs: boolean = true;
   appUrl;
-  navItems: any = [
-    {
-      name: 'All Logs',
-      children: []
-    },
-  ];
 
   logNames: any = [];
 
@@ -40,14 +32,6 @@ export class HomeComponent implements OnInit {
       this.showsideMenu = false;
       this.showLogs = true;
     }
-    this.service.getLogMenu().subscribe((res: any) => {
-      this.navItems[0].children = res;
-      this.navItems[0].children.forEach(element => {
-        element.children.forEach(item => {
-          item['route'] = "all-logs";
-        });
-      });
-    })
   }
   logout() {
     localStorage.clear();

@@ -12,15 +12,6 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 
         let schoolData = myData.data;
 
-        // input date range
-        // let startDate = req.body.startDate;
-        // let endDate = req.body.endDate;
-
-        // filter state data for specified date range
-        // filterData = schoolData.filter(obj => {
-        //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
-        // })
-
         schoolData = schoolData.filter(function (el) {
             return el.x_value != null;
         });
@@ -33,15 +24,15 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 
         var schoolDetails = schoolData.map(function (item) {
             let obj = {
-                districtId: item['district_id'],
-                districtName: item['district_name'],
-                blockId: item['block_id'],
-                blockName: item['block_name'],
-                clusterId: item['cluster_id'],
-                clusterName: item['cluster_name'],
-                schoolId: item['x_axis'],
-                schoolName: item['school_name'],
-                assesmentPercentage: item['x_value'],
+                semester_performance: item['x_value'],
+                school_id: item['x_axis'],
+                school_name: item['school_name'],
+                cluster_id: item['cluster_id'],
+                cluster_name: item['cluster_name'],
+                block_id: item['block_id'],
+                block_name: item['block_name'],
+                district_id: item['district_id'],
+                district_name: item['district_name'],
                 grade_3: item['grade_3'],
                 grade_4: item['grade_4'],
                 grade_5: item['grade_5'],
@@ -50,15 +41,14 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 grade_8: item['grade_8'],
                 lat: item['y_value'],
                 lng: item['z_value'],
-                studentsCount: item['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                // data_from_date: item['data_from_date'],
-                // data_upto_date: item['data_upto_date']
+                number_of_students: item['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
+
             }
             return obj
         });
 
         // sort the resultant data based on the attendance percentage to generate color gradients
-        var sortedData = schoolDetails.sort((a, b) => (parseFloat(a.assesmentPercentage) > parseFloat(b.assesmentPercentage)) ? 1 : -1)
+        var sortedData = schoolDetails.sort((a, b) => (parseFloat(a.semester_performance) > parseFloat(b.semester_performance)) ? 1 : -1)
 
         // final result object
         let resultObj = {
@@ -86,23 +76,13 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
 
         let schoolData = myData.data;
 
-        let distId = req.params.distId
-        let blockId = req.params.blockId
-        let clusterId = req.params.clusterId
-
+        let distId = req.params.distId;
+        let blockId = req.params.blockId;
+        let clusterId = req.params.clusterId;
 
         filterData = schoolData.filter(obj => {
             return (obj.district_id == distId && obj.block_id == blockId && obj.cluster_id == clusterId)
-        })
-
-        // input date range
-        // let startDate = req.body.startDate;
-        // let endDate = req.body.endDate;
-
-        // filter state data for specified date range
-        // filterData = filterData.filter(obj => {
-        //     return (obj.data_from_date == startDate && obj.data_upto_date == endDate)
-        // })
+        });
 
         filterData = filterData.filter(function (el) {
             return el.x_value != null;
@@ -116,15 +96,15 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         // map and extract required  values to show in the leaflet-map
         var schoolDetails = filterData.map(function (item) {
             let obj = {
-                districtId: item['district_id'],
-                districtName: item['district_name'],
-                blockId: item['block_id'],
-                blockName: item['block_name'],
-                clusterId: item['cluster_id'],
-                clusterName: item['cluster_name'],
-                schoolId: item['x_axis'],
-                schoolName: item['school_name'],
-                assesmentPercentage: item['x_value'],
+                semester_performance: item['x_value'],
+                school_id: item['x_axis'],
+                school_name: item['school_name'],
+                cluster_id: item['cluster_id'],
+                cluster_name: item['cluster_name'],
+                block_id: item['block_id'],
+                block_name: item['block_name'],
+                district_id: item['district_id'],
+                district_name: item['district_name'],
                 grade_3: item['grade_3'],
                 grade_4: item['grade_4'],
                 grade_5: item['grade_5'],
@@ -133,15 +113,13 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 grade_8: item['grade_8'],
                 lat: item['y_value'],
                 lng: item['z_value'],
-                studentsCount: item['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                // data_from_date: item['data_from_date'],
-                // data_upto_date: item['data_upto_date']
+                number_of_students: item['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
             }
             return obj
         });
 
         // sort the resultant data based on the attendance percentage to generate color gradients
-        var sortedData = schoolDetails.sort((a, b) => (parseFloat(a.assesmentPercentage) > parseFloat(b.assesmentPercentage)) ? 1 : -1)
+        var sortedData = schoolDetails.sort((a, b) => (parseFloat(a.semester_performance) > parseFloat(b.semester_performance)) ? 1 : -1)
 
         // final result object
         let resultObj = {

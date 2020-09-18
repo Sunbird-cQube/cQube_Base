@@ -10,20 +10,20 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         var year = req.body.year;
         let fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`
         var jsonData = await s3File.readS3File(fileName);
-        
+
         var blocksAttendanceData = jsonData.data
         var blockData = [];
         for (let i = 0; i < blocksAttendanceData.length; i++) {
             var obj = {
-                id: blocksAttendanceData[i]['x_axis'],
-                distId: blocksAttendanceData[i]['district_id'],
-                dist: blocksAttendanceData[i]['district_name'],
-                name: blocksAttendanceData[i]['block_name'],
-                label: blocksAttendanceData[i]['x_value'],
+                block_id: blocksAttendanceData[i]['x_axis'],
+                block_name: blocksAttendanceData[i]['block_name'],
+                district_id: blocksAttendanceData[i]['district_id'],
+                district_name: blocksAttendanceData[i]['district_name'],
+                attendance: blocksAttendanceData[i]['x_value'],
                 lat: blocksAttendanceData[i]['y_value'],
                 lng: blocksAttendanceData[i]['z_value'],
-                stdCount: (blocksAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                schCount: (blocksAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_students: (blocksAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_schools: (blocksAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
             }
             blockData.push(obj);
         }
@@ -47,18 +47,18 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
         var filterData = jsonData.data.filter(data => {
             return (data.district_id == distId)
         });
-        var myData = filterData;
-        for (let i = 0; i < myData.length; i++) {
+        var blocksAttendanceData = filterData;
+        for (let i = 0; i < blocksAttendanceData.length; i++) {
             var obj = {
-                id: myData[i]['x_axis'],
-                name: myData[i]['block_name'],
-                distId: myData[i]['district_id'],
-                dist: myData[i]['district_name'],
-                label: myData[i]['x_value'],
-                lat: myData[i]['y_value'],
-                lng: myData[i]['z_value'],
-                stdCount: (myData[i]['students_count']),
-                schCount: (myData[i]['total_schools']),
+                block_id: blocksAttendanceData[i]['x_axis'],
+                block_name: blocksAttendanceData[i]['block_name'],
+                district_id: blocksAttendanceData[i]['district_id'],
+                district_name: blocksAttendanceData[i]['district_name'],
+                attendance: blocksAttendanceData[i]['x_value'],
+                lat: blocksAttendanceData[i]['y_value'],
+                lng: blocksAttendanceData[i]['z_value'],
+                number_of_students: (blocksAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_schools: (blocksAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
             }
             blockData.push(obj);
         }
