@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "gujarat-project": {
+    "client-side": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/gujarat-project",
+            "outputPath": "dist/client-side",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,18 +72,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "gujarat-project:build"
+            "browserTarget": "client-side:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "gujarat-project:build:production"
+              "browserTarget": "client-side:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "gujarat-project:build"
+            "browserTarget": "client-side:build"
           }
         },
         "test": {
@@ -122,18 +122,18 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "gujarat-project:serve"
+            "devServerTarget": "client-side:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "gujarat-project:serve:production"
+              "devServerTarget": "client-side:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "gujarat-project",
+  "defaultProject": "client-side",
   "cli": {
     "analytics": "ba1a22eb-5816-43e5-b88d-9836f8523d87"
   }
