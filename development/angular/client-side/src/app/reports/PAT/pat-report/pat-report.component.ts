@@ -95,6 +95,7 @@ export class PATReportComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
+      this.reportData = [];
       this.commonService.errMsg();
       this.level = 'district';
       this.fileName = "Dist_wise_report";
@@ -745,7 +746,6 @@ export class PATReportComponent implements OnInit {
   getDownloadableData(markers, level) {
     var details = {};
     var orgObject = {};
-    var myobj = {};
     Object.keys(markers.details).forEach(key => {
       if (key !== "latitude") {
         details[key] = markers.details[key];
@@ -762,7 +762,7 @@ export class PATReportComponent implements OnInit {
       ordered[key] = markers.pat_scores[key];
     });
 
-    myobj = { ...orgObject, ...ordered }
+    var myobj = Object.assign(orgObject, ordered);
     this.reportData.push(myobj);
   }
 }

@@ -143,7 +143,6 @@ export class AppServiceComponent {
                 }
                 object.students_count = parseInt(object.students_count.replace(/\,/g, ''));
             }
-            reportData.push(object);
         } else if (reportType != "infra-map") {
             if (reportType != "sem-exception") {
                 if (reportType != "telemetry") {
@@ -153,7 +152,6 @@ export class AppServiceComponent {
                     object.number_of_students = Number(object.number_of_students.replace(/\,/g, ''));
                 }
             }
-            reportData.push(object);
         }
         return popupFood;
     }
