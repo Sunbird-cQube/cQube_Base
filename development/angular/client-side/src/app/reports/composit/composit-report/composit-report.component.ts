@@ -16,8 +16,8 @@ declare const $;
 export class CompositReportComponent implements OnInit {
   public scatterChart: Chart;
   public result: any = [];
-  public xAxis: any = "Adminisration";
-  public yAxis: any = "Enrollment";
+  public xAxis: any;
+  public yAxis: any;
   public xAxisFilter: any = [];
   public yAxisFilter: any = [];
   public downloadLevel = '';
@@ -60,7 +60,16 @@ export class CompositReportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.districtWise();
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.dist_wise_data().subscribe(res => {
+      this.result = res;
+      this.xAxis = Object.keys(this.result[0])[1];
+      this.yAxis = Object.keys(this.result[0])[1];
+      this.districtWise();
+    })
+
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
@@ -370,6 +379,7 @@ export class CompositReportComponent implements OnInit {
     });
   }
 
+
   showChart(result, downloadType) {
     var l = undefined;
     if (downloadType == "dist") {
@@ -389,48 +399,69 @@ export class CompositReportComponent implements OnInit {
 
     var labels = [];
     this.chartData = []
+    var j;
     for (var i = 0; i < result.length; i++) {
-      var x = undefined, y = undefined;
-      if (result[i][this.xAxis].percent && result[i][this.yAxis].percent) {
-        x = Number(result[i][this.xAxis].percent);
-        y = Number(result[i][this.yAxis].percent);
-      }
-      if (result[i][this.xAxis].percent && result[i][this.yAxis].value) {
-        x = Number(result[i][this.xAxis].percent);
-        y = Number(result[i][this.yAxis].value);
-      }
-      if (result[i][this.xAxis].value && result[i][this.yAxis].value) {
-        x = Number(result[i][this.xAxis].value);
-        y = Number(result[i][this.yAxis].value);
-      }
-      if (result[i][this.xAxis].value && result[i][this.yAxis].percent) {
-        x = Number(result[i][this.xAxis].value);
-        y = Number(result[i][this.yAxis].percent);
+      j = i;
+      if (result[i][this.xAxis] && result[i][this.yAxis]) {
+        var x = undefined, y = undefined;
+        if (result[i][this.xAxis].percent && result[i][this.yAxis].percent) {
+          x = Number(result[i][this.xAxis].percent); ``
+          y = Number(result[i][this.yAxis].percent);
+        }
+        if (result[i][this.xAxis].percent && result[i][this.yAxis].value) {
+          x = Number(result[i][this.xAxis].percent);
+          y = Number(result[i][this.yAxis].value);
+        }
+        if (result[i][this.xAxis].value && result[i][this.yAxis].value) {
+          x = Number(result[i][this.xAxis].value);
+          y = Number(result[i][this.yAxis].value);
+        }
+        if (result[i][this.xAxis].value && result[i][this.yAxis].percent) {
+          x = Number(result[i][this.xAxis].value);
+          y = Number(result[i][this.yAxis].percent);
+        }
+
+        this.chartData.push({ x: x, y: y });
+        if (downloadType == "dist") {
+          labels.push(result[i].district.value);
+          this.districtsNames.push({ id: this.result[i].district.id, name: this.result[i].district.value });
+        } else if (downloadType == "block") {
+          labels.push(result[i].block.value);
+          this.blockNames.push({ id: this.result[i].block.id, name: this.result[i].block.value });
+        } else if (downloadType == "cluster") {
+          labels.push(result[i].cluster.value);
+          this.clusterNames.push({ id: this.result[i].cluster.id, name: this.result[i].cluster.value });
+        } else if (downloadType == "school") {
+          labels.push(result[i].school.value);
+        }
+      } else {
+        this.chartData = [];
+        this.result = [];
+        this.commonService.loaderAndErr(this.result);
       }
 
-      this.chartData.push({ x: x, y: y });
+    }
+    if (result[j][this.xAxis] && result[j][this.yAxis]) {
+      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
+
+      let obj = {
+        xAxis: x_axis.value,
+        yAxis: y_axis.value
+      }
+      this.createChart(labels, this.chartData, this.tableHead, obj);
+    } else {
       if (downloadType == "dist") {
-        labels.push(result[i].district.value);
-        this.districtsNames.push({ id: this.result[i].district.id, name: this.result[i].district.value });
+        this.SchoolInfrastructureDistrictsNames = [];
       } else if (downloadType == "block") {
-        labels.push(result[i].block.value);
-        this.blockNames.push({ id: this.result[i].block.id, name: this.result[i].block.value });
+        this.SchoolInfrastructureBlocksNames = [];
       } else if (downloadType == "cluster") {
-        labels.push(result[i].cluster.value);
-        this.clusterNames.push({ id: this.result[i].cluster.id, name: this.result[i].cluster.value });
-      } else if (downloadType == "school") {
-        labels.push(result[i].school.value);
+        this.SchoolInfrastructureClusterNames = [];
       }
+      this.chartData = [];
+      this.result = [];
+      this.commonService.loaderAndErr(this.result);
     }
-
-    let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-    let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-
-    let obj = {
-      xAxis: x_axis.value,
-      yAxis: y_axis.value
-    }
-    this.createChart(labels, this.chartData, this.tableHead, obj);
   }
 
   selectAxis() {
@@ -473,9 +504,9 @@ export class CompositReportComponent implements OnInit {
           callbacks: {
             label: function (tooltipItem, data) {
               var label = data.labels[tooltipItem.index];
-              var multistringText = [name + ": " + label];
-              multistringText.push(obj.xAxis + ": " + tooltipItem.xLabel);
-              multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
+              var multistringText = [name + " : " + label];
+              multistringText.push(obj.xAxis + " : " + tooltipItem.xLabel.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"));
+              multistringText.push(obj.yAxis + " : " + tooltipItem.yLabel.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"));
               return multistringText;
             }
           }
@@ -525,10 +556,10 @@ export class CompositReportComponent implements OnInit {
       for (var i = 0; i < Object.keys(value).length; i++) {
         if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
           if (value[headers[i]].value) {
-            newObj[`${headers[i]}_value`] = value[headers[i]].value;
+            newObj[`${headers[i]}`] = value[headers[i]].value;
           }
           if (value[headers[i]].percent) {
-            newObj[`${headers[i]}_percent`] = value[headers[i]].percent;
+            newObj[`${headers[i]}`] = value[headers[i]].percent;
           }
         } else {
           newObj[headers[i]] = value[headers[i]].value;
