@@ -93,7 +93,7 @@ export class SummaryStatistictsComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
       }
     });
-    this.service.getDikshaSummary().subscribe((res: any) => {
+    this.service.getUdiseSummary().subscribe((res: any) => {
       this.tableData10 = res;
       if (this.tableData10.length > 0) {
         this.tableWithSubHeaders(this.tableData10, "table11");
