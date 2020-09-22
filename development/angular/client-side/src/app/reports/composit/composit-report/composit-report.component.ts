@@ -383,8 +383,8 @@ export class CompositReportComponent implements OnInit {
     }
 
     for (i = l; i < Object.keys(result[0]).length; i++) {
-      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').toLocaleUpperCase() });
-      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').toLocaleUpperCase() });
+      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ') });
+      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ') });
     }
 
     var labels = [];
@@ -473,9 +473,9 @@ export class CompositReportComponent implements OnInit {
           callbacks: {
             label: function (tooltipItem, data) {
               var label = data.labels[tooltipItem.index];
-              var multistringText = [name.toLocaleUpperCase() + ": " + label];
-              multistringText.push(obj.xAxis + ": " + tooltipItem.xLabel + " %");
-              multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel + " %");
+              var multistringText = [name + ": " + label];
+              multistringText.push(obj.xAxis + ": " + tooltipItem.xLabel);
+              multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
               return multistringText;
             }
           }
