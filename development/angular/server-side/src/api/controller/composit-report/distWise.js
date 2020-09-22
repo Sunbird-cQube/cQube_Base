@@ -9,7 +9,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
         let fileName = `composite/comp_district.json`
         var data = await s3File.readS3File(fileName);
 
-        logger.info('--- Infra dist wise api response sent ---');
+        logger.info('--- composite dist wise api response sent ---');
         res.status(200).send(data);
 
     } catch (e) {
