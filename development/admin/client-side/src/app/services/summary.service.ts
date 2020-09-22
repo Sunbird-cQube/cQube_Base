@@ -77,4 +77,11 @@ export class SummaryService {
       'headers': { 'token': "Bearer " + localStorage.getItem('token') }
     });
   }
+
+  getUdiseSummary() {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/summary/summaryUDISE`, {}, {
+      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+    });
+  }
 }
