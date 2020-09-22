@@ -70,7 +70,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         var filterData = '';
-        logger.info('--- school wise attendance api ---');
+        logger.info('--- school per cluster semester api ---');
         let fileName = `semester/school_sem_opt_json_${req.body.sem}.json`
         var myData = await s3File.readS3File(fileName);
 
@@ -129,7 +129,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
             },
             sortedData
         }
-        logger.info('--- semseter school wise api reponse sent ---');
+        logger.info('--- semseter school per cluster api reponse sent ---');
         res.status(200).send(resultObj);
 
     } catch (e) {
