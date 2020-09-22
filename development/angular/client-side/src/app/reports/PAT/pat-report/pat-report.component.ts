@@ -33,6 +33,7 @@ export class PATReportComponent implements OnInit {
   // to hide the blocks and cluster dropdowns
   public blockHidden: boolean = true;
   public clusterHidden: boolean = true;
+  subjectHidden: boolean = true;
 
   // to set the hierarchy names
   public districtHierarchy: any = '';
@@ -73,6 +74,11 @@ export class PATReportComponent implements OnInit {
   public mySchoolData: any = [];
   public level;
 
+  allGrades = [];
+  allSubjects = [];
+  grade;
+  subject;
+
   constructor(
     public http: HttpClient,
     public service: PatReportService,
@@ -88,6 +94,60 @@ export class PATReportComponent implements OnInit {
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
   }
+
+  onGradeSelect(data) {
+    this.grade = data;
+    this.subjectHidden = false;
+    this.subject = '';
+    this.allSubjects = Object.keys(this.data[0]['grades'][`${this.grade}`])
+    if (this.level == 'district') {
+      this.districtWise();
+    }
+    if (this.level == 'block_wise') {
+      this.blockWise();
+    }
+    if (this.level == 'cluster_wise') {
+      this.clusterWise();
+    }
+    if (this.level == 'school_wise') {
+      this.schoolWise();
+    }
+
+    if (this.level == 'block') {
+      this.onDistrictSelect(this.districtId);
+    }
+    if (this.level == 'cluster') {
+      this.onBlockSelect(this.blockId);
+    }
+    if (this.level == 'school') {
+      this.onClusterSelect(this.clusterId);
+    }
+  }
+  onSubjectSelect(data) {
+    this.subject = data;
+    if (this.level == 'district') {
+      this.districtWise();
+    }
+    if (this.level == 'block_wise') {
+      this.blockWise();
+    }
+    if (this.level == 'cluster_wise') {
+      this.clusterWise();
+    }
+    if (this.level == 'school_wise') {
+      this.schoolWise();
+    }
+
+    if (this.level == 'block') {
+      this.onDistrictSelect(this.districtId);
+    }
+    if (this.level == 'cluster') {
+      this.onBlockSelect(this.blockId);
+    }
+    if (this.level == 'school') {
+      this.onClusterSelect(this.clusterId);
+    }
+  }
   // to load all the districts for state data on the map
   districtWise() {
     try {
@@ -95,6 +155,11 @@ export class PATReportComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
+      if (this.level != 'district') {
+        this.subjectHidden = true;
+        this.grade = undefined;
+        this.subject = undefined;
+      }
       this.reportData = [];
       this.commonService.errMsg();
       this.level = 'district';
@@ -176,6 +241,12 @@ export class PATReportComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
+      if (this.level != 'block_wise') {
+        this.subjectHidden = true;
+        this.grade = undefined;
+        this.subject = undefined;
+      }
+      this.allGrades = [];
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -220,6 +291,9 @@ export class PATReportComponent implements OnInit {
             var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, this.colors[i], 3.5, 0.01, undefined, options.level);
             this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
             this.getDownloadableData(this.blockMarkers[i], options.level);
+            if (this.blockMarkers[i]['grades']) {
+              this.allGrades = Object.keys(this.blockMarkers[i]['grades']);
+            }
           }
 
           globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -252,6 +326,12 @@ export class PATReportComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
+      if (this.level != 'cluster_wise') {
+        this.subjectHidden = true;
+        this.grade = undefined;
+        this.subject = undefined;
+      }
+      this.allGrades = [];
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -296,6 +376,9 @@ export class PATReportComponent implements OnInit {
               var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, this.colors[i], 0, 0.01, undefined, options.level);
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.clusterMarkers[i], options.level);
+              if (this.clusterMarkers[i]['grades']) {
+                this.allGrades = Object.keys(this.clusterMarkers[i]['grades']);
+              }
             }
 
             //schoolCount
@@ -328,6 +411,12 @@ export class PATReportComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
+      if (this.level != 'school_wise') {
+        this.subjectHidden = true;
+        this.grade = undefined;
+        this.subject = undefined;
+      }
+      this.allGrades = [];
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -372,6 +461,9 @@ export class PATReportComponent implements OnInit {
               var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, this.colors[i], 0, 0, undefined, options.level);
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.schoolMarkers[i], options.level);
+              if (this.schoolMarkers[i]['grades']) {
+                this.allGrades = Object.keys(this.schoolMarkers[i]['grades']);
+              }
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -404,6 +496,11 @@ export class PATReportComponent implements OnInit {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
+    if (this.level != 'block') {
+      this.subjectHidden = true;
+      this.grade = undefined;
+      this.subject = undefined;
+    }
     this.blockId = undefined;
     this.reportData = [];
     this.level = 'block';
@@ -463,6 +560,11 @@ export class PATReportComponent implements OnInit {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
+    if (this.level != 'cluster') {
+      this.subjectHidden = true;
+      this.grade = undefined;
+      this.subject = undefined;
+    }
     this.clusterId = undefined;
     this.reportData = [];
     this.level = 'cluster';
@@ -533,7 +635,11 @@ export class PATReportComponent implements OnInit {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
-
+    if (this.level != 'school') {
+      this.subjectHidden = true;
+      this.grade = undefined;
+      this.subject = undefined;
+    }
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
@@ -616,6 +722,7 @@ export class PATReportComponent implements OnInit {
   // common function for all the data to show in the map
   genericFun(data, options, fileName) {
     this.reportData = [];
+    this.allGrades = [];
     this.schoolCount = 0;
     var myData = data['data'];
     if (myData.length > 0) {
@@ -628,6 +735,9 @@ export class PATReportComponent implements OnInit {
       for (var i = 0; i < this.markers.length; i++) {
         var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, this.colors[i], options.radius, options.strokeWeight, 1, options.level);
         globalMap.setZoom(options.mapZoom);
+        if (this.markers[i]['grades']) {
+          this.allGrades = Object.keys(this.markers[i]['grades']);
+        }
 
         // data to show on the tooltip for the desired levels
         this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
@@ -639,7 +749,7 @@ export class PATReportComponent implements OnInit {
       this.commonService.loaderAndErr(this.data);
       this.changeDetection.markForCheck();
     }
-    //schoolCount
+    // schoolCount
     this.schoolCount = data['footer'].total_schools;
     this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     this.studentCount = data['footer'].students_count;
@@ -673,7 +783,14 @@ export class PATReportComponent implements OnInit {
     orgObject['students_count'] = orgObject['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
     var yourData1 = this.commonService.getInfoFrom(orgObject, "", level, this.reportData, "patReport", '', colorText).join(" <br>");
-    var yourData = this.commonService.getInfoFrom(ordered, "", level, this.reportData, "patReport", '', colorText).join(" <br>");
+    var yourData;
+    if (this.grade && !this.subject) {
+      yourData = this.commonService.getInfoFrom(markers.grades[`${this.grade}`], "", level, this.reportData, "patReport", '', colorText).join(" <br>");
+    } else if (this.grade && this.subject) {
+      yourData = this.commonService.getInfoFrom(markers.grades[`${this.grade}`], "", level, this.reportData, "patReport", this.subject, colorText).join(" <br>");
+    } else {
+      yourData = this.commonService.getInfoFrom(ordered, "", level, this.reportData, "patReport", '', colorText).join(" <br>");
+    }
 
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       "<b><u>Details</u></b>" +
@@ -756,11 +873,16 @@ export class PATReportComponent implements OnInit {
         orgObject[key] = details[key];
       }
     });
-
     var ordered = {};
-    Object.keys(markers.pat_scores).sort().forEach(function (key) {
-      ordered[key] = markers.pat_scores[key];
-    });
+    if (this.grade && !this.subject) {
+      ordered = markers.grades[`${this.grade}`];
+    } else if (this.grade && this.subject) {
+      ordered = { [`${this.subject}` + '_score']: markers.grades[`${this.grade}`][`${this.subject}`] }
+    } else {
+      Object.keys(markers.pat_scores).sort().forEach(function (key) {
+        ordered[key] = markers.pat_scores[key];
+      });
+    }
 
     var myobj = Object.assign(orgObject, ordered);
     this.reportData.push(myobj);

@@ -64,6 +64,12 @@ const PAT_block_wise = require('./controller/patRoutes/blockWise');
 const PAT_cluster_wise = require('./controller/patRoutes/clusterWise');
 const PAT_school_wise = require('./controller/patRoutes/schoolWise');
 
+// Composit report
+const composit_dist_wise = require('./controller/composit-report/distWise');
+const composit_block_wise = require('./controller/composit-report/blockWise');
+const composit_cluster_wise = require('./controller/composit-report/clusterWise');
+const composit_school_wise = require('./controller/composit-report/schoolWise');
+
 // sem routes
 router.use('/sem', semDistrictWise);
 router.use('/sem', semBlockWise);
@@ -128,5 +134,11 @@ router.use('/pat', PAT_dist_wise);
 router.use('/pat', PAT_block_wise);
 router.use('/pat', PAT_cluster_wise);
 router.use('/pat', PAT_school_wise);
+
+//composit report
+router.use('/composit', composit_dist_wise);
+router.use('/composit', composit_block_wise);
+router.use('/composit', composit_cluster_wise);
+router.use('/composit', composit_school_wise);
 
 module.exports = router;

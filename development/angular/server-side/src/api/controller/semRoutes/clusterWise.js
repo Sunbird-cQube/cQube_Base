@@ -72,7 +72,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
 router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
     try {
         var filterData = ''
-        logger.info('--- cluster wise attendance api ---');
+        logger.info('--- cluster per block semester api ---');
         let fileName = `semester/cluster_sem_opt_json_${req.body.sem}.json`
         var myData = await s3File.readS3File(fileName);
         let clusterData = myData.data;
@@ -133,7 +133,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
             },
             sortedData
         }
-        logger.info('--- semseter cluster wise api reponse sent ---');
+        logger.info('--- semseter cluster per block api reponse sent ---');
         res.status(200).send(resultObj);
 
     } catch (e) {

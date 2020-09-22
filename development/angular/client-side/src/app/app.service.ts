@@ -121,7 +121,7 @@ export class AppServiceComponent {
                             })
                         + "</b>" + ": " + object[key] + " %" + `</span>`;
                 } else {
-                    if (reportType == "infra-map") {
+                    if (reportType == "infra-map" || reportType == "patReport") {
                         selected = `<span ${infraName == key ? colorText : ''}>`
                     }
                     stringLine = selected + "<b>" +
