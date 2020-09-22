@@ -67,7 +67,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         var filterData = '';
-        logger.info('--- block wise sem api ---');
+        logger.info('--- block per district sem api ---');
         let fileName = `semester/block_sem_opt_json_${req.body.sem}.json`
         var myData = await s3File.readS3File(fileName);
 
@@ -123,7 +123,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
             },
             sortedData
         }
-        logger.info('--- semester block wise api reponse sent ---');
+        logger.info('--- semester block per district api reponse sent ---');
         res.status(200).send(resultObj);
     } catch (e) {
         logger.error(e);

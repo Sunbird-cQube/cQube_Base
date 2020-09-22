@@ -121,7 +121,7 @@ export class AppServiceComponent {
                             })
                         + "</b>" + ": " + object[key] + " %" + `</span>`;
                 } else {
-                    if (reportType == "infra-map") {
+                    if (reportType == "infra-map" || reportType == "patReport") {
                         selected = `<span ${infraName == key ? colorText : ''}>`
                     }
                     stringLine = selected + "<b>" +
@@ -136,7 +136,14 @@ export class AppServiceComponent {
             }
             popupFood.push(stringLine);
         }
-        if (reportType != "infra-map") {
+        if (reportType == "patReport") {
+            if (object.students_count) {
+                if (levelWise != "school") {
+                    object.total_schools = parseInt(object.total_schools.replace(/\,/g, ''));
+                }
+                object.students_count = parseInt(object.students_count.replace(/\,/g, ''));
+            }
+        } else if (reportType != "infra-map") {
             if (reportType != "sem-exception") {
                 if (reportType != "telemetry") {
                     if (levelWise != "school") {
@@ -145,7 +152,6 @@ export class AppServiceComponent {
                     object.number_of_students = Number(object.number_of_students.replace(/\,/g, ''));
                 }
             }
-            reportData.push(object);
         }
         return popupFood;
     }

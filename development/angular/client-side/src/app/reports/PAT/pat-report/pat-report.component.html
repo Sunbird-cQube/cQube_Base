@@ -4,13 +4,13 @@
             <div *ngIf='skul'>
                 <p id="dist"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    PAT report for: <span (click)="districtWise()"
+                    Periodic Exam report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    PAT report for: <span (click)="districtWise()"
+                    Periodic Exam report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -19,7 +19,7 @@
             <div *ngIf="blok">
                 <p id="cluster"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    PAT report for: <span (click)="districtWise()"
+                    Periodic Exam report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -32,7 +32,7 @@
             <div *ngIf="clust">
                 <p id="school"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    PAT report for: <span (click)="districtWise()"
+                    Periodic Exam report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -64,7 +64,7 @@
     <div class="row">
         <div class="col-sm-12">
             <p style="text-align: justify; font-size: 11px;">
-                <strong> About the dashboard:</strong> The PAT dashboard visualises the data on school
+                <strong> About the dashboard:</strong> The Periodic Exam dashboard visualises the data on school
                 infrastructure
                 metrics for Gujarat based on the data collected through UDISE 2019.
             </p>
@@ -82,7 +82,7 @@
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
         </div>
-        <div class="col-sm-9" style="font-family: Arial;">
+        <div class="col-sm-6" style="font-family: Arial;">
             <select id="choose_dist"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
@@ -114,6 +114,30 @@
                 </option>
             </select>
         </div>
+        <!-- <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-6">
+                    <select [hidden]="" id="grades"
+                        style="margin-right: 10px; padding: 3px;float: right; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                        [(ngModel)]="grade" (change)="onGradeSelect(grade)">
+                        <option [value]="grade" disabled selected="selected">Choose a Grade</option>
+                        <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="allGrades[i]">
+                            {{allGrades[i]}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <select [hidden]="subjectHidden" id="subjects"
+                        style="margin-right: 0px; padding: 3px; float: right; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                        [(ngModel)]="subject" (change)="onSubjectSelect(subject)">
+                        <option [value]="subject" disabled selected="selected">Choose a Subject</option>
+                        <option *ngFor="let subject of allSubjects,  let i =index" [(ngValue)]="allSubjects[i]">
+                            {{allSubjects[i]}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div> -->
 
     </div>
     <div class="row">
@@ -127,7 +151,7 @@
             <span id="schools" style="text-align: center;">Number of schools: {{schoolCount}}</span>
         </div>
         <div class="col-sm-6">
-            <span id="schools" style="text-align: center;">Number of students: {{studentCount}}</span>
+            <span id="students" style="text-align: center;">Number of students: {{studentCount}}</span>
         </div>
     </div>
 </div>
