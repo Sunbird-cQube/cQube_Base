@@ -400,25 +400,26 @@ export class CompositReportComponent implements OnInit {
     var labels = [];
     this.chartData = []
     var j;
+
     for (var i = 0; i < result.length; i++) {
       j = i;
       if (result[i][this.xAxis] && result[i][this.yAxis]) {
         var x = undefined, y = undefined;
-        if (result[i][this.xAxis].percent && result[i][this.yAxis].percent) {
-          x = Number(result[i][this.xAxis].percent); ``
-          y = Number(result[i][this.yAxis].percent);
+        if (result[i][this.xAxis].percent >= 0 && result[i][this.yAxis].percent >= 0) {
+          x = parseFloat(result[i][this.xAxis].percent);
+          y = parseFloat(result[i][this.yAxis].percent);
         }
-        if (result[i][this.xAxis].percent && result[i][this.yAxis].value) {
-          x = Number(result[i][this.xAxis].percent);
-          y = Number(result[i][this.yAxis].value);
+        if (result[i][this.xAxis].percent >= 0 && result[i][this.yAxis].value >= 0) {
+          x = parseFloat(result[i][this.xAxis].percent);
+          y = parseFloat(result[i][this.yAxis].value);
         }
-        if (result[i][this.xAxis].value && result[i][this.yAxis].value) {
-          x = Number(result[i][this.xAxis].value);
-          y = Number(result[i][this.yAxis].value);
+        if (result[i][this.xAxis].value >= 0 && result[i][this.yAxis].value >= 0) {
+          x = parseFloat(result[i][this.xAxis].value);
+          y = parseFloat(result[i][this.yAxis].value);
         }
-        if (result[i][this.xAxis].value && result[i][this.yAxis].percent) {
-          x = Number(result[i][this.xAxis].value);
-          y = Number(result[i][this.yAxis].percent);
+        if (result[i][this.xAxis].value >= 0 && result[i][this.yAxis].percent >= 0) {
+          x = parseFloat(result[i][this.xAxis].value);
+          y = parseFloat(result[i][this.yAxis].percent);
         }
 
         this.chartData.push({ x: x, y: y });
@@ -555,10 +556,10 @@ export class CompositReportComponent implements OnInit {
       let newObj = {}
       for (var i = 0; i < Object.keys(value).length; i++) {
         if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
-          if (value[headers[i]].value) {
+          if (value[headers[i]].value >= 0) {
             newObj[`${headers[i]}`] = value[headers[i]].value;
           }
-          if (value[headers[i]].percent) {
+          if (value[headers[i]].percent >= 0) {
             newObj[`${headers[i]}`] = value[headers[i]].percent;
           }
         } else {
