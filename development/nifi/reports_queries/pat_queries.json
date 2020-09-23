@@ -1,0 +1,15 @@
+[
+{
+      "pat_school_wise":"Select * from periodic_exam_school"
+},
+{
+"pat_cluster_wise":"Select * from periodic_exam_cluster"
+},
+{
+"pat_block_wise":"Select * from periodic_exam_block"
+},
+{
+"pat_district_wise":"Select * from periodic_exam_district"
+}
+]
+
