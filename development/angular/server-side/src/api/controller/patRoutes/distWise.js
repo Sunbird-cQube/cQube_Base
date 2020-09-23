@@ -7,49 +7,48 @@ router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT dist wise api ---');
         let fileName = `pat/pat_district.json`
-        var districtData = await s3File.readS3File(fileName);
 
-        // var districtData = {
-        //     "data": [
-        //         {
-        //             "pat_scores": {
-        //                 "Grade 8": 50.73,
-        //                 "School Performance": 52.75,
-        //                 "Grade 5": 54.2,
-        //                 "Grade 3": 61.94,
-        //                 "Grade 6": 42.92,
-        //                 "Grade 4": 56.72,
-        //                 "Grade 7": 49.42,
-        //                 "academic_year": "2020-21"
-        //             },
-        //             "details": {
-        //                 "latitude": 22.477627778,
-        //                 "longitude": 72.873763889,
-        //                 "district_id": 2415,
-        //                 "district_name": "ANAND",
-        //                 "students_count": "68387",
-        //                 "total_schools": "630"
-        //             },
-        //             "grades": {
-        //                 "grade3": {
-        //                     "Maths": 43.54,
-        //                     "Science": 23.53,
-        //                     "OverAll": 61.94
-        //                 },
-        //                 "grade4": {
-        //                     "Social": 15.54,
-        //                     "English": 67.53,
-        //                     "OverAll": 50.05
-        //                 }
-        //             }
-        //         }
-        //     ],
-        //     AllDistrictsFooter: {
-        //         total_schools: 100,
-        //         students_count: 2000
+        var districtData = {}
+        if (req.body.data) {
+            districtData = {
+                "data": [{
+                    "subjects": {
+                        "Maths": 43.54,
+                        "Science": 23.53,
+                        "Performance": 23.67
+                    },
+                    "Details": {
+                        "latitude": 22.477627778,
+                        "longitude": 72.873763889,
+                        "district_id": 2415,
+                        "district_name": "ANAND",
+                        "students_count": "68387",
+                        "total_schools": "630"
+                    }
+                }, {
+                    "subjects": {
+                        "Maths": 42.54,
+                        "Science": 22.53,
+                        "Performance": 25.67
+                    },
+                    "Details": {
+                        "latitude": 21.477627778,
+                        "longitude": 73.873763889,
+                        "district_id": 2401,
+                        "district_name": "Ahemdabad",
+                        "students_count": "68387",
+                        "total_schools": "630"
+                    }
+                }],
+                AllDistrictsFooter: {
+                    total_schools: 50,
+                    students_count: 200
 
-        //     }
-        // }
+                }
+            }
+        } else {
+            districtData = await s3File.readS3File(fileName);
+        }
         var mydata = districtData.data;
 
         logger.info('--- PAT dist wise api response sent ---');
@@ -59,5 +58,62 @@ router.post('/distWise', auth.authController, async (req, res) => {
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 });
+
+router.get('/grades', (req, res, next) => {
+    try {
+        logger.info('---grades metadata api ---');
+        var mydata = {
+            "district": [
+                {
+                    "grade": "Grade 3"
+                },
+                {
+                    "grade": "Grade 4"
+                },
+                {
+                    "grade": "Grade 5"
+                }
+            ],
+            "block": [
+                {
+                    "grade": "Grade 3"
+                },
+                {
+                    "grade": "Grade 4"
+                },
+                {
+                    "grade": "Grade 5"
+                }
+            ],
+            "cluster": [
+                {
+                    "grade": "Grade 3"
+                },
+                {
+                    "grade": "Grade 4"
+                },
+                {
+                    "grade": "Grade 5"
+                }
+            ],
+            "school": [
+                {
+                    "grade": "Grade 3"
+                },
+                {
+                    "grade": "Grade 4"
+                },
+                {
+                    "grade": "Grade 5"
+                }
+            ]
+        }
+        logger.info('---grades metadata api response sent---');
+        res.status(200).send({ data: mydata });
+    } catch (e) {
+        logger.error(`Error :: ${e}`)
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+    }
+})
 
 module.exports = router;

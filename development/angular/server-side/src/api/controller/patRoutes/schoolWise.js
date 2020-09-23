@@ -25,7 +25,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         let clusterId = req.params.clusterId;
 
         let filterData = schoolData.data.filter(obj => {
-            return (obj.details.cluster_id == clusterId)
+            return (obj.Details.cluster_id == clusterId)
         })
         let mydata = filterData;
         logger.info('---PAT schoolPerCluster api response sent---');

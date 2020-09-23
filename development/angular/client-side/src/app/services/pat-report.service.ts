@@ -13,9 +13,14 @@ export class PatReportService {
 
   constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) { }
 
-  PATDistWiseData() {
+  gradeMetaData() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/pat/distWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.get(`${this.baseUrl}/pat/grades`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+  }
+
+  PATDistWiseData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/distWise`, { data }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 
   PATBlockWiseData() {

@@ -27,7 +27,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         let blockId = req.params.blockId;
 
         let filterData = clusterData.data.filter(obj => {
-            return (obj.details.district_id == distId && obj.details.block_id == blockId)
+            return (obj.Details.district_id == distId && obj.Details.block_id == blockId)
         })
         let mydata = filterData;
         logger.info('---PAT clusterperBlock api response sent---');
