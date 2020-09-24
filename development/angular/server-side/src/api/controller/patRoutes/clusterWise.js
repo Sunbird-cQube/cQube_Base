@@ -6,8 +6,15 @@ const s3File = require('../../lib/reads3File');
 router.post('/allClusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT cluster wise api ---');
-        let fileName = `pat/pat_cluster.json`;
-        var clusterData = await s3File.readS3File(fileName);
+        let fileName;
+        var clusterData = {}
+        if (req.body.data) {
+            fileName = `pat/cluster/${req.body.data}.json`;
+            clusterData = await s3File.readS3File(fileName);
+        } else {
+            fileName = `pat/pat_cluster.json`
+            clusterData = await s3File.readS3File(fileName);
+        }
         var mydata = clusterData.data;
         logger.info('---PAT cluster wise api response sent---');
         res.status(200).send({ data: mydata, footer: clusterData.AllClustersFooter });

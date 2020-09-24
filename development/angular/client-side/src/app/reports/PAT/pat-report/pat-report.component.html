@@ -12,7 +12,7 @@
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
                     Periodic Exam report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
-                        (click)="onDistrictSelect(districtHierarchy.distId)"
+                        (click)="ondistLinkClick(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{districtHierarchy.districtName}}</span> </p>
             </div>
@@ -74,18 +74,18 @@
         <div class="col-sm-3">
             <button class="btn btn-secondary" id="block"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
-                (click)="blockWise()">&nbsp;<strong style="font-family: Arial;">Blocks</strong> </button>
+                (click)="blockClick()">&nbsp;<strong style="font-family: Arial;">Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
-                (click)="clusterWise()">&nbsp;<strong style="font-family: Arial;">Clusters</strong> </button>
+                (click)="clusterClick()">&nbsp;<strong style="font-family: Arial;">Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
-                (click)="schoolWise()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
+                (click)="schoolClick()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
         </div>
         <div class="col-sm-6" style="font-family: Arial;">
             <select id="choose_dist"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
+                [(ngModel)]="districtId" (change)="ondistLinkClick(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.Details.district_id"
                     style="font-family: Arial; font-size: 11px;">

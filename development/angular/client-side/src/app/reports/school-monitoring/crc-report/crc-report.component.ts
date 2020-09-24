@@ -300,7 +300,7 @@ export class CrcReportComponent implements OnInit {
       this.reportData = this.result;
       this.downloadRoport();
     } else {
-      alert("No data fount to download");
+      alert("No data found to download");
     }
   }
 
@@ -322,7 +322,7 @@ export class CrcReportComponent implements OnInit {
       this.downloadRoport();
       this.changeDetection.markForCheck();
     }, err => {
-      alert("No data fount to download");
+      alert("No data found to download");
       this.chartData = [];
       this.commonService.loaderAndErr(this.chartData);
     });
@@ -346,7 +346,7 @@ export class CrcReportComponent implements OnInit {
       this.downloadRoport();
       this.changeDetection.markForCheck();
     }, err => {
-      alert("No data fount to download");
+      alert("No data found to download");
       this.chartData = [];
       this.commonService.loaderAndErr(this.chartData);
     });
@@ -370,7 +370,7 @@ export class CrcReportComponent implements OnInit {
       this.downloadRoport();
       this.changeDetection.markForCheck();
     }, err => {
-      alert("No data fount to download");
+      alert("No data found to download");
       this.chartData = [];
       this.commonService.loaderAndErr(this.chartData);
     });
@@ -788,7 +788,7 @@ export class CrcReportComponent implements OnInit {
 
   downloadRoport() {
     if (this.reportData.length <= 0) {
-      alert("No data fount to download");
+      alert("No data found to download");
     } else {
       const options = {
         fieldSeparator: ',',

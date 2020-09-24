@@ -6,8 +6,15 @@ const s3File = require('../../lib/reads3File');
 router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT school wise api ---');
-        let fileName = `pat/pat_school.json`;
-        var schoolData = await s3File.readS3File(fileName);
+        let fileName;
+        var schoolData = {}
+        if (req.body.data) {
+            fileName = `pat/school/${req.body.data}.json`;
+            schoolData = await s3File.readS3File(fileName);
+        } else {
+            fileName = `pat/pat_school.json`
+            schoolData = await s3File.readS3File(fileName);
+        }
         var mydata = schoolData.data;
         logger.info('---PAT school wise api response sent---');
         res.status(200).send({ data: mydata, footer: schoolData.AllSchoolsFooter });
