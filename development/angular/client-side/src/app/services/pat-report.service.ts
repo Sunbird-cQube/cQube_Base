@@ -13,14 +13,19 @@ export class PatReportService {
 
   constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) { }
 
-  PATDistWiseData() {
+  gradeMetaData() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/pat/distWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.get(`${this.baseUrl}/pat/grades`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 
-  PATBlockWiseData() {
+  PATDistWiseData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/pat/allBlockWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/pat/distWise`, { data }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+  }
+
+  PATBlockWiseData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/allBlockWise`, { data }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 
   PATBlocksPerDistData(distId) {
@@ -28,9 +33,9 @@ export class PatReportService {
     return this.http.post(`${this.baseUrl}/pat/blockWise/${distId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 
-  PATClusterWiseData() {
+  PATClusterWiseData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/pat/allClusterWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/pat/allClusterWise`, { data }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 
   PATClustersPerBlockData(distId, blockId) {
@@ -38,9 +43,9 @@ export class PatReportService {
     return this.http.post(`${this.baseUrl}/pat/clusterWise/${distId}/${blockId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 
-  PATSchoolWiseData() {
+  PATSchoolWiseData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/pat/allSchoolWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/pat/allSchoolWise`, {data}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 
   PATSchoolssPerClusterData(distId, blockId, clusterId) {
