@@ -191,7 +191,7 @@ export class PATReportComponent implements OnInit {
           this.data = res['data'];
           if (this.grade) {
             this.allSubjects = Object.keys(this.data[0].Subjects);
-            var index = this.allSubjects.indexOf('Grade Performance') + 1;
+            var index = this.allSubjects.indexOf('Grade Performance');
             this.allSubjects.splice(index, 1);
           }
           // to show only in dropdowns
