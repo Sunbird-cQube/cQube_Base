@@ -1,15 +1,29 @@
 [
 {
-      "pat_school_wise":"Select * from periodic_exam_school"
-},
-{
-"pat_cluster_wise":"Select * from periodic_exam_cluster"
-},
-{
-"pat_block_wise":"Select * from periodic_exam_block"
-},
-{
-"pat_district_wise":"Select * from periodic_exam_district"
-}
+    "pat_exam_district": "select * from periodic_exam_district"
+  },
+  {
+    "pat_grade_district": "select * from periodic_grade_district"
+  },
+  {
+    "pat_exam_block": "select * from periodic_exam_block"
+  },
+  {
+    "pat_grade_block": " select * from periodic_grade_block"
+  },
+  {
+    "pat_exam_cluster": "select * from periodic_exam_cluster"
+  },
+  {
+    "pat_grade_cluster": "select * from periodic_grade_cluster"
+  },
+  {
+    "pat_exam_school": "select * from periodic_exam_school"
+  },
+  {
+    "pat_grade_school": "select * from periodic_grade_school"
+  },
+  {
+    "pat_meta": "select json_object_agg(col,data) from  ((select 'district' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_district group by grade)as d) union (select 'block' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_block group by grade)as d) union (select 'cluster' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_cluster group by grade)as d) union (select 'school' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_school group by grade)as d))as d"
+  }
 ]
-

@@ -158,6 +158,43 @@
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
+                <connections>
+                    <id>e97b6459-1e68-3f71-0000-000000000000</id>
+                    <parentGroupId>87cd4372-8d4b-391d-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>87cd4372-8d4b-391d-0000-000000000000</groupId>
+                        <id>eae91cca-ecd1-3a2e-0000-000000000000</id>
+                        <type>OUTPUT_PORT</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <source>
+                        <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+                        <id>ef8db879-2cc6-3e9b-0000-000000000000</id>
+                        <type>OUTPUT_PORT</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <outputPorts>
+                    <id>eae91cca-ecd1-3a2e-0000-000000000000</id>
+                    <parentGroupId>87cd4372-8d4b-391d-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>736.0</x>
+                        <y>48.0</y>
+                    </position>
+                    <comments></comments>
+                    <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                    <name>student_attendance_comp_output</name>
+                    <state>STOPPED</state>
+                    <type>OUTPUT_PORT</type>
+                </outputPorts>
                 <processGroups>
                     <id>449d2c73-ea6c-3048-0000-000000000000</id>
                     <parentGroupId>87cd4372-8d4b-391d-0000-000000000000</parentGroupId>
@@ -346,6 +383,30 @@
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
 <id>f5f90059-4fb3-3af4-0000-000000000000</id>
 <type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>0ccb0eb5-b641-38e8-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>ef8db879-2cc6-3e9b-0000-000000000000</id>
+<type>OUTPUT_PORT</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <source>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>1e1fe089-434c-37ad-0000-000000000000</id>
+<type>FUNNEL</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -6038,6 +6099,19 @@
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>student_attendance_split_wait</name>
+                            <state>STOPPED</state>
+                            <type>OUTPUT_PORT</type>
+                        </outputPorts>
+                        <outputPorts>
+                            <id>ef8db879-2cc6-3e9b-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <position>
+<x>1648.0</x>
+<y>-576.0</y>
+                            </position>
+                            <comments></comments>
+                            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                            <name>student_attendance_pr_comp_output</name>
                             <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
@@ -28617,5 +28691,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/08/2020 15:01:28 IST</timestamp>
+    <timestamp>09/24/2020 07:45:51 IST</timestamp>
 </template>
