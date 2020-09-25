@@ -4,22 +4,22 @@
             <div *ngIf='skul'>
                 <p id="dist"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Exam report for: <span (click)="districtWise()"
+                    Periodic Exam report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Exam report for: <span (click)="districtWise()"
+                    Periodic Exam report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
-                        (click)="onDistrictSelect(districtHierarchy.distId)"
+                        (click)="ondistLinkClick(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{districtHierarchy.districtName}}</span> </p>
             </div>
             <div *ngIf="blok">
                 <p id="cluster"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Exam report for: <span (click)="districtWise()"
+                    Periodic Exam report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -32,7 +32,7 @@
             <div *ngIf="clust">
                 <p id="school"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Exam report for: <span (click)="districtWise()"
+                    Periodic Exam report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -74,22 +74,22 @@
         <div class="col-sm-3">
             <button class="btn btn-secondary" id="block"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
-                (click)="blockWise()">&nbsp;<strong style="font-family: Arial;">Blocks</strong> </button>
+                (click)="blockClick()">&nbsp;<strong style="font-family: Arial;">Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
-                (click)="clusterWise()">&nbsp;<strong style="font-family: Arial;">Clusters</strong> </button>
+                (click)="clusterClick()">&nbsp;<strong style="font-family: Arial;">Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
-                (click)="schoolWise()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
+                (click)="schoolClick()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
         </div>
         <div class="col-sm-6" style="font-family: Arial;">
             <select id="choose_dist"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
+                [(ngModel)]="districtId" (change)="ondistLinkClick(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
-                <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.details.district_id"
+                <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.Details.district_id"
                     style="font-family: Arial; font-size: 11px;">
-                    {{dist.details.district_name}}
+                    {{dist.Details.district_name}}
                 </option>
             </select>
 
@@ -97,9 +97,9 @@
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="blockId" (change)="onBlockSelect(blockId)">
                 <option [value]="blockId" disabled selected="selected">Choose a Block</option>
-                <option *ngFor="let block of blockMarkers" [(ngValue)]="block.details.block_id"
+                <option *ngFor="let block of blockMarkers" [(ngValue)]="block.Details.block_id"
                     style="font-family: Arial;font-size: 11px;">
-                    {{block.details.block_name}}
+                    {{block.Details.block_name}}
                 </option>
             </select>
 
@@ -107,22 +107,22 @@
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="clusterId" (change)="onClusterSelect(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
-                <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.details.cluster_id"
+                <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.Details.cluster_id"
                     style="font-family: Arial;font-size: 11px; "
                     [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
-                    {{cluster.details.cluster_name}}
+                    {{cluster.Details.cluster_name}}
                 </option>
             </select>
         </div>
-        <!-- <div class="col-sm-3">
+        <div class="col-sm-3">
             <div class="row">
                 <div class="col-sm-6">
                     <select [hidden]="" id="grades"
                         style="margin-right: 10px; padding: 3px;float: right; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                         [(ngModel)]="grade" (change)="onGradeSelect(grade)">
                         <option [value]="grade" disabled selected="selected">Choose a Grade</option>
-                        <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="allGrades[i]">
-                            {{allGrades[i]}}
+                        <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="grade.grade">
+                            {{grade.grade}}
                         </option>
                     </select>
                 </div>
@@ -137,7 +137,7 @@
                     </select>
                 </div>
             </div>
-        </div> -->
+        </div>
 
     </div>
     <div class="row">

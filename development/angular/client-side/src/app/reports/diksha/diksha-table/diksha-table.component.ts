@@ -214,7 +214,7 @@ export class DikshaTableComponent implements OnInit {
 
   downloadRoport() {
     if (this.reportData.length <= 0) {
-      alert("No data fount to download");
+      alert("No data found to download");
     } else {
       const options = {
         fieldSeparator: ',',
