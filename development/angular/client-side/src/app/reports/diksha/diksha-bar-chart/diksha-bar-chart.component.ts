@@ -65,7 +65,7 @@ export class DikshaBarChartComponent implements OnInit {
     document.getElementById('homeBtn').style.display = "Block";
     this.getAllData();
   }
- 
+
   emptyChart() {
     this.barChartData = [
       { data: [], label: '' }
@@ -241,7 +241,7 @@ export class DikshaBarChartComponent implements OnInit {
 
   downloadRoport() {
     if (this.reportData.length <= 0) {
-      alert("No data fount to download");
+      alert("No data found to download");
     } else {
       const options = {
         fieldSeparator: ',',

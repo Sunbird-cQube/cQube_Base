@@ -148,7 +148,23 @@ export class StudengtAttendanceComponent implements OnInit {
     }
 
     // if (this.reportData.length > 0) {
-    this.commonService.download(this.fileName, this.reportData);
+    var data = {};
+    var downloadable_data = {};
+    var myReport = [];
+    this.reportData.forEach(element => {
+      Object.keys(element).forEach(key => {
+        if (key !== "lat") {
+          data[key] = element[key];
+        }
+      });
+      Object.keys(data).forEach(key => {
+        if (key !== "lng") {
+          downloadable_data[key] = data[key];
+        }
+      });
+      myReport.push(downloadable_data);
+    });
+    this.commonService.download(this.fileName, myReport);
     // } else {
     //   this.commonService.loaderAndErr(this.markers);
     // }
@@ -217,7 +233,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
-        this.districtData = this.mylatlngData = res['distData'];
+        this.reportData = this.districtData = this.mylatlngData = res['distData'];
         var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
         let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
@@ -267,7 +283,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res['blockData'];
+        this.reportData = this.mylatlngData = res['blockData'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
         let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.colors = colors;
@@ -319,7 +335,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.cluster_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res['clusterData'];
+        this.reportData = this.mylatlngData = res['clusterData'];
         this.lat = 22.3660414123535;
         this.lng = 71.48396301269531;
 
@@ -383,7 +399,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
-        this.mylatlngData = res['schoolData'];
+        this.reportData = this.mylatlngData = res['schoolData'];
         this.lat = 22.3660414123535;
         this.lng = 71.48396301269531;
 
@@ -572,7 +588,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
-        this.blockData = this.mylatlngData = res['blockData'];
+        this.reportData = this.blockData = this.mylatlngData = res['blockData'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['block_id'] === current['block_id']);
           if (object.length == 0) previous.push(current);
@@ -675,7 +691,7 @@ export class StudengtAttendanceComponent implements OnInit {
       }
       this.month_year['id'] = data;
       this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
-        this.clusterData = this.mylatlngData = res['clusterDetails'];
+        this.reportData = this.clusterData = this.mylatlngData = res['clusterDetails'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['cluster_id'] === current['cluster_id']);
           if (object.length == 0) previous.push(current);
@@ -810,7 +826,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
       this.month_year['id'] = data;
       this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
-        this.mylatlngData = res['schoolsDetails'];
+        this.reportData = this.mylatlngData = res['schoolsDetails'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['school_id'] === current['school_id']);
           if (object.length == 0) previous.push(current);
