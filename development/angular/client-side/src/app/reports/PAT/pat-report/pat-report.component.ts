@@ -80,6 +80,8 @@ export class PATReportComponent implements OnInit {
   subject;
 
   distFilter = [];
+  blockFilter = [];
+  clusterFilter = [];
 
   constructor(
     public http: HttpClient,
@@ -295,6 +297,9 @@ export class PATReportComponent implements OnInit {
           let result = this.data
           this.blockMarkers = [];
           this.blockMarkers = result;
+          if (!this.blockMarkers[0]['Subjects']) {
+            this.blockFilter = this.blockMarkers;
+          }
 
           this.schoolCount = 0;
           if (this.grade && !this.subject) {
@@ -400,6 +405,9 @@ export class PATReportComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
+          if (!this.clusterMarkers[0]['Subjects']) {
+            this.clusterFilter = this.clusterMarkers;
+          }
           this.schoolCount = 0;
           if (this.grade && !this.subject) {
             this.clusterMarkers.sort((a, b) => (a.Subjects['Grade Performance'] > b.Subjects['Grade Performance']) ? 1 : ((b.Subjects['Grade Performance'] > a.Subjects['Grade Performance']) ? -1 : 0));
@@ -586,6 +594,9 @@ export class PATReportComponent implements OnInit {
       //   this.allSubjects.splice(index, 1);
       // }
       this.blockMarkers = this.data;
+      if (!this.blockMarkers[0]['Subjects']) {
+        this.blockFilter = this.blockMarkers;
+      }
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data[0].Details.district_id,
@@ -643,7 +654,7 @@ export class PATReportComponent implements OnInit {
     this.reportData = [];
     this.level = 'cluster';
     var fileName = "Cluster_per_block_report";
-    var myData = this.blockMarkers.find(a => a.Details.block_id == blockId);
+    var myData = this.blockFilter.find(a => a.Details.block_id == blockId);
     var grades = [];
     Object.keys(myData['Grades']).forEach(grade => {
       grades.push({ grade: grade })
@@ -660,6 +671,9 @@ export class PATReportComponent implements OnInit {
       //   this.allSubjects.pop()
       // }
       this.clusterMarkers = this.data;
+      if (!this.clusterMarkers[0]['Subjects']) {
+        this.clusterFilter = this.clusterMarkers;
+      }
       var myBlocks = [];
       this.blockMarkers.forEach(element => {
         if (element.Details.district_id === this.districtHierarchy.distId) {
@@ -722,7 +736,7 @@ export class PATReportComponent implements OnInit {
       this.grade = undefined;
       this.subject = undefined;
     }
-    var myData = this.clusterMarkers.find(a => a.Details.cluster_id == clusterId);
+    var myData = this.clusterFilter.find(a => a.Details.cluster_id == clusterId);
     var grades = [];
     Object.keys(myData['Grades']).forEach(grade => {
       grades.push({ grade: grade })
@@ -819,13 +833,21 @@ export class PATReportComponent implements OnInit {
       this.markers = myData;
       if (this.level == 'block' || this.level == 'cluster' || this.level == 'school') {
         if (this.grade && !this.subject) {
-          // console.log(this.markers[0].Grades)
-          // this.markers.sort((a, b) => (a.Grades[`${this.grade}`]['Grade Performance'] > b.Grades[`${this.grade}`]['Grade Performance']) ? 1 : ((b.Grades[`${this.grade}`]['Grade Performance'] > a.Grades[`${this.grade}`]['Grade Performance']) ? -1 : 0));
+          let filterData = this.markers.filter(obj => {
+            return ((Object.keys(obj.Grades)).includes(this.grade));
+          })
+          this.markers = filterData;
+          this.markers.sort((a, b) => (a.Grades[`${this.grade}`]['Grade Performance'] > b.Grades[`${this.grade}`]['Grade Performance']) ? 1 : ((b.Grades[`${this.grade}`]['Grade Performance'] > a.Grades[`${this.grade}`]['Grade Performance']) ? -1 : 0));
           this.allSubjects = Object.keys(this.markers[0].Grades[`${this.grade}`]);
           this.allSubjects.pop();
-          // var index = this.allSubjects.indexOf('Grade Performance') + 1;
-          // this.allSubjects.splice(index, 1);
         } else if (this.grade && this.subject) {
+          console.log(this.markers);
+          let filterData = this.markers.filter(obj => {
+            console.log((Object.keys(obj.Grades[`${this.grade}`])))
+            // return ((Object.keys(obj.Grades[`${this.grade}`])).includes(this.subject));
+          })
+          console.log(filterData);
+          // this.markers = filterData;
           this.markers.sort((a, b) => (a.Grades[`${this.grade}`][`${this.subject}`] > b.Grades[`${this.grade}`][`${this.subject}`]) ? 1 : ((b.Grades[`${this.grade}`][`${this.subject}`] > a.Grades[`${this.grade}`][`${this.subject}`]) ? -1 : 0));
         } else {
           this.markers.sort((a, b) => (a.Details['Performance'] > b.Details['Performance']) ? 1 : ((b.Details['Performance'] > a.Details['Performance']) ? -1 : 0));
