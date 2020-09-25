@@ -5,7 +5,7 @@
   register: processor_id
 
 - name: Upload template
-  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/infra_transformer.xml
+  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/pat_transformer.xml
   register: xml_output
   args:
     warn: false
@@ -13,7 +13,7 @@
 - name: Upload parameters
   action: shell curl -d @{{ item }} -H Content-Type:application/json -X POST http://localhost:{{ nifi_port }}/nifi-api/parameter-contexts
   with_items:
-     - nifi_json_files/infra.json
+     - nifi_json_files/pat.json
      - nifi_json_files/raw.json
   args:
     warn: false
@@ -33,7 +33,7 @@
 - name: Instatiate template list
   action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }' http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
   loop: "{{ template_list.json | json_query('templates[*]') }}"
-  when: item.template.name == 'infra_transformer'
+  when: item.template.name == 'pat_transformer'
   no_log: True
   args:
     warn: false
@@ -50,22 +50,22 @@
     method: GET
   register: processor_group_temp
 
-#--- Fetching processor group id of infra processor ---
-- name: Get processor group id of the infra processor
+#--- Fetching processor group id of pat processor ---
+- name: Get processor group id of the pat processor
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
     method: GET
   loop: "{{ processor_group_temp.json | json_query('processGroupFlow.flow.processGroups[*]') }}"
-  when: item.component.name == 'infra_transformer'
+  when: item.component.name == 'pat_transformer'
   register: processor_group_template
   no_log: True
 
 - set_fact:
-    infra_pg_id: "{{  processor_group_template | json_query('results[?item.component.name == `infra_transformer`]') }}"
+    pat_pg_id: "{{  processor_group_template | json_query('results[?item.component.name == `pat_transformer`]') }}"
 
 - name: Get multi processor group
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ infra_pg_id[0].item.component.id }}
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ pat_pg_id[0].item.component.id }}
     method: GET
   register: multi_processor
 
@@ -75,40 +75,40 @@
     jmesquery: "processGroupFlow.flow.processGroups[*].{Name: component.name, ID: component.id,  Version: revision.version}"
   register: output
 
-#--- Fetch ID and Version of each processor ----
+#--- Fetch ID and Version of each processor ---
 - name: Display ID of cqube raw processor
   debug:
     var: item
-  loop: "{{ output | json_query(infra_raw_id) }}"
+  loop: "{{ output | json_query(pat_raw_id) }}"
   vars:
-    infra_raw_id: "msg[?Name=='cQube_raw_data_fetch_infra'].ID"
+    pat_raw_id: "msg[?Name=='cQube_raw_data_fetch_pat'].ID"
   register: raw_id
 
 - name: Display version of cqube raw processor
   debug:
     var: item
-  loop: "{{ output | json_query(infra_raw_version) }}"
+  loop: "{{ output | json_query(pat_raw_version) }}"
   vars:
-    infra_raw_version: "msg[?Name=='cQube_raw_data_fetch_infra'].Version"
+    pat_raw_version: "msg[?Name=='cQube_raw_data_fetch_pat'].Version"
   register: raw_version
 
-- name: Display ID of infra processor
+- name: Display ID of pat processor
   debug:
     var: item
-  loop: "{{ output | json_query(infra_id) }}"
+  loop: "{{ output | json_query(pat_id) }}"
   vars:
-    infra_id: "msg[?Name=='infra_processor'].ID"
-  register: infra_id
+    pat_id: "msg[?Name=='pat_processor'].ID"
+  register: pat_id
 
-- name: Display version of infra processor
+- name: Display version of pat processor
   debug:
     var: item
-  loop: "{{ output | json_query(infra_version) }}"
+  loop: "{{ output | json_query(pat_version) }}"
   vars:
-    infra_version: "msg[?Name=='infra_processor'].Version"
-  register: infra_version
+    pat_version: "msg[?Name=='pat_processor'].Version"
+  register: pat_version
 
-- name: Get parameter context list
+- name: Get Default Processor Group
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/parameter-contexts
     method: GET
@@ -130,19 +130,19 @@
   when: item.component.name == 'cQube-raw-data-fetch-parameters'
   no_log: true
 
-- name: Connection infra processor group to infra parameters
+- name: Connection pat processor group to pat parameters
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ infra_id.results[0].item }}
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ pat_id.results[0].item }}
     method: PUT
     body_format: json
     body: {"revision": {
-            "version": "{{ infra_version.results[0].item }}",
+            "version": "{{ pat_version.results[0].item }}",
             "lastModifier": "Ansible"
         },"component":
-              {"id": "{{ infra_id.results[0].item }}","parameterContext":{"id": "{{ item.component.id }}"}}
+              {"id": "{{ pat_id.results[0].item }}","parameterContext":{"id": "{{ item.component.id }}"}}
      }
   loop: "{{ parameters.json | json_query('parameterContexts[*]') }}"
-  when: item.component.name == 'infra_parameters'
+  when: item.component.name == 'pat_parameters'
   no_log: true
 
 - name: Create DistributedMapCacheServer
@@ -151,33 +151,24 @@
     method: POST
     body_format: json
     status_code: 201
-    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4661"}}}
+    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4665"}}}
 
 #--- Run a python code to load required parameter values ---
 - name: Deleting params file if exists
   file:
-    path: "{{ base_dir }}/cqube/emission_app/python/{{ item }}"
+    path: "{{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
     state: absent
-  with_items:
-    - update_nifi_params.py
-    - update_jolt_params.py
 
 - name: creating python code for parameters
-  template: 
-    src: "{{ item }}.j2"
-    dest: "{{ base_dir }}/cqube/emission_app/python/{{ item }}"
+  template:
+    src: update_nifi_params.py.j2
+    dest: "{{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
     mode: "0644"
-  with_items:
-    - update_nifi_params.py
-    - update_jolt_params.py
 
 - name: Run python code
-  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/{{ item }}"
-  with_items:
-    - update_nifi_params.py
-    - update_jolt_params.py
+  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
 
-#--- starting of controllers ---
+#--- starting of controllers---
 - name: Get controllers
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ raw_id.results[0].item }}/controller-services
@@ -186,9 +177,9 @@
 
 - name: Get controllers
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ infra_id.results[0].item }}/controller-services
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ pat_id.results[0].item }}/controller-services
     method: GET
-  register: controllers_list_infra
+  register: controllers_list_pat
 
 - name: Add s3 credentials parameters
   uri:
@@ -199,12 +190,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "cQube_s3_infra_raw",
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_pat_raw",
         "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube_s3_infra_raw'
+  when: item.component.name == 'cQube_s3_pat_raw'
   no_log: True
 
 - name: Add s3 credentials parameters
@@ -216,12 +207,12 @@
             "version": "{{ item.revision.version }}",
            "lastModifier": "Ansible"
        },
-       "component": {"id": "{{ item.id }}", "name": "cQube_s3_infra",
+       "component": {"id": "{{ item.id }}", "name": "cQube_s3_pat",
        "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
 
     }
-  loop: "{{ controllers_list_infra.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'cQube_s3_infra'
+  loop: "{{ controllers_list_pat.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'cQube_s3_pat'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -233,12 +224,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-        "component": {"id": "{{ item.id }}", "name": "postgres_infra_raw",
+        "component": {"id": "{{ item.id }}", "name": "postgres_pat_raw",
         "properties" : { "Password" : "#{db_password}"}}
 
      }
   loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres_infra_raw'
+  when: item.component.name == 'postgres_pat_raw'
   no_log: True
 
 - name: Add postgre-source-pwd
@@ -250,12 +241,12 @@
              "version": "{{ item.revision.version }}",
             "lastModifier": "Ansible"
         },
-       "component": {"id": "{{ item.id }}", "name": "postgres_infra",
+       "component": {"id": "{{ item.id }}", "name": "postgres_pat",
        "properties" : { "Password" : "#{db_password}"}}
 
     }
-  loop: "{{ controllers_list_infra.json | json_query('controllerServices[*]') }}"
-  when: item.component.name == 'postgres_infra'
+  loop: "{{ controllers_list_pat.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'postgres_pat'
   no_log: True
 
 - name: Get updated raw controllers
@@ -265,11 +256,11 @@
   register: controllers_list_raw_updated
   no_log: True
 
-- name: Get updated infra controllers
+- name: Get updated pat controllers
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ infra_id.results[0].item }}/controller-services
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ pat_id.results[0].item }}/controller-services
     method: GET
-  register: controllers_list_infra_updated
+  register: controllers_list_pat_updated
   no_log: True
 
 - name: Start controllers
@@ -297,7 +288,7 @@
        },
        "state":"ENABLED"
       }
-  loop: "{{ controllers_list_infra_updated.json | json_query('controllerServices[*]') }}"
+  loop: "{{ controllers_list_pat_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
   no_log: True
 

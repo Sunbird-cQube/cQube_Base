@@ -1,4 +1,4 @@
-- name: Fetch nifi processor group id
+- name: Fetch nifi root processor group id
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
     method: GET
@@ -31,7 +31,7 @@
   register: template_list
 
 - name: Instatiate template list
-  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }'   http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
+  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }' http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
   loop: "{{ template_list.json | json_query('templates[*]') }}"
   when: item.template.name == 'student_attendance_transformer'
   no_log: True
@@ -50,6 +50,7 @@
     method: GET
   register: processor_group_temp
 
+#--- Fetch processor group id of student attendance processor ---
 - name: Get processor group id of the attendance processor
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
@@ -60,11 +61,11 @@
   no_log: True
 
 - set_fact:
-    tagExists: "{{  processor_group_template | json_query('results[?item.component.name == `student_attendance_transformer`]') }}"
+    student_attendance_pg_id: "{{  processor_group_template | json_query('results[?item.component.name == `student_attendance_transformer`]') }}"
 
 - name: Get multi processor group
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ tagExists[0].item.component.id }}
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ student_attendance_pg_id[0].item.component.id }}
     method: GET
   register: multi_processor
 
@@ -76,7 +77,6 @@
 
 
 #--- Display ID and Version of respective processor groups
-
 - name: Display ID of attendance raw processor
   debug:
     var: item
@@ -109,14 +109,13 @@
     attendance_version: "msg[?Name=='student_attendance_processor'].Version"
   register: attendance_version
 
-- name: Get Default Processor Group
+- name: Get Default Parameter contexts
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/parameter-contexts
     method: GET
   register: parameters
 
 #--- Connection of processor groups to respective parameter contexts ---
-
 - name: Connection attendance raw processor group to raw parameters
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ attendance_raw_id.results[0].item }}
@@ -147,8 +146,6 @@
   when: item.component.name == 'student_attendance_parameters'
   no_log: True
 
-#--- Starting of Controllers and ProcessorGroups ---
-
 - name: Create DistributedMapCacheServer
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ attendance_raw_id.results[0].item }}/controller-services
@@ -172,6 +169,7 @@
 - name: Run python code
   shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
 
+#--- Starting of Controllers ---
 - name: Get controllers
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ attendance_raw_id.results[0].item }}/controller-services
@@ -185,7 +183,6 @@
     method: GET
   register: controllers_list_attendance
   no_log: True
-
 
 - name: Add s3 credentials parameters
   uri:
@@ -221,7 +218,6 @@
   when: item.component.name == 'cQube_s3_stud_att'
   no_log: True
 
-    
 - name: Add postgre-source-pwd
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
@@ -299,4 +295,3 @@
   loop: "{{ controllers_list_attendance_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
   no_log: True
-
