@@ -160,43 +160,6 @@
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
-                <connections>
-                    <id>e2b3af3e-cb6e-3c66-0000-000000000000</id>
-                    <parentGroupId>1c581740-9692-33ac-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <destination>
-                        <groupId>1c581740-9692-33ac-0000-000000000000</groupId>
-                        <id>01aaa0d3-1392-3fe6-0000-000000000000</id>
-                        <type>OUTPUT_PORT</type>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <source>
-                        <groupId>0b5e5dfe-2112-3735-0000-000000000000</groupId>
-                        <id>7beb03e1-dbee-3a05-0000-000000000000</id>
-                        <type>OUTPUT_PORT</type>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <outputPorts>
-                    <id>01aaa0d3-1392-3fe6-0000-000000000000</id>
-                    <parentGroupId>1c581740-9692-33ac-0000-000000000000</parentGroupId>
-                    <position>
-                        <x>-464.0</x>
-                        <y>432.0</y>
-                    </position>
-                    <comments></comments>
-                    <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                    <name>pat_comp_output</name>
-                    <state>DISABLED</state>
-                    <type>OUTPUT_PORT</type>
-                </outputPorts>
                 <processGroups>
                     <id>0b5e5dfe-2112-3735-0000-000000000000</id>
                     <parentGroupId>1c581740-9692-33ac-0000-000000000000</parentGroupId>
@@ -2818,30 +2781,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>e5b7af91-31ca-36cf-0000-000000000000</id>
-                            <parentGroupId>0b5e5dfe-2112-3735-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>0b5e5dfe-2112-3735-0000-000000000000</groupId>
-<id>7beb03e1-dbee-3a05-0000-000000000000</id>
-<type>OUTPUT_PORT</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <source>
-<groupId>0b5e5dfe-2112-3735-0000-000000000000</groupId>
-<id>bbebab20-4cd8-323c-0000-000000000000</id>
-<type>FUNNEL</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>e679b8ee-ef3f-3b08-0000-000000000000</id>
                             <parentGroupId>0b5e5dfe-2112-3735-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -4724,19 +4663,6 @@
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>pat_split_file_failure</name>
-                            <state>STOPPED</state>
-                            <type>OUTPUT_PORT</type>
-                        </outputPorts>
-                        <outputPorts>
-                            <id>7beb03e1-dbee-3a05-0000-000000000000</id>
-                            <parentGroupId>0b5e5dfe-2112-3735-0000-000000000000</parentGroupId>
-                            <position>
-<x>3728.0</x>
-<y>1128.0</y>
-                            </position>
-                            <comments></comments>
-                            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                            <name>pat_pr_comp_output</name>
                             <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
@@ -23394,5 +23320,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/24/2020 20:03:51 IST</timestamp>
+    <timestamp>09/25/2020 15:06:44 IST</timestamp>
 </template>

@@ -14,10 +14,6 @@ drop function IF exists semester_no_schools;
 drop function IF exists insert_diksha_trans;
 drop function IF exists insert_diksha_agg;
 
-/*Infra clean*/
-truncate table infrastructure_master;
-truncate table infrastructure_staging_score;
-
 /* Insert master infrastructure */
 
 CREATE OR REPLACE FUNCTION insert_infra_master()
@@ -1605,24 +1601,20 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-
 CREATE OR REPLACE FUNCTION udise_district_score()
 RETURNS text AS
 $$
 DECLARE
-select_query text:='select string_agg(''round(avg(''||column_name||''),2)
+select_query text:='select string_agg(''round(cast(sum(''||column_name||'') as numeric)/NULLIF(cast(count(distinct(udise_school_id)) as numeric),0),2)
     *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
    (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
-indices text:='select string_agg(b.cols||c.column_name,'','') from                                                                   
- (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
- ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) is null then ''''No Data'''' else ''
- ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
- ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) end) as '' as cols                                   
- ,indice_id from (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
- group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
+indices text:='select string_agg(''round(sum(''||b.sum_cols||''))  as ''||c.column_name||'''','','') from
+(select string_agg(column_name,''+'') as sum_cols,indice_id from                                                                                                                                 
+    (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
+group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
 infra_score text:='select concat(''round('',infra_score,'') as Infrastructure_Score'') from
 (select string_agg(''((round(sum(''||b.sum_cols||'')))*0.01*(select score from udise_config where column_name= ''''''||c.column_name||''''''))'',''+'')as infra_score 
-from (select string_agg(''COALESCE(''||column_name||'',0)'',''+'') as sum_cols,indice_id from                                                                                                                                 
+from (select string_agg(column_name,''+'') as sum_cols,indice_id from                                                                                                                                 
     (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
 group by indice_id)as b left join udise_config as c on b.indice_id=c.id)as f';
 select_cols text;
@@ -1636,13 +1628,14 @@ Execute infra_score into infra_score_cols;
 district_score='
 create or replace view udise_district_score as 
 select b.*,
-((rank () over ( order by Infrastructure_Score desc))||'' out of ''||(select count(distinct(district_id)) from udise_school_metrics_agg)) as district_wise_rank 
+((rank () over ( order by Infrastructure_Score desc))||'' out of ''||(select count(distinct(district_id)) 
+from udise_school_metrics_agg)) as district_level_rank_within_the_state 
 from 
 (select district_id,initcap(district_name)as district_name,district_latitude,district_longitude,sum(total_schools)as total_schools,
-  sum(total_clusters)as total_clusters,sum(total_blocks)as total_blocks,'||indices_cols||','||infra_score_cols||'
+	sum(total_clusters)as total_clusters,sum(total_blocks)as total_blocks,'||indices_cols||','||infra_score_cols||'
 from 
 (select district_id,district_name,district_latitude,district_longitude,count(distinct(udise_school_id)) as total_schools,
-  count(distinct(cluster_id)) as total_clusters,count(distinct(block_id)) as total_blocks,'||select_cols||'
+	count(distinct(cluster_id)) as total_clusters,count(distinct(block_id)) as total_blocks,'||select_cols||'
 from udise_school_metrics_agg group by district_id,district_name,district_latitude,district_longitude)as a
  group by district_id,district_name,district_latitude,district_longitude)as b';
 Execute district_score; 
@@ -1654,19 +1647,16 @@ CREATE OR REPLACE FUNCTION udise_block_score()
 RETURNS text AS
 $$
 DECLARE
-select_query text:='select string_agg(''round(avg(''||column_name||''),2)
+select_query text:='select string_agg(''round(cast(sum(''||column_name||'') as numeric)/NULLIF(cast(count(distinct(udise_school_id)) as numeric),0),2)
     *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
    (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
-indices text:='select string_agg(b.cols||c.column_name,'','') from                                                                   
- (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
- ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) is null then ''''No Data'''' else ''
- ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
- ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) end) as '' as cols                                   
- ,indice_id from (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
- group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
+indices text:='select string_agg(''round(sum(''||b.sum_cols||''))  as ''||c.column_name||'''','','') from
+(select string_agg(column_name,''+'') as sum_cols,indice_id from                                                                                                                                 
+    (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
+group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
 infra_score text:='select concat(''round('',infra_score,'') as Infrastructure_Score'') from
 (select string_agg(''((round(sum(''||b.sum_cols||'')))*0.01*(select score from udise_config where column_name= ''''''||c.column_name||''''''))'',''+'')as infra_score 
-from (select string_agg(''COALESCE(''||column_name||'',0)'',''+'') as sum_cols,indice_id from                                                                                                                                 
+from (select string_agg(column_name,''+'') as sum_cols,indice_id from                                                                                                                                 
     (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
 group by indice_id)as b left join udise_config as c on b.indice_id=c.id)as f';
 select_cols text;
@@ -1679,19 +1669,16 @@ Execute indices into indices_cols;
 Execute infra_score into infra_score_cols;
 district_score='
 create or replace view udise_block_score as 
-select b.*,
-(rank () over ( partition by b.district_id order by infrastructure_score desc))||'' out of ''||(c.total_blocks) as block_wise_rank 
-,c.district_wise_rank
+select b.*
 from 
 (select block_id,initcap(block_name)as block_name,block_latitude,block_longitude,district_id,initcap(district_name)as district_name
 ,sum(total_schools)as total_schools,sum(total_clusters)as total_clusters,
 '||indices_cols||','||infra_score_cols||'
 from 
 (select block_id,block_name,block_latitude,block_longitude,district_id,district_name,count(distinct(udise_school_id)) as total_schools,
-  count(distinct(cluster_id)) as total_clusters,'||select_cols||'
+	count(distinct(cluster_id)) as total_clusters,'||select_cols||'
 from udise_school_metrics_agg group by block_id,block_name,block_latitude,block_longitude,district_id,district_name)as a
- group by block_id,block_name,block_latitude,block_longitude,district_id,district_name)as b
-left join (select district_id,district_wise_rank,total_blocks from udise_district_score)as c on b.district_id=c.district_id';
+ group by block_id,block_name,block_latitude,block_longitude,district_id,district_name)as b';
 Execute district_score; 
 return 0;
 END;
@@ -1702,19 +1689,16 @@ CREATE OR REPLACE FUNCTION udise_cluster_score()
 RETURNS text AS
 $$
 DECLARE
-select_query text:='select string_agg(''round(avg(''||column_name||''),2)
+select_query text:='select string_agg(''round(cast(sum(''||column_name||'') as numeric)/NULLIF(cast(count(distinct(udise_school_id)) as numeric),0),2)
     *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
    (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
-indices text:='select string_agg(b.cols||c.column_name,'','') from                                                                   
- (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
- ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) is null then ''''No Data'''' else ''
- ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
- ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) end) as '' as cols                                   
- ,indice_id from (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
- group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
+indices text:='select string_agg(''round(sum(''||b.sum_cols||''))  as ''||c.column_name||'''','','') from
+(select string_agg(column_name,''+'') as sum_cols,indice_id from                                                                                                                                 
+    (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
+group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
 infra_score text:='select concat(''round('',infra_score,'') as Infrastructure_Score'') from
 (select string_agg(''((round(sum(''||b.sum_cols||'')))*0.01*(select score from udise_config where column_name= ''''''||c.column_name||''''''))'',''+'')as infra_score 
-from (select string_agg(''COALESCE(''||column_name||'',0)'',''+'') as sum_cols,indice_id from                                                                                                                                 
+from (select string_agg(column_name,''+'') as sum_cols,indice_id from                                                                                                                                 
     (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
 group by indice_id)as b left join udise_config as c on b.indice_id=c.id)as f';
 select_cols text;
@@ -1727,18 +1711,14 @@ Execute indices into indices_cols;
 Execute infra_score into infra_score_cols;
 district_score='
 create or replace view udise_cluster_score as 
-select b.*,
-(rank () over ( partition by b.block_id order by infrastructure_score desc))
-||'' out of ''||(c.total_clusters) as cluster_wise_rank ,
-c.district_wise_rank as district_wise_rank,c.block_wise_rank as block_wise_rank from 
+select b.* from 
 (select cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,block_id,initcap(block_name)as block_name,
 district_id,initcap(district_name)as district_name,sum(total_schools)as total_schools,
 '||indices_cols||','||infra_score_cols||'
 from 
 (select cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,block_name,district_id,district_name,count(distinct(udise_school_id)) as total_schools,
-'||select_cols||'   from udise_school_metrics_agg group by block_id,block_name,cluster_id,cluster_name,cluster_latitude,cluster_longitude,district_id,district_name)as a
- group by block_id,block_name,cluster_id,cluster_name,cluster_latitude,cluster_longitude,district_id,district_name)as b
-left join (select block_id,district_wise_rank,block_wise_rank,total_clusters from udise_block_score)as c on b.block_id=c.block_id';
+'||select_cols||' 	from udise_school_metrics_agg group by block_id,block_name,cluster_id,cluster_name,cluster_latitude,cluster_longitude,district_id,district_name)as a
+ group by block_id,block_name,cluster_id,cluster_name,cluster_latitude,cluster_longitude,district_id,district_name)as b';
 Execute district_score; 
 return 0;
 END;
@@ -1749,19 +1729,16 @@ CREATE OR REPLACE FUNCTION udise_school_score()
 RETURNS text AS
 $$
 DECLARE
-select_query text:='select string_agg(''round(avg(''||column_name||''),2)
+select_query text:='select string_agg(''round(cast(sum(''||column_name||'') as numeric)/NULLIF(cast(count(distinct(udise_school_id)) as numeric),0),2)
     *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
    (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
-indices text:='select string_agg(b.cols||c.column_name,'','') from                                                                   
- (select ''(case when cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
- ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) is null then ''''No Data'''' else ''
- ||''cast(round(case when ''||string_agg(''avg(''||column_name||'') is null '',''or '')||''then null else '' 
- ||''sum(''||string_agg(''coalesce(''||column_name||'',0)'',''+ '')||'') end)  as text) end) as '' as cols                                   
- ,indice_id from (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
- group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
+indices text:='select string_agg(''round(sum(''||b.sum_cols||''))  as ''||c.column_name||'''','','') from
+(select string_agg(column_name,''+'') as sum_cols,indice_id from                                                                                                                                 
+    (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
+group by indice_id)as b left join udise_config as c on b.indice_id=c.id';
 infra_score text:='select concat(''round('',infra_score,'') as Infrastructure_Score'') from
 (select string_agg(''((round(sum(''||b.sum_cols||'')))*0.01*(select score from udise_config where column_name= ''''''||c.column_name||''''''))'',''+'')as infra_score 
-from (select string_agg(''COALESCE(''||column_name||'',0)'',''+'') as sum_cols,indice_id from                                                                                                                                 
+from (select string_agg(column_name,''+'') as sum_cols,indice_id from                                                                                                                                 
     (select column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a
 group by indice_id)as b left join udise_config as c on b.indice_id=c.id)as f';
 select_cols text;
@@ -1774,24 +1751,31 @@ Execute indices into indices_cols;
 Execute infra_score into infra_score_cols;
 district_score='
 create or replace view udise_school_score as 
-select b.*,
-(rank () over ( partition by b.cluster_id order by infrastructure_score desc))
-||'' out of ''||(c.total_schools) as school_wise_rank ,
-c.district_wise_rank as district_wise_rank,c.block_wise_rank as block_wise_rank,c.cluster_wise_rank as cluster_wise_rank
+select b.*
 from 
 (select udise_school_id,initcap(school_name)as school_name,school_latitude,school_longitude,cluster_id,initcap(cluster_name)as cluster_name,
-  block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,sum(total_schools)as total_schools,
+	block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,sum(total_schools)as total_schools,
 '||indices_cols||','||infra_score_cols||'
 from 
 (select udise_school_id,school_name,school_latitude,school_longitude,
-  cluster_id,cluster_name,block_id,block_name,district_id,district_name,count(distinct(udise_school_id)) as total_schools,
-'||select_cols||'     from udise_school_metrics_agg group by udise_school_id,school_name,school_latitude,school_longitude,block_id,block_name,cluster_id,cluster_name,district_id,district_name)as a
- group by udise_school_id,school_name,school_latitude,school_longitude,block_id,block_name,cluster_id,cluster_name,district_id,district_name)as b
-left join (select cluster_id,district_wise_rank,block_wise_rank,cluster_wise_rank,total_schools from udise_cluster_score)as c on b.cluster_id=c.cluster_id';
+	cluster_id,cluster_name,block_id,block_name,district_id,district_name,count(distinct(udise_school_id)) as total_schools,
+'||select_cols||' 		from udise_school_metrics_agg group by udise_school_id,school_name,school_latitude,school_longitude,block_id,block_name,cluster_id,cluster_name,district_id,district_name)as a
+ group by udise_school_id,school_name,school_latitude,school_longitude,block_id,block_name,cluster_id,cluster_name,district_id,district_name)as b';
 Execute district_score; 
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
+drop view if exists udise_school_score cascade;
+drop view if exists udise_cluster_score cascade;
+drop view if exists udise_block_score cascade;
+drop view if exists udise_district_score cascade;
+
+select * from udise_school_score();
+select * from udise_cluster_score();
+select * from udise_block_score();
+select * from udise_district_score();
+
 /*Udise jolt spec*/
 
 create or replace function udise_jolt_spec()
@@ -2088,7 +2072,7 @@ select d.*,b.total_schools,b.students_count from
 (select c.*,d.subject_wise_performance from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
-district_id,district_name,district_latitude,district_longitude,
+district_id,initcap(district_name)as district_name,district_latitude,district_longitude,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as district_performance
 from periodic_exam_school_result group by academic_year,
 district_id,district_name,district_latitude,district_longitude) as a
@@ -2143,7 +2127,7 @@ select d.*,b.total_schools,b.students_count from
 (select c.*,d.subject_wise_performance from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
-block_id,block_name,district_id,district_name,block_latitude,block_longitude,
+block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,block_latitude,block_longitude,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as block_performance
 from periodic_exam_school_result group by academic_year,
 block_id,block_name,district_id,district_name,block_latitude,block_longitude) as a
@@ -2195,7 +2179,8 @@ select d.*,b.total_schools,b.students_count from
 (select c.*,d.subject_wise_performance from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
-cluster_id,cluster_name,block_id,block_name,district_id,district_name,cluster_latitude,cluster_longitude,
+cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,district_id,
+initcap(district_name)as district_name,cluster_latitude,cluster_longitude,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as cluster_performance
 from periodic_exam_school_result group by academic_year,
 cluster_id,cluster_name,block_id,block_name,district_id,district_name,cluster_latitude,cluster_longitude) as a
@@ -2247,7 +2232,8 @@ select d.*,b.total_schools,b.students_count from
 (select c.*,d.subject_wise_performance from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
-school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,school_latitude,school_longitude,
+school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
+district_id,initcap(district_name)as district_name,school_latitude,school_longitude,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as school_performance
 from periodic_exam_school_result group by academic_year,
 school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,school_latitude,school_longitude) as a
@@ -2299,7 +2285,7 @@ group by a.school_id,b.assessment_year )as b
 create or replace view periodic_grade_district as
 select a.*,b.grade,b.subjects
 from
-(select academic_year,district_id,district_name,district_latitude,district_longitude,district_performance,total_schools,students_count from periodic_exam_district)as a
+(select academic_year,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance,total_schools,students_count from periodic_exam_district)as a
 left join
 (select academic_year,district_id,grade,
 json_object_agg(subject_name,percentage order by subject_name) as subjects
@@ -2324,8 +2310,8 @@ order by 1,grade)as b on a.academic_year=b.academic_year and a.district_id=b.dis
 create or replace view periodic_grade_block as
 select a.*,b.grade,b.subjects
 from
-(select academic_year,block_id,block_name,
-	district_id,district_name,block_latitude,block_longitude,block_performance,total_schools,students_count from periodic_exam_block)as a
+(select academic_year,block_id,initcap(block_name)as block_name,
+	district_id,initcap(district_name)as district_name,block_latitude,block_longitude,block_performance,total_schools,students_count from periodic_exam_block)as a
 left join
 (select academic_year,block_id,grade,
 json_object_agg(subject_name,percentage order by subject_name) as subjects
@@ -2349,8 +2335,8 @@ order by 1,grade)as b on a.academic_year=b.academic_year and a.block_id=b.block_
 create or replace view periodic_grade_cluster as
 select a.*,b.grade,b.subjects
 from
-(select academic_year,cluster_id,cluster_name,block_id,block_name,
-	district_id,district_name,cluster_latitude,cluster_longitude,cluster_performance,total_schools,students_count from periodic_exam_cluster)as a
+(select academic_year,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
+	district_id,initcap(district_name)as district_name,cluster_latitude,cluster_longitude,cluster_performance,total_schools,students_count from periodic_exam_cluster)as a
 left join
 (select academic_year,cluster_id,grade,
 json_object_agg(subject_name,percentage order by subject_name) as subjects
@@ -2374,8 +2360,8 @@ order by 1,grade)as b on a.academic_year=b.academic_year and a.cluster_id=b.clus
 create or replace view periodic_grade_school as
 select a.*,b.grade,b.subjects
 from
-(select academic_year,school_id,school_name,cluster_id,cluster_name,block_id,block_name,
-	district_id,district_name,school_latitude,school_longitude,school_performance,total_schools,students_count from periodic_exam_school)as a
+(select academic_year,school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
+	district_id,initcap(district_name)as district_name,school_latitude,school_longitude,school_performance,total_schools,students_count from periodic_exam_school)as a
 left join
 (select academic_year,school_id,grade,
 json_object_agg(subject_name,percentage order by subject_name) as subjects
@@ -2665,6 +2651,44 @@ insert into composite_config(template,status,category,table_join) values('udise'
 on stat.school_id=udise_school_score.udise_school_id')
 on conflict on constraint composite_config_pkey do nothing;
 
+	update composite_config as uds set select_query= stg.select_query from 
+(select string_agg(lower(column_name),',')||',infrastructure_score' as select_query from udise_config where type='indice' and status=true)as stg
+where uds.template='udise';
+
+
+update composite_config set status= false where lower(template) in (select split_part(lower(template),'_',2) from nifi_template_info where status=false);
+
+/*Composite jolt spec*/
+
+update composite_config as uds set jolt_spec=stg.jolt_spec from 
+(select string_agg(cols,',')||',"infrastructure_score": "[&1].Infrastructure Score(%).percent"' as jolt_spec from 
+(select case when column_name like '%_Index' then string_agg('"'||lower(column_name)||'": "[&1].'||replace(split_part(column_name,'_Index',1),'_',' ')||
+	'(%).percent"',',') else
+string_agg('"'||lower(column_name)||'": "[&1].'||replace(column_name,'_',' ')||'(%).percent"',',') end as cols
+from udise_config where status = '1' and type='indice' group by column_name)as a)as stg
+where uds.template='udise';
+
+update composite_config as uds set jolt_spec='"student_attendance": "[&1].Student Attendance(%).percent"' where uds.template='attendance';
+
+        
+update composite_config as uds set jolt_spec='"periodic_exam_performance": "[&1].Periodic Exam Performance(%).percent"' where uds.template='pat';        
+
+update composite_config as uds set jolt_spec=
+	 '"total_content_plays_textbook": "[&1].Total Content Plays-Textbook.value",
+        "total_content_plays_course": "[&1].Total Content Plays-Course.value",
+        "total_content_plays_all": "[&1].Total Content Plays-All.value"'
+         where uds.template='diksha';        	
+        
+update composite_config as uds set jolt_spec=
+	 '"semester_performance": "[&1].Semester Performance(%).percent",
+        "semester_performance_grade_3": "[&1].Semester Performance Grade-3(%).percent",
+        "semester_performance_grade_4": "[&1].Semester Performance Grade-4(%).percent",
+        "semester_performance_grade_5": "[&1].Semester Performance Grade-5(%).percent",
+        "semester_performance_grade_6": "[&1].Semester Performance Grade-6(%).percent",
+        "semester_performance_grade_7": "[&1].Semester Performance Grade-7(%).percent",
+        "semester_performance_grade_8": "[&1].Semester Performance Grade-8(%).percent"'
+         where uds.template='semester';
+
 /*Function to create composite views*/
 
 CREATE OR REPLACE FUNCTION composite_create_views()
@@ -2720,47 +2744,7 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-/*composite update udise columns and disable inactive nifi templates*/
 
-update composite_config as uds set select_query= stg.select_query from 
-(select string_agg(lower(column_name),',')||',infrastructure_score' as select_query from udise_config where type='indice' and status=true)as stg
-where uds.template='udise';
-
-update composite_config set status= false where lower(template) in (select split_part(lower(template),'_',2) from nifi_template_info where status=false);
-
-/*Create composite views*/
-select composite_create_views();
-
-/*Composite jolt spec*/
-
-update composite_config as uds set jolt_spec=stg.jolt_spec from 
-(select string_agg(cols,',')||',"infrastructure_score": "[&1].Infrastructure Score(%).percent"' as jolt_spec from 
-(select case when column_name like '%_Index' then string_agg('"'||lower(column_name)||'": "[&1].'||replace(split_part(column_name,'_Index',1),'_',' ')||
-	'(%).percent"',',') else
-string_agg('"'||lower(column_name)||'": "[&1].'||replace(column_name,'_',' ')||'(%).percent"',',') end as cols
-from udise_config where status = '1' and type='indice' group by column_name)as a)as stg
-where uds.template='udise';
-
-update composite_config as uds set jolt_spec='"student_attendance": "[&1].Student Attendance(%).percent"' where uds.template='attendance';
-
-        ,
-update composite_config as uds set jolt_spec='"periodic_exam_performance": "[&1].Periodic Exam Performance(%).percent"' where uds.template='pat';        
-
-update composite_config as uds set jolt_spec=
-	 '"total_content_plays_textbook": "[&1].Total Content Plays-Textbook.value",
-        "total_content_plays_course": "[&1].Total Content Plays-Course.value",
-        "total_content_plays_all": "[&1].Total Content Plays-All.value"'
-         where uds.template='diksha';        	
-        
-update composite_config as uds set jolt_spec=
-	 '"semester_performance": "[&1].Semester Performance(%).percent",
-        "semester_performance_grade_3": "[&1].Semester Performance Grade-3(%).percent",
-        "semester_performance_grade_4": "[&1].Semester Performance Grade-4(%).percent",
-        "semester_performance_grade_5": "[&1].Semester Performance Grade-5(%).percent",
-        "semester_performance_grade_6": "[&1].Semester Performance Grade-6(%).percent",
-        "semester_performance_grade_7": "[&1].Semester Performance Grade-7(%).percent",
-        "semester_performance_grade_8": "[&1].Semester Performance Grade-8(%).percent"'
-         where uds.template='semester';        	
 
 create or replace function composite_jolt_spec()
     RETURNS text AS
@@ -2856,5 +2840,18 @@ END;
 $$
 LANGUAGE plpgsql;
 
+create or replace view school_semester_no_data as
+select school_id,semester from school_student_subject_total_marks
+WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude <> 0 and cluster_name is not null
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+group by school_id,semester
+having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
+ case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+ +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+ case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+ +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+ ) = 0;
+
+select * from composite_create_views();
 select composite_jolt_spec();
 

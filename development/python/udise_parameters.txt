@@ -205,7 +205,50 @@ SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no,
 SUM(CASE when class_type_id IS NULL THEN 1 ELSE 0 END) AS count_null_class_type_id
 from flowfile)""",
 "udise_sch_enr_medinstr_table_name":"""udise_sch_enr_medinstr""",
-"udise_school_wise_qry":"""select * from udise_school_score""",
+"udise_school_wise_qry":"""select b.*,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster from udise_school_score as b
+left join(select usc.udise_school_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state                         
+ from udise_school_score as usc
+left join
+(select a.*,(select count(DISTINCT(udise_school_id)) from udise_school_metrics_agg)as total_schools 
+from (select udise_school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from udise_school_metrics_agg as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_cluster FROM   udise_school_metrics_agg group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_block FROM   udise_school_metrics_agg group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_district FROM   udise_school_metrics_agg group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.udise_school_id=a.udise_school_id
+group by usc.udise_school_id,infrastructure_score
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.udise_school_id = c.udise_school_id 
+""",
 "udise_update_null_count_sch_enr_reptr_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, item_group=udise_null_col.count_null_item_group, item_id=udise_null_col.count_null_item_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
 "udise_update_null_count_sch_recp_exp_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
 "udise_sch_recp_exp_count_null":"""(select
@@ -234,7 +277,40 @@ SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_
 from flowfile)""",
 "udise_nsqf_trng_prov_check_if_null":"""select * from flowfile where udise_sch_code IS NULL or sector_no IS NULL""",
 "udise_sch_enr_by_stream_check_if_null":"""select * from flowfile where udise_sch_code IS NULL or stream_id IS NULL or caste_id IS NULL""",
-"udise_cluster_wise_qry":"""select * from udise_cluster_score""",
+"udise_cluster_wise_qry":"""select b.*,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block from udise_cluster_score as b
+left join(select usc.cluster_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state                         
+ from udise_cluster_score as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from udise_school_metrics_agg)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from udise_school_metrics_agg as scl
+left join
+(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_block FROM   udise_school_metrics_agg group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_district FROM   udise_school_metrics_agg group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by infrastructure_score
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id""",
 "udise_sch_exmmarks_c12_not_null":"""select * from flowfile where udise_sch_code IS NOT NULL and item_id IS NOT NULL and marks_range_id IS NOT NULL """,
 "select_columns_sch_staff_posn_qry":"""select udise_sch_code,ac_year,tch_regular,tch_contract,tch_part_time,nontch_accnt,nontch_lib_asst,nontch_lab_asst,nontch_udc,nontch_ldc,nontch_peon,nontch_watchman,tch_hav_adhr from flowfile""",
 "udise_update_null_count_nsqf_basic_info_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
@@ -329,8 +405,31 @@ HAVING  COUNT(*) > 1""",
 "udise_sch_incentives_check_if_null":"""select * from flowfile where udise_sch_code IS NULL or grade_pri_upr IS NULL or incentive_type IS NULL""",
 "udise_nsqf_plcmnt_c12_table_name":"""udise_nsqf_plcmnt_c12""",
 "udise_update_null_count_nsqf_faculty_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, nsqf_faculty_id = udise_null_col.count_null_nsqf_faculty_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
-"udise_block_wise_qry":"""select * from udise_block_score""",
-"udise_update_null_count_nsqf_enr_caste_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, sector_no = udise_null_col.count_null_sector_no, item_id = udise_null_col.count_null_item_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
+"udise_block_wise_qry":"""select b.*,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district from udise_block_score as b
+left join(select usc.block_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state                         
+ from udise_block_score as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from udise_school_metrics_agg)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from udise_school_metrics_agg as scl
+left join
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.block_id) AS blocks_in_district FROM   udise_school_metrics_agg group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by infrastructure_score
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id""",
 "udise_update_null_count_sch_staff_posn_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
 "udise_school_facility_same_record_check_qry":"""
 SELECT udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,
@@ -1431,5 +1530,6 @@ over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
 "udise_save_to_nsqf_enr_caste_dup":"""udise_nsqf_enr_caste_dup""",
 "udise_save_to_nsqf_enr_sub_sec_dup":"""udise_nsqf_enr_sub_sec_dup""",
 "udise_save_to_sch_pgi_details_dup":"""udise_sch_pgi_details_dup""",
-"udise_save_to_sch_safety_dup":"""udise_sch_safety_dup"""
+"udise_save_to_sch_safety_dup":"""udise_sch_safety_dup""",
+"udise_sum_of_dup":"select sum(num_of_times) from flowfile"
 }
