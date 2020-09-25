@@ -1,7 +1,12 @@
 ---
-- name: Stoping the client_side app
+- name: Stopping the client_side app
   become: yes
   shell: pm2 stop client_side
+  tags: update
+
+- name: Deleting the client_side app
+  become: yes
+  shell: pm2 delete client_side
   tags: update
 
 - name: Delete client_side directory

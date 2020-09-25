@@ -1,3 +1,10 @@
+- name: Creating the datasource csv
+  template:
+    src: datasource.csv.j2
+    dest: datasource.csv
+    mode: "0644"
+  tags: [ install, update ]
+
 - name: Create directory with mode setting 
   file:
     path: /tmp/postgres
@@ -8,18 +15,14 @@
 
 - name: copy csv to /tmp/postgres
   copy:
-    src: infrastructure_master.csv
+    src: "{{ item }}"
     dest: /tmp/postgres
     owner: postgres
     mode: "0644"
-  tags: [ install, update ]
-
-- name: copy csv to /tmp/postgres
-  copy:
-    src: udise_config.csv
-    dest: /tmp/postgres
-    owner: postgres
-    mode: "0644"
+  loop: 
+    - infrastructure_master.csv
+    - udise_config.csv
+    - datasource.csv
   tags: [ install, update ]
 
 - name: Run queries from SQL script
@@ -48,6 +51,16 @@
 - name: Copying table structure from csv file
   shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy udise_config(id,description,column_name,type,indice_id,status,score) from '/tmp/postgres/udise_config.csv' delimiter '|' csv header;"
   when: output_udise.stdout_lines[2].strip() == "0"
+  tags: [ install, update ]
+
+- name: checking for nifi_template_info table
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "select case when (select count(*) from nifi_template_info)=0 then 0 else 1 end;"
+  register: output_nifi
+  tags: [ install, update ]
+
+- name: Copying table structure from csv file
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy nifi_template_info(template,status) from '/tmp/postgres/datasource.csv' delimiter ',' csv header;"
+  when: output_nifi.stdout_lines[2].strip() == "0"
   tags: [ install, update ]
 
 - name: Run queries from SQL script

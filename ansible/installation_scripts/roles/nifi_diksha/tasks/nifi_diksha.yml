@@ -1,4 +1,4 @@
-- name: Fetch nifi processor group id
+- name: Fetch nifi root processor group id
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
     method: GET
@@ -31,7 +31,7 @@
   register: template_list
 
 - name: Instatiate template list
-  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }'   http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
+  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }' http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
   loop: "{{ template_list.json | json_query('templates[*]') }}"
   when: item.template.name == 'diksha_transformer'
   no_log: True
@@ -50,6 +50,7 @@
     method: GET
   register: processor_group_temp
 
+#--- Fetching processor group id of diksha processor ---
 - name: Get processor group id of the diksha processor
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
@@ -60,11 +61,11 @@
   no_log: True
 
 - set_fact:
-    tagExists: "{{  processor_group_template | json_query('results[?item.component.name == `diksha_transformer`]') }}"
+    diksha_pg_id: "{{  processor_group_template | json_query('results[?item.component.name == `diksha_transformer`]') }}"
 
 - name: Get multi processor group
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ tagExists[0].item.component.id }}
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ diksha_pg_id[0].item.component.id }}
     method: GET
   register: multi_processor
 
@@ -74,8 +75,7 @@
     jmesquery: "processGroupFlow.flow.processGroups[*].{Name: component.name, ID: component.id,  Version: revision.version}"
   register: output
 
-#---- Fetch ID and Version of each processor -----
-
+#--- Fetch ID and Version of each processor ---
 - name: Display ID of cqube raw processor
   debug:
     var: item
@@ -114,8 +114,7 @@
     method: GET
   register: parameters
 
-#----connection of processor groups to respective parameter contexts -----
-
+#--- connection of processor groups to respective parameter contexts ---
 - name: Connection raw processor group to raw parameters
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ raw_id.results[0].item }}
@@ -146,8 +145,6 @@
   when: item.component.name == 'diksha_parameters'
   no_log: true
 
-#----starting of controllers and processor groups----
-
 - name: Create DistributedMapCacheServer
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ raw_id.results[0].item }}/controller-services
@@ -171,6 +168,7 @@
 - name: Run python code
   shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
 
+#--- starting of controllers --- 
 - name: Get controllers
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ raw_id.results[0].item }}/controller-services
@@ -293,3 +291,4 @@
   loop: "{{ controllers_list_diksha_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
   no_log: True
+
