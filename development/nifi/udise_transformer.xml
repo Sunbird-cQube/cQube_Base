@@ -155,7 +155,7 @@
                     <comments></comments>
                     <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                     <name>udise_comp_output</name>
-                    <state>STOPPED</state>
+                    <state>DISABLED</state>
                     <type>OUTPUT_PORT</type>
                 </outputPorts>
                 <processGroups>
@@ -25532,5 +25532,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/24/2020 07:47:00 IST</timestamp>
+    <timestamp>09/24/2020 20:04:05 IST</timestamp>
 </template>

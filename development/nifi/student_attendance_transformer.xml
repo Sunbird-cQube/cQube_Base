@@ -192,7 +192,7 @@
                     <comments></comments>
                     <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                     <name>student_attendance_comp_output</name>
-                    <state>STOPPED</state>
+                    <state>DISABLED</state>
                     <type>OUTPUT_PORT</type>
                 </outputPorts>
                 <processGroups>
@@ -28691,5 +28691,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/24/2020 07:45:51 IST</timestamp>
+    <timestamp>09/24/2020 20:04:59 IST</timestamp>
 </template>
