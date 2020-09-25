@@ -264,6 +264,31 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
+                    <id>a7a4e4b4-fe07-3a17-0000-000000000000</id>
+                    <parentGroupId>9576c5dc-8737-370c-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>9576c5dc-8737-370c-0000-000000000000</groupId>
+                        <id>81fb9583-6e1c-367e-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>success</selectedRelationships>
+                    <source>
+                        <groupId>9576c5dc-8737-370c-0000-000000000000</groupId>
+                        <id>b1773a27-cb46-366e-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>b455fcaf-b29a-321c-0000-000000000000</id>
                     <parentGroupId>9576c5dc-8737-370c-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -285,30 +310,6 @@
                         <groupId>9576c5dc-8737-370c-0000-000000000000</groupId>
                         <id>7554d006-5b34-3698-0000-000000000000</id>
                         <type>PROCESSOR</type>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <connections>
-                    <id>e2512ebe-98a8-3971-0000-000000000000</id>
-                    <parentGroupId>9576c5dc-8737-370c-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <destination>
-                        <groupId>9576c5dc-8737-370c-0000-000000000000</groupId>
-                        <id>81fb9583-6e1c-367e-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <source>
-                        <groupId>9576c5dc-8737-370c-0000-000000000000</groupId>
-                        <id>ef54f1ff-4d6c-314d-0000-000000000000</id>
-                        <type>INPUT_PORT</type>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -806,19 +807,6 @@
                     <state>ENABLED</state>
                     <type>org.apache.nifi.processors.aws.credentials.provider.service.AWSCredentialsProviderControllerService</type>
                 </controllerServices>
-                <inputPorts>
-                    <id>ef54f1ff-4d6c-314d-0000-000000000000</id>
-                    <parentGroupId>9576c5dc-8737-370c-0000-000000000000</parentGroupId>
-                    <position>
-                        <x>200.0</x>
-                        <y>728.0</y>
-                    </position>
-                    <comments></comments>
-                    <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                    <name>comp_input</name>
-                    <state>STOPPED</state>
-                    <type>INPUT_PORT</type>
-                </inputPorts>
                 <labels>
                     <id>592cf584-661f-3bbb-0000-000000000000</id>
                     <parentGroupId>9576c5dc-8737-370c-0000-000000000000</parentGroupId>
@@ -1692,6 +1680,103 @@ file:${filename},Error while executing "${query_type}" query.</value>
                     <type>org.apache.nifi.processors.standard.SplitJson</type>
                 </processors>
                 <processors>
+                    <id>b1773a27-cb46-366e-0000-000000000000</id>
+                    <parentGroupId>9576c5dc-8737-370c-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>104.0</x>
+                        <y>728.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.11.4</version>
+                    </bundle>
+                    <config>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>File Size</key>
+<value>
+    <name>File Size</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Batch Size</key>
+<value>
+    <name>Batch Size</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Data Format</key>
+<value>
+    <name>Data Format</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Unique FlowFiles</key>
+<value>
+    <name>Unique FlowFiles</name>
+</value>
+                            </entry>
+                            <entry>
+<key>generate-ff-custom-text</key>
+<value>
+    <name>generate-ff-custom-text</name>
+</value>
+                            </entry>
+                            <entry>
+<key>character-set</key>
+<value>
+    <name>character-set</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>File Size</key>
+<value>0B</value>
+                            </entry>
+                            <entry>
+<key>Batch Size</key>
+<value>1</value>
+                            </entry>
+                            <entry>
+<key>Data Format</key>
+<value>Text</value>
+                            </entry>
+                            <entry>
+<key>Unique FlowFiles</key>
+<value>false</value>
+                            </entry>
+                            <entry>
+<key>generate-ff-custom-text</key>
+                            </entry>
+                            <entry>
+<key>character-set</key>
+<value>UTF-8</value>
+                            </entry>
+                        </properties>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>schedule_composite</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>success</name>
+                    </relationships>
+                    <state>STOPPED</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
+                </processors>
+                <processors>
                     <id>bd73894b-30a0-3b9f-0000-000000000000</id>
                     <parentGroupId>9576c5dc-8737-370c-0000-000000000000</parentGroupId>
                     <position>
@@ -2468,5 +2553,5 @@ ${query_type:startsWith('comp_district_wise'):ifElse('comp_district.json','None'
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/22/2020 19:13:56 IST</timestamp>
+    <timestamp>09/25/2020 15:06:55 IST</timestamp>
 </template>
