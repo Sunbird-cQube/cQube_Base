@@ -2,4 +2,4 @@
 
 parameter_name: composite_parameters
 parameter_path: "{{ base_dir }}/cqube/emission_app/python/composite_parameters.txt"
-jolt_parameter_name: composite_jolt
+jolt_parameter_name: composite_parameters
