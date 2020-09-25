@@ -112,7 +112,10 @@ export class AppServiceComponent {
         for (var key in object) {
             if (object.hasOwnProperty(key)) {
                 if (key == value) {
-                    stringLine = "<b>" +
+                    if (reportType == "infra-map" || reportType == "patReport") {
+                        selected = `<span ${infraName == key.trim() ? colorText : ''}>`
+                    }
+                    stringLine = selected + "<b>" +
                         key.replace(
                             /\w\S*/g,
                             function (txt) {
