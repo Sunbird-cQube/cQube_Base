@@ -14,6 +14,30 @@
             <comments></comments>
             <contents>
                 <connections>
+                    <id>1791b0f2-3189-37a2-0000-000000000000</id>
+                    <parentGroupId>bdf85650-485e-3af0-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>bdf85650-485e-3af0-0000-000000000000</groupId>
+                        <id>d362c4ee-55ac-3163-0000-000000000000</id>
+                        <type>OUTPUT_PORT</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <source>
+                        <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+                        <id>b8d0d80a-dcfd-325b-0000-000000000000</id>
+                        <type>OUTPUT_PORT</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>801f7a98-9c2f-355e-0000-000000000000</id>
                     <parentGroupId>bdf85650-485e-3af0-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -162,6 +186,19 @@
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
+                <outputPorts>
+                    <id>d362c4ee-55ac-3163-0000-000000000000</id>
+                    <parentGroupId>bdf85650-485e-3af0-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>1632.0</x>
+                        <y>416.0</y>
+                    </position>
+                    <comments></comments>
+                    <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                    <name>diksha_comp_output</name>
+                    <state>DISABLED</state>
+                    <type>OUTPUT_PORT</type>
+                </outputPorts>
                 <processGroups>
                     <id>b62d71e5-34f9-31df-0000-000000000000</id>
                     <parentGroupId>bdf85650-485e-3af0-0000-000000000000</parentGroupId>
@@ -14076,6 +14113,30 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>f9c1061d-fb05-35f3-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>b8d0d80a-dcfd-325b-0000-000000000000</id>
+<type>OUTPUT_PORT</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>3bd25c1f-24c3-3dcc-0000-000000000000</id>
+<type>FUNNEL</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>fb07deef-e51b-3c78-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -16310,6 +16371,19 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>diksha_split_success</name>
+                            <state>STOPPED</state>
+                            <type>OUTPUT_PORT</type>
+                        </outputPorts>
+                        <outputPorts>
+                            <id>b8d0d80a-dcfd-325b-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <position>
+<x>-793.7430509898921</x>
+<y>-628.6910396402159</y>
+                            </position>
+                            <comments></comments>
+                            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                            <name>diksha_pr_comp_output</name>
                             <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
@@ -35430,5 +35504,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/08/2020 15:02:12 IST</timestamp>
+    <timestamp>09/24/2020 20:04:13 IST</timestamp>
 </template>

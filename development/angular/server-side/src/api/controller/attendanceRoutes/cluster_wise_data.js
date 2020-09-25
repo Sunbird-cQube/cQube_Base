@@ -14,17 +14,17 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         var clusterData = [];
         for (let i = 0; i < clustersAttendanceData.length; i++) {
             var obj = {
-                id: clustersAttendanceData[i]['x_axis'],
-                name: clustersAttendanceData[i]['cluster_name'],
-                distId: clustersAttendanceData[i]['district_id'],
-                dist: clustersAttendanceData[i]['district_name'],
-                blockId: clustersAttendanceData[i]['block_id'],
-                block: clustersAttendanceData[i]['block_name'],
-                label: clustersAttendanceData[i]['x_value'],
+                cluster_id: clustersAttendanceData[i]['x_axis'],
+                cluster_name: clustersAttendanceData[i]['cluster_name'],
+                block_id: clustersAttendanceData[i]['block_id'],
+                block_name: clustersAttendanceData[i]['block_name'],
+                district_id: clustersAttendanceData[i]['district_id'],
+                district_name: clustersAttendanceData[i]['district_name'],
+                attendance: clustersAttendanceData[i]['x_value'],
                 lat: clustersAttendanceData[i]['y_value'],
                 lng: clustersAttendanceData[i]['z_value'],
-                stdCount: (clustersAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                schCount: (clustersAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_students: (clustersAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_schools: (clustersAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             }
             clusterData.push(obj);
         }
@@ -38,7 +38,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
 
 router.post('/clusterPerBlock', auth.authController, async (req, res) => {
     try {
-        logger.info('---Attendance clusterPerDist api ---');
+        logger.info('---Attendance clusterPerBlock api ---');
         var blockId = req.body.data.id;
         var month = req.body.data.month;
         var year = req.body.data.year;
@@ -48,20 +48,20 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
         var filterData = jsonData.data.filter(data => {
             return (data.block_id == blockId)
         });
-        var myData = filterData;
-        for (let i = 0; i < myData.length; i++) {
+        var clustersAttendanceData = filterData;
+        for (let i = 0; i < clustersAttendanceData.length; i++) {
             var obj = {
-                id: myData[i]['x_axis'],
-                name: myData[i]['cluster_name'],
-                distId: myData[i]['district_id'],
-                dist: myData[i]['district_name'],
-                blockId: myData[i]['block_id'],
-                block: myData[i]['block_name'],
-                label: myData[i]['x_value'],
-                lat: myData[i]['y_value'],
-                lng: myData[i]['z_value'],
-                stdCount: (myData[i]['students_count']),
-                schCount: (myData[i]['total_schools']),
+                cluster_id: clustersAttendanceData[i]['x_axis'],
+                cluster_name: clustersAttendanceData[i]['cluster_name'],
+                block_id: clustersAttendanceData[i]['block_id'],
+                block_name: clustersAttendanceData[i]['block_name'],
+                district_id: clustersAttendanceData[i]['district_id'],
+                district_name: clustersAttendanceData[i]['district_name'],
+                attendance: clustersAttendanceData[i]['x_value'],
+                lat: clustersAttendanceData[i]['y_value'],
+                lng: clustersAttendanceData[i]['z_value'],
+                number_of_students: (clustersAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_schools: (clustersAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             }
             clusterData.push(obj);
         }

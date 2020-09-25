@@ -716,4 +716,6 @@ from flowfile)""",
 where UPPER(udise_sch_code) <> 'NULL'
 and UPPER(sector_no) <> 'NULL'
 and UPPER(item_id) <> 'NULL'""",
+"udise_sch_perf_null_qry":"select * from udise_scl_perf_null_records",
+"udise_sch_perf_no_lat_long_qry":"select * from udise_scl_perf_no_lat_long"
 }

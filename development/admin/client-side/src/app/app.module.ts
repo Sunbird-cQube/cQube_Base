@@ -9,18 +9,18 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CreateUserComponent } from './create-user/create-user.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
-import { AllLogsComponent } from './allLogs/allLogs.component';
-import { UsersComponent } from './users/users.component';
-import { S3FilesDownloadComponent } from './s3-files-download/s3-files-download.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SummaryStatistictsComponent } from './summary-statisticts/summary-statisticts.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
-import { NifiShedularComponent } from './nifi-shedular/nifi-shedular.component';
+import { CreateUserComponent } from './components/users/create-user/create-user.component';
+import { ChangePasswordComponent } from './components/users/change-password/change-password.component';
+import { ListUsersComponent } from './components/users/list-users/list-users.component';
+import { AllLogsComponent } from './components/allLogs/allLogs.component';
+import { S3FilesDownloadComponent } from './components/s3-files-download/s3-files-download.component';
+import { SummaryStatistictsComponent } from './components/summary-statisticts/summary-statisticts.component';
+import { NifiShedularComponent } from './components/nifi-shedular/nifi-shedular.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -34,7 +34,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     HomeComponent,
     ChangePasswordComponent,
     AllLogsComponent,
-    UsersComponent,
+    ListUsersComponent,
     S3FilesDownloadComponent,
     DashboardComponent,
     SummaryStatistictsComponent,

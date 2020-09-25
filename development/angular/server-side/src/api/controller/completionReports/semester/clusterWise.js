@@ -31,7 +31,7 @@ router.get('/clusterWise/:distId/:blockId',auth.authController, async (req, res)
             return (obj.district_id == distId && obj.block_id == blockId)
         })
         var sortedData = filterData.sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1)
-        logger.info('---Infra clusterperBlock api response sent---');
+        logger.info('---semester_completion clusterperBlock api response sent---');
         res.status(200).send({ data: sortedData, footer: clusterData.footer[`${blockId}`].total_schools_with_missing_data });
     } catch (e) {
         logger.error(e);

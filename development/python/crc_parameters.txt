@@ -1,19 +1,19 @@
 {
-"crc_check_if_null":'''select * from flowfile except(select * from flowfile
-where UPPER(SchoolId) <> 'NULL'
-AND UPPER(InspectionId) <> 'NULL'
-AND UPPER(InSchoolLocation) <> 'NULL'
-AND UPPER(CreatedOn) <> 'NULL'
-AND UPPER(Latitude) <> 'NULL'
-AND UPPER(Longitude) <> 'NULL')
+"crc_check_if_null":'''select * from flowfile 
+where SchoolId IS NULL
+or InspectionId IS NULL
+or InSchoolLocation IS NULL
+or CreatedOn IS NULL
+or Latitude IS NULL
+or Longitude IS NULL
 ''',
-"crc_not_null":'''select * from flowfile
-where UPPER(SchoolId) <> 'NULL'
-AND UPPER(InspectionId) <> 'NULL'
-AND UPPER(InSchoolLocation) <> 'NULL'
-AND UPPER(CreatedOn) <> 'NULL'
-AND UPPER(Latitude) <> 'NULL'
-AND UPPER(Longitude) <> 'NULL'
+"crc_not_null":'''select * from flowfile 
+where SchoolId IS NOT NULL
+AND InspectionId IS NOT NULL
+AND InSchoolLocation IS NOT NULL
+AND CreatedOn IS NOT NULL
+AND Latitude IS NOT NULL
+AND Longitude IS NOT NULL
 ''',
 "crc_count_null":'''(select
 SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
@@ -24,12 +24,11 @@ SUM(CASE when  Latitude IS NULL THEN 1 ELSE 0 END) AS count_latitude,
 SUM(CASE when  Longitude IS NULL THEN 1 ELSE 0 END) AS count_longitude
 from flowfile)
 ''',
-"crc_insp_check_if_null":'''select * from flowfile except(select * from flowfile
-where UPPER(SchoolId) <> 'NULL' )
+"crc_insp_check_if_null":'''select * from flowfile
+where SchoolId IS NULL
 ''',
 "crc_insp_not_null":'''select * from flowfile
-where UPPER(SchoolId) <> 'NULL'
-
+where SchoolId IS NOT NULL
 ''',
 "crc_insp_count_null":'''(select
 SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,

@@ -8,6 +8,9 @@
 #
 #------------------------------------------------------#
 
+#NOTE: Please fill the value with a space between ":" and the value. 
+#Example-   `system_user_name: ubuntu`
+
 system_user_name:                          # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
 base_dir:                                  # provide the absolute path where cqube installed
 
