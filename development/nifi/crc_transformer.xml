@@ -14,30 +14,6 @@
             <comments></comments>
             <contents>
                 <connections>
-                    <id>288ca378-8459-3610-0000-000000000000</id>
-                    <parentGroupId>c96317fa-e65b-3979-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <destination>
-                        <groupId>c96317fa-e65b-3979-0000-000000000000</groupId>
-                        <id>8d38bd74-e744-3ded-0000-000000000000</id>
-                        <type>OUTPUT_PORT</type>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <source>
-                        <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-                        <id>cb9507b2-163b-37d2-0000-000000000000</id>
-                        <type>OUTPUT_PORT</type>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <connections>
                     <id>3b96f7ab-826f-3f52-0000-000000000000</id>
                     <parentGroupId>c96317fa-e65b-3979-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -184,19 +160,6 @@
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
-                <outputPorts>
-                    <id>8d38bd74-e744-3ded-0000-000000000000</id>
-                    <parentGroupId>c96317fa-e65b-3979-0000-000000000000</parentGroupId>
-                    <position>
-                        <x>-1240.0</x>
-                        <y>368.0</y>
-                    </position>
-                    <comments></comments>
-                    <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                    <name>crc_comp_output</name>
-                    <state>DISABLED</state>
-                    <type>OUTPUT_PORT</type>
-                </outputPorts>
                 <processGroups>
                     <id>a4fcd019-6eb5-3749-0000-000000000000</id>
                     <parentGroupId>c96317fa-e65b-3979-0000-000000000000</parentGroupId>
@@ -11138,31 +11101,6 @@ VALUES
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>5c60414a-7f58-3fef-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>cb9507b2-163b-37d2-0000-000000000000</id>
-<type>OUTPUT_PORT</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>crc_inspec_data</selectedRelationships>
-                            <source>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>5bf49739-7e3f-31bf-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>5d2b0d9a-fd54-3522-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -16155,19 +16093,6 @@ Data Loading</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>crc_split_failure</name>
-                            <state>STOPPED</state>
-                            <type>OUTPUT_PORT</type>
-                        </outputPorts>
-                        <outputPorts>
-                            <id>cb9507b2-163b-37d2-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <position>
-<x>-984.0</x>
-<y>-232.0</y>
-                            </position>
-                            <comments></comments>
-                            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                            <name>crc_pr_comp_output</name>
                             <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
@@ -31450,5 +31375,5 @@ file:${filename} process_end_time updated to log summary table</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/24/2020 20:04:45 IST</timestamp>
+    <timestamp>09/25/2020 15:06:04 IST</timestamp>
 </template>
