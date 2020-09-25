@@ -18,7 +18,7 @@
           - prometheus
           - { role: nifi_clear, tags: update }
           - nifi_install
-          - { role: nifi_params, tags: update }
+          - { role: nifi_params, tags: update } 
 
           - role: nifi_crc
             tags: update
@@ -26,7 +26,6 @@
 
           - role: nifi_static
             tags: update
-            when: nifi_static
 
           - role: nifi_attendance
             tags: update
@@ -51,6 +50,15 @@
           - role: nifi_udise
             tags: update
             when: nifi_udise
+
+          - role: nifi_pat
+            tags: update
+            when: nifi_pat
+
+          - role: nifi_composite
+            tags: update
+            when: nifi_composite
+
             
           - { role: nifi_scheduler, tags: update }
 

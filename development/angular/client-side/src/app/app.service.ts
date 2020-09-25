@@ -112,7 +112,10 @@ export class AppServiceComponent {
         for (var key in object) {
             if (object.hasOwnProperty(key)) {
                 if (key == value) {
-                    stringLine = "<b>" +
+                    if (reportType == "infra-map" || reportType == "patReport") {
+                        selected = `<span ${infraName == key.trim() ? colorText : ''}>`
+                    }
+                    stringLine = selected + "<b>" +
                         key.replace(
                             /\w\S*/g,
                             function (txt) {
@@ -122,7 +125,7 @@ export class AppServiceComponent {
                         + "</b>" + ": " + object[key] + " %" + `</span>`;
                 } else {
                     if (reportType == "infra-map" || reportType == "patReport") {
-                        selected = `<span ${infraName == key ? colorText : ''}>`
+                        selected = `<span ${infraName == key.trim() ? colorText : ''}>`
                     }
                     stringLine = selected + "<b>" +
                         key.replace(
@@ -159,7 +162,7 @@ export class AppServiceComponent {
     //Download reports....
     download(fileName, reportData) {
         if (reportData.length <= 0) {
-            alert("No data fount to download");
+            alert("No data found to download");
         } else {
             const options = {
                 fieldSeparator: ',',

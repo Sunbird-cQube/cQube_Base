@@ -46,7 +46,7 @@
                     </p>
                 </div>
                 <div class="col-sm-6">
-                    <div *ngIf="skul; else ng_else" style="float: right; " id="select">
+                    <!-- <div *ngIf="skul; else ng_else" style="float: right; " id="select">
                         <em class="fa fa-download" title="Download Report" id="download1"
                             style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
                             (click)="downloadReportofState(downloadType)"></em>
@@ -60,11 +60,11 @@
                         </select>
                     </div>
 
-                    <ng-template #ng_else>
+                    <ng-template #ng_else> -->
                         <em class="fa fa-download" title="Download Report" id="download"
                             style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
-                            (click)="downloadRoport()"></em>
-                    </ng-template>
+                            (click)="funToDownload()"></em>
+                    <!-- </ng-template> -->
                     <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
                         alt="Home" (click)="districtWise()"></em>
@@ -80,70 +80,82 @@
             </p>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <button class="btn btn-secondary" id="allBlock" name="block"
+                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 1px; background-color: rgb(152, 160, 163);"
+                (click)="blockWise()">&nbsp;<strong id="allBlock" style="font-family: Arial;">Blocks</strong>
+            </button>
+            <button class="btn btn-secondary" id="allCluster"
+                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 1px; background-color: rgb(152, 160, 163);"
+                (click)="clusterWise()">&nbsp;<strong id="allCluster" style="font-family: Arial;">Clusters</strong>
+            </button>
+            <!-- <button class="btn btn-secondary" id="allSchool"
+                style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 1px; background-color: rgb(152, 160, 163);"
+                (click)="schoolWise()">&nbsp;<strong id="allSchool" style="font-family: Arial;">Schools</strong>
+            </button> -->
+        </div>
+        <div class="col-sm-6" style="font-family: Arial;">
+            <select id="choose_dist"
+                style="margin-right: 10px; padding: 1px;margin-left: 2%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
+                <option [value]="myDistrict" disabled selected="selected">Choose a District
+                </option>
+                <option *ngFor="let dist of SchoolInfrastructureDistrictsNames" [(ngValue)]="dist.district.id"
+                    style="font-family: Arial; font-size: 11px;">
+                    {{dist.district.value}}
+                </option>
+            </select>
+
+            <select [hidden]="blockHidden" id="choose_block"
+                style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
+                <option [value]="myBlock" disabled selected="selected">Choose a Block
+                </option>
+                <option *ngFor="let block of SchoolInfrastructureBlocksNames" [(ngValue)]="block.block.id">
+                    {{block.block.value}}
+                </option>
+            </select>
+
+            <select [hidden]="clusterHidden" id="choose_cluster"
+                style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
+                <option [value]="myCluster" disabled selected="selected">Choose a Cluster
+                </option>
+                <option *ngFor="let cluster of SchoolInfrastructureClusterNames" [(ngValue)]="cluster.cluster.id"
+                    style="font-family: Arial;font-size: 11px; "
+                    [ngStyle]="{'color': cluster.cluster.value !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
+                    {{cluster.cluster.value}}
+                </option>
+            </select>
+        </div>
+    </div>
     <div class="col-sm-12">
         <div class="row">
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-6">
-                        X-AXIS: <select id="x_axis"
-                            style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                            [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
-                            <option [value]="xAxis" disabled selected="selected">choose
-                                x-axis
-                            </option>
-                            <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis.key"
-                                style="font-family: Arial; font-size: 11px;">
-                                {{xaxis.value}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        Y-AXIS: <select id="y_axis"
-                            style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                            [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
-                            <option [value]="yAxis" disabled selected="selected">choose
-                                y-axis
-                            </option>
-                            <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key"
-                                style="font-family: Arial; font-size: 11px;">
-                                {{yaxis.value}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="col-sm-1"></div> -->
-            <div class="col-sm-6">
-                <select id="choose_dist"
-                    style="margin-right: 10px; padding: 1px;margin-left: 2%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                    [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
-                    <option [value]="myDistrict" disabled selected="selected">Choose a District
+            <div class="col-sm-2"></div>
+            <div class="col-sm-4">
+                X-AXIS: <select id="x_axis"
+                    style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                    [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
+                    <option [value]="xAxis" disabled selected="selected">choose
+                        x-axis
                     </option>
-                    <option *ngFor="let dist of SchoolInfrastructureDistrictsNames" [(ngValue)]="dist.district.id"
+                    <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis.key"
                         style="font-family: Arial; font-size: 11px;">
-                        {{dist.district.value}}
+                        {{xaxis.value}}
                     </option>
                 </select>
-
-                <select [hidden]="blockHidden" id="choose_block"
+            </div>
+            <div class="col-sm-4">
+                Y-AXIS: <select id="y_axis"
                     style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                    [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
-                    <option [value]="myBlock" disabled selected="selected">Choose a Block
+                    [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
+                    <option [value]="yAxis" disabled selected="selected">choose
+                        y-axis
                     </option>
-                    <option *ngFor="let block of SchoolInfrastructureBlocksNames" [(ngValue)]="block.block.id">
-                        {{block.block.value}}
-                    </option>
-                </select>
-
-                <select [hidden]="clusterHidden" id="choose_cluster"
-                    style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                    [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
-                    <option [value]="myCluster" disabled selected="selected">Choose a Cluster
-                    </option>
-                    <option *ngFor="let cluster of SchoolInfrastructureClusterNames" [(ngValue)]="cluster.cluster.id"
-                        style="font-family: Arial;font-size: 11px; "
-                        [ngStyle]="{'color': cluster.cluster.value !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
-                        {{cluster.cluster.value}}
+                    <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key"
+                        style="font-family: Arial; font-size: 11px;">
+                        {{yaxis.value}}
                     </option>
                 </select>
             </div>
@@ -151,7 +163,7 @@
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
-                <canvas id="myChart" height="150vh"></canvas>
+                <canvas id="myChart" height="142vh"></canvas>
             </div>
         </div>
     </div>

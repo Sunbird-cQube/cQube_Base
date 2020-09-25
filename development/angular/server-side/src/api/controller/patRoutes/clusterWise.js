@@ -6,8 +6,15 @@ const s3File = require('../../lib/reads3File');
 router.post('/allClusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT cluster wise api ---');
-        let fileName = `pat/pat_cluster.json`;
-        var clusterData = await s3File.readS3File(fileName);
+        let fileName;
+        var clusterData = {}
+        if (req.body.data) {
+            fileName = `pat/cluster/${req.body.data}.json`;
+            clusterData = await s3File.readS3File(fileName);
+        } else {
+            fileName = `pat/pat_cluster.json`
+            clusterData = await s3File.readS3File(fileName);
+        }
         var mydata = clusterData.data;
         logger.info('---PAT cluster wise api response sent---');
         res.status(200).send({ data: mydata, footer: clusterData.AllClustersFooter });
@@ -27,7 +34,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         let blockId = req.params.blockId;
 
         let filterData = clusterData.data.filter(obj => {
-            return (obj.details.district_id == distId && obj.details.block_id == blockId)
+            return (obj.Details.district_id == distId && obj.Details.block_id == blockId)
         })
         let mydata = filterData;
         logger.info('---PAT clusterperBlock api response sent---');

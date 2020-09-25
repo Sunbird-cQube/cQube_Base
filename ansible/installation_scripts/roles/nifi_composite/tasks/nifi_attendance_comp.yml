@@ -1,0 +1,52 @@
+- name: Fetch nifi root processor group id
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
+    method: GET
+  register: processor_id
+
+#--- Fetching output port id of student attendance processor ---
+- name: get port id of student attendance processor
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ student_attendance_pg_id[0].item.component.id }}
+    method: GET
+  loop: "{{ student_attendance_pg_id[0].json | json_query('processGroupFlow.flow.outputPorts[*]') }}"
+  when: item.component.name == 'student_attendance_comp_output'
+  register: port_list
+  no_log: True
+
+- set_fact:
+    student_attendance_port: "{{ port_list | json_query('results[?item.component.name == `student_attendance_comp_output`]') }}"
+
+#--- Connection of attendance output and composite input ports ---    
+- name: connecting attendance output port and composite input port
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/connections
+    method: POST
+    body_format: json
+    status_code: 201
+    body: {
+  "revision": {
+    "version": 0
+  },
+  "disconnectedNodeAcknowledged": false,
+  "component": {
+    "name": "",
+    "source": {
+      "id": "{{ student_attendance_port[0].item.component.id }}",
+      "groupId": "{{ student_attendance_pg_id[0].item.component.id }}",
+      "type": "OUTPUT_PORT"
+    },
+    "destination": {
+      "id": "{{ composite_port[0].item.component.id }}",
+      "groupId": "{{ composite_pg_id[0].item.component.id }}",
+      "type": "INPUT_PORT"
+    }
+  }
+}
+
+- name: Enable student attendance output port
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/output-ports/{{ student_attendance_port[0].item.component.id }}/run-status
+    method: PUT
+    body_format: json
+    body: {"revision":{"version":"{{ student_attendance_port[0].item.revision.version }}"},"state":"STOPPED","disconnectedNodeAcknowledged":false}
