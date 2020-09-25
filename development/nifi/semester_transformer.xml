@@ -14,6 +14,30 @@
             <comments></comments>
             <contents>
                 <connections>
+                    <id>4aeeb16f-5405-39de-0000-000000000000</id>
+                    <parentGroupId>214e2053-4fb0-396f-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>214e2053-4fb0-396f-0000-000000000000</groupId>
+                        <id>9feb13e3-80a2-3a59-0000-000000000000</id>
+                        <type>OUTPUT_PORT</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <source>
+                        <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
+                        <id>345c62c9-98c8-3dfc-0000-000000000000</id>
+                        <type>OUTPUT_PORT</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>a4473e03-655a-397d-0000-000000000000</id>
                     <parentGroupId>214e2053-4fb0-396f-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -132,6 +156,19 @@
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
+                <outputPorts>
+                    <id>9feb13e3-80a2-3a59-0000-000000000000</id>
+                    <parentGroupId>214e2053-4fb0-396f-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>-464.0</x>
+                        <y>464.0</y>
+                    </position>
+                    <comments></comments>
+                    <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                    <name>student_assessment_comp_output</name>
+                    <state>DISABLED</state>
+                    <type>OUTPUT_PORT</type>
+                </outputPorts>
                 <processGroups>
                     <id>571635a9-400b-3fc2-0000-000000000000</id>
                     <parentGroupId>214e2053-4fb0-396f-0000-000000000000</parentGroupId>
@@ -1068,6 +1105,30 @@
 <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
 <id>0130f3c7-b7ef-3dda-0000-000000000000</id>
 <type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>32ac3461-296c-3172-0000-000000000000</id>
+                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
+<id>345c62c9-98c8-3dfc-0000-000000000000</id>
+<type>OUTPUT_PORT</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <source>
+<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
+<id>4d0e8425-ccf3-32a6-0000-000000000000</id>
+<type>FUNNEL</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -5972,6 +6033,19 @@
                             </style>
                             <width>168.0</width>
                         </labels>
+                        <outputPorts>
+                            <id>345c62c9-98c8-3dfc-0000-000000000000</id>
+                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
+                            <position>
+<x>2280.0</x>
+<y>968.0</y>
+                            </position>
+                            <comments></comments>
+                            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                            <name>student_assessment_pr_comp_output</name>
+                            <state>STOPPED</state>
+                            <type>OUTPUT_PORT</type>
+                        </outputPorts>
                         <outputPorts>
                             <id>3c6ea1dc-133f-3512-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
@@ -12392,7 +12466,7 @@ file: ${filename} is not valid</value>
     <entry>
         <key>log-message</key>
         <value>Data validation:
-same id data validation of file:${filename} error while same id mirror data</value>
+same id data validation of file:${filename} error while checking same id  data</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -29095,5 +29169,5 @@ WHERE ff_uuid = '${source.uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/11/2020 18:55:23 IST</timestamp>
+    <timestamp>09/24/2020 20:04:50 IST</timestamp>
 </template>

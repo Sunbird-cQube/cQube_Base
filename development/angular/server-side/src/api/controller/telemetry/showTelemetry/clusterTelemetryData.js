@@ -16,7 +16,7 @@ router.post('/all_Cluster', async (req, res) => {
                 logger.error("No data found in s3 file");
                 res.status(403).json({ errMsg: "No such data found" });
             } else {
-                logger.info('--- get telemetry data api response sent ---');
+                logger.info('--- get cluster telemetry data api response sent ---');
                 res.send(JSON.parse(data.Body));
             }
         })

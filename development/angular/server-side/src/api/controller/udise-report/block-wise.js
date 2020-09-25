@@ -20,7 +20,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
 
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
-        logger.info('--- block wise UDISE api ---');
+        logger.info('--- block per district UDISE api ---');
         let fileName = `udise/udise_block_wise.json`
         var blockData = await s3File.readS3File(fileName);
         let distId = req.params.distId

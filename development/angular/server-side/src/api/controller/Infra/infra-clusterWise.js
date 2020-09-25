@@ -21,7 +21,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
 
 router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
     try {
-        logger.info('---Infra cluster wise api ---');
+        logger.info('---Infra cluster per block api ---');
         var distId = req.params.distId;
         var blockId = req.params.blockId;
         let fileName = `infra/infra_cluster_table.json`
@@ -34,7 +34,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         if (clusterFilterData.length == 0) {
             res.status(404).json({ errMsg: "No data found" });
         } else {
-            logger.info('---Infra all cluster wise response sent---');
+            logger.info('---Infra cluster per block response sent---');
             res.status(200).send(clusterFilterData);
         }
 
