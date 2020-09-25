@@ -49,19 +49,19 @@ def update_parameters(nifi_parameters):
     '''
     update_pr = requests.post("http://localhost:{}/nifi-api/parameter-contexts/{}/update-requests".format(nifi_port,nifi_parameters['id']),json=nifi_parameters)
     if update_pr.status_code == 200:
-        print("Successfully updated  the dynamic Jolt spec for infrastructure report!!")
+        print("Successfully updated  the dynamic Jolt spec!!")
         return update_pr
     else:
         logging.error("Error updating  parameter context details")
         return  {"Error":"Failed to update parameter context ","error":update_pr.json()}
 
 
-def update_parameter_context(parameter_name,jolt_spec):
+def update_parameter_context(parameter_context,parameter_name,jolt_spec):
     """
     Function will update the paramters into NiFi 
     """
     # Get parameter context details
-    pc = get_parameter_context('infra_parameters')
+    pc = get_parameter_context(parameter_context)
     
     # create parameter
     par_data = parameter_list_builder(parameter_name,jolt_spec)
