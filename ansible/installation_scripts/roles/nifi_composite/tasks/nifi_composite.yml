@@ -63,19 +63,6 @@
 - set_fact:
     composite_pg_id: "{{  processor_group_template | json_query('results[?item.component.name == `composite_transformer`]') }}"
 
-#--- Fetching the inputPort id from composite processor ---
-- name: Get port id of composite processor
-  uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ composite_pg_id[0].item.component.id }}
-    method: GET
-  loop: "{{ composite_pg_id[0].json | json_query('processGroupFlow.flow.inputPorts[*]') }}"
-  when: item.component.name == 'comp_input'
-  register: port_list
-  no_log: True
-
-- set_fact:
-    composite_port: "{{ port_list | json_query('results[?item.component.name == `comp_input`]') }}"
-
 - name: Get Default Parameter Contexts
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/parameter-contexts
