@@ -70,7 +70,10 @@ export class CompositReportComponent implements OnInit {
       this.xAxis = Object.keys(this.result[0])[1];
       this.yAxis = Object.keys(this.result[0])[1];
       this.districtWise();
-    })
+    }, err => {
+      this.result = [];
+      this.commonService.loaderAndErr(this.result);
+    });
 
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('backBtn').style.display = "none";
