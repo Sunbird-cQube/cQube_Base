@@ -105,7 +105,7 @@ export class AppServiceComponent {
 
 
     //map tooltip automation
-    public getInfoFrom(object, value, levelWise, reportData, reportType, infraName, colorText) {
+    public getInfoFrom(object, value, levelWise, reportType, infraName, colorText) {
         var popupFood = [];
         var stringLine;
         var selected = '';

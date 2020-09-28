@@ -955,10 +955,10 @@ export class PATReportComponent implements OnInit {
     orgObject['students_count'] = orgObject['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     var yourData1;
     if (this.grade) {
-      yourData1 = this.commonService.getInfoFrom(orgObject, "Performance", level, this.reportData, "patReport", '', colorText).join(" <br>");
+      yourData1 = this.commonService.getInfoFrom(orgObject, "Performance", level, "patReport", '', colorText).join(" <br>");
 
     } else {
-      yourData1 = this.commonService.getInfoFrom(orgObject, "Performance", level, this.reportData, "patReport", 'Performance', colorText).join(" <br>");
+      yourData1 = this.commonService.getInfoFrom(orgObject, "Performance", level, "patReport", 'Performance', colorText).join(" <br>");
 
     }
     var yourData;
@@ -976,28 +976,28 @@ export class PATReportComponent implements OnInit {
 
     if (level == mylevel) {
       if (this.grade && !this.subject) {
-        yourData = this.commonService.getInfoFrom(markers.Subjects, "Performance", level, this.reportData, "patReport", 'Grade Performance', colorText).join(" <br>");
+        yourData = this.commonService.getInfoFrom(markers.Subjects, "Performance", level, "patReport", 'Grade Performance', colorText).join(" <br>");
       } else if (this.grade && this.subject) {
-        yourData = this.commonService.getInfoFrom(markers.Subjects, "Performance", level, this.reportData, "patReport", this.subject, colorText).join(" <br>");
+        yourData = this.commonService.getInfoFrom(markers.Subjects, "Performance", level, "patReport", this.subject, colorText).join(" <br>");
       } else {
         ordered = {};
         Object.keys(markers['Grade Wise Performance']).sort().forEach(function (key) {
           ordered[key] = markers['Grade Wise Performance'][key];
         });
-        yourData = this.commonService.getInfoFrom(ordered, "Performance", level, this.reportData, "patReport", '', colorText).join(" <br>");
+        yourData = this.commonService.getInfoFrom(ordered, "Performance", level, "patReport", '', colorText).join(" <br>");
       }
 
     } else {
       if (this.grade && !this.subject) {
-        yourData = this.commonService.getInfoFrom(markers.Grades[`${this.grade}`], "Performance", level, this.reportData, "patReport", 'Grade Performance', colorText).join(" <br>");
+        yourData = this.commonService.getInfoFrom(markers.Grades[`${this.grade}`], "Performance", level, "patReport", 'Grade Performance', colorText).join(" <br>");
       } else if (this.grade && this.subject) {
-        yourData = this.commonService.getInfoFrom(markers.Grades[`${this.grade}`], "Performance", level, this.reportData, "patReport", this.subject, colorText).join(" <br>");
+        yourData = this.commonService.getInfoFrom(markers.Grades[`${this.grade}`], "Performance", level, "patReport", this.subject, colorText).join(" <br>");
       } else {
         ordered = {};
         Object.keys(markers['Grade Wise Performance']).sort().forEach(function (key) {
           ordered[key] = markers['Grade Wise Performance'][key];
         });
-        yourData = this.commonService.getInfoFrom(ordered, "Performance", level, this.reportData, "patReport", '', colorText).join(" <br>");
+        yourData = this.commonService.getInfoFrom(ordered, "Performance", level, "patReport", '', colorText).join(" <br>");
       }
     }
 

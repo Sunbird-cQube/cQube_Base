@@ -897,7 +897,7 @@ export class StudengtAttendanceComponent implements OnInit {
       }
     });
 
-    var yourData = this.commonService.getInfoFrom(orgObject, "attendance", levelWise, reportData, "std-attd", undefined, undefined).join(" <br>");
+    var yourData = this.commonService.getInfoFrom(orgObject, "attendance", levelWise, "std-attd", undefined, undefined).join(" <br>");
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);

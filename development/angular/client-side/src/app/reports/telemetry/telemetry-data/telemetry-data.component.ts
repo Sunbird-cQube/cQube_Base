@@ -698,7 +698,7 @@ export class TelemetryDataComponent implements OnInit {
       }
     });
     var yourData;
-    yourData = this.commonService.getInfoFrom(orgObject, "", level, this.reportData, "telemetry", undefined, undefined).join(" <br>");
+    yourData = this.commonService.getInfoFrom(orgObject, "", level, "telemetry", undefined, undefined).join(" <br>");
 
     //Generate dynamic tool-tip
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(

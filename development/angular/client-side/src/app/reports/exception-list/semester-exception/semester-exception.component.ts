@@ -696,9 +696,11 @@ export class SemesterExceptionComponent implements OnInit {
           detailSchool[key] = orgObject[key];
         }
       });
-      yourData = this.commonService.getInfoFrom(detailSchool, "percentage_schools_with_missing_data", level, this.reportData, "sem-exception", undefined, undefined).join(" <br>");
+      this.reportData.push(detailSchool);
+      yourData = this.commonService.getInfoFrom(detailSchool, "percentage_schools_with_missing_data", level, "sem-exception", undefined, undefined).join(" <br>");
     } else {
-      yourData = this.commonService.getInfoFrom(orgObject, "percentage_schools_with_missing_data", level, this.reportData, "sem-exception", undefined, undefined).join(" <br>");
+      this.reportData.push(orgObject);
+      yourData = this.commonService.getInfoFrom(orgObject, "percentage_schools_with_missing_data", level, "sem-exception", undefined, undefined).join(" <br>");
 
     }
     //Generate dynamic tool-tip
