@@ -70,7 +70,12 @@ export class CompositReportComponent implements OnInit {
       this.xAxis = Object.keys(this.result[0])[1];
       this.yAxis = Object.keys(this.result[0])[1];
       this.districtWise();
-    })
+    }, err => {
+      this.result = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
+      this.commonService.loaderAndErr(this.result);
+    });
 
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('backBtn').style.display = "none";
@@ -608,7 +613,6 @@ export class CompositReportComponent implements OnInit {
     let newData = [];
     $.each(this.reportData, function (key, value) {
       let headers = Object.keys(value);
-      console.log(headers);
       let newObj = {}
       for (var i = 0; i < Object.keys(value).length; i++) {
         if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'cluster' && headers[i] != 'school' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
