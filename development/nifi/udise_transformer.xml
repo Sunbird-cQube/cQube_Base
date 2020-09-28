@@ -66,30 +66,6 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
-                    <id>86280da9-782e-3452-0000-000000000000</id>
-                    <parentGroupId>ee6d9b2e-4f82-310d-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <destination>
-                        <groupId>ee6d9b2e-4f82-310d-0000-000000000000</groupId>
-                        <id>f84ad875-d97a-3bab-0000-000000000000</id>
-                        <type>OUTPUT_PORT</type>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <source>
-                        <groupId>df100f59-060d-32d5-0000-000000000000</groupId>
-                        <id>0fb353f7-5c67-3371-0000-000000000000</id>
-                        <type>OUTPUT_PORT</type>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <connections>
                     <id>967e47dc-1389-3df9-0000-000000000000</id>
                     <parentGroupId>ee6d9b2e-4f82-310d-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -145,19 +121,6 @@
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
-                <outputPorts>
-                    <id>f84ad875-d97a-3bab-0000-000000000000</id>
-                    <parentGroupId>ee6d9b2e-4f82-310d-0000-000000000000</parentGroupId>
-                    <position>
-                        <x>920.0</x>
-                        <y>328.0</y>
-                    </position>
-                    <comments></comments>
-                    <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                    <name>udise_comp_output</name>
-                    <state>STOPPED</state>
-                    <type>OUTPUT_PORT</type>
-                </outputPorts>
                 <processGroups>
                     <id>1aa7b15c-331f-31d5-0000-000000000000</id>
                     <parentGroupId>ee6d9b2e-4f82-310d-0000-000000000000</parentGroupId>
@@ -10388,35 +10351,6 @@ VALUES
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>ca5046fd-9456-3abe-0000-000000000000</id>
-                            <parentGroupId>df100f59-060d-32d5-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>-2450.448974609375</x>
-<y>-3237.297607421875</y>
-                            </bends>
-                            <destination>
-<groupId>df100f59-060d-32d5-0000-000000000000</groupId>
-<id>0fb353f7-5c67-3371-0000-000000000000</id>
-<type>OUTPUT_PORT</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>0</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>df100f59-060d-32d5-0000-000000000000</groupId>
-<id>adf3ca24-c4fe-3c38-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>cad66674-7c05-3e8a-0000-000000000000</id>
                             <parentGroupId>df100f59-060d-32d5-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -12726,19 +12660,6 @@ VALUES
                             </style>
                             <width>448.0</width>
                         </labels>
-                        <outputPorts>
-                            <id>0fb353f7-5c67-3371-0000-000000000000</id>
-                            <parentGroupId>df100f59-060d-32d5-0000-000000000000</parentGroupId>
-                            <position>
-<x>-2472.0</x>
-<y>-3312.0</y>
-                            </position>
-                            <comments></comments>
-                            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                            <name>udise_pr_comp_output</name>
-                            <state>STOPPED</state>
-                            <type>OUTPUT_PORT</type>
-                        </outputPorts>
                         <outputPorts>
                             <id>74a0a37c-c88b-3c0f-0000-000000000000</id>
                             <parentGroupId>df100f59-060d-32d5-0000-000000000000</parentGroupId>
@@ -25532,5 +25453,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/24/2020 07:47:00 IST</timestamp>
+    <timestamp>09/25/2020 15:06:35 IST</timestamp>
 </template>

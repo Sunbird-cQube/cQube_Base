@@ -1,4 +1,4 @@
-from update_nifi_jolt_params import *
+from update_nifi_parameters_main import *
 import time
 import ast
 
@@ -31,7 +31,9 @@ def nifi_params_config():
         'student_attendance_parameters':'student_attendance_parameters.txt',
         'student_assessment_parameters':'student_assessment_parameters.txt',
         'cqube_telemetry_parameters':'cqube_telemetry_parameters.txt',
-        'udise_parameters':'udise_parameters.txt'
+        'udise_parameters':'udise_parameters.txt',
+        'composite_parameters':'composite_parameters.txt',
+        'pat_parameters':'pat_parameters.txt'
     }
     for param_name,filename in params.items():
         with open(filename,'r') as fd:

@@ -7,6 +7,7 @@
     - { parent_processor: "infra_transformer", multi_processor1: "cQube_raw_data_fetch_infra", multi_processor2: "infra_processor" } 
     - { parent_processor: "diksha_transformer", multi_processor1: "cQube_raw_data_fetch_diksha", multi_processor2: "diksha_processor" }
     - { parent_processor: "cqube_telemetry_transformer", multi_processor1: "cQube_raw_data_fetch_cqube_telemetry", multi_processor2: "cqube_telemetry_processor" }
+    - { parent_processor: "udise_transformer", multi_processor1: "cQube_raw_data_fetch_udise", multi_processor2: "udise_processor" }
   loop_control:
    loop_var: temp
   tags: update
@@ -20,6 +21,7 @@
     - { parameter: "infra_parameters" }
     - { parameter: "diksha_parameters" }
     - { parameter: "cqube_telemetry_parameters" }
+    - { parameter: "udise_parameters" }
     - { parameter: "cQube-raw-data-fetch-parameters" } 
   loop_control:
    loop_var: temp 

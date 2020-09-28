@@ -1,26 +1,26 @@
 {
-"static_district_check_if_null":'''select * from flowfile except(select * from flowfile
-where UPPER(DistrictId) <> 'NULL'
-AND UPPER(District) <> 'NULL' )
+"static_district_check_if_null":'''select * from flowfile
+where DistrictId IS NULL 
+or District IS NULL
 ''',
 "static_district_not_null":'''select * from flowfile
-where UPPER(DistrictId) <> 'NULL'
-AND UPPER(District) <> 'NULL'
+where DistrictId IS NOT NULL
+and District IS NOT NULL
 ''',
 "static_district_count_null_vals":'''(select
 SUM(CASE when DistrictId IS NULL THEN 1 ELSE 0 END) AS count_null_districtId,
 SUM(CASE when District IS NULL THEN 1 ELSE 0 END) AS count_null_district
 from flowfile)
 ''',
-"static_block_check_if_null":'''select * from flowfile except(select * from flowfile
-where UPPER(BlockId) <> 'NULL'
-AND UPPER(DistrictId) <> 'NULL'
-AND UPPER(Block) <> 'NULL' )
+"static_block_check_if_null":'''select * from flowfile
+where BlockId IS NULL
+or DistrictId IS NULL
+or Block IS NULL
 ''',
 "static_block_not_null":'''select * from flowfile
-where UPPER(BlockId) <> 'NULL'
-AND UPPER(DistrictId) <> 'NULL'
-AND UPPER(Block) <> 'NULL'
+where BlockId IS NOT NULL
+AND DistrictId IS NOT NULL
+AND Block IS NOT NULL
 ''',
 "static_block_null_count":'''(select
 SUM(CASE when DistrictId IS NULL THEN 1 ELSE 0 END) AS count_null_districtId,
@@ -28,17 +28,17 @@ SUM(CASE when BlockId IS NULL THEN 1 ELSE 0 END) AS count_null_blockid,
 SUM(CASE when  Block IS NULL THEN 1 ELSE 0 END) AS count_null_block
 from flowfile)
 ''',
-"static_cluster_check_if_null":'''select * from flowfile except(select * from flowfile
-where UPPER(ClusterId) <> 'NULL'
-AND UPPER(BlockId) <> 'NULL'
-AND UPPER(DistrictId) <> 'NULL'
-AND UPPER(Cluster) <> 'NULL' )
+"static_cluster_check_if_null":'''select * from flowfile
+where ClusterId IS NULL
+or BlockId IS NULL
+or DistrictId IS NULL
+or Cluster IS NULL
 ''',
 "static_cluster_not_null":'''select * from flowfile
-where UPPER(ClusterId) <> 'NULL'
-AND UPPER(BlockId) <> 'NULL'
-AND UPPER(DistrictId) <> 'NULL'
-AND UPPER(Cluster) <> 'NULL'
+where ClusterId IS NOT NULL
+AND BlockId IS NOT NULL
+AND DistrictId IS NOT NULL
+AND Cluster IS NOT NULL
 ''',
 "static_cluster_null_value_count":'''(select
 SUM(CASE when ClusterId IS NULL THEN 1 ELSE 0 END) AS count_null_clusterId,

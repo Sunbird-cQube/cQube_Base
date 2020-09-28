@@ -49,19 +49,19 @@ def update_parameters(nifi_parameters):
     '''
     update_pr = requests.post("http://localhost:{}/nifi-api/parameter-contexts/{}/update-requests".format(nifi_port,nifi_parameters['id']),json=nifi_parameters)
     if update_pr.status_code == 200:
-        print("Successfully updated  the dynamic Jolt spec for infrastructure report!!")
+        print("Successfully updated  the dynamic Jolt spec!!")
         return update_pr
     else:
         logging.error("Error updating  parameter context details")
         return  {"Error":"Failed to update parameter context ","error":update_pr.json()}
 
 
-def update_parameter_context(parameter_name,jolt_spec):
+def update_parameter_context(parameter_context,parameter_name,jolt_spec):
     """
     Function will update the paramters into NiFi 
     """
     # Get parameter context details
-    pc = get_parameter_context('infra_parameters')
+    pc = get_parameter_context(parameter_context)
     
     # create parameter
     par_data = parameter_list_builder(parameter_name,jolt_spec)
@@ -74,50 +74,4 @@ def update_parameter_context(parameter_name,jolt_spec):
     up_status=update_parameters(par_data)
     if up_status.status_code == 200:
         logging.info("Successfully updated parameter")
-    return par_data
-
-if __name__ == "__main__":
-    # 1
-    # infra district jolt spec
-    infra_district_table = jolt_spec.get_jolt_spec('Infra_jolt_district_table')
-    infra_district_map = jolt_spec.get_jolt_spec('Infra_jolt_district_map')
-    
-    # update infra district jolt spec parameters
-    update_parameter_context('infra_district_table',infra_district_table)
-    update_parameter_context('infra_district_map',infra_district_map)
-   
-    
-    # 2
-    # infra block jolt spec
-    infra_block_table = jolt_spec.get_jolt_spec('Infra_jolt_block_table')
-    infra_block_map = jolt_spec.get_jolt_spec('Infra_jolt_block_map')
-    
-    # update infra block jolt spec parameters
-    update_parameter_context('infra_block_table',infra_block_table)
-    update_parameter_context('infra_block_map',infra_block_map)
-    
-
-    # 3
-    # infra cluster jolt spec
-    infra_cluster_table = jolt_spec.get_jolt_spec('Infra_jolt_cluster_table')
-    infra_cluster_map = jolt_spec.get_jolt_spec('Infra_jolt_cluster_map')
-    
-    # update infra cluster jolt spec parameters
-    update_parameter_context('infra_cluster_table',infra_cluster_table)
-    update_parameter_context('infra_cluster_map',infra_cluster_map)
-    
-    
-    # 4
-    # infra school jolt spec
-    infra_school_table = jolt_spec.get_jolt_spec('Infra_jolt_school_table')
-    infra_school_map = jolt_spec.get_jolt_spec('Infra_jolt_school_map')
-    
-    # update infra school jolt spec parameters
-    update_parameter_context('infra_school_table',infra_school_table)
-    update_parameter_context('infra_school_map',infra_school_map)
-    
-    
-
-
-    
-     
+    return par_data     

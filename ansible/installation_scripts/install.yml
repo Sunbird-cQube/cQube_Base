@@ -20,7 +20,7 @@
           - prometheus
           - { role: grafana, tags: install }
           - { role: nifi_params, tags: install }
-          - nifi_install    
+          - nifi_install   
 
           - role: nifi_crc
             tags: install
@@ -28,7 +28,6 @@
 
           - role: nifi_static
             tags: install
-            when: nifi_static
 
           - role: nifi_attendance
             tags: install
@@ -53,6 +52,14 @@
           - role: nifi_udise
             tags: install
             when: nifi_udise
+
+          - role: nifi_pat
+            tags: install
+            when: nifi_pat
+
+          - role: nifi_composite
+            tags: install
+            when: nifi_composite
 
           - { role: nifi_scheduler, tags: install }
           - cqube_version
