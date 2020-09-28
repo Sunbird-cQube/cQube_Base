@@ -698,6 +698,7 @@ export class TelemetryDataComponent implements OnInit {
       }
     });
     var yourData;
+    this.reportData.push(orgObject);
     yourData = this.commonService.getInfoFrom(orgObject, "", level, "telemetry", undefined, undefined).join(" <br>");
 
     //Generate dynamic tool-tip
