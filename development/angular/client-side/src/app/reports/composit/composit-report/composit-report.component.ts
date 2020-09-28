@@ -72,6 +72,8 @@ export class CompositReportComponent implements OnInit {
       this.districtWise();
     }, err => {
       this.result = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
       this.commonService.loaderAndErr(this.result);
     });
 
