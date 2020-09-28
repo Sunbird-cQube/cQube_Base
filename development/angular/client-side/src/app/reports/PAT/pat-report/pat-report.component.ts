@@ -1008,8 +1008,9 @@ export class PATReportComponent implements OnInit {
       }
     });
     Object.keys(details).forEach(key => {
+      var str = key.charAt(0).toUpperCase() + key.substr(1).toLowerCase();
       if (key !== "longitude") {
-        orgObject[key] = details[key];
+        orgObject[`${str}`] = details[key];
       }
     });
     var ordered = {};

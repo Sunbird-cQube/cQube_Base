@@ -518,7 +518,7 @@ export class CompositReportComponent implements OnInit {
         this.blockWise();
       } else if (this.fileName == "Cluster_level_report") {
         this.clusterWise();
-      } 
+      }
       // else if (this.fileName == "School_level_report") {
       //   this.schoolWise();
       // }
@@ -608,6 +608,7 @@ export class CompositReportComponent implements OnInit {
     let newData = [];
     $.each(this.reportData, function (key, value) {
       let headers = Object.keys(value);
+      console.log(headers);
       let newObj = {}
       for (var i = 0; i < Object.keys(value).length; i++) {
         if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'cluster' && headers[i] != 'school' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
@@ -620,8 +621,12 @@ export class CompositReportComponent implements OnInit {
         } else {
           newObj[headers[i]] = value[headers[i]].value;
         }
+
+        var myStr = headers[i].charAt(0).toUpperCase() + headers[i].substr(1).toLowerCase();
+        newObj[`${myStr}`] = newObj[headers[i]];
+        delete newObj[headers[i]]
+        newData.push(newObj);
       }
-      newData.push(newObj);
     })
     this.reportData = newData
     this.downloadRoport();
