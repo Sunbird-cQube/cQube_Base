@@ -623,11 +623,10 @@ export class CompositReportComponent implements OnInit {
           }
         } else {
           newObj[`${headers[i]}`] = value[`${headers[i]}`].value;
+          var myStr = headers[i].charAt(0).toUpperCase() + headers[i].substr(1).toLowerCase();
+          newObj[`${myStr}`] = newObj[headers[i]];
+          delete newObj[headers[i]]
         }
-
-        var myStr = headers[i].charAt(0).toUpperCase() + headers[i].substr(1).toLowerCase();
-        newObj[`${myStr}`] = newObj[headers[i]];
-        delete newObj[headers[i]]
       }
       newData.push(newObj);
     })
