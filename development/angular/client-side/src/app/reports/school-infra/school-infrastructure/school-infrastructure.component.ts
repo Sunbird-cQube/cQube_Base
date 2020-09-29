@@ -636,10 +636,10 @@ export class SchoolInfrastructureComponent implements OnInit {
       let newObj = {}
       for (var i = 0; i < Object.keys(value).length; i++) {
         if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
-          if (value[headers[i]].value) {
+          if (value[headers[i]].value >= 0) {
             newObj[`${headers[i]}_value`] = value[headers[i]].value;
           }
-          if (value[headers[i]].percent) {
+          if (value[headers[i]].percent >= 0) {
             newObj[`${headers[i]}_percent`] = value[headers[i]].percent;
           }
         } else {
@@ -672,7 +672,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
   downloadRoport() {
     if (this.reportData.length == 0) {
-      alert("No data fount to download");
+      alert("No data found to download");
     } else {
       const options = {
         fieldSeparator: ',',

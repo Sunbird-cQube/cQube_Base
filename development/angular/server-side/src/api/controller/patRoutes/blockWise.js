@@ -6,8 +6,15 @@ const s3File = require('../../lib/reads3File');
 router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- all blocks PAT api ---');
-        let fileName = `pat/pat_block.json`
-        var blockData = await s3File.readS3File(fileName);
+        let fileName;
+        var blockData = {}
+        if (req.body.data) {
+            fileName = `pat/block/${req.body.data}.json`;
+            blockData = await s3File.readS3File(fileName);
+        } else {
+            fileName = `pat/pat_block.json`
+            blockData = await s3File.readS3File(fileName);
+        }
         var mydata = blockData.data;
         logger.info('--- blocks PAT api response sent---');
         res.status(200).send({ data: mydata, footer: blockData.AllBlocksFooter });
@@ -26,7 +33,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         let distId = req.params.distId
 
         let filterData = blockData.data.filter(obj => {
-            return (obj.details.district_id == distId)
+            return (obj.Details.district_id == distId)
         })
         let mydata = filterData;
         logger.info('--- block per dist PAT api response sent---');

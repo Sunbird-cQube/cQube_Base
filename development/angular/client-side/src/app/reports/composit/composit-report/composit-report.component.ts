@@ -54,6 +54,8 @@ export class CompositReportComponent implements OnInit {
   public fileName: any;
   public reportData: any;
   public myData;
+  public downloadType: string;
+
 
   constructor(public http: HttpClient, public service: CompositReportService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent,) {
     localStorage.removeItem('resData');
@@ -68,7 +70,12 @@ export class CompositReportComponent implements OnInit {
       this.xAxis = Object.keys(this.result[0])[1];
       this.yAxis = Object.keys(this.result[0])[1];
       this.districtWise();
-    })
+    }, err => {
+      this.result = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
+      this.commonService.loaderAndErr(this.result);
+    });
 
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('backBtn').style.display = "none";
@@ -109,10 +116,11 @@ export class CompositReportComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.dist_wise_data().subscribe(res => {
-      this.SchoolInfrastructureDistrictsNames = this.result = res;
+      this.reportData = this.SchoolInfrastructureDistrictsNames = this.result = res;
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
+      this.funToDownload(this.reportData);
 
       this.SchoolInfrastructureDistrictsNames.sort((a, b) => (a.district.value > b.district.value) ? 1 : ((b.district.value > a.district.value) ? -1 : 0));
       this.commonService.loaderAndErr(this.result);
@@ -292,7 +300,7 @@ export class CompositReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "Dist_level_Infra_Report";
+    this.fileName = "Dist_level_Report";
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -311,21 +319,35 @@ export class CompositReportComponent implements OnInit {
   }
 
   blockWise() {
-    this.reportData = [];
+    if (this.chartData.length !== 0) {
+      this.scatterChart.destroy();
+    }
+    this.xAxisFilter = [];
+    this.yAxisFilter = [];
+    this.downloadLevel = 'block';
+    this.tableHead = "Block Name";
+    this.fileName = "Block_level_report";
+
+    this.myDistrict = '';
+
+    this.dist = false;
+    this.blok = false;
+    this.clust = false;
+    this.skul = true;
     this.commonService.errMsg();
-    var element1: any = document.getElementsByClassName('dwnld');
-    // element1[0].disabled = true;
-    this.fileName = "Block_level_Infra_Report";
+    this.blockHidden = true;
+    this.clusterHidden = true;
+    this.reportData = [];
+    document.getElementById('home').style.display = 'block';
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service.block_wise_data().subscribe(res => {
-      this.reportData = res;
-      if (res !== null) {
-        document.getElementById('spinner').style.display = 'none';
-        element1[0].disabled = false;
-      }
-      this.funToDownload(this.reportData);
+      this.reportData = this.result = res;
+      //for chart =============================================
+      this.showChart(this.result, this.downloadLevel);
+      //====================================
+      this.commonService.loaderAndErr(this.result);
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
@@ -334,21 +356,35 @@ export class CompositReportComponent implements OnInit {
   }
 
   clusterWise() {
-    this.reportData = [];
+    if (this.chartData.length !== 0) {
+      this.scatterChart.destroy();
+    }
+    this.xAxisFilter = [];
+    this.yAxisFilter = [];
+    this.downloadLevel = 'cluster';
+    this.tableHead = "Cluster Name";
+    this.fileName = "Cluster_level_report";
+
+    this.myDistrict = '';
+
+    this.dist = false;
+    this.blok = false;
+    this.clust = false;
+    this.skul = true;
     this.commonService.errMsg();
-    var element1: any = document.getElementsByClassName('dwnld');
-    // element1[0].disabled = true;
-    this.fileName = "Cluster_level_Infra_Report";
+    this.blockHidden = true;
+    this.clusterHidden = true;
+    this.reportData = [];
+    document.getElementById('home').style.display = 'block';
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service.cluster_wise_data().subscribe(res => {
-      this.reportData = res;
-      if (res !== null) {
-        document.getElementById('spinner').style.display = 'none';
-        element1[0].disabled = false;
-      }
-      this.funToDownload(this.reportData);
+      this.reportData = this.result = res;
+      //for chart =============================================
+      this.showChart(this.result, this.downloadLevel);
+      //====================================
+      this.commonService.loaderAndErr(this.result);
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
@@ -356,28 +392,42 @@ export class CompositReportComponent implements OnInit {
     });
   }
 
-  schoolWise() {
-    this.reportData = [];
-    this.commonService.errMsg();
-    var element1: any = document.getElementsByClassName('dwnld');
-    // element1[0].disabled = true;
-    this.fileName = "School_level_Infra_Report";
-    if (this.myData) {
-      this.myData.unsubscribe();
-    }
-    this.myData = this.service.school_wise_data().subscribe(res => {
-      this.reportData = res;
-      if (res !== null) {
-        document.getElementById('spinner').style.display = 'none';
-        element1[0].disabled = false;
-      }
-      this.funToDownload(this.reportData);
-      this.changeDetection.markForCheck();
-    }, err => {
-      this.chartData = [];
-      this.commonService.loaderAndErr(this.result);
-    });
-  }
+  // schoolWise() {
+  //   if (this.chartData.length !== 0) {
+  //     this.scatterChart.destroy();
+  //   }
+  //   this.xAxisFilter = [];
+  //   this.yAxisFilter = [];
+  //   this.downloadLevel = 'school';
+  //   this.tableHead = "School Name";
+  //   this.fileName = "School_level_report";
+
+  //   this.myDistrict = '';
+
+  //   this.dist = false;
+  //   this.blok = false;
+  //   this.clust = false;
+  //   this.skul = true;
+  //   this.commonService.errMsg();
+  //   this.blockHidden = true;
+  //   this.clusterHidden = true;
+  //   this.reportData = [];
+  //   document.getElementById('home').style.display = 'block';
+  //   if (this.myData) {
+  //     this.myData.unsubscribe();
+  //   }
+  //   this.myData = this.service.school_wise_data().subscribe(res => {
+  //     this.reportData = this.result = res;
+  //     //for chart =============================================
+  //     this.showChart(this.result, this.downloadLevel);
+  //     //====================================
+  //     this.commonService.loaderAndErr(this.result);
+  //     this.changeDetection.markForCheck();
+  //   }, err => {
+  //     this.chartData = [];
+  //     this.commonService.loaderAndErr(this.result);
+  //   });
+  // }
 
 
   showChart(result, downloadType) {
@@ -400,25 +450,26 @@ export class CompositReportComponent implements OnInit {
     var labels = [];
     this.chartData = []
     var j;
+
     for (var i = 0; i < result.length; i++) {
       j = i;
       if (result[i][this.xAxis] && result[i][this.yAxis]) {
         var x = undefined, y = undefined;
-        if (result[i][this.xAxis].percent && result[i][this.yAxis].percent) {
-          x = Number(result[i][this.xAxis].percent); ``
-          y = Number(result[i][this.yAxis].percent);
+        if (result[i][this.xAxis].percent >= 0 && result[i][this.yAxis].percent >= 0) {
+          x = parseFloat(result[i][this.xAxis].percent);
+          y = parseFloat(result[i][this.yAxis].percent);
         }
-        if (result[i][this.xAxis].percent && result[i][this.yAxis].value) {
-          x = Number(result[i][this.xAxis].percent);
-          y = Number(result[i][this.yAxis].value);
+        if (result[i][this.xAxis].percent >= 0 && result[i][this.yAxis].value >= 0) {
+          x = parseFloat(result[i][this.xAxis].percent);
+          y = parseFloat(result[i][this.yAxis].value);
         }
-        if (result[i][this.xAxis].value && result[i][this.yAxis].value) {
-          x = Number(result[i][this.xAxis].value);
-          y = Number(result[i][this.yAxis].value);
+        if (result[i][this.xAxis].value >= 0 && result[i][this.yAxis].value >= 0) {
+          x = parseFloat(result[i][this.xAxis].value);
+          y = parseFloat(result[i][this.yAxis].value);
         }
-        if (result[i][this.xAxis].value && result[i][this.yAxis].percent) {
-          x = Number(result[i][this.xAxis].value);
-          y = Number(result[i][this.yAxis].percent);
+        if (result[i][this.xAxis].value >= 0 && result[i][this.yAxis].percent >= 0) {
+          x = parseFloat(result[i][this.xAxis].value);
+          y = parseFloat(result[i][this.yAxis].percent);
         }
 
         this.chartData.push({ x: x, y: y });
@@ -466,7 +517,17 @@ export class CompositReportComponent implements OnInit {
 
   selectAxis() {
     if (this.skul) {
-      this.districtWise();
+      if (this.fileName == "Dist_level_report") {
+        this.districtWise();
+      } else if (this.fileName == "Block_level_report") {
+        this.blockWise();
+      } else if (this.fileName == "Cluster_level_report") {
+        this.clusterWise();
+      }
+      // else if (this.fileName == "School_level_report") {
+      //   this.schoolWise();
+      // }
+
     }
     if (this.dist) {
       this.myDistData(JSON.parse(localStorage.getItem('distId')));
@@ -487,7 +548,7 @@ export class CompositReportComponent implements OnInit {
         datasets: [{
           data: chartData,
           pointBackgroundColor: "#4890b5",
-          pointRadius: 6
+          pointRadius: 4
         }]
       },
       options: {
@@ -548,47 +609,29 @@ export class CompositReportComponent implements OnInit {
     });
   }
 
-  funToDownload(reportData) {
+  funToDownload(data) {
     let newData = [];
-    $.each(reportData, function (key, value) {
+    $.each(data, function (key, value) {
       let headers = Object.keys(value);
       let newObj = {}
       for (var i = 0; i < Object.keys(value).length; i++) {
-        if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
-          if (value[headers[i]].value) {
-            newObj[`${headers[i]}`] = value[headers[i]].value;
-          }
-          if (value[headers[i]].percent) {
-            newObj[`${headers[i]}`] = value[headers[i]].percent;
+        if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'cluster' && headers[i] != 'school' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
+          if (value[headers[i]].value >= 0) {
+            newObj[`${headers[i]}`] = value[`${headers[i]}`].value;
+          } else if (value[headers[i]].percent >= 0) {
+            newObj[`${headers[i]}`] = value[`${headers[i]}`].percent;
           }
         } else {
-          newObj[headers[i]] = value[headers[i]].value;
+          newObj[`${headers[i]}`] = value[`${headers[i]}`].value;
+          var myStr = headers[i].charAt(0).toUpperCase() + headers[i].substr(1).toLowerCase();
+          newObj[`${myStr}`] = newObj[headers[i]];
+          delete newObj[headers[i]]
         }
       }
       newData.push(newObj);
     })
     this.reportData = newData
-    if (this.downloadType === 'Dist Wise' || this.downloadType === 'Block Wise' || this.downloadType === 'Cluster Wise' || this.downloadType === 'School Wise') {
-      this.downloadRoport();
-    }
   }
-
-  public downloadType: string;
-  downloadReportofState(downloadType) {
-    if (downloadType === 'Dist Wise') {
-      this.distWise();
-    }
-    if (downloadType === 'Block Wise') {
-      this.blockWise();
-    }
-    if (downloadType === 'Cluster Wise') {
-      this.clusterWise();
-    }
-    if (downloadType === 'School Wise') {
-      this.schoolWise();
-    }
-  }
-
   downloadRoport() {
     this.commonService.download(this.fileName, this.reportData);
   }

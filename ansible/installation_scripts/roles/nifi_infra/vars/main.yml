@@ -2,3 +2,4 @@
 
 parameter_name: infra_parameters
 parameter_path: "{{ base_dir }}/cqube/emission_app/python/infra_parameters.txt"
+jolt_parameter_name: infra_parameters

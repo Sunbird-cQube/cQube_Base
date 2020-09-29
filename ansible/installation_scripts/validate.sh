@@ -235,10 +235,6 @@ base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 check_mem
 check_version 
 
-
-# Making default postgres install true
-sudo sed -i "s/^pg_install_flag:.*/pg_install_flag: true/g" roles/createdb/vars/main.yml
-
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}
 do

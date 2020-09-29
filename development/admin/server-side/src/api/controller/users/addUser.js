@@ -21,9 +21,6 @@ router.post('/', auth.authController, async function (req, res) {
         }
 
         var userDetails = {
-            firstName: req.body.firstname,
-            lastName: req.body.lastname,
-            email: req.body.email,
             username: req.body.username,
             credentials: [
                 {
@@ -60,7 +57,7 @@ router.post('/getAllUsers', auth.authController, async (req, res) => {
         }
 
         var users = await axios.get(usersUrl, { headers: headers });
-        var user = users.data.find(o => o.email == req.body.email && o.username == req.body.username);
+        var user = users.data.find(o => o.username == req.body.username.toLowerCase());
 
         logger.info('---get all user api response sent---');
 
