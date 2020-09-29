@@ -52,6 +52,22 @@
     mode: "0644"
   tags: install
 
+- name: Creating nifi_queries directory
+  file:
+    path: "{{ base_dir }}/cqube/nifi_queries"
+    state: directory
+  tags: [ install, update ]
+    
+- name: Copying the query files to nifi directory
+  copy: 
+    src: ../../development/nifi/reports_queries/{{ item }}
+    dest: "{{ base_dir }}/cqube/nifi_queries/{{ item }}"
+    mode: "0644"
+  with_items:
+    - composite_queries.json
+    - pat_queries.json
+  tags: [install, update]
+
 - name: Touch a file
   file:
     path: "{{ base_dir }}/cqube/emission_app/python/nifi_env_db.py"
