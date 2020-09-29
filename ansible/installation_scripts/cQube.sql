@@ -3685,7 +3685,7 @@ id	int,
 exam_id	int,
 exam_code	varchar(100),
 student_id	bigint,
-student_uid	bigint,
+student	_uid	bigint,
 school_id	bigint,
 studying_class	int,
 section	varchar(20),
@@ -3786,8 +3786,8 @@ updated_on  timestamp
 );
 
 create table if not exists periodic_exam_result_staging_1(
-id  int primary key not null,
-ffuid text,
+id  int,
+ff_uuid text,
 exam_id  int,
 exam_code  varchar(100),
 student_id  bigint,
@@ -3802,8 +3802,8 @@ updated_on  timestamp
 );
 
 create table if not exists periodic_exam_result_staging_2(
-id  int primary key not null,
-ffuid text,
+id  int,
+ff_uuid text,
 exam_id  int,
 exam_code  varchar(100),
 student_id  bigint,
@@ -3882,6 +3882,6 @@ CREATE TABLE IF NOT EXISTS composite_config (
  table_join text,
  category text,
  jolt_spec text,
-primary key(template,category)
+ primary key(template,category)
 );
 
