@@ -1454,5 +1454,7 @@ over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
 "udise_save_to_sch_pgi_details_dup":"""udise_sch_pgi_details_dup""",
 "udise_save_to_sch_safety_dup":"""udise_sch_safety_dup""",
 "udise_sum_of_dup":"select sum(num_of_times) from flowfile",
-"udise_update_null_count_nsqf_enr_caste_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, sector_no = udise_null_col.count_null_sector_no, item_id = udise_null_col.count_null_item_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid"""
+"udise_update_null_count_nsqf_enr_caste_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, sector_no = udise_null_col.count_null_sector_no, item_id = udise_null_col.count_null_item_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
+"udise_sch_safety_table_name":"""udise_sch_safety""",
+"udise_update_null_count_nsqf_exmres_c12_qry":"""update log_summary  SET udise_sch_code = udise_null_col.count_null_udise_sch_code, sector_no = udise_null_col.count_null_sector_no, marks_range_id = udise_null_col.count_null_marks_range_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid"""
 }
