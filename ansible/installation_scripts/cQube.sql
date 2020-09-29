@@ -2864,6 +2864,19 @@ smdc_pta_yn  smallint,
 smdc_pta_meeting  smallint
 );
 
+alter table udise_sch_profile drop column if exists smc_bnk_name ;
+alter table udise_sch_profile drop column if exists smc_bnk_br ;
+alter table udise_sch_profile drop column if exists smc_bnkac_no ;
+alter table udise_sch_profile drop column if exists smc_bnkac_ifsc ;
+alter table udise_sch_profile drop column if exists smc_bnkac_name ;
+alter table udise_sch_profile drop column if exists smdc_bnk_name ;
+alter table udise_sch_profile drop column if exists smdc_bnk_br ;
+alter table udise_sch_profile drop column if exists smdc_bnkac_no ;
+alter table udise_sch_profile drop column if exists smdc_bnkac_ifsc ;
+alter table udise_sch_profile drop column if exists smdc_bnkac_name ;
+
+
+
 create table if not exists udise_sch_staff_posn(
 udise_sch_code  bigint primary key not null,
 ac_year  text,
