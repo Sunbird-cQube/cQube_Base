@@ -1595,7 +1595,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
                             </entry>
                             <entry>
 <key>filename</key>
-<value>#{base_dir}/cQube/development/nifi/reports_queries/#{comp_queries_filename}</value>
+<value>#{base_dir}/cqube/nifi_queries/#{comp_queries_filename}</value>
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
@@ -1732,6 +1732,18 @@ file:${filename},Error while executing "${query_type}" query.</value>
     <name>character-set</name>
 </value>
                             </entry>
+                            <entry>
+<key>schedulingPeriod</key>
+<value>
+    <name>schedulingPeriod</name>
+</value>
+                            </entry>
+                            <entry>
+<key>schedulingStrategy</key>
+<value>
+    <name>schedulingStrategy</name>
+</value>
+                            </entry>
                         </descriptors>
                         <executionNode>ALL</executionNode>
                         <lossTolerant>false</lossTolerant>
@@ -1760,9 +1772,17 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <key>character-set</key>
 <value>UTF-8</value>
                             </entry>
+                            <entry>
+<key>schedulingPeriod</key>
+<value>* * * * 1 ?</value>
+                            </entry>
+                            <entry>
+<key>schedulingStrategy</key>
+<value>CRON_DRIVEN</value>
+                            </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 day</schedulingPeriod>
+                        <schedulingPeriod>1day</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -2553,5 +2573,5 @@ ${query_type:startsWith('comp_district_wise'):ifElse('comp_district.json','None'
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/25/2020 15:06:55 IST</timestamp>
+    <timestamp>09/29/2020 11:20:54 IST</timestamp>
 </template>
