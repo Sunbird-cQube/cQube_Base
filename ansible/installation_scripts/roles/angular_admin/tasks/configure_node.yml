@@ -60,7 +60,7 @@
       AWS_REGION= "{{ aws_default_region }}"
 
       NIFI_PROCESSORS= "crc_transformer,semester_transformer,student_attendance_transformer,diksha_transformer,infra_transformer,static_data_transformer,udise_transformer,pat_transformer,composite_transformer"
-      NIFI_URL= "https://{{ api_endpoint }}/nifi-api"
+      NIFI_URL= "https://localhost/nifi-api"
 
       NODE_ENV= "DEVELOPMENT"
       LOG= "console"
