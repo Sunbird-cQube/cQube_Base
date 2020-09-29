@@ -3563,6 +3563,17 @@ smdc_subexp_f smallint, smdc_tch_m smallint, smdc_tch_f smallint, smdc_vp_m smal
 smdc_cp_f smallint, smdc_trained_m smallint, smdc_trained_f smallint, smdc_meetings smallint, smdc_sdp_yn smallint, smdc_bnkac_yn smallint, smdc_sbc_yn smallint, 
 smdc_acadcom_yn smallint, smdc_pta_yn smallint, smdc_pta_meeting smallint ,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_sch_profile_dup drop column if exists smc_bnk_name ;
+alter table udise_sch_profile_dup drop column if exists smc_bnk_br ;
+alter table udise_sch_profile_dup drop column if exists smc_bnkac_no ;
+alter table udise_sch_profile_dup drop column if exists smc_bnkac_ifsc ;
+alter table udise_sch_profile_dup drop column if exists smc_bnkac_name ;
+alter table udise_sch_profile_dup drop column if exists smdc_bnk_name ;
+alter table udise_sch_profile_dup drop column if exists smdc_bnk_br ;
+alter table udise_sch_profile_dup drop column if exists smdc_bnkac_no ;
+alter table udise_sch_profile_dup drop column if exists smdc_bnkac_ifsc ;
+alter table udise_sch_profile_dup drop column if exists smdc_bnkac_name ;
+
 create table if not exists udise_sch_staff_posn_dup( udise_sch_code bigint primary key , ac_year text, tch_regular smallint, tch_contract smallint, tch_part_time smallint, nontch_accnt smallint, nontch_lib_asst smallint, nontch_lab_asst smallint, nontch_udc smallint, nontch_ldc smallint, nontch_peon smallint, nontch_watchman smallint, tch_hav_adhr smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
 
