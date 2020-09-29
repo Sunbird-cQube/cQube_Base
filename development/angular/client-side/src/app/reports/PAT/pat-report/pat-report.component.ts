@@ -185,7 +185,9 @@ export class PATReportComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
       this.service.gradeMetaData().subscribe(res => {
-        this.allGrades = res['data']['district'];
+        if (res['data']['district']) {
+          this.allGrades = res['data']['district'];
+        }
         this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
 
         if (this.myData) {
@@ -279,7 +281,9 @@ export class PATReportComponent implements OnInit {
       this.clusterHidden = true;
 
       this.service.gradeMetaData().subscribe(res => {
-        this.allGrades = res['data']['block'];
+        if (res['data']['block']) {
+          this.allGrades = res['data']['block'];
+        }
         this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
 
         // api call to get the all clusters data
@@ -400,7 +404,9 @@ export class PATReportComponent implements OnInit {
       this.clusterHidden = true;
 
       this.service.gradeMetaData().subscribe(res => {
-        this.allGrades = res['data']['cluster'];
+        if (res['data']['cluster']) {
+          this.allGrades = res['data']['cluster'];
+        }
         this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
 
         // api call to get the all clusters data
@@ -515,7 +521,9 @@ export class PATReportComponent implements OnInit {
       this.clusterHidden = true;
 
       this.service.gradeMetaData().subscribe(res => {
+        if (res['data']['school']) {
         this.allGrades = res['data']['school'];
+        }
         this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
 
         // api call to get the all schools data
