@@ -258,7 +258,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, this.colors[i], 3.5, 1, 0.01, this.levelWise);
-              this.generateToolTip(markerIcon, this.blockMarkers[i], this.levelWise, this.reportData);
+              this.generateToolTip(markerIcon, this.blockMarkers[i], this.levelWise);
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -330,7 +330,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, this.colors[i], 0, 1, 0.01, this.levelWise);
-              this.generateToolTip(markerIcon, this.clusterMarkers[i], this.levelWise, this.reportData);
+              this.generateToolTip(markerIcon, this.clusterMarkers[i], this.levelWise);
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -400,7 +400,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, this.colors[i], 0, 0, 0, this.levelWise);
-              this.generateToolTip(markerIcon, this.schoolMarkers[i], this.levelWise, this.reportData);
+              this.generateToolTip(markerIcon, this.schoolMarkers[i], this.levelWise);
             }
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
@@ -679,7 +679,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
   genericFun(data, options, fileName) {
     this.reportData = [];
     if (data['sortedData'].length > 0) {
-      this.markers = data['sortedData']
+     this.markers = data['sortedData']
 
       // generate color gradient
       let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
@@ -692,7 +692,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
         // data to show on the tooltip for the desired levels
         if (options.level) {
-          this.generateToolTip(markerIcon, this.markers[i], options.level, this.reportData);
+          this.generateToolTip(markerIcon, this.markers[i], options.level);
           this.fileName = fileName;
         }
       }
@@ -723,7 +723,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
   }
 
   //Generate dynamic tool-tip
-  generateToolTip(markerIcon, markers, levelWise, reportData) {
+  generateToolTip(markerIcon, markers, levelWise) {
     this.popups(markerIcon, markers, levelWise);
     var details = {};
     var orgObject = {};
@@ -738,7 +738,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
       }
     });
 
-    var yourData = this.commonService.getInfoFrom(orgObject, "semester_performance", levelWise, reportData, "std-attd", undefined, undefined).join(" <br>");
+    this.reportData.push(orgObject);
+
+    var yourData = this.commonService.getInfoFrom(orgObject, "semester_performance", levelWise, "std-attd", undefined, undefined).join(" <br>");
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);

@@ -1464,12 +1464,12 @@ fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trai
 fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained from(select udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
 fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained,row_number() over (partition by udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
 fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained) as rn from flowfile) sq Where rn =1""",
-"udise_check_same_id_sch_safety_qry":"""SELECT udise_sch_code,b.ac_year,b.sdmp_plan_yn,b.struct_safaud_yn,b.nonstr_safaud_yn,b.cctv_cam_yn,b.
+"udise_check_same_id_sch_safety_qry":"""SELECT b.udise_sch_code,b.ac_year,b.sdmp_plan_yn,b.struct_safaud_yn,b.nonstr_safaud_yn,b.cctv_cam_yn,b.
 fire_ext_yn,b.nodal_tch_yn,b.safty_trng_yn,b.dismgmt_taug_yn,b.slfdef_grt_yn,b.slfdef_trained,count(*) num_of_times
 from (select udise_sch_code from flowfile
 group by udise_sch_code having count(1)>1)  as a, flowfile  b
 where a.udise_sch_code=b.udise_sch_code
-group by udise_sch_code,b.ac_year,b.sdmp_plan_yn,b.struct_safaud_yn,b.nonstr_safaud_yn,b.cctv_cam_yn,b.fire_ext_yn,b.nodal_tch_yn,b.safty_trng_yn,b.dismgmt_taug_yn,b.slfdef_grt_yn,b.slfdef_trained""",
+group by b.udise_sch_code,b.ac_year,b.sdmp_plan_yn,b.struct_safaud_yn,b.nonstr_safaud_yn,b.cctv_cam_yn,b.fire_ext_yn,b.nodal_tch_yn,b.safty_trng_yn,b.dismgmt_taug_yn,b.slfdef_grt_yn,b.slfdef_trained""",
 "udise_filter_same_id_sch_safety_qry":"""SELECT   udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
 fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained from (SELECT udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
 fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained,count(*)

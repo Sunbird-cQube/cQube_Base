@@ -70,7 +70,12 @@ export class CompositReportComponent implements OnInit {
       this.xAxis = Object.keys(this.result[0])[1];
       this.yAxis = Object.keys(this.result[0])[1];
       this.districtWise();
-    })
+    }, err => {
+      this.result = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
+      this.commonService.loaderAndErr(this.result);
+    });
 
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('backBtn').style.display = "none";
@@ -518,7 +523,7 @@ export class CompositReportComponent implements OnInit {
         this.blockWise();
       } else if (this.fileName == "Cluster_level_report") {
         this.clusterWise();
-      } 
+      }
       // else if (this.fileName == "School_level_report") {
       //   this.schoolWise();
       // }
@@ -620,8 +625,12 @@ export class CompositReportComponent implements OnInit {
         } else {
           newObj[headers[i]] = value[headers[i]].value;
         }
+
+        var myStr = headers[i].charAt(0).toUpperCase() + headers[i].substr(1).toLowerCase();
+        newObj[`${myStr}`] = newObj[headers[i]];
+        delete newObj[headers[i]]
+        newData.push(newObj);
       }
-      newData.push(newObj);
     })
     this.reportData = newData
     this.downloadRoport();
