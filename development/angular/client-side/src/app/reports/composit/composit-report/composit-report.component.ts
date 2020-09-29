@@ -120,7 +120,7 @@ export class CompositReportComponent implements OnInit {
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
-      // this.funToDownload(this.reportData);
+      this.funToDownload(this.reportData);
 
       this.SchoolInfrastructureDistrictsNames.sort((a, b) => (a.district.value > b.district.value) ? 1 : ((b.district.value > a.district.value) ? -1 : 0));
       this.commonService.loaderAndErr(this.result);
@@ -169,7 +169,7 @@ export class CompositReportComponent implements OnInit {
     this.myData = this.service.block_per_dist_data(data).subscribe(res => {
       this.reportData = this.SchoolInfrastructureBlocksNames = this.result = res;
       // for download========
-      // this.funToDownload(this.reportData);
+      this.funToDownload(this.reportData);
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
@@ -225,7 +225,7 @@ export class CompositReportComponent implements OnInit {
     this.myData = this.service.cluster_per_block_data(this.distName, data).subscribe(res => {
       this.reportData = this.SchoolInfrastructureClusterNames = this.result = res;
       // for download========
-      // this.funToDownload(this.reportData);
+      this.funToDownload(this.reportData);
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
@@ -280,7 +280,7 @@ export class CompositReportComponent implements OnInit {
     this.myData = this.service.school_per_cluster_data(distId, blockId, data).subscribe(res => {
       this.reportData = this.SchoolInfrastructureSchoolNames = this.result = res;
       // for download========
-      // this.funToDownload(this.reportData);
+      this.funToDownload(this.reportData);
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
@@ -310,7 +310,7 @@ export class CompositReportComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
         element1[0].disabled = false;
       }
-      // this.funToDownload(this.reportData);
+      this.funToDownload(this.reportData);
       this.changeDetection.markForCheck();
     }, err => {
       this.chartData = [];
@@ -609,33 +609,29 @@ export class CompositReportComponent implements OnInit {
     });
   }
 
-  funToDownload() {
+  funToDownload(data) {
     let newData = [];
-    $.each(this.reportData, function (key, value) {
+    $.each(data, function (key, value) {
       let headers = Object.keys(value);
       let newObj = {}
       for (var i = 0; i < Object.keys(value).length; i++) {
         if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'cluster' && headers[i] != 'school' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
           if (value[headers[i]].value >= 0) {
-            newObj[`${headers[i]}`] = value[headers[i]].value;
-          }
-          if (value[headers[i]].percent >= 0) {
-            newObj[`${headers[i]}`] = value[headers[i]].percent;
+            newObj[`${headers[i]}`] = value[`${headers[i]}`].value;
+          } else if (value[headers[i]].percent >= 0) {
+            newObj[`${headers[i]}`] = value[`${headers[i]}`].percent;
           }
         } else {
-          newObj[headers[i]] = value[headers[i]].value;
+          newObj[`${headers[i]}`] = value[`${headers[i]}`].value;
+          var myStr = headers[i].charAt(0).toUpperCase() + headers[i].substr(1).toLowerCase();
+          newObj[`${myStr}`] = newObj[headers[i]];
+          delete newObj[headers[i]]
         }
-
-        var myStr = headers[i].charAt(0).toUpperCase() + headers[i].substr(1).toLowerCase();
-        newObj[`${myStr}`] = newObj[headers[i]];
-        delete newObj[headers[i]]
-        newData.push(newObj);
       }
+      newData.push(newObj);
     })
     this.reportData = newData
-    this.downloadRoport();
   }
-
   downloadRoport() {
     this.commonService.download(this.fileName, this.reportData);
   }

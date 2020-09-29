@@ -944,7 +944,7 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-drop view semester_exception_completion_data;
+drop view if exists semester_exception_completion_data;
 
 /*Diksha config script*/
 
