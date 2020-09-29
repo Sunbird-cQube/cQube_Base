@@ -1063,278 +1063,202 @@ sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b
 sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g,count(*)
 over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
 "udise_check_same_record_sch_profile_qry":"""SELECT
-udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,
-c11_sec,c12_sec,estd_year ,recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,
-upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
-resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,
-boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,boarding_hsec_yn,boarding_hsec_b,
-boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,
-medinstr_oth,lang1,lang2,lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,
-board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,distance_hsec,approach_road_yn,
-ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,
-anganwadi_stu_g,anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,
-workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,sch_hrs_stu_sec,sch_hrs_stu_hsec,
-sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
-cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,
-rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,
-rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,
-rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,rte_bld_c4_b,rte_bld_c4_g,
-rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
-rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,
-spltrg_cy_prov_g,spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,
-remedial_tch_enrol,session_start_mon,txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,
-txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,
-playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,no_visit_brc,no_visit_dis,
-smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
-smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smc_bnk_name,smc_bnk_br,
-smc_bnkac_no,smc_bnkac_ifsc,smc_bnkac_name,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,
-smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,
-smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,smdc_tch_m,smdc_tch_f,smdc_vp_m,
-smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,smdc_sdp_yn,
-smdc_bnkac_yn,smdc_bnk_name,smdc_bnk_br,smdc_bnkac_no,smdc_bnkac_ifsc,smdc_bnkac_name,smdc_sbc_yn,smdc_acadcom_yn,
-smdc_pta_yn,smdc_pta_meeting,count(udise_sch_code)-1  num_of_times
+udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting,count(udise_sch_code)-1  num_of_times
 FROM flowfile
-GROUP BY udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,
-c11_sec,c12_sec,estd_year ,recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,
-upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
-resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,
-boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,boarding_hsec_yn,boarding_hsec_b,
-boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,
-medinstr_oth,lang1,lang2,lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,
-board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,distance_hsec,approach_road_yn,
-ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,
-anganwadi_stu_g,anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,
-workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,sch_hrs_stu_sec,sch_hrs_stu_hsec,
-sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
-cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,
-rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,
-rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,
-rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,rte_bld_c4_b,rte_bld_c4_g,
-rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
-rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,
-spltrg_cy_prov_g,spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,
-remedial_tch_enrol,session_start_mon,txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,
-txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,
-playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,no_visit_brc,no_visit_dis,
-smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
-smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smc_bnk_name,smc_bnk_br,
-smc_bnkac_no,smc_bnkac_ifsc,smc_bnkac_name,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,
-smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,
-smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,smdc_tch_m,smdc_tch_f,smdc_vp_m,
-smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,smdc_sdp_yn,
-smdc_bnkac_yn,smdc_bnk_name,smdc_bnk_br,smdc_bnkac_no,smdc_bnkac_ifsc,smdc_bnkac_name,smdc_sbc_yn,smdc_acadcom_yn,
-smdc_pta_yn,smdc_pta_meeting  HAVING  COUNT(*) > 1""",
-"udise_filter_same_record_sch_profile_qry":"""select udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,
-c11_sec,c12_sec,estd_year ,recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,
-upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
-resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,
-boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,boarding_hsec_yn,boarding_hsec_b,
-boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,
-medinstr_oth,lang1,lang2,lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,
-board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,distance_hsec,approach_road_yn,
-ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,
-anganwadi_stu_g,anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,
-workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,sch_hrs_stu_sec,sch_hrs_stu_hsec,
-sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
-cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,
-rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,
-rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,
-rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,rte_bld_c4_b,rte_bld_c4_g,
-rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
-rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,
-spltrg_cy_prov_g,spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,
-remedial_tch_enrol,session_start_mon,txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,
-txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,
-playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,no_visit_brc,no_visit_dis,
-smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
-smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smc_bnk_name,smc_bnk_br,
-smc_bnkac_no,smc_bnkac_ifsc,smc_bnkac_name,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,
-smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,
-smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,smdc_tch_m,smdc_tch_f,smdc_vp_m,
-smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,smdc_sdp_yn,
-smdc_bnkac_yn,smdc_bnk_name,smdc_bnk_br,smdc_bnkac_no,smdc_bnkac_ifsc,smdc_bnkac_name,smdc_sbc_yn,smdc_acadcom_yn,
-smdc_pta_yn,smdc_pta_meeting from(select udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,
-c11_sec,c12_sec,estd_year ,recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,
-upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
-resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,
-boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,boarding_hsec_yn,boarding_hsec_b,
-boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,
-medinstr_oth,lang1,lang2,lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,
-board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,distance_hsec,approach_road_yn,
-ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,
-anganwadi_stu_g,anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,
-workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,sch_hrs_stu_sec,sch_hrs_stu_hsec,
-sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
-cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,
-rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,
-rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,
-rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,rte_bld_c4_b,rte_bld_c4_g,
-rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
-rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,
-spltrg_cy_prov_g,spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,
-remedial_tch_enrol,session_start_mon,txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,
-txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,
-playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,no_visit_brc,no_visit_dis,
-smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
-smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smc_bnk_name,smc_bnk_br,
-smc_bnkac_no,smc_bnkac_ifsc,smc_bnkac_name,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,
-smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,
-smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,smdc_tch_m,smdc_tch_f,smdc_vp_m,
-smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,smdc_sdp_yn,
-smdc_bnkac_yn,smdc_bnk_name,smdc_bnk_br,smdc_bnkac_no,smdc_bnkac_ifsc,smdc_bnkac_name,smdc_sbc_yn,smdc_acadcom_yn,
-smdc_pta_yn,smdc_pta_meeting,
-row_number() over (partition by udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,
-c11_sec,c12_sec,estd_year ,recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,
-upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
-resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,
-boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,boarding_hsec_yn,boarding_hsec_b,
-boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,
-medinstr_oth,lang1,lang2,lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,
-board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,distance_hsec,approach_road_yn,
-ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,
-anganwadi_stu_g,anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,
-workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,sch_hrs_stu_sec,sch_hrs_stu_hsec,
-sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
-cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,
-rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,
-rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,
-rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,rte_bld_c4_b,rte_bld_c4_g,
-rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
-rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,
-spltrg_cy_prov_g,spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,
-remedial_tch_enrol,session_start_mon,txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,
-txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,
-playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,no_visit_brc,no_visit_dis,
-smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
-smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smc_bnk_name,smc_bnk_br,
-smc_bnkac_no,smc_bnkac_ifsc,smc_bnkac_name,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,
-smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,
-smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,smdc_tch_m,smdc_tch_f,smdc_vp_m,
-smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,smdc_sdp_yn,
-smdc_bnkac_yn,smdc_bnk_name,smdc_bnk_br,smdc_bnkac_no,smdc_bnkac_ifsc,smdc_bnkac_name,smdc_sbc_yn,smdc_acadcom_yn,
-smdc_pta_yn,smdc_pta_meeting) as rn from flowfile) sq Where rn =1""",
-"udise_check_same_id_sch_profile_qry":"""SELECT b.udise_sch_code,b.ac_year,b.c0_sec,b.c1_sec,b.c2_sec,b.c3_sec,b.c4_sec,b.c5_sec,b.c6_sec,b.c7_sec,b.c8_sec,b.c9_sec,b.c10_sec,b.
-c11_sec,b.c12_sec,b.estd_year ,b.recog_year_pri ,b.recog_year_upr ,b.recog_year_sec ,b.recog_year_hsec ,b.
-upgrd_year_ele ,b.upgrd_year_sec ,b.upgrd_year_hsec ,b.cwsn_sch_yn,b.shift_sch_yn,b.resi_sch_yn,b.
-resi_sch_type,b.boarding_pri_yn,b.boarding_pri_b,b.boarding_pri_g,b.boarding_upr_yn,b.boarding_upr_b,b.
-boarding_upr_g,b.boarding_sec_yn,b.boarding_sec_b,b.boarding_sec_g,b.boarding_hsec_yn,b.boarding_hsec_b,b.
-boarding_hsec_g,b.minority_yn,b.minority_type,b.mtongue_pri,b.medinstr1,b.medinstr2,b.medinstr3,b.medinstr4,b.
-medinstr_oth,b.lang1,b.lang2,b.lang3,b.prevoc_yn,b.eduvoc_yn,b.board_sec,b.board_sec_no,b.board_sec_oth,b.board_hsec,b.
-board_hsec_no,b.board_hsec_oth,b.distance_pri,b.distance_upr,b.distance_sec,b.distance_hsec,b.approach_road_yn,b.
-ppsec_yn,b.ppstu_lkg_b,b.ppstu_lkg_g,b.ppstu_ukg_b,b.ppstu_ukg_g,b.anganwadi_yn,b.anganwadi_code,b.anganwadi_stu_b,b.
-anganwadi_stu_g,b.anganwadi_tch_trained,b.workdays_pre_pri,b.workdays_pri,b.workdays_upr,b.workdays_sec,b.
-workdays_hsec,b.sch_hrs_stu_pre_pri,b.sch_hrs_stu_pri,b.sch_hrs_stu_upr,b.sch_hrs_stu_sec,b.sch_hrs_stu_hsec,b.
-sch_hrs_tch_pre_pri,b.sch_hrs_tch_pri,b.sch_hrs_tch_upr,b.sch_hrs_tch_sec,b.sch_hrs_tch_hsec,b.cce_yn_pri,b.cce_yn_upr,b.
-cce_yn_sec,b.cce_yn_hsec,b.pcr_maintained_yn,b.pcr_shared_yn,b.rte_25p_applied,b.rte_25p_enrolled,b.rte_pvt_c0_b,b.
-rte_pvt_c0_g,b.rte_pvt_c1_b,b.rte_pvt_c1_g,b.rte_pvt_c2_b,b.rte_pvt_c2_g,b.rte_pvt_c3_b,b.rte_pvt_c3_g,b.rte_pvt_c4_b,b.rte_pvt_c4_g,b.
-rte_pvt_c5_b,b.rte_pvt_c5_g,b.rte_pvt_c6_b,b.rte_pvt_c6_g,b.rte_pvt_c7_b,b.rte_pvt_c7_g,b.rte_pvt_c8_b,b.rte_pvt_c8_g,b.rte_bld_c0_b,b.
-rte_bld_c0_g,b.rte_bld_c1_b,b.rte_bld_c1_g,b.rte_bld_c2_b,b.rte_bld_c2_g,b.rte_bld_c3_b,b.rte_bld_c3_g,b.rte_bld_c4_b,b.rte_bld_c4_g,b.
-rte_bld_c5_b,b.rte_bld_c5_g,b.rte_bld_c6_b,b.rte_bld_c6_g,b.rte_bld_c7_b,b.rte_bld_c7_g,b.rte_bld_c8_b,b.rte_bld_c8_g,b.rte_ews_c9_b,b.
-rte_ews_c9_g,b.rte_ews_c10_b,b.rte_ews_c10_g,b.rte_ews_c11_b,b.rte_ews_c11_g,b.rte_ews_c12_b,b.rte_ews_c12_g,b.spltrg_yn,b.spltrg_cy_prov_b,b.
-spltrg_cy_prov_g,b.spltrg_py_enrol_b,b.spltrg_py_enrol_g,b.spltrg_py_prov_b,b.spltrg_py_prov_g,b.spltrg_by,b.spltrg_place,b.spltrg_type,b.
-remedial_tch_enrol,b.session_start_mon,b.txtbk_recd_yn,b.txtbk_recd_mon,b.supp_mat_recd_yn,b.txtbk_pre_pri_yn,b.txtbk_pri_yn,b.
-txtbk_upr_yn,b.txtbk_sec_yn,b.txtbk_hsec_yn,b.tle_pre_pri_yn,b.tle_pri_yn,b.tle_upr_yn,b.tle_sec_yn,b.tle_hsec_yn,b.playmat_pre_pri_yn,b.
-playmat_pri_yn,b.playmat_upr_yn,b.playmat_sec_yn,b.playmat_hsec_yn,b.no_inspect,b.no_visit_crc,b.no_visit_brc,b.no_visit_dis,b.
-smc_yn,b.smc_mem_m,b.smc_mem_f,b.smc_par_m,b.smc_par_f,b.smc_par_sc,b.smc_par_st,b.smc_par_ews,b.smc_par_min,b.smc_lgb_m,b.smc_lgb_f,b.
-smc_tch_m,b.smc_tch_f,b.smc_trained_m,b.smc_trained_f,b.smc_meetings,b.smc_sdp_yn,b.smc_bnkac_yn,b.smc_bnk_name,b.smc_bnk_br,b.
-smc_bnkac_no,b.smc_bnkac_ifsc,b.smc_bnkac_name,b.smdc_smc_same_yn,b.smdc_yn,b.smdc_mem_m,b.smdc_mem_f,b.smdc_par_m,b.smdc_par_f,b.
-smdc_par_ews_m,b.smdc_par_ews_f,b.smdc_lgb_m,b.smdc_lgb_f,b.smdc_ebmc_m,b.smdc_ebmc_f,b.smdc_women_f,b.smdc_scst_m,b.smdc_scst_f,b.
-smdc_deo_m,b.smdc_deo_f,b.smdc_audit_m,b.smdc_audit_f,b.smdc_subexp_m,b.smdc_subexp_f,b.smdc_tch_m,b.smdc_tch_f,b.smdc_vp_m,b.
-smdc_vp_f,b.smdc_prin_m,b.smdc_prin_f,b.smdc_cp_m,b.smdc_cp_f,b.smdc_trained_m,b.smdc_trained_f,b.smdc_meetings,b.smdc_sdp_yn,b.
-smdc_bnkac_yn,b.smdc_bnk_name,b.smdc_bnk_br,b.smdc_bnkac_no,b.smdc_bnkac_ifsc,b.smdc_bnkac_name,b.smdc_sbc_yn,b.smdc_acadcom_yn,b.
-smdc_pta_yn,b.smdc_pta_meeting,count(*) num_of_times
+GROUP BY udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_profile_qry":"""select udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting from(select udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting,
+row_number() over (partition by udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_profile_qry":"""SELECT b.udise_sch_code,b.ac_year,b.c0_sec,b.c1_sec,b.c2_sec,b.c3_sec,b.c4_sec,b.c5_sec,b.c6_sec,b.c7_sec,b.c8_sec,b.c9_sec,b.c10_sec,b.c11_sec,b.c12_sec,b.estd_year ,b.
+recog_year_pri ,b.recog_year_upr ,b.recog_year_sec ,b.recog_year_hsec ,b.upgrd_year_ele ,b.upgrd_year_sec ,b.upgrd_year_hsec ,b.cwsn_sch_yn,b.shift_sch_yn,b.resi_sch_yn,b.
+resi_sch_type,b.boarding_pri_yn,b.boarding_pri_b,b.boarding_pri_g,b.boarding_upr_yn,b.boarding_upr_b,b.boarding_upr_g,b.boarding_sec_yn,b.boarding_sec_b,b.boarding_sec_g,b.
+boarding_hsec_yn,b.boarding_hsec_b,b.boarding_hsec_g,b.minority_yn,b.minority_type,b.mtongue_pri,b.medinstr1,b.medinstr2,b.medinstr3,b.medinstr4,b.medinstr_oth,b.lang1,b.lang2,b.
+lang3,b.prevoc_yn,b.eduvoc_yn,b.board_sec,b.board_sec_no,b.board_sec_oth,b.board_hsec,b.board_hsec_no,b.board_hsec_oth,b.distance_pri,b.distance_upr,b.distance_sec,b.
+distance_hsec,b.approach_road_yn,b.ppsec_yn,b.ppstu_lkg_b,b.ppstu_lkg_g,b.ppstu_ukg_b,b.ppstu_ukg_g,b.anganwadi_yn,b.anganwadi_code,b.anganwadi_stu_b,b.anganwadi_stu_g,b.
+anganwadi_tch_trained,b.workdays_pre_pri,b.workdays_pri,b.workdays_upr,b.workdays_sec,b.workdays_hsec,b.sch_hrs_stu_pre_pri,b.sch_hrs_stu_pri,b.sch_hrs_stu_upr,b.
+sch_hrs_stu_sec,b.sch_hrs_stu_hsec,b.sch_hrs_tch_pre_pri,b.sch_hrs_tch_pri,b.sch_hrs_tch_upr,b.sch_hrs_tch_sec,b.sch_hrs_tch_hsec,b.cce_yn_pri,b.cce_yn_upr,b.
+cce_yn_sec,b.cce_yn_hsec,b.pcr_maintained_yn,b.pcr_shared_yn,b.rte_25p_applied,b.rte_25p_enrolled,b.rte_pvt_c0_b,b.rte_pvt_c0_g,b.rte_pvt_c1_b,b.rte_pvt_c1_g,b.
+rte_pvt_c2_b,b.rte_pvt_c2_g,b.rte_pvt_c3_b,b.rte_pvt_c3_g,b.rte_pvt_c4_b,b.rte_pvt_c4_g,b.rte_pvt_c5_b,b.rte_pvt_c5_g,b.rte_pvt_c6_b,b.rte_pvt_c6_g,b.rte_pvt_c7_b,b.
+rte_pvt_c7_g,b.rte_pvt_c8_b,b.rte_pvt_c8_g,b.rte_bld_c0_b,b.rte_bld_c0_g,b.rte_bld_c1_b,b.rte_bld_c1_g,b.rte_bld_c2_b,b.rte_bld_c2_g,b.rte_bld_c3_b,b.rte_bld_c3_g,b.
+rte_bld_c4_b,b.rte_bld_c4_g,b.rte_bld_c5_b,b.rte_bld_c5_g,b.rte_bld_c6_b,b.rte_bld_c6_g,b.rte_bld_c7_b,b.rte_bld_c7_g,b.rte_bld_c8_b,b.rte_bld_c8_g,b.rte_ews_c9_b,b.
+rte_ews_c9_g,b.rte_ews_c10_b,b.rte_ews_c10_g,b.rte_ews_c11_b,b.rte_ews_c11_g,b.rte_ews_c12_b,b.rte_ews_c12_g,b.spltrg_yn,b.spltrg_cy_prov_b,b.spltrg_cy_prov_g,b.
+spltrg_py_enrol_b,b.spltrg_py_enrol_g,b.spltrg_py_prov_b,b.spltrg_py_prov_g,b.spltrg_by,b.spltrg_place,b.spltrg_type,b.remedial_tch_enrol,b.session_start_mon,b.
+txtbk_recd_yn,b.txtbk_recd_mon,b.supp_mat_recd_yn,b.txtbk_pre_pri_yn,b.txtbk_pri_yn,b.txtbk_upr_yn,b.txtbk_sec_yn,b.txtbk_hsec_yn,b.tle_pre_pri_yn,b.tle_pri_yn,b.
+tle_upr_yn,b.tle_sec_yn,b.tle_hsec_yn,b.playmat_pre_pri_yn,b.playmat_pri_yn,b.playmat_upr_yn,b.playmat_sec_yn,b.playmat_hsec_yn,b.no_inspect,b.no_visit_crc,b.
+no_visit_brc,b.no_visit_dis,b.smc_yn,b.smc_mem_m,b.smc_mem_f,b.smc_par_m,b.smc_par_f,b.smc_par_sc,b.smc_par_st,b.smc_par_ews,b.smc_par_min,b.smc_lgb_m,b.smc_lgb_f,b.
+smc_tch_m,b.smc_tch_f,b.smc_trained_m,b.smc_trained_f,b.smc_meetings,b.smc_sdp_yn,b.smc_bnkac_yn,b.
+smdc_smc_same_yn,b.smdc_yn,b.smdc_mem_m,b.smdc_mem_f,b.smdc_par_m,b.smdc_par_f,b.smdc_par_ews_m,b.smdc_par_ews_f,b.smdc_lgb_m,b.smdc_lgb_f,b.
+smdc_ebmc_m,b.smdc_ebmc_f,b.smdc_women_f,b.smdc_scst_m,b.smdc_scst_f,b.smdc_deo_m,b.smdc_deo_f,b.smdc_audit_m,b.smdc_audit_f,b.smdc_subexp_m,b.smdc_subexp_f,b.
+smdc_tch_m,b.smdc_tch_f,b.smdc_vp_m,b.smdc_vp_f,b.smdc_prin_m,b.smdc_prin_f,b.smdc_cp_m,b.smdc_cp_f,b.smdc_trained_m,b.smdc_trained_f,b.smdc_meetings,b.
+smdc_sdp_yn,b.smdc_bnkac_yn,b.smdc_sbc_yn,b.smdc_acadcom_yn,b.smdc_pta_yn,b.smdc_pta_meeting,count(*) num_of_times
 from (select udise_sch_code from flowfile
 group by udise_sch_code having count(1)>1)  as a, flowfile  b
 where a.udise_sch_code=b.udise_sch_code
-group by b.udise_sch_code,b.ac_year,b.c0_sec,b.c1_sec,b.c2_sec,b.c3_sec,b.c4_sec,b.c5_sec,b.c6_sec,b.c7_sec,b.c8_sec,b.c9_sec,b.c10_sec,b.
-c11_sec,b.c12_sec,b.estd_year ,b.recog_year_pri ,b.recog_year_upr ,b.recog_year_sec ,b.recog_year_hsec ,b.
-upgrd_year_ele ,b.upgrd_year_sec ,b.upgrd_year_hsec ,b.cwsn_sch_yn,b.shift_sch_yn,b.resi_sch_yn,b.
-resi_sch_type,b.boarding_pri_yn,b.boarding_pri_b,b.boarding_pri_g,b.boarding_upr_yn,b.boarding_upr_b,b.
-boarding_upr_g,b.boarding_sec_yn,b.boarding_sec_b,b.boarding_sec_g,b.boarding_hsec_yn,b.boarding_hsec_b,b.
-boarding_hsec_g,b.minority_yn,b.minority_type,b.mtongue_pri,b.medinstr1,b.medinstr2,b.medinstr3,b.medinstr4,b.
-medinstr_oth,b.lang1,b.lang2,b.lang3,b.prevoc_yn,b.eduvoc_yn,b.board_sec,b.board_sec_no,b.board_sec_oth,b.board_hsec,b.
-board_hsec_no,b.board_hsec_oth,b.distance_pri,b.distance_upr,b.distance_sec,b.distance_hsec,b.approach_road_yn,b.
-ppsec_yn,b.ppstu_lkg_b,b.ppstu_lkg_g,b.ppstu_ukg_b,b.ppstu_ukg_g,b.anganwadi_yn,b.anganwadi_code,b.anganwadi_stu_b,b.
-anganwadi_stu_g,b.anganwadi_tch_trained,b.workdays_pre_pri,b.workdays_pri,b.workdays_upr,b.workdays_sec,b.
-workdays_hsec,b.sch_hrs_stu_pre_pri,b.sch_hrs_stu_pri,b.sch_hrs_stu_upr,b.sch_hrs_stu_sec,b.sch_hrs_stu_hsec,b.
-sch_hrs_tch_pre_pri,b.sch_hrs_tch_pri,b.sch_hrs_tch_upr,b.sch_hrs_tch_sec,b.sch_hrs_tch_hsec,b.cce_yn_pri,b.cce_yn_upr,b.
-cce_yn_sec,b.cce_yn_hsec,b.pcr_maintained_yn,b.pcr_shared_yn,b.rte_25p_applied,b.rte_25p_enrolled,b.rte_pvt_c0_b,b.
-rte_pvt_c0_g,b.rte_pvt_c1_b,b.rte_pvt_c1_g,b.rte_pvt_c2_b,b.rte_pvt_c2_g,b.rte_pvt_c3_b,b.rte_pvt_c3_g,b.rte_pvt_c4_b,b.rte_pvt_c4_g,b.
-rte_pvt_c5_b,b.rte_pvt_c5_g,b.rte_pvt_c6_b,b.rte_pvt_c6_g,b.rte_pvt_c7_b,b.rte_pvt_c7_g,b.rte_pvt_c8_b,b.rte_pvt_c8_g,b.rte_bld_c0_b,b.
-rte_bld_c0_g,b.rte_bld_c1_b,b.rte_bld_c1_g,b.rte_bld_c2_b,b.rte_bld_c2_g,b.rte_bld_c3_b,b.rte_bld_c3_g,b.rte_bld_c4_b,b.rte_bld_c4_g,b.
-rte_bld_c5_b,b.rte_bld_c5_g,b.rte_bld_c6_b,b.rte_bld_c6_g,b.rte_bld_c7_b,b.rte_bld_c7_g,b.rte_bld_c8_b,b.rte_bld_c8_g,b.rte_ews_c9_b,b.
-rte_ews_c9_g,b.rte_ews_c10_b,b.rte_ews_c10_g,b.rte_ews_c11_b,b.rte_ews_c11_g,b.rte_ews_c12_b,b.rte_ews_c12_g,b.spltrg_yn,b.spltrg_cy_prov_b,b.
-spltrg_cy_prov_g,b.spltrg_py_enrol_b,b.spltrg_py_enrol_g,b.spltrg_py_prov_b,b.spltrg_py_prov_g,b.spltrg_by,b.spltrg_place,b.spltrg_type,b.
-remedial_tch_enrol,b.session_start_mon,b.txtbk_recd_yn,b.txtbk_recd_mon,b.supp_mat_recd_yn,b.txtbk_pre_pri_yn,b.txtbk_pri_yn,b.
-txtbk_upr_yn,b.txtbk_sec_yn,b.txtbk_hsec_yn,b.tle_pre_pri_yn,b.tle_pri_yn,b.tle_upr_yn,b.tle_sec_yn,b.tle_hsec_yn,b.playmat_pre_pri_yn,b.
-playmat_pri_yn,b.playmat_upr_yn,b.playmat_sec_yn,b.playmat_hsec_yn,b.no_inspect,b.no_visit_crc,b.no_visit_brc,b.no_visit_dis,b.
-smc_yn,b.smc_mem_m,b.smc_mem_f,b.smc_par_m,b.smc_par_f,b.smc_par_sc,b.smc_par_st,b.smc_par_ews,b.smc_par_min,b.smc_lgb_m,b.smc_lgb_f,b.
-smc_tch_m,b.smc_tch_f,b.smc_trained_m,b.smc_trained_f,b.smc_meetings,b.smc_sdp_yn,b.smc_bnkac_yn,b.smc_bnk_name,b.smc_bnk_br,b.
-smc_bnkac_no,b.smc_bnkac_ifsc,b.smc_bnkac_name,b.smdc_smc_same_yn,b.smdc_yn,b.smdc_mem_m,b.smdc_mem_f,b.smdc_par_m,b.smdc_par_f,b.
-smdc_par_ews_m,b.smdc_par_ews_f,b.smdc_lgb_m,b.smdc_lgb_f,b.smdc_ebmc_m,b.smdc_ebmc_f,b.smdc_women_f,b.smdc_scst_m,b.smdc_scst_f,b.
-smdc_deo_m,b.smdc_deo_f,b.smdc_audit_m,b.smdc_audit_f,b.smdc_subexp_m,b.smdc_subexp_f,b.smdc_tch_m,b.smdc_tch_f,b.smdc_vp_m,b.
-smdc_vp_f,b.smdc_prin_m,b.smdc_prin_f,b.smdc_cp_m,b.smdc_cp_f,b.smdc_trained_m,b.smdc_trained_f,b.smdc_meetings,b.smdc_sdp_yn,b.
-smdc_bnkac_yn,b.smdc_bnk_name,b.smdc_bnk_br,b.smdc_bnkac_no,b.smdc_bnkac_ifsc,b.smdc_bnkac_name,b.smdc_sbc_yn,b.smdc_acadcom_yn,b.
-smdc_pta_yn,b.smdc_pta_meeting""",
-"udise_filter_same_id_sch_profile_c8_qry":"""SELECT udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,
-c11_sec,c12_sec,estd_year ,recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,
-upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
-resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,
-boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,boarding_hsec_yn,boarding_hsec_b,
-boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,
-medinstr_oth,lang1,lang2,lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,
-board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,distance_hsec,approach_road_yn,
-ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,
-anganwadi_stu_g,anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,
-workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,sch_hrs_stu_sec,sch_hrs_stu_hsec,
-sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
-cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,
-rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,
-rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,
-rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,rte_bld_c4_b,rte_bld_c4_g,
-rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
-rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,
-spltrg_cy_prov_g,spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,
-remedial_tch_enrol,session_start_mon,txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,
-txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,
-playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,no_visit_brc,no_visit_dis,
-smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
-smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smc_bnk_name,smc_bnk_br,
-smc_bnkac_no,smc_bnkac_ifsc,smc_bnkac_name,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,
-smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,
-smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,smdc_tch_m,smdc_tch_f,smdc_vp_m,
-smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,smdc_sdp_yn,
-smdc_bnkac_yn,smdc_bnk_name,smdc_bnk_br,smdc_bnkac_no,smdc_bnkac_ifsc,smdc_bnkac_name,smdc_sbc_yn,smdc_acadcom_yn,
-smdc_pta_yn,smdc_pta_meeting from (SELECT udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,
-c11_sec,c12_sec,estd_year ,recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,
-upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
-resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,
-boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,boarding_hsec_yn,boarding_hsec_b,
-boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,
-medinstr_oth,lang1,lang2,lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,
-board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,distance_hsec,approach_road_yn,
-ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,
-anganwadi_stu_g,anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,
-workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,sch_hrs_stu_sec,sch_hrs_stu_hsec,
-sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
-cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,
-rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,
-rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,
-rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,rte_bld_c4_b,rte_bld_c4_g,
-rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
-rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,
-spltrg_cy_prov_g,spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,
-remedial_tch_enrol,session_start_mon,txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,
-txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,
-playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,no_visit_brc,no_visit_dis,
-smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
-smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smc_bnk_name,smc_bnk_br,
-smc_bnkac_no,smc_bnkac_ifsc,smc_bnkac_name,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,
-smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,
-smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,smdc_tch_m,smdc_tch_f,smdc_vp_m,
-smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,smdc_sdp_yn,
-smdc_bnkac_yn,smdc_bnk_name,smdc_bnk_br,smdc_bnkac_no,smdc_bnkac_ifsc,smdc_bnkac_name,smdc_sbc_yn,smdc_acadcom_yn,
-smdc_pta_yn,smdc_pta_meeting,count(*)
+group by b.udise_sch_code,b.ac_year,b.c0_sec,b.c1_sec,b.c2_sec,b.c3_sec,b.c4_sec,b.c5_sec,b.c6_sec,b.c7_sec,b.c8_sec,b.c9_sec,b.c10_sec,b.c11_sec,b.c12_sec,b.estd_year ,b.
+recog_year_pri ,b.recog_year_upr ,b.recog_year_sec ,b.recog_year_hsec ,b.upgrd_year_ele ,b.upgrd_year_sec ,b.upgrd_year_hsec ,b.cwsn_sch_yn,b.shift_sch_yn,b.resi_sch_yn,b.
+resi_sch_type,b.boarding_pri_yn,b.boarding_pri_b,b.boarding_pri_g,b.boarding_upr_yn,b.boarding_upr_b,b.boarding_upr_g,b.boarding_sec_yn,b.boarding_sec_b,b.boarding_sec_g,b.
+boarding_hsec_yn,b.boarding_hsec_b,b.boarding_hsec_g,b.minority_yn,b.minority_type,b.mtongue_pri,b.medinstr1,b.medinstr2,b.medinstr3,b.medinstr4,b.medinstr_oth,b.lang1,b.lang2,b.
+lang3,b.prevoc_yn,b.eduvoc_yn,b.board_sec,b.board_sec_no,b.board_sec_oth,b.board_hsec,b.board_hsec_no,b.board_hsec_oth,b.distance_pri,b.distance_upr,b.distance_sec,b.
+distance_hsec,b.approach_road_yn,b.ppsec_yn,b.ppstu_lkg_b,b.ppstu_lkg_g,b.ppstu_ukg_b,b.ppstu_ukg_g,b.anganwadi_yn,b.anganwadi_code,b.anganwadi_stu_b,b.anganwadi_stu_g,b.
+anganwadi_tch_trained,b.workdays_pre_pri,b.workdays_pri,b.workdays_upr,b.workdays_sec,b.workdays_hsec,b.sch_hrs_stu_pre_pri,b.sch_hrs_stu_pri,b.sch_hrs_stu_upr,b.
+sch_hrs_stu_sec,b.sch_hrs_stu_hsec,b.sch_hrs_tch_pre_pri,b.sch_hrs_tch_pri,b.sch_hrs_tch_upr,b.sch_hrs_tch_sec,b.sch_hrs_tch_hsec,b.cce_yn_pri,b.cce_yn_upr,b.
+cce_yn_sec,b.cce_yn_hsec,b.pcr_maintained_yn,b.pcr_shared_yn,b.rte_25p_applied,b.rte_25p_enrolled,b.rte_pvt_c0_b,b.rte_pvt_c0_g,b.rte_pvt_c1_b,b.rte_pvt_c1_g,b.
+rte_pvt_c2_b,b.rte_pvt_c2_g,b.rte_pvt_c3_b,b.rte_pvt_c3_g,b.rte_pvt_c4_b,b.rte_pvt_c4_g,b.rte_pvt_c5_b,b.rte_pvt_c5_g,b.rte_pvt_c6_b,b.rte_pvt_c6_g,b.rte_pvt_c7_b,b.
+rte_pvt_c7_g,b.rte_pvt_c8_b,b.rte_pvt_c8_g,b.rte_bld_c0_b,b.rte_bld_c0_g,b.rte_bld_c1_b,b.rte_bld_c1_g,b.rte_bld_c2_b,b.rte_bld_c2_g,b.rte_bld_c3_b,b.rte_bld_c3_g,b.
+rte_bld_c4_b,b.rte_bld_c4_g,b.rte_bld_c5_b,b.rte_bld_c5_g,b.rte_bld_c6_b,b.rte_bld_c6_g,b.rte_bld_c7_b,b.rte_bld_c7_g,b.rte_bld_c8_b,b.rte_bld_c8_g,b.rte_ews_c9_b,b.
+rte_ews_c9_g,b.rte_ews_c10_b,b.rte_ews_c10_g,b.rte_ews_c11_b,b.rte_ews_c11_g,b.rte_ews_c12_b,b.rte_ews_c12_g,b.spltrg_yn,b.spltrg_cy_prov_b,b.spltrg_cy_prov_g,b.
+spltrg_py_enrol_b,b.spltrg_py_enrol_g,b.spltrg_py_prov_b,b.spltrg_py_prov_g,b.spltrg_by,b.spltrg_place,b.spltrg_type,b.remedial_tch_enrol,b.session_start_mon,b.
+txtbk_recd_yn,b.txtbk_recd_mon,b.supp_mat_recd_yn,b.txtbk_pre_pri_yn,b.txtbk_pri_yn,b.txtbk_upr_yn,b.txtbk_sec_yn,b.txtbk_hsec_yn,b.tle_pre_pri_yn,b.tle_pri_yn,b.
+tle_upr_yn,b.tle_sec_yn,b.tle_hsec_yn,b.playmat_pre_pri_yn,b.playmat_pri_yn,b.playmat_upr_yn,b.playmat_sec_yn,b.playmat_hsec_yn,b.no_inspect,b.no_visit_crc,b.
+no_visit_brc,b.no_visit_dis,b.smc_yn,b.smc_mem_m,b.smc_mem_f,b.smc_par_m,b.smc_par_f,b.smc_par_sc,b.smc_par_st,b.smc_par_ews,b.smc_par_min,b.smc_lgb_m,b.smc_lgb_f,b.
+smc_tch_m,b.smc_tch_f,b.smc_trained_m,b.smc_trained_f,b.smc_meetings,b.smc_sdp_yn,b.smc_bnkac_yn,b.
+smdc_smc_same_yn,b.smdc_yn,b.smdc_mem_m,b.smdc_mem_f,b.smdc_par_m,b.smdc_par_f,b.smdc_par_ews_m,b.smdc_par_ews_f,b.smdc_lgb_m,b.smdc_lgb_f,b.
+smdc_ebmc_m,b.smdc_ebmc_f,b.smdc_women_f,b.smdc_scst_m,b.smdc_scst_f,b.smdc_deo_m,b.smdc_deo_f,b.smdc_audit_m,b.smdc_audit_f,b.smdc_subexp_m,b.smdc_subexp_f,b.
+smdc_tch_m,b.smdc_tch_f,b.smdc_vp_m,b.smdc_vp_f,b.smdc_prin_m,b.smdc_prin_f,b.smdc_cp_m,b.smdc_cp_f,b.smdc_trained_m,b.smdc_trained_f,b.smdc_meetings,b.
+smdc_sdp_yn,b.smdc_bnkac_yn,b.smdc_sbc_yn,b.smdc_acadcom_yn,b.smdc_pta_yn,b.smdc_pta_meeting""",
+"udise_filter_same_id_sch_profile_c8_qry":"""SELECT udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting from (SELECT udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting,count(*)
 over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
 "udise_check_same_record_tch_profile_qry":"""SELECT udise_sch_code,tch_code,name,gender,dob,social_cat,tch_type,nature_of_appt,
 doj_service,qual_acad,qual_prof,class_taught,appt_sub,sub_taught1,sub_taught2,trn_brc,
