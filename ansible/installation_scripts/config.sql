@@ -1804,7 +1804,7 @@ select ''
         "district_longitude": "data.[&1].details.longitude",
         "infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-        "district_wise_rank": "data.[&1].rank.District_Rank",
+        "district_level_rank_within_the_state": "data.[&1].rank.District_Level_Rank_Within_The_State",
         "@total_schools": "data.[&1].total_schools",
         "total_schools": "allDistrictsFooter.totalSchools[]"
       }
@@ -1849,8 +1849,8 @@ as select ''
 				"block_longitude": "data.[&1].details.longitude",
 				"infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-				"district_wise_rank": "data.[&1].rank.District_Rank",
-				"block_wise_rank": "data.[&1].rank.Block_Rank",
+				"block_level_rank_within_the_district": "data.[&1].rank.Block_Level_Rank_Within_The_District",
+				"block_level_rank_within_the_state": "data.[&1].rank.Block_Level_Rank_Within_The_State",
 				"@total_schools": "data.[&1].total_schools",
 				"total_schools": "footer.@(1,district_id).totalSchools[]"
 			}
@@ -1908,9 +1908,9 @@ as select ''
         "cluster_longitude": "data.[&1].details.longitude",
         "infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-        "district_wise_rank": "data.[&1].rank.District_Rank",
-        "block_wise_rank": "data.[&1].rank.Block_Rank",
-        "cluster_wise_rank": "data.[&1].rank.Cluster_Rank",
+        "cluster_level_rank_within_the_block": "data.[&1].rank.Cluster_Level_Rank_Within_The_Block",
+        "cluster_level_rank_within_the_district": "data.[&1].rank.Cluster_Level_Rank_Within_The_District",
+        "cluster_level_rank_within_the_state": "data.[&1].rank.Cluster_Level_Rank_Within_The_State",
         "@total_schools": "data.[&1].total_schools",
         "total_schools": "footer.@(1,block_id).totalSchools[]"
       }
@@ -1977,10 +1977,10 @@ as select ''
         "school_longitude": "data.[&1].details.longitude",
         "infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-        "district_wise_rank": "data.[&1].rank.District_Rank",
-        "block_wise_rank": "data.[&1].rank.Block_Rank",
-        "cluster_wise_rank": "data.[&1].rank.Cluster_Rank",
-        "school_wise_rank": "data.[&1].rank.School_Rank",
+        "school_level_rank_within_the_cluster": "data.[&1].rank.School_Level_Rank_Within_The_Cluster",
+        "school_level_rank_within_the_block": "data.[&1].rank.School_Level_Rank_Within_The_Block",
+        "school_level_rank_within_the_district": "data.[&1].rank.School_Level_Rank_Within_The_District",
+        "school_level_rank_within_the_state": "data.[&1].rank.School_Level_Rank_Within_The_State",
         "@total_schools": "data.[&1].total_schools",
         "total_schools": "footer.@(1,cluster_id).totalSchools[]"
       }
