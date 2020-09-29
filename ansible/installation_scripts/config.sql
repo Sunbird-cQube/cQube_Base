@@ -931,7 +931,8 @@ DECLARE
 semester_no_schools text;
 BEGIN
 semester_no_schools= 'create or replace view semester_exception_completion_data as 
-select distinct a.school_id,a.school_name,a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,'||semester||' as semester,
  b.district_latitude,b.district_longitude from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
@@ -943,6 +944,7 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+drop view if exists semester_exception_completion_data;
 
 /*Diksha config script*/
 

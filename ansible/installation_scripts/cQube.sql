@@ -3587,6 +3587,55 @@ count_null_studying_class int,
 count_null_obtained_marks int
 );
 
+create table if not exists periodic_exam_mst_dup(
+exam_id	int,
+assessment_year	varchar(20),
+medium	varchar(20),
+standard	int,
+division	varchar(20),
+subject_id	int,
+subject_name	varchar(50),
+exam_type_id	int,
+exam_type	varchar(50),
+exam_code	varchar(100),
+exam_date	date,
+total_questions	int,
+total_marks	int,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists periodic_exam_qst_mst_dup(
+question_id	int,
+exam_id	int,
+indicator_id	int,
+indicator_title	varchar(20),
+indicator	text,
+question_title	varchar(20),
+question	text,
+question_marks	numeric,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists periodic_exam_result_dup(
+id	int,
+exam_id	int,
+exam_code	varchar(100),
+student_id	bigint,
+student_uid	bigint,
+school_id	bigint,
+studying_class	int,
+section	varchar(20),
+question_id	int,
+obtained_marks	numeric,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
 /*log summary*/
 
 alter table log_summary add COLUMN if not exists exam_id int;
@@ -3661,6 +3710,38 @@ updated_on  timestamp
 );
 
 create table if not exists periodic_exam_result_temp(
+id  int primary key not null,
+ffuid text,
+exam_id  int,
+exam_code  varchar(100),
+student_id  bigint,
+student_uid  bigint,
+school_id  bigint,
+studying_class  int,
+section  varchar(20),
+question_id  int,
+obtained_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp
+);
+
+create table if not exists periodic_exam_result_staging_1(
+id  int primary key not null,
+ffuid text,
+exam_id  int,
+exam_code  varchar(100),
+student_id  bigint,
+student_uid  bigint,
+school_id  bigint,
+studying_class  int,
+section  varchar(20),
+question_id  int,
+obtained_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp
+);
+
+create table if not exists periodic_exam_result_staging_2(
 id  int primary key not null,
 ffuid text,
 exam_id  int,
