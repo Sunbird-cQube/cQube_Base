@@ -3818,7 +3818,7 @@ updated_on  timestamp
 );
 
 create table if not exists periodic_exam_result_trans(
-id  int primary key not null,
+id  int,
 exam_id  int,
 exam_code  varchar(100),
 student_id  bigint,
@@ -3829,7 +3829,8 @@ section  varchar(20),
 question_id  int,
 obtained_marks  numeric,
 created_on  timestamp,
-updated_on  timestamp
+updated_on  timestamp,
+primary key(exam_code, student_uid, question_id)
 );
 
 create table if not exists periodic_exam_school_result
