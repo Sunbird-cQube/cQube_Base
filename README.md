@@ -14,6 +14,12 @@ The following ports have to be configured in the nginix server with reverse prox
 3) Port 3000 should be proxied to the '/api'
 4) Port 5000 should be proxied to the '/data'
 
+<b>Nginx - cQube server firewall configuration</b>
+1) Port 4200 should be open from nginx to the cQube server
+2) Port 8080 should be open from nginx to the cQube server
+3) Port 3000 should be open from nginx to the cQube server
+4) Port 5000 should be open from nginx to the cQube server
+
 <b>Openvpn - cQube server firewall configuration</b>
 1) Port 9000 should be open from openvpn to the cQube server
 2) Port 4201 should be open from openvpn to the cQube server
