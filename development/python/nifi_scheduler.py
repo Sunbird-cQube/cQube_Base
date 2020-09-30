@@ -7,7 +7,7 @@ def get_processor_groups():
 	pg_list=dict()
 	if pg_resp.status_code==200:
 		for pg in pg_resp.json().get('processGroups'):			
-			if pg['component']['name']!='cqube_telemetry_parameters':
+			if pg['component']['name']!='cqube_telemetry_transformer':
 				pg_list[pg['component']['name']]=pg.get('id')
 	else:
 		logging.error("Unable to get the process group details, due to {}".format(pg_resp.text))
