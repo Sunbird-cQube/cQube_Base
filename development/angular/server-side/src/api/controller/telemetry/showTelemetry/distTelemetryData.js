@@ -5,7 +5,7 @@ var const_data = require('../../../lib/config');
 
 router.post('/', auth.authController, async (req, res) => {
     try {
-        logger.info('--- get dist telemetry data api ---');
+        logger.info('--- get district telemetry data api ---');
         let timePeriod = req.body.timePeriod;
         const_data['getParams']['Key'] = `cqube_telemetry/${timePeriod}/districts.json`;
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
@@ -16,7 +16,7 @@ router.post('/', auth.authController, async (req, res) => {
                 logger.error("No data found in s3 file");
                 res.status(403).json({ errMsg: "No such data found" });
             } else {
-                logger.info('--- get telemetry data api response sent ---');
+                logger.info('--- get district telemetry data api response sent ---');
                 res.send(JSON.parse(data.Body));
             }
         })

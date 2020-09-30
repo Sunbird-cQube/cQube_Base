@@ -21,7 +21,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
 
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
-        logger.info('--- block wise infra api ---');
+        logger.info('--- block per district infra api ---');
         let fileName = `infra/infra_block_map.json`
         var blockData = await s3File.readS3File(fileName);
 

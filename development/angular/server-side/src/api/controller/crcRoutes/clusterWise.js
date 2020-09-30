@@ -24,7 +24,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
 
 router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
   try {
-    logger.info('--- crc cluster per block and per district api ---');
+    logger.info('--- crc cluster per block api ---');
     let fileName = `crc/cluster_crc_opt_json.json`;
     var jsonData = await s3File.readS3File(fileName);
 
@@ -37,7 +37,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
       return (obj.districtId == distId && obj.blockId == blockId);
     });
     if (filterData.length > 0) {
-      logger.info('---  crc cluster per block and per district api response sent ---');
+      logger.info('---  crc cluster per block api response sent ---');
       res.status(200).send({ visits: filterData, schoolsVisitedCount: clusterData.footer[`${blockId}`] });
     }else{
       res.status(403).json({errMsg: "No matches found"});

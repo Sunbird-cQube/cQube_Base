@@ -1,4 +1,4 @@
-- name: Fetch nifi processor group id
+- name: Fetch nifi root processor group id
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
     method: GET
@@ -31,7 +31,7 @@
   register: template_list
 
 - name: Instatiate template list
-  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }'   http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
+  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }' http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
   loop: "{{ template_list.json | json_query('templates[*]') }}"
   when: item.template.name == 'static_data_transformer'
   no_log: True
@@ -50,7 +50,8 @@
     method: GET
   register: processor_group_temp
 
-- name: Get processor group id of the static data transformer processor
+#--- Fetching processor group id of static data processor ---
+- name: Get processor group id of the static data  processor
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
     method: GET
@@ -60,11 +61,11 @@
   no_log: True
 
 - set_fact:
-    tagExists: "{{  processor_group_template | json_query('results[?item.component.name == `static_data_transformer`]') }}"
+    static_pg_id: "{{  processor_group_template | json_query('results[?item.component.name == `static_data_transformer`]') }}"
 
 - name: Get multi processor group
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ tagExists[0].item.component.id }}
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ static_pg_id[0].item.component.id }}
     method: GET
   register: multi_processor
 
@@ -108,14 +109,13 @@
     static_data_version: "msg[?Name=='Static-Data_Processor'].Version"
   register: static_data_version
 
-- name: Get Default Processor Group
+- name: Get parameter contexts
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/parameter-contexts
     method: GET
   register: parameters
 
 #---Connection of processor groups to respective parameter contexts--
-
 - name: Connection static raw processor group to raw parameters
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ static_raw_id.results[0].item }}
@@ -146,8 +146,6 @@
   when: item.component.name == 'static_data_parameters'
   no_log: True
 
-#---Starting of Controllers and Processor groups
- 
 - name: Create DistributedMapCacheServer
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ static_raw_id.results[0].item }}/controller-services
@@ -171,6 +169,7 @@
 - name: Run python code
   shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
 
+#--- Starting of Controllers ---
 - name: Get controllers
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ static_raw_id.results[0].item }}/controller-services
@@ -274,9 +273,7 @@
     body_format: json
     body: {"revision": {
             "version": "{{ item.revision.version }}"
-
         },
-
         "state":"ENABLED"
         }
   loop: "{{ controllers_list_raw_updated.json | json_query('controllerServices[*]') }}"

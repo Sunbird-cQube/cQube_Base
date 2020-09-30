@@ -120,143 +120,12 @@ SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_
 from flowfile)""",
 "udise_sch_exmmarks_c10_not_null":"""select * from flowfile where udise_sch_code IS NOT NULL and item_id IS NOT NULL and marks_range_id IS NOT NULL """,
 "udise_update_null_count_nsqf_class_cond_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, class_type_id=udise_null_col.count_null_class_type_id, sector_no=udise_null_col.count_null_sector_no from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
-"udise_school_jolt_spec":"""[{
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "*": {
-        "cluster_id": ["=toString", null]
-      }
-    }
-	},
-
-  {
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "district_id": "data.[&1].details.district_id",
-        "district_name": "data.[&1].details.District_Name",
-        "block_id": "data.[&1].details.block_id",
-        "block_name": "data.[&1].details.Block_Name",
-        "cluster_id": "data.[&1].details.cluster_id",
-        "cluster_name": "data.[&1].details.Cluster_Name",
-        "udise_school_id": "data.[&1].details.school_id",
-        "school_name": "data.[&1].details.School_Name",
-        "school_latitude": "data.[&1].details.latitude",
-        "school_longitude": "data.[&1].details.longitude",
-        "infrastructure_score": "data.[&1].details.Infrastructure_Score",
-        "administration": "data.[&1].indices.Administration",
-        "arts_lab_index": "data.[&1].indices.Arts_Lab_Index",
-        "community_participation": "data.[&1].indices.Community_Participation",
-        "enrollment": "data.[&1].indices.Enrollment",
-        "grant_expenditure": "data.[&1].indices.Grant_Expenditure",
-        "ict_lab_index": "data.[&1].indices.ICT_Lab_Index",
-        "medical_index": "data.[&1].indices.Medical_Index",
-        "nsqf": "data.[&1].indices.NSQF",
-        "policy_implementation": "data.[&1].indices.Policy_Implementation",
-        "safety": "data.[&1].indices.Safety",
-        "school_infrastructure": "data.[&1].indices.School_Infrastructure",
-        "school_inspection": "data.[&1].indices.School_Inspection",
-        "school_performance": "data.[&1].indices.School_Performance",
-        "science_lab_index": "data.[&1].indices.Science_Lab_Index",
-        "teacher_profile": "data.[&1].indices.Teacher_Profile",
-        "district_wise_rank": "data.[&1].rank.District_Rank",
-        "block_wise_rank": "data.[&1].rank.Block_Rank",
-        "cluster_wise_rank": "data.[&1].rank.Cluster_Rank",
-        "school_wise_rank": "data.[&1].rank.School_Rank",
-        "@total_schools": "data.[&1].total_schools",
-        "total_schools": "footer.@(1,cluster_id).totalSchools[]"
-      }
-    }
-	}, {
-    "operation": "shift",
-    "spec": {
-      "data": {
-        "*": {
-          "details": "data.[&1].&",
-          "indices": "data.[&1].&",
-          "rank": "data.[&1].&",
-          "@total_schools": "allSchoolsFooter.totalSchools[]"
-        }
-      },
-      "footer": "&"
-    }
-	},
-
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "footer": {
-        "*": {
-          "totalSchools": "=intSum(@(1,totalSchools))"
-        }
-      }
-    }
-	}, {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "*": {
-        "totalSchools": "=intSum(@(1,totalSchools))"
-      }
-    }
-	}
-]""",
 "udise_nsqf_basic_info_check_if_null":"""select * from flowfile where udise_sch_code IS NULL""",
 "select_columns_sch_exmres_c10_qry":"""select udise_sch_code,ac_year,item_id,gen_app_b,gen_app_g,obc_app_b,
 obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g from flowfile""",
 "udise_nsqf_faculty_table_name":"""udise_nsqf_faculty""",
 "udise_update_metrics_range_qry":"""select update_metrics_range()""",
 "udise_update_null_count_sch_exmres_c5_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
-"udise_district_jolt_spec":"""[{
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "district_id": "data.[&1].details.district_id",
-        "district_name": "data.[&1].details.District_Name",
-        "district_latitude": "data.[&1].details.latitude",
-        "district_longitude": "data.[&1].details.longitude",
-        "infrastructure_score": "data.[&1].details.Infrastructure_Score",
-        "administration": "data.[&1].indices.Administration",
-        "arts_lab_index": "data.[&1].indices.Arts_Lab_Index",
-        "community_participation": "data.[&1].indices.Community_Participation",
-        "enrollment": "data.[&1].indices.Enrollment",
-        "grant_expenditure": "data.[&1].indices.Grant_Expenditure",
-        "ict_lab_index": "data.[&1].indices.ICT_Lab_Index",
-        "medical_index": "data.[&1].indices.Medical_Index",
-        "nsqf": "data.[&1].indices.NSQF",
-        "policy_implementation": "data.[&1].indices.Policy_Implementation",
-        "safety": "data.[&1].indices.Safety",
-        "school_infrastructure": "data.[&1].indices.School_Infrastructure",
-        "school_inspection": "data.[&1].indices.School_Inspection",
-        "school_performance": "data.[&1].indices.School_Performance",
-        "science_lab_index": "data.[&1].indices.Science_Lab_Index",
-        "teacher_profile": "data.[&1].indices.Teacher_Profile",
-        "district_wise_rank": "data.[&1].rank.District_Rank",
-        "@total_schools": "data.[&1].total_schools",
-        "total_schools": "allDistrictsFooter.totalSchools[]"
-      }
-    }
-	}, {
-    "operation": "shift",
-    "spec": {
-      "data": {
-        "*": {
-          "details": "data.[&1].&",
-          "indices": "data.[&1].&",
-          "rank": "data.[&1].&",
-          "@total_schools": "allDistrictsFooter.totalSchools[]"
-        }
-      }
-    }
-	},
-{
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "*": {
-        "totalSchools": "=intSum(@(1,totalSchools))"
-      }
-    }
-	}
-]""",
 "udise_nsqf_exmres_c10_table_name":"""udise_nsqf_exmres_c10""",
 "udise_nsqf_exmres_c12_table_name":"""udise_nsqf_exmres_c12""",
 "udise_sch_recp_exp_table_name":"""udise_sch_recp_exp""",
@@ -271,28 +140,6 @@ udise_sch_code,ac_year,age_id,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,
 c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g
 from flowfile""",
 "select_columns_sch_enr_cwsn_qry":"""select udise_sch_code,ac_year,disability_type,cpp_b,cpp_g,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from flowfile""",
-"select_columns_sch_profile_qry":"""select  udise_sch_code,   ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
-recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
-resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
-boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
-lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
-distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
-anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
-sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
-cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
-rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
-rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
-rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
-rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
-spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
-txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
-tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
-no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
-smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smc_bnk_name,smc_bnk_br,smc_bnkac_no,smc_bnkac_ifsc,
-smc_bnkac_name,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
-smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
-smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
-smdc_sdp_yn,smdc_bnkac_yn,smdc_bnk_name,smdc_bnk_br,smdc_bnkac_no,smdc_bnkac_ifsc,smdc_bnkac_name,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting from flowfile""",
 "udise_update_null_count_nsqf_plcmnt_c10_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code,item_id=udise_null_col.count_null_item_id, sector_no=udise_null_col.count_null_sector_no from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
 "udise_sch_enr_newadm_check_if_null":"""select * from flowfile where udise_sch_code IS NULL""",
 "select_columns_sch_safety_qry":"""select udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained from flowfile""",
@@ -310,77 +157,6 @@ drop view if exists udise_school_score cascade;
 "udise_sch_pgi_details_count_null":"""(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code
 from flowfile)""",
-"udise_cluster_jolt_spec":"""[
-
-  {
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "district_id": "data.[&1].details.district_id",
-        "district_name": "data.[&1].details.District_Name",
-        "block_id": "data.[&1].details.block_id",
-        "block_name": "data.[&1].details.Block_Name",
-        "cluster_id": "data.[&1].details.cluster_id",
-        "cluster_name": "data.[&1].details.Cluster_Name",
-        "cluster_latitude": "data.[&1].details.latitude",
-        "cluster_longitude": "data.[&1].details.longitude",
-        "infrastructure_score": "data.[&1].details.Infrastructure_Score",
-        "administration": "data.[&1].indices.Administration",
-        "arts_lab_index": "data.[&1].indices.Arts_Lab_Index",
-        "community_participation": "data.[&1].indices.Community_Participation",
-        "enrollment": "data.[&1].indices.Enrollment",
-        "grant_Expenditure": "data.[&1].indices.Grant_Expenditure",
-        "ict_lab_index": "data.[&1].indices.ICT_Lab_Index",
-        "medical_index": "data.[&1].indices.Medical_Index",
-        "nsqf": "data.[&1].indices.NSQF",
-        "policy_implementation": "data.[&1].indices.Policy_Implementation",
-        "safety": "data.[&1].indices.Safety",
-        "school_infrastructure": "data.[&1].indices.School_Infrastructure",
-        "school_inspection": "data.[&1].indices.School_Inspection",
-        "school_performance": "data.[&1].indices.School_Performance",
-        "science_lab_index": "data.[&1].indices.Science_Lab_Index",
-        "teacher_profile": "data.[&1].indices.Teacher_Profile",
-        "district_wise_rank": "data.[&1].rank.District_Rank",
-        "block_wise_rank": "data.[&1].rank.Block_Rank",
-        "cluster_wise_rank": "data.[&1].rank.Cluster_Rank",
-        "@total_schools": "data.[&1].total_schools",
-        "total_schools": "footer.@(1,block_id).totalSchools[]"
-      }
-    }
-	}, {
-    "operation": "shift",
-    "spec": {
-      "data": {
-        "*": {
-          "details": "data.[&1].&",
-          "indices": "data.[&1].&",
-          "rank": "data.[&1].&",
-          "@total_schools": "allClustersFooter.totalSchools[]"
-        }
-      },
-      "footer": "&"
-    }
-	},
-
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "footer": {
-        "*": {
-          "totalSchools": "=intSum(@(1,totalSchools))"
-        }
-      }
-    }
-	},
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "*": {
-        "totalSchools": "=intSum(@(1,totalSchools))"
-      }
-    }
-	}
-]""",
 "udise_nsqf_trng_prov_count_null":"""(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
 SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no
@@ -407,7 +183,50 @@ SUM(CASE when sector_no IS NULL THEN 1 ELSE 0 END) AS count_null_sector_no,
 SUM(CASE when class_type_id IS NULL THEN 1 ELSE 0 END) AS count_null_class_type_id
 from flowfile)""",
 "udise_sch_enr_medinstr_table_name":"""udise_sch_enr_medinstr""",
-"udise_school_wise_qry":"""select * from udise_school_score""",
+"udise_school_wise_qry":"""select b.*,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster from udise_school_score as b
+left join(select usc.udise_school_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state                         
+ from udise_school_score as usc
+left join
+(select a.*,(select count(DISTINCT(udise_school_id)) from udise_school_metrics_agg)as total_schools 
+from (select udise_school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from udise_school_metrics_agg as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_cluster FROM   udise_school_metrics_agg group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_block FROM   udise_school_metrics_agg group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_district FROM   udise_school_metrics_agg group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.udise_school_id=a.udise_school_id
+group by usc.udise_school_id,infrastructure_score
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.udise_school_id = c.udise_school_id 
+""",
 "udise_update_null_count_sch_enr_reptr_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, item_group=udise_null_col.count_null_item_group, item_id=udise_null_col.count_null_item_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
 "udise_update_null_count_sch_recp_exp_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
 "udise_sch_recp_exp_count_null":"""(select
@@ -436,7 +255,40 @@ SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_
 from flowfile)""",
 "udise_nsqf_trng_prov_check_if_null":"""select * from flowfile where udise_sch_code IS NULL or sector_no IS NULL""",
 "udise_sch_enr_by_stream_check_if_null":"""select * from flowfile where udise_sch_code IS NULL or stream_id IS NULL or caste_id IS NULL""",
-"udise_cluster_wise_qry":"""select * from udise_cluster_score""",
+"udise_cluster_wise_qry":"""select b.*,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block from udise_cluster_score as b
+left join(select usc.cluster_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state                         
+ from udise_cluster_score as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from udise_school_metrics_agg)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from udise_school_metrics_agg as scl
+left join
+(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_block FROM   udise_school_metrics_agg group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_district FROM   udise_school_metrics_agg group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by infrastructure_score
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id""",
 "udise_sch_exmmarks_c12_not_null":"""select * from flowfile where udise_sch_code IS NOT NULL and item_id IS NOT NULL and marks_range_id IS NOT NULL """,
 "select_columns_sch_staff_posn_qry":"""select udise_sch_code,ac_year,tch_regular,tch_contract,tch_part_time,nontch_accnt,nontch_lib_asst,nontch_lab_asst,nontch_udc,nontch_ldc,nontch_peon,nontch_watchman,tch_hav_adhr from flowfile""",
 "udise_update_null_count_nsqf_basic_info_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
@@ -473,76 +325,6 @@ from flowfile)""",
 "udise_nsqf_exmres_c10_check_if_null":"""select * from flowfile where udise_sch_code IS NULL or sector_no IS NULL or marks_range_id IS NULL""",
 "udise_select_metrics_range_qry":"""Select udise_metrics_range()""",
 "select_columns_sch_facility_qry":"""select udise_sch_code,    ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs from flowfile""",
-"udise_sch_safety_table_name":"""udise_sch_safety""",
-"udise_update_null_count_nsqf_exmres_c12_qry":"""update log_summary  SET udise_sch_code = udise_null_col.count_null_udise_sch_code, sector_no = udise_null_col.count_null_sector_no, marks_range_id = udise_null_col.count_null_marks_range_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
-"udise_block_jolt_spec":"""[
-
-	{
-		"operation": "shift",
-		"spec": {
-			"*": {
-				"district_id": "data.[&1].details.district_id",
-				"district_name": "data.[&1].details.District_Name",
-				"block_id": "data.[&1].details.block_id",
-				"block_name": "data.[&1].details.Block_Name",
-				"block_latitude": "data.[&1].details.latitude",
-				"block_longitude": "data.[&1].details.longitude",
-				"infrastructure_score": "data.[&1].details.Infrastructure_Score",
-				"administration": "data.[&1].indices.Administration",
-				"arts_lab_index": "data.[&1].indices.Arts_Lab_Index",
-				"community_participation": "data.[&1].indices.Community_Participation",
-				"enrollment": "data.[&1].indices.Enrollment",
-				"grant_expenditure": "data.[&1].indices.Grant_Expenditure",
-				"ict_lab_index": "data.[&1].indices.ICT_Lab_Index",
-				"medical_index": "data.[&1].indices.Medical_Index",
-				"nsqf": "data.[&1].indices.NSQF",
-				"policy_implementation": "data.[&1].indices.Policy_Implementation",
-				"safety": "data.[&1].indices.Safety",
-				"school_infrastructure": "data.[&1].indices.School_Infrastructure",
-				"school_inspection": "data.[&1].indices.School_Inspection",
-				"school_performance": "data.[&1].indices.School_Performance",
-				"science_lab_index": "data.[&1].indices.Science_Lab_Index",
-				"teacher_profile": "data.[&1].indices.Teacher_Profile",
-				"district_wise_rank": "data.[&1].rank.District_Rank",
-				"block_wise_rank": "data.[&1].rank.Block_Rank",
-				"@total_schools": "data.[&1].total_schools",
-				"total_schools": "footer.@(1,district_id).totalSchools[]"
-			}
-		}
-	}, {
-		"operation": "shift",
-		"spec": {
-			"data": {
-				"*": {
-					"details": "data.[&1].&",
-					"indices": "data.[&1].&",
-					"rank": "data.[&1].&",
-					"@total_schools": "allBlocksFooter.totalSchools[]"
-				}
-			},
-			"footer": "&"
-		}
-	},
-
-	{
-		"operation": "modify-overwrite-beta",
-		"spec": {
-			"footer": {
-				"*": {
-					"totalSchools": "=intSum(@(1,totalSchools))"
-				}
-			}
-		}
-	}, {
-		"operation": "modify-overwrite-beta",
-		"spec": {
-			"*": {
-				"totalSchools": "=intSum(@(1,totalSchools))"
-			}
-		}
-	}
-
-]""",
 "udise_sch_enr_reptr_count_null":"""(select
 SUM(CASE when udise_sch_code IS NULL THEN 1 ELSE 0 END) AS count_null_udise_sch_code,
 SUM(CASE when item_group IS NULL THEN 1 ELSE 0 END) AS count_null_item_group,
@@ -599,8 +381,31 @@ HAVING  COUNT(*) > 1""",
 "udise_sch_incentives_check_if_null":"""select * from flowfile where udise_sch_code IS NULL or grade_pri_upr IS NULL or incentive_type IS NULL""",
 "udise_nsqf_plcmnt_c12_table_name":"""udise_nsqf_plcmnt_c12""",
 "udise_update_null_count_nsqf_faculty_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, nsqf_faculty_id = udise_null_col.count_null_nsqf_faculty_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
-"udise_block_wise_qry":"""select * from udise_block_score""",
-"udise_update_null_count_nsqf_enr_caste_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, sector_no = udise_null_col.count_null_sector_no, item_id = udise_null_col.count_null_item_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
+"udise_block_wise_qry":"""select b.*,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district from udise_block_score as b
+left join(select usc.block_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state                         
+ from udise_block_score as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from udise_school_metrics_agg)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from udise_school_metrics_agg as scl
+left join
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.block_id) AS blocks_in_district FROM   udise_school_metrics_agg group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by infrastructure_score
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id""",
 "udise_update_null_count_sch_staff_posn_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
 "udise_school_facility_same_record_check_qry":"""
 SELECT udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,
@@ -716,6 +521,940 @@ from flowfile)""",
 where UPPER(udise_sch_code) <> 'NULL'
 and UPPER(sector_no) <> 'NULL'
 and UPPER(item_id) <> 'NULL'""",
-"udise_sch_perf_null_qry":"select * from udise_scl_perf_null_records",
-"udise_sch_perf_no_lat_long_qry":"select * from udise_scl_perf_no_lat_long"
+"udise_sch_perf_null_qry":"""select * from udise_scl_perf_null_records""",
+"udise_sch_perf_no_lat_long_qry":"""select * from udise_scl_perf_no_lat_long""",
+"udise_check_same_record_sch_facility_qry":"""SELECT udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,    ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_facility_qry":"""select udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs
+from (select udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs
+,row_number() over (partition by udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs
+) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_facility_qry":"""SELECT b.udise_sch_code,b.ac_year,b.bld_status,b.bld_blk_tot,b.bld_blk,b.bld_blk_ppu,b.bld_blk_kuc,b.bld_blk_tnt,b.bld_blk_dptd,b.bld_blk_undcons,b.bndrywall_type,b.clsrms_inst,b.clsrms_und_cons,b.clsrms_dptd,b.clsrms_pre_pri,b.clsrms_pri,b.clsrms_upr,b.clsrms_sec,b.clsrms_hsec,b.othrooms,b.clsrms_gd,b.clsrms_gd_ppu,b.clsrms_gd_kuc,b.clsrms_gd_tnt,b.clsrms_min,b.clsrms_min_ppu,b.clsrms_min_kun,b.clsrms_min_tnt,b.clsrms_maj,b.clsrms_maj_ppu,b.clsrms_maj_kuc,b.clsrms_maj_tnt,b.land_avl_yn,b.hm_room_yn,b.toilet_yn,b.toiletb,b.toiletb_fun,b.toiletg,b.toiletg_fun,b.
+toiletb_cwsn,b.toiletb_cwsn_fun,b.toiletg_cwsn,b.toiletg_cwsn_fun,b.urinalsb,b.urinalsb_fun,b.urinalsg,b.urinalsg_fun,b.toiletb_fun_water,b.toiletg_fun_water,b.handwash_yn,b.incinerator_yn,b.drink_water_yn,b.hand_pump_tot,b.hand_pump_fun,b.well_prot_tot,b.well_prot_fun,b.well_unprot_tot,b.well_unprot_fun,b.tap_tot,b.tap_fun,b.pack_water,b.pack_water_fun,b.othsrc_tot,b.othsrc_fun,b.
+othsrc_name,b.water_purifier_yn,b.water_tested_yn,b.rain_harvest_yn,b.handwash_meal_yn,b.handwash_meal_tot,b.electricity_yn,b.solarpanel_yn,b.library_yn,b.lib_books,b.lib_books_ncert,b.bookbank_yn,b.bkbnk_books,b.bkbnk_books_ncert,b.readcorner_yn,b.readcorner_books,b.librarian_yn,b.newspaper_yn,b.playground_yn,b.playground_alt_yn,b.medchk_yn,b.medchk_tot,b.dewormtab_yn,b.irontab_yn,b.ramps_yn,b.handrails_yn,b.spl_educator_yn,b.kitchen_garden_yn,b.dstbn_clsrms_yn,b.dstbn_toilet_yn,b.dstbn_kitchen_yn,b.stus_hv_furnt,b.ahmvp_room_yn,b.comroom_g_yn,b.staff_room_yn,b.craft_room_yn,b.
+staff_qtr_yn,b.integrated_lab_yn,b.library_room_yn,b.comp_room_yn,b.tinkering_lab_yn,b.phy_lab_yn,b.phy_lab_cond,b.chem_lab_yn,b.chem_lab_cond,b.boi_lab_yn,b.bio_lab_cond,b.math_lab_yn,b.math_lab_cond,b.lang_lab_yn,b.lang_lab_cond,b.geo_lab_yn,b.geo_lab_cond,b.homesc_lab_yn,b.home_sc_lab_cond,b.psycho_lab_yn,b.psycho_lab_cond,b.audio_system_yn,b.sciencekit_yn,b.mathkit_yn,b.biometric_dev_yn,b.comp_lab_type,b.ict_impl_year,b.ictlab_fun_yn,b.ict_model_impl,b.ict_instr_type,b.laptop_yn,b.laptop_tot,b.laptop_fun,b.tablets_yn,b.tablets_tot,b.tablets_fun,b.desktop_yn,b.desktop_tot,b.desktop_fun,b.teachdev_yn,b.teachdev_tot,b.teachdev_fun,b.digi_board_yn,b.digi_board_tot,b.digi_board_fun,b.server_yn,b.server_tot,b.server_fun,b.projector_yn,b.projector_tot,b.projector_fun,b.led_yn,b.led_tot,b.led_fun,b.printer_yn,b.printer_tot,b.printer_fun,b.scanner_yn,b.scanner_tot,b.scanner_fun,b.webcam_yn,b.webcam_tot,b.webcam_fun,b.generator_yn,b.generator_tot,b.generator_fun,b.internet_yn,b.dth_yn,b.digi_res_yn,b.tech_soln_yn,b.ict_tools_yn,
+b.ict_teach_hrs,count(*) num_of_times  from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.bld_status,b.bld_blk_tot,b.bld_blk,b.bld_blk_ppu,b.bld_blk_kuc,b.bld_blk_tnt,b.bld_blk_dptd,b.bld_blk_undcons,b.bndrywall_type,b.clsrms_inst,b.clsrms_und_cons,b.clsrms_dptd,b.clsrms_pre_pri,b.clsrms_pri,b.clsrms_upr,b.clsrms_sec,b.clsrms_hsec,b.othrooms,b.clsrms_gd,b.clsrms_gd_ppu,b.clsrms_gd_kuc,b.clsrms_gd_tnt,b.clsrms_min,b.clsrms_min_ppu,b.clsrms_min_kun,b.clsrms_min_tnt,b.clsrms_maj,b.clsrms_maj_ppu,b.clsrms_maj_kuc,b.clsrms_maj_tnt,b.land_avl_yn,b.hm_room_yn,b.toilet_yn,b.toiletb,b.toiletb_fun,b.toiletg,b.toiletg_fun,b.
+toiletb_cwsn,b.toiletb_cwsn_fun,b.toiletg_cwsn,b.toiletg_cwsn_fun,b.urinalsb,b.urinalsb_fun,b.urinalsg,b.urinalsg_fun,b.toiletb_fun_water,b.toiletg_fun_water,b.handwash_yn,b.incinerator_yn,b.drink_water_yn,b.hand_pump_tot,b.hand_pump_fun,b.well_prot_tot,b.well_prot_fun,b.well_unprot_tot,b.well_unprot_fun,b.tap_tot,b.tap_fun,b.pack_water,b.pack_water_fun,b.othsrc_tot,b.othsrc_fun,b.
+othsrc_name,b.water_purifier_yn,b.water_tested_yn,b.rain_harvest_yn,b.handwash_meal_yn,b.handwash_meal_tot,b.electricity_yn,b.solarpanel_yn,b.library_yn,b.lib_books,b.lib_books_ncert,b.bookbank_yn,b.bkbnk_books,b.bkbnk_books_ncert,b.readcorner_yn,b.readcorner_books,b.librarian_yn,b.newspaper_yn,b.playground_yn,b.playground_alt_yn,b.medchk_yn,b.medchk_tot,b.dewormtab_yn,b.irontab_yn,b.ramps_yn,b.handrails_yn,b.spl_educator_yn,b.kitchen_garden_yn,b.dstbn_clsrms_yn,b.dstbn_toilet_yn,b.dstbn_kitchen_yn,b.stus_hv_furnt,b.ahmvp_room_yn,b.comroom_g_yn,b.staff_room_yn,b.craft_room_yn,b.
+staff_qtr_yn,b.integrated_lab_yn,b.library_room_yn,b.comp_room_yn,b.tinkering_lab_yn,b.phy_lab_yn,b.phy_lab_cond,b.chem_lab_yn,b.chem_lab_cond,b.boi_lab_yn,b.bio_lab_cond,b.math_lab_yn,b.math_lab_cond,b.lang_lab_yn,b.lang_lab_cond,b.geo_lab_yn,b.geo_lab_cond,b.homesc_lab_yn,b.home_sc_lab_cond,b.psycho_lab_yn,b.psycho_lab_cond,b.audio_system_yn,b.sciencekit_yn,b.mathkit_yn,b.biometric_dev_yn,b.comp_lab_type,b.ict_impl_year,b.ictlab_fun_yn,b.ict_model_impl,b.ict_instr_type,b.laptop_yn,b.laptop_tot,b.laptop_fun,b.tablets_yn,b.tablets_tot,b.tablets_fun,b.desktop_yn,b.desktop_tot,b.desktop_fun,b.teachdev_yn,b.teachdev_tot,b.teachdev_fun,b.digi_board_yn,b.digi_board_tot,b.digi_board_fun,b.server_yn,b.server_tot,b.server_fun,b.projector_yn,b.projector_tot,b.projector_fun,b.led_yn,b.led_tot,b.led_fun,b.printer_yn,b.printer_tot,b.printer_fun,b.scanner_yn,b.scanner_tot,b.scanner_fun,b.webcam_yn,b.webcam_tot,b.webcam_fun,b.generator_yn,b.generator_tot,b.generator_fun,b.internet_yn,b.dth_yn,b.digi_res_yn,b.tech_soln_yn,b.ict_tools_yn,b.ict_teach_hrs""",
+"udise_filter_same_id_sch_facility_qry":"""SELECT udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs from 
+(SELECT udise_sch_code,ac_year,bld_status,bld_blk_tot,bld_blk,bld_blk_ppu,bld_blk_kuc,bld_blk_tnt,bld_blk_dptd,bld_blk_undcons,bndrywall_type,clsrms_inst,clsrms_und_cons,clsrms_dptd,clsrms_pre_pri,clsrms_pri,clsrms_upr,clsrms_sec,clsrms_hsec,othrooms,clsrms_gd,clsrms_gd_ppu,clsrms_gd_kuc,clsrms_gd_tnt,clsrms_min,clsrms_min_ppu,clsrms_min_kun,clsrms_min_tnt,clsrms_maj,clsrms_maj_ppu,clsrms_maj_kuc,clsrms_maj_tnt,land_avl_yn,hm_room_yn,toilet_yn,toiletb,toiletb_fun,toiletg,toiletg_fun,toiletb_cwsn,toiletb_cwsn_fun,toiletg_cwsn,toiletg_cwsn_fun,urinalsb,urinalsb_fun,urinalsg,urinalsg_fun,toiletb_fun_water,toiletg_fun_water,handwash_yn,incinerator_yn,drink_water_yn,hand_pump_tot,hand_pump_fun,well_prot_tot,well_prot_fun,well_unprot_tot,well_unprot_fun,tap_tot,tap_fun,pack_water,pack_water_fun,othsrc_tot,othsrc_fun,othsrc_name,water_purifier_yn,water_tested_yn,rain_harvest_yn,handwash_meal_yn,handwash_meal_tot,electricity_yn,solarpanel_yn,library_yn,lib_books,lib_books_ncert,bookbank_yn,bkbnk_books,bkbnk_books_ncert,readcorner_yn,readcorner_books,librarian_yn,newspaper_yn,playground_yn,playground_alt_yn,medchk_yn,medchk_tot,dewormtab_yn,irontab_yn,ramps_yn,handrails_yn,spl_educator_yn,kitchen_garden_yn,dstbn_clsrms_yn,dstbn_toilet_yn,dstbn_kitchen_yn,stus_hv_furnt,ahmvp_room_yn,comroom_g_yn,staff_room_yn,craft_room_yn,staff_qtr_yn,integrated_lab_yn,library_room_yn,comp_room_yn,tinkering_lab_yn,phy_lab_yn,phy_lab_cond,chem_lab_yn,chem_lab_cond,boi_lab_yn,bio_lab_cond,math_lab_yn,math_lab_cond,lang_lab_yn,lang_lab_cond,geo_lab_yn,geo_lab_cond,homesc_lab_yn,home_sc_lab_cond,psycho_lab_yn,psycho_lab_cond,audio_system_yn,sciencekit_yn,mathkit_yn,biometric_dev_yn,comp_lab_type,ict_impl_year,ictlab_fun_yn,ict_model_impl,ict_instr_type,laptop_yn,laptop_tot,laptop_fun,tablets_yn,tablets_tot,tablets_fun,desktop_yn,desktop_tot,desktop_fun,teachdev_yn,teachdev_tot,teachdev_fun,digi_board_yn,digi_board_tot,digi_board_fun,server_yn,server_tot,server_fun,projector_yn,projector_tot,projector_fun,led_yn,led_tot,led_fun,printer_yn,printer_tot,printer_fun,scanner_yn,scanner_tot,scanner_fun,webcam_yn,webcam_tot,webcam_fun,generator_yn,generator_tot,generator_fun,internet_yn,dth_yn,digi_res_yn,tech_soln_yn,ict_tools_yn,ict_teach_hrs,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_nsqf_plcmnt_c12_qry":"""SELECT udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_nsqf_plcmnt_c12_qry":"""select udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g from (select udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g,row_number() over (partition by udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_nsqf_plcmnt_c12_qry":"""SELECT b.udise_sch_code,b.ac_year,b.sector_no,b.item_id,b.opt_plcmnt_b,b.opt_plcmnt_g,b.
+placed_b,b.placed_g,b.voc_hs_b,b.voc_hs_g,b.nonvoc_hs_b,b.nonvoc_hs_g,b.self_emp_b,b.self_emp_g,count(*) num_of_times  from (select udise_sch_code,sector_no,item_id from flowfile
+group by udise_sch_code,sector_no,item_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.sector_no=b.sector_no
+and a.item_id=b.item_id
+group by b.udise_sch_code,b.ac_year,b.sector_no,b.item_id,b.opt_plcmnt_b,b.opt_plcmnt_g,b.
+placed_b,b.placed_g,b.voc_hs_b,b.voc_hs_g,b.nonvoc_hs_b,b.nonvoc_hs_g,b.self_emp_b,b.self_emp_g""",
+"udise_filter_same_id_nsqf_plcmnt_c12_qry":"""SELECT udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g from 
+(SELECT udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g,count(*)
+over (partition by udise_sch_code,sector_no,item_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_nsqf_plcmnt_c10_qry":"""SELECT udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_nsqf_plcmnt_c10_qry":"""select udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g from (select udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g,row_number() over (partition by udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_nsqf_plcmnt_c10_qry":"""SELECT b.udise_sch_code,b.ac_year,b.sector_no,b.item_id,b.opt_plcmnt_b,b.opt_plcmnt_g,b.
+placed_b,b.placed_g,b.voc_hs_b,b.voc_hs_g,b.nonvoc_hs_b,b.nonvoc_hs_g,b.self_emp_b,b.self_emp_g,count(*) num_of_times  from (select udise_sch_code,sector_no,item_id from flowfile
+group by udise_sch_code,sector_no,item_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.sector_no=b.sector_no
+and a.item_id=b.item_id
+group by b.udise_sch_code,b.ac_year,b.sector_no,b.item_id,b.opt_plcmnt_b,b.opt_plcmnt_g,b.
+placed_b,b.placed_g,b.voc_hs_b,b.voc_hs_g,b.nonvoc_hs_b,b.nonvoc_hs_g,b.self_emp_b,b.self_emp_g""",
+"udise_filter_same_id_nsqf_plcmnt_c10_qry":"""SELECT udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g from 
+(SELECT udise_sch_code,ac_year,sector_no,item_id,opt_plcmnt_b,opt_plcmnt_g,
+placed_b,placed_g,voc_hs_b,voc_hs_g,nonvoc_hs_b,nonvoc_hs_g,self_emp_b,self_emp_g,count(*)
+over (partition by udise_sch_code,sector_no,item_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_nsqf_class_cond_qry":"""SELECT udise_sch_code,ac_year,sector_no,class_type_id,c9,c10,c11,c12,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,sector_no,class_type_id,c9,c10,c11,c12
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_nsqf_class_cond_qry":"""select udise_sch_code,ac_year,sector_no,class_type_id,c9,c10,c11,c12 from (select udise_sch_code,ac_year,sector_no,class_type_id,c9,c10,c11,c12,
+row_number() over (partition by udise_sch_code,ac_year,sector_no,class_type_id,c9,c10,c11,c12) 
+as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_nsqf_class_cond_qry":"""SELECT b.udise_sch_code,b.ac_year,b.sector_no,b.class_type_id,b.c9,b.c10,b.c11,b.c12,count(*) num_of_times  from (select udise_sch_code,sector_no,class_type_id from flowfile
+group by udise_sch_code,sector_no,class_type_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.sector_no=b.sector_no
+and a.class_type_id=b.class_type_id
+group by b.udise_sch_code,b.ac_year,b.sector_no,b.class_type_id,b.c9,b.c10,b.c11,b.c12""",
+"udise_filter_same_id_nsqf_class_cond_qry":"""SELECT udise_sch_code,ac_year,sector_no,class_type_id,c9,c10,c11,c12 from (SELECT udise_sch_code,ac_year,sector_no,class_type_id,c9,c10,c11,c12 ,count(*)
+over (partition by udise_sch_code,sector_no,class_type_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_exmres_c12_qry":"""SELECT udise_sch_code,ac_year,item_id,stream_id,gen_app_b,gen_app_g,obc_app_b,obc_app_g,
+sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,item_id,stream_id,gen_app_b,gen_app_g,obc_app_b,obc_app_g,
+sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_exmres_c12_qry":"""select udise_sch_code,ac_year,item_id,stream_id,gen_app_b,gen_app_g,obc_app_b,obc_app_g,
+Sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g from(select udise_sch_code,ac_year,item_id,stream_id,gen_app_b,gen_app_g,obc_app_b,obc_app_g,
+sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g,row_number() over (partition by udise_sch_code,ac_year,item_id,stream_id,gen_app_b,gen_app_g,obc_app_b,obc_app_g,
+sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_exmres_c12_qry":"""SELECT b.udise_sch_code,b.ac_year,b.item_id,b.stream_id,b.gen_app_b,b.gen_app_g,b.obc_app_b,b.obc_app_g,b.
+sc_app_b,b.sc_app_g,b.st_app_b,b.st_app_g,b.gen_pass_b,b.gen_pass_g,b.obc_pass_b,b.obc_pass_g,b.sc_pass_b,b.sc_pass_g,b.st_pass_b,b.st_pass_g,count(*) num_of_times
+from (select udise_sch_code,item_id,stream_id from flowfile
+group by udise_sch_code,item_id,stream_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.item_id=b.item_id
+and a.stream_id=b.stream_id
+group by b.udise_sch_code,b.ac_year,b.item_id,b.stream_id,b.gen_app_b,b.gen_app_g,b.obc_app_b,b.obc_app_g,b.
+sc_app_b,b.sc_app_g,b.st_app_b,b.st_app_g,b.gen_pass_b,b.gen_pass_g,b.obc_pass_b,b.obc_pass_g,b.sc_pass_b,b.sc_pass_g,b.st_pass_b,b.st_pass_g""",
+"udise_filter_same_id_sch_exmres_c12_qry":"""SELECT udise_sch_code,ac_year,item_id,stream_id,gen_app_b,gen_app_g,obc_app_b,obc_app_g,
+sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g 
+from (SELECT udise_sch_code,ac_year,item_id,stream_id,gen_app_b,gen_app_g,obc_app_b,obc_app_g,
+sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g,count(*)
+over (partition by udise_sch_code,item_id,stream_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_exmres_c10_qry":"""SELECT udise_sch_code,ac_year,item_id,gen_app_b,gen_app_g,obc_app_b,
+obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,item_id,gen_app_b,gen_app_g,obc_app_b,
+obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_exmres_c10_qry":"""select udise_sch_code,ac_year,item_id,gen_app_b,gen_app_g,obc_app_b,
+obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g from(select udise_sch_code,ac_year,item_id,gen_app_b,gen_app_g,obc_app_b,
+obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g,
+row_number() over (partition by udise_sch_code,ac_year,item_id,gen_app_b,gen_app_g,obc_app_b,
+obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_exmres_c10_qry":"""SELECT b.udise_sch_code,b.ac_year,b.item_id,b.gen_app_b,b.gen_app_g,b.obc_app_b,b.
+obc_app_g,b.sc_app_b,b.sc_app_g,b.st_app_b,b.st_app_g,b.gen_pass_b,b.gen_pass_g,b.obc_pass_b,b.obc_pass_g,b.sc_pass_b,b.sc_pass_g,b.st_pass_b,b.st_pass_g,count(*) num_of_times
+from (select udise_sch_code,item_id from flowfile
+group by udise_sch_code,item_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.item_id=b.item_id
+group by b.udise_sch_code,b.ac_year,b.item_id,b.gen_app_b,b.gen_app_g,b.obc_app_b,b.
+obc_app_g,b.sc_app_b,b.sc_app_g,b.st_app_b,b.st_app_g,b.gen_pass_b,b.gen_pass_g,b.obc_pass_b,b.obc_pass_g,b.sc_pass_b,b.sc_pass_g,b.st_pass_b,b.st_pass_g""",
+"udise_filter_same_id_sch_exmres_c10_qry":"""SELECT udise_sch_code,ac_year,item_id,gen_app_b,gen_app_g,obc_app_b,
+obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g
+from (SELECT udise_sch_code,ac_year,item_id,gen_app_b,gen_app_g,obc_app_b,
+obc_app_g,sc_app_b,sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,st_pass_g,count(*)
+over (partition by udise_sch_code,item_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_exmres_c5_qry":"""SELECT udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,
+st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,
+st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,
+st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,
+st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_exmres_c5_qry":"""select udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,
+st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,
+st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g from(select udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,
+st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,
+st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g,row_number() over (partition by udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,
+st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,
+st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_exmres_c5_qry":"""SELECT  b.udise_sch_code,b.ac_year,b.gen_app_b,b.gen_app_g,b.obc_app_b,b.obc_app_g,b.sc_app_b,b.sc_app_g,b.
+st_app_b,b.st_app_g,b.gen_pass_b,b.gen_pass_g,b.obc_pass_b,b.obc_pass_g,b.sc_pass_b,b.sc_pass_g,b.st_pass_b,b.
+st_pass_g,b.gen_60p_b,b.gen_60p_g,b.obc_60p_b,b.obc_60p_g,b.sc_60p_b,b.sc_60p_g,b.st_60p_b,b.st_60p_g,count(*) num_of_times
+from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.gen_app_b,b.gen_app_g,b.obc_app_b,b.obc_app_g,b.sc_app_b,b.sc_app_g,b.
+st_app_b,b.st_app_g,b.gen_pass_b,b.gen_pass_g,b.obc_pass_b,b.obc_pass_g,b.sc_pass_b,b.sc_pass_g,b.st_pass_b,b.
+st_pass_g,b.gen_60p_b,b.gen_60p_g,b.obc_60p_b,b.obc_60p_g,b.sc_60p_b,b.sc_60p_g,b.st_60p_b,b.st_60p_g""",
+"udise_filter_same_id_sch_exmres_c5_qry":"""SELECT udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,
+st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,
+st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g from (SELECTudise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,sc_app_g,
+st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,sc_pass_g,st_pass_b,
+st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_incen_cwsn_qry":"""SELECT udise_sch_code,ac_year,item_id,tot_pre_pri_b,tot_pre_pri_g,tot_pry_b,
+tot_pry_g,tot_upr_b,tot_upr_g,tot_sec_b,tot_sec_g,tot_hsec_b,tot_hsec_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,item_id,tot_pre_pri_b,tot_pre_pri_g,tot_pry_b,
+tot_pry_g,tot_upr_b,tot_upr_g,tot_sec_b,tot_sec_g,tot_hsec_b,tot_hsec_g 
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_incen_cwsn_qry":"""select udise_sch_code,ac_year,item_id,tot_pre_pri_b,tot_pre_pri_g,tot_pry_b,
+tot_pry_g,tot_upr_b,tot_upr_g,tot_sec_b,tot_sec_g,tot_hsec_b,tot_hsec_g  from(select udise_sch_code,ac_year,item_id,tot_pre_pri_b,tot_pre_pri_g,tot_pry_b,
+tot_pry_g,tot_upr_b,tot_upr_g,tot_sec_b,tot_sec_g,tot_hsec_b,tot_hsec_g,
+row_number() over (partition by udise_sch_code,ac_year,item_id,tot_pre_pri_b,tot_pre_pri_g,tot_pry_b,
+tot_pry_g,tot_upr_b,tot_upr_g,tot_sec_b,tot_sec_g,tot_hsec_b,tot_hsec_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_incen_cwsn_qry":"""SELECT b.udise_sch_code,b.ac_year,b.item_id,b.tot_pre_pri_b,b.tot_pre_pri_g,b.tot_pry_b,b.
+tot_pry_g,b.tot_upr_b,b.tot_upr_g,b.tot_sec_b,b.tot_sec_g,b.tot_hsec_b,b.tot_hsec_g,count(*) num_of_times
+from (select udise_sch_code,item_id from flowfile
+group by udise_sch_code,item_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.item_id=b.item_id
+group by b.udise_sch_code,b.ac_year,b.item_id,b.tot_pre_pri_b,b.tot_pre_pri_g,b.tot_pry_b,b.
+tot_pry_g,b.tot_upr_b,b.tot_upr_g,b.tot_sec_b,b.tot_sec_g,b.tot_hsec_b,b.tot_hsec_g""",
+"udise_filter_same_id_sch_incen_cwsn_qry":"""SELECT udise_sch_code,ac_year,item_id,tot_pre_pri_b,tot_pre_pri_g,tot_pry_b,
+tot_pry_g,tot_upr_b,tot_upr_g,tot_sec_b,tot_sec_g,tot_hsec_b,tot_hsec_g
+from (SELECT udise_sch_code,ac_year,item_id,tot_pre_pri_b,tot_pre_pri_g,tot_pry_b,
+tot_pry_g,tot_upr_b,tot_upr_g,tot_sec_b,tot_sec_g,tot_hsec_b,tot_hsec_g,count(*)
+over (partition by udise_sch_code,item_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_enr_by_stream_qry":"""SELECT udise_sch_code,ac_year,stream_id,caste_id,ec11_b,ec11_g,ec12_b,ec12_g,rc11_b,rc11_g,rc12_b,rc12_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,stream_id,caste_id,ec11_b,ec11_g,ec12_b,ec12_g,rc11_b,rc11_g,rc12_b,rc12_g
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_enr_by_stream_qry":"""select udise_sch_code,ac_year,stream_id,caste_id,ec11_b,ec11_g,ec12_b,ec12_g,rc11_b,rc11_g,rc12_b,rc12_g from(select udise_sch_code,ac_year,stream_id,caste_id,ec11_b,ec11_g,ec12_b,ec12_g,rc11_b,rc11_g,rc12_b,rc12_g,row_number() over (partition by udise_sch_code,ac_year,stream_id,caste_id,ec11_b,ec11_g,ec12_b,ec12_g,rc11_b,rc11_g,rc12_b,rc12_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_enr_by_stream_qry":"""SELECT b.udise_sch_code,b.ac_year,b.stream_id,b.caste_id,b.ec11_b,b.ec11_g,b.ec12_b,b.ec12_g,b.rc11_b,b.rc11_g,b.rc12_b,b.rc12_g,count(*) num_of_times
+from (select udise_sch_code,stream_id,caste_id from flowfile
+group by udise_sch_code,stream_id,caste_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.stream_id=b.stream_id
+and a.caste_id=b.caste_id
+group by b.udise_sch_code,b.ac_year,b.stream_id,b.caste_id,b.ec11_b,b.ec11_g,b.ec12_b,b.ec12_g,b.rc11_b,b.rc11_g,b.rc12_b,b.rc12_g""",
+"udise_filter_same_id_sch_enr_by_stream_qry":"""SELECT udise_sch_code,ac_year,stream_id,caste_id,ec11_b,ec11_g,ec12_b,ec12_g,rc11_b,rc11_g,rc12_b,rc12_g from (SELECTudise_sch_code,ac_year,stream_id,caste_id,ec11_b,ec11_g,ec12_b,ec12_g,rc11_b,rc11_g,rc12_b,rc12_g,count(*)
+over (partition by udise_sch_code,stream_id,caste_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_enr_cwsn_qry":"""SELECT udise_sch_code,ac_year,disability_type,cpp_b,cpp_g,c1_b,c1_g,
+c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,disability_type,cpp_b,cpp_g,c1_b,c1_g,
+c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_enr_cwsn_qry":"""select udise_sch_code,ac_year,disability_type,cpp_b,cpp_g,c1_b,c1_g,
+c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from(select udise_sch_code,ac_year,disability_type,cpp_b,cpp_g,c1_b,c1_g,
+c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,
+row_number() over (partition by udise_sch_code,ac_year,disability_type,cpp_b,cpp_g,c1_b,c1_g,
+c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_enr_cwsn_qry":"""SELECT b.udise_sch_code,b.ac_year,b.disability_type,b.cpp_b,b.cpp_g,b.c1_b,b.c1_g,b.
+c2_b,b.c2_g,b.c3_b,b.c3_g,b.c4_b,b.c4_g,b.c5_b,b.c5_g,b.c6_b,b.c6_g,b.c7_b,b.c7_g,b.c8_b,b.c8_g,b.c9_b,b.c9_g,b.
+c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g,count(*) num_of_times
+from (select udise_sch_code,disability_type from flowfile
+group by udise_sch_code,disability_type having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.disability_type=b.disability_type
+group by b.udise_sch_code,b.ac_year,b.disability_type,b.cpp_b,b.cpp_g,b.c1_b,b.c1_g,b.
+c2_b,b.c2_g,b.c3_b,b.c3_g,b.c4_b,b.c4_g,b.c5_b,b.c5_g,b.c6_b,b.c6_g,b.c7_b,b.c7_g,b.c8_b,b.c8_g,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g""",
+"udise_filter_same_id_sch_enr_cwsn_qry":"""SELECT udise_sch_code,ac_year,disability_type,cpp_b,cpp_g,c1_b,c1_g,
+c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from (SELECT udise_sch_code,ac_year,disability_type,cpp_b,cpp_g,c1_b,c1_g,
+c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,count(*)
+over (partition by udise_sch_code,disability_type) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_enr_medinstr_qry":"""SELECT udise_sch_code,ac_year,medinstr_seq,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,medinstr_seq,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_enr_medinstr_qry":"""select udise_sch_code,ac_year,medinstr_seq,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from(select udise_sch_code,ac_year,medinstr_seq,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g, 
+row_number() over (partition by udise_sch_code,ac_year,medinstr_seq,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_enr_medinstr_qry":"""SELECT b.udise_sch_code,b.ac_year,b.medinstr_seq,b.c1_b,b.c1_g,b.c2_b,b.c2_g,b.c3_b,b.
+c3_g,b.c4_b,b.c4_g,b.c5_b,b.c5_g,b.c6_b,b.c6_g,b.c7_b,b.c7_g,b.c8_b,b.c8_g,b.c9_b,b.c9_g,b.
+c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g,count(*) num_of_times
+from (select udise_sch_code,medinstr_seq from flowfile
+group by udise_sch_code,medinstr_seq having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.medinstr_seq=b.medinstr_seq
+group by b.udise_sch_code,b.ac_year,b.medinstr_seq,b.c1_b,b.c1_g,b.c2_b,b.c2_g,b.c3_b,b.
+c3_g,b.c4_b,b.c4_g,b.c5_b,b.c5_g,b.c6_b,b.c6_g,b.c7_b,b.c7_g,b.c8_b,b.c8_g,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g""",
+"udise_filter_same_id_sch_enr_medinstr_qry":"""SELECT udise_sch_code,ac_year,medinstr_seq,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g
+from (SELECT udise_sch_code,ac_year,medinstr_seq,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,
+c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,count(*)
+over (partition by udise_sch_code,medinstr_seq) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_enr_age_qry":"""SELECT udise_sch_code,ac_year,age_id,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,
+c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,age_id,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,
+c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_enr_age_qry":"""select udise_sch_code,ac_year,age_id,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,
+c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g
+from (select udise_sch_code,ac_year,age_id,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,
+c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,
+row_number() over (partition by udise_sch_code,ac_year,age_id,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,
+c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_enr_age_qry":"""SELECT b.udise_sch_code,b.ac_year,b.age_id,b.c1_b,b.c1_g,b.c2_b,b.c2_g,b.c3_b,b.c3_g,b.c4_b,b.c4_g,b.c5_b,b.
+c5_g,b.c6_b,b.c6_g,b.c7_b,b.c7_g,b.c8_b,b.c8_g,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g,count(*) num_of_times
+from (select udise_sch_code,age_id from flowfile
+group by udise_sch_code,age_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.age_id=b.age_id
+group by b.udise_sch_code,b.ac_year,b.age_id,b.c1_b,b.c1_g,b.c2_b,b.c2_g,b.c3_b,b.c3_g,b.c4_b,b.c4_g,b.c5_b,b.
+c5_g,b.c6_b,b.c6_g,b.c7_b,b.c7_g,b.c8_b,b.c8_g,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g""",
+"udise_filter_same_id_sch_enr_age_qry":"""SELECT udise_sch_code,ac_year,age_id,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,
+c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g
+from (SELECT udise_sch_code,ac_year,age_id,c1_b,c1_g,c2_b,c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,
+c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,count(*)
+over (partition by udise_sch_code,age_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_enr_reptr_qry":"""SELECT udise_sch_code,ac_year,item_group,item_id,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,item_group,item_id,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_enr_reptr_qry":"""select udise_sch_code,ac_year,item_group,item_id,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g from(select udise_sch_code,ac_year,item_group,item_id,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g,
+row_number() over (partition by udise_sch_code,ac_year,item_group,item_id,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_enr_reptr_qry":"""SELECT b.udise_sch_code,b.ac_year,b.item_group,b.item_id,b.c1_b,b.c1_g,b.c2_b,b.c2_g,b.c3_b,b.
+c3_g,b.c4_b,b.c4_g,b.c5_b,b.c5_g,b.c6_b,b.c6_g,b.c7_b,b.c7_g,b.c8_b,b.c8_g,b.c9_b,b.c9_g,b.c10_b,b.
+c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g,count(*) num_of_times
+from (select udise_sch_code,item_id,item_group from flowfile
+group by udise_sch_code,item_id,item_group having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.item_id=b.item_id
+and a.item_group=b.item_group
+group by b.udise_sch_code,b.ac_year,b.item_group,b.item_id,b.c1_b,b.c1_g,b.c2_b,b.c2_g,b.c3_b,b.
+c3_g,b.c4_b,b.c4_g,b.c5_b,b.c5_g,b.c6_b,b.c6_g,b.c7_b,b.c7_g,b.c8_b,b.c8_g,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g""",
+"udise_filter_same_id_sch_enr_reptr_qry":"""SELECT udise_sch_code,ac_year,item_group,item_id,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g
+from (SELECT udise_sch_code,ac_year,item_group,item_id,c1_b,c1_g,c2_b,c2_g,c3_b,
+c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g,count(*)
+over (partition by udise_sch_code,item_id,item_group) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_enr_fresh_qry":"""SELECT udise_sch_code,ac_year,item_group,item_id,cpp_b,cpp_g,c1_b,c1_g,c2_b,
+c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,item_group,item_id,cpp_b,cpp_g,c1_b,c1_g,c2_b,
+c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_enr_fresh_qry":"""select udise_sch_code,ac_year,item_group,item_id,cpp_b,cpp_g,c1_b,c1_g,c2_b,
+c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g from(select udise_sch_code,ac_year,item_group,item_id,cpp_b,cpp_g,c1_b,c1_g,c2_b,
+c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g,
+row_number() over (partition by udise_sch_code,ac_year,item_group,item_id,cpp_b,cpp_g,c1_b,c1_g,c2_b,
+c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_enr_fresh_qry":"""SELECT b.udise_sch_code,b.ac_year,b.item_group,b.item_id,b.cpp_b,b.cpp_g,b.c1_b,b.c1_g,b.c2_b,b.c2_g,b.c3_b,b.c3_g,b.c4_b,b.c4_g,b.c5_b,b.c5_g,b.c6_b,b.c6_g,b.c7_b,b.c7_g,b.c8_b,b.c8_g,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g,count(*) num_of_times from (select udise_sch_code,item_id,item_group from flowfile
+group by udise_sch_code,item_id,item_group having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.item_id=b.item_id
+And a.item_group=b.item_group
+group by b.udise_sch_code,b.ac_year,b.item_group,b.item_id,b.cpp_b,b.cpp_g,b.c1_b,b.c1_g,b.c2_b,b.c2_g,b.c3_b,b.c3_g,b.c4_b,b.c4_g,b.c5_b,b.c5_g,b.c6_b,b.c6_g,b.c7_b,b.c7_g,b.c8_b,b.c8_g,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g""",
+"udise_filter_same_id_sch_enr_fresh_qry":"""SELECT udise_sch_code,ac_year,item_group,item_id,cpp_b,cpp_g,c1_b,c1_g,c2_b,
+c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g
+from (SELECT 
+udise_sch_code,ac_year,item_group,item_id,cpp_b,cpp_g,c1_b,c1_g,c2_b,
+c2_g,c3_b,c3_g,c4_b,c4_g,c5_b,c5_g,c6_b,c6_g,c7_b,c7_g,c8_b,c8_g,c9_b,c9_g,c10_b,
+c10_g,c11_b,c11_g,c12_b,c12_g,count(*)
+over (partition by udise_sch_code,item_id,item_group) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_enr_newadm_qry":"""SELECT udise_sch_code,ac_year,age4_b,age4_g,age5_b,age5_g,age6_b,age6_g,age7_b,
+age7_g,age8_b,age8_g,same_sch_b,same_sch_g,oth_sch_b,oth_sch_g,anganwadi_b,anganwadi_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,age4_b,age4_g,age5_b,age5_g,age6_b,age6_g,age7_b,
+age7_g,age8_b,age8_g,same_sch_b,same_sch_g,oth_sch_b,oth_sch_g,anganwadi_b,anganwadi_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_enr_newadm_qry":"""select udise_sch_code,ac_year,age4_b,age4_g,age5_b,age5_g,age6_b,age6_g,age7_b,
+age7_g,age8_b,age8_g,same_sch_b,same_sch_g,oth_sch_b,oth_sch_g,anganwadi_b,anganwadi_g from(select udise_sch_code,ac_year,age4_b,age4_g,age5_b,age5_g,age6_b,age6_g,age7_b,
+age7_g,age8_b,age8_g,same_sch_b,same_sch_g,oth_sch_b,oth_sch_g,anganwadi_b,anganwadi_g,row_number() over (partition by udise_sch_code,ac_year,age4_b,age4_g,age5_b,age5_g,age6_b,age6_g,age7_b,
+age7_g,age8_b,age8_g,same_sch_b,same_sch_g,oth_sch_b,oth_sch_g,anganwadi_b,anganwadi_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_enr_newadm_qry":"""SELECT b.udise_sch_code,b.ac_year,b.age4_b,b.age4_g,b.age5_b,b.age5_g,b.age6_b,b.age6_g,b.age7_b,b.
+age7_g,b.age8_b,b.age8_g,b.same_sch_b,b.same_sch_g,b.oth_sch_b,b.oth_sch_g,b.anganwadi_b,b.anganwadi_g,count(*) num_of_times
+from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.age4_b,b.age4_g,b.age5_b,b.age5_g,b.age6_b,b.age6_g,b.age7_b,b.
+age7_g,b.age8_b,b.age8_g,b.same_sch_b,b.same_sch_g,b.oth_sch_b,b.oth_sch_g,b.anganwadi_b,b.anganwadi_g""",
+"udise_filter_same_id_sch_enr_newadm_qry":"""SELECT udise_sch_code,ac_year,age4_b,age4_g,age5_b,age5_g,age6_b,age6_g,age7_b,
+age7_g,age8_b,age8_g,same_sch_b,same_sch_g,oth_sch_b,oth_sch_g,anganwadi_b,anganwadi_g from (SELECT 
+udise_sch_code,ac_year,age4_b,age4_g,age5_b,age5_g,age6_b,age6_g,age7_b,
+age7_g,age8_b,age8_g,same_sch_b,same_sch_g,oth_sch_b,oth_sch_g,anganwadi_b,anganwadi_g,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_staff_posn_qry":"""SELECT udise_sch_code,ac_year,tch_regular,tch_contract,tch_part_time,nontch_accnt,
+nontch_lib_asst,nontch_lab_asst,nontch_udc,nontch_ldc,nontch_peon,nontch_watchman,tch_hav_adhr,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,tch_regular,tch_contract,tch_part_time,nontch_accnt,
+nontch_lib_asst,nontch_lab_asst,nontch_udc,nontch_ldc,nontch_peon,nontch_watchman,tch_hav_adhr HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_enr_sch_staff_posn_qry":"""select udise_sch_code,ac_year,tch_regular,tch_contract,tch_part_time,nontch_accnt,
+nontch_lib_asst,nontch_lab_asst,nontch_udc,nontch_ldc,nontch_peon,nontch_watchman,tch_hav_adhr from(select udise_sch_code,ac_year,tch_regular,tch_contract,tch_part_time,nontch_accnt,
+nontch_lib_asst,nontch_lab_asst,nontch_udc,nontch_ldc,nontch_peon,nontch_watchman,tch_hav_adhr,row_number() over (partition by udise_sch_code,ac_year,tch_regular,tch_contract,tch_part_time,nontch_accnt,
+nontch_lib_asst,nontch_lab_asst,nontch_udc,nontch_ldc,nontch_peon,nontch_watchman,tch_hav_adhr) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_staff_posn_qry":"""SELECT b.udise_sch_code,b.ac_year,b.tch_regular,b.tch_contract,b.tch_part_time,b.nontch_accnt,
+b.nontch_lib_asst,b.nontch_lab_asst,b.nontch_udc,b.nontch_ldc,b.nontch_peon,b.nontch_watchman,b.tch_hav_adhr,count(*) num_of_times
+from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.tch_regular,b.tch_contract,b.tch_part_time,b.nontch_accnt,
+b.nontch_lib_asst,b.nontch_lab_asst,b.nontch_udc,b.nontch_ldc,b.nontch_peon,b.nontch_watchman,b.tch_hav_adhr""",
+"udise_check_same_record_sch_exmmarks_c10_qry":"""SELECT udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_enr_sch_exmmarks_c10_qry":"""select udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from(select udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,row_number() over (partition by udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_exmmarks_c10_qry":"""SELECT b.udise_sch_code,b.ac_year,b.item_id,b.marks_range_id,b.gen_b,b.gen_g,b.obc_b,b.obc_g,b.sc_b,b.sc_g,b.st_b,b.st_g,count(*) num_of_times
+from (select udise_sch_code,item_id,marks_range_id from flowfile
+group by udise_sch_code,item_id,marks_range_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.item_id=b.item_id
+and a.marks_range_id=b.marks_range_id
+group by b.udise_sch_code,b.ac_year,b.item_id,b.marks_range_id,b.gen_b,b.gen_g,b.obc_b,b.obc_g,b.sc_b,b.sc_g,b.st_b,b.st_g""",
+"udise_filter_same_id_sch_exmmarks_c10_qry":"""SELECT udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from (SELECT 
+udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,count(*)
+over (partition by udise_sch_code,item_id,marks_range_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_exmmarks_c12_qry":"""SELECT
+udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_enr_sch_exmmarks_c12_qry":"""select udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from(select udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,row_number() over (partition by udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_exmmarks_c12_qry":"""SELECT b.udise_sch_code,b.ac_year,b.item_id,b.marks_range_id,b.gen_b,b.gen_g,b.obc_b,b.obc_g,b.sc_b,b.sc_g,b.st_b,b.st_g,count(*) num_of_times
+from (select udise_sch_code,item_id,marks_range_id from flowfile
+ group by udise_sch_code,item_id,marks_range_id  having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.item_id=b.item_id
+and a.marks_range_id=b.marks_range_id
+group by b.udise_sch_code,b.ac_year,b.item_id,b.marks_range_id,b.gen_b,b.gen_g,b.obc_b,b.obc_g,b.sc_b,b.sc_g,b.st_b,b.st_g""",
+"udise_filter_same_id_sch_exmmarks_c12_qry":"""SELECT  udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_gfrom (SELECT 
+udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,count(*)
+over (partition by udise_sch_code,item_id,marks_range_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_nsqf_exmres_c10_qry":"""SELECT udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_nsqf_exmres_c10_qry":"""select udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from(select udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,
+row_number() over (partition by udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_nsqf_exmres_c10_qry":"""SELECT b.udise_sch_code,b.ac_year,b.sector_no,b.marks_range_id,b.gen_b,b.gen_g,b.obc_b,b.obc_g,b.sc_b,b.sc_g,b.st_b,b.st_g,count(*) num_of_times
+from (select udise_sch_code,sector_no,marks_range_id from flowfile
+group by udise_sch_code,sector_no,marks_range_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.sector_no=b.sector_no
+and a.marks_range_id=b.marks_range_id
+group by b.udise_sch_code,b.ac_year,b.sector_no,b.marks_range_id,b.gen_b,b.gen_g,b.obc_b,b.obc_g,b.sc_b,b.sc_g,b.st_b,b.st_g""",
+"udise_filter_same_id_nsqf_exmres_c10_qry":"""SELECT udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_gfrom (SELECT udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,count(*)
+over (partition by udise_sch_code,sector_no,marks_range_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_nsqf_exmres_c12_qry":"""SELECT udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_nsqf_exmres_c12_qry":"""select udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from (select udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,
+row_number() over (partition by udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_nsqf_exmres_c12_qry":"""SELECT b.udise_sch_code,b.ac_year,b.sector_no,b.marks_range_id,b.gen_b,b.gen_g,b.obc_b,b.obc_g,b.sc_b,b.sc_g,b.st_b,b.st_g,count(*) num_of_times
+from (select udise_sch_code,sector_no,marks_range_id from flowfile
+group by udise_sch_code,sector_no,marks_range_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.sector_no=b.sector_no
+and a.marks_range_id=b.marks_range_id
+group by b.udise_sch_code,b.ac_year,b.sector_no,b.marks_range_id,b.gen_b,b.gen_g,b.obc_b,b.obc_g,b.sc_b,b.sc_g,b.st_b,b.st_g""",
+"udise_filter_same_id_nsqf_exmres_c12_qry":"""SELECT udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from (SELECT udise_sch_code,ac_year,sector_no,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,count(*)
+over (partition by udise_sch_code,sector_no,marks_range_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_nsqf_trng_prov_qry":"""SELECT udise_sch_code,ac_year,agency_name,sector_no,cert_no,cert_agency,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,agency_name,sector_no,cert_no,cert_agency
+HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_nsqf_trng_prov_qry":"""select udise_sch_code,ac_year,agency_name,sector_no,cert_no,cert_agency from(select udise_sch_code,ac_year,agency_name,sector_no,cert_no,cert_agency,
+row_number() over (partition by udise_sch_code,ac_year,agency_name,sector_no,cert_no,cert_agency) as rn from flowfile) sq Where rn =1
+""",
+"udise_check_same_id_nsqf_trng_prov_qry":"""SELECT b.udise_sch_code,b.ac_year,b.agency_name,b.sector_no,b.cert_no,b.cert_agency,count(*) num_of_times
+from (select udise_sch_code,sector_no from flowfile
+group by udise_sch_code,sector_no having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.sector_no=b.sector_no
+group by b.udise_sch_code,b.ac_year,b.agency_name,b.sector_no,b.cert_no,b.cert_agency""",
+"udise_filter_same_id_nsqf_trng_prov_qry":"""SELECT udise_sch_code,ac_year,agency_name,sector_no,cert_no,cert_agency from (SELECT udise_sch_code,ac_year,agency_name,sector_no,cert_no,cert_agency,count(*)
+over (partition by udise_sch_code,sector_no) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_nsqf_faculty_qry":"""SELECT nsqf_faculty_id,udise_sch_code,ac_year,faculty_code,name,gender,dob,
+soc_cat,nature_of_appt,qual_acad,qual_prof,industry_exp,training_exp,
+class_taught,appt_sec,induc_trg_rcvd,inserv_trg_rcvd,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY  nsqf_faculty_id,udise_sch_code,ac_year,faculty_code,name,gender,dob,
+soc_cat,nature_of_appt,qual_acad,qual_prof,industry_exp,training_exp,
+class_taught,appt_sec,induc_trg_rcvd,inserv_trg_rcvd HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_nsqf_faculty_qry":"""select nsqf_faculty_id,udise_sch_code,ac_year,faculty_code,name,gender,dob,
+soc_cat,nature_of_appt,qual_acad,qual_prof,industry_exp,training_exp,
+class_taught,appt_sec,induc_trg_rcvd,inserv_trg_rcvd from(select nsqf_faculty_id,udise_sch_code,ac_year,faculty_code,name,gender,dob,
+soc_cat,nature_of_appt,qual_acad,qual_prof,industry_exp,training_exp,
+class_taught,appt_sec,induc_trg_rcvd,inserv_trg_rcvd,
+row_number() over (partition by nsqf_faculty_id,udise_sch_code,ac_year,faculty_code,name,gender,dob,
+soc_cat,nature_of_appt,qual_acad,qual_prof,industry_exp,training_exp,
+class_taught,appt_sec,induc_trg_rcvd,inserv_trg_rcvd) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_nsqf_faculty_qry":"""SELECT b.nsqf_faculty_id,b.udise_sch_code,b.ac_year,b.faculty_code,b.name,b.gender,b.dob,b.
+soc_cat,b.nature_of_appt,b.qual_acad,b.qual_prof,b.industry_exp,b.training_exp,b.
+class_taught,b.appt_sec,b.induc_trg_rcvd,b.inserv_trg_rcvd,count(*) num_of_times
+from (select udise_sch_code,nsqf_faculty_id from flowfile
+group by udise_sch_code,nsqf_faculty_id having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.nsqf_faculty_id=b.nsqf_faculty_id
+group by b.nsqf_faculty_id,b.udise_sch_code,b.ac_year,b.faculty_code,b.name,b.gender,b.dob,b.
+soc_cat,b.nature_of_appt,b.qual_acad,b.qual_prof,b.industry_exp,b.training_exp,b.
+class_taught,b.appt_sec,b.induc_trg_rcvd,b.inserv_trg_rcvd""",
+"udise_filter_same_id_nsqf_faculty_qry":"""SELECT nsqf_faculty_id,udise_sch_code,ac_year,faculty_code,name,gender,dob,
+soc_cat,nature_of_appt,qual_acad,qual_prof,industry_exp,training_exp,
+class_taught,appt_sec,induc_trg_rcvd,inserv_trg_rcvd from (SELECT nsqf_faculty_id,udise_sch_code,ac_year,faculty_code,name,gender,dob,
+soc_cat,nature_of_appt,qual_acad,qual_prof,industry_exp,training_exp,
+class_taught,appt_sec,induc_trg_rcvd,inserv_trg_rcvd,count(*)
+over (partition by udise_sch_code,nsqf_faculty_id) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_exmres_c8_qry":"""SELECT udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,
+sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,
+sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY  udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,
+sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,
+sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_exmres_c8_qry":"""select udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,
+sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,
+sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g from(select udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,
+sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,
+sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g,
+row_number() over (partition by udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,
+sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,
+sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g) as rn from flowfile) sq Where rn =1
+""",
+"udise_check_same_id_sch_exmres_c8_qry":"""SELECT b.udise_sch_code,b.ac_year,b.gen_app_b,b.gen_app_g,b.obc_app_b,b.obc_app_g,b.sc_app_b,b.
+sc_app_g,b.st_app_b,b.st_app_g,b.gen_pass_b,b.gen_pass_g,b.obc_pass_b,b.obc_pass_g,b.sc_pass_b,b.
+sc_pass_g,b.st_pass_b,b.st_pass_g,b.gen_60p_b,b.gen_60p_g,b.obc_60p_b,b.obc_60p_g,b.sc_60p_b,b.sc_60p_g,b.st_60p_b,b.st_60p_g,count(*) num_of_times
+from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.gen_app_b,b.gen_app_g,b.obc_app_b,b.obc_app_g,b.sc_app_b,b.
+sc_app_g,b.st_app_b,b.st_app_g,b.gen_pass_b,b.gen_pass_g,b.obc_pass_b,b.obc_pass_g,b.sc_pass_b,b.
+sc_pass_g,b.st_pass_b,b.st_pass_g,b.gen_60p_b,b.gen_60p_g,b.obc_60p_b,b.obc_60p_g,b.sc_60p_b,b.sc_60p_g,b.st_60p_b,b.st_60p_g""",
+"udise_filter_same_id_sch_exmres_c8_qry":"""SELECT udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,
+sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,
+sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g from (SELECT udise_sch_code,ac_year,gen_app_b,gen_app_g,obc_app_b,obc_app_g,sc_app_b,
+sc_app_g,st_app_b,st_app_g,gen_pass_b,gen_pass_g,obc_pass_b,obc_pass_g,sc_pass_b,
+sc_pass_g,st_pass_b,st_pass_g,gen_60p_b,gen_60p_g,obc_60p_b,obc_60p_g,sc_60p_b,sc_60p_g,st_60p_b,st_60p_g,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_profile_qry":"""SELECT
+udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_profile_qry":"""select udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting from(select udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting,
+row_number() over (partition by udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_profile_qry":"""SELECT b.udise_sch_code,b.ac_year,b.c0_sec,b.c1_sec,b.c2_sec,b.c3_sec,b.c4_sec,b.c5_sec,b.c6_sec,b.c7_sec,b.c8_sec,b.c9_sec,b.c10_sec,b.c11_sec,b.c12_sec,b.estd_year ,b.
+recog_year_pri ,b.recog_year_upr ,b.recog_year_sec ,b.recog_year_hsec ,b.upgrd_year_ele ,b.upgrd_year_sec ,b.upgrd_year_hsec ,b.cwsn_sch_yn,b.shift_sch_yn,b.resi_sch_yn,b.
+resi_sch_type,b.boarding_pri_yn,b.boarding_pri_b,b.boarding_pri_g,b.boarding_upr_yn,b.boarding_upr_b,b.boarding_upr_g,b.boarding_sec_yn,b.boarding_sec_b,b.boarding_sec_g,b.
+boarding_hsec_yn,b.boarding_hsec_b,b.boarding_hsec_g,b.minority_yn,b.minority_type,b.mtongue_pri,b.medinstr1,b.medinstr2,b.medinstr3,b.medinstr4,b.medinstr_oth,b.lang1,b.lang2,b.
+lang3,b.prevoc_yn,b.eduvoc_yn,b.board_sec,b.board_sec_no,b.board_sec_oth,b.board_hsec,b.board_hsec_no,b.board_hsec_oth,b.distance_pri,b.distance_upr,b.distance_sec,b.
+distance_hsec,b.approach_road_yn,b.ppsec_yn,b.ppstu_lkg_b,b.ppstu_lkg_g,b.ppstu_ukg_b,b.ppstu_ukg_g,b.anganwadi_yn,b.anganwadi_code,b.anganwadi_stu_b,b.anganwadi_stu_g,b.
+anganwadi_tch_trained,b.workdays_pre_pri,b.workdays_pri,b.workdays_upr,b.workdays_sec,b.workdays_hsec,b.sch_hrs_stu_pre_pri,b.sch_hrs_stu_pri,b.sch_hrs_stu_upr,b.
+sch_hrs_stu_sec,b.sch_hrs_stu_hsec,b.sch_hrs_tch_pre_pri,b.sch_hrs_tch_pri,b.sch_hrs_tch_upr,b.sch_hrs_tch_sec,b.sch_hrs_tch_hsec,b.cce_yn_pri,b.cce_yn_upr,b.
+cce_yn_sec,b.cce_yn_hsec,b.pcr_maintained_yn,b.pcr_shared_yn,b.rte_25p_applied,b.rte_25p_enrolled,b.rte_pvt_c0_b,b.rte_pvt_c0_g,b.rte_pvt_c1_b,b.rte_pvt_c1_g,b.
+rte_pvt_c2_b,b.rte_pvt_c2_g,b.rte_pvt_c3_b,b.rte_pvt_c3_g,b.rte_pvt_c4_b,b.rte_pvt_c4_g,b.rte_pvt_c5_b,b.rte_pvt_c5_g,b.rte_pvt_c6_b,b.rte_pvt_c6_g,b.rte_pvt_c7_b,b.
+rte_pvt_c7_g,b.rte_pvt_c8_b,b.rte_pvt_c8_g,b.rte_bld_c0_b,b.rte_bld_c0_g,b.rte_bld_c1_b,b.rte_bld_c1_g,b.rte_bld_c2_b,b.rte_bld_c2_g,b.rte_bld_c3_b,b.rte_bld_c3_g,b.
+rte_bld_c4_b,b.rte_bld_c4_g,b.rte_bld_c5_b,b.rte_bld_c5_g,b.rte_bld_c6_b,b.rte_bld_c6_g,b.rte_bld_c7_b,b.rte_bld_c7_g,b.rte_bld_c8_b,b.rte_bld_c8_g,b.rte_ews_c9_b,b.
+rte_ews_c9_g,b.rte_ews_c10_b,b.rte_ews_c10_g,b.rte_ews_c11_b,b.rte_ews_c11_g,b.rte_ews_c12_b,b.rte_ews_c12_g,b.spltrg_yn,b.spltrg_cy_prov_b,b.spltrg_cy_prov_g,b.
+spltrg_py_enrol_b,b.spltrg_py_enrol_g,b.spltrg_py_prov_b,b.spltrg_py_prov_g,b.spltrg_by,b.spltrg_place,b.spltrg_type,b.remedial_tch_enrol,b.session_start_mon,b.
+txtbk_recd_yn,b.txtbk_recd_mon,b.supp_mat_recd_yn,b.txtbk_pre_pri_yn,b.txtbk_pri_yn,b.txtbk_upr_yn,b.txtbk_sec_yn,b.txtbk_hsec_yn,b.tle_pre_pri_yn,b.tle_pri_yn,b.
+tle_upr_yn,b.tle_sec_yn,b.tle_hsec_yn,b.playmat_pre_pri_yn,b.playmat_pri_yn,b.playmat_upr_yn,b.playmat_sec_yn,b.playmat_hsec_yn,b.no_inspect,b.no_visit_crc,b.
+no_visit_brc,b.no_visit_dis,b.smc_yn,b.smc_mem_m,b.smc_mem_f,b.smc_par_m,b.smc_par_f,b.smc_par_sc,b.smc_par_st,b.smc_par_ews,b.smc_par_min,b.smc_lgb_m,b.smc_lgb_f,b.
+smc_tch_m,b.smc_tch_f,b.smc_trained_m,b.smc_trained_f,b.smc_meetings,b.smc_sdp_yn,b.smc_bnkac_yn,b.
+smdc_smc_same_yn,b.smdc_yn,b.smdc_mem_m,b.smdc_mem_f,b.smdc_par_m,b.smdc_par_f,b.smdc_par_ews_m,b.smdc_par_ews_f,b.smdc_lgb_m,b.smdc_lgb_f,b.
+smdc_ebmc_m,b.smdc_ebmc_f,b.smdc_women_f,b.smdc_scst_m,b.smdc_scst_f,b.smdc_deo_m,b.smdc_deo_f,b.smdc_audit_m,b.smdc_audit_f,b.smdc_subexp_m,b.smdc_subexp_f,b.
+smdc_tch_m,b.smdc_tch_f,b.smdc_vp_m,b.smdc_vp_f,b.smdc_prin_m,b.smdc_prin_f,b.smdc_cp_m,b.smdc_cp_f,b.smdc_trained_m,b.smdc_trained_f,b.smdc_meetings,b.
+smdc_sdp_yn,b.smdc_bnkac_yn,b.smdc_sbc_yn,b.smdc_acadcom_yn,b.smdc_pta_yn,b.smdc_pta_meeting,count(*) num_of_times
+from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.c0_sec,b.c1_sec,b.c2_sec,b.c3_sec,b.c4_sec,b.c5_sec,b.c6_sec,b.c7_sec,b.c8_sec,b.c9_sec,b.c10_sec,b.c11_sec,b.c12_sec,b.estd_year ,b.
+recog_year_pri ,b.recog_year_upr ,b.recog_year_sec ,b.recog_year_hsec ,b.upgrd_year_ele ,b.upgrd_year_sec ,b.upgrd_year_hsec ,b.cwsn_sch_yn,b.shift_sch_yn,b.resi_sch_yn,b.
+resi_sch_type,b.boarding_pri_yn,b.boarding_pri_b,b.boarding_pri_g,b.boarding_upr_yn,b.boarding_upr_b,b.boarding_upr_g,b.boarding_sec_yn,b.boarding_sec_b,b.boarding_sec_g,b.
+boarding_hsec_yn,b.boarding_hsec_b,b.boarding_hsec_g,b.minority_yn,b.minority_type,b.mtongue_pri,b.medinstr1,b.medinstr2,b.medinstr3,b.medinstr4,b.medinstr_oth,b.lang1,b.lang2,b.
+lang3,b.prevoc_yn,b.eduvoc_yn,b.board_sec,b.board_sec_no,b.board_sec_oth,b.board_hsec,b.board_hsec_no,b.board_hsec_oth,b.distance_pri,b.distance_upr,b.distance_sec,b.
+distance_hsec,b.approach_road_yn,b.ppsec_yn,b.ppstu_lkg_b,b.ppstu_lkg_g,b.ppstu_ukg_b,b.ppstu_ukg_g,b.anganwadi_yn,b.anganwadi_code,b.anganwadi_stu_b,b.anganwadi_stu_g,b.
+anganwadi_tch_trained,b.workdays_pre_pri,b.workdays_pri,b.workdays_upr,b.workdays_sec,b.workdays_hsec,b.sch_hrs_stu_pre_pri,b.sch_hrs_stu_pri,b.sch_hrs_stu_upr,b.
+sch_hrs_stu_sec,b.sch_hrs_stu_hsec,b.sch_hrs_tch_pre_pri,b.sch_hrs_tch_pri,b.sch_hrs_tch_upr,b.sch_hrs_tch_sec,b.sch_hrs_tch_hsec,b.cce_yn_pri,b.cce_yn_upr,b.
+cce_yn_sec,b.cce_yn_hsec,b.pcr_maintained_yn,b.pcr_shared_yn,b.rte_25p_applied,b.rte_25p_enrolled,b.rte_pvt_c0_b,b.rte_pvt_c0_g,b.rte_pvt_c1_b,b.rte_pvt_c1_g,b.
+rte_pvt_c2_b,b.rte_pvt_c2_g,b.rte_pvt_c3_b,b.rte_pvt_c3_g,b.rte_pvt_c4_b,b.rte_pvt_c4_g,b.rte_pvt_c5_b,b.rte_pvt_c5_g,b.rte_pvt_c6_b,b.rte_pvt_c6_g,b.rte_pvt_c7_b,b.
+rte_pvt_c7_g,b.rte_pvt_c8_b,b.rte_pvt_c8_g,b.rte_bld_c0_b,b.rte_bld_c0_g,b.rte_bld_c1_b,b.rte_bld_c1_g,b.rte_bld_c2_b,b.rte_bld_c2_g,b.rte_bld_c3_b,b.rte_bld_c3_g,b.
+rte_bld_c4_b,b.rte_bld_c4_g,b.rte_bld_c5_b,b.rte_bld_c5_g,b.rte_bld_c6_b,b.rte_bld_c6_g,b.rte_bld_c7_b,b.rte_bld_c7_g,b.rte_bld_c8_b,b.rte_bld_c8_g,b.rte_ews_c9_b,b.
+rte_ews_c9_g,b.rte_ews_c10_b,b.rte_ews_c10_g,b.rte_ews_c11_b,b.rte_ews_c11_g,b.rte_ews_c12_b,b.rte_ews_c12_g,b.spltrg_yn,b.spltrg_cy_prov_b,b.spltrg_cy_prov_g,b.
+spltrg_py_enrol_b,b.spltrg_py_enrol_g,b.spltrg_py_prov_b,b.spltrg_py_prov_g,b.spltrg_by,b.spltrg_place,b.spltrg_type,b.remedial_tch_enrol,b.session_start_mon,b.
+txtbk_recd_yn,b.txtbk_recd_mon,b.supp_mat_recd_yn,b.txtbk_pre_pri_yn,b.txtbk_pri_yn,b.txtbk_upr_yn,b.txtbk_sec_yn,b.txtbk_hsec_yn,b.tle_pre_pri_yn,b.tle_pri_yn,b.
+tle_upr_yn,b.tle_sec_yn,b.tle_hsec_yn,b.playmat_pre_pri_yn,b.playmat_pri_yn,b.playmat_upr_yn,b.playmat_sec_yn,b.playmat_hsec_yn,b.no_inspect,b.no_visit_crc,b.
+no_visit_brc,b.no_visit_dis,b.smc_yn,b.smc_mem_m,b.smc_mem_f,b.smc_par_m,b.smc_par_f,b.smc_par_sc,b.smc_par_st,b.smc_par_ews,b.smc_par_min,b.smc_lgb_m,b.smc_lgb_f,b.
+smc_tch_m,b.smc_tch_f,b.smc_trained_m,b.smc_trained_f,b.smc_meetings,b.smc_sdp_yn,b.smc_bnkac_yn,b.
+smdc_smc_same_yn,b.smdc_yn,b.smdc_mem_m,b.smdc_mem_f,b.smdc_par_m,b.smdc_par_f,b.smdc_par_ews_m,b.smdc_par_ews_f,b.smdc_lgb_m,b.smdc_lgb_f,b.
+smdc_ebmc_m,b.smdc_ebmc_f,b.smdc_women_f,b.smdc_scst_m,b.smdc_scst_f,b.smdc_deo_m,b.smdc_deo_f,b.smdc_audit_m,b.smdc_audit_f,b.smdc_subexp_m,b.smdc_subexp_f,b.
+smdc_tch_m,b.smdc_tch_f,b.smdc_vp_m,b.smdc_vp_f,b.smdc_prin_m,b.smdc_prin_f,b.smdc_cp_m,b.smdc_cp_f,b.smdc_trained_m,b.smdc_trained_f,b.smdc_meetings,b.
+smdc_sdp_yn,b.smdc_bnkac_yn,b.smdc_sbc_yn,b.smdc_acadcom_yn,b.smdc_pta_yn,b.smdc_pta_meeting""",
+"udise_filter_same_id_sch_profile_c8_qry":"""SELECT udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting from (SELECT udise_sch_code,ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_tch_profile_qry":"""SELECT udise_sch_code,tch_code,name,gender,dob,social_cat,tch_type,nature_of_appt,
+doj_service,qual_acad,qual_prof,class_taught,appt_sub,sub_taught1,sub_taught2,trn_brc,
+trn_crc,trn_diet,trn_other,trng_rcvd,trng_needed,nontch_days,math_upto,science_upto,
+english_upto,lang_study_upto,soc_study_upto,yoj_pres_sch,disability_type,trained_cwsn,trained_comp,count(udise_sch_code)-1  num_of_times
+FROM flowfile
+GROUP BY  udise_sch_code,tch_code,name,gender,dob,social_cat,tch_type,nature_of_appt,
+doj_service,qual_acad,qual_prof,class_taught,appt_sub,sub_taught1,sub_taught2,trn_brc,
+trn_crc,trn_diet,trn_other,trng_rcvd,trng_needed,nontch_days,math_upto,science_upto,
+english_upto,lang_study_upto,soc_study_upto,yoj_pres_sch,disability_type,trained_cwsn,trained_comp HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_tch_profile_qry":"""select udise_sch_code,tch_code,name,gender,dob,social_cat,tch_type,nature_of_appt,
+doj_service,qual_acad,qual_prof,class_taught,appt_sub,sub_taught1,sub_taught2,trn_brc,
+trn_crc,trn_diet,trn_other,trng_rcvd,trng_needed,nontch_days,math_upto,science_upto,
+english_upto,lang_study_upto,soc_study_upto,yoj_pres_sch,disability_type,trained_cwsn,trained_comp from(select udise_sch_code,tch_code,name,gender,dob,social_cat,tch_type,nature_of_appt,
+doj_service,qual_acad,qual_prof,class_taught,appt_sub,sub_taught1,sub_taught2,trn_brc,
+trn_crc,trn_diet,trn_other,trng_rcvd,trng_needed,nontch_days,math_upto,science_upto,
+english_upto,lang_study_upto,soc_study_upto,yoj_pres_sch,disability_type,trained_cwsn,trained_comp,
+row_number() over (partition by udise_sch_code,tch_code,name,gender,dob,social_cat,tch_type,nature_of_appt,
+doj_service,qual_acad,qual_prof,class_taught,appt_sub,sub_taught1,sub_taught2,trn_brc,
+trn_crc,trn_diet,trn_other,trng_rcvd,trng_needed,nontch_days,math_upto,science_upto,
+english_upto,lang_study_upto,soc_study_upto,yoj_pres_sch,disability_type,trained_cwsn,trained_comp) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_tch_profile_qry":"""SELECT b.udise_sch_code,b.tch_code,b.name,b.gender,b.dob,b.social_cat,b.tch_type,b.nature_of_appt,b.
+doj_service,b.qual_acad,b.qual_prof,b.class_taught,b.appt_sub,b.sub_taught1,b.sub_taught2,b.trn_brc,b.
+trn_crc,b.trn_diet,b.trn_other,b.trng_rcvd,b.trng_needed,b.nontch_days,b.math_upto,b.science_upto,b.
+english_upto,b.lang_study_upto,b.soc_study_upto,b.yoj_pres_sch,b.disability_type,b.trained_cwsn,b.trained_comp,count(*) num_of_times
+from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.tch_code,b.name,b.gender,b.dob,b.social_cat,b.tch_type,b.nature_of_appt,b.
+doj_service,b.qual_acad,b.qual_prof,b.class_taught,b.appt_sub,b.sub_taught1,b.sub_taught2,b.trn_brc,b.
+trn_crc,b.trn_diet,b.trn_other,b.trng_rcvd,b.trng_needed,b.nontch_days,b.math_upto,b.science_upto,b.
+english_upto,b.lang_study_upto,b.soc_study_upto,b.yoj_pres_sch,b.disability_type,b.trained_cwsn,b.trained_comp""",
+"udise_filter_same_id_tch_profile_qry":"""SELECT udise_sch_code,tch_code,name,gender,dob,social_cat,tch_type,nature_of_appt,
+doj_service,qual_acad,qual_prof,class_taught,appt_sub,sub_taught1,sub_taught2,trn_brc,
+trn_crc,trn_diet,trn_other,trng_rcvd,trng_needed,nontch_days,math_upto,science_upto,
+english_upto,lang_study_upto,soc_study_upto,yoj_pres_sch,disability_type,trained_cwsn,trained_comp from (SELECT udise_sch_code,tch_code,name,gender,dob,social_cat,tch_type,nature_of_appt,
+doj_service,qual_acad,qual_prof,class_taught,appt_sub,sub_taught1,sub_taught2,trn_brc,
+trn_crc,trn_diet,trn_other,trng_rcvd,trng_needed,nontch_days,math_upto,science_upto,
+english_upto,lang_study_upto,soc_study_upto,yoj_pres_sch,disability_type,trained_cwsn,trained_comp,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_recp_exp_qry":"""SELECT udise_sch_code,ac_year,dev_grt_r,dev_grt_e,maint_grt_r,maint_grt_e,tlm_grt_r,
+tlm_grt_e,cw_grt_r,cw_grt_e,anl_grt_r,anl_grt_e,minrep_grt_r,minrep_grt_e,labrep_grt_r,
+labrep_grt_e,book_grt_r,book_grt_e,elec_grt_r,elec_grt_e,oth_grt_r,oth_grt_e,compo_grt_r,
+compo_grt_e,lib_grt_r,lib_grt_e,sport_grt_r,sport_grt_e,media_grt_r,media_grt_e,smc_grt_r,
+smc_grt_e,presch_grt_r,presch_grt_e,ngo_asst_yn,ngo_asst_name,ngo_asst_rcvd,psu_asst_yn,
+psu_asst_name,psu_asst_rcvd,comm_asst_yn,comm_asst_rcvd,comm_asst_name,oth_asst_yn,oth_asst_name,oth_asst_rcvd,ict_reg_yn,sport_reg_yn,lib_reg_yn,count(udise_sch_code)-1  num_of_times FROM flowfile GROUP BY  udise_sch_code,ac_year,dev_grt_r,dev_grt_e,maint_grt_r,maint_grt_e,tlm_grt_r,
+tlm_grt_e,cw_grt_r,cw_grt_e,anl_grt_r,anl_grt_e,minrep_grt_r,minrep_grt_e,labrep_grt_r,
+labrep_grt_e,book_grt_r,book_grt_e,elec_grt_r,elec_grt_e,oth_grt_r,oth_grt_e,compo_grt_r,
+compo_grt_e,lib_grt_r,lib_grt_e,sport_grt_r,sport_grt_e,media_grt_r,media_grt_e,smc_grt_r,
+smc_grt_e,presch_grt_r,presch_grt_e,ngo_asst_yn,ngo_asst_name,ngo_asst_rcvd,psu_asst_yn,psu_asst_name,psu_asst_rcvd,comm_asst_yn,comm_asst_rcvd,comm_asst_name,oth_asst_yn,oth_asst_name,oth_asst_rcvd,ict_reg_yn,sport_reg_yn,lib_reg_yn HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_recp_exp_qry":"""select udise_sch_code,ac_year,dev_grt_r,dev_grt_e,maint_grt_r,maint_grt_e,tlm_grt_r,
+tlm_grt_e,cw_grt_r,cw_grt_e,anl_grt_r,anl_grt_e,minrep_grt_r,minrep_grt_e,labrep_grt_r,
+labrep_grt_e,book_grt_r,book_grt_e,elec_grt_r,elec_grt_e,oth_grt_r,oth_grt_e,compo_grt_r,
+compo_grt_e,lib_grt_r,lib_grt_e,sport_grt_r,sport_grt_e,media_grt_r,media_grt_e,smc_grt_r,
+smc_grt_e,presch_grt_r,presch_grt_e,ngo_asst_yn,ngo_asst_name,ngo_asst_rcvd,psu_asst_yn,psu_asst_name,psu_asst_rcvd,comm_asst_yn,comm_asst_rcvd,comm_asst_name,oth_asst_yn,oth_asst_name,oth_asst_rcvd,ict_reg_yn,sport_reg_yn,lib_reg_yn from(select udise_sch_code,ac_year,dev_grt_r,dev_grt_e,maint_grt_r,maint_grt_e,tlm_grt_r,
+tlm_grt_e,cw_grt_r,cw_grt_e,anl_grt_r,anl_grt_e,minrep_grt_r,minrep_grt_e,labrep_grt_r,
+labrep_grt_e,book_grt_r,book_grt_e,elec_grt_r,elec_grt_e,oth_grt_r,oth_grt_e,compo_grt_r,
+compo_grt_e,lib_grt_r,lib_grt_e,sport_grt_r,sport_grt_e,media_grt_r,media_grt_e,smc_grt_r,
+smc_grt_e,presch_grt_r,presch_grt_e,ngo_asst_yn,ngo_asst_name,ngo_asst_rcvd,psu_asst_yn,psu_asst_name,psu_asst_rcvd,comm_asst_yn,comm_asst_rcvd,comm_asst_name,oth_asst_yn,oth_asst_name,oth_asst_rcvd,ict_reg_yn,sport_reg_yn,lib_reg_yn ,
+row_number() over (partition by udise_sch_code,tch_code,name,gender,dob,social_cat,tch_type,nature_of_appt,
+doj_service,qual_acad,qual_prof,class_taught,appt_sub,sub_taught1,sub_taught2,trn_brc,
+trn_crc,trn_diet,trn_other,trng_rcvd,trng_needed,nontch_days,math_upto,science_upto,
+english_upto,lang_study_upto,soc_study_upto,yoj_pres_sch,disability_type,trained_cwsn,trained_comp) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_recp_exp_qry":"""SELECT b.udise_sch_code,b.ac_year,b.dev_grt_r,b.dev_grt_e,b.maint_grt_r,b.maint_grt_e,b.tlm_grt_r,b.tlm_grt_e,b.cw_grt_r,b.cw_grt_e,b.anl_grt_r,b.anl_grt_e,b.minrep_grt_r,b.minrep_grt_e,b.labrep_grt_r,b.labrep_grt_e,b.book_grt_r,b.book_grt_e,b.elec_grt_r,b.elec_grt_e,b.oth_grt_r,b.oth_grt_e,b.compo_grt_r,b.compo_grt_e,b.lib_grt_r,b.lib_grt_e,b.sport_grt_r,b.sport_grt_e,b.media_grt_r,b.media_grt_e,b.smc_grt_r,b.smc_grt_e,b.presch_grt_r,b.presch_grt_e,b.ngo_asst_yn,b.ngo_asst_name,b.ngo_asst_rcvd,b.psu_asst_yn,b.psu_asst_name,b.psu_asst_rcvd,b.comm_asst_yn,b.comm_asst_rcvd,b.comm_asst_name,b.oth_asst_yn,b.oth_asst_name,b.oth_asst_rcvd,b.ict_reg_yn,b.sport_reg_yn,b.lib_reg_yn,count(*) num_of_times
+from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.dev_grt_r,b.dev_grt_e,b.maint_grt_r,b.maint_grt_e,b.tlm_grt_r,b.tlm_grt_e,b.cw_grt_r,b.cw_grt_e,b.anl_grt_r,b.anl_grt_e,b.minrep_grt_r,b.minrep_grt_e,b.labrep_grt_r,b.labrep_grt_e,b.book_grt_r,b.book_grt_e,b.elec_grt_r,b.elec_grt_e,b.oth_grt_r,b.oth_grt_e,b.compo_grt_r,b.compo_grt_e,b.lib_grt_r,b.lib_grt_e,b.sport_grt_r,b.sport_grt_e,b.media_grt_r,b.media_grt_e,b.smc_grt_r,b.smc_grt_e,b.presch_grt_r,b.presch_grt_e,b.ngo_asst_yn,b.ngo_asst_name,b.ngo_asst_rcvd,b.psu_asst_yn,b.psu_asst_name,b.psu_asst_rcvd,b.comm_asst_yn,b.comm_asst_rcvd,b.comm_asst_name,b.oth_asst_yn,b.oth_asst_name,b.oth_asst_rcvd,b.ict_reg_yn,b.sport_reg_yn,b.lib_reg_yn""",
+"udise_filter_same_id_sch_recp_exp_qry":"""SELECT udise_sch_code,ac_year,dev_grt_r,dev_grt_e,maint_grt_r,maint_grt_e,tlm_grt_r,
+tlm_grt_e,cw_grt_r,cw_grt_e,anl_grt_r,anl_grt_e,minrep_grt_r,minrep_grt_e,labrep_grt_r,
+labrep_grt_e,book_grt_r,book_grt_e,elec_grt_r,elec_grt_e,oth_grt_r,oth_grt_e,compo_grt_r,
+compo_grt_e,lib_grt_r,lib_grt_e,sport_grt_r,sport_grt_e,media_grt_r,media_grt_e,smc_grt_r,
+smc_grt_e,presch_grt_r,presch_grt_e,ngo_asst_yn,ngo_asst_name,ngo_asst_rcvd,psu_asst_yn,psu_asst_name,psu_asst_rcvd,comm_asst_yn,comm_asst_rcvd,comm_asst_name,oth_asst_yn,oth_asst_name,oth_asst_rcvd,ict_reg_yn,sport_reg_yn,lib_reg_yn from (SELECT udise_sch_code,ac_year,dev_grt_r,dev_grt_e,maint_grt_r,maint_grt_e,tlm_grt_r,
+tlm_grt_e,cw_grt_r,cw_grt_e,anl_grt_r,anl_grt_e,minrep_grt_r,minrep_grt_e,labrep_grt_r,
+labrep_grt_e,book_grt_r,book_grt_e,elec_grt_r,elec_grt_e,oth_grt_r,oth_grt_e,compo_grt_r,
+compo_grt_e,lib_grt_r,lib_grt_e,sport_grt_r,sport_grt_e,media_grt_r,media_grt_e,smc_grt_r,
+smc_grt_e,presch_grt_r,presch_grt_e,ngo_asst_yn,ngo_asst_name,ngo_asst_rcvd,psu_asst_yn,psu_asst_name,psu_asst_rcvd,comm_asst_yn,comm_asst_rcvd,comm_asst_name,oth_asst_yn,oth_asst_name,oth_asst_rcvd,ict_reg_yn,sport_reg_yn,lib_reg_yn,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_nsqf_basic_info_qry":"""SELECT udise_sch_code,ac_year,nsqf_yn,voc_course_yn,sec1_sub,sec1_year,sec2_sub,sec2_year,
+count(udise_sch_code)-1  num_of_times FROM flowfile GROUP BY udise_sch_code,ac_year,nsqf_yn,voc_course_yn,sec1_sub,sec1_year,sec2_sub,sec2_year HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_nsqf_basic_info_qry":"""select udise_sch_code,ac_year,nsqf_yn,voc_course_yn,sec1_sub,sec1_year,sec2_sub,sec2_year from(select udise_sch_code,ac_year,nsqf_yn,voc_course_yn,sec1_sub,sec1_year,sec2_sub,sec2_year,
+row_number() over (partition by udise_sch_code,ac_year,nsqf_yn,voc_course_yn,sec1_sub,sec1_year,sec2_sub,sec2_year) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_nsqf_basic_info_qry":"""SELECT b.udise_sch_code,b.ac_year,b.nsqf_yn,b.voc_course_yn,b.sec1_sub,b.sec1_year,b.sec2_sub,b.sec2_year,count(*) num_of_times
+from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.nsqf_yn,b.voc_course_yn,b.sec1_sub,b.sec1_year,b.sec2_sub,b.sec2_year""",
+"udise_filter_same_id_nsqf_basic_info_qry":"""SELECT udise_sch_code,ac_year,nsqf_yn,voc_course_yn,sec1_sub,sec1_year,sec2_sub,sec2_year from (SELECT udise_sch_code,ac_year,nsqf_yn,voc_course_yn,sec1_sub,sec1_year,sec2_sub,sec2_year,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_nsqf_enr_caste_qry":"""SELECT udise_sch_code,ac_year,sector_no,item_id,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,count(udise_sch_code)-1  num_of_times FROM flowfile GROUP BY udise_sch_code,ac_year,sector_no,item_id,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_nsqf_nsqf_enr_caste_qry":"""select udise_sch_code,ac_year,sector_no,item_id,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from(select udise_sch_code,ac_year,sector_no,item_id,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,
+row_number() over (partition by udise_sch_code,ac_year,sector_no,item_id,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_nsqf_enr_caste_qry":"""SELECT b.udise_sch_code,b.ac_year,b.sector_no,b.item_id,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g,count(*) num_of_times
+from (select udise_sch_code,item_id,sector_no from flowfile
+group by udise_sch_code,item_id,sector_no having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.sector_no=b.sector_no
+and a.item_id=b.item_id
+group by b.udise_sch_code,b.ac_year,b.sector_no,b.item_id,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g""",
+"udise_filter_same_id_nsqf_enr_caste_qry":"""SELECT udise_sch_code,ac_year,sector_no,item_id,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from (SELECT udise_sch_code,ac_year,sector_no,item_id,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,count(*)
+over (partition by udise_sch_code,item_id,sector_no) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_nsqf_enr_sub_sec_qry":"""SELECT udise_sch_code,ac_year,sub_sector_id,sector_no,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,count(udise_sch_code)-1  num_of_times FROM flowfile GROUP BY udise_sch_code,ac_year,sub_sector_id,sector_no,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_nsqf_nsqf_enr_sub_sec_qry":"""select udise_sch_code,ac_year,sub_sector_id,sector_no,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from(select udise_sch_code,ac_year,sub_sector_id,sector_no,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,row_number() over (partition udise_sch_code,ac_year,sub_sector_id,sector_no,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_nsqf_enr_sub_sec_qry":"""SELECT b.udise_sch_code,b.ac_year,b.sub_sector_id,b.sector_no,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g,count(*) num_of_times
+from (select udise_sch_code,sector_no from flowfile
+group by udise_sch_code,sector_no having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.sector_no=b.sector_no
+group by b.udise_sch_code,b.ac_year,b.sub_sector_id,b.sector_no,b.c9_b,b.c9_g,b.c10_b,b.c10_g,b.c11_b,b.c11_g,b.c12_b,b.c12_g""",
+"udise_filter_same_id_nsqf_enr_sub_sec_qry":"""SELECT udise_sch_code,ac_year,sub_sector_id,sector_no,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from (SELECT udise_sch_code,ac_year,sub_sector_id,sector_no,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g,count(*)
+over (partition by udise_sch_code,sector_no) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_pgi_details_qry":"""SELECT udise_sch_code,ac_year,tch_adhr_seed,stu_atndnc_yn,tch_atndnc_yn,sch_eval_yn,improv_plan_yn,sch_pfms_yn,count(udise_sch_code)-1  num_of_times FROM flowfile GROUP BY udise_sch_code,ac_year,tch_adhr_seed,stu_atndnc_yn,tch_atndnc_yn,sch_eval_yn,improv_plan_yn,sch_pfms_yn HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_pgi_details_qry":"""select udise_sch_code,ac_year,tch_adhr_seed,stu_atndnc_yn,tch_atndnc_yn,sch_eval_yn,improv_plan_yn,sch_pfms_yn from(select udise_sch_code,ac_year,tch_adhr_seed,stu_atndnc_yn,tch_atndnc_yn,sch_eval_yn,improv_plan_yn,sch_pfms_yn,row_number() over (partition udise_sch_code,ac_year,tch_adhr_seed,stu_atndnc_yn,tch_atndnc_yn,sch_eval_yn,improv_plan_yn,sch_pfms_yn) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_pgi_details_qry":"""SELECT b.udise_sch_code,b.ac_year,b.tch_adhr_seed,b.stu_atndnc_yn,b.tch_atndnc_yn,b.sch_eval_yn,b.improv_plan_yn,b.sch_pfms_yn,count(*) num_of_times
+from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.tch_adhr_seed,b.stu_atndnc_yn,b.tch_atndnc_yn,b.sch_eval_yn,b.improv_plan_yn,b.sch_pfms_yn""",
+"udise_filter_same_id_sch_pgi_details_qry":"""SELECT  udise_sch_code,ac_year,tch_adhr_seed,stu_atndnc_yn,tch_atndnc_yn,sch_eval_yn,improv_plan_yn,sch_pfms_yn from (SELECT udise_sch_code,ac_year,tch_adhr_seed,stu_atndnc_yn,tch_atndnc_yn,sch_eval_yn,improv_plan_yn,sch_pfms_yn,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_safety_qry":"""SELECT udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
+fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained,count(udise_sch_code)-1  num_of_times FROM flowfile GROUP BY udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
+fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_safety_qry":"""select udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
+fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained from(select udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
+fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained,row_number() over (partition by udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
+fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_safety_qry":"""SELECT b.udise_sch_code,b.ac_year,b.sdmp_plan_yn,b.struct_safaud_yn,b.nonstr_safaud_yn,b.cctv_cam_yn,b.
+fire_ext_yn,b.nodal_tch_yn,b.safty_trng_yn,b.dismgmt_taug_yn,b.slfdef_grt_yn,b.slfdef_trained,count(*) num_of_times
+from (select udise_sch_code from flowfile
+group by udise_sch_code having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+group by b.udise_sch_code,b.ac_year,b.sdmp_plan_yn,b.struct_safaud_yn,b.nonstr_safaud_yn,b.cctv_cam_yn,b.fire_ext_yn,b.nodal_tch_yn,b.safty_trng_yn,b.dismgmt_taug_yn,b.slfdef_grt_yn,b.slfdef_trained""",
+"udise_filter_same_id_sch_safety_qry":"""SELECT   udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
+fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained from (SELECT udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
+fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_check_same_record_sch_incentives_qry":"""SELECT udise_sch_code,ac_year,grade_pri_upr,incentive_type,gen_b,gen_g,sc_b,
+sc_g,st_b,st_g,obc_b,obc_g,min_muslim_b,min_muslim_g,min_oth_b,min_oth_g,count(udise_sch_code)-1  num_of_times FROM flowfile GROUP BY udise_sch_code,ac_year,grade_pri_upr,incentive_type,gen_b,gen_g,sc_b,
+sc_g,st_b,st_g,obc_b,obc_g,min_muslim_b,min_muslim_g,min_oth_b,min_oth_g HAVING  COUNT(*) > 1""",
+"udise_filter_same_record_sch_incentives_qry":"""select udise_sch_code,ac_year,grade_pri_upr,incentive_type,gen_b,gen_g,sc_b,
+sc_g,st_b,st_g,obc_b,obc_g,min_muslim_b,min_muslim_g,min_oth_b,min_oth_g from(select udise_sch_code,ac_year,grade_pri_upr,incentive_type,gen_b,gen_g,sc_b,
+sc_g,st_b,st_g,obc_b,obc_g,min_muslim_b,min_muslim_g,min_oth_b,min_oth_g,row_number() over (partition by udise_sch_code,ac_year,grade_pri_upr,incentive_type,gen_b,gen_g,sc_b,
+sc_g,st_b,st_g,obc_b,obc_g,min_muslim_b,min_muslim_g,min_oth_b,min_oth_g) as rn from flowfile) sq Where rn =1""",
+"udise_check_same_id_sch_incentives_qry":"""SELECT b.udise_sch_code,b.ac_year,b.grade_pri_upr,b.incentive_type,b.gen_b,b.gen_g,b.sc_b,b.
+sc_g,b.st_b,b.st_g,b.obc_b,b.obc_g,b.min_muslim_b,b.min_muslim_g,b.min_oth_b,b.min_oth_g,count(*) num_of_times
+from (select udise_sch_code,grade_pri_upr,incentive_type from flowfile
+group by udise_sch_code,grade_pri_upr,incentive_type having count(1)>1)  as a, flowfile  b
+where a.udise_sch_code=b.udise_sch_code
+and a.grade_pri_upr=b.grade_pri_upr
+and a.incentive_type=b.incentive_type
+group by b.udise_sch_code,b.ac_year,b.grade_pri_upr,b.incentive_type,b.gen_b,b.gen_g,b.sc_b,b.
+sc_g,b.st_b,b.st_g,b.obc_b,b.obc_g,b.min_muslim_b,b.min_muslim_g,b.min_oth_b,b.min_oth_g""",
+"udise_filter_same_id_sch_incentives_qry":"""SELECT   udise_sch_code,ac_year,grade_pri_upr,incentive_type,gen_b,gen_g,sc_b,
+sc_g,st_b,st_g,obc_b,obc_g,min_muslim_b,min_muslim_g,min_oth_b,min_oth_g from (SELECT udise_sch_code,ac_year,grade_pri_upr,incentive_type,gen_b,gen_g,sc_b,
+sc_g,st_b,st_g,obc_b,obc_g,min_muslim_b,min_muslim_g,min_oth_b,min_oth_g,count(*)
+over (partition by udise_sch_code,grade_pri_upr,incentive_type) as rn from FLOWFILE) sq Where rn=1""",
+"udise_filter_same_id_sch_staff_posn_qry":"""SELECT udise_sch_code,ac_year,tch_regular,tch_contract,tch_part_time,nontch_accnt,
+nontch_lib_asst,nontch_lab_asst,nontch_udc,nontch_ldc,nontch_peon,nontch_watchman,tch_hav_adhr from (SELECT 
+udise_sch_code,ac_year,tch_regular,tch_contract,tch_part_time,nontch_accnt,
+nontch_lib_asst,nontch_lab_asst,nontch_udc,nontch_ldc,nontch_peon,nontch_watchman,tch_hav_adhr,count(*)
+over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
+"udise_save_to_sch_facility_dup":"""udise_sch_facility_dup""",
+"udise_save_to_nsqf_plcmnt_c12_dup":"""udise_nsqf_plcmnt_c12_dup""",
+"udise_save_to_nsqf_plcmnt_c10_dup":"""udise_nsqf_plcmnt_c10_dup""",
+"udise_save_to_nsqf_class_cond_dup":"""udise_nsqf_class_cond_dup""",
+"udise_save_to_sch_exmres_c12_dup":"""udise_sch_exmres_c12_dup""",
+"udise_save_to_sch_exmres_c10_dup":"""udise_sch_exmres_c10_dup""",
+"udise_save_to_sch_exmres_c5_dup":"""udise_sch_exmres_c5_dup""",
+"udise_save_to_sch_incen_cwsn_dup":"""udise_sch_incen_cwsn_dup""",
+"udise_save_to_sch_enr_by_stream_dup":"""udise_sch_enr_by_stream_dup""",
+"udise_save_to_sch_enr_cwsn_dup":"""udise_sch_enr_cwsn_dup""",
+"udise_save_to_sch_enr_medinstr_dup":"""udise_sch_enr_medinstr_dup""",
+"udise_save_to_sch_enr_age_dup":"""udise_sch_enr_age_dup""",
+"udise_save_to_sch_enr_reptr_dup":"""udise_sch_enr_reptr_dup""",
+"udise_save_to_sch_enr_fresh_dup":"""udise_sch_enr_fresh_dup""",
+"udise_save_to_sch_enr_newadm_dup":"""udise_sch_enr_newadm_dup""",
+"udise_save_to_sch_staff_posn_dup":"""udise_sch_staff_posn_dup""",
+"udise_save_to_sch_exmmarks_c10_dup":"""udise_sch_exmmarks_c10_dup""",
+"udise_save_to_sch_exmmarks_c12_dup":"""udise_sch_exmmarks_c12_dup""",
+"udise_save_to_nsqf_exmres_c10_dup":"""udise_nsqf_exmres_c10_dup""",
+"udise_save_to_nsqf_exmres_c12_dup":"""udise_nsqf_exmres_c12_dup""",
+"udise_save_to_nsqf_trng_prov_dup":"""udise_nsqf_trng_prov_dup""",
+"udise_save_to_nsqf_faculty_dup":"""udise_nsqf_faculty_dup""",
+"udise_save_to_sch_exmres_c8_dup":"""udise_sch_exmres_c8_dup""",
+"udise_save_to_sch_incentives_dup":"""udise_sch_incentives_dup""",
+"udise_save_to_sch_profile_dup":"""udise_sch_profile_dup""",
+"udise_save_to_tch_profile_dup":"""udise_tch_profile_dup""",
+"udise_save_to_sch_recp_exp_dup":"""udise_sch_recp_exp_dup""",
+"udise_save_to_nsqf_basic_info_dup":"""udise_nsqf_basic_info_dup""",
+"udise_save_to_nsqf_enr_caste_dup":"""udise_nsqf_enr_caste_dup""",
+"udise_save_to_nsqf_enr_sub_sec_dup":"""udise_nsqf_enr_sub_sec_dup""",
+"udise_save_to_sch_pgi_details_dup":"""udise_sch_pgi_details_dup""",
+"udise_save_to_sch_safety_dup":"""udise_sch_safety_dup""",
+"udise_sum_of_dup":"select sum(num_of_times) from flowfile",
+"udise_update_null_count_nsqf_enr_caste_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, sector_no = udise_null_col.count_null_sector_no, item_id = udise_null_col.count_null_item_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
+"udise_sch_safety_table_name":"""udise_sch_safety""",
+"udise_update_null_count_nsqf_exmres_c12_qry":"""update log_summary  SET udise_sch_code = udise_null_col.count_null_udise_sch_code, sector_no = udise_null_col.count_null_sector_no, marks_range_id = udise_null_col.count_null_marks_range_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
+"select_columns_sch_profile_qry":"""select  udise_sch_code,   ac_year,c0_sec,c1_sec,c2_sec,c3_sec,c4_sec,c5_sec,c6_sec,c7_sec,c8_sec,c9_sec,c10_sec,c11_sec,c12_sec,estd_year ,
+recog_year_pri ,recog_year_upr ,recog_year_sec ,recog_year_hsec ,upgrd_year_ele ,upgrd_year_sec ,upgrd_year_hsec ,cwsn_sch_yn,shift_sch_yn,resi_sch_yn,
+resi_sch_type,boarding_pri_yn,boarding_pri_b,boarding_pri_g,boarding_upr_yn,boarding_upr_b,boarding_upr_g,boarding_sec_yn,boarding_sec_b,boarding_sec_g,
+boarding_hsec_yn,boarding_hsec_b,boarding_hsec_g,minority_yn,minority_type,mtongue_pri,medinstr1,medinstr2,medinstr3,medinstr4,medinstr_oth,lang1,lang2,
+lang3,prevoc_yn,eduvoc_yn,board_sec,board_sec_no,board_sec_oth,board_hsec,board_hsec_no,board_hsec_oth,distance_pri,distance_upr,distance_sec,
+distance_hsec,approach_road_yn,ppsec_yn,ppstu_lkg_b,ppstu_lkg_g,ppstu_ukg_b,ppstu_ukg_g,anganwadi_yn,anganwadi_code,anganwadi_stu_b,anganwadi_stu_g,
+anganwadi_tch_trained,workdays_pre_pri,workdays_pri,workdays_upr,workdays_sec,workdays_hsec,sch_hrs_stu_pre_pri,sch_hrs_stu_pri,sch_hrs_stu_upr,
+sch_hrs_stu_sec,sch_hrs_stu_hsec,sch_hrs_tch_pre_pri,sch_hrs_tch_pri,sch_hrs_tch_upr,sch_hrs_tch_sec,sch_hrs_tch_hsec,cce_yn_pri,cce_yn_upr,
+cce_yn_sec,cce_yn_hsec,pcr_maintained_yn,pcr_shared_yn,rte_25p_applied,rte_25p_enrolled,rte_pvt_c0_b,rte_pvt_c0_g,rte_pvt_c1_b,rte_pvt_c1_g,
+rte_pvt_c2_b,rte_pvt_c2_g,rte_pvt_c3_b,rte_pvt_c3_g,rte_pvt_c4_b,rte_pvt_c4_g,rte_pvt_c5_b,rte_pvt_c5_g,rte_pvt_c6_b,rte_pvt_c6_g,rte_pvt_c7_b,
+rte_pvt_c7_g,rte_pvt_c8_b,rte_pvt_c8_g,rte_bld_c0_b,rte_bld_c0_g,rte_bld_c1_b,rte_bld_c1_g,rte_bld_c2_b,rte_bld_c2_g,rte_bld_c3_b,rte_bld_c3_g,
+rte_bld_c4_b,rte_bld_c4_g,rte_bld_c5_b,rte_bld_c5_g,rte_bld_c6_b,rte_bld_c6_g,rte_bld_c7_b,rte_bld_c7_g,rte_bld_c8_b,rte_bld_c8_g,rte_ews_c9_b,
+rte_ews_c9_g,rte_ews_c10_b,rte_ews_c10_g,rte_ews_c11_b,rte_ews_c11_g,rte_ews_c12_b,rte_ews_c12_g,spltrg_yn,spltrg_cy_prov_b,spltrg_cy_prov_g,
+spltrg_py_enrol_b,spltrg_py_enrol_g,spltrg_py_prov_b,spltrg_py_prov_g,spltrg_by,spltrg_place,spltrg_type,remedial_tch_enrol,session_start_mon,
+txtbk_recd_yn,txtbk_recd_mon,supp_mat_recd_yn,txtbk_pre_pri_yn,txtbk_pri_yn,txtbk_upr_yn,txtbk_sec_yn,txtbk_hsec_yn,tle_pre_pri_yn,tle_pri_yn,
+tle_upr_yn,tle_sec_yn,tle_hsec_yn,playmat_pre_pri_yn,playmat_pri_yn,playmat_upr_yn,playmat_sec_yn,playmat_hsec_yn,no_inspect,no_visit_crc,
+no_visit_brc,no_visit_dis,smc_yn,smc_mem_m,smc_mem_f,smc_par_m,smc_par_f,smc_par_sc,smc_par_st,smc_par_ews,smc_par_min,smc_lgb_m,smc_lgb_f,
+smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnkac_yn,
+smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
+smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
+smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting from flowfile"""
 }

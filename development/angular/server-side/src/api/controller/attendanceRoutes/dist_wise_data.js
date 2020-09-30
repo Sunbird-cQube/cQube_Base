@@ -14,13 +14,13 @@ router.post('/distWise', auth.authController, async function (req, res) {
         var distData = [];
         for (let i = 0; i < districtAttendanceData.length; i++) {
             var obj = {
-                id: districtAttendanceData[i]['x_axis'],
-                name: districtAttendanceData[i]['district_name'],
-                label: districtAttendanceData[i]['x_value'],
+                district_id: districtAttendanceData[i]['x_axis'],
+                district_name: districtAttendanceData[i]['district_name'],
+                attendance: districtAttendanceData[i]['x_value'],
                 lat: districtAttendanceData[i]['y_value'],
                 lng: districtAttendanceData[i]['z_value'],
-                stdCount: (districtAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                schCount: (districtAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
+                number_of_students: (districtAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_schools: (districtAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
             }
             distData.push(obj);
         }

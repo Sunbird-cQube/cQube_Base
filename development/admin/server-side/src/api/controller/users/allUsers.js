@@ -28,7 +28,7 @@ router.post('/', auth.authController, async function (req, res) {
             }
             res.status(201).json({ users: allUsers });
         }).catch(error => {
-            console.log(error);
+            logger.error(`Error ::${error}`);
             res.status(409).json({ errMsg: error });
         });
     } catch (e) {
@@ -111,7 +111,7 @@ router.post('/changeStatus/:id', auth.authController, async function (req, res) 
                     };
                     const_data['s3'].upload(params, function (err, data) {
                         if (err) {
-                            console.log('ERROR MSG: ', err);
+                            logger.error('ERROR MSG: ', err);
                         } else {
                             res.status(200).json({ msg: "Status changed successfully", status: user.user_status });
                         }
@@ -142,7 +142,7 @@ router.post('/deleteUser/:id', auth.authController, async function (req, res) {
                 let users = JSON.parse(data.Body.toString());
                 const user = users.find(u => u.user_id == req.params.id);
                 if (user) {
-                    let someArray = users.filter(person => person.user_id != user.user_id && person.user_email != user.user_email);
+                    let someArray = users.filter(person => person.user_id != user.user_id);
                     users = someArray;
 
                     var params = {
@@ -152,7 +152,7 @@ router.post('/deleteUser/:id', auth.authController, async function (req, res) {
                     };
                     const_data['s3'].upload(params, function (err, data) {
                         if (err) {
-                            console.log('ERROR MSG: ', err);
+                            logger.error('ERROR MSG: ', err);
                         } else {
                             res.status(200).json({ msg: "User deleted successfully" });
                         }
@@ -200,7 +200,7 @@ router.post('/editUser/:id', auth.authController, async function (req, res) {
                     };
                     const_data['s3'].upload(params, function (err, result) {
                         if (err) {
-                            console.log('ERROR MSG: ', err);
+                            logger.error('ERROR MSG: ', err);
                         } else {
                             res.status(200).json({ msg: "User validity extended" });
                         }

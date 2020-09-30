@@ -12392,7 +12392,7 @@ file: ${filename} is not valid</value>
     <entry>
         <key>log-message</key>
         <value>Data validation:
-same id data validation of file:${filename} error while same id mirror data</value>
+same id data validation of file:${filename} error while checking same id  data</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -29095,5 +29095,5 @@ WHERE ff_uuid = '${source.uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/11/2020 18:55:23 IST</timestamp>
+    <timestamp>09/25/2020 15:05:55 IST</timestamp>
 </template>

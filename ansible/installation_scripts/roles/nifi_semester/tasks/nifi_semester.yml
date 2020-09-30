@@ -1,4 +1,4 @@
-- name: Fetch nifi processor group id
+- name: Fetch nifi root processor group id
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
     method: GET
@@ -31,7 +31,7 @@
   register: template_list
 
 - name: Instatiate template list
-  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }'   http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
+  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }' http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
   loop: "{{ template_list.json | json_query('templates[*]') }}"
   when: item.template.name == 'semester_transformer'
   no_log: True
@@ -50,6 +50,7 @@
     method: GET
   register: processor_group_temp
 
+#--- Fetching processor group id of semester processor ---
 - name: Get processor group id of the semester processor
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
@@ -60,11 +61,11 @@
   no_log: True
 
 - set_fact:
-    tagExists: "{{  processor_group_template | json_query('results[?item.component.name == `semester_transformer`]') }}"
+    semester_pg_id: "{{  processor_group_template | json_query('results[?item.component.name == `semester_transformer`]') }}"
 
 - name: Get multi processor group
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ tagExists[0].item.component.id }}
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ semester_pg_id[0].item.component.id }}
     method: GET
   register: multi_processor
 
@@ -75,7 +76,6 @@
   register: output
 
 #--- Display ID and Version of respective processor groups ---
-
 - name: Display ID of semester raw processor
   debug:
     var: item
@@ -108,14 +108,13 @@
     assessment_version: "msg[?Name=='student_assessment_processor'].Version"
   register: assessment_version
 
-- name: Get Default Processor Group
+- name: Get parameter contexts
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/parameter-contexts
     method: GET
   register: parameters
 
 #--- Connection of processor groups to respective parameter contexts ---
-
 - name: Connection semester raw processor group to raw parameters
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ semester_raw_id.results[0].item }}
@@ -146,8 +145,6 @@
   when: item.component.name == 'student_assessment_parameters'
   no_log: True
 
-#--- Starting of Controllers and ProcessorGroups ---
-
 - name: Create DistributedMapCacheServer
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ semester_raw_id.results[0].item }}/controller-services
@@ -171,6 +168,7 @@
 - name: Run python code
   shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
 
+#--- Starting of Controllers ---
 - name: Get controllers
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ semester_raw_id.results[0].item }}/controller-services
@@ -294,3 +292,4 @@
   loop: "{{ controllers_list_assessment_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
   no_log: True
+

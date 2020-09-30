@@ -21,7 +21,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
 
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
-        logger.info('---Infra block wise api ---');
+        logger.info('---Infra block per district api ---');
         let fileName = `infra/infra_block_table.json`
         var blockData = await s3File.readS3File(fileName);
 
@@ -34,7 +34,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
             res.status(404).json({ errMsg: "No data found" });
         } else {
             // map and extract required  values to show in the leaflet-map
-            logger.info('--- Infra block wise api reponse sent ---');
+            logger.info('--- Infra block per district api reponse sent ---');
             res.status(200).send(filterData);
         }
     } catch (e) {
