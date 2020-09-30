@@ -2927,9 +2927,9 @@ trained_cwsn  smallint,
 trained_comp  smallint
 );
 
-alter table udise_tch_profile drop constraint if exists udise_tch_profile_pkey;
+/*alter table udise_tch_profile drop constraint if exists udise_tch_profile_pkey;
 alter table udise_tch_profile add primary key(udise_sch_code,name,dob);
-alter table udise_tch_profile alter column tch_code drop not null;
+alter table udise_tch_profile alter column tch_code drop not null;*/
 
 create table if not exists udise_sch_exmmarks_c10(
 udise_sch_code  bigint not null,
@@ -3060,11 +3060,11 @@ c11_b  smallint,
 c11_g  smallint,
 c12_b  smallint,
 c12_g  smallint,
-primary key(udise_sch_code,sector_no,sub_sector_id)
+primary key(udise_sch_code,sector_no)
 );
 
-alter table udise_nsqf_enr_sub_sec drop constraint if exists udise_nsqf_enr_sub_sec_pkey;
-alter table udise_nsqf_enr_sub_sec add primary key(udise_sch_code,sector_no,sub_sector_id);
+/*alter table udise_nsqf_enr_sub_sec drop constraint if exists udise_nsqf_enr_sub_sec_pkey;
+alter table udise_nsqf_enr_sub_sec add primary key(udise_sch_code,sector_no,sub_sector_id);*/
 
 
 create table if not exists udise_nsqf_exmres_c10(
