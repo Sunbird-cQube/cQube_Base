@@ -3104,7 +3104,8 @@ primary key(udise_sch_code,sector_no)
 create table if not exists udise_nsqf_faculty(
 udise_sch_code  bigint not null,
 ac_year  text,
-faculty_code  varchar(100) not null,
+nsqf_faculty_id bigint ,
+faculty_code  varchar(100),
 name  varchar(100),
 gender  smallint,
 dob  date,
@@ -3118,8 +3119,12 @@ class_taught  smallint,
 appt_sec  smallint,
 induc_trg_rcvd  smallint,
 inserv_trg_rcvd  smallint,
-primary key(udise_sch_code,faculty_code)
+primary key(udise_sch_code,nsqf_faculty_id)
 );
+
+alter table udise_nsqf_faculty add column if not exists nsqf_faculty_id bigint;
+alter table udise_nsqf_faculty drop constraint if exists udise_nsqf_faculty_pkey;
+alter table udise_nsqf_faculty add primary key(udise_sch_code,nsqf_faculty_id);
 
 create table if not exists udise_sch_pgi_details(
 udise_sch_code  bigint primary key not null,
