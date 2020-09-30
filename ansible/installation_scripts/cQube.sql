@@ -3017,10 +3017,15 @@ ac_year  text,
 nsqf_yn  smallint,
 voc_course_yn  smallint,
 sec1_sub  Integer,
-sec1_year  char,
+sec1_year  varchar(10),
 sec2_sub  Integer,
-sec2_year  char
+sec2_year  varchar(10)
 );
+
+alter table udise_nsqf_basic_info alter column sec2_year type varchar(10);
+
+alter table udise_nsqf_basic_info alter column sec1_year type varchar(10);
+
 
 create table if not exists udise_nsqf_enr_caste(
 udise_sch_code  bigint not null,
@@ -3099,7 +3104,8 @@ primary key(udise_sch_code,sector_no)
 create table if not exists udise_nsqf_faculty(
 udise_sch_code  bigint not null,
 ac_year  text,
-faculty_code  varchar(100) not null,
+nsqf_faculty_id bigint ,
+faculty_code  varchar(100),
 name  varchar(100),
 gender  smallint,
 dob  date,
@@ -3113,8 +3119,12 @@ class_taught  smallint,
 appt_sec  smallint,
 induc_trg_rcvd  smallint,
 inserv_trg_rcvd  smallint,
-primary key(udise_sch_code,faculty_code)
+primary key(udise_sch_code,nsqf_faculty_id)
 );
+
+alter table udise_nsqf_faculty add column if not exists nsqf_faculty_id bigint;
+alter table udise_nsqf_faculty drop constraint if exists udise_nsqf_faculty_pkey;
+alter table udise_nsqf_faculty add primary key(udise_sch_code,nsqf_faculty_id);
 
 create table if not exists udise_sch_pgi_details(
 udise_sch_code  bigint primary key not null,
@@ -3145,7 +3155,7 @@ slfdef_trained  smallint
 
 create table if not exists udise_sch_exmres_c8(
 udise_sch_code  bigint primary key not null,
-academic_year  char,
+academic_year  varchar(10),
 gen_app_b  smallint,
 gen_app_g  smallint,
 obc_app_b  smallint,
@@ -3171,6 +3181,8 @@ sc_60p_g  smallint,
 st_60p_b  smallint,
 st_60p_g  smallint
 );
+
+alter table udise_sch_exmres_c8 alter column academic_year type varchar(10);
 
 /*Udise transaction,aggregation,config */
 create table if not exists udise_school_metrics_trans(
@@ -3589,7 +3601,7 @@ create table if not exists udise_sch_exmmarks_c12_dup( udise_sch_code bigint , a
 create table if not exists udise_sch_recp_exp_dup( udise_sch_code bigint primary key , ac_year text, dev_grt_r double precision, dev_grt_e double precision, maint_grt_r double precision, maint_grt_e double precision, tlm_grt_r double precision, tlm_grt_e double precision, cw_grt_r double precision, cw_grt_e double precision, anl_grt_r double precision, anl_grt_e double precision, minrep_grt_r double precision, minrep_grt_e double precision, labrep_grt_r double precision, labrep_grt_e double precision, book_grt_r double precision, book_grt_e double precision, elec_grt_r double precision, elec_grt_e double precision, oth_grt_r double precision, oth_grt_e double precision, compo_grt_r double precision, compo_grt_e double precision, lib_grt_r double precision, lib_grt_e double precision, sport_grt_r double precision, sport_grt_e double precision, media_grt_r double precision, media_grt_e double precision, smc_grt_r double precision, smc_grt_e double precision, presch_grt_r double precision, presch_grt_e double precision, ngo_asst_yn smallint, ngo_asst_name varchar(100), ngo_asst_rcvd double precision, psu_asst_yn smallint, psu_asst_name varchar(100), psu_asst_rcvd double precision, comm_asst_yn smallint, comm_asst_rcvd double precision, comm_asst_name varchar(100), oth_asst_yn smallint, oth_asst_name varchar(100), oth_asst_rcvd double precision, ict_reg_yn smallint, sport_reg_yn smallint, lib_reg_yn smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
 
-create table if not exists udise_nsqf_basic_info_dup( udise_sch_code bigint primary key , ac_year text, nsqf_yn smallint, voc_course_yn smallint, sec1_sub Integer, sec1_year char, sec2_sub Integer, sec2_year char,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
+create table if not exists udise_nsqf_basic_info_dup( udise_sch_code bigint primary key , ac_year text, nsqf_yn smallint, voc_course_yn smallint, sec1_sub Integer, sec1_year varchar(10), sec2_sub Integer, sec2_year varchar(10),num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
 
 create table if not exists udise_nsqf_enr_caste_dup( udise_sch_code bigint , ac_year text, sector_no smallint , item_id smallint , c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
@@ -3616,7 +3628,7 @@ ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp
 create table if not exists udise_sch_safety_dup( udise_sch_code bigint primary key , ac_year text, sdmp_plan_yn smallint, struct_safaud_yn smallint, nonstr_safaud_yn smallint, cctv_cam_yn smallint, fire_ext_yn smallint, nodal_tch_yn smallint, safty_trng_yn smallint, dismgmt_taug_yn smallint, slfdef_grt_yn smallint, slfdef_trained smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
 
-create table if not exists udise_sch_exmres_c8_dup( udise_sch_code bigint primary key , academic_year char, gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, gen_60p_b smallint, gen_60p_g smallint, obc_60p_b smallint, obc_60p_g smallint, sc_60p_b smallint, sc_60p_g smallint, st_60p_b smallint, st_60p_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
+create table if not exists udise_sch_exmres_c8_dup( udise_sch_code bigint primary key , academic_year varchar(10), gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, gen_60p_b smallint, gen_60p_g smallint, obc_60p_b smallint, obc_60p_g smallint, sc_60p_b smallint, sc_60p_g smallint, st_60p_b smallint, st_60p_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
 
 /*pat null validation table*/
