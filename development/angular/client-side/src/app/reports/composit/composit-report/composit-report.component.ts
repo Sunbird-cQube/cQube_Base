@@ -344,6 +344,7 @@ export class CompositReportComponent implements OnInit {
     }
     this.myData = this.service.block_wise_data().subscribe(res => {
       this.reportData = this.result = res;
+      this.funToDownload(this.reportData);
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
@@ -381,6 +382,7 @@ export class CompositReportComponent implements OnInit {
     }
     this.myData = this.service.cluster_wise_data().subscribe(res => {
       this.reportData = this.result = res;
+      this.funToDownload(this.reportData);
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
       //====================================
@@ -610,6 +612,7 @@ export class CompositReportComponent implements OnInit {
   }
 
   funToDownload(data) {
+    console.log(data)
     let newData = [];
     $.each(data, function (key, value) {
       let headers = Object.keys(value);
