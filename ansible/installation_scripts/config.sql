@@ -1540,6 +1540,8 @@ select create_udise_table();
 
 /*Insert function for Udise aggregation table*/
 
+drop function if exists insert_udise_metrics_agg;
+
 CREATE OR REPLACE FUNCTION insert_udise_metrics_agg()
 RETURNS text AS
 $$
@@ -1552,21 +1554,21 @@ select_query text:='select string_agg(''a.''||column_name,'','') from informatio
 (select column_name from information_schema.columns where table_name in (''school_hierarchy_details'',''school_geo_master''))
 and column_name not in (''academic_year'',''udise_school_id'') order by 1';
 select_cols text;
-range_query_fwd text:=concat('select string_agg(''(case when ''||metric_name||'' < (select range[2] from udise_metrics_range where metric_name=''''''||metric_name                         
-  ||'''''') then 0 when ''||metric_name||'' between (select range[2] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and                        
-   (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') then 0.33 when ''||metric_name||'' 
+range_query_fwd text:=concat('select string_agg(''(case when COALESCE(''||metric_name||'',0) < (select range[2] from udise_metrics_range where metric_name=''''''||metric_name                         
+  ||'''''') then 0 when COALESCE(''||metric_name||'',0) between (select range[2] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and                        
+   (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') then 0.33 when COALESCE(''||metric_name||'',0) 
    between (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and (select range[4] from udise_metrics_range where metric_name=
-   ''''''||metric_name||'''''') then 0.66 when ''||metric_name||'' > (select range[4] from udise_metrics_range where metric_name=''''''||metric_name||'''''')                    
-   then 1 else ''||metric_name||'' end) as ''||metric_name||'''','','') from                                                                                                                   
+   ''''''||metric_name||'''''') then 0.66 when COALESCE(''||metric_name||'',0) > (select range[4] from udise_metrics_range where metric_name=''''''||metric_name||'''''')                    
+   then 1 end) as ''||metric_name||'''','','') from                                                                                                                   
   (select metric_name from udise_metrics_range where direction=''forward'' and metric_name in (select column_name from udise_config where status=''1''))as a');
-range_query_bwd text:=concat('select string_agg(''(case when ''||metric_name||'' < (select range[2] from udise_metrics_range where metric_name=''''''||metric_name                         
-  ||'''''') then 1 when ''||metric_name||'' between (select range[2] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and                        
-   (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') then 0.66 when ''||metric_name||'' 
+range_query_bwd text:=concat('select string_agg(''(case when COALESCE(''||metric_name||'',0) < (select range[2] from udise_metrics_range where metric_name=''''''||metric_name                         
+  ||'''''') then 1 when COALESCE(''||metric_name||'',0) between (select range[2] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and                        
+   (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') then 0.66 when COALESCE(''||metric_name||'',0) 
    between (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and (select range[4] from udise_metrics_range where metric_name=
-   ''''''||metric_name||'''''') then 0.33 when ''||metric_name||'' > (select range[4] from udise_metrics_range where metric_name=''''''||metric_name||'''''')                    
-   then 0 else ''||metric_name||'' end) as ''||metric_name||'''','','') from                                                                                                                   
+   ''''''||metric_name||'''''') then 0.33 when COALESCE(''||metric_name||'',0) > (select range[4] from udise_metrics_range where metric_name=''''''||metric_name||'''''')                    
+   then 0 end) as ''||metric_name||'''','','') from                                                                                                                   
   (select metric_name from udise_metrics_range where direction=''backward'' and metric_name in (select column_name from udise_config where status=''1''))as a');
-range_query_gen text:=concat('select string_agg(''(case when ''||metric_name||''= 1 then 1 else ''||metric_name||'' end) as ''||metric_name||'''','','') from                                                                                                                    
+range_query_gen text:=concat('select string_agg(''(case when ''||metric_name||''= 1 then 1 else 0 end) as ''||metric_name||'''','','') from                                                                                                                    
 (select metric_name from udise_metrics_range where direction=''No'' and metric_name in (select column_name from udise_config where status=''1''))as a');
 range_cols_fwd text; 
 range_cols_bwd text; 
@@ -1804,7 +1806,7 @@ select ''
         "district_longitude": "data.[&1].details.longitude",
         "infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-        "district_wise_rank": "data.[&1].rank.District_Rank",
+        "district_level_rank_within_the_state": "data.[&1].rank.District_Level_Rank_Within_The_State",
         "@total_schools": "data.[&1].total_schools",
         "total_schools": "allDistrictsFooter.totalSchools[]"
       }
@@ -1849,8 +1851,8 @@ as select ''
 				"block_longitude": "data.[&1].details.longitude",
 				"infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-				"district_wise_rank": "data.[&1].rank.District_Rank",
-				"block_wise_rank": "data.[&1].rank.Block_Rank",
+				"block_level_rank_within_the_district": "data.[&1].rank.Block_Level_Rank_Within_The_District",
+				"block_level_rank_within_the_state": "data.[&1].rank.Block_Level_Rank_Within_The_State",
 				"@total_schools": "data.[&1].total_schools",
 				"total_schools": "footer.@(1,district_id).totalSchools[]"
 			}
@@ -1908,9 +1910,9 @@ as select ''
         "cluster_longitude": "data.[&1].details.longitude",
         "infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-        "district_wise_rank": "data.[&1].rank.District_Rank",
-        "block_wise_rank": "data.[&1].rank.Block_Rank",
-        "cluster_wise_rank": "data.[&1].rank.Cluster_Rank",
+        "cluster_level_rank_within_the_block": "data.[&1].rank.Cluster_Level_Rank_Within_The_Block",
+        "cluster_level_rank_within_the_district": "data.[&1].rank.Cluster_Level_Rank_Within_The_District",
+        "cluster_level_rank_within_the_state": "data.[&1].rank.Cluster_Level_Rank_Within_The_State",
         "@total_schools": "data.[&1].total_schools",
         "total_schools": "footer.@(1,block_id).totalSchools[]"
       }
@@ -1977,10 +1979,10 @@ as select ''
         "school_longitude": "data.[&1].details.longitude",
         "infrastructure_score": "data.[&1].details.Infrastructure_Score",
 '||indices_cols||',
-        "district_wise_rank": "data.[&1].rank.District_Rank",
-        "block_wise_rank": "data.[&1].rank.Block_Rank",
-        "cluster_wise_rank": "data.[&1].rank.Cluster_Rank",
-        "school_wise_rank": "data.[&1].rank.School_Rank",
+        "school_level_rank_within_the_cluster": "data.[&1].rank.School_Level_Rank_Within_The_Cluster",
+        "school_level_rank_within_the_block": "data.[&1].rank.School_Level_Rank_Within_The_Block",
+        "school_level_rank_within_the_district": "data.[&1].rank.School_Level_Rank_Within_The_District",
+        "school_level_rank_within_the_state": "data.[&1].rank.School_Level_Rank_Within_The_State",
         "@total_schools": "data.[&1].total_schools",
         "total_schools": "footer.@(1,cluster_id).totalSchools[]"
       }
@@ -2746,7 +2748,12 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+drop view if exists composite_district;
+drop view if exists composite_block;
+drop view if exists composite_cluster;
+drop view if exists composite_school;
 
+select * from composite_create_views();
 
 create or replace function composite_jolt_spec()
     RETURNS text AS
