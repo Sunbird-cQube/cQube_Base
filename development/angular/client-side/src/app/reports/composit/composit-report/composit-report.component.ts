@@ -612,7 +612,6 @@ export class CompositReportComponent implements OnInit {
   }
 
   funToDownload(data) {
-    console.log(data)
     let newData = [];
     $.each(data, function (key, value) {
       let headers = Object.keys(value);
