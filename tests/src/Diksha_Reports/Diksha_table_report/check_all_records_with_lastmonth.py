@@ -36,7 +36,6 @@ class All_Districtwise_lastmonth_chart():
             name = districts.options[x].text
             names = name.strip()
             self.data.page_loading(self.driver)
-            # nodata = self.driver.find_element_by_id("errMsg").text
             if "No data found" in self.driver.page_source:
                 print(districts.options[x].text, " does not last 30 days records")
             else:
@@ -50,7 +49,6 @@ class All_Districtwise_lastmonth_chart():
                     header = next(csv_reader)
                     data = list(csv_reader)
                     row_count = len(data)
-                    print(row_count)
                 os.remove(self.filename)
                 tablecount = self.driver.find_elements_by_tag_name('tr')
                 records = int(len(tablecount)) - 2

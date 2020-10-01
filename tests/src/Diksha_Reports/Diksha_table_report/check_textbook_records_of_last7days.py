@@ -38,6 +38,7 @@ class textbook_districtwise_lastweek_record():
             time.sleep(1)
             districts.select_by_index(x)
             name = districts.options[x].text
+            time.sleep(2)
             names = name.strip()
             self.data.page_loading(self.driver)
             if "No data found" in self.driver.page_source:
@@ -53,7 +54,6 @@ class textbook_districtwise_lastweek_record():
                     header = next(csv_reader)
                     data = list(csv_reader)
                     row_count = len(data)
-                    print(row_count)
                 os.remove(self.filename)
                 tablecount = self.driver.find_elements_by_tag_name('tr')
                 records = int(len(tablecount)) - 2

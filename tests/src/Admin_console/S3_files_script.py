@@ -41,7 +41,7 @@ class Test_s3files(unittest.TestCase):
         for i in range(1,len(bucket_name.options)):
             bucket_name.select_by_index(i)
             self.data.page_loading(self.driver)
-            self.driver.find_element_by_xpath("//*[@id='table']/thead[2]/tr[2]/td[1]/input").click()
+            self.driver.find_element_by_xpath(Data.s3bucket_select1).click()
             self.data.page_loading(self.driver)
             self.driver.find_element_by_id("btn").click()
             time.sleep(3)

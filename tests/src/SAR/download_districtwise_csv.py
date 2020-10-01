@@ -18,7 +18,7 @@ class DistrictwiseCsv():
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
-        time.sleep(2)
+        time.sleep(3)
         p = pwd()
         self.filename = p.get_download_dir() + "/District_wise_report_"+self.month+"_"+self.year+".csv"
         return os.path.isfile(self.filename)

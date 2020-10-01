@@ -11,12 +11,8 @@ from CRC.check_crc_tabledata_by_districtwise import schoolwise_tabledata
 
 from CRC.check_crc_tabledata_by_selecting_districts import districtwise_tabledata
 from CRC.check_districtlevel_visited import districtwise_visits
-from CRC.check_homebtn import Homebutton
-from CRC.check_performance_for_blockwise_report import download_blockwise_csv
-from CRC.check_performance_for_clusterwise_report import download_clusterwise_csv
+from CRC.check_homebtn import Homeicon
 
-from CRC.check_performance_for_districtwise_report import download_districtwise_csv
-from CRC.check_performance_of_crc_report import CRC_report
 from CRC.check_table_data_order import Check_order_of_tabledata
 from CRC.check_total_no_of_visited_in_districtwise import visited
 from CRC.check_total_no_of_visits_in_districtwise import school_visits
@@ -40,10 +36,7 @@ class cQube_CRC_Report(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
-            self.total_tests =25
-            self.tests = [0] * 26
             self.data = GetData()
-            self.logger = self.data.get_functional_log("crc")
             self.driver = self.data.get_driver()
             self.data.open_cqube_appln(self.driver)
             self.data.login_cqube(self.driver)
