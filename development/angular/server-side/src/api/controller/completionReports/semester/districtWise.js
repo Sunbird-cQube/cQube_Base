@@ -3,10 +3,11 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.get('/allDistrictWise', auth.authController, async (req, res) => {
+router.post('/allDistrictWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- semester_completion district api ---');
-        let fileName = `exception_list/semester_completion/district_sem_completion_2.json`
+        var sem = req.body.sem;
+        let fileName = `exception_list/semester_completion/district_sem_completion_${sem}.json`
         var districtData = await s3File.readS3File(fileName);
         var sortedData = districtData['data'].sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1)
         logger.info('--- semester_completion district api response sent ---');

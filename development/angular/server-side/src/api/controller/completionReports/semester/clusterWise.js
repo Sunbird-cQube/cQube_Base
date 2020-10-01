@@ -4,10 +4,11 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.get('/allClusterWise',auth.authController, async (req, res) => {
+router.post('/allClusterWise',auth.authController, async (req, res) => {
     try {
         logger.info('--- semester_completion cluster wise api ---');
-        let fileName = `exception_list/semester_completion/cluster_sem_completion_2.json`;
+        var sem = req.body.sem;
+        let fileName = `exception_list/semester_completion/cluster_sem_completion_${sem}.json`;
         var clusterData = await s3File.readS3File(fileName);
         var sortedData = clusterData['data'].sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1)
         logger.info('--- semester_completion cluster wise api response sent---');
@@ -18,10 +19,11 @@ router.get('/allClusterWise',auth.authController, async (req, res) => {
     }
 });
 
-router.get('/clusterWise/:distId/:blockId',auth.authController, async (req, res) => {
+router.post('/clusterWise/:distId/:blockId',auth.authController, async (req, res) => {
     try {
         logger.info('---semester_completion clusterperBlock api ---');
-        let fileName = `exception_list/semester_completion/cluster_sem_completion_2.json`;
+        var sem = req.body.sem;
+        let fileName = `exception_list/semester_completion/cluster_sem_completion_${sem}.json`;
         var clusterData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId;
