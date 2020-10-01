@@ -2,10 +2,7 @@ import csv
 import os
 import re
 import time
-import unittest
-
 from selenium.webdriver.support.select import Select
-
 from Data.parameters import Data
 from get_dir import pwd
 from reuse_func import GetData

@@ -19,6 +19,7 @@ class SchoolwiseCsv():
         cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.SAR_Schools_btn).click()
         cal.page_loading(self.driver)
+        time.sleep(5)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(5)
         p = pwd()

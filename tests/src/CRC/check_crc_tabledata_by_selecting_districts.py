@@ -1,13 +1,6 @@
-import time
-import unittest
 import pandas as pd
-from selenium import webdriver
-from selenium.common import exceptions
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
-
 from Data.parameters import Data
-from get_dir import pwd
 from reuse_func import GetData
 
 

@@ -1,5 +1,4 @@
-from Admin_console import check_admin_landing_page, \
-    Logs_scripts, S3_files_script, Summary_Report
+from Admin_console import admin_console_smoke_testing, admin_console_system_testing
 from get_dir import pwd
 
 
@@ -11,14 +10,13 @@ class MyTestSuite(unittest.TestCase):
     def test_Issue(self):
         functional_test = unittest.TestSuite()
         functional_test.addTests([
-            # file name .class name
-                unittest.defaultTestLoader.loadTestsFromTestCase(check_admin_landing_page.Test_admin_landing_page),
-                unittest.defaultTestLoader.loadTestsFromTestCase(Logs_scripts.Test_logs),
-                unittest.defaultTestLoader.loadTestsFromTestCase(S3_files_script.Test_s3files),
-                unittest.defaultTestLoader.loadTestsFromTestCase(Summary_Report.Test_summaryreport)
+        # unittest.defaultTestLoader.loadTestsFromTestCase(admin_console_smoke_testing.Admin_console_smoketest),
+        unittest.defaultTestLoader.loadTestsFromTestCase(admin_console_system_testing.adminconsole_system_test),
         ])
         p= pwd()
-        outfile = open(p.get_admin_login_path(), "w")
+        # outfile = open(p.get_smoke_report_path(), "a")
+        outfile = open(p.get_system_report_path(), "a")
+
         runner1 = HTMLTestRunner.HTMLTestRunner(
             stream=outfile,
             title='Regression Test Report',

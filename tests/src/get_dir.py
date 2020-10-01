@@ -14,7 +14,7 @@ class pwd():
 
     def get_admin_console_path(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/admin_console_report.html')
+        report_path = os.path.join(cwd, 'Reports/backlog.html')
         return report_path
 
     def get_semester_exception_download_path(self):
@@ -44,7 +44,7 @@ class pwd():
 
     def get_functional_report_path(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/Landing_page.html')
+        report_path = os.path.join(cwd, 'Reports/Functional_test_report.html')
         return report_path
 
     def get_integration_report_path(self):
@@ -54,7 +54,7 @@ class pwd():
 
     def get_system_report_path(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/system_testing_report.html')
+        report_path = os.path.join(cwd, 'Reports/adminsystem_testing_report.html')
         return report_path
 
     def get_config_ini_path(self):
@@ -272,3 +272,15 @@ class pwd():
         self.driver.find_element_by_id("email").clear()
         self.driver.find_element_by_id("designattion").clear()
         self.driver.find_element_by_id("passswd").clear()
+
+
+
+    def get_s3_report_path(self):
+        cwd = os.path.dirname(__file__)
+        report_path = os.path.join(cwd, 'Reports/s3FilesCheck.html')
+        return report_path
+
+    def get_nifi_processor_group_report_path(self):
+        cwd = os.path.dirname(__file__)
+        report_path = os.path.join(cwd, 'Reports/cQubeConfiguration.html')
+        return report_path
