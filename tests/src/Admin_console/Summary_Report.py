@@ -19,7 +19,7 @@ class Test_summaryreport(unittest.TestCase):
     def test_summary_icon(self):
         count = 0
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_xpath("//*[@id='summary']/img").click()
+        self.driver.find_element_by_xpath(Data.summary_icon).click()
         self.data.page_loading(self.driver)
         if 'summary-statistics' in self.driver.current_url:
             print("Summmary statistics report page is present ")
@@ -34,7 +34,7 @@ class Test_summaryreport(unittest.TestCase):
         count = 0
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(2)
-        self.driver.find_element_by_xpath("//*[@id='summary']/div/td[2]").click()
+        self.driver.find_element_by_xpath(Data.summ).click()
         self.data.page_loading(self.driver)
         if 'summary-statistics' in self.driver.current_url:
             print("Summmary statistics report page is present ")
@@ -49,7 +49,7 @@ class Test_summaryreport(unittest.TestCase):
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath("//*[@id='summary']/div/td[2]").click()
+        self.driver.find_element_by_xpath(Data.summ).click()
         self.data.page_loading(self.driver)
         reports =self.driver.find_elements_by_tag_name('h2')
         count = len(reports)

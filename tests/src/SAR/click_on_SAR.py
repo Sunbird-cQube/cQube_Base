@@ -17,7 +17,6 @@ class DahboardSar():
             cal.page_loading(self.driver)
             cal.navigate_to_student_report()
             cal.page_loading(self.driver)
-            return self.driver.page_source
         except ElementClickInterceptedException:
             print("Element not found and test failed")
 

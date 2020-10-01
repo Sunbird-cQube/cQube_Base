@@ -1,10 +1,5 @@
-import time
-
-from selenium import webdriver
-
 from Data.parameters import Data
 from reuse_func import GetData
-
 
 class Dashboard_menu():
     def __init__(self,driver):

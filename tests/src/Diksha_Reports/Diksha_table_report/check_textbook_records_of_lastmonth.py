@@ -38,6 +38,7 @@ class textbook_districtwise_lastmonth_chart():
             time.sleep(1)
             districts.select_by_index(x)
             name = districts.options[x].text
+            time.sleep(2)
             names = name.strip()
             self.data.page_loading(self.driver)
             if "No data found" in self.driver.page_source:

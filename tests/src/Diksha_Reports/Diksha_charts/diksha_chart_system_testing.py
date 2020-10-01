@@ -4,17 +4,7 @@ import unittest
 
 from selenium.webdriver.support.select import Select
 from Data.parameters import Data
-from Diksha_Reports.Diksha_charts.check_with_all_last_30_days_records import test_all_data
 from reuse_func import GetData
-
-from Diksha_Reports.Diksha_charts.check_chart_with_lastweek import Districtwise_lastweek_chart
-from Diksha_Reports.Diksha_charts.check_chart_with_monthwise import Districtwise_lastmonth_chart
-from Diksha_Reports.Diksha_charts.check_each_districts import district_list
-from Diksha_Reports.Diksha_charts.check_with_lastday_records import Districtwise_overall_chart
-from Diksha_Reports.Diksha_charts.click_on_homeicon import Diksha_homeicon
-
-from Diksha_Reports.Diksha_charts.click_on_hyperlink import Diksha_hyperlink
-from Diksha_Reports.Diksha_charts.click_on_logout import Diksha_logout
 from Diksha_Reports.Diksha_charts.donwload_the_teacher_file import Diksha_teacher_download
 from Diksha_Reports.Diksha_charts.download_overall_file import Diksha_overall_download
 from Diksha_Reports.Diksha_charts.download_the_others_file import Diksha_others_download
@@ -39,18 +29,6 @@ class cQube_diskha_chart(unittest.TestCase):
         b = Diksha_page(self.driver)
         result = b.test_navigation()
         self.data.page_loading(self.driver)
-
-    def test_hyperlink(self):
-        b = Diksha_hyperlink(self.driver)
-        result = b.test_hyperlink()
-        self.data.page_loading(self.driver)
-
-    def test_choosedistricts(self):
-        b = district_list(self.driver)
-        res = b.test_each_districts()
-        self.assertEqual(0,res,msg="Some district's content play  are missing ")
-        self.data.page_loading(self.driver)
-
 
     def test_timeperiods(self):
         self.driver.find_element_by_xpath(Data.hyper_link).click()
@@ -88,61 +66,6 @@ class cQube_diskha_chart(unittest.TestCase):
         self.assertTrue(res, msg="Others data csv file is downloaded")
         self.data.page_loading(self.driver)
 
-    def test_lastday_records(self):
-        b =Districtwise_overall_chart(self.driver)
-        res = b.test_each_districts()
-        self.assertNotEqual(res,0,msg="Some of charts are showing  No Data Available ")
-        self.data.page_loading(self.driver)
-
-
-    def test_lastmonth_wise(self):
-        b = Districtwise_lastmonth_chart(self.driver)
-        res  = b.test_each_districts()
-        self.assertNotEqual(res,0,msg="Some of charts are showing  No Data Available ")
-        self.data.page_loading(self.driver)
-
-
-    def test_lastweek_wise(self):
-        b = Districtwise_lastweek_chart(self.driver)
-        res = b.test_each_districts()
-        self.assertNotEqual(res,0,msg="Some of charts are showing  No Data Available ")
-        self.data.page_loading(self.driver)
-
-
-    def test_Diksha_homeicon(self):
-        b = Diksha_homeicon(self.driver)
-        res = b.test_homeicon()
-        self.assertEqual(res,0,msg="Homeicon is not working ")
-        self.data.page_loading(self.driver)
-
-
-    def test_Diksha_logout(self):
-        b = Diksha_logout(self.driver)
-        res = b.test_logout()
-        self.assertEqual(res,'Log in to cQube',msg="Logout is not working")
-        self.data.page_loading(self.driver)
-
-
-    def test_contentplay_for_lastmonth(self):
-        b = test_all_data(self.driver)
-        res = b.test_last30_days()
-        self.assertEqual(0,res,msg="some mismatch found at csv file content sum and ui side content plays ")
-        print("Checked with all type of last month content plays count ")
-        self.data.page_loading(self.driver)
-
-    def test_contentplay_for_lastday(self):
-        b = test_all_data(self.driver)
-        res = b.test_last_day()
-        self.assertEqual(0, res, msg="some mismatch found at csv file content sum and ui side content plays ")
-        print("Checked with all type of last day content plays count ")
-        self.data.page_loading(self.driver)
-
-    def test_contentplay_for_last7day(self):
-        b = test_all_data(self.driver)
-        res = b.test_last_7_day()
-        self.assertEqual(0, res, msg="some mismatch found at csv file content sum and ui side content plays ")
-        print("Checked with all type of last 7 days content plays count ")
-        self.data.page_loading(self.driver)
 
     @classmethod
     def tearDownClass(cls):

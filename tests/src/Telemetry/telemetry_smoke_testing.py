@@ -1,10 +1,7 @@
 import time
 import unittest
 from Data.parameters import Data
-
-
 from Telemetry.download_last7day_records import last7day_download
-
 from Telemetry.download_lastday_records import lastday_download
 from Telemetry.download_overall_records import overall_download
 from Telemetry.download_the_lastmonth_recor import lastmonth_download

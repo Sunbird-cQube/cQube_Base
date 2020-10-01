@@ -1,17 +1,14 @@
 import time
 import unittest
 from Data.parameters import Data
-
 from Telemetry.check_with_lastday import lastday_timeperiod
 from Telemetry.check_with_lastmonth import lastmonth_timeperiod
 from Telemetry.check_with_lastweek import last7day_timeperiod
 from Telemetry.check_with_overall import overall_timeperiod
 from Telemetry.download_last7day_records import last7day_download
-
 from Telemetry.download_lastday_records import lastday_download
 from Telemetry.download_overall_records import overall_download
 from Telemetry.download_the_lastmonth_recor import lastmonth_download
-
 from get_dir import pwd
 from reuse_func import GetData
 

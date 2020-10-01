@@ -1,5 +1,4 @@
 import csv
-import os
 import re
 import time
 
@@ -27,22 +26,6 @@ class districtwise_visits():
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
             self.filename = p.get_download_dir() + "/Block_level_CRC_Report.csv"
-            # with open(self.filename) as fin:
-            #     csv_reader = csv.reader(fin, delimiter=',')
-            #     header = next(csv_reader)
-            #     schools = 0
-            #     for row in csv.reader(fin):
-            #         schools += int(row[0])
-            #     schoolvisited = self.driver.find_element_by_id("visited").text
-            #     sc= re.sub('\D', "", schoolvisited)
-            #     self.cal.page_loading(self.driver)
-            #     os.remove(self.filename)
-            #     if int(sc) == schools:
-            #         print(select_district.options[x].text ,":" ,"total no of schools visited :" ,schools ,int(sc))
-            #     else:
-            #         print(select_district.options[x].text, ": records are mischated ")
-            #
-            #     self.cal.page_loading(self.driver)
             count = 0
             with open(self.filename) as fin:
                 csv_reader = csv.reader(fin, delimiter=',')
