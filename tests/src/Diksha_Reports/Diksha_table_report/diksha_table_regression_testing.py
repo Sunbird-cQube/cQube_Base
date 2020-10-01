@@ -2,12 +2,7 @@
 import unittest
 from reuse_func import GetData
 from Data.parameters import Data
-
-from Diksha_Reports.Diksha_table_report.check_all_records_with_last7days import All_Districtwise_lastweek_record
-from Diksha_Reports.Diksha_table_report.check_all_records_with_lastday import All_Districtwise_lastday_records
-from Diksha_Reports.Diksha_table_report.check_all_records_with_lastmonth import All_Districtwise_lastmonth_chart
 from Diksha_Reports.Diksha_table_report.check_with_order_of_table import Table_orderwise
-
 from Diksha_Reports.Diksha_table_report.check_each_districts import district_list
 from Diksha_Reports.Diksha_table_report.click_on_homeicon import Diksha_homeicon
 from Diksha_Reports.Diksha_table_report.click_on_hyperlink import Diksha_hyperlink
@@ -84,24 +79,6 @@ class cQube_diskha_regression(unittest.TestCase):
         self.data.navigate_to_diksha_table()
         self.data.page_loading(self.driver)
 
-    # def test_all_last7days(self):
-    #     b = All_Districtwise_lastweek_record(self.driver)
-    #     res = b.test_each_districts()
-    #     self.assertEqual(0, res, msg="Some mismatch found at file records and table records")
-    #     self.data.page_loading(self.driver)
-    #
-    # def test_all_lastday(self):
-    #     b = All_Districtwise_lastday_records(self.driver)
-    #     res = b.test_each_districts()
-    #     self.assertEqual(0, res, msg="Some mismatch found at file records and table records")
-    #     self.data.page_loading(self.driver)
-    #
-    # def test_all_lastmonth(self):
-    #     b = All_Districtwise_lastmonth_chart(self.driver)
-    #     res = b.test_each_districts()
-    #     self.assertEqual(0, res, msg="Some mismatch found at file records and table records")
-    #     self.data.page_loading(self.driver)
-
     def test_Diksha_logout(self):
         b = Diksha_logout(self.driver)
         res = b.test_logout()
@@ -119,8 +96,6 @@ class cQube_diskha_regression(unittest.TestCase):
         else:
             print("search box is not working ")
         self.data.page_loading(self.driver)
-
-
 
     def test_tableorder(self):
         b = Table_orderwise(self.driver)

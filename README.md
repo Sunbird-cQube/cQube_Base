@@ -14,6 +14,12 @@ The following ports have to be configured in the nginix server with reverse prox
 3) Port 3000 should be proxied to the '/api'
 4) Port 5000 should be proxied to the '/data'
 
+<b>Nginx - cQube server firewall configuration</b>
+1) Port 4200 should be open from nginx to the cQube server
+2) Port 8080 should be open from nginx to the cQube server
+3) Port 3000 should be open from nginx to the cQube server
+4) Port 5000 should be open from nginx to the cQube server
+
 <b>Openvpn - cQube server firewall configuration</b>
 1) Port 9000 should be open from openvpn to the cQube server
 2) Port 4201 should be open from openvpn to the cQube server
@@ -27,6 +33,7 @@ Note: For <b>Installation:</b> follow the below steps directly, for upgradation 
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
+git checkout release-1.4
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
@@ -107,6 +114,12 @@ cqube_emission
 ├── school_master
 │   └── school_mst.zip
 │       └── school_mst.csv
+├── pat
+│   └── periodic_exam_mst.zip
+│       └── periodic_exam_mst.csv
+├── pat
+│   └── periodic_exam_qst_mst.zip
+│       └── periodic_exam_qst_mst.csv
 ```
 
 Transactional Files:
@@ -131,6 +144,9 @@ cqube_emission
 ├── diksha
 │   └── diksha.zip
 │       └── diksha.csv
+├── pat
+│   └── periodic_exam_result_trans.zip
+│       └── periodic_exam_result_trans.csv
 ```
 - For udise data file structure, please refer the operational document.
 
@@ -154,6 +170,7 @@ python3 client.py
 - Navigate to the directory where cQube has been downloaded or cloned
 ```
 cd cQube/ansible/installation_scripts/
+git checkout release-1.4
 ```
 - Copy the upgradation_config.yml.template to upgradation_config.yml 
 `cp upgradation_config.yml.template upgradation_config.yml`

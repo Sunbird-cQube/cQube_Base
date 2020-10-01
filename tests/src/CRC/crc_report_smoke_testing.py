@@ -5,7 +5,6 @@ import unittest
 from CRC.check_crc_block_per_district_csv_download import blockwise
 from CRC.check_crc_tabledata_by_districtwise import schoolwise_tabledata
 from CRC.check_homebtn import Homeicon
-from CRC.check_performance_for_blockwise_report import download_blockwise_csv
 from CRC.check_table_data_order import Check_order_of_tabledata
 
 from CRC.check_total_no_of_visited_in_districtwise import visited
@@ -123,9 +122,9 @@ class cQube_CRC_Report(unittest.TestCase):
         result = b.test_homeicon()
         self.assertTrue(result,msg="Home button not working ")
 
-    def test_peformance_blockwise(self):
+    def test_download_blockwise(self):
         print("checking performance of blockwise csv file download")
-        b = download_blockwise_csv(self.driver)
+        b = donwload_blockwise_csv(self.driver)
         result = b.test_blockwise()
         self.assertTrue(result, msg="Blockwise csv is not downloaded")
         print("Block wise csv file is downloaded within 10 seconds")

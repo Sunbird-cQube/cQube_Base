@@ -1,14 +1,22 @@
 import time
+
 from CRC import crc_report_smoke_testing
+from Composite_report import composite_smoke_testing
 from Diksha_Reports.Diksha_charts import diksha_chart_smoke_testing
+from Diksha_Reports.Diksha_column_chart import column_smoke_testing
 from Diksha_Reports.Diksha_table_report import diksha_table_smoke_testing
-from Landing_Page import cQube_home_page
+
+from Landing_Page import cQube_landing_page
+from Login import login_page
+from Periodic_report import periodic_smoke_testing
 from SAR import student_attendance_smoke_testing
 from SI.MAP import School_Map_smoke_testing
+
 from SI.Report import School_report_smoke_testing
 from SR import semester_report_smoke_testing
 from Semester_Exception import exception_smoke_testing
 from Telemetry import telemetry_smoke_testing
+from UDISE import udise_smoke_testing
 
 from get_dir import pwd
 
@@ -34,7 +42,7 @@ class MyTestSuite(unittest.TestCase):
         smoke_test = unittest.TestSuite()
         smoke_test.addTests([
             # file name .class name
-            unittest.defaultTestLoader.loadTestsFromTestCase(login_smoke_testing.cQube_Login_smoke_Test),
+            unittest.defaultTestLoader.loadTestsFromTestCase(login_page.login),
         ])
         p = pwd()
         outfile = open(p.get_smoke_report_path(), "w")
@@ -51,7 +59,7 @@ class MyTestSuite(unittest.TestCase):
     def test_issue02(self):
         smoke_test = unittest.TestSuite()
         smoke_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(cQube_home_page.cQube_Home),
+            unittest.defaultTestLoader.loadTestsFromTestCase(cQube_landing_page.cQube_Home),
         ])
         p = pwd()
         outfile = open(p.get_smoke_report_path(), "a")
@@ -141,12 +149,12 @@ class MyTestSuite(unittest.TestCase):
             outfile.close()
 
     def test_issue06(self):
-        self.data.navigate_to_school_infrastructure_map()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in the school infra map report page")
-        else:
+        # self.data.navigate_to_school_infrastructure_map()
+        # time.sleep(3)
+        # self.errMsg = self.data.get_data_status()
+        # if self.errMsg.text == 'No data found':
+        #     print("No data in the school infra map report page")
+        # else:
             smoke_test = unittest.TestSuite()
             smoke_test.addTests([
                 # file name .class name
@@ -191,12 +199,7 @@ class MyTestSuite(unittest.TestCase):
             outfile.close()
 
     def test_issue08(self):
-        self.data.navigate_to_diksha_graph()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in the school infra report page")
-        else:
+
             smoke_test = unittest.TestSuite()
             smoke_test.addTests([
                 unittest.defaultTestLoader.loadTestsFromTestCase(diksha_chart_smoke_testing.cQube_diskha_chart)
@@ -214,13 +217,28 @@ class MyTestSuite(unittest.TestCase):
             runner1.run(smoke_test)
             outfile.close()
 
+    def test_issue12(self):
+
+        smoke_test = unittest.TestSuite()
+        smoke_test.addTests([
+            unittest.defaultTestLoader.loadTestsFromTestCase(
+                column_smoke_testing.cQube_diskha_column_report)
+        ])
+        p = pwd()
+        outfile = open(p.get_smoke_report_path(), "a")
+
+        runner1 = HTMLTestRunner.HTMLTestRunner(
+            stream=outfile,
+            title='Diksha column smoke Test Report',
+            verbosity=1,
+
+        )
+
+        runner1.run(smoke_test)
+        outfile.close()
+
     def test_issue09(self):
-        self.data.navigate_to_diksha_table()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in the school infra report page")
-        else:
+
             smoke_test = unittest.TestSuite()
             smoke_test.addTests([
                 unittest.defaultTestLoader.loadTestsFromTestCase(diksha_table_smoke_testing.cQube_diskha_report)
@@ -239,12 +257,7 @@ class MyTestSuite(unittest.TestCase):
             outfile.close()
 
     def test_issue10(self):
-        self.data.navigate_to_semester_exception()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in the semester exception report page")
-        else:
+
             smoke_test = unittest.TestSuite()
             smoke_test.addTests([
                 unittest.defaultTestLoader.loadTestsFromTestCase(exception_smoke_testing.cQube_semester_exception_report)
@@ -263,12 +276,7 @@ class MyTestSuite(unittest.TestCase):
             outfile.close()
 
     def test_issue11(self):
-        self.data.navigate_to_telemetry()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in the Telemetry  report page")
-        else:
+
             smoke_test = unittest.TestSuite()
             smoke_test.addTests([
                 unittest.defaultTestLoader.loadTestsFromTestCase(
@@ -285,6 +293,76 @@ class MyTestSuite(unittest.TestCase):
             )
 
             runner1.run(smoke_test)
+            outfile.close()
+
+    def test_issue13(self):
+
+            smoke_test = unittest.TestSuite()
+            smoke_test.addTests([
+                unittest.defaultTestLoader.loadTestsFromTestCase(
+                    udise_smoke_testing.cQube_udise_Report)
+            ])
+            p = pwd()
+            outfile = open(p.get_smoke_report_path(), "a")
+
+            runner1 = HTMLTestRunner.HTMLTestRunner(
+                stream=outfile,
+                title='UDISE Report smoke Test Report',
+                verbosity=1,
+
+            )
+
+            runner1.run(smoke_test)
+            outfile.close()
+
+    def test_issue14(self):
+        self.data.navigate_to_composite_report()
+        time.sleep(3)
+        self.errMsg = self.data.get_data_status()
+        if self.errMsg.text == 'No data found':
+            print("No data in composite the report page")
+        else:
+            regression_test = unittest.TestSuite()
+            regression_test.addTests([
+                unittest.defaultTestLoader.loadTestsFromTestCase(
+                    composite_smoke_testing.composite_smoke_testing)
+            ])
+            p = pwd()
+            outfile = open(p.get_smoke_report_path(), "a")
+
+            runner1 = HTMLTestRunner.HTMLTestRunner(
+                stream=outfile,
+                title='Composite Report smoke Test Report',
+                verbosity=1,
+
+            )
+
+            runner1.run(regression_test)
+            outfile.close()
+
+    def test_issue15(self):
+        self.data.navigate_to_periodic_report()
+        time.sleep(3)
+        self.errMsg = self.data.get_data_status()
+        if self.errMsg.text == 'No data found':
+            print("No data in Periodic the report page")
+        else:
+            regression_test = unittest.TestSuite()
+            regression_test.addTests([
+                unittest.defaultTestLoader.loadTestsFromTestCase(
+                    periodic_smoke_testing.periodic_smoke)
+            ])
+            p = pwd()
+            outfile = open(p.get_smoke_report_path(), "a")
+
+            runner1 = HTMLTestRunner.HTMLTestRunner(
+                stream=outfile,
+                title='Periodic Report Smoke Test Report',
+                verbosity=1,
+
+            )
+
+            runner1.run(regression_test)
             outfile.close()
 
     @classmethod

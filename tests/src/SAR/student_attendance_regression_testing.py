@@ -44,7 +44,7 @@ class cQube_Student_Attendance(unittest.TestCase):
     def test_click_on_student_attendence_report(self):
         sar = DahboardSar(self.driver)
         result = sar.click_on_sar()
-        if "Student Attendance Report" in result:
+        if "Student Attendance Report" in self.driver.page_source:
             print("Navigating to Student Attendance Report is working")
         else:
             print("SAR page does not exist!...")

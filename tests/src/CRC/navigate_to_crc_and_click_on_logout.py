@@ -1,10 +1,5 @@
-import time
-
-
 from Data.parameters import Data
-from get_dir import pwd
 from reuse_func import GetData
-
 
 class Logout_function():
    def __init__(self,driver):

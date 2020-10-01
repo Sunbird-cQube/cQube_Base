@@ -35,7 +35,7 @@ class sc_map_districtwise():
                     header = next(csv_reader)
                     schools = 0
                     for row in csv.reader(fin):
-                        schools += int(row[2])
+                        schools += int(row[0])
                     school = self.driver.find_element_by_id("schools").text
                     sc = re.sub('\D', "", school)
                     if int(sc) != schools:
