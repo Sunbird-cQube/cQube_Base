@@ -2824,6 +2824,11 @@ smc_trained_f  smallint,
 smc_meetings  smallint,
 smc_sdp_yn  smallint,
 smc_bnkac_yn  smallint,
+smc_bnk_name  varchar(100),
+smc_bnk_br  varchar(100),
+smc_bnkac_no  varchar(100),
+smc_bnkac_ifsc  varchar(100),
+smc_bnkac_name  varchar(100),
 smdc_smc_same_yn  smallint,
 smdc_yn  smallint,
 smdc_mem_m  smallint,
@@ -2858,24 +2863,16 @@ smdc_trained_f  smallint,
 smdc_meetings  smallint,
 smdc_sdp_yn  smallint,
 smdc_bnkac_yn  smallint,
+smdc_bnk_name  varchar(100),
+smdc_bnk_br  varchar(100),
+smdc_bnkac_no  varchar(100),
+smdc_bnkac_ifsc  varchar(100),
+smdc_bnkac_name  varchar(100),
 smdc_sbc_yn  smallint,
 smdc_acadcom_yn  smallint,
 smdc_pta_yn  smallint,
 smdc_pta_meeting  smallint
 );
-
-alter table udise_sch_profile drop column if exists smc_bnk_name ;
-alter table udise_sch_profile drop column if exists smc_bnk_br ;
-alter table udise_sch_profile drop column if exists smc_bnkac_no ;
-alter table udise_sch_profile drop column if exists smc_bnkac_ifsc ;
-alter table udise_sch_profile drop column if exists smc_bnkac_name ;
-alter table udise_sch_profile drop column if exists smdc_bnk_name ;
-alter table udise_sch_profile drop column if exists smdc_bnk_br ;
-alter table udise_sch_profile drop column if exists smdc_bnkac_no ;
-alter table udise_sch_profile drop column if exists smdc_bnkac_ifsc ;
-alter table udise_sch_profile drop column if exists smdc_bnkac_name ;
-
-
 
 create table if not exists udise_sch_staff_posn(
 udise_sch_code  bigint primary key not null,
@@ -2926,10 +2923,6 @@ disability_type  smallint,
 trained_cwsn  smallint,
 trained_comp  smallint
 );
-
-/*alter table udise_tch_profile drop constraint if exists udise_tch_profile_pkey;
-alter table udise_tch_profile add primary key(udise_sch_code,name,dob);
-alter table udise_tch_profile alter column tch_code drop not null;*/
 
 create table if not exists udise_sch_exmmarks_c10(
 udise_sch_code  bigint not null,
@@ -3021,15 +3014,10 @@ ac_year  text,
 nsqf_yn  smallint,
 voc_course_yn  smallint,
 sec1_sub  Integer,
-sec1_year  varchar(10),
+sec1_year  char,
 sec2_sub  Integer,
-sec2_year  varchar(10)
+sec2_year  char
 );
-
-alter table udise_nsqf_basic_info alter column sec2_year type varchar(10);
-
-alter table udise_nsqf_basic_info alter column sec1_year type varchar(10);
-
 
 create table if not exists udise_nsqf_enr_caste(
 udise_sch_code  bigint not null,
@@ -3062,10 +3050,6 @@ c12_b  smallint,
 c12_g  smallint,
 primary key(udise_sch_code,sector_no)
 );
-
-/*alter table udise_nsqf_enr_sub_sec drop constraint if exists udise_nsqf_enr_sub_sec_pkey;
-alter table udise_nsqf_enr_sub_sec add primary key(udise_sch_code,sector_no,sub_sector_id);*/
-
 
 create table if not exists udise_nsqf_exmres_c10(
 udise_sch_code  bigint not null,
@@ -3112,8 +3096,7 @@ primary key(udise_sch_code,sector_no)
 create table if not exists udise_nsqf_faculty(
 udise_sch_code  bigint not null,
 ac_year  text,
-nsqf_faculty_id bigint ,
-faculty_code  varchar(100),
+faculty_code  varchar(100) not null,
 name  varchar(100),
 gender  smallint,
 dob  date,
@@ -3127,13 +3110,8 @@ class_taught  smallint,
 appt_sec  smallint,
 induc_trg_rcvd  smallint,
 inserv_trg_rcvd  smallint,
-primary key(udise_sch_code,nsqf_faculty_id)
+primary key(udise_sch_code,faculty_code)
 );
-
-alter table udise_nsqf_faculty add column if not exists nsqf_faculty_id bigint;
-alter table udise_nsqf_faculty drop constraint if exists udise_nsqf_faculty_pkey;
-alter table udise_nsqf_faculty alter column faculty_code drop not null;
-alter table udise_nsqf_faculty add primary key(udise_sch_code,nsqf_faculty_id);
 
 create table if not exists udise_sch_pgi_details(
 udise_sch_code  bigint primary key not null,
@@ -3164,7 +3142,7 @@ slfdef_trained  smallint
 
 create table if not exists udise_sch_exmres_c8(
 udise_sch_code  bigint primary key not null,
-academic_year  varchar(10),
+academic_year  char,
 gen_app_b  smallint,
 gen_app_g  smallint,
 obc_app_b  smallint,
@@ -3190,8 +3168,6 @@ sc_60p_g  smallint,
 st_60p_b  smallint,
 st_60p_g  smallint
 );
-
-alter table udise_sch_exmres_c8 alter column academic_year type varchar(10);
 
 /*Udise transaction,aggregation,config */
 create table if not exists udise_school_metrics_trans(
@@ -3492,597 +3468,5 @@ count_null_marks_range_id int,
 count_null_nsqf_faculty_id int
 );
 
-/*udise duplicate check tables*/
 
-/*udise_dup_tables*/
-
-create table if not exists udise_nsqf_plcmnt_c12_dup( udise_sch_code bigint , ac_year text, sector_no smallint , item_id smallint, opt_plcmnt_b smallint, opt_plcmnt_g smallint, placed_b smallint, placed_g smallint, voc_hs_b smallint, voc_hs_g smallint, nonvoc_hs_b smallint, nonvoc_hs_g smallint, self_emp_b smallint, self_emp_g smallint, 
-num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-create table if not exists udise_nsqf_plcmnt_c10_dup( udise_sch_code bigint , ac_year text, sector_no smallint , item_id smallint, opt_plcmnt_b smallint, opt_plcmnt_g smallint, placed_b smallint, placed_g smallint, voc_hs_b smallint, voc_hs_g smallint, nonvoc_hs_b smallint, nonvoc_hs_g smallint, self_emp_b smallint, self_emp_g smallint, 
-num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-create table if not exists udise_nsqf_class_cond_dup( udise_sch_code bigint , ac_year text, sector_no smallint , class_type_id smallint , c9 smallint, c10 smallint, c11 smallint, c12 smallint, num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_sch_exmres_c12_dup( udise_sch_code bigint , ac_year text, item_id smallint , stream_id smallint , gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_sch_exmres_c10_dup( udise_sch_code bigint , ac_year text, item_id smallint , gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, 
-num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-create table if not exists udise_sch_exmres_c5_dup( udise_sch_code bigint primary key , ac_year text, gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, gen_60p_b smallint, gen_60p_g smallint, obc_60p_b smallint, obc_60p_g smallint, sc_60p_b smallint, sc_60p_g smallint, st_60p_b smallint, st_60p_g smallint ,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_sch_incen_cwsn_dup( udise_sch_code bigint , ac_year text, item_id smallint , tot_pre_pri_b smallint, tot_pre_pri_g smallint, tot_pry_b smallint, tot_pry_g smallint, tot_upr_b smallint, tot_upr_g smallint, tot_sec_b smallint, tot_sec_g smallint, tot_hsec_b smallint, tot_hsec_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_sch_incentives_dup( udise_sch_code bigint , ac_year text, grade_pri_upr smallint , incentive_type smallint , gen_b smallint, gen_g smallint, sc_b smallint, sc_g smallint, st_b smallint, st_g smallint, obc_b smallint, obc_g smallint, min_muslim_b smallint, min_muslim_g smallint, min_oth_b smallint, min_oth_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_sch_enr_by_stream_dup( udise_sch_code bigint , ac_year text, stream_id smallint , caste_id smallint , ec11_b smallint, ec11_g smallint, ec12_b smallint, ec12_g smallint, rc11_b smallint, rc11_g smallint, rc12_b smallint, rc12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp) ;
-
-
-create table if not exists udise_sch_enr_cwsn_dup( udise_sch_code bigint , ac_year text, disability_type smallint , cpp_b smallint, cpp_g smallint, c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_sch_enr_medinstr_dup( udise_sch_code bigint , ac_year text, medinstr_seq smallint , c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-create table if not exists udise_sch_enr_age_dup( udise_sch_code bigint , ac_year text, age_id smallint , c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint, primary key(udise_sch_code,age_id) );
-create table if not exists udise_sch_enr_reptr( udise_sch_code bigint , ac_year text, item_group smallint , item_id smallint , c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_sch_enr_fresh_dup( udise_sch_code bigint , ac_year text, item_group smallint , item_id smallint , cpp_b smallint, cpp_g smallint, c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_sch_enr_newadm_dup( udise_sch_code bigint primary key , ac_year text, age4_b smallint, age4_g smallint, age5_b smallint, age5_g smallint, age6_b smallint, age6_g smallint, age7_b smallint, age7_g smallint, age8_b smallint, age8_g smallint, same_sch_b smallint, same_sch_g smallint, oth_sch_b smallint, oth_sch_g smallint, anganwadi_b smallint, anganwadi_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-create table if not exists udise_sch_facility_dup( udise_sch_code bigint primary key , ac_year text, bld_status smallint, bld_blk_tot smallint, bld_blk smallint, bld_blk_ppu smallint, bld_blk_kuc smallint, bld_blk_tnt smallint, bld_blk_dptd smallint, bld_blk_undcons smallint, bndrywall_type smallint, clsrms_inst smallint, clsrms_und_cons smallint, clsrms_dptd smallint, clsrms_pre_pri smallint, clsrms_pri smallint, clsrms_upr smallint, clsrms_sec smallint, clsrms_hsec smallint, othrooms smallint, clsrms_gd smallint, clsrms_gd_ppu smallint, clsrms_gd_kuc smallint, clsrms_gd_tnt smallint, clsrms_min smallint, clsrms_min_ppu smallint, clsrms_min_kun smallint, clsrms_min_tnt smallint, clsrms_maj smallint, clsrms_maj_ppu smallint, clsrms_maj_kuc smallint, clsrms_maj_tnt smallint, land_avl_yn smallint, hm_room_yn smallint, toilet_yn smallint, toiletb smallint, toiletb_fun smallint, toiletg smallint, toiletg_fun smallint, toiletb_cwsn smallint, toiletb_cwsn_fun smallint, toiletg_cwsn smallint, toiletg_cwsn_fun smallint, urinalsb smallint, urinalsb_fun smallint, urinalsg smallint, urinalsg_fun smallint, toiletb_fun_water smallint, toiletg_fun_water smallint, handwash_yn smallint, incinerator_yn smallint, drink_water_yn smallint, hand_pump_tot smallint, hand_pump_fun smallint, well_prot_tot smallint, well_prot_fun smallint, well_unprot_tot smallint, well_unprot_fun smallint, tap_tot smallint, tap_fun smallint, pack_water smallint, pack_water_fun smallint, othsrc_tot smallint, othsrc_fun smallint, othsrc_name varchar(100), water_purifier_yn smallint, water_tested_yn smallint, rain_harvest_yn smallint, handwash_meal_yn smallint, handwash_meal_tot smallint, electricity_yn smallint, solarpanel_yn smallint, library_yn smallint, lib_books integer, lib_books_ncert integer, bookbank_yn smallint, bkbnk_books integer, bkbnk_books_ncert integer, readcorner_yn smallint, readcorner_books integer, librarian_yn smallint, newspaper_yn smallint, playground_yn smallint, playground_alt_yn smallint, medchk_yn smallint, medchk_tot smallint, dewormtab_yn smallint, irontab_yn smallint, ramps_yn smallint, handrails_yn smallint, spl_educator_yn smallint, kitchen_garden_yn smallint, dstbn_clsrms_yn smallint, dstbn_toilet_yn smallint, dstbn_kitchen_yn smallint, stus_hv_furnt smallint, ahmvp_room_yn smallint, comroom_g_yn smallint, staff_room_yn smallint, craft_room_yn smallint, staff_qtr_yn smallint, integrated_lab_yn smallint, library_room_yn smallint, comp_room_yn smallint, tinkering_lab_yn smallint, phy_lab_yn smallint, phy_lab_cond smallint, chem_lab_yn smallint, chem_lab_cond smallint, boi_lab_yn smallint, bio_lab_cond smallint, math_lab_yn smallint, math_lab_cond smallint, lang_lab_yn smallint, lang_lab_cond smallint, geo_lab_yn smallint, geo_lab_cond smallint, homesc_lab_yn smallint, home_sc_lab_cond smallint, psycho_lab_yn smallint, psycho_lab_cond smallint, audio_system_yn smallint, sciencekit_yn smallint, mathkit_yn smallint, biometric_dev_yn smallint, comp_lab_type smallint, ict_impl_year smallint, ictlab_fun_yn smallint, ict_model_impl smallint, ict_instr_type smallint, laptop_yn smallint, laptop_tot smallint, laptop_fun smallint, tablets_yn smallint, tablets_tot smallint, tablets_fun smallint, desktop_yn smallint, desktop_tot smallint, desktop_fun smallint, teachdev_yn smallint, teachdev_tot smallint, teachdev_fun smallint, digi_board_yn smallint, digi_board_tot smallint, digi_board_fun smallint, server_yn smallint, server_tot smallint, server_fun smallint, projector_yn smallint, projector_tot smallint, projector_fun smallint, led_yn smallint, led_tot smallint, led_fun smallint, printer_yn smallint, printer_tot smallint, printer_fun smallint, scanner_yn smallint, scanner_tot smallint, scanner_fun smallint, webcam_yn smallint, webcam_tot smallint, webcam_fun smallint, generator_yn smallint, generator_tot smallint, generator_fun smallint, internet_yn smallint, dth_yn smallint, digi_res_yn smallint, tech_soln_yn smallint, ict_tools_yn smallint, ict_teach_hrs smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-create table if not exists udise_sch_profile_dup( udise_sch_code bigint primary key , 
-ac_year text, c0_sec smallint, c1_sec smallint, c2_sec smallint, c3_sec smallint, c4_sec smallint, 
-c5_sec smallint, c6_sec smallint, c7_sec smallint, c8_sec smallint, c9_sec smallint, c10_sec smallint, 
-c11_sec smallint, c12_sec smallint, estd_year varchar(10), recog_year_pri varchar(10), recog_year_upr varchar(10), 
-recog_year_sec varchar(10), recog_year_hsec varchar(10), upgrd_year_ele varchar(10), upgrd_year_sec varchar(10), 
-upgrd_year_hsec varchar(10), cwsn_sch_yn smallint, shift_sch_yn smallint, resi_sch_yn smallint, resi_sch_type int, 
-boarding_pri_yn smallint, boarding_pri_b smallint, boarding_pri_g smallint, boarding_upr_yn smallint, boarding_upr_b smallint, 
-boarding_upr_g smallint, boarding_sec_yn smallint, boarding_sec_b smallint, boarding_sec_g smallint, boarding_hsec_yn smallint, 
-boarding_hsec_b smallint, boarding_hsec_g smallint, minority_yn smallint, minority_type smallint, mtongue_pri smallint, medinstr1 smallint, 
-medinstr2 smallint, medinstr3 smallint, medinstr4 smallint, medinstr_oth varchar(100), lang1 smallint, lang2 smallint, lang3 smallint, 
-prevoc_yn smallint, eduvoc_yn smallint, board_sec smallint, board_sec_no varchar(100), board_sec_oth varchar(100), board_hsec smallint, 
-board_hsec_no varchar(100), board_hsec_oth varchar(100), distance_pri double precision, distance_upr double precision, 
-distance_sec double precision, distance_hsec double precision, approach_road_yn smallint, ppsec_yn smallint, ppstu_lkg_b smallint, 
-ppstu_lkg_g smallint, ppstu_ukg_b smallint, ppstu_ukg_g smallint, anganwadi_yn smallint, anganwadi_code varchar(100), anganwadi_stu_b smallint, 
-anganwadi_stu_g smallint, anganwadi_tch_trained smallint, workdays_pre_pri smallint, workdays_pri smallint, workdays_upr smallint, workdays_sec smallint, 
-workdays_hsec smallint, sch_hrs_stu_pre_pri double precision, sch_hrs_stu_pri double precision, sch_hrs_stu_upr double precision, 
-sch_hrs_stu_sec double precision, sch_hrs_stu_hsec double precision, sch_hrs_tch_pre_pri double precision, sch_hrs_tch_pri double precision, 
-sch_hrs_tch_upr double precision, sch_hrs_tch_sec double precision, sch_hrs_tch_hsec double precision, cce_yn_pri smallint, cce_yn_upr smallint, 
-cce_yn_sec smallint, cce_yn_hsec smallint, pcr_maintained_yn smallint, pcr_shared_yn smallint, rte_25p_applied smallint, rte_25p_enrolled smallint, 
-rte_pvt_c0_b smallint, rte_pvt_c0_g smallint, rte_pvt_c1_b smallint, rte_pvt_c1_g smallint, rte_pvt_c2_b smallint, rte_pvt_c2_g smallint, rte_pvt_c3_b smallint, 
-rte_pvt_c3_g smallint, rte_pvt_c4_b smallint, rte_pvt_c4_g smallint, rte_pvt_c5_b smallint, rte_pvt_c5_g smallint, rte_pvt_c6_b smallint, rte_pvt_c6_g smallint, 
-rte_pvt_c7_b smallint, rte_pvt_c7_g smallint, rte_pvt_c8_b smallint, rte_pvt_c8_g smallint, rte_bld_c0_b smallint, rte_bld_c0_g smallint, rte_bld_c1_b smallint, 
-rte_bld_c1_g smallint, rte_bld_c2_b smallint, rte_bld_c2_g smallint, rte_bld_c3_b smallint, rte_bld_c3_g smallint, rte_bld_c4_b smallint, rte_bld_c4_g smallint, 
-rte_bld_c5_b smallint, rte_bld_c5_g smallint, rte_bld_c6_b smallint, rte_bld_c6_g smallint, rte_bld_c7_b smallint, rte_bld_c7_g smallint, rte_bld_c8_b smallint, 
-rte_bld_c8_g smallint, rte_ews_c9_b smallint, rte_ews_c9_g smallint, rte_ews_c10_b smallint, rte_ews_c10_g smallint, rte_ews_c11_b smallint, rte_ews_c11_g smallint, 
-rte_ews_c12_b smallint, rte_ews_c12_g smallint, spltrg_yn smallint, spltrg_cy_prov_b smallint, spltrg_cy_prov_g smallint, spltrg_py_enrol_b smallint, 
-spltrg_py_enrol_g smallint, spltrg_py_prov_b smallint, spltrg_py_prov_g smallint, spltrg_by smallint, spltrg_place smallint, spltrg_type smallint, 
-remedial_tch_enrol smallint, session_start_mon smallint, txtbk_recd_yn smallint, txtbk_recd_mon smallint, supp_mat_recd_yn smallint, txtbk_pre_pri_yn smallint, 
-txtbk_pri_yn smallint, txtbk_upr_yn smallint, txtbk_sec_yn smallint, txtbk_hsec_yn smallint, tle_pre_pri_yn smallint, tle_pri_yn smallint, tle_upr_yn smallint, 
-tle_sec_yn smallint, tle_hsec_yn smallint, playmat_pre_pri_yn smallint, playmat_pri_yn smallint, playmat_upr_yn smallint, playmat_sec_yn smallint, playmat_hsec_yn smallint, 
-no_inspect smallint, no_visit_crc smallint, no_visit_brc smallint, no_visit_dis smallint, smc_yn smallint, smc_mem_m smallint, smc_mem_f smallint, 
-smc_par_m smallint, smc_par_f smallint, smc_par_sc smallint, smc_par_st smallint, smc_par_ews smallint, smc_par_min smallint, smc_lgb_m smallint, 
-smc_lgb_f smallint, smc_tch_m smallint, smc_tch_f smallint, smc_trained_m smallint, smc_trained_f smallint, smc_meetings smallint, smc_sdp_yn smallint, 
-smc_bnkac_yn smallint, smdc_smc_same_yn smallint, smdc_yn smallint, smdc_mem_m smallint, smdc_mem_f smallint, smdc_par_m smallint, smdc_par_f smallint, 
-smdc_par_ews_m smallint, smdc_par_ews_f smallint, smdc_lgb_m smallint, smdc_lgb_f smallint, smdc_ebmc_m smallint, smdc_ebmc_f smallint, smdc_women_f smallint, 
-smdc_scst_m smallint, smdc_scst_f smallint, smdc_deo_m smallint, smdc_deo_f smallint, smdc_audit_m smallint, smdc_audit_f smallint, smdc_subexp_m smallint, 
-smdc_subexp_f smallint, smdc_tch_m smallint, smdc_tch_f smallint, smdc_vp_m smallint, smdc_vp_f smallint, smdc_prin_m smallint, smdc_prin_f smallint, smdc_cp_m smallint, 
-smdc_cp_f smallint, smdc_trained_m smallint, smdc_trained_f smallint, smdc_meetings smallint, smdc_sdp_yn smallint, smdc_bnkac_yn smallint, smdc_sbc_yn smallint, 
-smdc_acadcom_yn smallint, smdc_pta_yn smallint, smdc_pta_meeting smallint ,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-alter table udise_sch_profile_dup drop column if exists smc_bnk_name ;
-alter table udise_sch_profile_dup drop column if exists smc_bnk_br ;
-alter table udise_sch_profile_dup drop column if exists smc_bnkac_no ;
-alter table udise_sch_profile_dup drop column if exists smc_bnkac_ifsc ;
-alter table udise_sch_profile_dup drop column if exists smc_bnkac_name ;
-alter table udise_sch_profile_dup drop column if exists smdc_bnk_name ;
-alter table udise_sch_profile_dup drop column if exists smdc_bnk_br ;
-alter table udise_sch_profile_dup drop column if exists smdc_bnkac_no ;
-alter table udise_sch_profile_dup drop column if exists smdc_bnkac_ifsc ;
-alter table udise_sch_profile_dup drop column if exists smdc_bnkac_name ;
-
-create table if not exists udise_sch_staff_posn_dup( udise_sch_code bigint primary key , ac_year text, tch_regular smallint, tch_contract smallint, tch_part_time smallint, nontch_accnt smallint, nontch_lib_asst smallint, nontch_lab_asst smallint, nontch_udc smallint, nontch_ldc smallint, nontch_peon smallint, nontch_watchman smallint, tch_hav_adhr smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-create table if not exists udise_tch_profile_dup( udise_sch_code bigint primary key , tch_code varchar(100), name varchar(100), gender smallint, dob date, social_cat smallint, tch_type smallint, nature_of_appt smallint, doj_service date, qual_acad smallint, qual_prof smallint, class_taught smallint, appt_sub smallint, sub_taught1 smallint, sub_taught2 smallint, trn_brc smallint, trn_crc smallint, trn_diet smallint, trn_other smallint, trng_rcvd smallint, trng_needed smallint, nontch_days smallint, math_upto smallint, science_upto smallint, english_upto smallint, lang_study_upto smallint, soc_study_upto smallint, yoj_pres_sch varchar(100), disability_type smallint, trained_cwsn smallint, trained_comp smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-create table if not exists udise_sch_exmmarks_c10_dup( udise_sch_code bigint , ac_year text, item_id smallint , marks_range_id smallint , gen_b smallint, gen_g smallint, obc_b smallint, obc_g smallint, sc_b smallint, sc_g smallint, st_b smallint, st_g integer,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-create table if not exists udise_sch_exmmarks_c12_dup( udise_sch_code bigint , ac_year text, item_id smallint , marks_range_id smallint , gen_b smallint, gen_g smallint, obc_b smallint, obc_g smallint, sc_b smallint, sc_g smallint, st_b smallint, st_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_sch_recp_exp_dup( udise_sch_code bigint primary key , ac_year text, dev_grt_r double precision, dev_grt_e double precision, maint_grt_r double precision, maint_grt_e double precision, tlm_grt_r double precision, tlm_grt_e double precision, cw_grt_r double precision, cw_grt_e double precision, anl_grt_r double precision, anl_grt_e double precision, minrep_grt_r double precision, minrep_grt_e double precision, labrep_grt_r double precision, labrep_grt_e double precision, book_grt_r double precision, book_grt_e double precision, elec_grt_r double precision, elec_grt_e double precision, oth_grt_r double precision, oth_grt_e double precision, compo_grt_r double precision, compo_grt_e double precision, lib_grt_r double precision, lib_grt_e double precision, sport_grt_r double precision, sport_grt_e double precision, media_grt_r double precision, media_grt_e double precision, smc_grt_r double precision, smc_grt_e double precision, presch_grt_r double precision, presch_grt_e double precision, ngo_asst_yn smallint, ngo_asst_name varchar(100), ngo_asst_rcvd double precision, psu_asst_yn smallint, psu_asst_name varchar(100), psu_asst_rcvd double precision, comm_asst_yn smallint, comm_asst_rcvd double precision, comm_asst_name varchar(100), oth_asst_yn smallint, oth_asst_name varchar(100), oth_asst_rcvd double precision, ict_reg_yn smallint, sport_reg_yn smallint, lib_reg_yn smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-<<<<<<< HEAD
-create table if not exists udise_nsqf_basic_info_dup( udise_sch_code bigint primary key , ac_year text, nsqf_yn smallint, voc_course_yn smallint, sec1_sub Integer, sec1_year char, sec2_sub Integer, sec2_year char,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-=======
-create table if not exists udise_nsqf_basic_info_dup( udise_sch_code bigint primary key , ac_year text, nsqf_yn smallint, voc_course_yn smallint, sec1_sub Integer, sec1_year varchar(10), sec2_sub Integer, sec2_year varchar(10),num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
->>>>>>> upstream/cQube-release-new
-
-
-create table if not exists udise_nsqf_enr_caste_dup( udise_sch_code bigint , ac_year text, sector_no smallint , item_id smallint , c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_nsqf_enr_sub_sec_dup( udise_sch_code bigint , ac_year text, sub_sector_id smallint, sector_no smallint , c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_nsqf_exmres_c10_dup( udise_sch_code bigint , ac_year text, sector_no smallint , marks_range_id smallint , gen_b smallint, gen_g smallint, obc_b smallint, obc_g smallint, sc_b smallint, sc_g smallint, st_b smallint, st_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-create table if not exists udise_nsqf_exmres_c12_dup( udise_sch_code bigint , ac_year text, sector_no smallint , marks_range_id smallint , gen_b smallint, gen_g smallint, obc_b smallint, obc_g smallint, sc_b smallint, sc_g smallint, st_b smallint, st_g smallint, num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_nsqf_trng_prov_dup( udise_sch_code bigint , ac_year text, agency_name varchar(200), sector_no smallint , cert_no varchar(200), cert_agency varchar(200),num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-create table if not exists udise_nsqf_faculty_dup( udise_sch_code bigint , ac_year text, faculty_code varchar(100) , name varchar(100), gender smallint, dob date, soc_cat smallint, nature_of_appt smallint, qual_acad smallint, qual_prof smallint, industry_exp smallint, training_exp smallint, class_taught smallint, appt_sec smallint, induc_trg_rcvd smallint, inserv_trg_rcvd smallint, num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-
-create table if not exists udise_sch_pgi_details_dup( udise_sch_code bigint primary key , ac_year text, tch_adhr_seed Integer, stu_atndnc_yn smallint, tch_atndnc_yn smallint, sch_eval_yn smallint, improv_plan_yn smallint, sch_pfms_yn smallint, num_of_times int,
-ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-
-create table if not exists udise_sch_safety_dup( udise_sch_code bigint primary key , ac_year text, sdmp_plan_yn smallint, struct_safaud_yn smallint, nonstr_safaud_yn smallint, cctv_cam_yn smallint, fire_ext_yn smallint, nodal_tch_yn smallint, safty_trng_yn smallint, dismgmt_taug_yn smallint, slfdef_grt_yn smallint, slfdef_trained smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-
-
-<<<<<<< HEAD
-create table if not exists udise_sch_exmres_c8_dup( udise_sch_code bigint primary key , academic_year char, gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, gen_60p_b smallint, gen_60p_g smallint, obc_60p_b smallint, obc_60p_g smallint, sc_60p_b smallint, sc_60p_g smallint, st_60p_b smallint, st_60p_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-=======
-create table if not exists udise_sch_exmres_c8_dup( udise_sch_code bigint primary key , academic_year varchar(10), gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, gen_60p_b smallint, gen_60p_g smallint, obc_60p_b smallint, obc_60p_g smallint, sc_60p_b smallint, sc_60p_g smallint, st_60p_b smallint, st_60p_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
->>>>>>> upstream/cQube-release-new
-
-
-/*pat null validation table*/
-
-create table if not exists pat_null_col(
-filename varchar(200) ,
-ff_uuid varchar(200),
-count_null_exam_id int,
-count_null_question_id int,
-count_null_assessment_year int,
-count_null_medium int,
-count_null_standard int,
-count_null_subject_id int,
-count_null_subject_name int,
-count_null_exam_type_id int,
-count_null_exam_type int,
-count_null_exam_code int,
-count_null_exam_date int,
-count_null_total_questions int,
-count_null_total_marks int,
-count_null_question_title int,
-count_null_question int,
-count_null_question_marks int,
-count_null_id int,
-count_null_student_uid int,
-count_null_school_id int,
-count_null_studying_class int,
-count_null_obtained_marks int
-);
-
-create table if not exists periodic_exam_mst_dup(
-exam_id	int,
-assessment_year	varchar(20),
-medium	varchar(20),
-standard	int,
-division	varchar(20),
-subject_id	int,
-subject_name	varchar(50),
-exam_type_id	int,
-exam_type	varchar(50),
-exam_code	varchar(100),
-exam_date	date,
-total_questions	int,
-total_marks	int,
-num_of_times int,
-ff_uuid varchar(255),
-created_on_file_process  TIMESTAMP without time zone default current_timestamp
-);
-
-create table if not exists periodic_exam_qst_mst_dup(
-question_id	int,
-exam_id	int,
-indicator_id	int,
-indicator_title	varchar(20),
-indicator	text,
-question_title	varchar(20),
-question	text,
-question_marks	numeric,
-num_of_times int,
-ff_uuid varchar(255),
-created_on_file_process  TIMESTAMP without time zone default current_timestamp
-);
-
-create table if not exists periodic_exam_result_dup(
-id	int,
-exam_id	int,
-exam_code	varchar(100),
-student_id	bigint,
-<<<<<<< HEAD
-student_uid	bigint,
-=======
-student	_uid	bigint,
->>>>>>> upstream/cQube-release-new
-school_id	bigint,
-studying_class	int,
-section	varchar(20),
-question_id	int,
-obtained_marks	numeric,
-num_of_times int,
-ff_uuid varchar(255),
-created_on_file_process  TIMESTAMP without time zone default current_timestamp
-);
-
-/*log summary*/
-
-alter table log_summary add COLUMN if not exists exam_id int;
-alter table log_summary add COLUMN if not exists question_id  int;
-alter table log_summary add COLUMN if not exists assessment_year int;
-alter table log_summary add COLUMN if not exists medium int;
-alter table log_summary add COLUMN if not exists standard int;
-alter table log_summary add COLUMN if not exists subject_id int;
-alter table log_summary add COLUMN if not exists subject_name int;
-alter table log_summary add COLUMN if not exists exam_type_id int;
-alter table log_summary add COLUMN if not exists exam_type int;
-alter table log_summary add COLUMN if not exists exam_code int;
-alter table log_summary add COLUMN if not exists exam_date int;
-alter table log_summary add COLUMN if not exists total_questions int;
-alter table log_summary add COLUMN if not exists total_marks int;
-alter table log_summary add COLUMN if not exists question_title int;
-alter table log_summary add COLUMN if not exists question int;
-alter table log_summary add COLUMN if not exists question_marks int;
-alter table log_summary add COLUMN if not exists id  int;
-alter table log_summary add COLUMN if not exists school_id int;
-alter table log_summary add COLUMN if not exists student_uid int;
-alter table log_summary add COLUMN if not exists studying_class int;
-alter table log_summary add COLUMN if not exists obtained_marks int;
-<<<<<<< HEAD
-
-
-alter table log_summary add COLUMN if not exists udise_sch_code int;
-alter table log_summary add COLUMN if not exists sector_no  int;
-alter table log_summary add COLUMN if not exists item_id int;
-alter table log_summary add COLUMN if not exists class_type_id int;
-alter table log_summary add COLUMN if not exists stream_id int;
-alter table log_summary add COLUMN if not exists grade_pri_upr int;
-alter table log_summary add COLUMN if not exists incentive_type int;
-alter table log_summary add COLUMN if not exists caste_id int;
-alter table log_summary add COLUMN if not exists disability_type int;
-alter table log_summary add COLUMN if not exists medinstr_seq int;
-alter table log_summary add COLUMN if not exists age_id int;
-alter table log_summary add COLUMN if not exists item_group int;
-alter table log_summary add COLUMN if not exists tch_code int;
-alter table log_summary add COLUMN if not exists marks_range_id int;
-alter table log_summary add COLUMN if not exists nsqf_faculty_id int;
-
-/*PAT data tables*/
-
-create table if not exists periodic_exam_mst(
-exam_id  int primary key not null,
-assessment_year  varchar(20),
-medium  varchar(20),
-standard  int,
-division  varchar(20),
-subject_id  int,
-subject_name  varchar(50),
-exam_type_id  int,
-exam_type  varchar(50),
-exam_code  varchar(100),
-exam_date  date,
-total_questions  int,
-total_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp);
-
-create table if not exists periodic_exam_qst_mst(
-question_id  int primary key not null,
-exam_id  int,
-indicator_id  int,
-indicator_title varchar(20),
-indicator  text,
-question_title  varchar(20),
-question  text,
-question_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_temp(
-id  int primary key not null,
-ffuid text,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_staging_1(
-id  int primary key not null,
-ffuid text,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_staging_2(
-id  int primary key not null,
-ffuid text,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_trans(
-id  int primary key not null,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_school_result
-(id  serial,
-academic_year  varchar(50),
-exam_code  varchar(100),
-school_id  bigint,
-grade  smallint,
-school_name  varchar(200),
-school_latitude  double precision,
-school_longitude  double precision,
-district_id  bigint,
-district_name  varchar(100),
-district_latitude  double precision,
-district_longitude  double precision,
-block_id  bigint,
-block_name  varchar(100),
-block_latitude  double precision,
-block_longitude  double precision,
-cluster_id  bigint,
-cluster_name  varchar(100),
-cluster_latitude  double precision,
-cluster_longitude  double precision,
-subject  text,
-obtained_marks  numeric,
-total_marks  numeric,
-students_count   int,
-created_on  timestamp,
-updated_on  timestamp,
-primary key(academic_year,exam_code,school_id)
-);
-
-/*Composite reports queries*/
-
-/* composite nifi template info */
-
-CREATE TABLE IF NOT EXISTS nifi_template_info ( 
- id serial,
- template text, 
- status boolean
-);
-
-/* composite config */
-=======
->>>>>>> upstream/cQube-release-new
-
-CREATE TABLE IF NOT EXISTS composite_config ( 
- id serial,
- template text, 
- status boolean,
- select_query text,
- table_join text,
- category text,
- jolt_spec text,
-primary key(template,category)
-);
-
-alter table log_summary add COLUMN if not exists udise_sch_code int;
-alter table log_summary add COLUMN if not exists sector_no  int;
-alter table log_summary add COLUMN if not exists item_id int;
-alter table log_summary add COLUMN if not exists class_type_id int;
-alter table log_summary add COLUMN if not exists stream_id int;
-alter table log_summary add COLUMN if not exists grade_pri_upr int;
-alter table log_summary add COLUMN if not exists incentive_type int;
-alter table log_summary add COLUMN if not exists caste_id int;
-alter table log_summary add COLUMN if not exists disability_type int;
-alter table log_summary add COLUMN if not exists medinstr_seq int;
-alter table log_summary add COLUMN if not exists age_id int;
-alter table log_summary add COLUMN if not exists item_group int;
-alter table log_summary add COLUMN if not exists tch_code int;
-alter table log_summary add COLUMN if not exists marks_range_id int;
-alter table log_summary add COLUMN if not exists nsqf_faculty_id int;
-
-/*PAT data tables*/
-
-create table if not exists periodic_exam_mst(
-exam_id  int primary key not null,
-assessment_year  varchar(20),
-medium  varchar(20),
-standard  int,
-division  varchar(20),
-subject_id  int,
-subject_name  varchar(50),
-exam_type_id  int,
-exam_type  varchar(50),
-exam_code  varchar(100),
-exam_date  date,
-total_questions  int,
-total_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp);
-
-create table if not exists periodic_exam_qst_mst(
-question_id  int primary key not null,
-exam_id  int,
-indicator_id  int,
-indicator_title varchar(20),
-indicator  text,
-question_title  varchar(20),
-question  text,
-question_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_temp(
-id  int primary key not null,
-ffuid text,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_staging_1(
-id  int,
-ff_uuid text,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_staging_2(
-id  int,
-ff_uuid text,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_trans(
-id  int,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp,
-primary key(exam_code, student_uid, question_id)
-);
-
-create table if not exists periodic_exam_school_result
-(id  serial,
-academic_year  varchar(50),
-exam_code  varchar(100),
-school_id  bigint,
-grade  smallint,
-school_name  varchar(200),
-school_latitude  double precision,
-school_longitude  double precision,
-district_id  bigint,
-district_name  varchar(100),
-district_latitude  double precision,
-district_longitude  double precision,
-block_id  bigint,
-block_name  varchar(100),
-block_latitude  double precision,
-block_longitude  double precision,
-cluster_id  bigint,
-cluster_name  varchar(100),
-cluster_latitude  double precision,
-cluster_longitude  double precision,
-subject  text,
-obtained_marks  numeric,
-total_marks  numeric,
-students_count   int,
-created_on  timestamp,
-updated_on  timestamp,
-primary key(academic_year,exam_code,school_id)
-);
-
-/*Composite reports queries*/
-
-/* composite nifi template info */
-
-CREATE TABLE IF NOT EXISTS nifi_template_info ( 
- id serial,
- template text, 
- status boolean
-);
-
-/* composite config */
-
-CREATE TABLE IF NOT EXISTS composite_config ( 
- id serial,
- template text, 
- status boolean,
- select_query text,
- table_join text,
- category text,
- jolt_spec text,
- primary key(template,category)
-);
 

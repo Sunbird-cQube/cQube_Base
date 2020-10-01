@@ -1540,6 +1540,8 @@ select create_udise_table();
 
 /*Insert function for Udise aggregation table*/
 
+drop function if exists insert_udise_metrics_agg;
+
 CREATE OR REPLACE FUNCTION insert_udise_metrics_agg()
 RETURNS text AS
 $$
@@ -1552,21 +1554,21 @@ select_query text:='select string_agg(''a.''||column_name,'','') from informatio
 (select column_name from information_schema.columns where table_name in (''school_hierarchy_details'',''school_geo_master''))
 and column_name not in (''academic_year'',''udise_school_id'') order by 1';
 select_cols text;
-range_query_fwd text:=concat('select string_agg(''(case when ''||metric_name||'' < (select range[2] from udise_metrics_range where metric_name=''''''||metric_name                         
-  ||'''''') then 0 when ''||metric_name||'' between (select range[2] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and                        
-   (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') then 0.33 when ''||metric_name||'' 
+range_query_fwd text:=concat('select string_agg(''(case when COALESCE(''||metric_name||'',0) < (select range[2] from udise_metrics_range where metric_name=''''''||metric_name                         
+  ||'''''') then 0 when COALESCE(''||metric_name||'',0) between (select range[2] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and                        
+   (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') then 0.33 when COALESCE(''||metric_name||'',0) 
    between (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and (select range[4] from udise_metrics_range where metric_name=
-   ''''''||metric_name||'''''') then 0.66 when ''||metric_name||'' > (select range[4] from udise_metrics_range where metric_name=''''''||metric_name||'''''')                    
-   then 1 else ''||metric_name||'' end) as ''||metric_name||'''','','') from                                                                                                                   
+   ''''''||metric_name||'''''') then 0.66 when COALESCE(''||metric_name||'',0) > (select range[4] from udise_metrics_range where metric_name=''''''||metric_name||'''''')                    
+   then 1 end) as ''||metric_name||'''','','') from                                                                                                                   
   (select metric_name from udise_metrics_range where direction=''forward'' and metric_name in (select column_name from udise_config where status=''1''))as a');
-range_query_bwd text:=concat('select string_agg(''(case when ''||metric_name||'' < (select range[2] from udise_metrics_range where metric_name=''''''||metric_name                         
-  ||'''''') then 1 when ''||metric_name||'' between (select range[2] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and                        
-   (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') then 0.66 when ''||metric_name||'' 
+range_query_bwd text:=concat('select string_agg(''(case when COALESCE(''||metric_name||'',0) < (select range[2] from udise_metrics_range where metric_name=''''''||metric_name                         
+  ||'''''') then 1 when COALESCE(''||metric_name||'',0) between (select range[2] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and                        
+   (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') then 0.66 when COALESCE(''||metric_name||'',0) 
    between (select range[3] from udise_metrics_range where metric_name=''''''||metric_name||'''''') and (select range[4] from udise_metrics_range where metric_name=
-   ''''''||metric_name||'''''') then 0.33 when ''||metric_name||'' > (select range[4] from udise_metrics_range where metric_name=''''''||metric_name||'''''')                    
-   then 0 else ''||metric_name||'' end) as ''||metric_name||'''','','') from                                                                                                                   
+   ''''''||metric_name||'''''') then 0.33 when COALESCE(''||metric_name||'',0) > (select range[4] from udise_metrics_range where metric_name=''''''||metric_name||'''''')                    
+   then 0 end) as ''||metric_name||'''','','') from                                                                                                                   
   (select metric_name from udise_metrics_range where direction=''backward'' and metric_name in (select column_name from udise_config where status=''1''))as a');
-range_query_gen text:=concat('select string_agg(''(case when ''||metric_name||''= 1 then 1 else ''||metric_name||'' end) as ''||metric_name||'''','','') from                                                                                                                    
+range_query_gen text:=concat('select string_agg(''(case when ''||metric_name||''= 1 then 1 else 0 end) as ''||metric_name||'''','','') from                                                                                                                    
 (select metric_name from udise_metrics_range where direction=''No'' and metric_name in (select column_name from udise_config where status=''1''))as a');
 range_cols_fwd text; 
 range_cols_bwd text; 
@@ -2746,7 +2748,16 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+<<<<<<< HEAD
 
+=======
+drop view if exists composite_district;
+drop view if exists composite_block;
+drop view if exists composite_cluster;
+drop view if exists composite_school;
+
+select * from composite_create_views();
+>>>>>>> upstream/cQube-release-new
 
 create or replace function composite_jolt_spec()
     RETURNS text AS
