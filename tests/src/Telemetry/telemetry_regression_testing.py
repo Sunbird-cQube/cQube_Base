@@ -1,7 +1,6 @@
 import time
 import unittest
 from Data.parameters import Data
-
 from Telemetry.check_with_lastday import lastday_timeperiod
 from Telemetry.check_with_lastmonth import lastmonth_timeperiod
 from Telemetry.check_with_lastweek import last7day_timeperiod

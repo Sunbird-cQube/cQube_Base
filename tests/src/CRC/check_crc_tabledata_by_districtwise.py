@@ -1,11 +1,5 @@
-import time
-import unittest
 import pandas as pd
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-
 from Data.parameters import Data
-from get_dir import pwd
 from reuse_func import GetData
 
 
@@ -20,7 +14,6 @@ class schoolwise_tabledata():
         table_data = []
 
         li2 = self.driver.find_elements_by_xpath('//*[@id="table"]/tbody/tr')
-        # print(len(li2))
         for x in li2:
             table_data_rows = x.text
             table_data_rows = table_data_rows.split()

@@ -192,7 +192,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
           centerLng: 71.48396301269531,
           level: 'district'
         }
-        this.fileName = "district_wise"
+        this.fileName = "district_wise_sem_report";
         this.genericFun(this.data, options, this.fileName);
 
         // sort the districtname alphabetically
@@ -223,6 +223,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "block";
+      this.fileName = "block_wise_sem_report"
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -293,6 +294,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "cluster";
+      this.fileName = "cluster_wise_sem_report"
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -366,6 +368,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "school";
+      this.fileName = "school_wise_sem_report"
       this.reportData = [];
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -476,7 +479,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         centerLng: this.data['sortedData'][0].lng,
         level: 'block'
       }
-      this.fileName = "Blocks_per_district";
+      this.fileName = "Blocks_per_district_sem_report";
       this.genericFun(this.data, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
@@ -561,7 +564,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         centerLng: this.data['sortedData'][0].lng,
         level: 'cluster'
       }
-      this.fileName = "clusters_per_block";
+      this.fileName = "clusters_per_block_sem_report";
       this.genericFun(this.data, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
@@ -661,7 +664,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
           centerLng: this.data['sortedData'][0].lng,
           level: "school"
         }
-        this.fileName = "Schools_per_cluster";
+        this.fileName = "Schools_per_cluster_sem_report";
         this.genericFun(this.data, options, this.fileName);
       }, err => {
         this.data = [];

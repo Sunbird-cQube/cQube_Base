@@ -114,6 +114,12 @@ cqube_emission
 ├── school_master
 │   └── school_mst.zip
 │       └── school_mst.csv
+├── pat
+│   └── periodic_exam_mst.zip
+│       └── periodic_exam_mst.csv
+├── pat
+│   └── periodic_exam_qst_mst.zip
+│       └── periodic_exam_qst_mst.csv
 ```
 
 Transactional Files:
@@ -138,6 +144,9 @@ cqube_emission
 ├── diksha
 │   └── diksha.zip
 │       └── diksha.csv
+├── pat
+│   └── periodic_exam_result_trans.zip
+│       └── periodic_exam_result_trans.csv
 ```
 - For udise data file structure, please refer the operational document.
 

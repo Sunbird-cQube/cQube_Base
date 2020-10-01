@@ -5,7 +5,7 @@ from selenium.common import exceptions
 
 from SI.Report.check_block_per_district_csv_download import blocklevel_csv
 from SI.Report.check_graph_present_on_school_infra import check_with_graph
-from SI.Report.check_homebtn import home_button
+from SI.Report.check_homebtn import home
 from SI.Report.check_table_data_metrics import download_report
 from SI.Report.check_table_present_on_schoolinfra import check_with_table
 
@@ -38,8 +38,8 @@ class cQube_SI_Report(unittest.TestCase):
 
     def test_home(self):
         print("checking home icon functionality")
-        b = home_button(self.driver)
-        res = b.test_home()
+        b = home(self.driver)
+        res = b.test_homeicon()
         self.data.page_loading(self.driver)
 
     def test_download_district_wise(self):
