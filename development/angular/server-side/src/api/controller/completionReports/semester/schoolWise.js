@@ -7,7 +7,8 @@ const s3File = require('../../../lib/reads3File');
 router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- semester_completion school wise api ---');
-        let fileName = `exception_list/semester_completion/school_sem_completion_2.json`;
+        var sem = req.body.sem;
+        let fileName = `exception_list/semester_completion/school_sem_completion_${sem}.json`;
         var schoolData = await s3File.readS3File(fileName);
         var sortedData = schoolData['data'].sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1)
         logger.info('--- semester_completion school wise api response sent---');
@@ -21,7 +22,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         logger.info('--- semester_completion schoolPerCluster api ---');
-        let fileName = `exception_list/semester_completion/school_sem_completion_2.json`;
+        let fileName = `exception_list/semester_completion/school_sem_completion_${sem}.json`;
         var schoolData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId;
