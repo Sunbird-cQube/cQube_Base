@@ -22,6 +22,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         logger.info('--- semester_completion schoolPerCluster api ---');
+        var sem = req.body.sem;
         let fileName = `exception_list/semester_completion/school_sem_completion_${sem}.json`;
         var schoolData = await s3File.readS3File(fileName);
 
