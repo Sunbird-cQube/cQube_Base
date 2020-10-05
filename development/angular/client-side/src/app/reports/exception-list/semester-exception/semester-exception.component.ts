@@ -177,7 +177,7 @@ export class SemesterExceptionComponent implements OnInit {
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
-      this.levelWise = "block"; 
+      this.levelWise = "block";
 
       this.reportData = [];
       this.districtId = undefined;
@@ -207,7 +207,7 @@ export class SemesterExceptionComponent implements OnInit {
         if (this.data['data'].length > 0) {
           let result = this.data['data']
           this.blockMarkers = [];
-          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
           let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
@@ -224,7 +224,7 @@ export class SemesterExceptionComponent implements OnInit {
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
-            this.schoolCount = this.data['footer'];
+            this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
@@ -278,7 +278,7 @@ export class SemesterExceptionComponent implements OnInit {
         }
         if (this.data['data'].length > 0) {
           let result = this.data['data'];
-          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           this.clusterMarkers = [];
           // generate color gradient
           let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
@@ -297,7 +297,7 @@ export class SemesterExceptionComponent implements OnInit {
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
-            this.schoolCount = this.data['footer'];
+            this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
@@ -348,7 +348,7 @@ export class SemesterExceptionComponent implements OnInit {
         this.schoolMarkers = [];
         if (this.data['data'].length > 0) {
           let result = this.data['data']
-          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
           let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
@@ -366,7 +366,7 @@ export class SemesterExceptionComponent implements OnInit {
 
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
-            this.schoolCount = this.data['footer'];
+            this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
@@ -400,7 +400,7 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.semCompletionBlockPerDist(districtId,{ sem: this.semester }).subscribe(res => {
+    this.myData = this.service.semCompletionBlockPerDist(districtId, { sem: this.semester }).subscribe(res => {
       this.data = res;
 
       this.blockMarkers = this.data['data'];
@@ -456,7 +456,7 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.semCompletionClusterPerBlock(this.districtHierarchy.distId, blockId,{ sem: this.semester }).subscribe(res => {
+    this.myData = this.service.semCompletionClusterPerBlock(this.districtHierarchy.distId, blockId, { sem: this.semester }).subscribe(res => {
       this.data = res;
       this.clusterMarkers = this.data['data'];
       var myBlocks = [];
@@ -519,7 +519,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.semCompletionBlock({ sem: this.semester }).subscribe(result => {
-      this.myData = this.service.semCompletionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId,{ sem: this.semester }).subscribe(res => {
+      this.myData = this.service.semCompletionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { sem: this.semester }).subscribe(res => {
         this.data = res;
         this.schoolMarkers = this.data['data'];
 
@@ -594,7 +594,7 @@ export class SemesterExceptionComponent implements OnInit {
     this.reportData = [];
     if (data['data'].length > 0) {
       this.markers = data['data']
-      this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) > parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+      this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
       // generate color gradient
       let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
       this.colors = colors;
@@ -647,7 +647,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.commonService.loaderAndErr(this.data);
       this.changeDetection.markForCheck();
     }
-    this.schoolCount = this.data['footer'];
+    this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
