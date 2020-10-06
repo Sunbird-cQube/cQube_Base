@@ -85,8 +85,8 @@ if [[ ! $installed_version < $this_version ]]; then
    echo "cQube is already upgraded to $this_version version.";
    exit 1
 fi
-if [[ ! $installed_version == "1.2.1" ]]; then
-   echo "Version $this_version is only upgradeable from 1.2.1 version";
+if [[ ! $installed_version == $version_upgradable_from ]]; then
+   echo "Version $this_version is only upgradeable from $version_upgradable_from version";
    exit 1
 fi
 }
@@ -255,8 +255,10 @@ db_user=$(awk ''/^db_user:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.
 db_name=$(awk ''/^db_name:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 
+
 check_mem
 # Check the version before starting validation
+version_upgradable_from=1.3
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file

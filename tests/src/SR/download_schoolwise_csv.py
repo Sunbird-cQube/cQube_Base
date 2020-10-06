@@ -20,7 +20,7 @@ class SchoolwiseCsv():
         self.driver.find_element_by_id(Data.sr_schools_btn).click()
         cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
-        time.sleep(15)
+        time.sleep(25)
         p = pwd()
         self.filename = p.get_download_dir() + "/School_wise_report_sem_2.csv"
         if os.path.isfile(self.filename) != True:

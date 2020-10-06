@@ -147,11 +147,15 @@ export class StudengtAttendanceComponent implements OnInit {
       this.getTelemetryData(clusterData, event.target.id, "cluster");
     }
 
-    // if (this.reportData.length > 0) {
-    var data = {};
-    var downloadable_data = {};
     var myReport = [];
     this.reportData.forEach(element => {
+      if (this.levelWise != 'school') {
+        element.number_of_schools = parseInt(element.number_of_schools.replace(/\,/g, ''));
+      }
+      element.number_of_students = parseInt(element.number_of_students.replace(/\,/g, ''));
+
+      var data = {};
+      var downloadable_data = {};
       Object.keys(element).forEach(key => {
         if (key !== "lat") {
           data[key] = element[key];
@@ -165,9 +169,6 @@ export class StudengtAttendanceComponent implements OnInit {
       myReport.push(downloadable_data);
     });
     this.commonService.download(this.fileName, myReport);
-    // } else {
-    //   this.commonService.loaderAndErr(this.markers);
-    // }
   }
 
   public month_year;
@@ -248,7 +249,7 @@ export class StudengtAttendanceComponent implements OnInit {
             this.districtsIds.push(this.markers[i]['district_id']);
             distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
             var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 5, 0.01, 0, this.levelWise);
-            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
+            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
         }
 
@@ -300,7 +301,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
             var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 0, this.levelWise);
             globalMap.setZoom(7);
-            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
+            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
           this.blocksNames = blockNames;
@@ -361,7 +362,7 @@ export class StudengtAttendanceComponent implements OnInit {
             }
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
             var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 1, 0.01, 0, this.levelWise);
-            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
+            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
           clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -415,7 +416,7 @@ export class StudengtAttendanceComponent implements OnInit {
           for (let i = 0; i < this.markers.length; i++) {
             this.districtsIds.push(sorted[i]['district_id']);
             var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 0, 0, 0, this.levelWise);
-            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
+            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
           globalMap.setView(new L.LatLng(this.lat, this.lng), 7.3);
           this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -612,7 +613,7 @@ export class StudengtAttendanceComponent implements OnInit {
           this.blocksIds.push(this.markers[i]['block_id']);
           blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
           var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 0, this.levelWise);
-          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
+          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         this.blocksNames = blokName;
@@ -719,7 +720,7 @@ export class StudengtAttendanceComponent implements OnInit {
             clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
           }
           var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 0, this.levelWise);
-          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
+          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
 
         clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -847,7 +848,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
           var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.1, 1, this.levelWise);
-          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise, this.reportData);
+          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         globalMap.setView(new L.LatLng(this.lat, this.lng), 12);
         this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -882,7 +883,7 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   //Generate dynamic tool-tip
-  generateToolTip(markerIcon, markers, onClick_Marker, layerMarkers, levelWise, reportData) {
+  generateToolTip(markerIcon, markers, onClick_Marker, layerMarkers, levelWise) {
     this.popups(markerIcon, markers, onClick_Marker, layerMarkers, levelWise);
     var details = {};
     var orgObject = {};
@@ -897,7 +898,7 @@ export class StudengtAttendanceComponent implements OnInit {
       }
     });
 
-    var yourData = this.commonService.getInfoFrom(orgObject, "attendance", levelWise, reportData, "std-attd", undefined, undefined).join(" <br>");
+    var yourData = this.commonService.getInfoFrom(orgObject, "attendance", levelWise, "std-attd", undefined, undefined).join(" <br>");
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);

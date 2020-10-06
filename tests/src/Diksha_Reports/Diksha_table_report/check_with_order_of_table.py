@@ -10,15 +10,20 @@ class Table_orderwise():
         self.p = GetData()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.p.page_loading(self.driver)
-        self.driver.find_element_by_xpath("//*[@id='table_wrapper']/div[2]/div[1]/div/table/thead/tr/th[1]").click()
+        self.driver.find_element_by_xpath("//*[@id='table_wrapper']/div[2]/div[1]/div/table/thead/tr/th[2]").click()
         self.p.page_loading(self.driver)
-        values = self.driver.find_elements_by_xpath("//th[1]")
+        values = self.driver.find_elements_by_xpath("//th[2]")
         for i in values:
             print(i.get_attribute("aria-sort"))
 
         self.p.page_loading(self.driver)
-        self.driver.find_element_by_xpath("//*[@id='table_wrapper']/div[2]/div[1]/div/table/thead/tr/th[1]").click()
+        self.driver.find_element_by_xpath("//*[@id='table_wrapper']/div[2]/div[1]/div/table/thead/tr/th[2]").click()
         self.p.page_loading(self.driver)
-        value = self.driver.find_elements_by_xpath("//th[1]")
+        value = self.driver.find_elements_by_xpath("//th[2]")
         for i in value:
             print(i.get_attribute("aria-sort"))
+        self.p.page_loading(self.driver)
+
+
+
+

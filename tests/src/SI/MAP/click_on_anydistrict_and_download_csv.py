@@ -18,7 +18,7 @@ class download_icon():
         self.p.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(3)
-        self.filenmae = cal.get_download_dir() + '/District_wise_report.csv'
+        self.filenmae = cal.get_download_dir() + '/Dist_wise_report.csv'
         self.p.page_loading(self.driver)
         file = os.path.isfile(self.filenmae)
         self.p.page_loading(self.driver)

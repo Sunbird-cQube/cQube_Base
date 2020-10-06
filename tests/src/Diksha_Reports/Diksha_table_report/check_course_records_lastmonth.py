@@ -50,7 +50,6 @@ class course_districtwise_lastmonth_chart():
                     header = next(csv_reader)
                     data = list(csv_reader)
                     row_count = len(data)
-                    print(row_count)
                 os.remove(self.filename)
                 tablecount = self.driver.find_elements_by_tag_name('tr')
                 records = int(len(tablecount)) - 2

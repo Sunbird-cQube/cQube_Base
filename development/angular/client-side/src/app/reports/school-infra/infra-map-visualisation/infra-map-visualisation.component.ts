@@ -766,11 +766,11 @@ export class InfraMapVisualisationComponent implements OnInit {
           detailSchool[key] = details[key];
         }
       });
-      yourData1 = this.commonService.getInfoFrom(detailSchool, "", level, this.reportData, "infra-map", infraName, colorText).join(" <br>");
+      yourData1 = this.commonService.getInfoFrom(detailSchool, "", level, "infra-map", infraName, colorText).join(" <br>");
     } else {
-      yourData1 = this.commonService.getInfoFrom(orgObject, "", level, this.reportData, "infra-map", infraName, colorText).join(" <br>");
+      yourData1 = this.commonService.getInfoFrom(orgObject, "", level, "infra-map", infraName, colorText).join(" <br>");
     }
-    var yourData = this.commonService.getInfoFrom(markers.metrics, "", level, this.reportData, "infra-map", infraName, colorText).join(" <br>");
+    var yourData = this.commonService.getInfoFrom(markers.metrics, "", level, "infra-map", infraName, colorText).join(" <br>");
 
 
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(

@@ -50,7 +50,7 @@ class school_map_blockwise():
                                 total = 0
                                 schools = 0
                                 for row in csv.reader(fin):
-                                    schools += int(row[2])
+                                    schools += int(row[0])
                                 school = self.driver.find_element_by_id("schools").text
                                 sc= re.sub('\D', "", school)
                                 if int(sc) != schools:
