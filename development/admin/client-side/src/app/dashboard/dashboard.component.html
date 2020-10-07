@@ -1,71 +1,139 @@
-<div class="container">
-    <div class="row">
-        <div class="col-sm-3">
-            <div [routerLink]="['/home/create-user']" class="cards" id="addUser">
-                <img src="../../assets/addUser.png" alt="addUser" style="margin: 2% 0% 3% 0%; "><br>
-                <strong>
-                    Add User
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div [routerLink]="['/home/change-password']" class="cards" id="chPass">
-                <img src="../../assets/changePassword.png" alt="changePassword" style="margin: 2% 0% 3% 0%; "><br>
-                <strong>
-                    Change Password
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div [routerLink]="['/home/users']" class="cards" id="user">
-                <img src="../../assets/allUsers.png" alt="usersList" style="margin: 2% 0% 3% 0%; "><br>
-                <strong>
-                    Users List
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div [routerLink]="['/home/all-logs']" class="cards" id="logs">
-                <img src="../../assets/logs.png" alt="logs" style="margin: 2% 0% 3% 0%; "><br>
-                <strong>
-                    Logs
-                </strong>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-3">
-            <div [routerLink]="['/home/summary-statistics']" class="cards" id="summary">
-                <img src="../../assets/statistics.png" alt="statistics" style="margin: 2% 0% 3% 0%; "><br>
-                <strong>
-                    Summary Statistics
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div [routerLink]="['/home/s3FileDownload']" class="cards" id="s3dwn">
-                <img src="../../assets/downloadFile.png" alt="s3FileDownload" style="margin: 2% 0% 3% 0%; "><br>
-                <strong>
-                    Download S3 Files
-                </strong>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="cards" id="moniter">
-                <a href="{{grafanaUrl}}" target=" " style="text-decoration: none; color: #284d8a;">
-                    <img src="../../assets/monitering.png" alt="monitering" style="margin: 2% 0% 3% 0%; "><br>
-                    <strong>
-                        Monitoring Details
-                    </strong>
-                </a>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div [routerLink]="['/home/nifi-shedular']" class="cards" id="nifi">
-                <img src="../../assets/nifi.png" alt="nifiShedular" style="margin: 2% 0% 3% 0%; "><br>
-                <strong>
-                    Nifi Scheduler
-                </strong>
+<div class="container-fluid" style="background-color: rgb(245, 245, 245);">
+    <div class="container" style="margin-bottom: 10px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="diksha"></div>
+                        <div class="outer12">
+                            <div class="inner-12 card" id="addUser" [routerLink]="['/home/create-user']"
+                                style="background: linear-gradient(135deg, #32c2e6 0%, #57ddc0 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/addUser.ico" alt="">
+                                    </div>
+                                    <div class="inner-3">
+                                        Add User
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="diksha"></div>
+                        <div class="outer12">
+                            <div class="inner-12 card" id="chPass" [routerLink]="['/home/change-password']"
+                                style="background: linear-gradient(135deg, #2da8e0 0%, #50ccf1 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/chPass.ico" alt="">
+                                    </div>
+                                    <div class="inner-3">
+                                        Change Password
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="diksha"></div>
+                        <div class="outer12">
+                            <div class="inner-12 card" id="user" [routerLink]="['/home/users']"
+                                style="background: linear-gradient(135deg, #7adef7 0%, #66b3f1 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/allUsers.ico" alt="">
+                                    </div>
+                                    <div class="inner-3">
+                                        Users List
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="diksha"></div>
+                        <div class="outer12">
+                            <div class="inner-12 card" id="logs" [routerLink]="['/home/all-logs']"
+                                style="background: linear-gradient(135deg, #716fc5 0%, #3f95e6 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/ic_assignment_24px.svg" alt="">
+                                    </div>
+                                    <div class="inner-3">
+                                        Logs
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="diksha"></div>
+                        <div class="outer12">
+                            <div class="inner-12 card" id="summary" [routerLink]="['/home/summary-statistics']"
+                                style="background: linear-gradient(135deg, #53bfc7 0%, #3d8bbe 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/ic_grid_on.svg" alt="">
+                                    </div>
+                                    <div class="inner-3">
+                                        Summary
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="diksha"></div>
+                        <div class="outer12">
+                            <div class="inner-12 card" id="s3dwn" [routerLink]="['/home/s3FileDownload']"
+                                style="background: linear-gradient(135deg, #3a97d4 0%, #59adf1 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/ic_cloud_download.svg" alt="">
+                                    </div>
+                                    <div class="inner-3">
+                                        Download S3 Files
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="diksha"></div>
+                        <div class="outer12">
+                            <a class="inner-12 card" id="moniter" href="{{grafanaUrl}}" target=" "
+                                style="background: linear-gradient(135deg, #5eb3ec 0%, #34cfcf 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/monitoring.ico" alt="">
+                                    </div>
+                                    <div class="inner-3" style="text-decoration: none;">
+                                        Monitoring Details
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="diksha"></div>
+                        <div class="outer12">
+                            <div class="inner-12 card" id="nifi" [routerLink]="['/home/nifi-shedular']"
+                                style="background: linear-gradient(135deg, #4c92d4 0%, #68c2ec 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/schedular.ico" alt="">
+                                    </div>
+                                    <div class="inner-3">
+                                        Nifi Scheduler
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
