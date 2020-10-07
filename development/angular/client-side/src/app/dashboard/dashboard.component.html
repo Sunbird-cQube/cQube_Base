@@ -7,7 +7,7 @@
                 </div>
                 <div class="row outer1">
                     <div class="col-sm-4">
-                        <div class="inner-1 card" [routerLink]="['/home/diksha-chart']">
+                        <div class="inner-1 card" id="dsc" [routerLink]="['/home/diksha-chart']">
                             <div class="row">
                                 <div class="inner-2">
                                     <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <div class="inner-1 card" [routerLink]="['/home/diksha-column-chart']">
+                        <div class="inner-1 card" id="dcc" [routerLink]="['/home/diksha-column-chart']">
                             <div class="row">
                                 <div class="inner-2">
                                     <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <div class="inner-1 card" [routerLink]="['/home/diksha-table']">
+                        <div class="inner-1 card" id="dtr" [routerLink]="['/home/diksha-table']">
                             <div class="row">
                                 <div class="inner-2">
                                     <img class="ic-equalizer" src="../../assets/ic_grid_on.svg" alt="">
@@ -50,7 +50,7 @@
                 <div class="row">
                     <div class="row outer12">
                         <div class="col-sm-6">
-                            <div class="inner-12 card" [routerLink]="['/home/sem-exception']"
+                            <div class="inner-12 card" id="SemExp" [routerLink]="['/home/sem-exception']"
                                 style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="inner-12 card" [routerLink]="['/home/download-missing-data']"
+                            <div class="inner-12 card" id="isdata" [routerLink]="['/home/download-missing-data']"
                                 style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -78,7 +78,7 @@
                     </div>
                     <div class="row outer13">
                         <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/semester-report']"
+                            <div class="inner-12 card" id="sr" [routerLink]="['/home/semester-report']"
                                 style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -99,7 +99,7 @@
                 <div class="row">
                     <div class="row outer12">
                         <div class="col-sm-6">
-                            <div class="inner-12 card" [routerLink]="['/home/attendance-report']"
+                            <div class="inner-12 card" id="sar" [routerLink]="['/home/attendance-report']"
                                 style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -111,7 +111,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="inner-12 card" [routerLink]="['/home/teacher-attendance']"
+                            <div class="inner-12 card" id="tar" [routerLink]="['/home/teacher-attendance']"
                                 style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -127,7 +127,7 @@
                     </div>
                     <div class="row outer13">
                         <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/telemetry']"
+                            <div class="inner-12 card" id="telemData" [routerLink]="['/home/telemetry']"
                                 style="background: linear-gradient(135deg, #6B76DB 0%, #9E9EF4 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -148,7 +148,7 @@
                 <div class="row">
                     <div class="row outer12" style="width: 32%;">
                         <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/udise-report']"
+                            <div class="inner-12 card" id="udise" [routerLink]="['/home/udise-report']"
                                 style="background: linear-gradient(135deg, #2CC594 0%, #85E6A6 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -163,7 +163,7 @@
                     </div>
                     <div class="row outer13">
                         <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/crc-report']"
+                            <div class="inner-12 card" id="crcr" [routerLink]="['/home/crc-report']"
                                 style="background: linear-gradient(135deg, #FF5F55 0%, #FF9E95 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -184,7 +184,7 @@
                 <div class="row">
                     <div class="row outer12" style="width: 32%;">
                         <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/composit-report']"
+                            <div class="inner-12 card" id="composit" [routerLink]="['/home/composit-report']"
                                 style="background: linear-gradient(135deg, #3decd5 0%, #a6e4bb 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -199,7 +199,7 @@
                     </div>
                     <div class="row outer13">
                         <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/pat-report']"
+                            <div class="inner-12 card" id="pat" [routerLink]="['/home/pat-report']"
                                 style="background: linear-gradient(135deg, #995c57 0%, #FF9E95 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -219,7 +219,7 @@
                     <div class="col-sm-12 diksha">SCHOOL INFRASTRUCTURE</div>
                 </div>
                 <div class="row outer-2">
-                    <div class="row side-inner-1 card" [routerLink]="['/home/school-infra-map']">
+                    <div class="row side-inner-1 card" id="imr" [routerLink]="['/home/school-infra-map']">
                         <div class="row">
                             <div class="side-inner-2">
                                 <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
@@ -229,7 +229,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row side-inner-1 card" [routerLink]="['/home/school-infrastructure']">
+                    <div class="row side-inner-1 card" id="icr" [routerLink]="['/home/school-infrastructure']">
                         <div class="row">
                             <div class="side-inner-2">
                                 <img class="ic-equalizer" src="../../assets/ic_assessment.svg" alt="">
