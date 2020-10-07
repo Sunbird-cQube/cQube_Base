@@ -130,9 +130,8 @@
         transform: scale(1.03); 
   } */
 
-
-  .btn:hover {
-    transition: transform .3s;
+  .headerBtn:hover {
+    transition: transform .1s;
     -ms-transform: scale(1.12);
     -webkit-transform: scale(1.12);
     transform: scale(1.12); 
