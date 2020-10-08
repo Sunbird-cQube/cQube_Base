@@ -3,74 +3,41 @@
         <div class="row">
             <div class="col-sm-9">
                 <div class="row">
-                    <div class="col-sm-12 diksha">DIKSHA</div>
-                </div>
-                <div class="row outer1">
-                    <div class="col-sm-4">
-                        <div class="inner-1 card" id="dsc" [routerLink]="['/home/diksha-chart']">
-                            <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Diksha Stack Chart
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="inner-1 card" id="dcc" [routerLink]="['/home/diksha-column-chart']">
-                            <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Diksha Column Chart
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="inner-1 card" id="dtr" [routerLink]="['/home/diksha-table']">
-                            <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_grid_on.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Diksha Table Report
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-7 diksha">EXCEPTION-LIST</div>
-                    <div class="col-sm-4 diksha" style="margin-left: 4%;">STUDENT PERFORMANCE</div>
+                    <div class="col-sm-7 diksha">SCHOOL INFRASTRUCTURE</div>
+                    <div class="col-sm-4 diksha" style="margin-left: 4%;">UDISE</div>
                 </div>
                 <div class="row">
                     <div class="row outer12">
                         <div class="col-sm-6">
-                            <div class="inner-12 card" id="SemExp" [routerLink]="['/home/sem-exception']"
-                                style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);">
+                            <div class="inner-12 card" id="imr" [routerLink]="['/home/school-infra-map']"
+                                (click)="fetchTelemetry($event,'imr')"
+                                style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);">
                                 <div class="row">
                                     <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/ic_assignment_24px.svg" alt="">
-                                    </div>
+                                        <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt=""> </div>
                                     <div class="inner-3">
-                                        Semester Exception
+                                        Infrastructure Map Report
+                                        <div class="views">
+                                            <p id="views">views: {{sarViews}}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="inner-12 card" id="isdata" [routerLink]="['/home/download-missing-data']"
-                                style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);">
+                            <div class="inner-12 card" id="tar" [routerLink]="['/home/teacher-attendance']"
+                                (click)="fetchTelemetry($event,'tar')"
+                                style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);">
                                 <div class="row">
                                     <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/ic_cloud_download.svg" alt="">
+                                        <img class="ic-equalizer" src="../../assets/teacher.svg" alt=""
+                                            style=" height: 23px; width: 24px;">
                                     </div>
                                     <div class="inner-3">
-                                        Completion Error
+                                        Infrastructure Chart Report
+                                        <div class="views">
+                                            <p id="views">views: </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -79,6 +46,7 @@
                     <div class="row outer13">
                         <div class="col-sm-12">
                             <div class="inner-12 card" id="sr" [routerLink]="['/home/semester-report']"
+                                (click)="fetchTelemetry($event,'semr')"
                                 style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -86,40 +54,9 @@
                                     </div>
                                     <div class="inner-3">
                                         Semester Report
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-7 diksha">ATTENDANCE</div>
-                    <div class="col-sm-4 diksha" style="margin-left: 4%;">TELEMETRY DATA</div>
-                </div>
-                <div class="row">
-                    <div class="row outer12">
-                        <div class="col-sm-6">
-                            <div class="inner-12 card" id="sar" [routerLink]="['/home/attendance-report']"
-                                style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/student-4.svg" alt=""> </div>
-                                    <div class="inner-3">
-                                        Student Attendance Report
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="inner-12 card" id="tar" [routerLink]="['/home/teacher-attendance']"
-                                style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/teacher.svg" alt=""
-                                            style=" height: 23px; width: 24px;">
-                                    </div>
-                                    <div class="inner-3">
-                                        Teacher Attendance Report
+                                        <div class="views">
+                                            <p id="views">views: </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -127,14 +64,18 @@
                     </div>
                     <div class="row outer13">
                         <div class="col-sm-12">
-                            <div class="inner-12 card" id="telemData" [routerLink]="['/home/telemetry']"
-                                style="background: linear-gradient(135deg, #6B76DB 0%, #9E9EF4 100%);">
+                            <div class="inner-12 card" id="sr" [routerLink]="['/home/semester-report']"
+                                (click)="fetchTelemetry($event,'semr')"
+                                style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);">
                                 <div class="row">
                                     <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/Group 10.svg" alt="">
+                                        <img class="ic-equalizer" src="../../assets/Combined Shape.svg" alt="">
                                     </div>
                                     <div class="inner-3">
-                                        Telemetry
+                                        Semester Report
+                                        <div class="views">
+                                            <p id="views">views: </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -149,6 +90,7 @@
                     <div class="row outer12" style="width: 32%;">
                         <div class="col-sm-12">
                             <div class="inner-12 card" id="udise" [routerLink]="['/home/udise-report']"
+                                (click)="fetchTelemetry($event,'udiser')"
                                 style="background: linear-gradient(135deg, #2CC594 0%, #85E6A6 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -156,6 +98,9 @@
                                     </div>
                                     <div class="inner-3">
                                         UDISE Report
+                                        <div class="views">
+                                            <p id="views">views: </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -164,6 +109,7 @@
                     <div class="row outer13">
                         <div class="col-sm-12">
                             <div class="inner-12 card" id="crcr" [routerLink]="['/home/crc-report']"
+                                (click)="fetchTelemetry($event,'crcr')"
                                 style="background: linear-gradient(135deg, #FF5F55 0%, #FF9E95 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -171,11 +117,131 @@
                                     </div>
                                     <div class="inner-3">
                                         CRC Report
+                                        <div class="views">
+                                            <p id="views">views: </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 diksha">DIKSHA</div>
+                </div>
+                <div class="row outer1">
+                    <div class="col-sm-4">
+                        <div class="inner-1 card" id="dsc" [routerLink]="['/home/diksha-chart']"
+                            (click)="fetchTelemetry($event,'dsc')">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Diksha Stack Chart
+                                    <div class="views">
+                                        <p id="views">views: </p>
+                                    </div>
+                                </div>
+                                <br>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="inner-1 card" id="dcc" [routerLink]="['/home/diksha-column-chart']"
+                            (click)="fetchTelemetry($event,'dcc')">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Diksha Column Chart
+                                    <div class="views">
+                                        <p id="views">views: </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="inner-1 card" id="dtr" [routerLink]="['/home/diksha-table']"
+                            (click)="fetchTelemetry($event,'dtr')">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_grid_on.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Diksha Table Report
+                                    <div class="views">
+                                        <p id="views">views: </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-7 diksha">EXCEPTION-LIST</div>
+                    <div class="col-sm-4 diksha" style="margin-left: 4%;">TELEMETRY DATA</div>
+                </div>
+                <div class="row">
+                    <div class="row outer12">
+                        <div class="col-sm-6">
+                            <div class="inner-12 card" id="SemExp" [routerLink]="['/home/sem-exception']"
+                                (click)="fetchTelemetry($event,'SemExcp')"
+                                style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/ic_assignment_24px.svg" alt="">
+                                    </div>
+                                    <div class="inner-3">
+                                        Semester Exception
+                                        <div class="views">
+                                            <p id="views">views: </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="inner-12 card" id="isdata" [routerLink]="['/home/download-missing-data']"
+                                (click)="fetchTelemetry($event,'missingData')"
+                                style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/ic_cloud_download.svg" alt="">
+                                    </div>
+                                    <div class="inner-3">
+                                        Completion Error
+                                        <div class="views">
+                                            <p id="views">views: </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row outer13">
+                        <div class="col-sm-12">
+                            <div class="inner-12 card" id="telemData" [routerLink]="['/home/telemetry']"
+                                (click)="fetchTelemetry($event,'telemetry')"
+                                style="background: linear-gradient(135deg, #6B76DB 0%, #9E9EF4 100%);">
+                                <div class="row">
+                                    <div class="inner-2">
+                                        <img class="ic-equalizer" src="../../assets/Group 10.svg" alt="">
+                                    </div>
+                                    <div class="inner-3">
+                                        Telemetry
+                                        <div class="views">
+                                            <p id="views">views: </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col-sm-3 diksha">COMPOSITE</div>
@@ -185,6 +251,7 @@
                     <div class="row outer12" style="width: 32%;">
                         <div class="col-sm-12">
                             <div class="inner-12 card" id="composit" [routerLink]="['/home/composit-report']"
+                                (click)="fetchTelemetry($event,'compositer')"
                                 style="background: linear-gradient(135deg, #3decd5 0%, #a6e4bb 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -192,6 +259,9 @@
                                     </div>
                                     <div class="inner-3">
                                         Composite Report
+                                        <div class="views">
+                                            <p id="views">views: </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -200,6 +270,7 @@
                     <div class="row outer13">
                         <div class="col-sm-12">
                             <div class="inner-12 card" id="pat" [routerLink]="['/home/pat-report']"
+                                (click)="fetchTelemetry($event,'pat')"
                                 style="background: linear-gradient(135deg, #995c57 0%, #FF9E95 100%);">
                                 <div class="row">
                                     <div class="inner-2">
@@ -207,6 +278,9 @@
                                     </div>
                                     <div class="inner-3">
                                         Periodic-exam Report
+                                        <div class="views">
+                                            <p id="views">views: </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -214,33 +288,41 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <!-- <div class="col-sm-3">
                 <div class="row">
                     <div class="col-sm-12 diksha">SCHOOL INFRASTRUCTURE</div>
                 </div>
-                <div class="row outer-2">
-                    <div class="row side-inner-1 card" id="imr" [routerLink]="['/home/school-infra-map']">
+                <div class="row outer-2"> -->
+                    <!-- <div class="row side-inner-1 card" id="imr" [routerLink]="['/home/school-infra-map']"
+                        (click)="fetchTelemetry($event,'imr')">
                         <div class="row">
                             <div class="side-inner-2">
                                 <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
                             </div>
                             <div class="side-inner-3">
                                 Infrastructure Map Report
+                                <div class="views">
+                                    <p id="views">views: </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row side-inner-1 card" id="icr" [routerLink]="['/home/school-infrastructure']">
+                    <div class="row side-inner-1 card" id="icr" [routerLink]="['/home/school-infrastructure']"
+                        (click)="fetchTelemetry($event,'icr')">
                         <div class="row">
                             <div class="side-inner-2">
                                 <img class="ic-equalizer" src="../../assets/ic_assessment.svg" alt="">
                             </div>
                             <div class="side-inner-3">
                                 Infrastructure Chart Report
+                                <div class="views">
+                                    <p id="views">views: </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </div> -->
+                <!-- </div>
+            </div> -->
         </div>
     </div>
 </div>

@@ -18,7 +18,7 @@ router.post('/', auth.authController, async (req, res) => {
         //check if file is there, and append new data
         var params = {
             Bucket: const_data['getParams1']['Bucket'],
-            Key: `telemetry/telemetry_${year}_${month}_${date}_${hour}.csv`
+            Key: `telemetry/telemetry_view/telemetry_views_${year}_${month}_${date}_${hour}.csv`
         };
         const_data['s3'].headObject(params, function (err, metadata) {
             if (err && err.code === 'NotFound') {
@@ -27,7 +27,7 @@ router.post('/', auth.authController, async (req, res) => {
                     if (error) return console.error(error);
                     var params1 = {
                         Bucket: const_data['getParams1']['Bucket'],
-                        Key: `telemetry/telemetry_${year}_${month}_${date}_${hour}.csv`,
+                        Key: `telemetry/telemetry_view/telemetry_views_${year}_${month}_${date}_${hour}.csv`,
                         Body: csv.replace(/,/g, '|')
                     };
                     const_data['s3'].upload(params1, function (err, result) {
@@ -43,7 +43,7 @@ router.post('/', auth.authController, async (req, res) => {
                 const_data['s3'].getSignedUrl('getObject', params, (error, response) => {
 
                     jsonexport(req.body.telemetryData, { includeHeaders: false }, function (error, csv) {
-                        var service = new S3Append(config.appendConfig, `telemetry/telemetry_${year}_${month}_${date}_${hour}.csv`, format.csv);
+                        var service = new S3Append(config.appendConfig, `telemetry/telemetry_view/telemetry_views_${year}_${month}_${date}_${hour}.csv`, format.csv);
 
                         service.append(`\r${csv.replace(/,/g, '|')}`);
 
@@ -66,19 +66,37 @@ router.post('/', auth.authController, async (req, res) => {
     }
 });
 
-// router.get('/', (req, res) => {
-//     const_data['getParams1']['Key'] = `telemetry/telemetry_2020_8_11_${hour}.csv`;
-//     const_data['s3'].getObject(const_data['getParams1'], async function (err, data) {
-//         if (err) {
-//             logger.error(err);
-//             res.status(500).json({ msg: "Something went wrong" });
-//         } else if (!data) {
-//             logger.error("No data found in s3 file");
-//             res.status(403).json({ msg: "No such data found" });
-//         } else {
-//             console.log(data.Body.toString());
-//         }
-//     });
-// })
+router.get('/', (req, res) => {
+    // const_data['getParams1']['Key'] = `telemetry/telemetry_view/telemetry_views_2020_10_08_15.csv`;
+    // const_data['s3'].getObject(const_data['getParams1'], async function (err, data) {
+    //     if (err) {
+    //         logger.error(err);
+    //         res.status(500).json({ msg: "Something went wrong" });
+    //     } else if (!data) {
+    //         logger.error("No data found in s3 file");
+    //         res.status(403).json({ msg: "No such data found" });
+    //     } else {
+    var objArr = [
+        {
+            reportId: "sar",
+            views: 225,
+            period: "last 24hrs"
+        },
+        {
+            reportId: "sar",
+            views: 2225,
+            period: "last 7days"
+        },
+        {
+            reportId: "sar",
+            views: 22225,
+            period: "last 30days"
+        }
+    ]
+    // console.log(data.Body.toString());
+    res.send({ objArr });
+    //     }
+    // });
+})
 
 module.exports = router
