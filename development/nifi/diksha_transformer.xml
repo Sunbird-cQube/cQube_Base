@@ -27501,6 +27501,7 @@ Optional(ParseBigDecimal()),Optional(parseInt()),Optional(ParseBigDecimal())</va
         "district_name": "data.[&amp;1].district_name",
         "type": "data.[&amp;1].type",
         "collection_name": "data.[&amp;1].collection_name",
+        "percentage":"data.[&amp;1].percentage",
         "@total_content_plays": "data.[&amp;1].total_content_plays",
         "total_content_plays": "footer.total_content_plays[]"
       }
@@ -35430,5 +35431,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/25/2020 15:06:21 IST</timestamp>
+    <timestamp>10/07/2020 10:45:37 IST</timestamp>
 </template>

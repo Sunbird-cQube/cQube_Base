@@ -2927,10 +2927,6 @@ trained_cwsn  smallint,
 trained_comp  smallint
 );
 
-/*alter table udise_tch_profile drop constraint if exists udise_tch_profile_pkey;
-alter table udise_tch_profile add primary key(udise_sch_code,name,dob);
-alter table udise_tch_profile alter column tch_code drop not null;*/
-
 create table if not exists udise_sch_exmmarks_c10(
 udise_sch_code  bigint not null,
 ac_year  text,
@@ -3021,15 +3017,10 @@ ac_year  text,
 nsqf_yn  smallint,
 voc_course_yn  smallint,
 sec1_sub  Integer,
-sec1_year  varchar(10),
+sec1_year  char,
 sec2_sub  Integer,
-sec2_year  varchar(10)
+sec2_year  char
 );
-
-alter table udise_nsqf_basic_info alter column sec2_year type varchar(10);
-
-alter table udise_nsqf_basic_info alter column sec1_year type varchar(10);
-
 
 create table if not exists udise_nsqf_enr_caste(
 udise_sch_code  bigint not null,
@@ -3062,10 +3053,6 @@ c12_b  smallint,
 c12_g  smallint,
 primary key(udise_sch_code,sector_no)
 );
-
-/*alter table udise_nsqf_enr_sub_sec drop constraint if exists udise_nsqf_enr_sub_sec_pkey;
-alter table udise_nsqf_enr_sub_sec add primary key(udise_sch_code,sector_no,sub_sector_id);*/
-
 
 create table if not exists udise_nsqf_exmres_c10(
 udise_sch_code  bigint not null,
@@ -3112,8 +3099,7 @@ primary key(udise_sch_code,sector_no)
 create table if not exists udise_nsqf_faculty(
 udise_sch_code  bigint not null,
 ac_year  text,
-nsqf_faculty_id bigint ,
-faculty_code  varchar(100),
+faculty_code  varchar(100) not null,
 name  varchar(100),
 gender  smallint,
 dob  date,
@@ -3127,13 +3113,8 @@ class_taught  smallint,
 appt_sec  smallint,
 induc_trg_rcvd  smallint,
 inserv_trg_rcvd  smallint,
-primary key(udise_sch_code,nsqf_faculty_id)
+primary key(udise_sch_code,faculty_code)
 );
-
-alter table udise_nsqf_faculty add column if not exists nsqf_faculty_id bigint;
-alter table udise_nsqf_faculty drop constraint if exists udise_nsqf_faculty_pkey;
-alter table udise_nsqf_faculty alter column faculty_code drop not null;
-alter table udise_nsqf_faculty add primary key(udise_sch_code,nsqf_faculty_id);
 
 create table if not exists udise_sch_pgi_details(
 udise_sch_code  bigint primary key not null,
@@ -3164,7 +3145,7 @@ slfdef_trained  smallint
 
 create table if not exists udise_sch_exmres_c8(
 udise_sch_code  bigint primary key not null,
-academic_year  varchar(10),
+academic_year  char,
 gen_app_b  smallint,
 gen_app_g  smallint,
 obc_app_b  smallint,
@@ -3190,8 +3171,6 @@ sc_60p_g  smallint,
 st_60p_b  smallint,
 st_60p_g  smallint
 );
-
-alter table udise_sch_exmres_c8 alter column academic_year type varchar(10);
 
 /*Udise transaction,aggregation,config */
 create table if not exists udise_school_metrics_trans(
@@ -3610,11 +3589,7 @@ create table if not exists udise_sch_exmmarks_c12_dup( udise_sch_code bigint , a
 create table if not exists udise_sch_recp_exp_dup( udise_sch_code bigint primary key , ac_year text, dev_grt_r double precision, dev_grt_e double precision, maint_grt_r double precision, maint_grt_e double precision, tlm_grt_r double precision, tlm_grt_e double precision, cw_grt_r double precision, cw_grt_e double precision, anl_grt_r double precision, anl_grt_e double precision, minrep_grt_r double precision, minrep_grt_e double precision, labrep_grt_r double precision, labrep_grt_e double precision, book_grt_r double precision, book_grt_e double precision, elec_grt_r double precision, elec_grt_e double precision, oth_grt_r double precision, oth_grt_e double precision, compo_grt_r double precision, compo_grt_e double precision, lib_grt_r double precision, lib_grt_e double precision, sport_grt_r double precision, sport_grt_e double precision, media_grt_r double precision, media_grt_e double precision, smc_grt_r double precision, smc_grt_e double precision, presch_grt_r double precision, presch_grt_e double precision, ngo_asst_yn smallint, ngo_asst_name varchar(100), ngo_asst_rcvd double precision, psu_asst_yn smallint, psu_asst_name varchar(100), psu_asst_rcvd double precision, comm_asst_yn smallint, comm_asst_rcvd double precision, comm_asst_name varchar(100), oth_asst_yn smallint, oth_asst_name varchar(100), oth_asst_rcvd double precision, ict_reg_yn smallint, sport_reg_yn smallint, lib_reg_yn smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
 
-<<<<<<< HEAD
 create table if not exists udise_nsqf_basic_info_dup( udise_sch_code bigint primary key , ac_year text, nsqf_yn smallint, voc_course_yn smallint, sec1_sub Integer, sec1_year char, sec2_sub Integer, sec2_year char,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
-=======
-create table if not exists udise_nsqf_basic_info_dup( udise_sch_code bigint primary key , ac_year text, nsqf_yn smallint, voc_course_yn smallint, sec1_sub Integer, sec1_year varchar(10), sec2_sub Integer, sec2_year varchar(10),num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
->>>>>>> upstream/cQube-release-new
 
 
 create table if not exists udise_nsqf_enr_caste_dup( udise_sch_code bigint , ac_year text, sector_no smallint , item_id smallint , c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
@@ -3641,11 +3616,7 @@ ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp
 create table if not exists udise_sch_safety_dup( udise_sch_code bigint primary key , ac_year text, sdmp_plan_yn smallint, struct_safaud_yn smallint, nonstr_safaud_yn smallint, cctv_cam_yn smallint, fire_ext_yn smallint, nodal_tch_yn smallint, safty_trng_yn smallint, dismgmt_taug_yn smallint, slfdef_grt_yn smallint, slfdef_trained smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
 
-<<<<<<< HEAD
 create table if not exists udise_sch_exmres_c8_dup( udise_sch_code bigint primary key , academic_year char, gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, gen_60p_b smallint, gen_60p_g smallint, obc_60p_b smallint, obc_60p_g smallint, sc_60p_b smallint, sc_60p_g smallint, st_60p_b smallint, st_60p_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
-=======
-create table if not exists udise_sch_exmres_c8_dup( udise_sch_code bigint primary key , academic_year varchar(10), gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, gen_60p_b smallint, gen_60p_g smallint, obc_60p_b smallint, obc_60p_g smallint, sc_60p_b smallint, sc_60p_g smallint, st_60p_b smallint, st_60p_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
->>>>>>> upstream/cQube-release-new
 
 
 /*pat null validation table*/
@@ -3714,15 +3685,7 @@ id	int,
 exam_id	int,
 exam_code	varchar(100),
 student_id	bigint,
-<<<<<<< HEAD
-<<<<<<< HEAD
 student_uid	bigint,
-=======
-student	_uid	bigint,
->>>>>>> upstream/cQube-release-new
-=======
-student_uid	bigint,
->>>>>>> upstream/cQube-release-new
 school_id	bigint,
 studying_class	int,
 section	varchar(20),
@@ -3756,7 +3719,6 @@ alter table log_summary add COLUMN if not exists school_id int;
 alter table log_summary add COLUMN if not exists student_uid int;
 alter table log_summary add COLUMN if not exists studying_class int;
 alter table log_summary add COLUMN if not exists obtained_marks int;
-<<<<<<< HEAD
 
 
 alter table log_summary add COLUMN if not exists udise_sch_code int;
@@ -3868,173 +3830,6 @@ question_id  int,
 obtained_marks  numeric,
 created_on  timestamp,
 updated_on  timestamp
-);
-
-create table if not exists periodic_exam_school_result
-(id  serial,
-academic_year  varchar(50),
-exam_code  varchar(100),
-school_id  bigint,
-grade  smallint,
-school_name  varchar(200),
-school_latitude  double precision,
-school_longitude  double precision,
-district_id  bigint,
-district_name  varchar(100),
-district_latitude  double precision,
-district_longitude  double precision,
-block_id  bigint,
-block_name  varchar(100),
-block_latitude  double precision,
-block_longitude  double precision,
-cluster_id  bigint,
-cluster_name  varchar(100),
-cluster_latitude  double precision,
-cluster_longitude  double precision,
-subject  text,
-obtained_marks  numeric,
-total_marks  numeric,
-students_count   int,
-created_on  timestamp,
-updated_on  timestamp,
-primary key(academic_year,exam_code,school_id)
-);
-
-/*Composite reports queries*/
-
-/* composite nifi template info */
-
-CREATE TABLE IF NOT EXISTS nifi_template_info ( 
- id serial,
- template text, 
- status boolean
-);
-
-/* composite config */
-=======
->>>>>>> upstream/cQube-release-new
-
-CREATE TABLE IF NOT EXISTS composite_config ( 
- id serial,
- template text, 
- status boolean,
- select_query text,
- table_join text,
- category text,
- jolt_spec text,
-primary key(template,category)
-);
-
-alter table log_summary add COLUMN if not exists udise_sch_code int;
-alter table log_summary add COLUMN if not exists sector_no  int;
-alter table log_summary add COLUMN if not exists item_id int;
-alter table log_summary add COLUMN if not exists class_type_id int;
-alter table log_summary add COLUMN if not exists stream_id int;
-alter table log_summary add COLUMN if not exists grade_pri_upr int;
-alter table log_summary add COLUMN if not exists incentive_type int;
-alter table log_summary add COLUMN if not exists caste_id int;
-alter table log_summary add COLUMN if not exists disability_type int;
-alter table log_summary add COLUMN if not exists medinstr_seq int;
-alter table log_summary add COLUMN if not exists age_id int;
-alter table log_summary add COLUMN if not exists item_group int;
-alter table log_summary add COLUMN if not exists tch_code int;
-alter table log_summary add COLUMN if not exists marks_range_id int;
-alter table log_summary add COLUMN if not exists nsqf_faculty_id int;
-
-/*PAT data tables*/
-
-create table if not exists periodic_exam_mst(
-exam_id  int primary key not null,
-assessment_year  varchar(20),
-medium  varchar(20),
-standard  int,
-division  varchar(20),
-subject_id  int,
-subject_name  varchar(50),
-exam_type_id  int,
-exam_type  varchar(50),
-exam_code  varchar(100),
-exam_date  date,
-total_questions  int,
-total_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp);
-
-create table if not exists periodic_exam_qst_mst(
-question_id  int primary key not null,
-exam_id  int,
-indicator_id  int,
-indicator_title varchar(20),
-indicator  text,
-question_title  varchar(20),
-question  text,
-question_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_temp(
-id  int primary key not null,
-ffuid text,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_staging_1(
-id  int,
-ff_uuid text,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_staging_2(
-id  int,
-ff_uuid text,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp
-);
-
-create table if not exists periodic_exam_result_trans(
-id  int,
-exam_id  int,
-exam_code  varchar(100),
-student_id  bigint,
-student_uid  bigint,
-school_id  bigint,
-studying_class  int,
-section  varchar(20),
-question_id  int,
-obtained_marks  numeric,
-created_on  timestamp,
-updated_on  timestamp,
-primary key(exam_code, student_uid, question_id)
 );
 
 create table if not exists periodic_exam_school_result
@@ -4087,6 +3882,6 @@ CREATE TABLE IF NOT EXISTS composite_config (
  table_join text,
  category text,
  jolt_spec text,
- primary key(template,category)
+primary key(template,category)
 );
 

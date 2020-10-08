@@ -2748,12 +2748,16 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+<<<<<<< HEAD
+
+=======
 drop view if exists composite_district;
 drop view if exists composite_block;
 drop view if exists composite_cluster;
 drop view if exists composite_school;
 
 select * from composite_create_views();
+>>>>>>> upstream/cQube-release-new
 
 create or replace function composite_jolt_spec()
     RETURNS text AS

@@ -3715,13 +3715,9 @@ exam_id	int,
 exam_code	varchar(100),
 student_id	bigint,
 <<<<<<< HEAD
-<<<<<<< HEAD
 student_uid	bigint,
 =======
 student	_uid	bigint,
->>>>>>> upstream/cQube-release-new
-=======
-student_uid	bigint,
 >>>>>>> upstream/cQube-release-new
 school_id	bigint,
 studying_class	int,
