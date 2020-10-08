@@ -24,7 +24,14 @@
     - config.sql
     - infrastructure_master.csv
     - udise_config.csv
-    - datasource.csv
+  tags: [ install, update ]
+
+- name: copy datasource.csv files to /tmp/postgres
+  copy:
+    src: datasource.csv
+    dest: /tmp/postgres
+    owner: postgres
+    mode: "0644"
   tags: [ install, update ]
 
 - name: Run queries from SQL script
