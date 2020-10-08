@@ -13,13 +13,15 @@
     mode: "1755"
   tags: [ install, update ]
 
-- name: copy csv to /tmp/postgres
+- name: copy required files to /tmp/postgres
   copy:
-    src: "{{ item }}"
+    src: "../../development/postgres/{{ item }}"
     dest: /tmp/postgres
     owner: postgres
     mode: "0644"
   loop: 
+    - cQube.sql
+    - config.sql
     - infrastructure_master.csv
     - udise_config.csv
     - datasource.csv
@@ -30,7 +32,7 @@
   become_user: postgres
   postgresql_query:
     db: "{{ db_name }}"
-    path_to_script: cQube.sql
+    path_to_script: /tmp/postgres/cQube.sql
   tags: [ install, update ]
 
 - name: checking for infra table
@@ -68,7 +70,7 @@
   become_user: postgres
   postgresql_query:
     db: "{{ db_name }}"
-    path_to_script: config.sql
+    path_to_script: /tmp/postgres/config.sql
   tags: [ install, update ]
 
 - name: restart postgresql

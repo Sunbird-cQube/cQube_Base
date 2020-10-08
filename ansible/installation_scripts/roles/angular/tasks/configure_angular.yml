@@ -4,11 +4,6 @@
   shell: pm2 stop client_side
   tags: update
 
-- name: Deleting the client_side app
-  become: yes
-  shell: pm2 delete client_side
-  tags: update
-
 - name: Delete client_side directory
   file:
     path: "{{ base_dir }}/cqube/dashboard/client_side"
@@ -24,7 +19,7 @@
     state: directory
   tags: [ install, update ]
 
-- name: copying server-side script
+- name: copying client-side script
   shell: "cp -R ../../development/angular/client-side/* {{base_dir}}/cqube/dashboard/client_side"
   tags: [ install, update ]
 
