@@ -3,24 +3,25 @@
         <div class="row">
             <div class="col-sm-9">
                 <div class="row">
-                    <div class="col-sm-7 diksha">SCHOOL INFRASTRUCTURE</div>
-                    <div class="col-sm-4 diksha" style="margin-left: 4%;">UDISE</div>
+                    <div class="col-sm-7 diksha">ATTENDANCE</div>
+                    <div class="col-sm-4 diksha" style="margin-left: 4%;">STUDENT PERFORMANCE</div>
                 </div>
                 <div class="row">
                     <div class="row outer12">
                         <div class="col-sm-6">
-                            <div class="inner-12 card" id="imr" [routerLink]="['/home/school-infra-map']"
-                                (click)="fetchTelemetry($event,'imr')"
+                            <div class="inner-12 card" id="sar" [routerLink]="['/home/attendance-report']"
+                                (click)="fetchTelemetry($event,'sar')"
                                 style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);">
                                 <div class="row">
                                     <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt=""> </div>
+                                        <img class="ic-equalizer" src="../../assets/student-4.svg" alt=""> </div>
                                     <div class="inner-3">
-                                        Infrastructure Map Report
+                                        Student Attendance Report
                                         <div class="views">
                                             <p id="views">views: {{sarViews}}</p>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -34,26 +35,7 @@
                                             style=" height: 23px; width: 24px;">
                                     </div>
                                     <div class="inner-3">
-                                        Infrastructure Chart Report
-                                        <div class="views">
-                                            <p id="views">views: </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row outer13">
-                        <div class="col-sm-12">
-                            <div class="inner-12 card" id="sr" [routerLink]="['/home/semester-report']"
-                                (click)="fetchTelemetry($event,'semr')"
-                                style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/Combined Shape.svg" alt="">
-                                    </div>
-                                    <div class="inner-3">
-                                        Semester Report
+                                        Teacher Attendance Report
                                         <div class="views">
                                             <p id="views">views: </p>
                                         </div>
@@ -288,12 +270,12 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-sm-3">
+            <div class="col-sm-3">
                 <div class="row">
                     <div class="col-sm-12 diksha">SCHOOL INFRASTRUCTURE</div>
                 </div>
-                <div class="row outer-2"> -->
-                    <!-- <div class="row side-inner-1 card" id="imr" [routerLink]="['/home/school-infra-map']"
+                <div class="row outer-2">
+                    <div class="row side-inner-1 card" id="imr" [routerLink]="['/home/school-infra-map']"
                         (click)="fetchTelemetry($event,'imr')">
                         <div class="row">
                             <div class="side-inner-2">
@@ -320,9 +302,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div> -->
-                <!-- </div>
-            </div> -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
