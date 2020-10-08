@@ -171,7 +171,13 @@ export class DikshaBarChartComponent implements OnInit {
 
   createChart(data) {
     var chartData = [];
-    var obj = { data: data.data, label: "Total Content Play" }
+    var percentage = [];
+    var contentPlays = [];
+    data.data.forEach(element => {
+      contentPlays.push(element.total_content_plays);
+      percentage.push(element.percentage);
+    });
+    var obj = { data: contentPlays, label: "Total Content Play" }
     chartData.push(obj);
     this.barChartOptions = {
       legend: {
@@ -183,18 +189,20 @@ export class DikshaBarChartComponent implements OnInit {
           if (!tooltip) return;
           tooltip.displayColors = false;
         },
-        // callbacks: {
-        //   label: function (tooltipItem, data) {
-        //     var label = data.labels[tooltipItem.index];
-        //     var content = data.datasets[0].data;
-        //     var scores = content[tooltipItem.index];
-        //     // var subject = data.datasets[tooltipItem.index].label
-        //     var multistringText = ["District Name" + ": " + label];
-        //     multistringText.push("Total Content Plays" + ": " + scores);
-        //     // multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
-        //     return multistringText;
-        //   }
-        // }
+        callbacks: {
+          label: function (tooltipItem, data) {
+            var label = data.labels[tooltipItem.index];
+            var content = data.datasets[0].data;
+            var scores = content[tooltipItem.index];
+            var percent = percentage[tooltipItem.index]
+            // var subject = data.datasets[tooltipItem.index].label
+            var multistringText = [];
+            multistringText.push("Total Content Plays" + ": " + scores);
+            multistringText.push("Percentage" + ": " + percent + " %");
+            // multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
+            return multistringText;
+          }
+        }
       },
 
       scales: {

@@ -16,7 +16,6 @@
           - angular
           - angular_admin
           - prometheus
-          - { role: nifi_clear, tags: update }
           - nifi_install
           - { role: nifi_params, tags: update } 
 

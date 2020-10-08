@@ -16,34 +16,34 @@ export class ExceptionReportService {
   constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) { }
 
   //Semester Completion
-  semCompletionDist() {
+  semCompletionDist(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/semCompDist/allDistrictWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompDist/allDistrictWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 
-  semCompletionBlock() {
+  semCompletionBlock(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/semCompBlock/allBlockWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompBlock/allBlockWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
-  semCompletionCluster() {
+  semCompletionCluster(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/semCompCluster/allClusterWise`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompCluster/allClusterWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
-  semCompletionSchool() {
+  semCompletionSchool(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/semCompSchool/allSchoolWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompSchool/allSchoolWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
-  semCompletionBlockPerDist(distId) {
+  semCompletionBlockPerDist(distId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/semCompBlock/blockWise/${distId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompBlock/blockWise/${distId}`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
-  semCompletionClusterPerBlock(distId, blockId) {
+  semCompletionClusterPerBlock(distId, blockId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/semCompCluster/clusterWise/${distId}/${blockId}`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompCluster/clusterWise/${distId}/${blockId}`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
-  semCompletionSchoolPerClustter(distId, blockId, clusterId) {
+  semCompletionSchoolPerClustter(distId, blockId, clusterId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/semCompSchool/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompSchool/schoolWise/${distId}/${blockId}/${clusterId}`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 
   //missing school data api

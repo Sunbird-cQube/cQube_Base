@@ -119,13 +119,21 @@
       transform: rotate(360deg);
     }
   }
-
+/* 
   .btn{
     transition: .2s;
-  }
+  } */
 
-  .btn:hover{
+  /* .btn:hover{
     -ms-transform: scale(1.03);
         -webkit-transform: scale(1.03);
         transform: scale(1.03); 
+  } */
+
+  .headerBtn:hover {
+    transition: transform .1s;
+    -ms-transform: scale(1.12);
+    -webkit-transform: scale(1.12);
+    transform: scale(1.12); 
+    text-decoration: none;
   }
