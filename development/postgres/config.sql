@@ -2753,7 +2753,7 @@ drop view if exists composite_block;
 drop view if exists composite_cluster;
 drop view if exists composite_school;
 
-select * from composite_create_views();
+/* select * from composite_create_views(); */
 
 create or replace function composite_jolt_spec()
     RETURNS text AS
