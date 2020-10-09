@@ -1,6 +1,6 @@
 .login-pf body {
     background:  url("../img/back1.png"), url("../img/Group.svg") , linear-gradient(135.84deg, #5421FF 0%, #3D92FF 53.32%, #00DCF8 100%);
-    height:100%; 
+    /* height:100%; */
     width: 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -359,9 +359,10 @@ a.zocial  {
     background-color: #31D08C !important;
 }
     
-#username, #password {    
+#username, #password {
     height: 40px;
     border-radius: 20px !important;
+    background-color: rgb(255, 251, 251);
 }
 
 @media (min-height: 646px) {
@@ -398,16 +399,24 @@ a.zocial  {
 
 .card-pf {
     margin-left:100px;
-    height: 360px;
-    width: 280px;
+    height: 360px auto;
+    width: 300px;
     border-radius: 16px;
     background: transparent;
     opacity: 0.9;
-    box-shadow: 3px 3px 5px 6px  rgb(57, 125, 226);
+    color: #fff;
+  box-shadow:         3px 3px 5px 6px  rgb(57, 125, 226);
   }
     
 label{
     color: white;
+}
+
+#mode-manual{
+    color: #42edf3;
+}
+#kc-totp-settings li p{
+    color: antiquewhite;
 }
     /*tablet*/
 @media (max-width: 840px) {

@@ -67,7 +67,7 @@
 - name: Copying the theme directory
   copy: 
     src: "../../development/keycloak/{{ login_theme_name }}"
-    dest: "{{ base_dir }}/cqube/keycloak/themes/{{ login_theme_name }}"
+    dest: "{{ base_dir }}/cqube/keycloak/themes/"
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
     mode: "0644"
