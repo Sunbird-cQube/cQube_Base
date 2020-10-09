@@ -163,7 +163,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   height: 90px;
   /* width: 270px; */
   border-radius: 13px;
-  background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%);
+  /* background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%); */
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.02);
 }
 
@@ -179,7 +179,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 .inner-3 {
   height: 18px;
   /* width: 159px; */
-  color: #FFFFFF;
+  color: #383737;
   font-family: "Noto Sans";
   font-size: 13px;
   font-weight: bold;
@@ -280,6 +280,6 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   height: 90px;
   width: 100%;
   border-radius: 13px;
-  background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%);
+  /* background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%); */
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.02);
 }
