@@ -1,6 +1,6 @@
 .login-pf body {
     background:  url("../img/back1.png"), url("../img/Group.svg") , linear-gradient(135.84deg, #5421FF 0%, #3D92FF 53.32%, #00DCF8 100%);
-    /* height:100%;  */
+    /* height:100%; */
     width: 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -359,9 +359,10 @@ a.zocial  {
     background-color: #31D08C !important;
 }
     
-#username, #password {    
+#username, #password {
     height: 40px;
     border-radius: 20px !important;
+    background-color: rgb(255, 251, 251);
 }
 
 @media (min-height: 646px) {
@@ -404,7 +405,7 @@ a.zocial  {
     background: transparent;
     opacity: 0.9;
     color: #fff;
-    box-shadow: 3px 3px 5px 6px  rgb(57, 125, 226);
+  box-shadow:         3px 3px 5px 6px  rgb(57, 125, 226);
   }
     
 label{
