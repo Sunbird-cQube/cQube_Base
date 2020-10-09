@@ -141,7 +141,7 @@
 
     </div>
   </div>
-    <div style="color: #FFFFFF;font-size: 16px;margin-left:100px;margin-top:30px;">
+    <div style="color: #FFFFFF;font-size: 16px;margin-left:50px;margin-top:30px;">
         <p> <b>Utilizing data to drive action on the ground </b> by enabling the <br>ability to <b>see, solve and act</b> </p>
     </div>
 </body>
