@@ -2,212 +2,43 @@
     <div class="container" style="margin-bottom: 10px;">
         <div class="row">
             <div class="col-sm-9">
-                <div class="row">
-                    <div class="col-sm-12 diksha">DIKSHA</div>
-                </div>
+                <div class="col-sm-12 diksha">SCHOOL INFRASTRUCTURE</div>
                 <div class="row outer1">
                     <div class="col-sm-4">
-                        <div class="inner-1 card" [routerLink]="['/home/diksha-chart']">
+                        <div class="inner-1 card" id="imr" [routerLink]="['/home/school-infra-map']"
+                            style="background-color: rgb(160, 233, 205);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
+                                </div>
+                                <div class="inner-3" style="margin-top: 20px;">
+                                    Infrastructure access <br> by Location
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="inner-1 card" id="cr" [routerLink]="['/home/school-infrastructure']"
+                            style="background-color:rgb(160, 233, 205);">
                             <div class="row">
                                 <div class="inner-2">
                                     <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Diksha Stack Chart
+                                    Composite Report
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <div class="inner-1 card" [routerLink]="['/home/diksha-column-chart']">
+                        <div class="inner-1 card" id="udise" [routerLink]="['/home/udise-report']"
+                            style="background-color: rgb(160, 233, 205);">
                             <div class="row">
                                 <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
+                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Diksha Column Chart
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="inner-1 card" [routerLink]="['/home/diksha-table']">
-                            <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_grid_on.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Diksha Table Report
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-7 diksha">EXCEPTION-LIST</div>
-                    <div class="col-sm-4 diksha" style="margin-left: 4%;">STUDENT PERFORMANCE</div>
-                </div>
-                <div class="row">
-                    <div class="row outer12">
-                        <div class="col-sm-6">
-                            <div class="inner-12 card" [routerLink]="['/home/sem-exception']"
-                                style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/ic_assignment_24px.svg" alt="">
-                                    </div>
-                                    <div class="inner-3">
-                                        Semester Exception
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="inner-12 card" [routerLink]="['/home/download-missing-data']"
-                                style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/ic_cloud_download.svg" alt="">
-                                    </div>
-                                    <div class="inner-3">
-                                        Completion Error
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row outer13">
-                        <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/semester-report']"
-                                style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/Combined Shape.svg" alt="">
-                                    </div>
-                                    <div class="inner-3">
-                                        Semester Report
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-7 diksha">ATTENDANCE</div>
-                    <div class="col-sm-4 diksha" style="margin-left: 4%;">TELEMETRY DATA</div>
-                </div>
-                <div class="row">
-                    <div class="row outer12">
-                        <div class="col-sm-6">
-                            <div class="inner-12 card" [routerLink]="['/home/attendance-report']"
-                                style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/student-4.svg" alt=""> </div>
-                                    <div class="inner-3">
-                                        Student Attendance Report
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="inner-12 card" [routerLink]="['/home/teacher-attendance']"
-                                style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/teacher.svg" alt=""
-                                            style=" height: 23px; width: 24px;">
-                                    </div>
-                                    <div class="inner-3">
-                                        Teacher Attendance Report
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row outer13">
-                        <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/telemetry']"
-                                style="background: linear-gradient(135deg, #6B76DB 0%, #9E9EF4 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/Group 10.svg" alt="">
-                                    </div>
-                                    <div class="inner-3">
-                                        Telemetry
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3 diksha">UDISE</div>
-                    <div class="col-sm-5 diksha" style="margin-left: 7%;">SCHOOL MONITORING</div>
-                </div>
-                <div class="row">
-                    <div class="row outer12" style="width: 32%;">
-                        <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/udise-report']"
-                                style="background: linear-gradient(135deg, #2CC594 0%, #85E6A6 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/Group 12.svg" alt="">
-                                    </div>
-                                    <div class="inner-3">
-                                        UDISE Report
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row outer13">
-                        <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/crc-report']"
-                                style="background: linear-gradient(135deg, #FF5F55 0%, #FF9E95 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/Group 11.svg" alt="">
-                                    </div>
-                                    <div class="inner-3">
-                                        CRC Report
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3 diksha">COMPOSITE</div>
-                    <div class="col-sm-5 diksha" style="margin-left: 7%;">PERIODIC EXAM</div>
-                </div>
-                <div class="row">
-                    <div class="row outer12" style="width: 32%;">
-                        <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/composit-report']"
-                                style="background: linear-gradient(135deg, #3decd5 0%, #a6e4bb 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
-                                    </div>
-                                    <div class="inner-3">
-                                        Composite Report
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row outer13">
-                        <div class="col-sm-12">
-                            <div class="inner-12 card" [routerLink]="['/home/pat-report']"
-                                style="background: linear-gradient(135deg, #995c57 0%, #FF9E95 100%);">
-                                <div class="row">
-                                    <div class="inner-2">
-                                        <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
-                                    </div>
-                                    <div class="inner-3">
-                                        Periodic-exam Report
-                                    </div>
+                                    UDISE Report
                                 </div>
                             </div>
                         </div>
@@ -215,27 +46,196 @@
                 </div>
             </div>
             <div class="col-sm-3">
-                <div class="row">
-                    <div class="col-sm-12 diksha">SCHOOL INFRASTRUCTURE</div>
-                </div>
-                <div class="row outer-2">
-                    <div class="row side-inner-1 card" [routerLink]="['/home/school-infra-map']">
-                        <div class="row">
-                            <div class="side-inner-2">
-                                <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
-                            </div>
-                            <div class="side-inner-3">
-                                Infrastructure Map Report
+                <div class="diksha">COMPOSITE</div>
+                <div class="row outer12">
+                    <div class="col-sm-12">
+                        <div class="inner-12 card" id="composit" [routerLink]="['/home/composit-report']"
+                            style="background-color: rgb(243, 228, 203);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
+                                </div>
+                                <div class="inner-3" style="margin-top: 20px;">
+                                    Composite Report <br> across metrics
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row side-inner-1 card" [routerLink]="['/home/school-infrastructure']">
-                        <div class="row">
-                            <div class="side-inner-2">
-                                <img class="ic-equalizer" src="../../assets/ic_assessment.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="col-sm-12 diksha">DIKSHA</div>
+                <div class="row outer1">
+                    <div class="col-sm-4">
+                        <div class="inner-1 card" id="dsc" [routerLink]="['/home/diksha-chart']"
+                            style="background-color: rgb(255, 207, 169);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Usage by user profile
+                                </div>
                             </div>
-                            <div class="side-inner-3">
-                                Infrastructure Chart Report
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="inner-1 card" id="dcc" [routerLink]="['/home/diksha-column-chart']"
+                            style="background-color: rgb(255, 207, 169);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Usage by Location
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="inner-1 card" id="dtr" [routerLink]="['/home/diksha-table']"
+                            style="background-color: rgb(255, 207, 169);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_grid_on.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Usage by Content Name
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="diksha">SCHOOL MONITORING</div>
+                <div class="row outer12">
+                    <div class="col-sm-12">
+                        <div class="inner-12 card" id="crcr" [routerLink]="['/home/crc-report']"
+                            style="background-color: rgb(238, 164, 164);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    CRC Visit
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="diksha">STUDENT PERFORMANCE</div>
+                <div class="row outer12">
+                    <div class="col-sm-6">
+                        <div class="inner-12 card" id="sr" [routerLink]="['/home/semester-report']"
+                            style="background-color: rgb(203, 210, 233);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Semester Report
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="inner-12 card" id="pat" [routerLink]="['/home/pat-report']"
+                            style="background-color: rgb(203, 210, 233);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Periodic Assessment Test
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="diksha">EXCEPTION-LIST</div>
+                <div class="row outer12">
+                    <div class="col-sm-6">
+                        <div class="inner-12 card" id="SemExp" [routerLink]="['/home/sem-exception']"
+                            style="background-color: rgb(255, 193, 228);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Semester Exception
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="inner-12 card" id="isdata" [routerLink]="['/home/download-missing-data']"
+                            style="background-color: rgb(255, 193, 228);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_cloud_download.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Download Exception List
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="diksha">ATTENDANCE</div>
+                <div class="row outer12">
+                    <div class="col-sm-6">
+                        <div class="inner-12 card" id="sar" [routerLink]="['/home/attendance-report']"
+                            style="background-color: rgb(221, 253, 199);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt=""> </div>
+                                <div class="inner-3">
+                                    Student Attendance
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="inner-12 card" id="tar" [routerLink]="['/home/teacher-attendance']"
+                            style="background-color:rgb(221, 253, 199);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Teacher Attendance
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="diksha">TELEMETRY DATA</div>
+                <div class="row outer12">
+                    <div class="col-sm-12">
+                        <div class="inner-12 card" id="telemData" [routerLink]="['/home/telemetry']"
+                            style="background-color:rgb(253, 251, 171);">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/Group 10.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Telemetry
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -243,7 +243,6 @@
             </div>
         </div>
     </div>
-</div>
-<div id="spinner" style="display: none;">
-    <div class="loading">Loading&#8230;</div>
-</div>
+    <div id="spinner" style="display: none;">
+        <div class="loading">Loading&#8230;</div>
+    </div>

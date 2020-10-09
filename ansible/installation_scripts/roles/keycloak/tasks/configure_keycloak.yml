@@ -1,4 +1,5 @@
 ---
+#
 - name: Checking the realm
   shell: ./kcadm.sh get realms --fields realm,enabled --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}
   args:
@@ -37,6 +38,46 @@
     temp_config_otp: false
   when: not keycloak_config_otp | bool
   tags: [ install, update ]
+
+# updating the config_otp
+
+- name: Creating the json for config_otp option
+  template:
+    src: cQube_realm_config_otp.json.j2
+    dest: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm_config_otp.json"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    mode: '0644'
+  tags: update
+
+- name: Updating the config_otp option to realm
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh update 'authentication/required-actions/CONFIGURE_TOTP' -r {{ realm_name }} -f {{ cQube_realm_config_otp_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    executable: /bin/bash
+  tags: update
+
+# 1.4.1 update  - Keycloak Login Theme - cqube_themes
+#--------------
+# new login theme change in keycloak
+# 
+# process: 
+# copying the theme directory from cQube/development/keycloak/cqube_themes to <base_dir>/cqube/keycloak/themes
+# using the `kcadm.sh` with `update` option
+
+- name: Copying the theme directory
+  copy: 
+    src: "../../development/keycloak/{{ login_theme_name }}"
+    dest: "{{ base_dir }}/cqube/keycloak/themes/{{ login_theme_name }}"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    mode: "0644"
+  tags: [ install, update ]
+
+- name: Updating the realm with new login theme
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh update realms/{{ realm_name }} -s 'loginTheme={{ login_theme_name }}' --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    executable: /bin/bash
+  tags: update
   
 - name: Creating the template for realm
   template:
@@ -53,33 +94,18 @@
     executable: /bin/bash
   tags: install
 
-- name: Creating the template to remove the defaultRoles 
-  template:
-    src: cQube_realm_defaultRoles.json.j2
-    dest: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm_defaultRoles.json"
-    owner: "{{ system_user_name }}"
-    group: "{{ system_user_name }}"
-    mode: '0644'
-  tags: [ install, update ]
-
-- name: Removing the defaultRoles from the list
-  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh update realms/{{ realm_name }} -f {{ cQube_realm_defaultRoles_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
-  args:
-    executable: /bin/bash
-  tags: [ install, update ] 
-
 - name: Adding the client roles to admin realm role
   shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh add-roles -r {{ realm_name }} --rname {{ admin_role }} --cclientid realm-management --rolename manage-users --rolename manage-realm --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:
     executable: /bin/bash
-  tags: [ install, update ]
+  tags: install
 
 - name: Getting the Role ID
   shell: ./kcadm.sh get roles -r {{realm_name}} --fields id,name --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}   
   args:
     chdir: "{{ base_dir }}/cqube/keycloak/bin/"
   register: result
-  tags: [ install, update ]
+  tags: install
 
 - name: Parsing the output
   set_fact:
@@ -87,10 +113,12 @@
   loop: '{{ result.stdout }}'
   when: item.name == report_viewer_role
   no_log: true
-  tags: [ install, update ]
+  tags: install
 
 - name: Adding the client roles to report_viewer realm role
   shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh add-roles -r {{ realm_name }} --rid {{ report_viewer_id }} --cclientid realm-management --rolename manage-users --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:
     executable: /bin/bash
-  tags: [ install, update ]
+  tags: install
+
+
