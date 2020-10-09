@@ -1,3 +1,4 @@
 {
-"comp_queries_filename":"""composite_queries.json"""
+"comp_queries_filename":"""composite_queries.json""",
+"comp_create_view_qry":"""select * from composite_create_views()"""
 }

@@ -22,7 +22,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/District_wise_report.csv"
+        self.filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(self.filename, 'rt')as f:
             reader = csv.reader(f)
@@ -40,7 +40,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        filename = p.get_download_dir() + "/District_wise_report.csv"
+        filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(filename, 'rt')as f:
             reader = csv.reader(f)
@@ -57,7 +57,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        filename = p.get_download_dir() + "/District_wise_report.csv"
+        filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(filename, 'rt')as f:
             reader = csv.reader(f)
@@ -74,7 +74,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        filename = p.get_download_dir() + "/District_wise_report.csv"
+        filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(filename, 'rt')as f:
             reader = csv.reader(f)
@@ -91,7 +91,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        filename = p.get_download_dir() + "/District_wise_report.csv"
+        filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(filename, 'rt')as f:
             reader = csv.reader(f)
@@ -108,7 +108,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        filename = p.get_download_dir() + "/District_wise_report.csv"
+        filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(filename, 'rt')as f:
             reader = csv.reader(f)
@@ -125,7 +125,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        filename = p.get_download_dir() + "/District_wise_report.csv"
+        filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(filename, 'rt')as f:
             reader = csv.reader(f)
@@ -142,7 +142,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        filename = p.get_download_dir() + "/District_wise_report.csv"
+        filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(filename, 'rt')as f:
             reader = csv.reader(f)
@@ -159,7 +159,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        filename = p.get_download_dir() + "/District_wise_report.csv"
+        filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(filename, 'rt')as f:
             reader = csv.reader(f)
@@ -176,7 +176,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        filename = p.get_download_dir() + "/District_wise_report.csv"
+        filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(filename, 'rt')as f:
             reader = csv.reader(f)
@@ -193,7 +193,7 @@ class SchoolInfra_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        filename = p.get_download_dir() + "/District_wise_report.csv"
+        filename = p.get_download_dir() + "/Dist_wise_report.csv"
         row_count = 0
         with open(filename, 'rt')as f:
             reader = csv.reader(f)

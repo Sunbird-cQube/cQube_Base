@@ -86,7 +86,7 @@ class cQube_CRC_Report(unittest.TestCase):
 
     def test_schools_per_cluster_csv_download1(self):
         school = crc_schoolevel_records(self.driver)
-        result = school.check_csv_download1()
+        result = school.check_csv_download()
         if result == 0:
             print("Schools per cluster csv download report is working")
             print("on selection of each district,block and cluster")

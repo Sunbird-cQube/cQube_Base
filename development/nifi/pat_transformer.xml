@@ -2693,6 +2693,35 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>90946549-062e-39d2-0000-000000000000</id>
+                            <parentGroupId>0b5e5dfe-2112-3735-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>5608.0</x>
+<y>1544.0</y>
+                            </bends>
+                            <destination>
+<groupId>0b5e5dfe-2112-3735-0000-000000000000</groupId>
+<id>f47c18cd-4144-3b9a-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>0b5e5dfe-2112-3735-0000-000000000000</groupId>
+<id>9695142e-0526-34a8-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>90d4f02e-0d91-3f53-0000-000000000000</id>
                             <parentGroupId>0b5e5dfe-2112-3735-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -3247,8 +3276,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>3672.0</x>
-<y>5864.0</y>
+<x>3696.0</x>
+<y>5768.0</y>
                             </bends>
                             <bends>
 <x>3579.829345703125</x>
@@ -13559,7 +13588,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
     </entry>
     <entry>
         <key>filename</key>
-        <value>#{base_dir}/cqube/nifi_queries/#{pat_queries_filename}</value>
+        <value>#{base_dir}/cqube/nifi/nifi_queries/#{pat_queries_filename}</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -14522,6 +14551,7 @@ ${filename:startsWith('periodic_exam_qst_mst'):ifElse(#{pat_periodic_exam_qst_ms
     </entry>
     <entry>
         <key>sql-pre-query</key>
+        <value>#{sch_hrchy_rm_special_char_1}#{sch_hrchy_rm_special_char_2}</value>
     </entry>
     <entry>
         <key>SQL select query</key>
@@ -15055,7 +15085,7 @@ ${query_type:startsWith('pat_meta'):ifElse(#{pat_meta_jolt_spec},'None')}
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>pat_jolt_transform</name>
                             <relationships>
-<autoTerminate>true</autoTerminate>
+<autoTerminate>false</autoTerminate>
 <name>failure</name>
                             </relationships>
                             <relationships>
@@ -21550,6 +21580,75 @@ Mirror data validation of file:${filename}, Mirror data found </value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
+                        </processors>
+                        <processors>
+                            <id>f47c18cd-4144-3b9a-0000-000000000000</id>
+                            <parentGroupId>0b5e5dfe-2112-3735-0000-000000000000</parentGroupId>
+                            <position>
+<x>5136.0</x>
+<y>1664.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>log-level</key>
+        <value>
+            <name>log-level</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>
+            <name>log-prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>
+            <name>log-message</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>log-level</key>
+        <value>error</value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>---------AGGREGATIONS-----------</value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>aggregations:
+file:${filename} Error during jolt transformation of "${query_type}" query.</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>LogMessage</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
                             <id>f854717e-be6a-308b-0000-000000000000</id>
@@ -30201,5 +30300,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/29/2020 11:20:25 IST</timestamp>
+    <timestamp>10/08/2020 14:35:00 IST</timestamp>
 </template>

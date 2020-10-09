@@ -43,20 +43,22 @@ class test_school_map_schoollevel_records():
                     else:
                         self.driver.find_element_by_id(Data.Download).click()
                         time.sleep(3)
-                        self.filename = p.get_download_dir_SI_MAP_Download1() + "/School_per_cluster_report.csv"
+                        self.filename = p.get_download_dir() + "/School_per_cluster_report.csv"
                         if not os.path.isfile(self.filename):
                             print(select_cluster.options[z].text ,"csv file is not downloaded!")
                         else:
                             with open(self.filename) as fin:
-                                csv_reader = csv.reader(fin, delimiter=',')
-                                header = next(csv_reader)
-                                total = 0
-                                for row in csv.reader(fin):
-                                    total += int(row[2])
+                                csv_reader = csv.reader(fin)
+                                data = list(csv_reader)
+                                countrecords =len(data)
+                                # header = next(csv_reader)
+                                # total = 0
+                                # for row in csv.reader(fin):
+                                #     total += int(row[2])
                                 school = self.driver.find_element_by_id("schools").text
                                 sc= re.sub('\D', "", school)
-                                if int(sc) != total:
-                                    print(select_block.options[y].text, "schools:", total, int(sc), "mismatch found")
+                                if int(sc) != int(countrecords)-1:
+                                    print(select_block.options[y].text, "schools:", int(countrecords)-1, int(sc), "mismatch found")
                                     count = count + 1
                             self.remove_csv1()
         return count

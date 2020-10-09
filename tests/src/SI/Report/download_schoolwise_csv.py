@@ -23,7 +23,7 @@ class school_wise_donwload():
             District_wise.select_by_index(4)
             self.data.page_loading(self.driver)
             self.driver.find_element_by_id(Data.Download_scator).click()
-            time.sleep(10)
+            time.sleep(15)
             self.filename = p.get_download_dir() + "/School_level_Infra_Report.csv"
             time.sleep(3)
             return os.path.isfile(self.filename)

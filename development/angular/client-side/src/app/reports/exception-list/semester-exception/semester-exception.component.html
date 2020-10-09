@@ -83,7 +83,7 @@
                 style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
         </div>
-        <div class="col-sm-7" style="font-family: Arial;">
+        <div class="col-sm-6" style="font-family: Arial;">
             <select id="choose_dist"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
@@ -115,6 +115,16 @@
                 </option>
             </select>
 
+        </div>
+        <div class="col-sm-3">
+            <span style="font-size: 12px;margin-left: 27%;">Select Semester ➝</span> <select id="choose_semester"
+                style="float: right; padding: 3px;margin-left: 2%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="semester" (change)="semSelect()">
+                <option [value]="semester" disabled selected="selected">Choose semester</option>
+                <option *ngFor="let sem of semesters" [(ngValue)]="sem.id">
+                    {{sem.name}}
+                </option>
+            </select>
         </div>
 
     </div>
