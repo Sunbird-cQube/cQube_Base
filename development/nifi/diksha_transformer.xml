@@ -27493,30 +27493,7 @@ Optional(ParseBigDecimal()),Optional(parseInt()),Optional(ParseBigDecimal())</va
     </entry>
     <entry>
         <key>jolt-spec</key>
-        <value>[{
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "district_id": "data.[&amp;1].district_id",
-        "district_name": "data.[&amp;1].district_name",
-        "type": "data.[&amp;1].type",
-        "collection_name": "data.[&amp;1].collection_name",
-        "@total_content_plays": "data.[&amp;1].total_content_plays",
-        "total_content_plays": "footer.total_content_plays[]"
-      }
-    }
-	},
-
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "footer": {
-        "total_content_plays": "=intSum(@(1,total_content_plays))"
-      }
-    }
- }
-
-]</value>
+        <value>#{JoltTransformJSON_all_districts}</value>
     </entry>
     <entry>
         <key>Transform Cache Size</key>
@@ -34822,24 +34799,7 @@ file: ${filename} null values are not found.</value>
     </entry>
     <entry>
         <key>jolt-spec</key>
-        <value>[
-   {
-      "operation":"shift",
-      "spec":{
-         "*":{
-            "total_content_plays":"collections.@(1,collection_name)"
-         }
-      }
-   },
-   {
-      "operation":"modify-overwrite-beta",
-      "spec":{
-         "collections":{
-            "*":"=intSum(@(1,&amp;))"
-         }
-      }
-   }
-]</value>
+        <value>#{JoltTransformJSON_all_collections}</value>
     </entry>
     <entry>
         <key>Transform Cache Size</key>
@@ -35430,5 +35390,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/25/2020 15:06:21 IST</timestamp>
+    <timestamp>10/08/2020 15:36:37 IST</timestamp>
 </template>

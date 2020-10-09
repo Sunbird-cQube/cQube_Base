@@ -19,7 +19,7 @@ router.post('/dikshaAllData', auth.authController, async (req, res) => {
             return a.district_name
         })
         chartData['data'] = districtsData.map(a => {
-            return a.total_content_plays
+            return { total_content_plays: a.total_content_plays, percentage: a.percentage }
         })
         logger.info('--- diksha chart allData api response sent ---');
         res.send({ chartData, downloadData: districtsData, footer: footer.total_content_plays });
@@ -52,7 +52,7 @@ router.post('/dikshaGetCollections', auth.authController, async (req, res) => {
                     return a.district_name
                 })
                 chartData['data'] = districtsData.map(a => {
-                    return a.total_content_plays
+                    return { total_content_plays: a.total_content_plays, percentage: a.percentage }
                 })
             }
         } else {
@@ -106,7 +106,7 @@ router.post('/dikshaGetCollectionData', auth.authController, async (req, res) =>
             return a.district_name
         })
         chartData['data'] = collectionData.map(a => {
-            return a.total_content_plays
+            return { total_content_plays: a.total_content_plays, percentage: a.percentage }
         })
         logger.info('--- diksha get data on collection select api response sent ---');
         res.send({ chartData, downloadData: collectionData, footer: footerData });
