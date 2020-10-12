@@ -164,7 +164,7 @@
                                 </div>
                                 <div class="inner-3">
                                     CRC Visit
-                                    <div class="views">
+                                    <div class="views" style="width: 140px;">
                                         <p *ngIf="crcrViews;else other_content" id="views">views: {{crcrViews}}</p>
                                         <ng-template #other_content>
                                             <p id="errViews">views: 0 {{timePeriod}}</p>
@@ -314,14 +314,14 @@
                 <div class="row outer12">
                     <div class="col-sm-12">
                         <div class="inner-12 card" id="telemData" [routerLink]="['/home/telemetry']"
-                            style="background-color:rgb(253, 251, 171);" (click)="fetchTelemetry($event,'telemData')">
+                            style="background-color:rgb(236, 235, 126);" (click)="fetchTelemetry($event,'telemData')">
                             <div class="row">
                                 <div class="inner-2">
                                     <img class="ic-equalizer" src="../../assets/Group 10.svg" alt="">
                                 </div>
                                 <div class="inner-3">
                                     Telemetry
-                                    <div class="views">
+                                    <div class="views" style="width: 140px;">
                                         <p *ngIf="telemDataViews;else other_content" id="views">views:
                                             {{telemDataViews}}</p>
                                         <ng-template #other_content>
