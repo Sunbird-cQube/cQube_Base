@@ -279,14 +279,13 @@ export class AppServiceComponent {
 
     //capturing telemetry.....
     telemetry(date) {
-        console.log(this.telemetryData);
         this.logoutOnTokenExpire();
         return this.http.post(`${this.baseUrl}/telemetry`, { telemetryData: this.telemetryData, date: date }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
-    getTelemetry() {
+    getTelemetry(data) {
         this.logoutOnTokenExpire();
-        return this.http.get(`${this.baseUrl}/telemetry`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/telemetry/data`, {period: data},{ 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     //

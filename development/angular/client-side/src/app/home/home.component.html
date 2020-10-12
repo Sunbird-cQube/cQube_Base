@@ -20,7 +20,7 @@
   </span>
 </mat-toolbar>
 
-<mat-sidenav-container>
+<mat-sidenav-container style="background-color: rgb(245, 245, 245);">
   <mat-sidenav #sidenav>
     <mat-nav-list style="font-family: Arial;" class=sidenav>
       <mat-toolbar style="height: 80px; background-color: white; border-bottom: 1px solid lightgray;">
@@ -31,56 +31,6 @@
       </mat-toolbar>
 
       <div *ngIf="!showsideMenu">
-
-        <mat-nav-list>
-          <mat-list-item (click)="showSubmenu4 = !showSubmenu4" class="abc1"
-            style="font-family: Arial; border-bottom: 1px solid lightgray;">
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-            <span class="full-width" id="excpList" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; "> Exception
-              List</span>
-            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu4}" *ngIf="isExpanded || isShowing">
-              expand_more</mat-icon>
-          </mat-list-item>
-          <div class="submenu4" [ngClass]="{'expanded' : showSubmenu4}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['sem-exception']" (click)="fetchTelemetry($event,'SemExcp')"
-              (click)="sidenav.toggle() " id="SemException" (click)="showSubmenu4 = !showSubmenu4"><span
-                style="margin-left: 50px;">Semester Exception</span></a>
-            <a mat-list-item [routerLink]="['download-missing-data']" (click)="fetchTelemetry($event,'missingData')"
-              (click)="sidenav.toggle()" id="cmplnErr" (click)="showSubmenu4 = !showSubmenu4"><span
-                style="margin-left: 50px;">Completion Error</span></a>
-          </div>
-        </mat-nav-list>
-
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
-          [routerLink]="['crc-report']" (click)="fetchTelemetry($event,'crcr')" id="crcReport">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; CRC Report </td>
-        </a>
-
-        <mat-nav-list>
-          <mat-list-item (click)="showSubmenu3 = !showSubmenu3" class="abc1"
-            style="font-family: Arial; border-bottom: 1px solid lightgray;">
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-            <span class="full-width" id="attedReport" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
-              Attendance</span>
-            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu3}" *ngIf="isExpanded || isShowing">
-              expand_more</mat-icon>
-          </mat-list-item>
-          <div class="submenu3" [ngClass]="{'expanded' : showSubmenu3}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['attendance-report']" (click)="fetchTelemetry($event,'sar')"
-              (click)="sidenav.toggle() " id="stdReport" (click)="showSubmenu3 = !showSubmenu3"><span
-                style="margin-left: 50px;">Student Attendance
-                Report</span></a>
-            <a mat-list-item [routerLink]="['teacher-attendance']" (click)="fetchTelemetry($event,'tar')"
-              (click)="sidenav.toggle()" id="thrReport" (click)="showSubmenu3 = !showSubmenu3"><span
-                style="margin-left: 50px;">Teacher Attendance
-                Report</span></a>
-          </div>
-        </mat-nav-list>
-
         <mat-nav-list>
           <mat-list-item (click)="showSubmenu = !showSubmenu" class="abc1"
             style="font-family: Arial; border-bottom: 1px solid lightgray;">
@@ -91,14 +41,58 @@
               expand_more</mat-icon>
           </mat-list-item>
           <div class="submenu1" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['school-infra-map']" (click)="fetchTelemetry($event,'imr')"
-              (click)="sidenav.toggle() " id="mapReport" (click)="showSubmenu = !showSubmenu"><span
-                style="margin-left: 50px;">Infrastructure Map Report</span></a>
-            <a mat-list-item [routerLink]="['school-infrastructure']" (click)="fetchTelemetry($event,'icr')"
-              (click)="sidenav.toggle()" id="tblReport" (click)="showSubmenu = !showSubmenu"><span
-                style="margin-left: 50px;">Infrastructure Chart Report</span></a>
+            <a mat-list-item [routerLink]="['school-infra-map']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'imr')" id="mapReport" (click)="showSubmenu = !showSubmenu"><span
+                style="margin-left: 50px;">Infrastructure access by
+                Location</span></a>
+            <a mat-list-item [routerLink]="['school-infrastructure']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'cr')" id="tblReport" (click)="showSubmenu = !showSubmenu"><span
+                style="margin-left: 50px;">Composite Report</span></a>
+            <a mat-list-item [routerLink]="['udise-report']" id="udiseReport" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'udise')" (click)="showSubmenu = !showSubmenu"><span
+                style="margin-left: 50px;">UDISE Report</span></a>
           </div>
         </mat-nav-list>
+
+        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
+          [routerLink]="['composit-report']" (click)="fetchTelemetry($event,'composite')" id="compositRep">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Composite Report across metrics </td>
+        </a>
+
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu2 = !showSubmenu2" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+            <span class="full-width" id="diksha" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
+              Diksha</span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu2}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu2" [ngClass]="{'expanded' : showSubmenu2}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['diksha-chart']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'dsc')" id="chrtReport" (click)="showSubmenu2 = !showSubmenu2"><span
+                style="margin-left: 50px;">Usage by user profile</span></a>
+            <a mat-list-item [routerLink]="['diksha-column-chart']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'dcc')" id="clmnReport" (click)="showSubmenu2 = !showSubmenu2"><span
+                style="margin-left: 50px;">Usage by Location</span></a>
+            <a mat-list-item [routerLink]="['diksha-table']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'dtr')" id="dtblReport" (click)="showSubmenu2 = !showSubmenu2"><span
+                style="margin-left: 50px;">Usage by Content Name</span></a>
+          </div>
+        </mat-nav-list>
+
+        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
+          [routerLink]="['crc-report']" (click)="fetchTelemetry($event,'crcr')" id="crcReport">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; CRC Visit </td>
+        </a>
 
         <mat-nav-list>
           <mat-list-item (click)="showSubmenu6 = !showSubmenu6" class="abc1"
@@ -111,62 +105,63 @@
               expand_more</mat-icon>
           </mat-list-item>
           <div class="submenu6" [ngClass]="{'expanded' : showSubmenu6}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['semester-report']" (click)="fetchTelemetry($event,'semr')"
-              (click)="sidenav.toggle() " id="semReport" (click)="showSubmenu6 = !showSubmenu6"><span
+            <a mat-list-item [routerLink]="['semester-report']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'sr')" id="semReport" (click)="showSubmenu6 = !showSubmenu6"><span
                 style="margin-left: 50px;">Semester Report</span></a>
-            <a mat-list-item [routerLink]="['pat-report']" (click)="fetchTelemetry($event,'pat')" id="patReport"
-              (click)="sidenav.toggle() " (click)="showSubmenu6 = !showSubmenu6"><span
-                style="margin-left: 50px;">Periodic Exam Report</span></a>
+            <a mat-list-item [routerLink]="['pat-report']" id="patReport" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'pat')" (click)="showSubmenu6 = !showSubmenu6"><span
+                style="margin-left: 50px;">Periodic Assessment
+                Test</span></a>
           </div>
         </mat-nav-list>
 
         <mat-nav-list>
-          <mat-list-item (click)="showSubmenu2 = !showSubmenu2" class="abc1"
+          <mat-list-item (click)="showSubmenu4 = !showSubmenu4" class="abc1"
             style="font-family: Arial; border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-            <span class="full-width" id="diksha" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
-              Diksha</span>
-            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu2}" *ngIf="isExpanded || isShowing">
+            <span class="full-width" id="excpList" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; "> Exception
+              List</span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu4}" *ngIf="isExpanded || isShowing">
               expand_more</mat-icon>
           </mat-list-item>
-          <div class="submenu2" [ngClass]="{'expanded' : showSubmenu2}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['diksha-chart']" (click)="fetchTelemetry($event,'dsc')"
-              (click)="sidenav.toggle() " id="chrtReport" (click)="showSubmenu2 = !showSubmenu2"><span
-                style="margin-left: 50px;">Diksha Stack Chart</span></a>
-            <a mat-list-item [routerLink]="['diksha-column-chart']" (click)="fetchTelemetry($event,'dcc')"
-              (click)="sidenav.toggle()" id="clmnReport" (click)="showSubmenu2 = !showSubmenu2"><span
-                style="margin-left: 50px;">Diksha Column Chart</span></a>
-            <a mat-list-item [routerLink]="['diksha-table']" (click)="fetchTelemetry($event,'dtr')"
-              (click)="sidenav.toggle()" id="dtblReport" (click)="showSubmenu2 = !showSubmenu2"><span
-                style="margin-left: 50px;">Diksha Table Report</span></a>
+          <div class="submenu4" [ngClass]="{'expanded' : showSubmenu4}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['sem-exception']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'SemExp')" id="SemException" (click)="showSubmenu4 = !showSubmenu4"><span
+                style="margin-left: 50px;">Semester Exception</span></a>
+            <a mat-list-item [routerLink]="['download-missing-data']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'isdata')" id="cmplnErr" (click)="showSubmenu4 = !showSubmenu4"><span
+                style="margin-left: 50px;">Download Exception List</span></a>
+          </div>
+        </mat-nav-list>
+
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu3 = !showSubmenu3" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+            <span class="full-width" id="attedReport" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
+              Attendance</span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu3}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu3" [ngClass]="{'expanded' : showSubmenu3}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['attendance-report']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'sar')" id="stdReport" (click)="showSubmenu3 = !showSubmenu3"><span
+                style="margin-left: 50px;">Student Attendance
+              </span></a>
+            <a mat-list-item [routerLink]="['teacher-attendance']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'tar')" id="thrReport" (click)="showSubmenu3 = !showSubmenu3"><span
+                style="margin-left: 50px;">Teacher Attendance
+              </span></a>
           </div>
         </mat-nav-list>
 
         <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
-          [routerLink]="['telemetry']" (click)="fetchTelemetry($event,'telemetry')" id="telemReport">
+          [routerLink]="['telemetry']" (click)="fetchTelemetry($event,'telemData')" id="telemReport">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
           <td>
             &nbsp;&nbsp; Telemetry </td>
-        </a>
-
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
-          [routerLink]="['udise-report']" (click)="fetchTelemetry($event,'udiser')" id="udiseReport">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; UDISE report </td>
-        </a>
-
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
-          [routerLink]="['composit-report']" (click)="fetchTelemetry($event,'compositer')" id="compositRep">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Composite-Report </td>
         </a>
 
         <a *ngIf="showUser" mat-list-item (click)="sidenav.toggle()"
@@ -181,8 +176,8 @@
       </div>
 
     </mat-nav-list>
-    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.4 </span>
-    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 29/09/2020</span>
+    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.4.1 </span>
+    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 09/10/2020</span>
   </mat-sidenav>
 
   <mat-sidenav-content>

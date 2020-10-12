@@ -11,7 +11,24 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
 export class DashboardComponent implements OnInit {
   hiddenPass = false;
   edate: Date;
+  telemetryData = [];
+  timePeriod;
+
+  imrViews;
+  crViews;
+  udiseViews;
+  compositeViews;
+  dscViews;
+  dccViews;
+  dtrViews;
+  crcrViews;
+  srViews;
+  patViews;
+  semExpViews;
+  isdataViews;
   sarViews;
+  tarViews;
+  telemDataViews;
 
   constructor(private router: Router, private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
     service.logoutOnTokenExpire();
@@ -25,25 +42,20 @@ export class DashboardComponent implements OnInit {
     } else {
       this.hiddenPass = true;
     }
+    this.callOnInterval();
+    setInterval(() => {
+      this.callOnInterval();
+    }, 6000);
+  }
+
+  callOnInterval() {
     this.getViews24hrs();
     setTimeout(() => {
-      this.getViews24hrs();
-      setInterval(() => {
-        this.getViews24hrs();
-      }, 15000);
-    }, 45000);
-    setTimeout(() => {
       this.getViews7days();
-      setInterval(() => {
-        this.getViews7days();
-      }, 30000);
-    }, 15000);
+    }, 2000);
     setTimeout(() => {
       this.getViews30days();
-      setInterval(() => {
-        this.getViews30days();
-      }, 45000);
-    }, 30000);
+    }, 4000);
   }
 
   fetchTelemetry(event, report) {
@@ -51,24 +63,91 @@ export class DashboardComponent implements OnInit {
   }
 
   getViews24hrs() {
-    this.service.getTelemetry().subscribe(res => {
-      console.log(res);
-      this.sarViews = res['objArr'][0].views + " (" + res['objArr'][0].period + ")";
+    this.service.getTelemetry('last_day').subscribe(res => {
+      this.telemetryData = res['telemetryData'];
+      this.assignViews(this.telemetryData);
     })
   }
 
   getViews7days() {
-    this.service.getTelemetry().subscribe(res => {
-      console.log(res);
-      this.sarViews = res['objArr'][1].views + " (" + res['objArr'][1].period + ")";
+    this.service.getTelemetry('last_7_days').subscribe(res => {
+      this.telemetryData = res['telemetryData'];
+      this.assignViews(this.telemetryData);
     })
   }
 
   getViews30days() {
-    this.service.getTelemetry().subscribe(res => {
-      console.log(res);
-      this.sarViews = res['objArr'][2].views + " (" + res['objArr'][2].period + ")";
+    this.service.getTelemetry('last_30_days').subscribe(res => {
+      this.telemetryData = res['telemetryData'];
+      this.assignViews(this.telemetryData);
     })
+  }
+
+  assignViews(views) {
+    this.imrViews = "";
+    this.crViews = "";
+    this.udiseViews = "";
+    this.compositeViews = "";
+    this.dscViews = "";
+    this.dccViews = "";
+    this.dtrViews = "";
+    this.crcrViews = "";
+    this.srViews = "";
+    this.patViews = "";
+    this.semExpViews = "";
+    this.isdataViews = "";
+    this.sarViews = "";
+    this.tarViews = "";
+    this.telemDataViews = "";
+
+    views.forEach(element => {
+      this.timePeriod = " (" + element.time_range + ")";
+      if (element.reportid == 'imr') {
+        this.imrViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'cr') {
+        this.crViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'udise') {
+        this.udiseViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'composite') {
+        this.compositeViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'dsc') {
+        this.dscViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'dcc') {
+        this.dccViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'dtr') {
+        this.dtrViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'crcr') {
+        this.crcrViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'sr') {
+        this.srViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'pat') {
+        this.patViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'SemExp') {
+        this.semExpViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'isdata') {
+        this.isdataViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'sar') {
+        this.sarViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'tar') {
+        this.tarViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+      if (element.reportid == 'telemData') {
+        this.telemDataViews = element.number_of_views + " (" + element.time_range + ")";
+      }
+    });
   }
 
 

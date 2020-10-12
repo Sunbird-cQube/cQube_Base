@@ -123,8 +123,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 .outer1 {
-  height: 120px auto;
-  width: 98%;
+  height: 120px;
+  width: 100%;
   border-radius: 20px;
   background-color: #FFFFFF;
   box-shadow: 0 2px 24px 0 rgba(0,84,254,0.18);
@@ -135,7 +135,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   height: 90px;
   /* width: 270px; */
   border-radius: 13px;
-  background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%);
+  /* background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%); */
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.02);
 }
 
@@ -151,7 +151,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 .inner-3 {
   height: 18px;
   /* width: 159px; */
-  color: #FFFFFF;
+  color: #383737;
   font-family: "Noto Sans";
   font-size: 13px;
   font-weight: bold;
@@ -231,18 +231,17 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 .outer12 {
-  margin:0px 5px 0px 0px;
   height: 120px;
-  width: 63%;
+  width: 100%;
   border-radius: 20px;
   background-color: #FFFFFF;
   box-shadow: 0 2px 24px 0 rgba(0,84,254,0.18);
 }
 
 .outer13 {
-  margin:0px 5px 0px 0px;
+  /* margin:0px 5px 0px 0px; */
   height: 120px;
-  width: 31%;
+  width: 100%;
   border-radius: 20px;
   background-color: #FFFFFF;
   box-shadow: 0 2px 24px 0 rgba(0,84,254,0.18);
@@ -251,9 +250,9 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 .inner-12 {
   margin: 15px 0px 15px 0px;
   height: 90px;
-  /* width: 270px; */
+  width: 100%;
   border-radius: 13px;
-  background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%);
+  /* background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%); */
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.02);
 }
 
@@ -265,8 +264,21 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   margin-top: 13px;
   border-radius: 8px;
 }
+.views1{
+  background-color: white; 
+  height: 20px;
+  width: 150px; 
+  float: white;
+  margin-top: 8px;
+  border-radius: 8px;
+}
 
 #views{
+  color: rgb(109, 109, 109);
+  float: left;
+  margin-left: 3%;
+}
+#errViews{
   color: rgb(109, 109, 109);
   float: left;
   margin-left: 3%;

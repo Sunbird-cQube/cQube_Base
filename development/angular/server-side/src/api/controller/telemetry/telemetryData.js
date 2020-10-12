@@ -6,6 +6,8 @@ const jsonexport = require('jsonexport');
 var S3Append = require('s3-append').S3Append;
 var config = require('../../lib/config');
 const { format } = require('path');
+const s3File = require('../../lib/reads3File');
+
 
 router.post('/', auth.authController, async (req, res) => {
     try {
@@ -66,37 +68,19 @@ router.post('/', auth.authController, async (req, res) => {
     }
 });
 
-router.get('/', (req, res) => {
-    // const_data['getParams1']['Key'] = `telemetry/telemetry_view/telemetry_views_2020_10_08_15.csv`;
-    // const_data['s3'].getObject(const_data['getParams1'], async function (err, data) {
-    //     if (err) {
-    //         logger.error(err);
-    //         res.status(500).json({ msg: "Something went wrong" });
-    //     } else if (!data) {
-    //         logger.error("No data found in s3 file");
-    //         res.status(403).json({ msg: "No such data found" });
-    //     } else {
-    var objArr = [
-        {
-            reportId: "sar",
-            views: 225,
-            period: "last 24hrs"
-        },
-        {
-            reportId: "sar",
-            views: 2225,
-            period: "last 7days"
-        },
-        {
-            reportId: "sar",
-            views: 22225,
-            period: "last 30days"
-        }
-    ]
-    // console.log(data.Body.toString());
-    res.send({ objArr });
-    //     }
-    // });
+router.post('/data', async (req, res) => {
+    try {
+        logger.info('---get telemetry api ---');
+        var period = req.body.period;
+        let fileName = `cqube_telemetry_views/${period}/telemetry_views_data.json`;
+        var telemetryData = await s3File.readS3File(fileName);
+
+        logger.info('--- get telemetry api response sent ---');
+        res.status(200).send({ telemetryData });
+    } catch (e) {
+        logger.error(`Error :: ${e}`)
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+    }
 })
 
 module.exports = router
