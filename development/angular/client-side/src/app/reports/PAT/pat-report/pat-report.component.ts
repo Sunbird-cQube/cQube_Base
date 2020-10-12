@@ -105,7 +105,6 @@ export class PATReportComponent implements OnInit {
   onPeriodSelect() {
     console.log(this.period);
     // this.levelWiseFilter();
-    console.log(this.period);
   }
 
   onGradeSelect(data) {

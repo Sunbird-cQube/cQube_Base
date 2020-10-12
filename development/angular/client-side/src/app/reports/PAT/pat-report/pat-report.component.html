@@ -78,7 +78,7 @@
             <select id="period"
                 style="padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="period" (change)="onPeriodSelect()">
-                <option [value]="period" disabled selected="selected">Choose a timeRange</option>
+                <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
                 <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
                     {{period.value}}
                 </option>
