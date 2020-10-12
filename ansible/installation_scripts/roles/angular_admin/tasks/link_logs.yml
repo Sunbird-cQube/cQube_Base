@@ -19,8 +19,8 @@
   args:
     warn: false
   with_items:
-    - { src: "{{base_dir}}/cqube/nifi/logs/nifi-app.log", dest: "nifi-app.log" }
-    - { src: "{{base_dir}}/cqube/nifi/logs/nifi-bootstrap.log", dest: "nifi-bootstrap.log" }
+    - { src: "{{base_dir}}/cqube/nifi/nifi/logs/nifi-app.log", dest: "nifi-app.log" }
+    - { src: "{{base_dir}}/cqube/nifi/nifi/logs/nifi-bootstrap.log", dest: "nifi-bootstrap.log" }
     - { src: "/var/log/postgresql/postgresql-10-main.log", dest: "postgresql-10-main.log" }
     - { src: "{{base_dir}}/cqube/emission_app/python/access.log", dest: "emission_app-access.log" }
     - { src: "{{base_dir}}/cqube/emission_app/python/error.log", dest: "emission_app-error.log" }
