@@ -83,6 +83,9 @@ export class PATReportComponent implements OnInit {
   blockFilter = [];
   clusterFilter = [];
 
+  timeRange = [{ key: 'last_day', value: "Last Day" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: 'last_30_days', value: "Last 30 Days" }];
+  period;
+
   constructor(
     public http: HttpClient,
     public service: PatReportService,
@@ -99,35 +102,24 @@ export class PATReportComponent implements OnInit {
     document.getElementById('homeBtn').style.display = "Block";
   }
 
+  onPeriodSelect() {
+    console.log(this.period);
+    // this.levelWiseFilter();
+    console.log(this.period);
+  }
+
   onGradeSelect(data) {
     this.grade = data;
     this.subjectHidden = false;
     this.subject = '';
-    if (this.level == 'district') {
-      this.districtWise();
-    }
-    if (this.level == 'block_wise') {
-      this.blockWise();
-    }
-    if (this.level == 'cluster_wise') {
-      this.clusterWise();
-    }
-    if (this.level == 'school_wise') {
-      this.schoolWise();
-    }
-
-    if (this.level == 'block') {
-      this.onDistrictSelect(this.districtId);
-    }
-    if (this.level == 'cluster') {
-      this.onBlockSelect(this.blockId);
-    }
-    if (this.level == 'school') {
-      this.onClusterSelect(this.clusterId);
-    }
+    this.levelWiseFilter();
   }
   onSubjectSelect(data) {
     this.subject = data;
+    this.levelWiseFilter();
+  }
+
+  levelWiseFilter() {
     if (this.level == 'district') {
       this.districtWise();
     }
@@ -522,7 +514,7 @@ export class PATReportComponent implements OnInit {
 
       this.service.gradeMetaData().subscribe(res => {
         if (res['data']['school']) {
-        this.allGrades = res['data']['school'];
+          this.allGrades = res['data']['school'];
         }
         this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
 
