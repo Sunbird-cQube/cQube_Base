@@ -76,13 +76,16 @@
     <div class="row">
         <div class="col-sm-2">
             <select id="period"
-                style="padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="padding: 3px;float: left; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="period" (change)="onPeriodSelect()">
                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
                 <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
                     {{period.value}}
                 </option>
             </select>
+            <!-- <span style="margin-left: 10px;float: left; cursor: pointer; color: gray; width: 30px;display: none;"
+                id="reset"><i class="fa fa-refresh" aria-hidden="true" (click)="onPeriodSelect();"
+                    (click)="resetToAll()" title="Reset to All"></i></span> -->
         </div>
         <div class="col-sm-2">
             <button class="btn btn-secondary" id="block"
