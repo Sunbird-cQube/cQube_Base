@@ -83,8 +83,8 @@ export class PATReportComponent implements OnInit {
   blockFilter = [];
   clusterFilter = [];
 
-  timeRange = [{ key: 'last_day', value: "Last Day" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: 'last_30_days', value: "Last 30 Days" }];
-  period;
+  timeRange = [{ key: 'last_7_days', value: "Last 7 Days" }, { key: 'last_30_days', value: "Last 30 Days" }];
+  period = '';
 
   constructor(
     public http: HttpClient,
