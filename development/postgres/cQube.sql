@@ -2927,9 +2927,9 @@ trained_cwsn  smallint,
 trained_comp  smallint
 );
 
-alter table udise_tch_profile drop constraint if exists udise_tch_profile_pkey;
+/*alter table udise_tch_profile drop constraint if exists udise_tch_profile_pkey;
 alter table udise_tch_profile add primary key(udise_sch_code,name,dob);
-alter table udise_tch_profile alter column tch_code drop not null;
+alter table udise_tch_profile alter column tch_code drop not null;*/
 
 create table if not exists udise_sch_exmmarks_c10(
 udise_sch_code  bigint not null,
