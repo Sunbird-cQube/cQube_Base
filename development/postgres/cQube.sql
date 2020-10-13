@@ -4038,3 +4038,18 @@ CREATE TABLE IF NOT EXISTS composite_config (
  primary key(template,category)
 );
 
+ create table if not exists telemetry_data
+    (
+  pageid text,
+  uid text,
+  event text,
+  level text,
+  locationid bigint,
+  locationname text,
+  lat double precision,
+  lng double precision,
+  download int,
+  created_on TIMESTAMP without time zone default current_timestamp
+  );
+
+
