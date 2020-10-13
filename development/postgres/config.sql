@@ -1695,30 +1695,23 @@ $$
 DECLARE
 temp_insert text;
 st_select text:='select string_agg(lower(column_name),'','') from udise_config where status = true
-and lower(type)=''metric'' and lower(metric_config)=''static''';
+and lower(type)=''metric''';
 st_select_cols text;
-ex_select text:='select string_agg(lower(column_name),'','') from udise_config where status = true
-and lower(type)=''metric'' and lower(metric_config)=''created''';
-ex_select_cols text;
 ex_agg text:='select string_agg(''((COALESCE(''||replace(trans_columns,'','','',0)+COALESCE('')||'',0))/''||
 	array_length(regexp_split_to_array(trans_columns,'',''),1)||'') as ''||lower(column_name),'','') from udise_config where status = true
 and lower(type)=''metric'' and lower(metric_config)=''created''';
 ex_agg_cols text;
 st_update text:='select string_agg(lower(column_name)||''=excluded.''||lower(column_name),'','') from udise_config where status = true
-and lower(type)=''metric'' and lower(metric_config)=''static''';
+and lower(type)=''metric''';
 st_update_cols text;
-ex_update text:='select string_agg(lower(column_name)||''=excluded.''||lower(column_name),'','') from udise_config where status = true
-and lower(type)=''metric'' and lower(metric_config)=''created''';
-ex_update_cols text;
 BEGIN
 EXECUTE st_select into st_select_cols;
-EXECUTE ex_select into ex_select_cols;
 EXECUTE ex_agg into ex_agg_cols;
 EXECUTE st_update into st_update_cols;
-EXECUTE ex_update into ex_update_cols;
+IF ex_agg_cols <>'' then 
 temp_insert='insert into udise_school_metrics_temp(
-  udise_school_id,academic_year,'||st_select_cols||','||ex_select_cols||')
-select udise_school_id,academic_year,'||st_select_cols||','||ex_select_cols||' from 
+  udise_school_id,academic_year,'||st_select_cols||')
+select udise_school_id,academic_year,'||st_select_cols||' from 
 (select udise_school_id,academic_year,
 round(cast(sum(no_cwsn_students_rec_incentive) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100.0 as adm_cwsn_students_incentives,
 round(cast(sum(no_gen_students_rec_incentive) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100.0 as adm_general_students_incentives,
@@ -1816,8 +1809,110 @@ round(cast(sum(trained_comp) as numeric)/NULLIF(cast(sum(no_of_teachers) as nume
 from udise_school_metrics_trans group by udise_school_id,academic_year)as s
 on conflict(udise_school_id)
 do update set 
-academic_year=excluded.academic_year,'||st_update_cols||',updated_on=now(),'||ex_update_cols||'';
-Execute temp_insert; 
+academic_year=excluded.academic_year,'||st_update_cols||',updated_on=now()';
+else 
+temp_insert='insert into udise_school_metrics_temp(
+  udise_school_id,academic_year,'||st_select_cols||')
+select udise_school_id,academic_year,'||st_select_cols||' from 
+(select udise_school_id,academic_year,
+round(cast(sum(no_cwsn_students_rec_incentive) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100.0 as adm_cwsn_students_incentives,
+round(cast(sum(no_gen_students_rec_incentive) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100.0 as adm_general_students_incentives,
+round(cast(sum(no_cat_students_rec_incentive) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100.0 as adm_category_students_incentives,
+sum(case when is_students_counselling = ''1'' then 1 else 0 end) as  adm_students_counselling,
+sum(avg_instruct_days) as adm_instruct_days,
+sum(avg_scl_hours_childrens) as adm_avg_school_hours_childrens,
+sum(avg_work_hours_teachers) as adm_avg_working_hours_teachers,
+sum(case when is_training_oosc= ''1'' then 1 else 0 end) as adm_training_oosc,
+sum(case when stu_atndnc_yn= ''1'' then 1 else 0 end) as adm_student_attendance_electronic,
+sum(case when tch_atndnc_yn= ''1'' then 1 else 0 end) as adm_teacher_attendance_electronic,
+sum(case when nodal_tch_yn= ''1'' then 1 else 0 end) as adm_nodal_teacher,
+round(NULLIF(cast(sum(no_of_students) as numeric),0)/NULLIF(cast(SUM(is_txtbk_pre_pri+is_txtbk_pri+is_txtbk_upr+is_txtbk_sec+is_txtbk_hsec) as numeric),0),2) as adm_free_textbook_score,
+round(NULLIF(cast(sum(no_of_students) as numeric),0)/NULLIF(cast(SUM(is_tle_pre_pri+is_tle_pri+is_tle_upr+is_tle_sec+is_tle_hsec) as numeric),0),2) as adm_tech_education_score,
+round(NULLIF(cast(sum(no_of_students) as numeric),0)/NULLIF(cast(SUM(is_playmat_pre_pri+is_playmat_pri+is_playmat_upr+is_playmat_sec+is_playmat_hsec) as numeric),0),2) as adm_sports_equipments_score,
+sum(case when language_room= ''1'' then 1 else 0 end) as artlab_language_room,
+sum(case when geography_room= ''1'' then 1 else 0 end) as artlab_geography_room,
+sum(case when science_room= ''1'' then 1 else 0 end) as artlab_home_science_room,
+sum(case when psychology_room= ''1'' then 1 else 0 end) as artlab_psychology_room,
+round(cast(SUM(total_male_smc_trained+total_female_smc_trained) as numeric)/
+  NULLIF(cast(SUM(total_male_smc_members +total_female_smc_members) as numeric),0),2)*100.0 as cp_smc_members_training_provided,
+sum(total_meetings_smc)as cp_total_meetings_held_smc,
+sum(case when is_smdc_school= ''1'' then 1 else 0 end) as cp_smdc_school,
+round(cast(sum(cwsn_students) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100.0 as enr_cwsn_students,
+round(cast(sum(repeaters_students) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100.0 as enr_repeaters_students,
+round(cast(sum(no_students_girls) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100.0 as enr_girls_students,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(no_of_teachers) as numeric),0),2)*100.0 as enr_pupil_teacher_ratio,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(classrooms_good_condition) as numeric),0),2)*100 as enr_students_per_classroom,
+round(cast(sum(dev_grt_e) as numeric)/NULLIF(cast(sum(dev_grt_r) as numeric),0),2)*100 as ge_spent_school_development,
+round(cast(sum(maint_grt_e) as numeric)/NULLIF(cast(sum(maint_grt_r) as numeric),0),2)*100 as ge_spent_school_maintenance,
+round(cast(sum(tlm_grt_e) as numeric)/NULLIF(cast(sum(tlm_grt_r) as numeric),0),2)*100 as ge_spent_for_teachers,
+round(cast(sum(cw_grt_e) as numeric)/NULLIF(cast(sum(cw_grt_r) as numeric),0),2)*100 as ge_spent_civil_works,
+round(cast(sum(anl_grt_e) as numeric)/NULLIF(cast(sum(anl_grt_r) as numeric),0),2)*100 as ge_spent_annual_school,
+round(cast(sum(minrep_grt_e) as numeric)/NULLIF(cast(sum(minrep_grt_r) as numeric),0),2)*100 as ge_spent_minor_repair,
+round(cast(sum(labrep_grt_e) as numeric)/NULLIF(cast(sum(labrep_grt_r) as numeric),0),2)*100 as ge_spent_lab_repair,
+round(cast(sum(book_grt_e) as numeric)/NULLIF(cast(sum(book_grt_r) as numeric),0),2)*100 as ge_spent_books_purchase,
+round(cast(sum(elec_grt_e) as numeric)/NULLIF(cast(sum(elec_grt_r) as numeric),0),2)*100 as ge_spent_on_wte,
+round(cast(sum(oth_grt_e) as numeric)/NULLIF(cast(sum(oth_grt_r) as numeric),0),2)*100 as ge_spent_others,
+round(cast(sum(compo_grt_e) as numeric)/NULLIF(cast(sum(compo_grt_r) as numeric),0),2)*100 as ge_school_grants,
+round(cast(sum(lib_grt_e) as numeric)/NULLIF(cast(sum(lib_grt_r) as numeric),0),2)*100 as ge_spent_library,
+round(cast(sum(sport_grt_e) as numeric)/NULLIF(cast(sum(sport_grt_r) as numeric),0),2)*100 as ge_spent_physical_educ,
+round(cast(sum(media_grt_e) as numeric)/NULLIF(cast(sum(media_grt_r) as numeric),0),2)*100 as ge_spent_media,
+round(cast(sum(smc_grt_e) as numeric)/NULLIF(cast(sum(smc_grt_r) as numeric),0),2)*100 as ge_spent_smc_smdc,
+round(cast(sum(presch_grt_e) as numeric)/NULLIF(cast(sum(presch_grt_r) as numeric),0),2)*100 as ge_spent_pre_school,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(laptop_fun) as numeric),0),2) as ict_func_laptop_per_student,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(tablets_fun) as numeric),0),2) as ict_func_tablets_per_student,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(desktop_fun) as numeric),0),2) as ict_func_desktop_per_student,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(server_fun) as numeric),0),2) as ict_func_servers_per_student,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(projector_fun) as numeric),0),2) as ict_func_projector_per_student,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(led_fun) as numeric),0),2) as ict_func_led_per_student,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(webcam_fun) as numeric),0),2) as ict_func_webcam_per_student,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(generator_fun) as numeric),0),2) as ict_func_pwrbkp_per_student,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(printer_fun) as numeric),0),2) as ict_func_printer_per_student,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(sum(scanner_fun) as numeric),0),2) as ict_func_scanner_per_student,
+sum(case when medchk_yn= ''1'' then 1 else 0 end) as med_checkup_conducted,
+sum(case when dewormtab_yn= ''1'' then 1 else 0 end) as med_dewoming_tablets,
+sum(case when irontab_yn= ''1'' then 1 else 0 end) as med_iron_tablets,
+round(cast(sum(students_got_placement_class10) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100 as nsqf_placement_class_10_placed,
+round(cast(sum(students_got_placement_class12) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100 as nsqf_placement_class_12_placed,
+round(cast(sum(no_students_received_incentives) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100 as nsqf_students_incentives,
+round(cast(SUM(
+  case when cce_yn_pri = ''1'' then 1 else 0 end+ case when cce_yn_upr = ''1'' then 1 else 0 end+
+  case when  cce_yn_sec = ''1'' then 1 else 0 end+ case when cce_yn_hsec = ''1'' then 1 else 0 end
+  ) as numeric)/4,2) as pi_cce,
+round(cast(sum(students_enrolled_rte) as numeric)/NULLIF(cast(sum(no_of_students) as numeric),0),2)*100 as pi_enrolled_rte,
+sum(case when sdmp_plan_yn= ''1'' then 1 else 0 end) as safety_sdmp,
+sum(case when cctv_cam_yn= ''1'' then 1 else 0 end) as safety_cctv,
+sum(case when fire_ext_yn= ''1'' then 1 else 0 end) as safety_fire_extinguisher,
+sum(case when slfdef_grt_yn= ''1'' then 1 else 0 end) as safety_is_girls_trained_defense,
+round(cast(sum(slfdef_trained) as numeric)/NULLIF(cast(sum(no_students_girls) as numeric),0),2)*100 as safety_girls_trained_defense,
+round(cast(sum(no_students_boys) as numeric)/NULLIF(cast(sum(no_of_boys_func_toilet) as numeric),0),2) as infra_boys_per_func_toilet,
+round(cast(sum(no_students_girls) as numeric)/NULLIF(cast(sum(no_of_girls_func_toilet) as numeric),0),2) as infra_girls_per_func_toilet,
+round(cast(sum(no_of_students) as numeric)/NULLIF(cast(SUM(no_boys_func_urinals+no_girls_func_urinals) as numeric),0),2)as infra_students_per_urinals,
+sum(case when cwsn_sch_yn= ''1'' then 1 else 0 end) as infra_cwsn_school,
+sum(case when anganwadi_yn= ''1'' then 1 else 0 end) as infra_anganwadi,
+sum(case when voc_course_yn= ''1'' then 1 else 0 end) as infra_vocational_course,
+sum(case when nsqf_yn= ''1'' then 1 else 0 end) as infra_nsqf,
+sum(no_visit_crc) as insp_crc,
+sum(no_visit_brc)as insp_brc,
+sum(no_visit_dis)as insp_dis,
+round(cast(sum(students_passed_class10) as numeric)/NULLIF(cast(sum(students_applied_class10) as numeric),0),2)*100 as perf_class_10_passed,
+round(cast(sum(students_passed_class12) as numeric)/NULLIF(cast(sum(students_applied_class12) as numeric),0),2)*100 as perf_class_12_passed,
+sum(case when phy_lab_yn= ''1'' then 1 else 0 end) as sclab_physics_room,
+sum(case when chem_lab_yn= ''1'' then 1 else 0 end) as sclab_chemistry_room,
+sum(case when bio_lab_yn= ''1'' then 1 else 0 end) as sclab_biology_room,
+sum(case when math_lab_yn= ''1'' then 1 else 0 end) as sclab_maths_room,
+sum(tch_avg_years_service) as tch_experience,
+round(cast(sum(trn_brc) as numeric)/NULLIF(cast(sum(no_of_teachers) as numeric),0),2)*100 as tch_trained_brc,
+round(cast(sum(trn_crc) as numeric)/NULLIF(cast(sum(no_of_teachers) as numeric),0),2)*100 as tch_trained_crc,
+round(cast(sum(trn_diet) as numeric)/NULLIF(cast(sum(no_of_teachers) as numeric),0),2)*100 as tch_trained_diet,
+round(cast(sum(trn_other) as numeric)/NULLIF(cast(sum(no_of_teachers) as numeric),0),2)*100 as tch_trained_other,
+round(cast(sum(trained_cwsn) as numeric)/NULLIF(cast(sum(no_of_teachers) as numeric),0),2)*100 as tch_teaching_cwsn,
+round(cast(sum(trained_comp) as numeric)/NULLIF(cast(sum(no_of_teachers) as numeric),0),2)*100 as tch_teaching_use_computer
+from udise_school_metrics_trans group by udise_school_id,academic_year)as s
+on conflict(udise_school_id)
+do update set 
+academic_year=excluded.academic_year,'||st_update_cols||',updated_on=now()';
+END IF;
+EXECUTE temp_insert;
 return 0;
 END;
 $$LANGUAGE plpgsql;
