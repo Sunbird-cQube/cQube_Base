@@ -4,13 +4,7 @@ id|description|column|type|indice_id|status|score|trans_columns|metric_config|di
 1002|% General Students receiving Incentives|adm_general_students_incentives|metric|1000|1|5|||
 1003|% Category Students receiving Incentives|adm_category_students_incentives|metric|1000|1|5|||
 1004|whether counselling to students|adm_students_counselling|metric|1000|1|10|||
-1005|% Instructional days in a year|adm_instruct_days|metric|1000|1|5|||
-1006|Average School hours for childrens|adm_avg_school_hours_childrens|metric|1000|1|5|||
-1007|Average working hours for teachers|adm_avg_working_hours_teachers|metric|1000|1|10|||
 1008|Special training for out of school children|adm_training_oosc|metric|1000|1|5|||
-1009|Free textbooks received score|adm_free_textbook_score|metric|1000|1|10|||
-1010|Technology and livelyhood education score|adm_tech_education_score|metric|1000|1|10|||
-1011|Sports and games equipments available score|adm_sports_equipments_score|metric|1000|1|5|||
 1012|student attendance electronically capture|adm_student_attendance_electronic|metric|1000|1|5|||
 1013|teacher attendance electronically capture|adm_teacher_attendance_electronic|metric|1000|1|10|||
 1014|Nodal teachers for school safety|adm_nodal_teacher|metric|1000|1|10|||
@@ -29,23 +23,6 @@ id|description|column|type|indice_id|status|score|trans_columns|metric_config|di
 4003|% Female Students|enr_girls_students|metric|4000|1|20|||
 4004|PTR|enr_pupil_teacher_ratio|metric|4000|1|20|||
 4005|Students per Classroom (Good Condition)|enr_students_per_classroom|metric|4000|1|20|||
-5000|grant expenditure|Grant_Expenditure|indice||1|5|||
-5001|%  grants spent on School Development|ge_spent_school_development|metric|5000|1|10|||
-5002|%  grants spent on School Maintenance|ge_spent_school_maintenance|metric|5000|1|10|||
-5003|%  grants spent for Teachers|ge_spent_for_teachers|metric|5000|1|10|||
-5004|%  grants spent for civil works|ge_spent_civil_works|metric|5000|1|10|||
-5005|%  grants spent Annual on schools|ge_spent_annual_school|metric|5000|1|5|||
-5006|%  grants spent on minor repair|ge_spent_minor_repair|metric|5000|1|5|||
-5007|%  grants spent on lab repair and replacement|ge_spent_lab_repair|metric|5000|1|5|||
-5008|%  grants spent for books purchase|ge_spent_books_purchase|metric|5000|1|5|||
-5009|%  grants spent on water,telephone,electricity|ge_spent_on_wte|metric|5000|1|5|||
-5010|%  grants spent for others|ge_spent_others|metric|5000|1|5|||
-5011|%  composite school grants spent|ge_school_grants|metric|5000|1|5|||
-5012|%  grants spent for library|ge_spent_library|metric|5000|1|5|||
-5013|%  grants spent on sports and physical education|ge_spent_physical_educ|metric|5000|1|5|||
-5014|%  grants spent on media and community mobilization|ge_spent_media|metric|5000|1|5|||
-5015|%  grants spent for SMC and SMDC training|ge_spent_smc_smdc|metric|5000|1|5|||
-5016|%  pre-school grants spent|ge_spent_pre_school|metric|5000|1|5|||
 6000|ict lab index|ICT_Lab_Index|indice||1|5|||
 6001|laptops functional per students |ict_func_laptop_per_student|metric|6000|1|10|||
 6002|Tablets functional per students |ict_func_tablets_per_student|metric|6000|1|10|||
