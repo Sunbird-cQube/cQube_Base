@@ -45,17 +45,17 @@ export class DashboardComponent implements OnInit {
     this.callOnInterval();
     setInterval(() => {
       this.callOnInterval();
-    }, 45000);
+    }, 30000);
   }
 
   callOnInterval() {
     this.getViews24hrs();
     setTimeout(() => {
       this.getViews7days();
-    }, 15000);
+    }, 10000);
     setTimeout(() => {
       this.getViews30days();
-    }, 30000);
+    }, 20000);
   }
 
   fetchTelemetry(event, report) {
