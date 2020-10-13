@@ -3536,7 +3536,6 @@ CREATE TABLE if not exists udise_school_metrics_trans (academic_year text  NULL 
      primary key(udise_school_id),
      created_on timestamp without time zone  NULL ,
      updated_on timestamp without time zone  NULL); 
- );
 
 create table if not exists udise_metrics_range(
 metric_id serial,
