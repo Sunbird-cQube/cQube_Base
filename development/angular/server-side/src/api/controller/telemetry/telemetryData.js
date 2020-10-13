@@ -6,6 +6,8 @@ const jsonexport = require('jsonexport');
 var S3Append = require('s3-append').S3Append;
 var config = require('../../lib/config');
 const { format } = require('path');
+const s3File = require('../../lib/reads3File');
+
 
 router.post('/', auth.authController, async (req, res) => {
     try {
@@ -18,7 +20,7 @@ router.post('/', auth.authController, async (req, res) => {
         //check if file is there, and append new data
         var params = {
             Bucket: const_data['getParams1']['Bucket'],
-            Key: `telemetry/telemetry_${year}_${month}_${date}_${hour}.csv`
+            Key: `telemetry/telemetry_view/telemetry_views_${year}_${month}_${date}_${hour}.csv`
         };
         const_data['s3'].headObject(params, function (err, metadata) {
             if (err && err.code === 'NotFound') {
@@ -27,7 +29,7 @@ router.post('/', auth.authController, async (req, res) => {
                     if (error) return console.error(error);
                     var params1 = {
                         Bucket: const_data['getParams1']['Bucket'],
-                        Key: `telemetry/telemetry_${year}_${month}_${date}_${hour}.csv`,
+                        Key: `telemetry/telemetry_view/telemetry_views_${year}_${month}_${date}_${hour}.csv`,
                         Body: csv.replace(/,/g, '|')
                     };
                     const_data['s3'].upload(params1, function (err, result) {
@@ -43,7 +45,7 @@ router.post('/', auth.authController, async (req, res) => {
                 const_data['s3'].getSignedUrl('getObject', params, (error, response) => {
 
                     jsonexport(req.body.telemetryData, { includeHeaders: false }, function (error, csv) {
-                        var service = new S3Append(config.appendConfig, `telemetry/telemetry_${year}_${month}_${date}_${hour}.csv`, format.csv);
+                        var service = new S3Append(config.appendConfig, `telemetry/telemetry_view/telemetry_views_${year}_${month}_${date}_${hour}.csv`, format.csv);
 
                         service.append(`\r${csv.replace(/,/g, '|')}`);
 
@@ -66,19 +68,19 @@ router.post('/', auth.authController, async (req, res) => {
     }
 });
 
-// router.get('/', (req, res) => {
-//     const_data['getParams1']['Key'] = `telemetry/telemetry_2020_8_11_${hour}.csv`;
-//     const_data['s3'].getObject(const_data['getParams1'], async function (err, data) {
-//         if (err) {
-//             logger.error(err);
-//             res.status(500).json({ msg: "Something went wrong" });
-//         } else if (!data) {
-//             logger.error("No data found in s3 file");
-//             res.status(403).json({ msg: "No such data found" });
-//         } else {
-//             console.log(data.Body.toString());
-//         }
-//     });
-// })
+router.post('/data', async (req, res) => {
+    try {
+        logger.info('---get telemetry api ---');
+        var period = req.body.period;
+        let fileName = `cqube_telemetry_views/${period}/telemetry_views_data.json`;
+        var telemetryData = await s3File.readS3File(fileName);
+
+        logger.info('--- get telemetry api response sent ---');
+        res.status(200).send({ telemetryData });
+    } catch (e) {
+        logger.error(`Error :: ${e}`)
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+    }
+})
 
 module.exports = router

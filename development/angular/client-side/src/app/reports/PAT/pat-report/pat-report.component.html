@@ -4,13 +4,13 @@
             <div *ngIf='skul'>
                 <p id="dist"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Exam report for: <span (click)="linkClick()"
+                    Periodic Assessment Test report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Exam report for: <span (click)="linkClick()"
+                    Periodic Assessment Test report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="ondistLinkClick(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -19,7 +19,7 @@
             <div *ngIf="blok">
                 <p id="cluster"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Exam report for: <span (click)="linkClick()"
+                    Periodic Assessment Test report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="ondistLinkClick(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -32,7 +32,7 @@
             <div *ngIf="clust">
                 <p id="school"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Exam report for: <span (click)="linkClick()"
+                    Periodic Assessment Test report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="ondistLinkClick(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -66,8 +66,10 @@
     <div class="row">
         <div class="col-sm-12">
             <p style="text-align: justify; font-size: 11px;">
-                <strong> About the dashboard:</strong> The Periodic Exam dashboard visualises the data on school
-                infrastructure metrics for Gujarat based on the data collected through UDISE 2019.
+                <strong> About the dashboard:</strong> This dashboard provides information about student's performance
+                in the Periodic Assessment Test across all subjects and grades. The data has been collated at various
+                administrative levels (i.e. District, Block, Cluster and School) and this dashboard allows you to view
+                and download the data at these various administrative levels.
             </p>
         </div>
     </div>

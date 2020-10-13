@@ -2,6 +2,10 @@
   file: path=~/nifi state=directory
   tags: install
 
+- name: Creates a directory
+  file: path={{ base_dir }}/cqube/nifi state=directory
+  tags: install
+
 - name: Installing curl
   apt: name=curl
   tags: install
@@ -14,18 +18,18 @@
   tags: install
 
 - name: Check if nifi is present in destination
-  stat: path={{ base_dir }}/cqube/nifi
+  stat: path={{ base_dir }}/cqube/nifi/nifi
   register: status
   tags: install
 
 - name: stop nifi if its running
-  shell: "{{ base_dir }}/cqube/nifi/bin/nifi.sh stop"
+  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
   when: status.stat.exists == true
   tags: install
 
 - name: remove nifi directory if present
   become: yes
-  shell: rm -rf {{ base_dir }}/cqube/nifi
+  shell: rm -rf {{ base_dir }}/cqube/nifi/nifi
   ignore_errors: yes
   args:
     warn: false
@@ -34,39 +38,39 @@
 - name: Extract NiFi in the same folder
   unarchive:
     src: ~/nifi/nifi-{{ nifi_version }}-bin.tar.gz
-    dest: "{{ base_dir }}/cqube"
+    dest: "{{ base_dir }}/cqube/nifi"
   tags: install
 
 - name: Rename the extracted folder
-  shell: mv {{ base_dir }}/cqube/nifi* {{ base_dir }}/cqube/nifi
+  shell: mv {{ base_dir }}/cqube/nifi/nifi* {{ base_dir }}/cqube/nifi/nifi
   tags: install
 
 - name: Creates directory
-  file: path={{ base_dir }}/cqube/nifi/jars state=directory
+  file: path={{ base_dir }}/cqube/nifi/nifi/jars state=directory
   tags: install
 
 - name: Download Jar file
   get_url:
     url: https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.10/postgresql-42.2.10.jar
-    dest: "{{ base_dir }}/cqube/nifi/jars"
+    dest: "{{ base_dir }}/cqube/nifi/nifi/jars"
     mode: "0644"
   tags: install
 
 - name: Creating nifi_queries directory
   file:
-    path: "{{ base_dir }}/cqube/nifi_queries"
+    path: "{{ base_dir }}/cqube/nifi/nifi_queries"
     state: directory
-  tags: [ install, update ]
+  tags: install
     
 - name: Copying the query files to nifi directory
   copy: 
     src: ../../development/nifi/reports_queries/{{ item }}
-    dest: "{{ base_dir }}/cqube/nifi_queries/{{ item }}"
+    dest: "{{ base_dir }}/cqube/nifi/nifi_queries/{{ item }}"
     mode: "0644"
   with_items:
     - composite_queries.json
     - pat_queries.json
-  tags: [install, update]
+  tags: install
 
 - name: Touch a file
   file:
@@ -87,41 +91,48 @@
 
 - name: configure the webserver in nifi.properties file
   replace:
-    dest: "{{ base_dir }}/cqube/nifi/conf/nifi.properties"
+    dest: "{{ base_dir }}/cqube/nifi/nifi/conf/nifi.properties"
     regexp: 'nifi.web.http.host='
     replace: 'nifi.web.http.host=0.0.0.0'
   tags: install
 
 - name: configure the webserver in nifi.properties file
   replace:
-    dest: "{{ base_dir }}/cqube/nifi/conf/nifi.properties"
+    dest: "{{ base_dir }}/cqube/nifi/nifi/conf/nifi.properties"
     regexp: 'nifi.web.http.port=8080'
     replace: 'nifi.web.http.port={{ nifi_port }}'
   tags: install
 
 - name: Increase nifi memory
   lineinfile:
-    path: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
+    path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
     regexp: '^java.arg.2='
     line: "java.arg.2={{ java_arg_2 }}"
   tags: [ install ,update ]
 
+- name: Enabling the garbage collector value
+  lineinfile:
+    path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
+    regexp: '^#java.arg.13='
+    line: 'java.arg.13=-XX:+UseG1GC'
+  tags: [ install, update ]
+
 - name: Add time zone to nifi
   blockinfile:
-        path: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
+        path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
         block: |
                java.arg.8=-Duser.timezone=Asia/Kolkata
   tags: install
 
 - name: Increase nifi memory
   lineinfile:
-    path: "{{ base_dir }}/cqube/nifi/conf/bootstrap.conf"
+    path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
     regexp: '^java.arg.3='
     line: "java.arg.3={{ java_arg_3 }}"
   tags: [ install, update ]
 
 - name: start NiFi
-  shell: "{{ base_dir }}/cqube/nifi/bin/nifi.sh start"
+  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
   tags: install
 
 - pause:
@@ -129,13 +140,13 @@
     prompt: "nifi is starting, kindly do not press any key"
   tags: install
 
-- name: Restart NiFi
-  shell: "{{ base_dir }}/cqube/nifi/bin/nifi.sh restart"
+- name: Start NiFi
+  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
   tags: update
 
 - pause:
     minutes: 3
-    prompt: "nifi is restarting, kindly do not press any key"
+    prompt: "nifi is starting, kindly do not press any key"
   tags: update
 
 - name: checking for nifi port, waiting until it starts... 

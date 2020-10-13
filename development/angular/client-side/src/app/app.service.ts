@@ -14,6 +14,8 @@ export class AppServiceComponent {
     public map;
     public baseUrl = environment.apiEndpoint;
     public token;
+    service: any;
+    telemetryData: any;
 
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
         this.token = keyCloakService.kc.token;
@@ -275,4 +277,43 @@ export class AppServiceComponent {
         return setColor;
     }
 
+    //capturing telemetry.....
+    telemetry(date) {
+        this.logoutOnTokenExpire();
+        return this.http.post(`${this.baseUrl}/telemetry`, { telemetryData: this.telemetryData, date: date }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    getTelemetry(data) {
+        this.logoutOnTokenExpire();
+        return this.http.post(`${this.baseUrl}/telemetry/data`, {period: data},{ 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    }
+
+    //
+    edate;
+    getTelemetryData(reportId, event) {
+        this.telemetryData = [];
+        var obj = {};
+        this.edate = new Date();
+        var dateObj = {
+            year: this.edate.getFullYear(),
+            month: ("0" + (this.edate.getMonth() + 1)).slice(-2),
+            date: ("0" + (this.edate.getDate())).slice(-2),
+            hour: ("0" + (this.edate.getHours())).slice(-2),
+            minut: ("0" + (this.edate.getMinutes())).slice(-2),
+            seconds: ("0" + (this.edate.getSeconds())).slice(-2),
+        }
+        obj = {
+            uid: this.keyCloakService.kc.tokenParsed.sub,
+            eventType: event,
+            reportId: reportId,
+            time: dateObj.year + '-' + dateObj.month + '-' + dateObj.date + ' ' + dateObj.hour + ':' + dateObj.minut + ':' + dateObj.seconds
+        }
+
+        this.telemetryData.push(obj);
+
+        this.telemetry(dateObj).subscribe(res => {
+        }, err => {
+            console.log(err);
+        });
+    }
 }

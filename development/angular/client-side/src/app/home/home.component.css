@@ -7,7 +7,7 @@
 }
 
 .sidenav {
-  width: 280px;
+  width: 300px;
   box-shadow: 3px 0 6px rgba(0,0,0,.24);
 }
 
@@ -32,7 +32,7 @@ img{
 .sidenav a{
   padding: 4px 2px 4px 0px;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 14px;
   color: #3553d8;
   display: block;
   transition: .3s;
@@ -53,7 +53,7 @@ img{
   padding: 4px 2px 4px 0px;
   text-decoration: none;
   background-color: #ffffff;
-  font-size: 16px;
+  font-size: 14px;
   color: #3553d8;
   display: block;
   transition: .3s;
@@ -130,7 +130,7 @@ img{
 }
 
 .submenu1.expanded {
-  height: 96px;
+  height: 144px;
 }
 
 .submenu2.expanded {

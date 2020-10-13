@@ -3014,5 +3014,9 @@ file:${filename},Error while extracting "${query_type}" query.</value>
             <variables/>
         </processGroups>
     </snippet>
+<<<<<<< HEAD
     <timestamp>10/13/2020 12:28:18 IST</timestamp>
+=======
+    <timestamp>10/08/2020 14:35:09 IST</timestamp>
+>>>>>>> 9d9c874c84944369ff43a2e6de9a84e438499020
 </template>
