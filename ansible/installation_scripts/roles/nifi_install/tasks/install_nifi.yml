@@ -110,6 +110,13 @@
     line: "java.arg.2={{ java_arg_2 }}"
   tags: [ install ,update ]
 
+- name: Enabling the garbage collector value
+  lineinfile:
+    path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
+    regexp: '^#java.arg.13='
+    line: 'java.arg.13=-XX:+UseG1GC'
+  tags: [ install, update ]
+
 - name: Add time zone to nifi
   blockinfile:
         path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"

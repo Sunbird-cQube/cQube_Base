@@ -5,7 +5,7 @@
 		select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records+datatype_mismatch)-sum(attendance_id+student_id+school_id+year+month))as processed_records 
 		from log_summary group by ff_uuid) as a
 	where a.ff_uuid=b.ff_uuid''',
-"select_cqube_telemetry_files_from_log_db":"select * from log_summary where filename like '%telemetry%'",
+"select_cqube_telemetry_files_from_log_db":'''select * from log_summary where filename like '%telemetry%'''',
 "cqube_telemetry_jolt_for_log_summary":'''[{
 		"operation": "shift",
 		"spec": {
@@ -48,5 +48,24 @@ group by pageid,level,locationid,locationname,lat,lng
 "telemetry_query_overall_data":'''select pageid,count(uid) as Number_of_views,count(distinct(uid)) as Number_of_users,level,locationid,locationname,lat,lng 
 from telemetry_data where event in ('click','change')
 group by pageid,level,locationid,locationname,lat,lng
-'''
+''',
+"telemetry_table_name":'''telemetry_data''',
+"telemetry_views_table_name":'''telemetry_views_data''',
+"telemetry_views_last_day_data":'''select reportId,count(reportId) as Number_of_views ,'last_day' as time_range
+from telemetry_views_data where date(click_time) = (select max(date(click_time)) from telemetry_views_data )
+group by reportId''',
+"telemetry_views_last_15_days_data":'''select reportId,count(reportId) as Number_of_views ,'last_7_days' as time_range
+from telemetry_views_data where date(click_time) between (select max(date(click_time))-INTERVAL '7 DAY' from telemetry_views_data) and 
+(select max(created_on) from telemetry_views_data )
+group by reportId''',
+"telemetry_views_last_30_days_data":'''select reportId,count(reportId) as Number_of_views ,'last_30_days' as time_range
+from telemetry_views_data where date(click_time) between (select max(date(click_time))-INTERVAL '30 DAY' from telemetry_views_data) and 
+(select max(created_on) from telemetry_views_data )
+group by reportId''',
+"telemetry_dir":'''cqube_telemetry/last_day''',
+"telemetry_views_dir":'''cqube_telemetry_views/last_day''',
+"telemetry_7days_dir":'''cqube_telemetry/last_7_days''',
+"telemetry_views_7days_dir":'''cqube_telemetry_views/last_7_days''',
+"telemetry_30days_dir":'''cqube_telemetry/last_30_days''',
+"telemetry_views_30days_dir":'''cqube_telemetry_views/last_30_days'''
 }
