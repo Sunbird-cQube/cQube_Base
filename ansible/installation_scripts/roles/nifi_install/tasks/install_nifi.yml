@@ -131,6 +131,13 @@
     line: "java.arg.3={{ java_arg_3 }}"
   tags: [ install, update ]
 
+- name: Delete existing templates in nifi
+  become: yes
+  file:
+    path: "{{ base_dir }}/cqube/nifi/nifi/conf/flow.xml.gz"
+    state: absent
+  tags: update
+
 - name: start NiFi
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
   tags: install
@@ -140,13 +147,13 @@
     prompt: "nifi is starting, kindly do not press any key"
   tags: install
 
-- name: Start NiFi
-  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
+- name: Restart NiFi
+  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh restart"
   tags: update
 
 - pause:
     minutes: 3
-    prompt: "nifi is starting, kindly do not press any key"
+    prompt: "nifi is restarting, kindly do not press any key"
   tags: update
 
 - name: checking for nifi port, waiting until it starts... 
