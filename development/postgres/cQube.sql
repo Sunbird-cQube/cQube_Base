@@ -4352,17 +4352,12 @@ CREATE TABLE IF NOT EXISTS composite_config (
  primary key(template,category)
 );
 
- create table if not exists telemetry_data
+ create table if not exists telemetry_views_data
     (
-  pageid text,
   uid text,
-  event text,
-  level text,
-  locationid bigint,
-  locationname text,
-  lat double precision,
-  lng double precision,
-  download int,
+  eventtype text,
+  reportid text,
+  click_time TIMESTAMP without time zone,
   created_on TIMESTAMP without time zone default current_timestamp
   );
 
