@@ -3558,21 +3558,6 @@ updated_on timestamp,
 primary key(id)
 );
 
-/*truncate if records exists*/
-
-create or replace function truncate_if_exists(columnname text)
-returns void language plpgsql as $$
-begin
-    perform 1
-    from information_schema.columns 
-    where table_name = 'udise_config' and column_name= columnname ;
-    if not found then
-        execute format('truncate %I', 'udise_config');
-    end if;
-end $$;
-
-select truncate_if_exists('metric_config');
-
 /*alter udise_config*/
 alter table udise_config add COLUMN if not exists trans_columns text;
 alter table udise_config add COLUMN if not exists direction text;
