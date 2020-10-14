@@ -1,32 +1,4 @@
 
-.cards{
-    height: 125px;
-    width:100%; 
-    background-color: rgb(237, 238, 238);
-    color: #284d8a;
-    cursor: pointer;
-    margin: 0px auto;
-    margin-top: 5%;
-    margin-bottom: 4%;
-    text-align: center;
-    font-size: 12px;
-    transition: transform .5s;
-    border-radius: 5px;
-}
-
-.cards img {
-  overflow: hidden;
-  position: relative;
-  height: 70px;
-  width: 70%;
-}
-
-.cards:hover {
-        -ms-transform: scale(1.09);
-        -webkit-transform: scale(1.09);
-        transform: scale(1.09); 
-      }
-  
 /* Absolute Center Spinner */
 .loading {
   position: fixed;
@@ -282,4 +254,32 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   border-radius: 13px;
   /* background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%); */
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.02);
+}
+
+.views{
+  background-color: white; 
+  height: 20px;
+  width: 150px; 
+  float: white;
+  margin-top: 13px;
+  border-radius: 8px;
+}
+.views1{
+  background-color: white; 
+  height: 20px;
+  width: 140px; 
+  float: white;
+  margin-top: 8px;
+  border-radius: 8px;
+}
+
+#views{
+  color: rgb(109, 109, 109);
+  float: left;
+  margin-left: 3%;
+}
+#errViews{
+  color: rgb(109, 109, 109);
+  float: left;
+  margin-left: 3%;
 }

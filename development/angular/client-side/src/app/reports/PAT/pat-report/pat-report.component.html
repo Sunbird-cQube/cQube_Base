@@ -74,18 +74,29 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
+            <select id="period"
+                style="padding: 3px;float: left; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="period" (change)="onPeriodSelect()">
+                <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
+                <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
+                    {{period.value}}
+                </option>
+            </select>
+
+        </div>
+        <div class="col-sm-2">
             <button class="btn btn-secondary" id="block"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 60px; float: left;margin: 2px 7px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="blockClick()">&nbsp;<strong style="font-family: Arial;">Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 60px; float: left;margin: 2px 7px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="clusterClick()">&nbsp;<strong style="font-family: Arial;">Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 60px; float: left;margin: 2px 0px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="schoolClick()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
         </div>
-        <div class="col-sm-6" style="font-family: Arial;">
+        <div class="col-sm-5" style="font-family: Arial;">
             <select id="choose_dist"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="ondistLinkClick(districtId)">
