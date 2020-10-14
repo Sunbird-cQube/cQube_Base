@@ -2742,7 +2742,7 @@ group by a.school_id,b.assessment_year )as b
 create or replace view periodic_grade_district_all as
 select a.*,b.grade,b.subjects
 from
-(select academic_year,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance,total_schools,students_count from periodic_exam_district)as a
+(select academic_year,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance,total_schools,students_count from periodic_exam_district_all)as a
 left join
 (select academic_year,district_id,grade,
 json_object_agg(subject_name,percentage order by subject_name) as subjects
@@ -2768,7 +2768,7 @@ create or replace view periodic_grade_block_all as
 select a.*,b.grade,b.subjects
 from
 (select academic_year,block_id,initcap(block_name)as block_name,
-	district_id,initcap(district_name)as district_name,block_latitude,block_longitude,block_performance,total_schools,students_count from periodic_exam_block)as a
+	district_id,initcap(district_name)as district_name,block_latitude,block_longitude,block_performance,total_schools,students_count from periodic_exam_block_all)as a
 left join
 (select academic_year,block_id,grade,
 json_object_agg(subject_name,percentage order by subject_name) as subjects
@@ -2793,7 +2793,7 @@ create or replace view periodic_grade_cluster_all as
 select a.*,b.grade,b.subjects
 from
 (select academic_year,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
-	district_id,initcap(district_name)as district_name,cluster_latitude,cluster_longitude,cluster_performance,total_schools,students_count from periodic_exam_cluster)as a
+	district_id,initcap(district_name)as district_name,cluster_latitude,cluster_longitude,cluster_performance,total_schools,students_count from periodic_exam_cluster_all)as a
 left join
 (select academic_year,cluster_id,grade,
 json_object_agg(subject_name,percentage order by subject_name) as subjects
@@ -2818,7 +2818,7 @@ create or replace view periodic_grade_school_all as
 select a.*,b.grade,b.subjects
 from
 (select academic_year,school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
-	district_id,initcap(district_name)as district_name,school_latitude,school_longitude,school_performance,total_schools,students_count from periodic_exam_school)as a
+	district_id,initcap(district_name)as district_name,school_latitude,school_longitude,school_performance,total_schools,students_count from periodic_exam_school_all)as a
 left join
 (select academic_year,school_id,grade,
 json_object_agg(subject_name,percentage order by subject_name) as subjects
