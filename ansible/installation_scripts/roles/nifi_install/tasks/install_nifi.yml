@@ -42,7 +42,7 @@
   tags: install
 
 - name: Rename the extracted folder
-  shell: mv {{ base_dir }}/cqube/nifi/nifi* {{ base_dir }}/cqube/nifi/nifi
+  shell: mv {{ base_dir }}/cqube/nifi/nifi-* {{ base_dir }}/cqube/nifi/nifi
   tags: install
 
 - name: Creates directory
