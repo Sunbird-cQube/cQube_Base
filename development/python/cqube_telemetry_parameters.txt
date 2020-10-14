@@ -5,7 +5,7 @@
 		select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records+datatype_mismatch)-sum(attendance_id+student_id+school_id+year+month))as processed_records 
 		from log_summary group by ff_uuid) as a
 	where a.ff_uuid=b.ff_uuid''',
-"select_cqube_telemetry_files_from_log_db":'''select * from log_summary where filename like '%telemetry%'''',
+"select_cqube_telemetry_files_from_log_db":"select * from log_summary where filename like '%telemetry%'",
 "cqube_telemetry_jolt_for_log_summary":'''[{
 		"operation": "shift",
 		"spec": {
