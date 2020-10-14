@@ -6,15 +6,26 @@ const s3File = require('../../lib/reads3File');
 router.post('/allClusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT cluster wise api ---');
-        let fileName;
+        var period = req.body.data.period;
+        var grade = req.body.data.grade;
+        var fileName;
         var clusterData = {}
-        if (req.body.data) {
-            fileName = `pat/cluster/${req.body.data}.json`;
-            clusterData = await s3File.readS3File(fileName);
+
+        if (period == '') {
+            if (grade) {
+                fileName = `pat/all/cluster/${grade}.json`;
+            } else {
+                fileName = `pat/all/pat_cluster.json`;
+            }
         } else {
-            fileName = `pat/pat_cluster.json`
-            clusterData = await s3File.readS3File(fileName);
+            if (grade) {
+                fileName = `pat/${period}/cluster/${grade}.json`;
+            } else {
+                fileName = `pat/${period}/pat_cluster.json`;
+            }
         }
+
+        clusterData = await s3File.readS3File(fileName);
         var mydata = clusterData.data;
         logger.info('---PAT cluster wise api response sent---');
         res.status(200).send({ data: mydata, footer: clusterData.AllClustersFooter });
@@ -27,7 +38,14 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
 router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT clusterperBlock api ---');
-        let fileName = `pat/pat_cluster.json`;
+        var period = req.body.data.period;
+        var fileName;
+        if (period == '') {
+            fileName = `pat/all/pat_cluster.json`;
+        } else {
+            fileName = `pat/${period}/pat_cluster.json`;
+        }
+
         var clusterData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId;

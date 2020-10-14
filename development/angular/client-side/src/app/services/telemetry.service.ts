@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
 import { KeycloakSecurityService } from '../keycloak-security.service';
 import { AppServiceComponent } from '../app.service';
 
@@ -8,9 +7,11 @@ import { AppServiceComponent } from '../app.service';
   providedIn: 'root'
 })
 export class TelemetryService {
-  public baseUrl = environment.apiEndpoint;
+  public baseUrl;
 
-  constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) { }
+  constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) {
+    this.baseUrl = service.baseUrl;
+   }
 
   //telemetry data
   telemetryDist(data) {
