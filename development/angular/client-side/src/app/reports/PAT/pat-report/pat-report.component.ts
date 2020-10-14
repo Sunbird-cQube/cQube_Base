@@ -104,7 +104,6 @@ export class PATReportComponent implements OnInit {
 
   onPeriodSelect() {
     this.levelWiseFilter();
-    document.getElementById('reset').style.display = 'block';
   }
 
   onGradeSelect(data) {
@@ -145,17 +144,10 @@ export class PATReportComponent implements OnInit {
 
   linkClick() {
     document.getElementById('home').style.display = 'none';
-    // document.getElementById('reset').style.display = 'none';
     this.grade = undefined;
     this.subjectHidden = true;
-    // this.period = '';
     this.districtWise();
   }
-
-  // resetToAll() {
-  //   this.period = '';
-  //   document.getElementById('reset').style.display = 'none';
-  // }
 
   // to load all the districts for state data on the map
   districtWise() {
