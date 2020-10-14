@@ -2516,10 +2516,10 @@ select * from udise_scl_perf_exception();
 /*daterange*/
 
 create or replace view pat_date_range as 
-(select exam_code,'last 30 days' as date_range from periodic_exam_mst where exam_date between 
+(select exam_code,'last30days' as date_range from periodic_exam_mst where exam_date between 
 (select max(exam_date)-INTERVAL '30 day' from periodic_exam_mst) and (select max(exam_date) from periodic_exam_mst) )
 union
-(select exam_code,'last 7 days' as date_range from periodic_exam_mst where exam_date between 
+(select exam_code,'last7days' as date_range from periodic_exam_mst where exam_date between 
 (select max(exam_date)-INTERVAL '7 day' from periodic_exam_mst) and (select max(exam_date) from periodic_exam_mst) );
 
 /*------------------------Over all--------------------------------------------------------------------------------------------------------*/

@@ -14,7 +14,6 @@ export class AppServiceComponent {
     public map;
     public baseUrl = environment.apiEndpoint;
     public token;
-    service: any;
     telemetryData: any;
 
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
