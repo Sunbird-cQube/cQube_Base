@@ -3192,11 +3192,6 @@ st_60p_g  smallint
 
 alter table udise_sch_exmres_c8 alter column academic_year type varchar(10);
 
-/*Drop table*/
-
-drop table if exists udise_school_metrics_trans;
-drop table if exists udise_school_metrics_temp;
-
 /*Udise transaction,aggregation,config */
 
 CREATE TABLE if not exists udise_school_metrics_trans (academic_year text  NULL ,
@@ -3557,7 +3552,7 @@ status boolean,
 score numeric,
 trans_columns text,
 direction text,
-metric_config text,
+metric_config text default 'static',
 created_on timestamp,
 updated_on timestamp,
 primary key(id)

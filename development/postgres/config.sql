@@ -1687,6 +1687,7 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+update udise_config set metric_config ='static' where metric_config in ('') or metric_config is null;
 select create_udise_table();
 
 CREATE OR REPLACE FUNCTION insert_udise_temp()
