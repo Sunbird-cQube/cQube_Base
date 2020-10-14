@@ -1,3 +1,5 @@
+BEGIN;
+
 /*Drop functions if exists*/
 
 drop function IF exists insert_infra_master;
@@ -3605,7 +3607,7 @@ on stat.district_id=sa.district_id')
 on conflict on constraint composite_config_pkey do nothing;
 
 insert into composite_config(template,status,category,select_query,table_join) values('pat',true,'district','pat.Periodic_exam_performance',
-		'left join (select district_id,district_performance as Periodic_exam_performance from periodic_exam_district) as pat 
+		'left join (select district_id,district_performance as Periodic_exam_performance from periodic_exam_district_all) as pat 
 on stat.district_id=pat.district_id')
 on conflict on constraint composite_config_pkey do nothing;
 
@@ -3682,7 +3684,7 @@ on stat.block_id=sa.block_id')
 on conflict on constraint composite_config_pkey do nothing;
 
 insert into composite_config(template,status,category,select_query,table_join) values('pat',true,'block','pat.Periodic_exam_performance',
-		'left join (select block_id,block_performance as Periodic_exam_performance from periodic_exam_block) as pat 
+		'left join (select block_id,block_performance as Periodic_exam_performance from periodic_exam_block_all) as pat 
 on stat.block_id=pat.block_id')
 on conflict on constraint composite_config_pkey do nothing;
 
@@ -3746,7 +3748,7 @@ on stat.cluster_id=sa.cluster_id')
 on conflict on constraint composite_config_pkey do nothing;
 
 insert into composite_config(template,status,category,select_query,table_join) values('pat',true,'cluster','pat.Periodic_exam_performance',
-		'left join (select cluster_id,cluster_performance as Periodic_exam_performance from periodic_exam_cluster) as pat 
+		'left join (select cluster_id,cluster_performance as Periodic_exam_performance from periodic_exam_cluster_all) as pat 
 on stat.cluster_id=pat.cluster_id')
 on conflict on constraint composite_config_pkey do nothing;
 
@@ -3810,7 +3812,7 @@ on stat.school_id=sa.school_id')
 on conflict on constraint composite_config_pkey do nothing;
 
 insert into composite_config(template,status,category,select_query,table_join) values('pat',true,'school','pat.Periodic_exam_performance',
-		'left join (select school_id,school_performance as Periodic_exam_performance from periodic_exam_school) as pat 
+		'left join (select school_id,school_performance as Periodic_exam_performance from periodic_exam_school_all) as pat 
 on stat.school_id=pat.school_id')
 on conflict on constraint composite_config_pkey do nothing;
 
@@ -4059,3 +4061,4 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
 select * from composite_create_views();
 select composite_jolt_spec();
 
+END;
