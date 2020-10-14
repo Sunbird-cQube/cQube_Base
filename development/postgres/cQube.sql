@@ -4357,7 +4357,7 @@ CREATE TABLE IF NOT EXISTS composite_config (
   uid text,
   eventtype text,
   reportid text,
-  click_time TIMESTAMP without time zone
+  click_time TIMESTAMP without time zone,
   created_on TIMESTAMP without time zone default current_timestamp
   );
 
