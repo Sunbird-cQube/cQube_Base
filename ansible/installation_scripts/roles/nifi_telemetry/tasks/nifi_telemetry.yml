@@ -275,6 +275,8 @@
         }
   loop: "{{ controllers_list_raw_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
+  loop_control:
+    pause: 10
   no_log: True
 
 - name: Start controllers
@@ -290,6 +292,8 @@
       }
   loop: "{{ controllers_list_telemetry_updated.json | json_query('controllerServices[*]') }}"
   when: item.component.state == 'DISABLED'
+  loop_control:
+    pause: 10
   no_log: True
 
 - name: Start Processor group

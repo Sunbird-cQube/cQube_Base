@@ -6,15 +6,26 @@ const s3File = require('../../lib/reads3File');
 router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- all blocks PAT api ---');
-        let fileName;
+        var period = req.body.data.period;
+        var grade = req.body.data.grade;
+        var fileName;
         var blockData = {}
-        if (req.body.data) {
-            fileName = `pat/block/${req.body.data}.json`;
-            blockData = await s3File.readS3File(fileName);
+
+        if (period == '') {
+            if (grade) {
+                fileName = `pat/all/block/${grade}.json`;
+            } else {
+                fileName = `pat/all/pat_block.json`
+            }
         } else {
-            fileName = `pat/pat_block.json`
-            blockData = await s3File.readS3File(fileName);
+            if (grade) {
+                fileName = `pat/${period}/block/${grade}.json`;
+            } else {
+                fileName = `pat/${period}/pat_block.json`
+            }
         }
+
+        blockData = await s3File.readS3File(fileName);
         var mydata = blockData.data;
         logger.info('--- blocks PAT api response sent---');
         res.status(200).send({ data: mydata, footer: blockData.AllBlocksFooter });
@@ -28,7 +39,14 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         logger.info('--- block wise PAT api ---');
-        let fileName = `pat/pat_block.json`
+        var period = req.body.data.period;
+        var fileName;
+        if (period == "") {
+            fileName = `pat/all/pat_block.json`;
+        } else {
+            fileName = `pat/${period}/pat_block.json`;
+        }
+
         var blockData = await s3File.readS3File(fileName);
         let distId = req.params.distId
 

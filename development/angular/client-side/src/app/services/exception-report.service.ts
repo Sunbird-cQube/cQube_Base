@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../src/environments/environment';
 import { KeycloakSecurityService } from './../keycloak-security.service';
 import { AppServiceComponent } from '../app.service';
 
@@ -10,10 +9,12 @@ import { AppServiceComponent } from '../app.service';
 })
 export class ExceptionReportService {
   public map;
-  public baseUrl = environment.apiEndpoint;
+  public baseUrl;
   public token;
 
-  constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) { }
+  constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) {
+    this.baseUrl = service.baseUrl;
+  }
 
   //Semester Completion
   semCompletionDist(data) {

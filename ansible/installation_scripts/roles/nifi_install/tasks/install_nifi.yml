@@ -42,7 +42,7 @@
   tags: install
 
 - name: Rename the extracted folder
-  shell: mv {{ base_dir }}/cqube/nifi/nifi* {{ base_dir }}/cqube/nifi/nifi
+  shell: mv {{ base_dir }}/cqube/nifi/nifi-* {{ base_dir }}/cqube/nifi/nifi
   tags: install
 
 - name: Creates directory
@@ -110,6 +110,13 @@
     line: "java.arg.2={{ java_arg_2 }}"
   tags: [ install ,update ]
 
+- name: Enabling the garbage collector value
+  lineinfile:
+    path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
+    regexp: '^#java.arg.13='
+    line: 'java.arg.13=-XX:+UseG1GC'
+  tags: [ install, update ]
+
 - name: Add time zone to nifi
   blockinfile:
         path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
@@ -124,6 +131,13 @@
     line: "java.arg.3={{ java_arg_3 }}"
   tags: [ install, update ]
 
+- name: Delete existing templates in nifi
+  become: yes
+  file:
+    path: "{{ base_dir }}/cqube/nifi/nifi/conf/flow.xml.gz"
+    state: absent
+  tags: update
+
 - name: start NiFi
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
   tags: install
@@ -133,13 +147,13 @@
     prompt: "nifi is starting, kindly do not press any key"
   tags: install
 
-- name: Start NiFi
-  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
+- name: Restart NiFi
+  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh restart"
   tags: update
 
 - pause:
     minutes: 3
-    prompt: "nifi is starting, kindly do not press any key"
+    prompt: "nifi is restarting, kindly do not press any key"
   tags: update
 
 - name: checking for nifi port, waiting until it starts... 

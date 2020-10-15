@@ -1,8 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from '../../../services/diksha-report.service';
 import { Router } from '@angular/router';
-import { ExportToCsv } from 'export-to-csv';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
 import { AppServiceComponent } from '../../../app.service';
@@ -56,7 +55,6 @@ export class DikshaBarChartComponent implements OnInit {
     public service: DikshaReportService,
     public commonService: AppServiceComponent,
     public router: Router,
-    private changeDetection: ChangeDetectorRef,
   ) {
   }
 
@@ -87,6 +85,7 @@ export class DikshaBarChartComponent implements OnInit {
     if (this.collection_type != "all") {
       document.getElementById('home').style.display = "block";
     }
+    this.reportData = [];
     this.commonService.errMsg();
     this.timePeriod = '';
     this.collectionName = '';
@@ -122,6 +121,7 @@ export class DikshaBarChartComponent implements OnInit {
     this.commonService.errMsg();
     this.collectionName = '';
     this.footer = '';
+    this.reportData = [];
     this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod }).subscribe(res => {
       this.collectionNames = [];
       this.collectionNames = res['uniqueCollections'];
@@ -197,7 +197,7 @@ export class DikshaBarChartComponent implements OnInit {
             var percent = percentage[tooltipItem.index]
             // var subject = data.datasets[tooltipItem.index].label
             var multistringText = [];
-            multistringText.push("Total Content Plays" + ": " + scores);
+            multistringText.push("Total Content Plays" + ": " + scores.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"));
             multistringText.push("Percentage" + ": " + percent + " %");
             // multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
             return multistringText;
@@ -248,24 +248,7 @@ export class DikshaBarChartComponent implements OnInit {
   }
 
   downloadRoport() {
-    if (this.reportData.length <= 0) {
-      alert("No data found to download");
-    } else {
-      const options = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        showTitle: false,
-        title: 'My Awesome CSV',
-        useTextFile: false,
-        useBom: true,
-        useKeysAsHeaders: true,
-        filename: this.fileName
-      };
-      const csvExporter = new ExportToCsv(options);
-      csvExporter.generateCsv(this.reportData);
-    }
+    this.commonService.download(this.fileName, this.reportData);
   }
 
   changeingStringCases(str) {
