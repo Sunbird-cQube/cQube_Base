@@ -14,7 +14,6 @@ export class AppServiceComponent {
     public map;
     public baseUrl = environment.apiEndpoint;
     public token;
-    service: any;
     telemetryData: any;
 
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
@@ -285,7 +284,7 @@ export class AppServiceComponent {
 
     getTelemetry(data) {
         this.logoutOnTokenExpire();
-        return this.http.post(`${this.baseUrl}/telemetry/data`, {period: data},{ 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/telemetry/data`, { period: data }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     //
