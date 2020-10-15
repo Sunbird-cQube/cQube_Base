@@ -491,11 +491,13 @@ export class StudengtAttendanceComponent implements OnInit {
       localStorage.setItem('dist', label.district_name);
       localStorage.setItem('distId', label.district_id);
       this.myDistData(label.district_id);
-      obj = {
-        id: label.district_id,
-        name: label.district_name,
-        lat: event.latlng.lat,
-        lng: event.latlng.lng
+      if (event.latlng) {
+        obj = {
+          id: label.district_id,
+          name: label.district_name,
+          lat: event.latlng.lat,
+          lng: event.latlng.lng
+        }
       }
     }
 
@@ -511,11 +513,14 @@ export class StudengtAttendanceComponent implements OnInit {
       localStorage.setItem('block', label.block_name);
       localStorage.setItem('blockId', label.block_id);
       this.myBlockData(label.block_id);
-      obj = {
-        id: label.block_id,
-        name: label.block_name,
-        lat: event.latlng.lat,
-        lng: event.latlng.lng
+
+      if (event.latlng) {
+        obj = {
+          id: label.block_id,
+          name: label.block_name,
+          lat: event.latlng.lat,
+          lng: event.latlng.lng
+        }
       }
     }
 
@@ -529,11 +534,13 @@ export class StudengtAttendanceComponent implements OnInit {
       localStorage.setItem('clusterId', label.cluster_id);
 
       this.myClusterData(label.cluster_id);
-      obj = {
-        id: label.cluster_id,
-        name: label.cluster_name,
-        lat: event.latlng.lat,
-        lng: event.latlng.lng
+      if (event.latlng) {
+        obj = {
+          id: label.cluster_id,
+          name: label.cluster_name,
+          lat: event.latlng.lat,
+          lng: event.latlng.lng
+        }
       }
     }
     this.getTelemetryData(obj, event.type, level);
