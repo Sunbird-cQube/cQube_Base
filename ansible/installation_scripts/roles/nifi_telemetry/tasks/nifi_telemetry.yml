@@ -303,5 +303,8 @@
     body_format: json
     body: {"id":"{{ tagExists[0].item.component.id }}","state":"RUNNING"}
   no_log: True
+
+- name: Triggering the handler
+  shell: "echo 'triggering the handler using shell'"  
   notify:
-  - start telemetry processor
+    - start telemetry processor
