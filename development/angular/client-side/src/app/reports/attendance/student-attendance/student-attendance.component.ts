@@ -550,7 +550,7 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   onClickSchool(event) {
-    var level = "school";
+    this.levelWise = 'school';
     if (event.latlng) {
       var obj = {
         id: event.target.myJsonData.school_id,
@@ -558,7 +558,7 @@ export class StudengtAttendanceComponent implements OnInit {
         lat: event.target.myJsonData.lat,
         lng: event.target.myJsonData.lng
       }
-      this.getTelemetryData(obj, event.type, level);
+      this.getTelemetryData(obj, event.type, this.levelWise);
     }
   }
 
