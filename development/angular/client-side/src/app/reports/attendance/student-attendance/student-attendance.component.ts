@@ -166,10 +166,13 @@ export class StudengtAttendanceComponent implements OnInit {
     var myReport = [];
     this.reportData.forEach(element => {
       if (this.levelWise != 'school') {
-        element.number_of_schools = parseInt(element.number_of_schools.replace(/\,/g, ''));
+        if (element.number_of_schools) {
+          element.number_of_schools = (element.number_of_schools.replace(/\,/g, ''));
+        }
       }
-      element.number_of_students = parseInt(element.number_of_students.replace(/\,/g, ''));
-
+      if (element.number_of_students) {
+        element.number_of_students = (element.number_of_students.replace(/\,/g, ''));
+      }
       var data = {};
       var downloadable_data = {};
       Object.keys(element).forEach(key => {
