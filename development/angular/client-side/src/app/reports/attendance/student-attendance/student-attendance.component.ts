@@ -120,31 +120,47 @@ export class StudengtAttendanceComponent implements OnInit {
 
   downloadReport(event) {
     if (this.globalId == this.myDistrict) {
-      var distData = {};
+      var distData: any = {};
       this.districtData.find(a => {
-        if (a.id == this.myDistrict) {
-          distData = a;
+        if (a.district_id == this.myDistrict) {
+          distData = {
+            id: a.district_id,
+            name: a.district_name,
+            lat: a.lat,
+            lng: a.lng
+          }
         }
       });
       this.getTelemetryData(distData, event.target.id, "district");
     }
+
     if (this.globalId == this.myBlock) {
-      var blockData = {};
+      var blokData: any = {};
       this.blockData.find(a => {
-        if (a.id == this.myBlock) {
-          blockData = a;
+        if (a.block_id == this.myBlock) {
+          blokData = {
+            id: a.block_id,
+            name: a.block_name,
+            lat: a.lat,
+            lng: a.lng
+          }
         }
       });
-      this.getTelemetryData(blockData, event.target.id, "block");
+      this.getTelemetryData(blokData, event.target.id, "block");
     }
     if (this.globalId == this.myCluster) {
-      var clusterData = {};
+      var clustData: any = {};
       this.clusterData.find(a => {
-        if (a.id == this.myCluster) {
-          clusterData = a;
+        if (a.cluster_id == this.myCluster) {
+          clustData = {
+            id: a.cluster_id,
+            name: a.cluster_name,
+            lat: a.lat,
+            lng: a.lng
+          }
         }
       });
-      this.getTelemetryData(clusterData, event.target.id, "cluster");
+      this.getTelemetryData(clustData, event.target.id, "cluster");
     }
 
     var myReport = [];
@@ -466,11 +482,18 @@ export class StudengtAttendanceComponent implements OnInit {
 
   clickedMarker(event, label) {
     var level;
+    var obj = {};
     if (this.districtsIds.includes(label.district_id)) {
       level = "district";
       localStorage.setItem('dist', label.district_name);
       localStorage.setItem('distId', label.district_id);
       this.myDistData(label.district_id);
+      obj = {
+        id: label.district_id,
+        name: label.district_name,
+        lat: event.latlng.lat,
+        lng: event.latlng.lng
+      }
     }
 
     if (this.blocksIds.includes(label.block_id)) {
@@ -485,6 +508,12 @@ export class StudengtAttendanceComponent implements OnInit {
       localStorage.setItem('block', label.block_name);
       localStorage.setItem('blockId', label.block_id);
       this.myBlockData(label.block_id);
+      obj = {
+        id: label.block_id,
+        name: label.block_name,
+        lat: event.latlng.lat,
+        lng: event.latlng.lng
+      }
     }
 
     if (this.clusterIds.includes(label.cluster_id)) {
@@ -497,16 +526,14 @@ export class StudengtAttendanceComponent implements OnInit {
       localStorage.setItem('clusterId', label.cluster_id);
 
       this.myClusterData(label.cluster_id);
-    }
-    if (event.latlng) {
-      var obj = {
-        id: label.id,
-        name: label.name,
+      obj = {
+        id: label.cluster_id,
+        name: label.cluster_name,
         lat: event.latlng.lat,
         lng: event.latlng.lng
       }
-      this.getTelemetryData(obj, event.type, level);
     }
+    this.getTelemetryData(obj, event.type, level);
   }
 
   //Showing tooltips on markers on mouse hover...
@@ -526,8 +553,8 @@ export class StudengtAttendanceComponent implements OnInit {
     var level = "school";
     if (event.latlng) {
       var obj = {
-        id: event.target.myJsonData.id,
-        name: event.target.myJsonData.name,
+        id: event.target.myJsonData.school_id,
+        name: event.target.myJsonData.school_name,
         lat: event.target.myJsonData.lat,
         lng: event.target.myJsonData.lng
       }
@@ -542,10 +569,15 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   distSelect(event, data) {
-    var distData = {};
+    var distData: any = {};
     this.districtData.find(a => {
-      if (a.id == data) {
-        distData = a;
+      if (a.district_id == data) {
+        distData = {
+          id: a.district_id,
+          name: a.district_name,
+          lat: a.lat,
+          lng: a.lng
+        }
       }
     });
     this.getTelemetryData(distData, event.type, "district");
@@ -636,13 +668,18 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   blockSelect(event, data) {
-    var blockData = {};
+    var blokData: any = {};
     this.blockData.find(a => {
-      if (a.id == data) {
-        blockData = a;
+      if (a.block_id == data) {
+        blokData = {
+          id: a.block_id,
+          name: a.block_name,
+          lat: a.lat,
+          lng: a.lng
+        }
       }
     });
-    this.getTelemetryData(blockData, event.type, "block");
+    this.getTelemetryData(blokData, event.type, "block");
     this.myBlockData(data);
   }
 
@@ -745,13 +782,18 @@ export class StudengtAttendanceComponent implements OnInit {
 
 
   clusterSelect(event, data) {
-    var clusterData = {};
+    var clustData: any = {};
     this.clusterData.find(a => {
-      if (a.id == data) {
-        clusterData = a;
+      if (a.cluster_id == data) {
+        clustData = {
+          id: a.cluster_id,
+          name: a.cluster_name,
+          lat: a.lat,
+          lng: a.lng
+        }
       }
     });
-    this.getTelemetryData(clusterData, event.type, "cluster");
+    this.getTelemetryData(clustData, event.type, "cluster");
     this.myClusterData(data);
   }
   myClusterData(data) {
@@ -878,6 +920,8 @@ export class StudengtAttendanceComponent implements OnInit {
     layerMarkers.addLayer(markerIcon);
     if (levelWise != "school") {
       markerIcon.on('click', onClick_Marker, this);
+    } else {
+      markerIcon.on('click', this.onClickSchool, this);
     }
     markerIcon.myJsonData = markers;
   }
@@ -944,8 +988,7 @@ export class StudengtAttendanceComponent implements OnInit {
         date: ("0" + (this.edate.getDate())).slice(-2),
         hour: ("0" + (this.edate.getHours())).slice(-2),
       }
-
-      this.service.telemetry(dateObj).subscribe(res => {
+      this.service.telemetrySar(dateObj).subscribe(res => {
       }, err => {
         console.log(err);
       });
