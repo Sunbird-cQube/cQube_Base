@@ -303,3 +303,5 @@
     body_format: json
     body: {"id":"{{ tagExists[0].item.component.id }}","state":"RUNNING"}
   no_log: True
+  notify:
+  - start telemetry processor

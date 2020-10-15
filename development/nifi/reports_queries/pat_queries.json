@@ -25,7 +25,7 @@
     "pat_grade_school_all": "Select * from periodic_grade_school_all"
   },
   {
-    "pat_meta_all": "select json_object_agg(col,data) from  ((select 'district' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_district group by grade)as d) union (select 'block' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_block group by grade)as d) union (select 'cluster' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_cluster group by grade)as d) union (select 'school' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_school group by grade)as d))as d"
+    "pat_meta_all": "select json_object_agg(col,data) from ((select 'district' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_district_all group by grade)as d)union(select 'block' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_block_all group by grade)as d) union (select 'cluster' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_cluster_all group by grade)as d)union(select 'school' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_school_all group by grade)as d))as d"
   },
 	{
     "pat_exam_district_last30": "Select * from periodic_exam_district_last30"
@@ -52,7 +52,7 @@
     "pat_grade_school_last30": "Select * from periodic_grade_school_last30"
   },
   {
-    "pat_meta_last30": "select json_object_agg(col,data) from  ((select 'district' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_district group by grade)as d) union (select 'block' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_block group by grade)as d) union (select 'cluster' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_cluster group by grade)as d) union (select 'school' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_school group by grade)as d))as d"
+    "pat_meta_last30": "select json_object_agg(col,data) from  ((select 'district' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_district_all group by grade)as d) union (select 'block' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_block_all group by grade)as d) union (select 'cluster' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_cluster_all group by grade)as d) union (select 'school' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_school_all group by grade)as d))as d"
   },
   {
     "pat_exam_district_last7": "Select * from periodic_exam_district_last7"
@@ -79,7 +79,7 @@
     "pat_grade_school_last7": "Select * from periodic_grade_school_last7"
   },
   {
-    "pat_meta_last7": "select json_object_agg(col,data) from  ((select 'district' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_district group by grade)as d) union (select 'block' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_block group by grade)as d) union (select 'cluster' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_cluster group by grade)as d) union (select 'school' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_school group by grade)as d))as d"
+    "pat_meta_last7": "select json_object_agg(col,data) from  ((select 'district' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_district_all group by grade)as d) union (select 'block' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_block_all group by grade)as d) union (select 'cluster' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_cluster_all group by grade)as d) union (select 'school' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from periodic_grade_school_all group by grade)as d))as d"
   }
 ]
 
