@@ -6,15 +6,24 @@ const s3File = require('../../lib/reads3File');
 router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT school wise api ---');
-        let fileName;
+        var period = req.body.data.period;
+        var grade = req.body.data.grade;
+        var fileName;
         var schoolData = {}
-        if (req.body.data) {
-            fileName = `pat/school/${req.body.data}.json`;
-            schoolData = await s3File.readS3File(fileName);
+        if (period == '') {
+            if (grade) {
+                fileName = `pat/all/school/${grade}.json`;
+            } else {
+                fileName = `pat/all/pat_school.json`;
+            }
         } else {
-            fileName = `pat/pat_school.json`
-            schoolData = await s3File.readS3File(fileName);
+            if (grade) {
+                fileName = `pat/${period}/school/${grade}.json`;
+            } else {
+                fileName = `pat/${period}/pat_school.json`;
+            }
         }
+        schoolData = await s3File.readS3File(fileName);
         var mydata = schoolData.data;
         logger.info('---PAT school wise api response sent---');
         res.status(200).send({ data: mydata, footer: schoolData.AllSchoolsFooter });
@@ -27,7 +36,14 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT schoolPerCluster api ---');
-        let fileName = `pat/pat_school.json`;
+        var period = req.body.data.period;
+        var fileName;
+        if (period == '') {
+            fileName = `pat/all/pat_school.json`;
+        } else {
+            fileName = `pat/${period}/pat_school.json`;
+        }
+
         var schoolData = await s3File.readS3File(fileName);
         let clusterId = req.params.clusterId;
 

@@ -122,6 +122,8 @@ export class SemesterExceptionComponent implements OnInit {
       this.districtId = undefined;
       this.commonService.errMsg();
       this.levelWise = "district";
+      this.reportData = [];
+      this.schoolCount = '';
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -178,6 +180,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "block";
+      this.schoolCount = '';
 
       this.reportData = [];
       this.districtId = undefined;
@@ -249,6 +252,8 @@ export class SemesterExceptionComponent implements OnInit {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "cluster";
+      this.schoolCount = '';
+
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -322,6 +327,8 @@ export class SemesterExceptionComponent implements OnInit {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "school";
+      this.schoolCount = '';
+
       this.reportData = [];
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -592,6 +599,8 @@ export class SemesterExceptionComponent implements OnInit {
   // common function for all the data to show in the map
   genericFun(data, options, fileName) {
     this.reportData = [];
+    this.schoolCount = '';
+
     if (data['data'].length > 0) {
       this.markers = data['data']
       this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
@@ -707,6 +716,11 @@ export class SemesterExceptionComponent implements OnInit {
 
   // to download the excel report
   downloadReport() {
+    this.reportData.forEach(element => {
+      if (element.number_of_schools != undefined) {
+        element['number_of_schools'] = element.number_of_schools.replace(/\,/g, '');
+      }
+    });
     this.commonService.download(this.fileName, this.reportData);
   }
 

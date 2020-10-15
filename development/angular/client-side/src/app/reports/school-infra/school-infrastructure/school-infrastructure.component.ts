@@ -164,8 +164,6 @@ export class SchoolInfrastructureComponent implements OnInit {
       //====================================
       this.SchoolInfrastructureBlocksNames.sort((a, b) => (a.block.value > b.block.value) ? 1 : ((b.block.value > a.block.value) ? -1 : 0));
       // for table data
-      // $('#table').DataTable().destroy();
-      // $('#table').empty();
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================
@@ -225,8 +223,6 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.SchoolInfrastructureClusterNames.sort((a, b) => (a.cluster.value > b.cluster.value) ? 1 : ((b.cluster.value > a.cluster.value) ? -1 : 0));
 
       // for table data
-      // $('#table').DataTable().destroy();
-      // $('#table').empty();
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================
@@ -283,7 +279,6 @@ export class SchoolInfrastructureComponent implements OnInit {
       //====================================
 
       // for table data
-      $('#table').DataTable().destroy();
       var dataSet = this.result;
       this.createTable(dataSet);
       //========================

@@ -58,7 +58,7 @@
   tags: [ install, update ]
 
 - name: Copying table structure from csv file
-  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy udise_config(id,description,column_name,type,indice_id,status,score) from '/tmp/postgres/udise_config.csv' delimiter '|' csv header;"
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy udise_config(id,description,column_name,type,indice_id,status,score,trans_columns,metric_config,direction) from '/tmp/postgres/udise_config.csv' delimiter '|' csv header;"
   when: output_udise.stdout_lines[2].strip() == "0"
   tags: [ install, update ]
 

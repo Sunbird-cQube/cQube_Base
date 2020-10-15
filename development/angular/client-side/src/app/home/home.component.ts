@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-
+  edate: Date;
   constructor(private router: Router, public http: HttpClient, public service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) { }
   email: any;
   role: any;
@@ -64,4 +64,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  fetchTelemetry(event, report) {
+    this.service.getTelemetryData(report, event.type);
+  }
 }

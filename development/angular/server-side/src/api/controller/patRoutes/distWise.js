@@ -6,16 +6,26 @@ const s3File = require('../../lib/reads3File');
 router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT dist wise api ---');
+        var period = req.body.data.period;
+        var grade = req.body.data.grade;
         let fileName;
 
         var districtData = {}
-        if (req.body.data) {
-            fileName = `pat/district/${req.body.data}.json`
-            districtData = await s3File.readS3File(fileName);
+        if (period == '') {
+            if (grade) {
+                fileName = `pat/all/district/${grade}.json`
+            } else {
+                fileName = `pat/all/pat_district.json`
+            }
         } else {
-            fileName = `pat/pat_district.json`
-            districtData = await s3File.readS3File(fileName);
+            if (grade) {
+                fileName = `pat/${period}/district/${grade}.json`
+            } else {
+                fileName = `pat/${period}/pat_district.json`
+            }
         }
+
+        districtData = await s3File.readS3File(fileName);
         var mydata = districtData.data;
 
         logger.info('--- PAT dist wise api response sent ---');
@@ -26,12 +36,19 @@ router.post('/distWise', auth.authController, async (req, res) => {
     }
 });
 
-router.get('/grades', async (req, res, next) => {
+router.post('/grades', async (req, res, next) => {
     try {
         logger.info('---grades metadata api ---');
-        let fileName = `pat/pat_metadata.json`
+        var fileName;
+        var period = req.body.data.period;
+
+        if (period == '' || period == undefined) {
+            fileName = `pat/all/pat_metadata.json`;
+        } else {
+            fileName = `pat/${period}/pat_metadata.json`;
+        }
+
         var data = await s3File.readS3File(fileName);
-        // console.log(data);
         logger.info('---grades metadata api response sent---');
         res.status(200).send({ data: data });
     } catch (e) {

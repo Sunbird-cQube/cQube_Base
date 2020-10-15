@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
 import { KeycloakSecurityService } from '../keycloak-security.service';
 import { AppServiceComponent } from '../app.service';
 
@@ -8,10 +7,12 @@ import { AppServiceComponent } from '../app.service';
   providedIn: 'root'
 })
 export class AttendanceReportService {
-  public baseUrl = environment.apiEndpoint;
+  public baseUrl;
   public telemetryData = [];
 
-  constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) { }
+  constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) { 
+    this.baseUrl = service.baseUrl;
+  }
   //Attendance report
   dist_wise_data(data) {
     this.service.logoutOnTokenExpire();
@@ -54,8 +55,8 @@ export class AttendanceReportService {
     return this.http.get(`${this.baseUrl}/attendance/getDateRange`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
   //capturing telemetry.....
-  telemetry(date) {
+  telemetrySar(date) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/telemetry`, { telemetryData: this.telemetryData, date: date }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/telemetry/sar`, { telemetryData: this.telemetryData, date: date }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 }

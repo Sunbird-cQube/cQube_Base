@@ -163,6 +163,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.districtId = undefined;
       this.commonService.errMsg();
       this.levelWise = "district";
+      this.reportData = [];
+      this.schoolCount = '';
+      this.studentCount = '';
+
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -225,6 +229,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.levelWise = "block";
       this.fileName = "block_wise_sem_report"
       this.reportData = [];
+      this.schoolCount = '';
+      this.studentCount = '';
+
       this.districtId = undefined;
       this.blockId = undefined;
       // these are for showing the hierarchy names based on selection
@@ -296,6 +303,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.levelWise = "cluster";
       this.fileName = "cluster_wise_sem_report"
       this.reportData = [];
+      this.schoolCount = '';
+      this.studentCount = '';
+
       this.districtId = undefined;
       this.blockId = undefined;
       this.clusterId = undefined;
@@ -370,6 +380,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.levelWise = "school";
       this.fileName = "school_wise_sem_report"
       this.reportData = [];
+      this.schoolCount = '';
+      this.studentCount = '';
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -681,8 +693,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
   // common function for all the data to show in the map
   genericFun(data, options, fileName) {
     this.reportData = [];
+    this.schoolCount = '';
+    this.studentCount = '';
+
     if (data['sortedData'].length > 0) {
-     this.markers = data['sortedData']
+      this.markers = data['sortedData']
 
       // generate color gradient
       let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
@@ -798,6 +813,14 @@ export class SemViewComponent implements OnInit, OnDestroy {
     // this.btnId = event.target.id;
     // var date = new Date();
     // this.trackInteract(date, this.btnId, eventType);
+    this.reportData.forEach(element => {
+      if (element.number_of_students != undefined) {
+        element['number_of_students'] = element.number_of_students.replace(/\,/g, '');
+      }
+      if (element.number_of_schools != undefined) {
+        element['number_of_schools'] = element.number_of_schools.replace(/\,/g, '');
+      }
+    });
     this.commonService.download(this.fileName, this.reportData);
   }
   trackInteract(date, id, type) {
