@@ -14470,7 +14470,7 @@ ${filename:startsWith('periodic_exam_qst_mst'):ifElse(#{pat_periodic_exam_qst_ms
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>Database Connection Pooling Service</key>
@@ -19046,17 +19046,34 @@ same id data validation of file:${filename} error while same id mirror data</val
 <properties>
     <entry>
         <key>Object Key</key>
-        <value>pat/${query_type:startsWith('pat_exam_school'):ifElse('pat_school.json',
-${query_type:startsWith('pat_exam_cluster'):ifElse('pat_cluster.json',
-${query_type:startsWith('pat_exam_block'):ifElse('pat_block.json',
-${query_type:startsWith('pat_exam_district'):ifElse('pat_district.json',
-${query_type:startsWith('pat_grade_district'):ifElse('district/${grade}.json',
-${query_type:startsWith('pat_grade_block'):ifElse('block/${grade}.json',
-${query_type:startsWith('pat_grade_cluster'):ifElse('cluster/${grade}.json',
-${query_type:startsWith('pat_grade_school'):ifElse('school/${grade}.json',
-${query_type:startsWith('pat_meta'):ifElse('pat_metadata.json','None')}
-)} )} )} )} )}
-)} )} )}</value>
+        <value>pat/${query_type:startsWith('pat_exam_school_all'):ifElse('all/pat_school.json',
+${query_type:startsWith('pat_exam_cluster_all'):ifElse('all/pat_cluster.json',
+${query_type:startsWith('pat_exam_block_all'):ifElse('all/pat_block.json',
+${query_type:startsWith('pat_exam_district_all'):ifElse('all/pat_district.json',
+${query_type:startsWith('pat_grade_district_all'):ifElse('all/district/${grade}.json',
+${query_type:startsWith('pat_grade_block_all'):ifElse('all/block/${grade}.json',
+${query_type:startsWith('pat_grade_cluster_all'):ifElse('all/cluster/${grade}.json',
+${query_type:startsWith('pat_grade_school_all'):ifElse('all/school/${grade}.json',
+${query_type:startsWith('pat_meta_all'):ifElse('all/pat_metadata.json',
+${query_type:startsWith('pat_exam_school_last30'):ifElse('last_30_days/pat_school.json',
+${query_type:startsWith('pat_exam_cluster_last30'):ifElse('last_30_days/pat_cluster.json',
+${query_type:startsWith('pat_exam_block_last30'):ifElse('last_30_days/pat_block.json',
+${query_type:startsWith('pat_exam_district_last30'):ifElse('last_30_days/pat_district.json',
+${query_type:startsWith('pat_grade_district_last30'):ifElse('last_30_days/district/${grade}.json',
+${query_type:startsWith('pat_grade_block_last30'):ifElse('last_30_days/block/${grade}.json',
+${query_type:startsWith('pat_grade_cluster_last30'):ifElse('last_30_days/cluster/${grade}.json',
+${query_type:startsWith('pat_grade_school_last30'):ifElse('last_30_days/school/${grade}.json',
+${query_type:startsWith('pat_meta_last30'):ifElse('last_30_days/pat_metadata.json',
+${query_type:startsWith('pat_exam_school_last7'):ifElse('last_7_days/pat_school.json',
+${query_type:startsWith('pat_exam_cluster_last7'):ifElse('last_7_days/pat_cluster.json',
+${query_type:startsWith('pat_exam_block_last7'):ifElse('last_7_days/pat_block.json',
+${query_type:startsWith('pat_exam_district_last7'):ifElse('last_7_days/pat_district.json',
+${query_type:startsWith('pat_grade_district_last7'):ifElse('last_7_days/district/${grade}.json',
+${query_type:startsWith('pat_grade_block_last7'):ifElse('last_7_days/block/${grade}.json',
+${query_type:startsWith('pat_grade_cluster_last7'):ifElse('last_7_days/cluster/${grade}.json',
+${query_type:startsWith('pat_grade_school_last7'):ifElse('last_7_days/school/${grade}.json',
+${query_type:startsWith('pat_meta_last7'):ifElse('last_7_days/pat_metadata.json','None')}
+)} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -30300,5 +30317,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>10/13/2020 12:26:15 IST</timestamp>
+    <timestamp>10/15/2020 19:50:42 IST</timestamp>
 </template>
