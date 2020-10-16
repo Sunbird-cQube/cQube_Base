@@ -1,26 +1,24 @@
 import unittest
 
 from HTMLTestRunner import HTMLTestRunner
-
-from Composite_report import composite_functional_testing
+from Landing_Page import Dashboard_icons
 from Periodic_report import periodic_functional_suite
 from get_dir import pwd
 
 
 class MyTestSuite(unittest.TestCase):
 
-
     def test_issue01(self):
         regression_test = unittest.TestSuite()
         regression_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(composite_functional_testing.composite_report),
+            unittest.defaultTestLoader.loadTestsFromTestCase(Dashboard_icons.cQube_Home),
             ])
         p = pwd()
-        outfile = open(p.get_functional_report_path(), "a")
+        outfile = open(p.get_functional_report_path(), "w")
 
         runner1 = HTMLTestRunner.HTMLTestRunner(
             stream=outfile,
-            title='Composite Report functional Test Report',
+            title='Telemetry Dashboard icons functional Test Report',
             verbosity=1,
 
         )
@@ -33,7 +31,7 @@ class MyTestSuite(unittest.TestCase):
             unittest.defaultTestLoader.loadTestsFromTestCase(periodic_functional_suite.periodic_functional_testing),
         ])
         p = pwd()
-        outfile = open(p.get_functional_report_path(), "w")
+        outfile = open(p.get_functional_report_path(), "a")
 
         runner1 = HTMLTestRunner.HTMLTestRunner(
             stream=outfile,

@@ -87,6 +87,7 @@ class cQube_Student_Attendance(unittest.TestCase):
             csv.remove_csv()
         else:
             raise self.failureException("Block wise csv report download is not working")
+        time.sleep(2)
 
     def test_clusterwise_csv_download(self):
         csv = ClusterwiseCsv(self.driver, self.year, self.month)
@@ -151,6 +152,7 @@ class cQube_Student_Attendance(unittest.TestCase):
             print("Home Icon is working")
         else:
             raise self.failureException('Home Icon is not working')
+        self.data.page_loading(self.driver)
 
     def test_total_no_of_students_and_total_no_of_schools_is_equals_at_districts_blocks_clusters_schools(self):
         tc = TotalStudentsSchools(self.driver)

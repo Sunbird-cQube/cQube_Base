@@ -25,18 +25,18 @@ class periodic_regression(unittest.TestCase):
     def setUpClass(self):
         self.data = GetData()
         self.driver = self.data.get_driver()
-        self.driver.implicitly_wait(100)
+        self.driver.implicitly_wait(50)
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
         self.data.navigate_to_periodic_report()
         self.data.page_loading(self.driver)
 
-    def test_Pat_Report_icon(self):
-        cls = Pat_Report_icon(self.driver)
-        fnc = cls.check_landing_page()
-        self.assertEqual(0,fnc,msg='Pat icon is not working ')
-        print('Checked with pat icon is working fine ')
-        self.data.page_loading(self.driver)
+    # def test_Pat_Report_icon(self):
+    #     cls = Pat_Report_icon(self.driver)
+    #     fnc = cls.check_landing_page()
+    #     self.assertEqual(0,fnc,msg='Pat icon is not working ')
+    #     print('Checked with pat icon is working fine ')
+    #     self.data.page_loading(self.driver)
 
     def test_grades_selection(self):
         b = periodic_grades(self.driver)
@@ -48,6 +48,15 @@ class periodic_regression(unittest.TestCase):
         b = periodic_grades(self.driver)
         res = b.select_subjects_dropdown()
         print("selected each grade with all the subjects")
+        self.data.page_loading(self.driver)
+
+    def test_homebtn(self):
+        b = Home(self.driver)
+        self.data.page_loading(self.driver)
+        res = b.click_HomeButton()
+        self.assertEqual(0, res, msg='home button is not worked ')
+        print('Home button is working ')
+        self.data.navigate_to_periodic_report()
         self.data.page_loading(self.driver)
 
     def test_DistrictwiseCsv(self):
@@ -109,13 +118,7 @@ class periodic_regression(unittest.TestCase):
         print('Home icon is working')
         self.data.page_loading(self.driver)
 
-    def test_homebtn(self):
-        b = Home(self.driver)
-        res = b.click_HomeButton()
-        self.assertEqual(0, res, msg='home button is not worked ')
-        print('Home button is working ')
-        self.data.navigate_to_periodic_report()
-        self.data.page_loading(self.driver)
+
 
     def test_check_hyperlinks(self):
         hyperlinks = Hyperlink(self.driver)

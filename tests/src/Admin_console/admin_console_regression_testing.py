@@ -20,7 +20,7 @@ class Admin_console_regression(unittest.TestCase):
 
     def test_createuser_icon(self):
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_xpath(Data.createusericon).click()
+        self.driver.find_element_by_id('addUser').click()
         self.data.page_loading(self.driver)
         head = self.driver.find_element_by_id('head').text
         self.assertEqual("Create User", head, msg="create user page is not exists")

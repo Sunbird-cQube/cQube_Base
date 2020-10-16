@@ -30,6 +30,7 @@ class Home():
         else:
             print('Home btn is not working ')
             count = count + 1
+        cal.page_loading(self.driver)
         return count
 
 

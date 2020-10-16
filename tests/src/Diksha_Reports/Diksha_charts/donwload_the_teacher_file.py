@@ -6,6 +6,7 @@ import time
 from selenium.webdriver.support.select import Select
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -18,6 +19,7 @@ class Diksha_teacher_download():
     def test_teacher_file(self):
         self.data = GetData()
         self.p = pwd()
+        self.fname =file_extention()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.data.page_loading(self.driver)
         download = Select(self.driver.find_element_by_id('downloader'))
@@ -25,7 +27,7 @@ class Diksha_teacher_download():
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id('download').click()
         time.sleep(4)
-        self.filename = self.p.get_download_dir() + '/Diksha_last_30_days_data_Teacher.csv'
+        self.filename = self.p.get_download_dir() + '/' + self.fname.diksha_stack_teacher()
         time.sleep(2)
         file = os.path.isfile(self.filename)
         count = 0

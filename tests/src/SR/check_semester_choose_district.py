@@ -6,6 +6,7 @@ import time
 from selenium.webdriver.support.select import Select
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -18,6 +19,7 @@ class District():
 
     def check_district(self):
         cal = GetData()
+        self.fname = file_extention()
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
         cal.page_loading(self.driver)
@@ -36,7 +38,7 @@ class District():
                 self.driver.find_element_by_id('download').click()
                 time.sleep(2)
                 p = pwd()
-                self.filename = p.get_download_dir() + "/Block_Per_dist_report_sem_2.csv"
+                self.filename = p.get_download_dir() + "/" + self.fname.sr_districtwise()
                 if not os.path.isfile(self.filename):
                     print("District" + select_district.first_selected_option.text + "csv is not downloaded")
                     count = count + 1
@@ -47,8 +49,8 @@ class District():
                         total = 0
                         schools = 0
                         for row in csv.reader(fin):
-                            total += int(row[12])
-                            schools += int(row[11])
+                            total += int(row[11].replace(',',''))
+                            schools += int(row[12].replace(',',""))
                         students = self.driver.find_element_by_id("students").text
                         res = re.sub('\D', "", students)
 

@@ -55,7 +55,7 @@ class DistrictBlockCluster():
                             header = next(csv_reader)
                             total = 0
                             for row in csv.reader(fin):
-                                row = row[6].strip('\"')
+                                row = row[9].strip('\"')
                                 row1 = row.replace(',', "")
                                 total += int(row1)
                             students = self.driver.find_element_by_id("students").text

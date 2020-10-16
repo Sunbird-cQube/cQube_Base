@@ -6,6 +6,7 @@ import time
 from selenium.webdriver.support.select import Select
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -18,6 +19,7 @@ class DistrictBlockCluster():
 
     def check_district_block_cluster(self):
         cal = GetData()
+        self.fname = file_extention()
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
         select_district = Select(self.driver.find_element_by_id('choose_dist'))
@@ -32,6 +34,7 @@ class DistrictBlockCluster():
                 cal.page_loading(self.driver)
                 for z in range(len(select_cluster.options)-1, len(select_cluster.options)):
                     select_cluster.select_by_index(z)
+                    time.sleep(2)
                     cal.page_loading(self.driver)
                     markers = self.driver.find_elements_by_class_name(Data.dots)
                     if len(markers) - 1 == 0:
@@ -42,7 +45,7 @@ class DistrictBlockCluster():
                     self.driver.find_element_by_id('download').click()
                     time.sleep(3)
                     p = pwd()
-                    self.filename = p.get_download_dir() +"/School_per_cluster_report_sem_2.csv"
+                    self.filename = p.get_download_dir() +"/" + self.fname.sr_clusterwise()
                     if not os.path.isfile(self.filename):
                         print(
                             "District" + select_district.first_selected_option.text + "Block" + select_block.first_selected_option.text + "Cluster" + select_cluster.first_selected_option.text + "csv is not downloaded")
