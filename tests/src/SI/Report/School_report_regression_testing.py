@@ -40,6 +40,7 @@ class cQube_SI_Report(unittest.TestCase):
         res = b.test_menulist()
         print("check with dashboard options is working fine ")
         self.data.page_loading(self.driver)
+
     def test_graph(self):
         b = check_with_graph(self.driver)
         res = b.test_graph()

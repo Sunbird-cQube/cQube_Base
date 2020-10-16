@@ -10,6 +10,7 @@ class login(unittest.TestCase):
     def setUpClass(self):
         self.data = GetData()
         self.driver = self.data.get_driver()
+        # self.driver = self.data.get_firefox_driver()
         self.data.open_cqube_appln(self.driver)
         self.data.page_loading(self.driver)
 

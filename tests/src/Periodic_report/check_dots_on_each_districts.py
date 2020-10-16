@@ -21,7 +21,7 @@ class DotsOnDistricts():
         for x in range(1, len(select_district.options)):
             select_district.select_by_index(x)
             cal.page_loading(self.driver)
-            time.sleep(2)
+            time.sleep(5)
             dots = self.driver.find_elements_by_class_name(Data.dots)
             if int(len(dots) - 1) == 0:
                 print("District" + select_district.first_selected_option.text + "Markers are not found")

@@ -22,7 +22,7 @@ class cQube_diskha_column_report(unittest.TestCase):
     def setUpClass(self):
             self.data = GetData()
             self.driver = self.data.get_driver()
-            self.driver.implicitly_wait(50)
+            self.driver.implicitly_wait(100)
             self.data.open_cqube_appln(self.driver)
             self.data.login_cqube(self.driver)
             self.data.navigate_to_diksha_column_chart()
@@ -110,7 +110,7 @@ class cQube_diskha_column_report(unittest.TestCase):
             print('Home button is not working')
             count = count + 1
         self.assertEqual(0,count,msg="Home button is not working")
-        self.driver.find_element_by_xpath("//img[@alt='dikshaColumn']").click()
+        self.driver.find_element_by_id("dcc").click()
         self.data.page_loading(self.driver)
 
     def test_Diksha_logout(self):

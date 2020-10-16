@@ -95,6 +95,8 @@ class cQube_Semester_Report(unittest.TestCase):
         else:
             print("District wise csv report download is working")
 
+
+
     def test_blockwise_csv_download(self):
         csv = BlockwiseCsv(self.driver)
         result = csv.click_download_icon_of_blocks()

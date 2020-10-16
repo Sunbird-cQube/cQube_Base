@@ -32,7 +32,7 @@ class others_records_download():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(4)
-            self.filename = self.p.get_download_dir() + '/collectionType_textbook_data.csv'
+            self.filename = self.p.get_download_dir() + '/collectionType_others_data.csv'
             time.sleep(2)
             file = os.path.isfile(self.filename)
             os.remove(self.filename)

@@ -1,3 +1,4 @@
+import time
 import unittest
 from Data.parameters import Data
 
@@ -98,6 +99,7 @@ class cQube_semester_exception_report(unittest.TestCase):
         self.data.login_cqube(self.driver)
         self.data.navigate_to_semester_exception()
         self.data.page_loading(self.driver)
+        time.sleep(3)
 
     def test_sem_exception_hyperlink(self):
         b = sem_exception_hyperlink(self.driver)

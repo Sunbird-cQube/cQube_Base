@@ -46,7 +46,7 @@ class Test_Telemetry(unittest.TestCase):
         self.driver.find_element_by_id('telemData').click()
         self.data.page_loading(self.driver)
 
-    def test_click_on_blocks(self):
+    def test_click_on_blocks_cluster_school(self):
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.block_btn).click()
         self.data.page_loading(self.driver)
@@ -58,21 +58,18 @@ class Test_Telemetry(unittest.TestCase):
         self.driver.find_element_by_id('telemData').click()
         self.data.page_loading(self.driver)
 
-
-    def test_click_on_cluster(self):
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.cluster_btn).click()
         self.data.page_loading(self.driver)
         dots = self.driver.find_elements_by_class_name(Data.dots)
         count = len(dots) - 1
-        self.assertNotEqual(0, count  , msg="Markers not present on cluster level ")
+        self.assertNotEqual(0, count, msg="Markers not present on cluster level ")
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id('homeBtn').click()
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id('telemData').click()
         self.data.page_loading(self.driver)
 
-    def test_click_on_school(self):
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.schoolbtn).click()
         self.data.page_loading(self.driver)
@@ -83,6 +80,8 @@ class Test_Telemetry(unittest.TestCase):
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id('telemData').click()
         self.data.page_loading(self.driver)
+
+
 
     def test_check_with_lastday(self):
         b = lastday_timeperiod(self.driver)
@@ -123,7 +122,6 @@ class Test_Telemetry(unittest.TestCase):
         self.assertNotEqual(0, res1, msg='Block level markers are not present')
         self.assertNotEqual(0, res2, msg='Cluster level markers are not present')
         self.assertNotEqual(0, res3, msg='School level markers are not present')
-        # self.driver.find_element_by_id(Data.homeicon).click()
         self.driver.find_element_by_id('homeBtn').click()
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id('telemData').click()
@@ -185,7 +183,8 @@ class Test_Telemetry(unittest.TestCase):
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id('homeBtn').click()
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id('telemData').click()
+        # self.driver.find_element_by_id('telemData').click()
+        self.data.navigate_to_telemetry()
         if 'telemetry' in self.driver.current_url:
             print("Telemetry page is present ")
         else:
@@ -206,7 +205,8 @@ class Test_Telemetry(unittest.TestCase):
         self.assertEqual('Log in to cQube',self.driver.title,msg="logout is not working ")
         self.data.login_cqube(self.driver)
         time.sleep(2)
-        self.driver.find_element_by_id('telemData').click()
+        # self.driver.find_element_by_id('telemData').click()
+        self.data.navigate_to_telemetry()
         time.sleep(2)
         if 'telemetry' in self.driver.current_url:
             print("Telemetry page is displayed")

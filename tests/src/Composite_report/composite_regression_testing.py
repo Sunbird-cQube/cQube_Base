@@ -19,7 +19,7 @@ class composite_regression_report(unittest.TestCase):
     def setUpClass(self):
         self.data = GetData()
         self.driver = self.data.get_driver()
-        self.driver.implicitly_wait(50)
+        self.driver.implicitly_wait(100)
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
         self.data.navigate_to_composite_report()
@@ -37,7 +37,7 @@ class composite_regression_report(unittest.TestCase):
             print('Home button is not working ')
             count = count + 1
         self.assertEqual(0,count,msg="Home btn is not working ")
-        self.driver.find_element_by_id('composit').click()
+        self.driver.find_element_by_id('composite').click()
         self.data.page_loading(self.driver)
 
     def test_districtwise_csv_download(self):

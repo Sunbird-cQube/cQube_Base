@@ -4,6 +4,7 @@ from Semester_Exception.check_districts_csv_download import DistrictwiseDownload
 from Semester_Exception.click_on_blocks import Semester_Blocks
 from Semester_Exception.click_on_clusters import semester_clusters
 from Semester_Exception.click_on_schools import semeste_schools
+from Semester_Exception.sem_exception_options import sem_options
 from reuse_func import GetData
 
 class cQube_semester_exception_report(unittest.TestCase):
@@ -41,6 +42,12 @@ class cQube_semester_exception_report(unittest.TestCase):
         b = ClusterPerBlockCsvDownload(self.driver)
         res = b.check_csv_download()
         self.assertEqual(0,res , msg='Some cluster level files are not downloaded')
+
+    def test_options(self):
+        d = sem_options(self.driver)
+        res = d.sem_exception_options_test()
+        self.assertEqual(0,res,msg='Csv file is downloaded')
+        self.data.page_loading(self.driver)
 
     @classmethod
     def tearDownClass(cls):

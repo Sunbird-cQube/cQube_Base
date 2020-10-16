@@ -1,7 +1,5 @@
-
 import time
 import unittest
-
 from selenium.webdriver.support.select import Select
 from Data.parameters import Data
 from reuse_func import GetData
@@ -43,7 +41,7 @@ class cQube_diskha_chart(unittest.TestCase):
         self.driver.find_element_by_id('homeBtn').click()
         self.data.page_loading(self.driver)
         count = 0
-        self.driver.find_element_by_xpath("//img[@alt='dikshaChart']").click()
+        self.driver.find_element_by_id("dsc").click()
         self.data.page_loading(self.driver)
         if "diksha-chart" in self.driver.current_url:
             print("Diksha chart report page is present ")
@@ -90,9 +88,6 @@ class cQube_diskha_chart(unittest.TestCase):
         res = b.test_logout()
         self.assertEqual(res,'Log in to cQube',msg="Logout is not working")
         self.data.page_loading(self.driver)
-
-
-
 
 
 

@@ -6,6 +6,7 @@ import time
 from selenium.webdriver.support.select import Select
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -23,6 +24,7 @@ class test_crc_report_districtwise():
         self.cal.page_loading(self.driver)
         select_district = Select(self.driver.find_element_by_name('myDistrict'))
         count = 0
+        self.fname=file_extention()
         for x in range(1, len(select_district.options)):
             select_district.select_by_index(x)
             self.cal.page_loading(self.driver)
@@ -33,7 +35,7 @@ class test_crc_report_districtwise():
             else:
                 self.driver.find_element_by_id(Data.Download).click()
                 time.sleep(3)
-                self.filename = p.get_download_dir() + "/Block_level_CRC_Report.csv"
+                self.filename = p.get_download_dir() + '/' + self.fname.crc_districtwise()
                 with open(self.filename) as fin:
                     csv_reader = csv.reader(fin, delimiter=',')
                     header = next(csv_reader)
