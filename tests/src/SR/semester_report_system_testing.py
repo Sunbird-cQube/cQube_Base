@@ -1,5 +1,6 @@
 import time
 import unittest
+
 from SR.check_semester_choose_district import District
 from SR.check_semester_choose_district_block import DistrictsBlock
 from SR.check_semester_choose_district_block_cluster import DistrictBlockCluster

@@ -1,10 +1,11 @@
 
-cQube Release_1.4
+cQube Release_1.5
 
 Prerequisites:
   To Run Selenium python scripts ,Install pycharm in your system
   Google Chrome need to be installed in the server or local machine.
-  Chrome driver need to be downloaded and place this driver file in cQubeTesting-1.4/Driver folder
+  Chrome driver need to be downloaded and placed in the cQubeTesting-1.5/Driver folder
+  awscli must be installed and configured
    
 Steps to install the google chrome
 
@@ -16,18 +17,25 @@ Steps to install the google chrome
 Steps to Download the chrome driver 
 Note: Based on chrome browser version need to download chrome driver 
    https://sites.google.com/a/chromium.org/chromedriver/downloads
-
-Note : Java jdk1.8 need to be already installed in the machine
+   
+Steps to install and configure the awscli
+   Enter the below commands in the terminal 
+   sudo pip3 install awscli
+   aws configure
+   provide the s3 access key
+   provide the s3 secret key
+   provide the s3 default region
 
 Steps to execute the test script
 	1.Open the Terminal (Ctrl+Alt+t) in the ubuntu
-	2.Clone the cQubeTesting-1.4 project from github i.e git clone [repository url] 
+	2.Clone the cQubeTesting-1.5 project from github i.e git clone [repository url] 
 	2.sudo apt update
 	3.sudo apt install python3-pip
-	4.Execute the Requirement.txt in the terminal (Requirement.txt file present in the cQubeTesting-1.4 Folder) [mandatory]
-	    pip3 install -r Requirement.txt 
-	5.Fill the config.ini file (config.ini file present in the cQubeTesting-1.4 Folder).
+	4.Execute the Requirement.txt in the terminal (Requirement.txt file present in the cQubeTesting-1.5 Folder) [mandatory]
+	    sudo pip3 install -r Requirement.txt 
+	5.Fill the config.ini file (config.ini file present in the cQubeTesting-1.5 Folder).
 	        Mandatory fields for installation and upgradation of backend configuration and also to check the json files in the s3 output bucket
+		
                     [config]
                     domain=
                     username=
@@ -40,6 +48,7 @@ Steps to execute the test script
                     db_password= # db user which is provided in the config.yml file
                     aws_default_region=ap-south-1
                     s3_bucket= # s3 output bucket name which is provided in the config.yml file
+		    
     Execution of automation testscripts for both installation and upgradation of backend configuration
 
             python3 -m unittest TestSuites/cQubeBackendConfiguration/run_configuration.py
@@ -73,7 +82,7 @@ Steps to execute the test script
     6.To Run the Test scripts
         for functinal testing of periodic report and composite fallow commnad
             python3 -m unittest TestSuites/FunctionalTestSuite/Functional_suite.py
-    Navigate to cQubeTesting-1.3 Directory in the terminal (ex cd /home/ubuntu/cQubeTesting-1.4)
+    Navigate to cQubeTesting-1.3 Directory in the terminal (ex cd /home/ubuntu/cQubeTesting-1.5)
             For Regression:
                 python3 -m unittest TestSuites/Regression_suite/regression_test_suite.py
                 python3 -m unittest Admin_console/admin_console_regression_testing.py
@@ -101,24 +110,5 @@ Steps to execute the test script
             8> login with admin user and password , admin can access both cQube reports and admin console
 
     After execution of scripts ,the report will be generated and present in Reports folder
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

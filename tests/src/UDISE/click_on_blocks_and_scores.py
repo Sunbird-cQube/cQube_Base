@@ -19,7 +19,7 @@ class block_btn_scores():
         count = 0
         self.p.page_loading(self.driver)
         scores = Select(self.driver.find_element_by_id("choose_infra"))
-        for i in range(len(scores.options)):
+        for i in range(len(scores.options)-1):
             time.sleep(2)
             scores.select_by_index(i)
             time.sleep(5)

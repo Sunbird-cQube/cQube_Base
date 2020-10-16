@@ -1,3 +1,4 @@
+import time
 import unittest
 
 from Periodic_report.Click_on_hyper_link_in_periodic_report import Hyperlink
@@ -21,9 +22,18 @@ class periodic_smoke(unittest.TestCase):
     def setUpClass(self):
         self.data = GetData()
         self.driver = self.data.get_driver()
-        self.driver.implicitly_wait(100)
+        self.driver.implicitly_wait(50)
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
+        self.data.navigate_to_periodic_report()
+        self.data.page_loading(self.driver)
+
+    def test_homebtn(self):
+        b = Home(self.driver)
+        time.sleep(3)
+        res = b.click_HomeButton()
+        self.assertEqual(0, res, msg='home button is not worked ')
+        print('Home button is working ')
         self.data.navigate_to_periodic_report()
         self.data.page_loading(self.driver)
 
@@ -38,6 +48,7 @@ class periodic_smoke(unittest.TestCase):
         b = periodic_grades(self.driver)
         res = b.click_each_grades()
         print("selected each grade options ")
+        time.sleep(5)
         self.data.page_loading(self.driver)
 
     def test_select_each_subjects(self):
@@ -66,12 +77,12 @@ class periodic_smoke(unittest.TestCase):
         print('cluster level records are working fine')
         self.data.page_loading(self.driver)
 
-    def test_DotsOnDistricts(self):
-        b = DotsOnDistricts(self.driver)
-        res = b.check_dots_on_each_districts()
-        self.assertEqual(0, res, msg='Some districts dont have markers ')
-        print('Checked with markers on each district wise')
-        self.data.page_loading(self.driver)
+    # def test_DotsOnDistricts(self):
+    #     b = DotsOnDistricts(self.driver)
+    #     res = b.check_dots_on_each_districts()
+    #     self.assertEqual(0, res, msg='Some districts dont have markers ')
+    #     print('Checked with markers on each district wise')
+    #     self.data.page_loading(self.driver)
 
     def test_schoolbutton_records(self):
         b = SchoolwiseCsv(self.driver)
@@ -87,17 +98,17 @@ class periodic_smoke(unittest.TestCase):
         print('School level records are working fine')
         self.data.page_loading(self.driver)
 
-    def test_TotalStudentsSchools(self):
-        b = TotalStudentsSchools(self.driver)
-        res1, res2, res3, res4, res5, res6, res7, res8 = b.block_cluster_schools_footer_info()
-        self.assertEqual(int(res1), int(res3), msg='Block level student info is mis matched')
-        self.assertEqual(int(res2), int(res4), msg='Block level school info is mis matched')
-        self.assertEqual(int(res1), int(res5), msg='Cluster level student info is mis matched')
-        self.assertEqual(int(res2), int(res6), msg='Cluster level school info is mis matched')
-        self.assertEqual(int(res1), int(res7), msg='School level student info is mis matched')
-        self.assertEqual(int(res2), int(res8), msg='School level school info is mis matched')
-        print('Checked with footer values accross block ,cluster , school levels ')
-        self.data.page_loading(self.driver)
+    # def test_TotalStudentsSchools(self):
+    #     b = TotalStudentsSchools(self.driver)
+    #     res1, res2, res3, res4, res5, res6, res7, res8 = b.block_cluster_schools_footer_info()
+    #     self.assertEqual(int(res1), int(res3), msg='Block level student info is mis matched')
+    #     self.assertEqual(int(res2), int(res4), msg='Block level school info is mis matched')
+    #     self.assertEqual(int(res1), int(res5), msg='Cluster level student info is mis matched')
+    #     self.assertEqual(int(res2), int(res6), msg='Cluster level school info is mis matched')
+    #     self.assertEqual(int(res1), int(res7), msg='School level student info is mis matched')
+    #     self.assertEqual(int(res2), int(res8), msg='School level school info is mis matched')
+    #     print('Checked with footer values accross block ,cluster , school levels ')
+    #     self.data.page_loading(self.driver)
 
     def test_Homeicon(self):
         b = Home(self.driver)
@@ -105,13 +116,7 @@ class periodic_smoke(unittest.TestCase):
         print('Home icon is working')
         self.data.page_loading(self.driver)
 
-    def test_homebtn(self):
-        b = Home(self.driver)
-        res = b.click_HomeButton()
-        self.assertEqual(0, res, msg='home button is not worked ')
-        print('Home button is working ')
-        self.data.navigate_to_periodic_report()
-        self.data.page_loading(self.driver)
+
 
     def test_check_hyperlinks(self):
         hyperlinks = Hyperlink(self.driver)

@@ -1,4 +1,3 @@
-from Data.parameters import Data
 from reuse_func import GetData
 
 
@@ -69,7 +68,7 @@ class cQube_landing_page():
     def test_school_chart(self):
         self.cal = GetData()
         self.cal.page_loading(self.driver)
-        self.driver.find_element_by_id("icr").click()
+        self.driver.find_element_by_id("cr").click()
         self.cal.page_loading(self.driver)
         if "school-infrastructure" in self.driver.current_url:
             print("Navigated to  School infrastructure chart based report")
@@ -152,3 +151,39 @@ class cQube_landing_page():
         self.driver.find_element_by_id("homeBtn").click()
         self.cal.page_loading(self.driver)
 
+    def test_udise_report(self):
+        self.cal = GetData()
+        self.cal.page_loading(self.driver)
+        self.driver.find_element_by_id("udise").click()
+        self.cal.page_loading(self.driver)
+        if "udise-report" in self.driver.current_url:
+            print("Navigated to udise report home page")
+        else:
+            print("udise report home page report is not exist")
+        self.driver.find_element_by_id("homeBtn").click()
+        self.cal.page_loading(self.driver)
+
+    def test_periodic_report(self):
+        self.cal = GetData()
+        self.cal.page_loading(self.driver)
+        self.driver.find_element_by_id("pat").click()
+        self.cal.page_loading(self.driver)
+        if "pat-report" in self.driver.current_url:
+            print("Navigated to peirodic report home page")
+        else:
+            print("periodic report home page report is not exist")
+        self.driver.find_element_by_id("homeBtn").click()
+        self.cal.page_loading(self.driver)
+
+
+    def test_composite_report(self):
+        self.cal = GetData()
+        self.cal.page_loading(self.driver)
+        self.driver.find_element_by_id("composite").click()
+        self.cal.page_loading(self.driver)
+        if "composit-report" in self.driver.current_url:
+            print("Navigated to Composite report home page")
+        else:
+            print("Composite report home page report is not exist")
+        self.driver.find_element_by_id("homeBtn").click()
+        self.cal.page_loading(self.driver)

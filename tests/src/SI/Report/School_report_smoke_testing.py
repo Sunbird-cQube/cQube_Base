@@ -102,6 +102,7 @@ class cQube_SI_Report(unittest.TestCase):
         res = b.test_each_district()
         self.assertEqual(0, res, msg="some files are not downloaded")
         self.data.page_loading(self.driver)
+
     def test_logout(self):
         print("checking logout functionality")
         b = schoolinfra_logout(self.driver)

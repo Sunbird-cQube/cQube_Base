@@ -5,6 +5,7 @@ import time
 from selenium.webdriver.support.select import Select
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -17,6 +18,7 @@ class test_districtwise():
     def test_districtwise(self):
         p = pwd()
         self.cal = GetData()
+        self.fname =file_extention()
         select_district = Select(self.driver.find_element_by_name('myDistrict'))
         count = 0
         for x in range(1, len(select_district.options)):
@@ -29,7 +31,7 @@ class test_districtwise():
             else:
                 self.driver.find_element_by_id(Data.Download).click()
                 time.sleep(3)
-                self.filename = p.get_download_dir() + "/blockPerDistrict_report.csv"
+                self.filename = p.get_download_dir() + "/" + self.fname.sc_districtwise()
                 if not os.path.isfile(self.filename):
                     print(select_district.options[x].text , " csv file is not downloaded")
                 else:

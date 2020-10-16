@@ -29,3 +29,4 @@ class Districtwise_monthwise_records():
             self.data.page_loading(self.driver)
             if  "No data found" in self.driver.page_source:
                 print(districts.options[x].text ," does not last month records")
+        self.data.page_loading(self.driver)

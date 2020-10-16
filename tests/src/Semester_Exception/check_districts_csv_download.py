@@ -4,6 +4,7 @@ import unittest
 
 from selenium.webdriver.support.select import Select
 
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -15,6 +16,7 @@ class DistrictwiseDownload():
 
     def check_districts_csv_download(self):
         cal = GetData()
+        self.fname = file_extention()
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
         select_district = Select(self.driver.find_element_by_id('choose_dist'))
@@ -25,7 +27,7 @@ class DistrictwiseDownload():
             self.driver.find_element_by_id('download').click()
             time.sleep(3)
             p = pwd()
-            self.filename = p.get_download_dir() + "/Block_per_dist_report.csv"
+            self.filename = p.get_download_dir() + "/" + self.fname.exception_districtwise()
             if os.path.isfile(self.filename) != True:
                 print("District" + select_district.first_selected_option.text + "csv is not downloaded")
                 count = count + 1

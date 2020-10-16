@@ -12,5 +12,6 @@ class Schools():
         self.driver.find_element_by_id(Data.sr_schools_btn).click()
         cal = GetData()
         cal.page_loading(self.driver)
+        time.sleep(15)
         result= self.driver.find_elements_by_class_name(Data.dots)
         return result
