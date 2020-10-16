@@ -1,3 +1,5 @@
+import time
+
 from Periodic_report.check_blocklevel_download_csv import Block_level_records
 from Periodic_report.check_clusterlevel_download_csv import ClusterwiseCsv
 from Periodic_report.check_districtlevel_download_csv import DistrictwiseCsv
@@ -34,6 +36,7 @@ class periodic_system_testing(unittest.TestCase):
         res = b.click_each_grades()
         print("selected each grade options ")
         self.data.page_loading(self.driver)
+        time.sleep(4)
 
     def test_select_each_subjects(self):
         b = periodic_grades(self.driver)

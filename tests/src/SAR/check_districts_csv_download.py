@@ -46,7 +46,7 @@ class DistrictCsvDownload():
                     schools = 0
                     for row in csv.reader(fin):
                         total += int(row[5])
-                        schools += int(row[4])
+                        schools += int(row[6])
                     students = self.driver.find_element_by_id("students").text
                     res = re.sub('\D', "", students)
 

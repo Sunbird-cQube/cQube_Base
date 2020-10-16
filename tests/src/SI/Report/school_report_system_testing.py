@@ -70,7 +70,7 @@ class cQube_SI_Report(unittest.TestCase):
         print("checked with orderwise of table data")
         self.data.page_loading(self.driver)
 
-    def test_schools_per_cluster_csv_download1(self):
+    def test_schools_per_cluster_csv_download(self):
         school = Test_schoolwise(self.driver)
         result = school.check_csv_download1()
         if result == 0:

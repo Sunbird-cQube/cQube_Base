@@ -1,5 +1,4 @@
-
-from Landing_Page import cQube_home_page
+from Landing_Page import cQube_landing_page
 from get_dir import pwd
 import unittest
 from HTMLTestRunner import HTMLTestRunner
@@ -14,7 +13,7 @@ class MyTestSuite(unittest.TestCase):
 
             functional_test = unittest.TestSuite()
             functional_test.addTests([
-                unittest.defaultTestLoader.loadTestsFromTestCase(cQube_home_page.cQube_Home),
+                unittest.defaultTestLoader.loadTestsFromTestCase(cQube_landing_page.cQube_Home),
             ])
             p= pwd()
             outfile = open(p.get_functional_report_path(), "w")

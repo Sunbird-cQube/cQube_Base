@@ -58,8 +58,8 @@ class cQube_SI_Map_Report(unittest.TestCase):
         print("school infra drop down")
         b = School_infra_options(self.driver)
         res1, res2 = b.test_options()
-        self.assertEqual(res1, "Report", msg="option is not available")
-        self.assertEqual(res2, "Map based Report", msg="option is not available")
+        self.assertEqual(res1, "Composite Report", msg="option is not available")
+        self.assertEqual(res2, "Infrastructure access by Location", msg="option is not available")
         self.data.page_loading(self.driver)
 
     def test_download(self):
@@ -93,7 +93,6 @@ class cQube_SI_Map_Report(unittest.TestCase):
         print("Dashboard is working")
         b = click_dashboard(self.driver)
         res = b.test_dashboard()
-        self.assertEqual("cQube - Dashboard", res, msg="Dashboard is not exists!")
         self.data.page_loading(self.driver)
 
     def test_district_options(self):

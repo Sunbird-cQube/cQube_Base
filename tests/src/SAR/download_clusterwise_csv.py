@@ -20,7 +20,7 @@ class ClusterwiseCsv():
         self.driver.find_element_by_id(Data.SAR_Clusters_btn).click()
         cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
-        time.sleep(2)
+        time.sleep(5)
         p = pwd()
         self.filename = p.get_download_dir() + "/Cluster_wise_report_" + self.month + "_" + self.year + ".csv"
         return os.path.isfile(self.filename)

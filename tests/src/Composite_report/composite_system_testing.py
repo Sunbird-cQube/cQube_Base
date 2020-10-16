@@ -38,7 +38,7 @@ class composite_system_report(unittest.TestCase):
             print('Home button is not working ')
             count = count + 1
         self.assertEqual(0,count,msg="Home btn is not working ")
-        self.driver.find_element_by_id('composit').click()
+        self.driver.find_element_by_id('composite').click()
         self.data.page_loading(self.driver)
 
     def test_districtwise_csv_download(self):

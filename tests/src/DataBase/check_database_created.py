@@ -1,6 +1,5 @@
 import unittest
 
-import psycopg2
 
 from reuse_func import GetData
 

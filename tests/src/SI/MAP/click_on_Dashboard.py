@@ -11,10 +11,10 @@ class click_dashboard():
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.p.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Dashboard).click()
-        text = self.driver.find_element_by_xpath(Data.header).text
+        # text = self.driver.find_element_by_xpath(Data.header).text
         self.driver.find_element_by_xpath(Data.School_infra).click()
         self.p.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Reportmap).click()
         self.p.page_loading(self.driver)
-        return text
+        # return text
 

@@ -64,7 +64,7 @@ class Data():
     y = "y_axis"
     s_dist = "//select[@name='myDistrict']/option[2]"
     # sc_Reportmap
-    School_infra = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[3]/mat-list-item/div/mat-icon"
+    School_infra = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[1]/mat-list-item/div/mat-icon"
     Reportmap = "mapReport"
     Report = "tblReport"
     scm_block = "block"
@@ -76,11 +76,11 @@ class Data():
     sc_infrascores = "//select[@id='choose_infra']/option"
     sc_no_of_schools = "schools"
 
-    diksha ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[5]/mat-list-item/div/mat-icon"
+    diksha ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[2]/mat-list-item/div/mat-icon"
     diksha_graph ="chrtReport"
     diksha_table = "dtblReport"
 
-    exception_click ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[1]/mat-list-item/div/mat-icon"
+    exception_click ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[4]/mat-list-item/div/mat-icon"
     sem_exception = "SemException"
 
 
@@ -249,6 +249,8 @@ class Data():
     sar_block ="choose_block"
     sar_cluster="choose_cluster"
     column_report ="clmnReport"
+    completion ="cmplnErr"
+    compl_download ="//button[contains(text(),'Download')]"
    #semester Report
     sr_by_xpath = "//*[@id='sr']"
     sr_by_id = "sr"
@@ -267,8 +269,8 @@ class Data():
 
     #Dashboards
     telmetry_report ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[7]/mat-list-item/div/mat-icon"
-    attendance = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[2]/mat-list-item/div/mat-icon"
-    semester_sel = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[4]/mat-list-item/div/mat-icon"
+    attendance = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[5]/mat-list-item/div/mat-icon"
+    semester_sel = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[3]/mat-list-item/div/mat-icon"
     crc_report = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[2]/mat-list-item/div/mat-icon"
     crc_sel2 ="//*[@id='select']/select/option[2]"
     crc_sel3 ="//*[@id='select']/select/option[3]"
@@ -281,3 +283,20 @@ class Data():
     logs_icon ="//*[@id='logs']/img"
     summary ="//*[@id='summary']/img"
     monitor= "//*[@id='moniter']/a/img"
+
+    #viewes
+    infra_location ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[1]/div[1]/div[2]/div[1]/div/div/div[2]/div/p"
+    view_composite ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[1]/div[1]/div[2]/div[2]/div/div/div[2]/div/p"
+    view_udise ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[1]/div[1]/div[2]/div[3]/div/div/div[2]/div/p"
+    view_compo="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[1]/div[2]/div[2]/div/div/div/div[2]/div/p"
+    view_profile ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[2]/div[1]/div[2]/div[1]/div/div/div[2]/div/p"
+    view_location ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/div/p"
+    view_content ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[2]/div[1]/div[2]/div[3]/div/div/div[2]/div/p"
+    view_crc ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[2]/div[2]/div[2]/div/div/div/div[2]/div/p"
+    view_semester="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[3]/div[1]/div[2]/div[1]/div/div/div[2]/div/p"
+    view_pat="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/div/p"
+    view_exception="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[3]/div[2]/div[2]/div[1]/div/div/div[2]/div/p"
+    view_completion ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[3]/div[2]/div[2]/div[2]/div/div/div[2]/div/p"
+    view_student ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[4]/div[1]/div[2]/div[1]/div/div/div[2]/div/p"
+    view_teacher="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[4]/div[1]/div[2]/div[2]/div/div/div[2]/div/p"
+    view_telemetry="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-dashboard/div/div[1]/div[4]/div[2]/div[2]/div/div/div/div[2]/div/p"
