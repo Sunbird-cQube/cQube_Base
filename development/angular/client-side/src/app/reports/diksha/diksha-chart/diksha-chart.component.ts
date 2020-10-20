@@ -51,7 +51,7 @@ export class DikshaChartComponent implements OnInit {
 
   public result: any = [];
   public districtId: any = '';
-  public timePeriod = 'Last 30 Days';
+  public timePeriod = 'last_30_days';
   public hierName: any;
   public dist: boolean = false;
   public all: boolean = false;
@@ -134,7 +134,7 @@ export class DikshaChartComponent implements OnInit {
     this.districtId = '';
     this.footer = '';
     this.hierName = undefined;
-    this.timePeriod = 'last_30_days';
+    // this.timePeriod = 'last_30_days';
 
     this.result = [];
     this.all = true
