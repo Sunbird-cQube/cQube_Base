@@ -39,8 +39,8 @@ export class DikshaTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    document.getElementById('backBtn').style.display = "none";
-    document.getElementById('homeBtn').style.display = "Block";
+
+
     this.collectionWise();
   }
 

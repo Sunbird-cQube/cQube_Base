@@ -81,10 +81,10 @@ export class TelemetryDataComponent implements OnInit {
 
   ngOnInit() {
     this.timePeriod = 'overall';
-    document.getElementById('backBtn').style.display = "none";
+
     this.commonService.initMap('map');
     this.districtWise();
-    document.getElementById('homeBtn').style.display = "Block";
+
   }
 
   getDaysInMonth = function (month, year) {

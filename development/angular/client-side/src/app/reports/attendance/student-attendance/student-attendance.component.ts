@@ -107,10 +107,10 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   ngOnInit() {
-    document.getElementById('backBtn').style.display = "none";
+
     this.skul = true;
     this.commonService.initMap('mapContainer');
-    document.getElementById('homeBtn').style.display = "Block";
+
   }
 
   public fileName: any;

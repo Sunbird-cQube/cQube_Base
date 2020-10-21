@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { KeycloakSecurityService } from '../keycloak-security.service';
 import { AppServiceComponent } from '../app.service';
@@ -12,7 +11,9 @@ import { environment } from '../../environments/environment';
 })
 export class HomeComponent implements OnInit {
   edate: Date;
-  constructor(private router: Router, public http: HttpClient, public service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) { }
+  showBack = true;
+  showHome = true;
+  constructor( public http: HttpClient, public service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) { }
   email: any;
   role: any;
   showSubmenu1: any = false;
@@ -32,6 +33,13 @@ export class HomeComponent implements OnInit {
   public userType = localStorage.getItem('roleName') === "admin";
   public roleName;
   ngOnInit() {
+    if (window.location.hash == '#/dashboard') {
+      this.showBack = true;
+      this.showHome = false;
+    } else {
+      this.showBack = false;
+      this.showHome = true;
+    }
     this.email = localStorage.getItem('userName');
     this.role = localStorage.getItem('roleName');
     if (this.role == "admin") {

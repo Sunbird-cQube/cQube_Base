@@ -63,8 +63,8 @@ export class SchoolInfrastructureComponent implements OnInit {
   ngOnInit() {
     this.districtWise();
     document.getElementById('spinner').style.display = 'block';
-    document.getElementById('backBtn').style.display = "none";
-    document.getElementById('homeBtn').style.display = "Block";
+
+
   }
 
   public tableHead: any;

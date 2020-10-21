@@ -76,8 +76,8 @@ export class DikshaChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    document.getElementById('backBtn').style.display = "none";
-    document.getElementById('homeBtn').style.display = "Block";
+
+
     this.metaData();
     this.getAllData();
   }

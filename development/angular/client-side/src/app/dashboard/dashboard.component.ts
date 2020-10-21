@@ -35,8 +35,6 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit() {
     document.getElementById('spinner').style.display = 'none';
-    document.getElementById('backBtn').style.display = "block";
-    document.getElementById('homeBtn').style.display = "None";
     if (localStorage.getItem('roleName') == "admin") {
       this.hiddenPass = false;
     } else {

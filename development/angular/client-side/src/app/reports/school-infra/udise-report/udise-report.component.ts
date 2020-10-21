@@ -86,8 +86,8 @@ export class UdiseReportComponent implements OnInit {
   ngOnInit() {
     this.commonService.initMap('udisemap');
     this.districtWise();
-    document.getElementById('backBtn').style.display = "none";
-    document.getElementById('homeBtn').style.display = "Block";
+
+
   }
 
   // to load and hide the spinner 
