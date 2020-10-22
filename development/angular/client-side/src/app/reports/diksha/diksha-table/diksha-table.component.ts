@@ -70,7 +70,7 @@ export class DikshaTableComponent implements OnInit {
     document.getElementById('home').style.display = "none";
     this.errMsg();
     this.districtId = '';
-    this.timePeriod = '';
+    // this.timePeriod = '';
     this.all = true
     this.dist = false;
     this.timeDetails = [];

@@ -86,7 +86,7 @@ export class DikshaBarChartComponent implements OnInit {
     }
     this.reportData = [];
     this.commonService.errMsg();
-    this.timePeriod = '';
+    // this.timePeriod = '';
     this.collectionName = '';
     this.footer = '';
     this.fileName = `collectionType_${this.collection_type}_data`;
