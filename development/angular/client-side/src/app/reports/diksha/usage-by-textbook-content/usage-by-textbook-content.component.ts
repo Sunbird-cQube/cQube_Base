@@ -88,9 +88,9 @@ export class UsageByTextbookContentComponent implements OnInit {
     this.result = [];
     this.reportData = [];
     this.header = this.changeingStringCases(this.collectionType) + " linked";
-    if (this.collectionType == "all") {
-      this.header = "Overall";
-    }
+    // if (this.collectionType == "all") {
+    //   this.header = "Overall";
+    // }
     // this.header = this.header;
     this.service.dikshaAllTableData({ collectionType: this.collectionType }).subscribe(res => {
       this.fileName = `Diksha_All_Data_${this.timePeriod}`;

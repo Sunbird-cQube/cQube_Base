@@ -62,7 +62,6 @@ export class DikshaTableComponent implements OnInit {
   }
 
   default() {
-    this.collectionType = "all";
     this.collectionWise();
   }
 
@@ -70,7 +69,7 @@ export class DikshaTableComponent implements OnInit {
     document.getElementById('home').style.display = "none";
     this.errMsg();
     this.districtId = '';
-    // this.timePeriod = '';
+    this.timePeriod = '';
     this.all = true
     this.dist = false;
     this.timeDetails = [];
@@ -88,9 +87,9 @@ export class DikshaTableComponent implements OnInit {
     this.result = [];
     this.reportData = [];
     this.header = this.changeingStringCases(this.collectionType) + " linked";
-    if (this.collectionType == "all") {
-      this.header = "Overall";
-    }
+    // if (this.collectionType == "all") {
+    //   this.header = "Overall";
+    // }
     // this.header = this.header;
     this.service.dikshaAllTableData({ collectionType: this.collectionType }).subscribe(res => {
       this.fileName = `Diksha_All_Data_${this.timePeriod}`;

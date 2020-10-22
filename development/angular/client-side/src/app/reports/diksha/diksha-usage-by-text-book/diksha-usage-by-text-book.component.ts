@@ -39,7 +39,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
   public myChart: Chart;
   public showAllChart: boolean = false;
   public allDataNotFound: any;
-  public collectioTypes: any = [{ id: "all", type: "Overall" }, { id: "course", type: "Course" }, { id: "textbook", type: "TextBook" }, { id: "others", type: "Others" }];
+  public collectioTypes: any = [{ id: "textbook", type: "TextBook" }];
   public collectionNames: any = [];
   collectionName = '';
   footer;
@@ -72,21 +72,18 @@ export class DikshaUsageByTextBookComponent implements OnInit {
 
   homeClick() {
     document.getElementById('home').style.display = "none";
+    this.timePeriod = '';
     this.getAllData()
   }
-  linkClick() {
-    this.collection_type = "all";
-    document.getElementById('home').style.display = "none";
-    this.getAllData()
-  }
+
   async getAllData() {
     this.emptyChart();
-    if (this.collection_type != "all") {
+    if (this.timePeriod != "") {
       document.getElementById('home').style.display = "block";
     }
     this.reportData = [];
     this.commonService.errMsg();
-    this.timePeriod = '';
+
     this.collectionName = '';
     this.footer = '';
     this.fileName = `collectionType_${this.collection_type}_data`;
@@ -94,9 +91,9 @@ export class DikshaUsageByTextBookComponent implements OnInit {
     this.all = true
     this.dist = false;
     this.header = this.changeingStringCases(this.collection_type) + " linked";
-    if (this.collection_type == 'all') {
-      this.header = "Overall";
-    }
+    // if (this.collection_type == 'all') {
+    //   this.header = "Overall";
+    // }
     // this.header = this.header;
     this.listCollectionNames();
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {

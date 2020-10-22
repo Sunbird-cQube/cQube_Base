@@ -4,7 +4,7 @@
             <div *ngIf='all'>
                 <p id="dist_level"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    {{header}} content usage: <span (click)="linkClick()"
+                    {{header}} content usage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <!-- <div *ngIf='dist'>
@@ -39,7 +39,7 @@
     <div class="col-sm-12">
         <div class="row" style="margin-top: 5px;">
             <div class="col-sm-2">
-                <span style="font-size: 12px;">Choose collection type ↴ </span>
+                <span style="font-size: 12px;">Collection type ↴ </span>
                 <select id="coll_type" disabled
                     style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                     [(ngModel)]="collection_type" name="collection_type" (change)="getAllData()">
