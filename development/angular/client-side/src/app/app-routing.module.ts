@@ -16,7 +16,19 @@ const routes: Routes = [
     path: '', component: HomeComponent, canActivate: [AuthGuard], children: [
       {
         path: 'dashboard', component: DashboardComponent, canActivateChild: [AuthGuard]
-      }
+      },
+      // {
+      //   path: 'diksha', loadChildren: './reports/diksha/diksha.module#DikshaModule'
+      // },
+      // {
+      //   path: 'diksha', loadChildren: './reports/diksha/diksha.module#DikshaModule'
+      // },
+      // {
+      //   path: 'diksha', loadChildren: './reports/diksha/diksha.module#DikshaModule'
+      // },
+      // {
+      //   path: 'diksha', loadChildren: './reports/diksha/diksha.module#DikshaModule'
+      // }
     ]
   }
 ];

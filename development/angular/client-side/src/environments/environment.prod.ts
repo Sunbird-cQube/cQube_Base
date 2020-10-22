@@ -4,6 +4,5 @@ export const environment = {
   adminUrl: "http://172.31.23.205:4201",
   keycloakUrl: "http://172.31.23.205:8080/auth",
   realm: "cQube",
-  clientId: "cQube_Application",
-  appUrl: "http://localhost:4200",
+  clientId: "cQube_Application"
 };

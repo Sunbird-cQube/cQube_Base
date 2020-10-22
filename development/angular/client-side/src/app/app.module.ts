@@ -63,4 +63,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(){
+    console.log("App module");
+  }
+}

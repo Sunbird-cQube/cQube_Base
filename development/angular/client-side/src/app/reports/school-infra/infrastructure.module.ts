@@ -42,4 +42,8 @@ const infraRoutes: Routes = [
     RouterModule.forChild(infraRoutes)
   ]
 })
-export class InfrastructureModule { }
+export class InfrastructureModule {
+  constructor(){
+    console.log("Infra module");
+  }
+ }

@@ -43,4 +43,8 @@ const dikshaRoutes: Routes = [
     RouterModule.forChild(dikshaRoutes)
   ]
 })
-export class DikshaModule { }
+export class DikshaModule {
+  constructor() {
+    console.log("Diksha module");
+  }
+}
