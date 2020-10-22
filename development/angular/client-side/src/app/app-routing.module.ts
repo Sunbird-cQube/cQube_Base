@@ -20,6 +20,8 @@ import { MissingDataComponent } from './reports/exception-list/missing-data/miss
 import { UdiseReportComponent } from './reports/UDISE/udise-report/udise-report.component';
 import { PATReportComponent } from './reports/PAT/pat-report/pat-report.component';
 import { CompositReportComponent } from './reports/composit/composit-report/composit-report.component';
+import { DikshaUsageByTextBookComponent } from './reports/diksha/diksha-usage-by-text-book/diksha-usage-by-text-book.component';
+import { UsageByTextbookContentComponent } from './reports/diksha/usage-by-textbook-content/usage-by-textbook-content.component';
 
 const routes: Routes = [
   {
@@ -59,6 +61,12 @@ const routes: Routes = [
       },
       {
         path: 'diksha-table', component: DikshaTableComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'usage-by-textbook-content', component: UsageByTextbookContentComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'usage-by-textbook', component: DikshaUsageByTextBookComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'diksha-column-chart', component: DikshaBarChartComponent, canActivateChild: [AuthGuard]

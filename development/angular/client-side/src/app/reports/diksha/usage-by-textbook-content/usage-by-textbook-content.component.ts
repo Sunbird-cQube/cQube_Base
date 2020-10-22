@@ -6,16 +6,16 @@ import { ExportToCsv } from 'export-to-csv';
 declare const $;
 
 @Component({
-  selector: 'app-diksha-table',
-  templateUrl: './diksha-table.component.html',
-  styleUrls: ['./diksha-table.component.css'],
+  selector: 'app-usage-by-textbook-content',
+  templateUrl: './usage-by-textbook-content.component.html',
+  styleUrls: ['./usage-by-textbook-content.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class DikshaTableComponent implements OnInit {
+export class UsageByTextbookContentComponent implements OnInit {
   public result: any = [];
   public districtId: any = '';
   public timePeriod: any = '';
-  public collectionType = 'course';
+  public collectionType = 'textbook';
   public allCollections = [];
   public timeDetails: any = [];
   public districtsDetails: any = '';
@@ -35,7 +35,7 @@ export class DikshaTableComponent implements OnInit {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
-    this.allCollections = [{ id: "course", name: "Course" }]
+    this.allCollections = [{ id: "textbook", name: "Textbook" }]
   }
 
   ngOnInit(): void {
@@ -62,7 +62,7 @@ export class DikshaTableComponent implements OnInit {
   }
 
   default() {
-    this.collectionType = "all";
+    this.collectionType = "textbook";
     this.collectionWise();
   }
 

@@ -34,6 +34,8 @@ import { UdiseReportComponent } from './reports/UDISE/udise-report/udise-report.
 import { StudengtAttendanceComponent } from './reports/attendance/student-attendance/student-attendance.component';
 import { PATReportComponent } from './reports/PAT/pat-report/pat-report.component';
 import { CompositReportComponent } from './reports/composit/composit-report/composit-report.component';
+import { DikshaUsageByTextBookComponent } from './reports/diksha/diksha-usage-by-text-book/diksha-usage-by-text-book.component';
+import { UsageByTextbookContentComponent } from './reports/diksha/usage-by-textbook-content/usage-by-textbook-content.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -61,7 +63,9 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     MissingDataComponent,
     UdiseReportComponent,
     PATReportComponent,
-    CompositReportComponent
+    CompositReportComponent,
+    DikshaUsageByTextBookComponent,
+    UsageByTextbookContentComponent
   ],
   imports: [
     BrowserModule,

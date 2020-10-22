@@ -20,7 +20,9 @@ export class DashboardComponent implements OnInit {
   compositeViews;
   dscViews;
   dccViews;
+  utViews;
   dtrViews;
+  utcViews;
   crcrViews;
   srViews;
   patViews;
@@ -90,7 +92,9 @@ export class DashboardComponent implements OnInit {
     this.compositeViews = "";
     this.dscViews = "";
     this.dccViews = "";
+    this.utViews = "";
     this.dtrViews = "";
+    this.utcViews = "";
     this.crcrViews = "";
     this.srViews = "";
     this.patViews = "";
@@ -124,8 +128,14 @@ export class DashboardComponent implements OnInit {
       if (element.reportid == 'dcc') {
         this.dccViews = element.number_of_views + " (" + timeStr + ")";
       }
+      if (element.reportid == 'ut') {
+        this.utViews = element.number_of_views + " (" + timeStr + ")";
+      }
       if (element.reportid == 'dtr') {
         this.dtrViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'utc') {
+        this.utcViews = element.number_of_views + " (" + timeStr + ")";
       }
       if (element.reportid == 'crcr') {
         this.crcrViews = element.number_of_views + " (" + timeStr + ")";

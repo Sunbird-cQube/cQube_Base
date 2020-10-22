@@ -7,12 +7,12 @@ import { Label, Color } from 'ng2-charts';
 import { AppServiceComponent } from '../../../app.service';
 
 @Component({
-  selector: 'app-diksha-bar-chart',
-  templateUrl: './diksha-bar-chart.component.html',
-  styleUrls: ['./diksha-bar-chart.component.css'],
+  selector: 'app-diksha-usage-by-text-book',
+  templateUrl: './diksha-usage-by-text-book.component.html',
+  styleUrls: ['./diksha-usage-by-text-book.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class DikshaBarChartComponent implements OnInit {
+export class DikshaUsageByTextBookComponent implements OnInit {
   chart: boolean = false;
   public colors = [];
   header = '';
@@ -27,7 +27,7 @@ export class DikshaBarChartComponent implements OnInit {
   ]
   public barChartData: ChartDataSets[] = [];
 
-  collection_type = 'course';
+  collection_type = 'textbook';
 
   public result: any = [];
   public timePeriod = '';
