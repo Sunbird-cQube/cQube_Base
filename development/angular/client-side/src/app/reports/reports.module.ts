@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AttendancModule } from './attendance/attendance.module';
-// import { DikshaModule } from './diksha/diksha.module';
 import { ExceptionModule } from './exception-list/exception.module';
 import { InfrastructureModule } from './school-infra/infrastructure.module';
 import { StudentPerformanceModule } from './student-performance/student-performance.module';
@@ -59,7 +58,6 @@ const otherRoutes = [
     CommonModule,
     FormsModule,
     AttendancModule,
-    // DikshaModule,
     InfrastructureModule,
     StudentPerformanceModule,
     ExceptionModule,

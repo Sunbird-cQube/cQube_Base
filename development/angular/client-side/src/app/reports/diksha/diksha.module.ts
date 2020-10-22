@@ -11,22 +11,17 @@ import { HomeComponent } from 'src/app/home/home.component';
 
 const dikshaRoutes: Routes = [
   {
-    path: '', component: HomeComponent, canActivate: [AuthGuard], children:
-      [
-        {
-          path: 'diksha', canActivate: [AuthGuard], children: [
-            {
-              path: 'diksha-chart', component: DikshaChartComponent, canActivateChild: [AuthGuard]
-            },
-            {
-              path: 'diksha-table', component: DikshaTableComponent, canActivateChild: [AuthGuard]
-            },
-            {
-              path: 'diksha-column-chart', component: DikshaBarChartComponent, canActivateChild: [AuthGuard]
-            },
-          ]
-        }
-      ]
+    path: '', canActivate: [AuthGuard], children: [
+      {
+        path: 'diksha-chart', component: DikshaChartComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'diksha-table', component: DikshaTableComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'diksha-column-chart', component: DikshaBarChartComponent, canActivateChild: [AuthGuard]
+      },
+    ]
   }
 ]
 
