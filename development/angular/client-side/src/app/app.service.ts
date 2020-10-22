@@ -284,7 +284,7 @@ export class AppServiceComponent {
 
     getTelemetry(data) {
         this.logoutOnTokenExpire();
-        return this.http.post(`${this.baseUrl}/telemetry/data`, {period: data},{ 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/telemetry/data`, { period: data }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
     }
 
     //

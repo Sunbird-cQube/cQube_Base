@@ -51,8 +51,8 @@ class ClusterPerBlockCsvDownload():
                         total = 0
                         schools = 0
                         for row in csv.reader(fin):
-                            total += int(row[6])
-                            schools += int(row[5])
+                            total += int(row[7].replace(',',''))
+                            schools += int(row[8].replace(',',''))
                         students = self.driver.find_element_by_id("students").text
                         res = re.sub('\D', "", students)
 

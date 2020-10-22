@@ -70,7 +70,7 @@
   with_items:
     - composite_queries.json
     - pat_queries.json
-  tags: install
+  tags: [ install , update ]
 
 - name: Touch a file
   file:

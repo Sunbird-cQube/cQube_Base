@@ -23,7 +23,7 @@ class cluster_btn_scores():
         for i in range(1,len(scores.options)):
             time.sleep(2)
             scores.select_by_index(i)
-            time.sleep(4)
+            self.p.page_loading(self.driver)
             markers = self.driver.find_elements_by_class_name(Data.dots)
             dots = len(markers) - 1
             if dots == 0:

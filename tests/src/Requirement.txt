@@ -3,6 +3,5 @@ pandas
 selenium
 configparser
 pathlib
-metadata
 psycopg2-binary
 boto

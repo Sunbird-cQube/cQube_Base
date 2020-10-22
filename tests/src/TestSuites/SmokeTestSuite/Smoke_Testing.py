@@ -75,12 +75,7 @@ class MyTestSuite(unittest.TestCase):
 
 
     def test_issue03(self):
-        self.data.navigate_to_student_report()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in the student attendance report page")
-        else:
+
             smoke_test = unittest.TestSuite()
             smoke_test.addTests([
                 # file name .class name
@@ -100,12 +95,7 @@ class MyTestSuite(unittest.TestCase):
             outfile.close()
 
     def test_issue04(self):
-        self.data.navigate_to_crc_report()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in the crc report page")
-        else:
+
             smoke_test = unittest.TestSuite()
             smoke_test.addTests([
                 # file name .class name
@@ -125,12 +115,7 @@ class MyTestSuite(unittest.TestCase):
             outfile.close()
 
     def test_issue05(self):
-        self.data.navigate_to_semester_report()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in the semester report page")
-        else:
+
             smoke_test = unittest.TestSuite()
             smoke_test.addTests([
                 unittest.defaultTestLoader.loadTestsFromTestCase(semester_report_smoke_testing.cQube_Semester_Report),
@@ -149,12 +134,7 @@ class MyTestSuite(unittest.TestCase):
             outfile.close()
 
     def test_issue06(self):
-        # self.data.navigate_to_school_infrastructure_map()
-        # time.sleep(3)
-        # self.errMsg = self.data.get_data_status()
-        # if self.errMsg.text == 'No data found':
-        #     print("No data in the school infra map report page")
-        # else:
+
             smoke_test = unittest.TestSuite()
             smoke_test.addTests([
                 # file name .class name
@@ -175,12 +155,7 @@ class MyTestSuite(unittest.TestCase):
             outfile.close()
 
     def test_issue07(self):
-        self.data.navigate_to_school_infrastructure()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in the school infra report page")
-        else:
+
             smoke_test = unittest.TestSuite()
             smoke_test.addTests([
                 unittest.defaultTestLoader.loadTestsFromTestCase(School_report_smoke_testing.cQube_SI_Report)
@@ -316,14 +291,9 @@ class MyTestSuite(unittest.TestCase):
             outfile.close()
 
     def test_issue14(self):
-        self.data.navigate_to_composite_report()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in composite the report page")
-        else:
-            regression_test = unittest.TestSuite()
-            regression_test.addTests([
+
+            smoke_test = unittest.TestSuite()
+            smoke_test.addTests([
                 unittest.defaultTestLoader.loadTestsFromTestCase(
                     composite_smoke_testing.composite_smoke_testing)
             ])
@@ -337,18 +307,13 @@ class MyTestSuite(unittest.TestCase):
 
             )
 
-            runner1.run(regression_test)
+            runner1.run(smoke_test)
             outfile.close()
 
     def test_issue15(self):
-        self.data.navigate_to_periodic_report()
-        time.sleep(3)
-        self.errMsg = self.data.get_data_status()
-        if self.errMsg.text == 'No data found':
-            print("No data in Periodic the report page")
-        else:
-            regression_test = unittest.TestSuite()
-            regression_test.addTests([
+
+            smoke_test = unittest.TestSuite()
+            smoke_test.addTests([
                 unittest.defaultTestLoader.loadTestsFromTestCase(
                     periodic_smoke_testing.periodic_smoke)
             ])
@@ -362,7 +327,7 @@ class MyTestSuite(unittest.TestCase):
 
             )
 
-            runner1.run(regression_test)
+            runner1.run(smoke_test)
             outfile.close()
 
     @classmethod

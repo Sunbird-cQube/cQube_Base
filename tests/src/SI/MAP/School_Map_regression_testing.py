@@ -1,7 +1,6 @@
 import time
 import unittest
 from Data.parameters import Data
-
 from SI.MAP.check_infrascore_with_download_functionality import SchoolInfra_scores
 from SI.MAP.check_sc_map_clusterwise_records import test_school_map_schoollevel_records
 from SI.MAP.check_with_map_on_schoolinfra import check_markers_on_map

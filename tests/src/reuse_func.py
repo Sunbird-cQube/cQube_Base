@@ -3,7 +3,8 @@ import configparser
 import json
 import os
 import time
-
+import boto
+import boto.s3
 import psycopg2
 import requests
 from selenium import webdriver
@@ -53,6 +54,14 @@ class GetData():
         self.driver=webdriver.Chrome(options=options,executable_path=self.p.get_driver_path())
         return self.driver
 
+    def get_firefox_driver(self):
+        p = pwd()
+        options = webdriver.FirefoxOptions()
+        prefs = {'download.default_directory': self.p.get_download_dir()}
+        options.add_argument(prefs)
+        options.add_argument("--headless")
+        self.driver = webdriver.Firefox(options=options,executable_path=p.get_firefox_driver_path())
+        return self.driver
 
     def open_cqube_appln(self,driver):
         self.driver = driver
@@ -101,9 +110,8 @@ class GetData():
         self.driver.implicitly_wait(20)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(2)
-
         self.driver.find_element_by_id('compositRep').click()
-        time.sleep(6)
+        time.sleep(8)
 
     def page_loading(self,driver):
         try:
@@ -185,8 +193,8 @@ class GetData():
     def navigate_to_udise_report(self):
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
-        # time.sleep(3)
-        # self.driver.find_element_by_xpath(Data.udise_drop).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath(Data.School_infra).click()
         time.sleep(2)
         self.driver.find_element_by_id(Data.udise_report).click()
         time.sleep(5)
@@ -195,8 +203,6 @@ class GetData():
     def navigate_to_crc_report(self):
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
-        # time.sleep(3)
-        # self.driver.find_element_by_xpath(Data.crc_report).click()
         time.sleep(2)
         self.driver.find_element_by_id(Data.CRC).click()
         time.sleep(4)
@@ -228,6 +234,14 @@ class GetData():
         self.driver.find_element_by_id(Data.column_report).click()
         time.sleep(6)
 
+    def navigate_to_completion_error(self):
+        self.driver.implicitly_wait(30)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath(Data.exception_click).click()
+        time.sleep(2)
+        self.driver.find_element_by_id(Data.completion).click()
+        time.sleep(6)
 
 
     def navigate_to_semester_exception(self):
@@ -385,6 +399,7 @@ class GetData():
         self.driver.find_element_by_id(Data.passwd).send_keys(self.get_admin_password())
         self.driver.find_element_by_id(Data.login).click()
         time.sleep(3)
+
 
     def get_demoadmin_name(self):
         config = configparser.ConfigParser()
@@ -614,3 +629,19 @@ class GetData():
         self.pat_grades = ['Grade 3.json', 'Grade 4.json', 'Grade 5.json', 'Grade 6.json', 'Grade 7.json',
                            'Grade 8.json']
         return self.pat_grades
+
+
+    def get_cmp_pat_files(self, timeseries, levels):
+        lst = []
+        for x in range(3, 9):
+            lst.append("pat/{}/{}/Grade {}.json".format(timeseries, levels, x))
+        return lst
+
+    def get_cmp_pat_levels_files(self, timeseries):
+        lst = []
+        lst.append("pat/{}/pat_block.json".format(timeseries))
+        lst.append("pat/{}/pat_cluster.json".format(timeseries))
+        lst.append("pat/{}/pat_district.json".format(timeseries))
+        lst.append("pat/{}/pat_metadata.json".format(timeseries))
+        lst.append("pat/{}/pat_school.json".format(timeseries))
+        return lst

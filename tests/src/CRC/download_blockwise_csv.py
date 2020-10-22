@@ -4,6 +4,7 @@ import time
 from selenium.webdriver.support.select import Select
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -15,6 +16,7 @@ class donwload_blockwise_csv():
     def test_blockwise(self):
         p =pwd()
         self.cal  = GetData()
+        self.fname = file_extention()
         self.driver.implicitly_wait(20)
         self.driver.find_element_by_xpath(Data.hyper).click()
         self.cal.page_loading(self.driver)
@@ -23,7 +25,7 @@ class donwload_blockwise_csv():
         self.cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(2)
-        self.filename = p.get_download_dir() + "/Block_level_CRC_Report.csv"
+        self.filename = p.get_download_dir() + '/' + self.fname.crc_block()
         time.sleep(2)
         return os.path.isfile(self.filename)
     def remove_file(self):

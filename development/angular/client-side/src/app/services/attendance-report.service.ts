@@ -55,8 +55,8 @@ export class AttendanceReportService {
     return this.http.get(`${this.baseUrl}/attendance/getDateRange`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
   //capturing telemetry.....
-  telemetry(date) {
+  telemetrySar(date) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/telemetry`, { telemetryData: this.telemetryData, date: date }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/telemetry/sar`, { telemetryData: this.telemetryData, date: date }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
   }
 }
