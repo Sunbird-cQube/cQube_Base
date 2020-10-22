@@ -6,23 +6,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { FormsModule } from '@angular/forms';
 import { AuthGuard } from 'src/app/auth.guard';
-import { HomeComponent } from 'src/app/home/home.component';
 
 const sttendanceRoutes: Routes = [
+
   {
-    path: '', component: HomeComponent, canActivate: [AuthGuard], children:
-      [
-        {
-          path: 'attendance', canActivate: [AuthGuard], children: [
-            {
-              path: 'student-attendance', component: StudengtAttendanceComponent, canActivateChild: [AuthGuard]
-            },
-            {
-              path: 'teacher-attendance', component: TeacherAttendanceComponent, canActivateChild: [AuthGuard]
-            }
-          ]
-        }
-      ]
+    path: '', canActivate: [AuthGuard], children: [
+      {
+        path: 'student-attendance', component: StudengtAttendanceComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'teacher-attendance', component: TeacherAttendanceComponent, canActivateChild: [AuthGuard]
+      }
+    ]
   }
 ]
 

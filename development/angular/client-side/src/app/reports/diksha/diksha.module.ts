@@ -7,7 +7,6 @@ import { AuthGuard } from 'src/app/auth.guard';
 import { DikshaBarChartComponent } from './diksha-bar-chart/diksha-bar-chart.component';
 import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
 import { DikshaTableComponent } from './diksha-table/diksha-table.component';
-import { HomeComponent } from 'src/app/home/home.component';
 
 const dikshaRoutes: Routes = [
   {
@@ -38,8 +37,4 @@ const dikshaRoutes: Routes = [
     RouterModule.forChild(dikshaRoutes)
   ]
 })
-export class DikshaModule {
-  constructor() {
-    console.log("Diksha module");
-  }
-}
+export class DikshaModule { }

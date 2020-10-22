@@ -9,19 +9,14 @@ import { FormsModule } from '@angular/forms';
 
 const exceptionRoutes: Routes = [
   {
-    path: '', component: HomeComponent, canActivate: [AuthGuard], children:
-      [
-        {
-          path: 'exception', canActivate: [AuthGuard], children: [
-            {
-              path: 'sem-exception', component: SemesterExceptionComponent, canActivateChild: [AuthGuard]
-            },
-            {
-              path: 'download-missing-data', component: MissingDataComponent, canActivateChild: [AuthGuard]
-            }
-          ]
-        }
-      ]
+    path: '', canActivate: [AuthGuard], children: [
+      {
+        path: 'sem-exception', component: SemesterExceptionComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'download-missing-data', component: MissingDataComponent, canActivateChild: [AuthGuard]
+      }
+    ]
   }
 ]
 

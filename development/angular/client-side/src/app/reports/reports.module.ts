@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AttendancModule } from './attendance/attendance.module';
-import { ExceptionModule } from './exception-list/exception.module';
-import { InfrastructureModule } from './school-infra/infrastructure.module';
-import { StudentPerformanceModule } from './student-performance/student-performance.module';
 import { AuthGuard } from '../auth.guard';
 import { CompositReportComponent } from './composit/composit-report/composit-report.component';
 import { CrcReportComponent } from './school-monitoring/crc-report/crc-report.component';
@@ -57,15 +53,7 @@ const otherRoutes = [
   imports: [
     CommonModule,
     FormsModule,
-    AttendancModule,
-    InfrastructureModule,
-    StudentPerformanceModule,
-    ExceptionModule,
     RouterModule.forChild(otherRoutes)
   ]
 })
-export class ReportsModule {
-  constructor() {
-    console.log("Other module");
-  }
-}
+export class ReportsModule { }

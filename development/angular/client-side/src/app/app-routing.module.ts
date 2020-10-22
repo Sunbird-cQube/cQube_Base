@@ -4,7 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import { DikshaModule } from './reports/diksha/diksha.module'
+import { InfrastructureModule } from './reports/school-infra/infrastructure.module'
 
 const routes: Routes = [
   {
@@ -19,19 +19,26 @@ const routes: Routes = [
         path: 'dashboard', component: DashboardComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'diksha', loadChildren: './reports/diksha/diksha.module#DikshaModule', canActivateChild: [AuthGuard]
+        path: 'diksha', loadChildren: './reports/diksha/diksha.module#DikshaModule'
+      },
+      {
+        path: 'attendance', loadChildren: './reports/attendance/attendance.module#AttendancModule'
+      },
+      {
+        path: 'exception', loadChildren: './reports/exception-list/exception.module#ExceptionModule'
+      },
+      {
+        path: 'infrastructure', loadChildren: './reports/school-infra/infrastructure.module#InfrastructureModule'
+      },
+      {
+        path: 'student-performance', loadChildren: './reports/student-performance/student-performance.module#StudentPerformanceModule'
       }
-      // {
-      //   path: 'diksha', loadChildren: './reports/diksha/diksha.module#DikshaModule'
-      // },
-      // {
-      //   path: 'diksha', loadChildren: './reports/diksha/diksha.module#DikshaModule'
-      // },
-      // {
-      //   path: 'diksha', loadChildren: './reports/diksha/diksha.module#DikshaModule'
-      // }
     ]
   }
+  // ,
+  // {
+  //   path: 'infrastructure', loadChildren: './reports/school-infra/infrastructure.module#InfrastructureModule'
+  // }
 ];
 
 @NgModule({
