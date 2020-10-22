@@ -32,7 +32,7 @@ class cQube_diskha_regression(unittest.TestCase):
         self.driver.find_element_by_id('homeBtn').click()
         self.data.page_loading(self.driver)
         count = 0
-        self.driver.find_element_by_xpath("//img[@alt='dikshaTable']").click()
+        self.driver.find_element_by_id("dtr").click()
         self.data.page_loading(self.driver)
         if "diksha-table" in self.driver.current_url:
             print("Diksha Table report page is present ")

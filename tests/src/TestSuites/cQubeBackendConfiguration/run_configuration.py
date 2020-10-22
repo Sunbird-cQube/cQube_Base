@@ -1,4 +1,3 @@
-import time
 
 from AfterInstallation.check_basedirectory import directory
 from DataBase import check_database_created, check_db_username_password

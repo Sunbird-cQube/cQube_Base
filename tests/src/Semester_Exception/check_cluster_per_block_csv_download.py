@@ -3,6 +3,7 @@ import time
 
 from selenium.webdriver.support.select import Select
 
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -14,6 +15,7 @@ class ClusterPerBlockCsvDownload():
 
     def check_csv_download(self):
         cal = GetData()
+        self.fname = file_extention()
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
         select_district = Select(self.driver.find_element_by_id('choose_dist'))
@@ -29,7 +31,7 @@ class ClusterPerBlockCsvDownload():
                 self.driver.find_element_by_id('download').click()
                 time.sleep(4)
                 p= pwd()
-                self.filename = p.get_download_dir() + "/Cluster_per_block_report.csv"
+                self.filename = p.get_download_dir() + "/" + self.fname.exception_blockwise()
                 if os.path.isfile(self.filename) != True:
                     print("District" + select_district.first_selected_option.text + "Block " + select_block.first_selected_option.text   + "csv is not downloaded")
                     count = count + 1

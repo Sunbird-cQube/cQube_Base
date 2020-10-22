@@ -6,6 +6,7 @@ import time
 from selenium.webdriver.support.select import Select
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -21,6 +22,7 @@ class crc_schoolevel_records():
     def check_csv_download(self):
         p = pwd()
         self.cal = GetData()
+        self.fname =file_extention()
         self.driver.implicitly_wait(60)
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.cal.page_loading(self.driver)
@@ -31,7 +33,7 @@ class crc_schoolevel_records():
         for x in range(int(len(select_district.options))-1, int(len(select_district.options))):
             select_district.select_by_index(x)
             self.cal.page_loading(self.driver)
-            for y in range(1, len(select_block.options)):
+            for y in range(len(select_block.options)-1, len(select_block.options)):
                 select_block.select_by_index(y)
                 self.cal.page_loading(self.driver)
                 for z in range(1, len(select_cluster.options)):
@@ -44,7 +46,7 @@ class crc_schoolevel_records():
                     else:
                         self.driver.find_element_by_id(Data.Download).click()
                         time.sleep(3)
-                        self.filename = p.get_download_dir() + "/School_level_CRC_Report.csv"
+                        self.filename = p.get_download_dir() + '/' + self.fname.crc_clusterwise()
                         if not os.path.isfile(self.filename):
                             print(select_cluster.options[z].text ," csv file not downloaded")
                         else:

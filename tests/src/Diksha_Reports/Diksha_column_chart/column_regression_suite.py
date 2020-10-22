@@ -78,7 +78,8 @@ class cQube_diskha_column_report(unittest.TestCase):
             print('Home button is not working')
             count = count + 1
         self.assertEqual(0,count,msg="Home button is not working")
-        self.driver.find_element_by_xpath("//img[@alt='dikshaColumn']").click()
+        # self.driver.find_element_by_xpath("//img[@alt='dikshaColumn']").click()
+        self.data.navigate_to_diksha_column_chart()
         self.data.page_loading(self.driver)
 
     def test_Diksha_logout(self):
@@ -114,5 +115,9 @@ class cQube_diskha_column_report(unittest.TestCase):
     def test_download_otherstype(self):
         b = others_records_download(self.driver)
         res = b.test_download_csv()
-        # self.assertTrue(res , msg='otherstype records file is not downloaded')
+        self.assertFalse(res , msg='otherstype records file is downloaded without data on screen')
         self.data.page_loading(self.driver)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.close()
