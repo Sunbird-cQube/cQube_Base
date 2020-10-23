@@ -78,10 +78,16 @@
                 style="margin-left: 50px;">Usage by user profile</span></a>
             <a mat-list-item [routerLink]="['diksha-column-chart']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'dcc')" id="clmnReport" (click)="showSubmenu2 = !showSubmenu2"><span
-                style="margin-left: 50px;">Usage by Location</span></a>
+                style="margin-left: 50px;">Usage by Course</span></a>
+            <a mat-list-item [routerLink]="['usage-by-textbook']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'dtr')" id="ut" (click)="showSubmenu2 = !showSubmenu2"><span
+                style="margin-left: 50px;">Usage by Textbook</span></a>
             <a mat-list-item [routerLink]="['diksha-table']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'dtr')" id="dtblReport" (click)="showSubmenu2 = !showSubmenu2"><span
-                style="margin-left: 50px;">Usage by Content Name</span></a>
+                style="margin-left: 50px;">Usage by Course Content</span></a>
+            <a mat-list-item [routerLink]="['usage-by-textbook-content']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'dtr')" id="utc" (click)="showSubmenu2 = !showSubmenu2"><span
+                style="margin-left: 50px;">Usage by Textbook Content</span></a>
           </div>
         </mat-nav-list>
 
