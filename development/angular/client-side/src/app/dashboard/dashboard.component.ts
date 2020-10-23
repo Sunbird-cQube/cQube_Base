@@ -37,8 +37,8 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit() {
     document.getElementById('spinner').style.display = 'none';
-    document.getElementById('backBtn').style.display = "block";
-    document.getElementById('homeBtn').style.display = "None";
+    document.getElementById('homeBtn').style.display = 'none';
+    document.getElementById('backBtn').style.display = 'block';
     if (localStorage.getItem('roleName') == "admin") {
       this.hiddenPass = false;
     } else {
@@ -62,6 +62,9 @@ export class DashboardComponent implements OnInit {
 
   fetchTelemetry(event, report) {
     this.service.getTelemetryData(report, event.type);
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
+    this.service.homeControl();
   }
 
   getViews24hrs() {

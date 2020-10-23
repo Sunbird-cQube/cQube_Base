@@ -14,28 +14,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, MatSortModule } from '@angular/material';
-import { ChangePasswordComponent } from './reports/users/change-password/change-password.component';
-import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
-import { TeacherAttendanceComponent } from './reports/attendance/teacher-attendance/teacher-attendance.component';
-import { SemViewComponent } from './reports/student-performance/sem-view/sem-view.component';
-import { CrcReportComponent } from './reports/school-monitoring/crc-report/crc-report.component';
-import { SchoolInfrastructureComponent } from './reports/school-infra/school-infrastructure/school-infrastructure.component';
-import { InfraMapVisualisationComponent } from './reports/school-infra/infra-map-visualisation/infra-map-visualisation.component';
-import { DikshaChartComponent } from './reports/diksha/diksha-chart/diksha-chart.component';
-import { DikshaTableComponent } from './reports/diksha/diksha-table/diksha-table.component';
-import { SemesterExceptionComponent } from './reports/exception-list/semester-exception/semester-exception.component';
-import { TelemetryDataComponent } from './reports/telemetry/telemetry-data/telemetry-data.component';
-import { DikshaBarChartComponent } from './reports/diksha/diksha-bar-chart/diksha-bar-chart.component';
-import { MissingDataComponent } from './reports/exception-list/missing-data/missing-data.component';
-import { UdiseReportComponent } from './reports/UDISE/udise-report/udise-report.component';
-import { StudengtAttendanceComponent } from './reports/attendance/student-attendance/student-attendance.component';
-import { PATReportComponent } from './reports/PAT/pat-report/pat-report.component';
-import { CompositReportComponent } from './reports/composit/composit-report/composit-report.component';
-import { DikshaUsageByTextBookComponent } from './reports/diksha/diksha-usage-by-text-book/diksha-usage-by-text-book.component';
-import { UsageByTextbookContentComponent } from './reports/diksha/usage-by-textbook-content/usage-by-textbook-content.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -44,32 +25,12 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
 @NgModule({
   declarations: [
     AppComponent,
-    StudengtAttendanceComponent,
     HomeComponent,
-    TeacherAttendanceComponent,
-    SemViewComponent,
-    CrcReportComponent,
-    ChangePasswordComponent,
-    ComingSoonComponent,
     DashboardComponent,
-    SchoolInfrastructureComponent,
-    InfraMapVisualisationComponent,
     HomePageComponent,
-    DikshaChartComponent,
-    DikshaTableComponent,
-    SemesterExceptionComponent,
-    TelemetryDataComponent,
-    DikshaBarChartComponent,
-    MissingDataComponent,
-    UdiseReportComponent,
-    PATReportComponent,
-    CompositReportComponent,
-    DikshaUsageByTextBookComponent,
-    UsageByTextbookContentComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
@@ -81,7 +42,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     HttpClientModule,
     FormsModule,
     ChartsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AppRoutingModule
   ],
   exports: [
     MatTableModule,

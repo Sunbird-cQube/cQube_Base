@@ -14,8 +14,8 @@ export class TeacherAttendanceComponent implements OnInit {
   }
 
   ngOnInit() {
-    document.getElementById('backBtn').style.display = "none";
-    document.getElementById('homeBtn').style.display = "Block";
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
   }
 
 }

@@ -14,10 +14,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     // this.data = (localStorage.getItem('token') == null && window.location.href !== "http://localhost:4200/#/user-view");
     // let expectedRoleArray = next.data.roles[0];
-      // console.log(expectedRoleArray);
-      
+    // console.log(expectedRoleArray);
+
     if (this.data) {
-      // this.router.navigate(['/homePage']);
+      // this.router.navigate(['/home']);
       return false;
     } else {
       return true;

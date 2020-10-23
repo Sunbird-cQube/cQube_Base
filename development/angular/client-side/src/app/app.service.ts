@@ -15,10 +15,22 @@ export class AppServiceComponent {
     public baseUrl = environment.apiEndpoint;
     public token;
     telemetryData: any;
+    showBack = true;
+    showHome = true;
 
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
         this.token = keyCloakService.kc.token;
         localStorage.setItem('token', this.token);
+    }
+
+    homeControl() {
+        if (window.location.hash == '#/dashboard') {
+            this.showBack = true;
+            this.showHome = false;
+        } else {
+            this.showBack = false;
+            this.showHome = true;
+        }
     }
 
     logoutOnTokenExpire() {
