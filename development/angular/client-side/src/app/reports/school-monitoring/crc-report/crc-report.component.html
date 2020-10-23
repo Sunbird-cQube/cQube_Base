@@ -1,4 +1,4 @@
-<div class="container-fluid" style="font-family: Arial; width: 100%; margin-top: 10px;">
+<div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
         <div class="col-sm-7">
             <div *ngIf='skul'>
@@ -100,7 +100,7 @@
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-5">
-                    X-AXIS:<select id="x_axis"
+                    X-AXIS: &nbsp;<select id="x_axis"
                         style="padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
@@ -113,7 +113,7 @@
                     </select>
                 </div>
                 <div class="col-sm-5">
-                    Y-AXIS:<select id="y_axis"
+                    Y-AXIS: &nbsp;<select id="y_axis"
                         style="padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
                         <option [value]="yAxis" disabled selected="selected">choose
@@ -127,12 +127,12 @@
                 </div>
             </div>
 
-            <p style="text-align: justify; font-size: 11px;">
+            <p style="text-align: justify; font-size: 11px;padding-top: 10px;">
                 <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
                 dropdown below. You can alter the metrics (calculated from the CRC App) to update the scatter plot.
             </p>
             <div class="row">
-                <canvas id="myChart" height="155vh"></canvas>
+                <canvas id="myChart" height="140vh"></canvas>
             </div>
         </div>
         <div class="col-sm-6">
@@ -170,7 +170,7 @@
                     </option>
                 </select>
             </div>
-            <p style="text-align: justify; font-size: 11px;">
+            <p style="text-align: justify; font-size: 11px;padding-top: 10px;">
                 <strong> NOTE:</strong> The table provides information about the various metrics (calculated from the
                 CRC App). You can sort the entire table based on any metrics available in this table.
             </p>
