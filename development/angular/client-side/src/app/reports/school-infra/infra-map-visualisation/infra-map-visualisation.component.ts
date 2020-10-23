@@ -84,6 +84,8 @@ export class InfraMapVisualisationComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
     this.commonService.initMap('infraMap');
     this.districtWise();
   }

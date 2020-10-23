@@ -11,9 +11,8 @@ import { environment } from '../../environments/environment';
 })
 export class HomeComponent implements OnInit {
   edate: Date;
-  showBack = true;
-  showHome = true;
-  constructor( public http: HttpClient, public service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) { }
+  
+  constructor(public http: HttpClient, public service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) { }
   email: any;
   role: any;
   showSubmenu1: any = false;
@@ -33,14 +32,6 @@ export class HomeComponent implements OnInit {
   public userType = localStorage.getItem('roleName') === "admin";
   public roleName;
   ngOnInit() {
-    console.log(window.location.href);
-    if (window.location.hash == '#/dashboard') {
-      this.showBack = true;
-      this.showHome = false;
-    } else {
-      this.showBack = false;
-      this.showHome = true;
-    }
     this.email = localStorage.getItem('userName');
     this.role = localStorage.getItem('roleName');
     if (this.role == "admin") {
@@ -52,28 +43,27 @@ export class HomeComponent implements OnInit {
 
   }
 
-
-  logout() {
-    localStorage.clear();
-    let options = {
-      redirectUri: environment.appUrl
-    }
-    this.keyCloakService.kc.logout(options);
+logout() {
+  localStorage.clear();
+  let options = {
+    redirectUri: environment.appUrl
   }
+  this.keyCloakService.kc.logout(options);
+}
 
-  mouseenter() {
-    if (!this.isExpanded) {
-      this.isShowing = true;
-    }
+mouseenter() {
+  if (!this.isExpanded) {
+    this.isShowing = true;
   }
+}
 
-  mouseleave() {
-    if (!this.isExpanded) {
-      this.isShowing = false;
-    }
+mouseleave() {
+  if (!this.isExpanded) {
+    this.isShowing = false;
   }
+}
 
-  fetchTelemetry(event, report) {
-    this.service.getTelemetryData(report, event.type);
-  }
+fetchTelemetry(event, report) {
+  this.service.getTelemetryData(report, event.type);
+}
 }

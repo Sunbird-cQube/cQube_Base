@@ -80,8 +80,9 @@ export class TelemetryDataComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
     this.timePeriod = 'overall';
-
     this.commonService.initMap('map');
     this.districtWise();
 

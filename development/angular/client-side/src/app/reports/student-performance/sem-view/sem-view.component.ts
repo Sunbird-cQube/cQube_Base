@@ -106,15 +106,14 @@ export class SemViewComponent implements OnInit, OnDestroy {
   ngOnDestroy() { }
 
   ngOnInit() {
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
     var eventType = "pageLoad";
     this.btnId = "";
     var date = new Date();
     this.trackInteract(date, this.btnId, eventType);
-
-
     this.commonService.initMap('semMap');
     this.districtWise();
-
   }
 
   homeClick(event) {

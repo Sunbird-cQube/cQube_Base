@@ -80,7 +80,8 @@ export class SemesterExceptionComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
     this.commonService.initMap('semExMap');
     this.districtWise();
 
