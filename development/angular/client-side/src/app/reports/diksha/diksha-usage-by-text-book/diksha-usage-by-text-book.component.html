@@ -38,20 +38,8 @@
 
     <div class="col-sm-12">
         <div class="row" style="margin-top: 5px;">
-            <!-- <div class="col-sm-2">
-                <span style="font-size: 12px;">Collection type ↴ </span>
-                <select id="coll_type" disabled
-                    style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                    [(ngModel)]="collection_type" name="collection_type" (change)="getAllData()">
-                    <option [value]="collection_type" disabled selected="selected">Choose collection type</option>
-                    <option *ngFor="let collection of collectioTypes" [(ngValue)]="collection.id"
-                        style="font-family: Arial; font-size: 11px;">
-                        {{collection.type}}
-                    </option>
-                </select>
-            </div> -->
-            <div class="col-sm-2">
-                <span style="font-size: 12px;">Choose time range ↴ </span> <select id="time_range"
+            <div class="col-sm-9">
+                <select id="time_range"
                     style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                     [(ngModel)]="timePeriod" name="timePeriod" (change)="chooseTimeRange()">
                     <option [value]="timePeriod" disabled selected="selected">Choose Time Range
@@ -61,9 +49,8 @@
                         {{time.name}}
                     </option>
                 </select>
-            </div>
-            <div class="col-sm-2">
-                <span style="font-size: 12px;">Choose collection name ↴ </span> <select id="coll_name"
+
+                <select id="coll_name"
                     style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                     [(ngModel)]="collectionName" name="collectionName" (change)="getDataBasedOnCollections()">
                     <option [value]="collectionName" disabled selected="selected">Choose collection name
@@ -74,10 +61,10 @@
                     </option>
                 </select>
             </div>
-            <div class="col-sm-5"></div>
             <div class="col-sm-3">
                 <br>
-                <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total {{header}} Content Usage:</strong>
+                <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total {{header}} Content
+                        Usage:</strong>
                     {{footer}}</span>
             </div>
         </div>
