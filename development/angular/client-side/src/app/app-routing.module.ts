@@ -4,7 +4,6 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
-// import {AttendancModule } from ''
 
 const routes: Routes = [
   {

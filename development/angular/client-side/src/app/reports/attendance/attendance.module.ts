@@ -8,7 +8,6 @@ import { FormsModule } from '@angular/forms';
 import { AuthGuard } from 'src/app/auth.guard';
 
 const sttendanceRoutes: Routes = [
-
   {
     path: '', canActivate: [AuthGuard], children: [
       {
@@ -33,6 +32,4 @@ const sttendanceRoutes: Routes = [
     RouterModule.forChild(sttendanceRoutes)
   ]
 })
-export class AttendancModule {
-  
- }
+export class AttendancModule { }

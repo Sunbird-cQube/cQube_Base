@@ -50,8 +50,4 @@ const otherRoutes = [
     RouterModule.forChild(otherRoutes)
   ]
 })
-export class ReportsModule {
-  constructor() {
-    console.log("Reports module");
-  }
-}
+export class ReportsModule { }
