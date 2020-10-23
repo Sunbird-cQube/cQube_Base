@@ -107,7 +107,6 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.skul = true;
     this.commonService.initMap('mapContainer');
 

@@ -6,39 +6,33 @@ import { CrcReportComponent } from './school-monitoring/crc-report/crc-report.co
 import { TelemetryDataComponent } from './telemetry/telemetry-data/telemetry-data.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { FormsModule } from '@angular/forms';
-import { HomeComponent } from '../home/home.component';
 import { RouterModule } from '@angular/router';
 
 const otherRoutes = [
   {
-    path: '', component: HomeComponent, canActivate: [AuthGuard], children:
-      [
-        {
-          path: 'crc', canActivate: [AuthGuard], children: [
-            {
-              path: 'crc-report', component: CrcReportComponent, canActivateChild: [AuthGuard]
-            }]
-        },
-        {
-          path: 'user', canActivate: [AuthGuard], children: [
-            {
-              path: 'changePassword', component: ChangePasswordComponent, canActivateChild: [AuthGuard]
-            }]
-        },
-        {
-          path: '', canActivate: [AuthGuard], children: [
-            {
-              path: 'telemetry', component: TelemetryDataComponent, canActivateChild: [AuthGuard]
-            }]
-        },
-        {
-          path: 'composite', canActivate: [AuthGuard], children: [
-            {
-              path: 'composite-report', component: CompositReportComponent, canActivateChild: [AuthGuard]
-            }
-          ]
-        }
-      ]
+    path: 'crc', canActivate: [AuthGuard], children: [
+      {
+        path: 'crc-report', component: CrcReportComponent, canActivateChild: [AuthGuard]
+      }]
+  },
+  {
+    path: 'user', canActivate: [AuthGuard], children: [
+      {
+        path: 'changePassword', component: ChangePasswordComponent, canActivateChild: [AuthGuard]
+      }]
+  },
+  {
+    path: '', canActivate: [AuthGuard], children: [
+      {
+        path: 'telemetry', component: TelemetryDataComponent, canActivateChild: [AuthGuard]
+      }]
+  },
+  {
+    path: 'composite', canActivate: [AuthGuard], children: [
+      {
+        path: 'composite-report', component: CompositReportComponent, canActivateChild: [AuthGuard]
+      }
+    ]
   }
 ]
 
@@ -56,4 +50,8 @@ const otherRoutes = [
     RouterModule.forChild(otherRoutes)
   ]
 })
-export class ReportsModule { }
+export class ReportsModule {
+  constructor() {
+    console.log("Reports module");
+  }
+}

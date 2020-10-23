@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
   public userType = localStorage.getItem('roleName') === "admin";
   public roleName;
   ngOnInit() {
+    console.log(window.location.href);
     if (window.location.hash == '#/dashboard') {
       this.showBack = true;
       this.showHome = false;

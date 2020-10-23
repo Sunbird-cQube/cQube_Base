@@ -17,7 +17,6 @@ import { MatPaginatorModule, MatSortModule } from '@angular/material';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
-import { ReportsModule } from './reports/reports.module';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -32,7 +31,6 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
@@ -45,7 +43,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     FormsModule,
     ChartsModule,
     BrowserAnimationsModule,
-    ReportsModule
+    AppRoutingModule
   ],
   exports: [
     MatTableModule,

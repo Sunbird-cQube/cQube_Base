@@ -4,7 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import { InfrastructureModule } from './reports/school-infra/infrastructure.module'
+// import {AttendancModule } from ''
 
 const routes: Routes = [
   {
@@ -19,26 +19,26 @@ const routes: Routes = [
         path: 'dashboard', component: DashboardComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'diksha', loadChildren: './reports/diksha/diksha.module#DikshaModule'
+        path: 'diksha', loadChildren: () => import('./reports/diksha/diksha.module').then(m => m.DikshaModule)
       },
       {
-        path: 'attendance', loadChildren: './reports/attendance/attendance.module#AttendancModule'
+        path: 'attendance', loadChildren: () => import('./reports/attendance/attendance.module').then(m => m.AttendancModule)
       },
       {
-        path: 'exception', loadChildren: './reports/exception-list/exception.module#ExceptionModule'
+        path: 'exception', loadChildren: () => import('./reports/exception-list/exception.module').then(m => m.ExceptionModule)
       },
       {
-        path: 'infrastructure', loadChildren: './reports/school-infra/infrastructure.module#InfrastructureModule'
+        path: 'infrastructure', loadChildren: () => import('./reports/school-infra/infrastructure.module').then(m => m.InfrastructureModule)
       },
       {
-        path: 'student-performance', loadChildren: './reports/student-performance/student-performance.module#StudentPerformanceModule'
+        path: 'student-performance', loadChildren: () => import('./reports/student-performance/student-performance.module').then(m => m.StudentPerformanceModule)
+      },
+      {
+        path: '', loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule)
       }
     ]
   }
-  // ,
-  // {
-  //   path: 'infrastructure', loadChildren: './reports/school-infra/infrastructure.module#InfrastructureModule'
-  // }
+
 ];
 
 @NgModule({

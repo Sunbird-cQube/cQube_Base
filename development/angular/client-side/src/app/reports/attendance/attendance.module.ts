@@ -33,4 +33,6 @@ const sttendanceRoutes: Routes = [
     RouterModule.forChild(sttendanceRoutes)
   ]
 })
-export class AttendancModule { }
+export class AttendancModule {
+  
+ }
