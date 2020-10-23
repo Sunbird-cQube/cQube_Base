@@ -11,7 +11,7 @@
                                 <div class="inner-2">
                                     <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
                                 </div>
-                                <div class="inner-3" style="margin-top: 20px;">
+                                <div class="inner-3">
                                     Infrastructure access <br> by Location
                                     <div class="views1">
                                         <p *ngIf="imrViews;else other_content" id="views">views: {{imrViews}}</p>
@@ -31,7 +31,7 @@
                                     <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Composite Report
+                                    Composite <br> Report
                                     <div class="views">
                                         <p *ngIf="crViews;else other_content" id="views">views: {{crViews}}</p>
                                         <ng-template #other_content>
@@ -50,7 +50,7 @@
                                     <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    UDISE Report
+                                    UDISE <br> Report
                                     <div class="views">
                                         <p *ngIf="udiseViews;else other_content" id="views">views: {{udiseViews}}</p>
                                         <ng-template #other_content>
@@ -101,7 +101,7 @@
                                     <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Usage by user profile
+                                    Usage by user <br> profile
                                     <div class="views">
                                         <p *ngIf="dscViews;else other_content" id="views">views: {{dscViews}}</p>
                                         <ng-template #other_content>
@@ -120,7 +120,7 @@
                                     <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Usage by Location
+                                    Usage by <br> Course
                                     <div class="views">
                                         <p *ngIf="dccViews;else other_content" id="views">views: {{dccViews}}</p>
                                         <ng-template #other_content>
@@ -132,16 +132,16 @@
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <div class="inner-1 card" id="dtr" [routerLink]="['/home/diksha-table']"
-                            style="background-color: rgb(255, 207, 169);" (click)="fetchTelemetry($event,'dtr')">
+                        <div class="inner-1 card" id="ut" [routerLink]="['/home/usage-by-textbook']"
+                            style="background-color: rgb(255, 207, 169);" (click)="fetchTelemetry($event,'ut')">
                             <div class="row">
                                 <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_grid_on.svg" alt="">
+                                    <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Usage by Content Name
+                                    Usage by <br> Textbook
                                     <div class="views">
-                                        <p *ngIf="dtrViews;else other_content" id="views">views: {{dtrViews}}</p>
+                                        <p *ngIf="utViews;else other_content" id="views">views: {{utViews}}</p>
                                         <ng-template #other_content>
                                             <p id="errViews">views: 0 {{timePeriod}}</p>
                                         </ng-template>
@@ -163,9 +163,54 @@
                                     <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    CRC Visit
+                                    CRC <br> Visit
                                     <div class="views" style="width: 140px;">
                                         <p *ngIf="crcrViews;else other_content" id="views">views: {{crcrViews}}</p>
+                                        <ng-template #other_content>
+                                            <p id="errViews">views: 0 {{timePeriod}}</p>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-6">
+                <!-- <div class="diksha">STUDENT PERFORMANCE</div> -->
+                <div class="row outer12">
+                    <div class="col-sm-6">
+                        <div class="inner-12 card" id="dtr" [routerLink]="['/home/diksha-table']"
+                            style="background-color:  rgb(255, 207, 169);" (click)="fetchTelemetry($event,'dtr')">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_grid_on.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Usage by <br> Course Content
+                                    <div class="views">
+                                        <p *ngIf="dtrViews;else other_content" id="views">views: {{dtrViews}}</p>
+                                        <ng-template #other_content>
+                                            <p id="errViews">views: 0 {{timePeriod}}</p>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="inner-12 card" id="utc" [routerLink]="['/home/usage-by-textbook-content']"
+                            style="background-color:  rgb(255, 207, 169);" (click)="fetchTelemetry($event,'utc')">
+                            <div class="row">
+                                <div class="inner-2">
+                                    <img class="ic-equalizer" src="../../assets/ic_grid_on.svg" alt="">
+                                </div>
+                                <div class="inner-3">
+                                    Usage by <br> Textbook Content
+                                    <div class="views">
+                                        <p *ngIf="utcViews;else other_content" id="views">views: {{utcViews}}</p>
                                         <ng-template #other_content>
                                             <p id="errViews">views: 0 {{timePeriod}}</p>
                                         </ng-template>
@@ -189,7 +234,7 @@
                                     <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Semester Report
+                                    Semester <br> Report
                                     <div class="views">
                                         <p *ngIf="srViews;else other_content" id="views">views: {{srViews}}</p>
                                         <ng-template #other_content>
@@ -208,7 +253,7 @@
                                     <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Periodic Assessment Test
+                                    Periodic Assessment <br> Test
                                     <div class="views">
                                         <p *ngIf="patViews;else other_content" id="views">views: {{patViews}}</p>
                                         <ng-template #other_content>
@@ -232,7 +277,7 @@
                                     <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Semester Exception
+                                    Semester <br> Exception
                                     <div class="views">
                                         <p *ngIf="semExpViews;else other_content" id="views">views: {{semExpViews}}</p>
                                         <ng-template #other_content>
@@ -251,7 +296,7 @@
                                     <img class="ic-equalizer" src="../../assets/ic_cloud_download.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Download Exception List
+                                    Download Exception <br> List
                                     <div class="views">
                                         <p *ngIf="isdataViews;else other_content" id="views">views: {{isdataViews}}</p>
                                         <ng-template #other_content>
@@ -277,7 +322,7 @@
                                 <div class="inner-2">
                                     <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt=""> </div>
                                 <div class="inner-3">
-                                    Student Attendance
+                                    Student <br> Attendance
                                     <div class="views">
                                         <p *ngIf="sarViews;else other_content" id="views">views: {{sarViews}}</p>
                                         <ng-template #other_content>
@@ -296,7 +341,7 @@
                                     <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
                                 </div>
                                 <div class="inner-3">
-                                    Teacher Attendance
+                                    Teacher <br> Attendance
                                     <div class="views">
                                         <p *ngIf="tarViews;else other_content" id="views">views: {{tarViews}}</p>
                                         <ng-template #other_content>
@@ -319,9 +364,9 @@
                                 <div class="inner-2">
                                     <img class="ic-equalizer" src="../../assets/Group 10.svg" alt="">
                                 </div>
-                                <div class="inner-3">
+                                <div class="inner-3" style="margin-top: 35px;">
                                     Telemetry
-                                    <div class="views" style="width: 140px;">
+                                    <div class="views" style="width: 140px;margin-top: 17px;">
                                         <p *ngIf="telemDataViews;else other_content" id="views">views:
                                             {{telemDataViews}}</p>
                                         <ng-template #other_content>
