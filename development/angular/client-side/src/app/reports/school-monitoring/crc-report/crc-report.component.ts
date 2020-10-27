@@ -110,10 +110,11 @@ export class CrcReportComponent implements OnInit {
   }
 
   ngOnInit() {
-    document.getElementById('backBtn').style.display = "none";
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
     this.createChart(["clg"], [], '', {});
     this.districtWise();
-    document.getElementById('homeBtn').style.display = "Block";
+
   }
 
   public tableHead: any;
@@ -183,7 +184,7 @@ export class CrcReportComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
-        scrollY: "39vh",
+        scrollY: "35vh",
         scrollX: true,
         scrollCollapse: true,
         paging: false,
@@ -253,7 +254,7 @@ export class CrcReportComponent implements OnInit {
             "bLengthChange": false,
             "bInfo": false,
             "bPaginate": false,
-            scrollY: "39vh",
+            scrollY: "35vh",
             scrollX: true,
             scrollCollapse: true,
             paging: false,
@@ -441,7 +442,7 @@ export class CrcReportComponent implements OnInit {
           "bLengthChange": false,
           "bInfo": false,
           "bPaginate": false,
-          scrollY: "39vh",
+          scrollY: "35vh",
           scrollX: true,
           scrollCollapse: true,
           paging: false,
@@ -549,7 +550,7 @@ export class CrcReportComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
-        scrollY: "39vh",
+        scrollY: "35vh",
         scrollX: true,
         scrollCollapse: true,
         paging: false,
@@ -658,7 +659,7 @@ export class CrcReportComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
-        scrollY: "39vh",
+        scrollY: "35vh",
         scrollX: true,
         scrollCollapse: true,
         paging: false,

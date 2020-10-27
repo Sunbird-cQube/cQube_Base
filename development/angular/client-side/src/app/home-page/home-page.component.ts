@@ -23,7 +23,7 @@ export class HomePageComponent implements OnInit {
     if (this.keycloakService.kc.tokenParsed.realm_access) {
       if (this.keycloakService.kc.tokenParsed.realm_access.roles.includes('admin')) {
         localStorage.setItem('roleName', 'admin');
-        this.router.navigate(['/homePage']);
+        this.router.navigate(['/home']);
       } else if (this.keycloakService.kc.tokenParsed.realm_access.roles.includes('report_viewer')) {
         localStorage.setItem('roleName', 'report_viewer');
         this.router.navigate(['/home']);
