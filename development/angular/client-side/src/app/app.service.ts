@@ -45,9 +45,7 @@ export class AppServiceComponent {
 
     changePassword(data, id) {
         this.logoutOnTokenExpire();
-        return this.http.post(`${this.baseUrl}/changePassword/${id}`, { cnfpass: data }, {
-            'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-        });
+        return this.http.post(`${this.baseUrl}/changePassword/${id}`, { cnfpass: data });
     }
 
     // to load and hide the spinner 
@@ -291,12 +289,12 @@ export class AppServiceComponent {
     //capturing telemetry.....
     telemetry(date) {
         this.logoutOnTokenExpire();
-        return this.http.post(`${this.baseUrl}/telemetry`, { telemetryData: this.telemetryData, date: date }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/telemetry`, { telemetryData: this.telemetryData, date: date });
     }
 
     getTelemetry(data) {
         this.logoutOnTokenExpire();
-        return this.http.post(`${this.baseUrl}/telemetry/data`, { period: data }, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+        return this.http.post(`${this.baseUrl}/telemetry/data`, { period: data });
     }
 
     //

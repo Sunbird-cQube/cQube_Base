@@ -14,72 +14,52 @@ export class UsersService {
   //User management...........
   addUser(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/addUser`, data, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/addUser`, data);
   }
 
   changePassword(data, id) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/changePassword/${id}`, { cnfpass: data }, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/changePassword/${id}`, { cnfpass: data });
   }
 
   allUsers() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/allUsers`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/allUsers`, {});
   }
 
   getCreatedUser(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/addUser/getAllUsers`, data, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/addUser/getAllUsers`, data);
   }
 
 
   getRoles() {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/addUser/roles`, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.get(`${this.baseUrl}/addUser/roles`);
   }
 
   addRole(id, role) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/addUser/setRoles`, { userId: id, role: role }, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/addUser/setRoles`, { userId: id, role: role });
 
   }
 
   changeStatus(id, updaterId) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/allUsers/changeStatus/${id}`, { updaterId: updaterId }, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/allUsers/changeStatus/${id}`, { updaterId: updaterId });
   }
 
   deleteUser(id) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/allUsers/deleteUser/${id}`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/allUsers/deleteUser/${id}`, {});
   }
   editUser(id, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/allUsers/editUser/${id}`, { data: data }, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/allUsers/editUser/${id}`, { data: data });
   }
 
   getCurrentUser(id) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/allUsers/getUser/${id}`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/allUsers/getUser/${id}`, {});
   }
 }

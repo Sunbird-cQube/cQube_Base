@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" style="height: 35px; background-color: rgb(230, 230, 230);width: 100%;" >
+<mat-toolbar color="primary" style="height: 35px; background-color: rgb(230, 230, 230);width: 100%;">
   <button mat-icon-button (click)="sidenav.toggle()" id="menu">
     <mat-icon style="color: rgb(98, 150, 209);">menu</mat-icon>
   </button>
@@ -68,7 +68,7 @@
             style="font-family: Arial; border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
             <span class="full-width" id="diksha" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
-              Diksha Usage</span>
+              Teacher Professional Development</span>
             <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu2}" *ngIf="isExpanded || isShowing">
               expand_more</mat-icon>
           </mat-list-item>
@@ -79,14 +79,28 @@
             <a mat-list-item [routerLink]="['/diksha/diksha-column-chart']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'dcc')" id="clmnReport" (click)="showSubmenu2 = !showSubmenu2"><span
                 style="margin-left: 50px;">Usage by Course</span></a>
-            <a mat-list-item [routerLink]="['/diksha/usage-by-textbook']" (click)="sidenav.toggle()"
-              (click)="fetchTelemetry($event,'dtr')" id="ut" (click)="showSubmenu2 = !showSubmenu2"><span
-                style="margin-left: 50px;">Usage by Textbook</span></a>
             <a mat-list-item [routerLink]="['/diksha/diksha-table']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'dtr')" id="dtblReport" (click)="showSubmenu2 = !showSubmenu2"><span
                 style="margin-left: 50px;">Usage by Course Content</span></a>
+          </div>
+        </mat-nav-list>
+
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu9 = !showSubmenu9" class="abc1"
+            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+            <span class="full-width" id="stdPerform" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
+              Energise Textbook Usage
+            </span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu9}" *ngIf="isExpanded || isShowing">
+              expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu9" [ngClass]="{'expanded' : showSubmenu9}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['/diksha/usage-by-textbook']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'dtr')" id="ut" (click)="showSubmenu9 = !showSubmenu9"><span
+                style="margin-left: 50px;">Usage by Textbook</span></a>
             <a mat-list-item [routerLink]="['/diksha/usage-by-textbook-content']" (click)="sidenav.toggle()"
-              (click)="fetchTelemetry($event,'dtr')" id="utc" (click)="showSubmenu2 = !showSubmenu2"><span
+              (click)="fetchTelemetry($event,'dtr')" id="utc" (click)="showSubmenu9 = !showSubmenu9"><span
                 style="margin-left: 50px;">Usage by Textbook Content</span></a>
           </div>
         </mat-nav-list>
