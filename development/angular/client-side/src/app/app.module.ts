@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +17,7 @@ import { MatPaginatorModule, MatSortModule } from '@angular/material';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
+import { AuthInterceptor } from './auth.interceptor';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -55,6 +56,11 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
       provide: APP_INITIALIZER,
       deps: [KeycloakSecurityService],
       useFactory: kcFactory,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true
     }
   ],

@@ -12,40 +12,40 @@ export class CrcReportService {
 
   constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) {
     this.baseUrl = service.baseUrl;
-   }
-  
+  }
+
   // crc new apis
   crcDistWiseData() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/districtWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/crc/districtWise`, {});
   }
   crcBlockWiseData(distId) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/blockWise/${distId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/crc/blockWise/${distId}`, {});
   }
   crcClusterWiseData(distId, blockId) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/clusterWise/${distId}/${blockId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/crc/clusterWise/${distId}/${blockId}`, {});
   }
 
   crcSchoolWiseData(distId, blockId, clusterId) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/schoolWise/${distId}/${blockId}/${clusterId}`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/crc/schoolWise/${distId}/${blockId}/${clusterId}`, {});
   }
 
   crcAllBlockWiseData() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/allBlockWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/crc/allBlockWise`, {});
   }
 
   crcAllClusterWiseData() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/allClusterWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/crc/allClusterWise`, {});
   }
 
   crcAllSchoolWiseData() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/allSchoolWise`, {}, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/crc/allSchoolWise`, {});
   }
 
 }

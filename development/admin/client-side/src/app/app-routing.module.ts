@@ -13,12 +13,12 @@ import { NifiShedularComponent } from './components/nifi-shedular/nifi-shedular.
 
 const routes: Routes = [
   {
-    path: '', redirectTo: '/home', pathMatch: 'full'
+    path: '', redirectTo: '/admin-dashboard', pathMatch: 'full'
   },
   {
-    path: 'home', component: HomeComponent, children: [
+    path: '', component: HomeComponent, children: [
       {
-        path: '', component: DashboardComponent, canActivateChild: [AuthGuard]
+        path: 'admin-dashboard', component: DashboardComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'create-user', component: CreateUserComponent, canActivateChild: [AuthGuard]
