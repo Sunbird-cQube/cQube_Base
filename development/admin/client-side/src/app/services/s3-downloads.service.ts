@@ -14,22 +14,16 @@ export class S3DownloadsService {
   //s3 downloads
   listBuckets() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/s3Download/listBuckets`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/s3Download/listBuckets`, {});
   }
 
   listFiles(bucketName) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/s3Download/listFiles/${bucketName}`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/s3Download/listFiles/${bucketName}`, {});
   }
 
   downloadFile(fileName, bucketName) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/s3Download/getDownloadUrl/`, { fileName: fileName, bucketName: bucketName }, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/s3Download/getDownloadUrl/`, { fileName: fileName, bucketName: bucketName });
   }
 }
