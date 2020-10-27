@@ -123,7 +123,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 .outer1 {
-  height: 120px;
+  /* height: 120px; */
   width: 100%;
   border-radius: 20px;
   background-color: #FFFFFF;
@@ -144,6 +144,13 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   height: 50px;
   width: 50px;
   /* opacity: 0.5; */
+  border-radius: 6px;
+  background-color: #3257E0;
+}
+
+.iconDiv {
+  height: 50px;
+  width: 50px;
   border-radius: 6px;
   background-color: #3257E0;
 }
@@ -173,11 +180,21 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 .ic-equalizer {
+  position: relative;
   height: 30px;
   width: 30px;
-  margin-left: 10px;
-  margin-top: 10px;
-  opacity: 0.9;
+  margin-left: 0px;
+  margin-top: 0px;
+  opacity: 1;
+}
+
+.ic-equalizer1 {
+  margin-top: 0px;
+  height: 30px;
+  width: 30px;
+  /* margin-left: 0px;
+  margin-top: 0px; */
+  opacity: 1;
 }
 
 .card{
@@ -231,7 +248,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 .outer12 {
-  height: 120px;
+  /* height: 120px; */
   width: 100%;
   border-radius: 20px;
   background-color: #FFFFFF;
@@ -258,32 +275,176 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 .views{
   background-color: white; 
-  height: 15px;
-  width: 160px; 
+  height: 20px;
+  margin: 2% 7% 7% 7%;
+  width: 85%;
   float: white;
-  margin-top: 12px;
+  padding: 2%;
   border-radius: 8px;
 }
 .views1{
   background-color: white; 
-  height: 15px;
-  width: 145px; 
+  height: 20px;
+  margin: 2% 7% 7% 7%;
+  width: 85%;
   float: white;
-  margin-top: 12px;
+  padding: 2%;
   border-radius: 8px;
 }
 
 #views{
   color: rgb(109, 109, 109);
-  float: center;
-  margin-left: 2%;
+  text-align: center;
+  font-weight: bold;
   font-size: 11px;
-  line-height: 1.2em;
+  font-family: "Noto Sans";
+  line-height: .8em;
 }
 #errViews{
   color: rgb(109, 109, 109);
-  float: center;
-  margin-left: 2%;
+  text-align: center;
+  font-weight: bold;
   font-size: 11px;
-  line-height: 1.2em;
+  font-family: "Noto Sans";
+  line-height: .8em;
 }
+
+
+.card-tasks .card-body .table {
+  margin-bottom: 0; }
+  .card-tasks .card-body .table > thead > tr > th,
+  .card-tasks .card-body .table > tbody > tr > th,
+  .card-tasks .card-body .table > tfoot > tr > th,
+  .card-tasks .card-body .table > thead > tr > td,
+  .card-tasks .card-body .table > tbody > tr > td,
+  .card-tasks .card-body .table > tfoot > tr > td {
+    padding-top: 0;
+    padding-bottom: 0; }
+
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
+  background-color: #FFFFFF;
+  color: #252422;
+  margin-bottom: 20px;
+  position: relative;
+  border: 0 none;
+  transition: box-shadow 200ms ease, -webkit-transform 300ms cubic-bezier(0.34, 2, 0.6, 1);
+  transition: transform 300ms cubic-bezier(0.34, 2, 0.6, 1), box-shadow 200ms ease;
+  transition: transform 300ms cubic-bezier(0.34, 2, 0.6, 1), box-shadow 200ms ease, -webkit-transform 300ms cubic-bezier(0.34, 2, 0.6, 1); }
+  .card .card-body {
+    padding: 15px 15px 10px 15px; }
+    .card .card-body.table-full-width {
+      padding-left: 0;
+      padding-right: 0; }
+  .card .card-header {
+    padding: 15px 15px 0;
+    border: 0; }
+    .card .card-header:not([data-background-color]) {
+      background-color: transparent; }
+    .card .card-header .card-title {
+      
+      margin-top: 10px; }
+  .card .map {
+    border-radius: 3px; }
+    .card .map.map-big {
+      height: 400px; }
+  .card[data-background-color="orange"] {
+    background-color: #51cbce; }
+    .card[data-background-color="orange"] .card-header {
+      background-color: #51cbce; }
+    .card[data-background-color="orange"] .card-footer .stats {
+      color: #FFFFFF; }
+  .card[data-background-color="red"] {
+    background-color: #ef8157; }
+  .card[data-background-color="yellow"] {
+    background-color: #fbc658; }
+  .card[data-background-color="blue"] {
+    background-color: #51bcda; }
+  .card[data-background-color="green"] {
+    background-color: #6bd098; }
+  .card .image {
+    overflow: hidden;
+    height: 200px;
+    position: relative; }
+  .card .avatar {
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-bottom: 15px; }
+  .card .numbers {
+    font-size: 2em; }
+  .card .big-title {
+    font-size: 12px;
+    text-align: center;
+    /* font-weight: 500; */
+    padding-bottom: 15px; }
+  .card label {
+    font-size: 0.8571em;
+    margin-bottom: 5px;
+    color: #9A9A9A; }
+  .card .card-footer {
+    background-color: transparent;
+    border: 0; }
+    .card .card-footer .stats i {
+      margin-right: 5px;
+      position: relative;
+      top: 0px;
+      color: #66615B; }
+    .card .card-footer .btn {
+      margin: 0; }
+  .card.card-plain {
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0; }
+    .card.card-plain .card-body {
+      padding-left: 5px;
+      padding-right: 5px; }
+    .card.card-plain img {
+      border-radius: 12px; }
+
+
+.card .info-area {
+  padding: 40px 0 40px;
+  text-align: center;
+  position: relative;
+  z-index: 2; }
+
+  .card-stats{
+    margin-top: 22px;
+    background-color:rgb(160, 233, 205);
+  }
+
+.card-stats .card-body {
+  padding: 15px 15px 0px; }
+  .card-stats .card-body .numbers {
+    font-size: 12px;
+      font-weight: bold;
+      line-height: 1.4em; 
+      color: rgb(65, 65, 65);
+      font-family: "Noto Sans";
+    text-align: right;
+    font-size: 2em; }
+    .card-stats .card-body .numbers p {
+      margin-bottom: 0; }
+    .card-stats .card-body .numbers .card-category {
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 1.4em; 
+    }
+
+.card-stats .card-footer {
+  padding: 0px 15px 15px; }
+  .card-stats .card-footer .stats {
+    color: #9A9A9A; }
+  .card-stats .card-footer hr {
+    margin-top: 10px;
+    margin-bottom: 15px; }
+
+.card-stats .icon-big {
+  font-size: 1.8em;
+}
+  .card-stats .icon-big i {
+    line-height: 59px; }
