@@ -18,7 +18,7 @@ export class UsageByTextbookContentComponent implements OnInit {
   public collectionType = 'textbook';
   public allCollections = [];
   public timeDetails: any = [];
-  public districtsDetails: any = '';
+  public districtsDetails: any = [];
   dataTable: any;
   dtOptions: any;
   tableData: any = [];

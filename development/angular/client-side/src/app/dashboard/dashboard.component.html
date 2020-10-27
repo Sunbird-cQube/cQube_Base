@@ -5,7 +5,7 @@
                 <div class="col-sm-12 diksha">SCHOOL INFRASTRUCTURE</div>
                 <div class="row outer1">
                     <div class="col-lg-4 col-md-12 col-sm-12">
-                        <div class="card card-stats" id="imr" [routerLink]="['/home/school-infra-map']"
+                        <div class="card card-stats" id="imr" [routerLink]="['/infrastructure/school-infra-map']"
                             (click)="fetchTelemetry($event,'imr')">
                             <div class="card-body ">
                                 <div class="row">
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12">
-                        <div class="card card-stats" id="cr" [routerLink]="['/home/school-infrastructure']"
+                        <div class="card card-stats" id="cr" [routerLink]="['/infrastructure/school-infrastructure']"
                             (click)="fetchTelemetry($event,'cr')">
                             <div class="card-body ">
                                 <div class="row">
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12">
-                        <div class="card card-stats" id="udise" [routerLink]="['/home/udise-report']"
+                        <div class="card card-stats" id="udise" [routerLink]="['/infrastructure/udise-report']"
                             (click)="fetchTelemetry($event,'udise')">
                             <div class="card-body ">
                                 <div class="row">
@@ -100,7 +100,7 @@
                 <div class="diksha">COMPOSITE</div>
                 <div class="row outer12">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card card-stats" style="background-color: rgb(243, 228, 203);" id="composite" [routerLink]="['/home/composit-report']"
+                        <div class="card card-stats" style="background-color: rgb(243, 228, 203);" id="composite" [routerLink]="['/composite/composite-report']"
                             (click)="fetchTelemetry($event,'composite')">
                             <div class="card-body ">
                                 <div class="row">
@@ -139,7 +139,7 @@
                 <div class="row outer1">
                     <div class="col-lg-4 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="dsc"
-                            [routerLink]="['/home/diksha-chart']" (click)="fetchTelemetry($event,'dsc')">
+                            [routerLink]="['/diksha/diksha-chart']" (click)="fetchTelemetry($event,'dsc')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -170,7 +170,7 @@
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="dcc"
-                            [routerLink]="['/home/diksha-column-chart']" (click)="fetchTelemetry($event,'dcc')">
+                            [routerLink]="['/diksha/diksha-column-chart']" (click)="fetchTelemetry($event,'dcc')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -201,7 +201,7 @@
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="ut"
-                            [routerLink]="['/home/usage-by-textbook']" (click)="fetchTelemetry($event,'ut')">
+                            [routerLink]="['/diksha/usage-by-textbook']" (click)="fetchTelemetry($event,'ut')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -237,7 +237,7 @@
                 <div class="row outer12">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color: rgb(238, 164, 164);" id="crcr"
-                            [routerLink]="['/home/crc-report']" (click)="fetchTelemetry($event,'crcr')">
+                            [routerLink]="['/crc/crc-report']" (click)="fetchTelemetry($event,'crcr')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -274,7 +274,7 @@
                 <div class="row outer12">
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color:  rgb(255, 207, 169);" id="dtr"
-                            [routerLink]="['/home/diksha-table']" (click)="fetchTelemetry($event,'dtr')">
+                            [routerLink]="['/diksha/diksha-table']" (click)="fetchTelemetry($event,'dtr')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -305,7 +305,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color:  rgb(255, 207, 169);" id="utc"
-                            [routerLink]="['/home/usage-by-textbook-content']" (click)="fetchTelemetry($event,'utc')">
+                            [routerLink]="['/diksha/usage-by-textbook-content']" (click)="fetchTelemetry($event,'utc')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -343,7 +343,7 @@
                 <div class="row outer12">
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color:  rgb(203, 210, 233);" id="sr"
-                            [routerLink]="['/home/semester-report']" (click)="fetchTelemetry($event,'sr')">
+                            [routerLink]="['/student-performance/semester-report']" (click)="fetchTelemetry($event,'sr')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -374,7 +374,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color:  rgb(203, 210, 233);" id="pat"
-                            [routerLink]="['/home/pat-report']" (click)="fetchTelemetry($event,'pat')">
+                            [routerLink]="['/student-performance/pat-report']" (click)="fetchTelemetry($event,'pat')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -410,7 +410,7 @@
                 <div class="row outer12">
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="SemExp"
-                            [routerLink]="['/home/sem-exception']" (click)="fetchTelemetry($event,'SemExp')">
+                            [routerLink]="['/exception/sem-exception']" (click)="fetchTelemetry($event,'SemExp')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -442,7 +442,7 @@
 
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="isdata"
-                            [routerLink]="['/home/download-missing-data']" (click)="fetchTelemetry($event,'isdata')">
+                            [routerLink]="['/exception/download-missing-data']" (click)="fetchTelemetry($event,'isdata')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -481,7 +481,7 @@
                 <div class="row outer12">
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color:  rgb(221, 253, 199);" id="sar"
-                            [routerLink]="['/home/attendance-report']" (click)="fetchTelemetry($event,'sar')">
+                            [routerLink]="['/attendance/student-attendance']" (click)="fetchTelemetry($event,'sar')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -512,7 +512,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color:  rgb(221, 253, 199);" id="tar"
-                            [routerLink]="['/home/teacher-attendance']" (click)="fetchTelemetry($event,'tar')">
+                            [routerLink]="['/attendance/teacher-attendance']" (click)="fetchTelemetry($event,'tar')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col-3 col-md-2">
@@ -548,7 +548,7 @@
                 <div class="row outer12">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card card-stats" style="background-color: rgb(236, 235, 126);" id="telemData"
-                            [routerLink]="['/home/telemetry']" (click)="fetchTelemetry($event,'telemData')">
+                            [routerLink]="['/telemetry']" (click)="fetchTelemetry($event,'telemData')">
                             <div class="card-body ">
                                 <div class="row">
                                     <div class="col=md-3 col-md-2">
