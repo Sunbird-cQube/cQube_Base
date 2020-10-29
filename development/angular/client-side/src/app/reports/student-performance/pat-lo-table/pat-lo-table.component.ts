@@ -99,8 +99,8 @@ export class PATLOTableComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.PATHeatMapAllData(a).subscribe(response => {
-      console.log(response);
-      this.createTable(response);
+      console.log(response['tableData']);
+      this.createTable(response['tableData'], 'LOtable');
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       console.log(err);
@@ -110,21 +110,28 @@ export class PATLOTableComponent implements OnInit {
   }
 
 
-  createTable(dataSet) {
-    // if ($.fn.DataTable.isDataTable('#LOtable')) {
-    //   $('#LOtable').DataTable().destroy();
-    //   $('#LOtable').empty();
-    // }
+  createTable(dataSet, tablename) {
     var my_columns = [];
-
-    $.each(dataSet['districtDetails'], function (key, value) {
-      // console.log(value)
+    $.each(dataSet[0], function (key, value) {
       var my_item = {};
-      // my_item['data'] = key;
+      my_item['data'] = key;
       my_item['value'] = value;
-      my_columns.push(value);
+      my_columns.push(my_item);
     });
-    
+    var sub_column = []
+    my_columns.forEach(val => {
+      if (typeof val.value == "object") {
+        $.each(val.value, function (key, value) {
+          var my_item = {};
+          my_item['data'] = key;
+          my_item['value'] = value;
+          sub_column.push(my_item);
+        });
+      }
+    })
+
+
+    var colspanlength = sub_column.length;
 
     $(document).ready(function () {
       var headers = '<thead><tr>'
@@ -132,48 +139,64 @@ export class PATLOTableComponent implements OnInit {
       var body = '<tbody>';
 
       my_columns.forEach((column, i) => {
-        headers += `<th>${column.district_name}</th>`
+        if (column.data != 'ff_uuid') {
+          var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          });
+          headers += `<th ${(column.data != 'records_with_null_value') ? 'rowspan="2" style = "text-transform:capitalize;"' : `colspan= ${colspanlength}  style = 'text-transform:capitalize;'`}>${col}</th>`
+        }
+      });
+
+      sub_column.forEach((column, i) => {
+        var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+        subheader += `<th>${col}</th>`
       });
 
       let newArr = [];
       $.each(dataSet, function (a, b) {
         let temp = [];
         $.each(b, function (key, value) {
-          var new_item = {};
-          new_item['data'] = key;
-          new_item['value'] = value;
-          temp.push(new_item);
-        })
+          if (key != "records_with_null_value") {
+            var new_item = {};
+            new_item['data'] = key;
+            new_item['value'] = value;
+            temp.push(new_item);
+          }
+          else {
+            if (typeof value == "object") {
+              $.each(value, function (key1, value1) {
+                var new_item = {};
+                new_item['data'] = key1;
+                new_item['value'] = value1;
+                temp.push(new_item);
+              })
+            }
+          }
+        });
         newArr.push(temp)
       });
 
       newArr.forEach((columns) => {
         body += '<tr>';
         columns.forEach((column) => {
-          // if (column.data != 'district'
-          //   && column.data != 'block'
-          //   && column.data != 'cluster'
-          //   && column.data != 'school'
-          //   && column.data != 'total_schools'
-          //   && column.data != 'infra_score'
-          //   && column.data != 'total_schools_data_received'
-          // ) {
-          //   body += `<td>${column.value.value}</td><td>${column.value.percent}</td>`
-          // } else {
-            body += `<td>${column.value.value}</td>`
-          // }
-        })
+          if (column.data != 'ff_uuid') {
+            body += `<td>${column.value}</td>`
+          }
+        });
         body += '</tr>';
       });
 
       subheader += '</tr>'
       headers += `</tr>${subheader}</thead>`
       body += '</tr></tbody>';
-      $("#LOtable").append(headers);
-      $("#LOtable").append(body);
-      $('#LOtable').DataTable({
+      $(`#${tablename}`).empty();
+      $(`#${tablename}`).append(headers);
+      $(`#${tablename}`).append(body);
+      $(`#${tablename}`).DataTable({
         destroy: true, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: "40vh", scrollX: true,
+        bPaginate: false, scrollY: "58vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: false,
         fixedColumns: {
           leftColumns: 1
