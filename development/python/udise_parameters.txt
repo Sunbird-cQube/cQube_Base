@@ -1146,7 +1146,8 @@ smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnka
 smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
 smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
 smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
-smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting) as rn from flowfile) sq Where rn =1""",
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting) as rn from flowfile) sq Where rn =1
+""",
 "udise_check_same_id_sch_profile_qry":"""SELECT b.udise_sch_code,b.ac_year,b.c0_sec,b.c1_sec,b.c2_sec,b.c3_sec,b.c4_sec,b.c5_sec,b.c6_sec,b.c7_sec,b.c8_sec,b.c9_sec,b.c10_sec,b.c11_sec,b.c12_sec,b.estd_year ,b.
 recog_year_pri ,b.recog_year_upr ,b.recog_year_sec ,b.recog_year_hsec ,b.upgrd_year_ele ,b.upgrd_year_sec ,b.upgrd_year_hsec ,b.cwsn_sch_yn,b.shift_sch_yn,b.resi_sch_yn,b.
 resi_sch_type,b.boarding_pri_yn,b.boarding_pri_b,b.boarding_pri_g,b.boarding_upr_yn,b.boarding_upr_b,b.boarding_upr_g,b.boarding_sec_yn,b.boarding_sec_b,b.boarding_sec_g,b.
@@ -1370,7 +1371,7 @@ from (select udise_sch_code from flowfile
 group by udise_sch_code having count(1)>1)  as a, flowfile  b
 where a.udise_sch_code=b.udise_sch_code
 group by b.udise_sch_code,b.ac_year,b.sdmp_plan_yn,b.struct_safaud_yn,b.nonstr_safaud_yn,b.cctv_cam_yn,b.fire_ext_yn,b.nodal_tch_yn,b.safty_trng_yn,b.dismgmt_taug_yn,b.slfdef_grt_yn,b.slfdef_trained""",
-"udise_filter_same_id_sch_safety_qry":"""SELECT   udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
+"udise_filter_same_id_sch_safety_qry":"""SELECT udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
 fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained from (SELECT udise_sch_code,ac_year,sdmp_plan_yn,struct_safaud_yn,nonstr_safaud_yn,cctv_cam_yn,
 fire_ext_yn,nodal_tch_yn,safty_trng_yn,dismgmt_taug_yn,slfdef_grt_yn,slfdef_trained,count(*)
 over (partition by udise_sch_code) as rn from FLOWFILE) sq Where rn =1""",
@@ -1456,5 +1457,9 @@ smc_tch_m,smc_tch_f,smc_trained_m,smc_trained_f,smc_meetings,smc_sdp_yn,smc_bnka
 smdc_smc_same_yn,smdc_yn,smdc_mem_m,smdc_mem_f,smdc_par_m,smdc_par_f,smdc_par_ews_m,smdc_par_ews_f,smdc_lgb_m,smdc_lgb_f,
 smdc_ebmc_m,smdc_ebmc_f,smdc_women_f,smdc_scst_m,smdc_scst_f,smdc_deo_m,smdc_deo_f,smdc_audit_m,smdc_audit_f,smdc_subexp_m,smdc_subexp_f,
 smdc_tch_m,smdc_tch_f,smdc_vp_m,smdc_vp_f,smdc_prin_m,smdc_prin_f,smdc_cp_m,smdc_cp_f,smdc_trained_m,smdc_trained_f,smdc_meetings,
-smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting from flowfile"""
+smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeting from flowfile""",
+"udise_district_filename":"""udise_district_wise""",
+"udise_block_filename":"""udise_block_wise""",
+"udise_cluster_filename":"""udise_cluster_wise""",
+"udise_school_filename":"""udise_school_wise"""
 }
