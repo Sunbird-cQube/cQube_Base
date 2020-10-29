@@ -11,6 +11,7 @@ router.post('/distWise', async (req, res) => {
         let { year, grade, subject_name, exam_date, viewBy } = req.body
         let fileName = `pat/heatChart/${year}/allData.json`
         var data = await s3File.readS3File(fileName);
+        console.log(data);
         let districtDetails = data.map(e => {
             return {
                 district_id: e.district_id,

@@ -16,7 +16,7 @@ router.post('/clusterWise', async (req, res) => {
                 grade: 'grade3',
                 subject: 'maths',
                 examDate: '29-07-2019',
-                districtId: '2407',
+                district_id: '2407',
                 districtName: 'Ahemadabad',
                 blockId: '240712',
                 blockName: 'AMC',
