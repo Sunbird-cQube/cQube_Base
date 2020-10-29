@@ -53,4 +53,25 @@ export class PatReportService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/pat/schoolWise/${distId}/${blockId}/${clusterId}`, { data });
   }
+
+
+  PATHeatMapAllData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/heatChart/distWise`, data);
+  }
+
+  PATHeatMapDistData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/heatChart/blockWise`, data);
+  }
+
+  PATHeatMapMetaData() {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/heatChart/metaData`, {});
+  }
+
+  PATHeatMapBlockData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/heatChart/clusterWise`, data);
+  }
 }
