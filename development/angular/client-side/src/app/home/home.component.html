@@ -132,6 +132,9 @@
               (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'pat')"
               (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">Periodic Assessment
                 Test</span></a>
+            <a mat-list-item [routerLink]="['/student-performance/heat-chart']" id="heatChart"
+              (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'heatChart')"
+              (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">Heat Chart</span></a>
           </div>
         </mat-nav-list>
 
