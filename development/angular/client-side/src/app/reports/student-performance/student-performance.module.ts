@@ -5,6 +5,7 @@ import { AuthGuard } from 'src/app/auth.guard';
 import { PATReportComponent } from './pat-report/pat-report.component';
 import { SemViewComponent } from './sem-view/sem-view.component';
 import { FormsModule } from '@angular/forms';
+import { HeatChartComponent } from './heat-chart/heat-chart.component';
 
 const performRoute: Routes = [
   {
@@ -14,6 +15,9 @@ const performRoute: Routes = [
       },
       {
         path: 'pat-report', component: PATReportComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'heat-chart', component: HeatChartComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
@@ -22,7 +26,8 @@ const performRoute: Routes = [
 @NgModule({
   declarations: [
     SemViewComponent,
-    PATReportComponent
+    PATReportComponent,
+    HeatChartComponent
   ],
   imports: [
     CommonModule,
