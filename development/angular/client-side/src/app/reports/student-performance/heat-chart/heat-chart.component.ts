@@ -17,6 +17,9 @@ export class HeatChartComponent implements OnInit {
   name: string;
   level = '';
 
+  blockHidden = true;
+  clusterHidden = true;
+
   // For filter implementation
   districtNames = [];
   district;
@@ -88,6 +91,10 @@ export class HeatChartComponent implements OnInit {
     this.examDate = undefined;
     this.subject = undefined;
     this.district = undefined;
+    this.block = undefined;
+    this.cluster = undefined;
+    this.blockHidden = true;
+    this.clusterHidden = true;
     document.getElementById('home').style.display = 'none';
     this.commonFunc();
   }
@@ -230,6 +237,36 @@ export class HeatChartComponent implements OnInit {
         <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
       }
 
+      if (level == 'cluster') {
+        obj = `<b>ClusterId: ${series['xAxis'].categories[point['x']]}</b> 
+        <br> <b>ClusterName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+               
+        <br> <b>Grade: ${splitVal[1]}</b>
+        <br> <b>Subject: ${splitVal[2]}</b>
+        <br> <b>ExamDate: ${splitVal[0]}</b>
+        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${splitVal[6]}` : `<b>QuestionId: ${splitVal[6]}</b>`}
+        <br> <b>Total Schools: ${splitVal[4]}</b>
+        <br> <b>Total Students: ${splitVal[5]}</b>
+        <br> <b>Students Attended: ${splitVal[3]}</b>
+        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+      }
+
+      if (level == 'school') {
+        obj = `<b>SchoolId: ${series['xAxis'].categories[point['x']]}</b> 
+        <br> <b>SchoolName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+               
+        <br> <b>Grade: ${splitVal[1]}</b>
+        <br> <b>Subject: ${splitVal[2]}</b>
+        <br> <b>ExamDate: ${splitVal[0]}</b>
+        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${splitVal[6]}` : `<b>QuestionId: ${splitVal[6]}</b>`}
+        <br> <b>Total Schools: ${splitVal[4]}</b>
+        <br> <b>Total Students: ${splitVal[5]}</b>
+        <br> <b>Students Attended: ${splitVal[3]}</b>
+        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+      }
+
+
+
       return obj
     }
   }
@@ -237,42 +274,43 @@ export class HeatChartComponent implements OnInit {
   selectedYear() {
     this.fileName = "Year_wise_report";
     document.getElementById('home').style.display = 'none';
-    this.commonFunc()
+    if (this.level == 'district') {
+      this.commonFunc()
+    }
+    if (this.level == 'block') {
+      this.selectedDistrict(this.district);
+    }
+
   }
 
   selectedGrade() {
     this.fileName = "Grade_wise_report";
-    document.getElementById('home').style.display = 'block';
-    this.commonFunc()
+    this.levelWiseFilter();
   }
 
   selectedSubject() {
     this.fileName = "Subject_wise_report";
-    document.getElementById('home').style.display = 'block';
-    this.commonFunc()
+    this.levelWiseFilter();
   }
 
   selectedExamDate() {
     this.fileName = "ExamDate_wise_report";
-    document.getElementById('home').style.display = 'block';
-    this.commonFunc()
+    this.levelWiseFilter();
   }
 
   selectedViewBy() {
     this.fileName = "ViewBy_report";
-    document.getElementById('home').style.display = 'block';
-    this.commonFunc()
+    this.levelWiseFilter();
   }
 
   selectedDistrict(districtId) {
+    this.level = 'block';
+    this.block = undefined;
+    this.blockHidden = false;
+    this.clusterHidden = true;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
     this.reportData = [];
-    this.level = 'block';
-    this.skul = false;
-    this.dist = true;
-    this.blok = false;
-    this.clust = false;
 
     let a = {
       year: this.year,
@@ -283,13 +321,17 @@ export class HeatChartComponent implements OnInit {
       districtId: districtId
     }
 
-    var dist = this.districtNames.find(a => a.district_id == districtId);
-    this.districtHierarchy = {
-      districtName: dist.district_name,
-      distId: dist.district_id
-    }
     this.service.PATHeatMapDistData(a).subscribe(response => {
       this.genericFunction(response);
+      var dist = this.districtNames.find(a => a.district_id == districtId);
+      this.districtHierarchy = {
+        districtName: dist.district_name,
+        distId: dist.district_id
+      }
+      this.skul = false;
+      this.dist = true;
+      this.blok = false;
+      this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       console.log(err);
@@ -300,14 +342,14 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
+    this.level = 'cluster';
+    this.block = undefined;
+    this.cluster = undefined;
+    this.blockHidden = false;
+    this.clusterHidden = false;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
     this.reportData = [];
-    this.level = 'block';
-    this.skul = false;
-    this.dist = true;
-    this.blok = false;
-    this.clust = false;
 
     let a = {
       year: this.year,
@@ -319,15 +361,21 @@ export class HeatChartComponent implements OnInit {
       blockId: blockId
     }
 
-    var block = this.blockNames.find(a => a.block_id == blockId);
-    this.districtHierarchy = {
-      districtName: block.district_name,
-      distId: block.district_id,
-      blockName: block.block_name,
-      blockId: block.block_id
-    }
     this.service.PATHeatMapBlockData(a).subscribe(response => {
       this.genericFunction(response);
+      var block = this.blockNames.find(a => a.block_id == blockId);
+
+      this.blockHierarchy = {
+        districtName: block.district_name,
+        distId: block.district_id,
+        blockName: block.block_name,
+        blockId: block.block_id
+      }
+
+      this.skul = false;
+      this.dist = false;
+      this.blok = true;
+      this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       console.log(err);
@@ -337,7 +385,44 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
+    this.level = 'school';
+    document.getElementById('home').style.display = 'block';
+    this.commonService.errMsg();
+    this.reportData = [];
 
+    let a = {
+      year: this.year,
+      grade: this.grade,
+      subject_name: this.subject,
+      exam_date: this.examDate,
+      viewBy: this.viewBy == '' ? 'indicator' : this.viewBy,
+      districtId: this.district,
+      blockId: this.block,
+      clusterId: clusterId
+    }
+
+    this.service.PATHeatMapBlockData(a).subscribe(response => {
+      this.genericFunction(response);
+      var cluster = this.clusterNames.find(a => a.cluster_id == clusterId);
+      this.clusterHierarchy = {
+        districtName: cluster.district_name,
+        distId: cluster.district_id,
+        blockName: cluster.block_name,
+        blockId: cluster.block_id,
+        clusterId: cluster.cluster_id,
+        clusterName: cluster.cluster_name
+      }
+      this.skul = false;
+      this.dist = false;
+      this.blok = false;
+      this.clust = true;
+
+      this.commonService.loaderAndErr(this.reportData);
+    }, err => {
+      console.log(err);
+      this.reportData = [];
+      this.commonService.loaderAndErr(this.reportData);
+    })
   }
 
   genericFunction(response) {
@@ -356,7 +441,27 @@ export class HeatChartComponent implements OnInit {
     if (response['blockDetails']) {
       this.blockNames = response['blockDetails'];
     }
+    if (response['clusterDetails']) {
+      this.clusterNames = response['clusterDetails'];
+    }
     this.chartFun(xLabel, xLabelId, yLabel, zLabel, data, a.viewBy, this.level);
+  }
+
+  //level wise filter
+  levelWiseFilter() {
+    document.getElementById('home').style.display = 'block';
+    if (this.level == 'district') {
+      this.commonFunc()
+    }
+    if (this.level == 'block') {
+      this.selectedDistrict(this.district);
+    }
+    if (this.level == 'cluster') {
+      this.selectedBlock(this.block)
+    }
+    if (this.level == 'school') {
+      this.selectedCluster(this.cluster);
+    }
   }
 
   // to download the csv report

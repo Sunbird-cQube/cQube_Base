@@ -101,7 +101,7 @@
                 </option>
             </select>
 
-            <select [hidden]="" id="viewBy"
+            <select id="viewBy"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="viewBy" (change)="selectedViewBy()">
                 <option [value]="viewBy" disabled selected="selected">Choose View by</option>
@@ -110,7 +110,7 @@
                 </option>
             </select>
 
-            <select [hidden]="" id="district"
+            <select id="district"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="district" (change)="selectedDistrict(district)">
                 <option [value]="district" disabled selected="selected">Choose a District</option>
@@ -120,7 +120,7 @@
             </select>
 
 
-            <select [hidden]="" id="block"
+            <select [hidden]="blockHidden" id="block"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="block" (change)="selectedBlock(block)">
                 <option [value]="block" disabled selected="selected">Choose a Block</option>
@@ -128,7 +128,7 @@
                     {{block.block_name}}
                 </option>
             </select>
-            <select [hidden]="" id="cluster"
+            <select [hidden]="clusterHidden" id="cluster"
                 style="margin-right: 0px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="cluster" (change)="selectedCluster(cluster)">
                 <option [value]="cluster" disabled selected="selected">Choose a Cluster</option>
