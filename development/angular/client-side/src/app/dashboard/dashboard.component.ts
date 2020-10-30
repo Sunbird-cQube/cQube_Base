@@ -20,7 +20,9 @@ export class DashboardComponent implements OnInit {
   compositeViews;
   dscViews;
   dccViews;
+  utViews;
   dtrViews;
+  utcViews;
   crcrViews;
   srViews;
   patViews;
@@ -35,8 +37,8 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit() {
     document.getElementById('spinner').style.display = 'none';
-    document.getElementById('backBtn').style.display = "block";
-    document.getElementById('homeBtn').style.display = "None";
+    document.getElementById('homeBtn').style.display = 'none';
+    document.getElementById('backBtn').style.display = 'block';
     if (localStorage.getItem('roleName') == "admin") {
       this.hiddenPass = false;
     } else {
@@ -60,6 +62,9 @@ export class DashboardComponent implements OnInit {
 
   fetchTelemetry(event, report) {
     this.service.getTelemetryData(report, event.type);
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
+    this.service.homeControl();
   }
 
   getViews24hrs() {
@@ -90,7 +95,9 @@ export class DashboardComponent implements OnInit {
     this.compositeViews = "";
     this.dscViews = "";
     this.dccViews = "";
+    this.utViews = "";
     this.dtrViews = "";
+    this.utcViews = "";
     this.crcrViews = "";
     this.srViews = "";
     this.patViews = "";
@@ -124,8 +131,14 @@ export class DashboardComponent implements OnInit {
       if (element.reportid == 'dcc') {
         this.dccViews = element.number_of_views + " (" + timeStr + ")";
       }
+      if (element.reportid == 'ut') {
+        this.utViews = element.number_of_views + " (" + timeStr + ")";
+      }
       if (element.reportid == 'dtr') {
         this.dtrViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'utc') {
+        this.utcViews = element.number_of_views + " (" + timeStr + ")";
       }
       if (element.reportid == 'crcr') {
         this.crcrViews = element.number_of_views + " (" + timeStr + ")";
