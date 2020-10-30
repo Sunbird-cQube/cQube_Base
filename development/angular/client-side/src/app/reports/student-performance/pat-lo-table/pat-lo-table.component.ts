@@ -100,7 +100,7 @@ export class PATLOTableComponent implements OnInit {
     }
     this.myData = this.service.PATHeatMapAllData(a).subscribe(response => {
       console.log(response['tableData']);
-      this.createTable(response['tableData'], 'LOtable');
+      this.createTable(response['tableData']);
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       console.log(err);
@@ -109,8 +109,7 @@ export class PATLOTableComponent implements OnInit {
     })
   }
 
-
-  createTable(dataSet, tablename) {
+  createTable(dataSet) {
     var my_columns = [];
     $.each(dataSet[0], function (key, value) {
       var my_item = {};
@@ -118,62 +117,25 @@ export class PATLOTableComponent implements OnInit {
       my_item['value'] = value;
       my_columns.push(my_item);
     });
-    var sub_column = []
-    my_columns.forEach(val => {
-      if (typeof val.value == "object") {
-        $.each(val.value, function (key, value) {
-          var my_item = {};
-          my_item['data'] = key;
-          my_item['value'] = value;
-          sub_column.push(my_item);
-        });
-      }
-    })
-
-
-    var colspanlength = sub_column.length;
-
+    
     $(document).ready(function () {
       var headers = '<thead><tr>'
-      var subheader = '<tr>';
       var body = '<tbody>';
-
       my_columns.forEach((column, i) => {
-        if (column.data != 'ff_uuid') {
           var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
           });
-          headers += `<th ${(column.data != 'records_with_null_value') ? 'rowspan="2" style = "text-transform:capitalize;"' : `colspan= ${colspanlength}  style = 'text-transform:capitalize;'`}>${col}</th>`
-        }
-      });
-
-      sub_column.forEach((column, i) => {
-        var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
-          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-        subheader += `<th>${col}</th>`
+          headers += `<th>${col}</th>`
       });
 
       let newArr = [];
       $.each(dataSet, function (a, b) {
         let temp = [];
         $.each(b, function (key, value) {
-          if (key != "records_with_null_value") {
             var new_item = {};
             new_item['data'] = key;
             new_item['value'] = value;
             temp.push(new_item);
-          }
-          else {
-            if (typeof value == "object") {
-              $.each(value, function (key1, value1) {
-                var new_item = {};
-                new_item['data'] = key1;
-                new_item['value'] = value1;
-                temp.push(new_item);
-              })
-            }
-          }
         });
         newArr.push(temp)
       });
@@ -181,20 +143,17 @@ export class PATLOTableComponent implements OnInit {
       newArr.forEach((columns) => {
         body += '<tr>';
         columns.forEach((column) => {
-          if (column.data != 'ff_uuid') {
             body += `<td>${column.value}</td>`
-          }
         });
         body += '</tr>';
       });
 
-      subheader += '</tr>'
-      headers += `</tr>${subheader}</thead>`
-      body += '</tr></tbody>';
-      $(`#${tablename}`).empty();
-      $(`#${tablename}`).append(headers);
-      $(`#${tablename}`).append(body);
-      $(`#${tablename}`).DataTable({
+      headers += `</tr></thead>`
+      body += '</tbody>';
+      $(`#LOtable`).empty();
+      $(`#LOtable`).append(headers);
+      $(`#LOtable`).append(body);
+      $(`#LOtable`).DataTable({
         destroy: true, bLengthChange: false, bInfo: false,
         bPaginate: false, scrollY: "58vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: false,

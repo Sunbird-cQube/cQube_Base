@@ -7,7 +7,7 @@ const helper = require('./helper');
 router.post('/blockWise', async (req, res) => {
     try {
         logger.info('---PAT heat map district wise api ---');
-        let { year, grade, subject, examDate, districtId,viewBy } = req.body        
+        let { year, grade, subject_name, exam_date, districtId,viewBy } = req.body        
         let fileName = `pat/heatChart/${year}/districts/${districtId}.json`        
         var data = await s3File.readS3File(fileName);
         
@@ -38,14 +38,14 @@ router.post('/blockWise', async (req, res) => {
                 return val.grade == grade
             })
         }
-        if (subject) {
+        if (subject_name) {
             data = data.filter(val => {
-                return val.subject == subject
+                return val.subject_name == subject_name
             })
         }
-        if (examDate) {
+        if (exam_date) {
             data = data.filter(val => {
-                return val.examDate == examDate
+                return val.exam_date == exam_date
             })
         }
         // res.send(data)

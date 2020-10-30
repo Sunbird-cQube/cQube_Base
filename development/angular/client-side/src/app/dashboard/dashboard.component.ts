@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
   sarViews;
   tarViews;
   telemDataViews;
+  heatChartViews;
 
   constructor(private router: Router, private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
     service.logoutOnTokenExpire();
@@ -106,6 +107,7 @@ export class DashboardComponent implements OnInit {
     this.sarViews = "";
     this.tarViews = "";
     this.telemDataViews = "";
+    this.heatChartViews = "";
 
 
     var myStr = this.removeUnderscore(views[0].time_range);
@@ -164,6 +166,10 @@ export class DashboardComponent implements OnInit {
       if (element.reportid == 'telemData') {
         this.telemDataViews = element.number_of_views + " (" + timeStr + ")";
       }
+      if (element.reportid == 'heatChart') {
+        this.heatChartViews = element.number_of_views + " (" + timeStr + ")";
+      }
+
     });
   }
 

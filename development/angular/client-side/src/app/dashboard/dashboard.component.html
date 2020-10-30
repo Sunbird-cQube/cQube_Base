@@ -651,8 +651,8 @@
             <div class="diksha"></div>
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(236, 235, 126);" id="telemData"
-                        [routerLink]="['/student-performance/heat-chart']" (click)="fetchTelemetry($event,'telemData')">
+                    <div class="card card-stats" style="background-color: rgb(236, 235, 126);" id="heatChart"
+                        [routerLink]="['/student-performance/heat-chart']" (click)="fetchTelemetry($event,'heatChart')">
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col-3 col-md-2">
@@ -671,8 +671,8 @@
                             </div>
                             <div class="row">
                                 <div class="views">
-                                    <p *ngIf="telemDataViews;else other_content" id="views">views:
-                                        {{telemDataViews}}</p>
+                                    <p *ngIf="heatChartViews;else other_content" id="views">views:
+                                        {{heatChartViews}}</p>
                                     <ng-template #other_content>
                                         <p id="errViews">views: 0 {{timePeriod}}</p>
                                     </ng-template>

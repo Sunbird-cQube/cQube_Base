@@ -6,8 +6,7 @@ const helper = require('./helper');
 
 router.post('/distWise', async (req, res) => {
     try {
-        logger.info('---PAT heat map allData api ---');
-
+        logger.info('---PAT heat map distwise api ---');
         let { year, grade, subject_name, exam_date, viewBy } = req.body
         let fileName = `pat/heatChart/${year}/allData.json`
         var data = await s3File.readS3File(fileName);
@@ -634,8 +633,8 @@ router.post('/distWise', async (req, res) => {
         data = data.sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1)
         let result = await helper.generalFun(data, 0, viewBy)
 
-        logger.info('--- PAT heat map allData response sent ---');
-
+        logger.info('--- PAT heat map distwise response sent ---');
+        
         res.status(200).send({ districtDetails, result, downloadData: data, tableData });
     } catch (e) {
         logger.error(`Error :: ${e}`)

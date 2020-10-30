@@ -39,9 +39,7 @@
                         {{clusterHierarchy.districtName}}</span><span>/ </span><span
                         (click)="selectedBlock(clusterHierarchy.blockId)"
                         style="cursor: pointer;text-decoration: underline;">
-                        {{clusterHierarchy.blockName}}</span><span>/ </span><span
-                        (click)="selectedCluster(clusterHierarchy.clusterId)"
-                        style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.blockName}}</span><span>/ </span><span>
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
@@ -69,8 +67,8 @@
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="year" (change)="selectedYear()">
                 <option [value]="year" disabled selected="selected">Choose a Year</option>
-                <option *ngFor="let year of years let i =index" [(ngValue)]="year.year">
-                    {{year.year}}
+                <option *ngFor="let year of years let i =index" [(ngValue)]="years[i]">
+                    {{years[i]}}
                 </option>
             </select>
 
@@ -79,16 +77,22 @@
                 [(ngModel)]="grade" (change)="selectedGrade()">
                 <option [value]="grade" disabled selected="selected">Choose a Grade</option>
                 <option *ngFor="let grade of grades, let i =index" [(ngValue)]="grade.grade">
-                    grade {{grade.grade}}
+                    <span *ngIf="grade.grade == 'all'; else other_content">
+                        All Grades
+                    </span>
+                    <ng-template #other_content> Grade {{grade.grade}}</ng-template>
                 </option>
             </select>
 
             <select [hidden]="" id="subject"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="subject" (change)="selectedSubject()">
-                <option [value]="subject" disabled selected="selected">Choose a Subject</option>
+                <option  [value]="subject" disabled selected="selected">Choose a Subject</option>
                 <option *ngFor="let subject of subjects, let i =index" [(ngValue)]="subject.subject">
-                    {{subject.subject}}
+                    <span *ngIf="subject.subject == 'all'; else other_content">
+                        All Subjects
+                    </span>
+                    <ng-template #other_content> {{subject.subject}}</ng-template>
                 </option>
             </select>
 
@@ -96,12 +100,15 @@
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="examDate" (change)="selectedExamDate()">
                 <option [value]="examDate" disabled selected="selected">Choose an Examdate</option>
-                <option *ngFor="let examDate of examDates, let i =index" [(ngValue)]="examDate.date">
-                    {{examDate.date}}
+                <option *ngFor="let examDate of examDates, let i =index" [(ngValue)]="examDate.exam_date">
+                    <span *ngIf="examDate.exam_date == 'all'; else other_content">
+                        All Dates
+                    </span>
+                    <ng-template #other_content> {{examDate.exam_date}}</ng-template>
                 </option>
             </select>
 
-            <select [hidden]="" id="viewBy"
+            <select id="viewBy"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="viewBy" (change)="selectedViewBy()">
                 <option [value]="viewBy" disabled selected="selected">Choose View by</option>
@@ -110,7 +117,7 @@
                 </option>
             </select>
 
-            <select [hidden]="" id="district"
+            <select id="district"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="district" (change)="selectedDistrict(district)">
                 <option [value]="district" disabled selected="selected">Choose a District</option>
@@ -120,7 +127,7 @@
             </select>
 
 
-            <select [hidden]="" id="block"
+            <select [hidden]="blockHidden" id="block"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="block" (change)="selectedBlock(block)">
                 <option [value]="block" disabled selected="selected">Choose a Block</option>
@@ -128,7 +135,7 @@
                     {{block.block_name}}
                 </option>
             </select>
-            <select [hidden]="" id="cluster"
+            <select [hidden]="clusterHidden" id="cluster"
                 style="margin-right: 0px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="cluster" (change)="selectedCluster(cluster)">
                 <option [value]="cluster" disabled selected="selected">Choose a Cluster</option>
