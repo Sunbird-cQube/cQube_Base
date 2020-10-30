@@ -31,14 +31,16 @@ export class DashboardComponent implements OnInit {
   sarViews;
   tarViews;
   telemDataViews;
+  heatChartViews;
+  lotableViews;
 
   constructor(private router: Router, private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
     service.logoutOnTokenExpire();
   }
   ngOnInit() {
     document.getElementById('spinner').style.display = 'none';
-    document.getElementById('backBtn').style.display = "block";
-    document.getElementById('homeBtn').style.display = "None";
+    document.getElementById('homeBtn').style.display = 'none';
+    document.getElementById('backBtn').style.display = 'block';
     if (localStorage.getItem('roleName') == "admin") {
       this.hiddenPass = false;
     } else {
@@ -62,6 +64,9 @@ export class DashboardComponent implements OnInit {
 
   fetchTelemetry(event, report) {
     this.service.getTelemetryData(report, event.type);
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
+    this.service.homeControl();
   }
 
   getViews24hrs() {
@@ -103,6 +108,8 @@ export class DashboardComponent implements OnInit {
     this.sarViews = "";
     this.tarViews = "";
     this.telemDataViews = "";
+    this.heatChartViews = "";
+    this.lotableViews = "";
 
 
     var myStr = this.removeUnderscore(views[0].time_range);
@@ -161,6 +168,13 @@ export class DashboardComponent implements OnInit {
       if (element.reportid == 'telemData') {
         this.telemDataViews = element.number_of_views + " (" + timeStr + ")";
       }
+      if (element.reportid == 'heatChart') {
+        this.lotableViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'lotable') {
+        this.lotableViews = element.number_of_views + " (" + timeStr + ")";
+      }
+
     });
   }
 

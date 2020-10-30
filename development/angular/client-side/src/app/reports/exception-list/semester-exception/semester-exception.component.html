@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
         <div class="col-sm-9">
             <div *ngIf='skul'>
@@ -64,7 +64,8 @@
     <div class="row">
         <div class="col-sm-12">
             <p style="text-align: justify; font-size: 11px;">
-                <strong> About the dashboard:</strong> This dashboard provides information about those schools whose data is missing from
+                <strong> About the dashboard:</strong> This dashboard provides information about those schools whose
+                data is missing from
                 the Semester Exam results. The data has been collated at various administrative levels (i.e. District,
                 Block, Cluster and School) and this dashboard allows you to view and download the data at these various
                 administrative levels.
@@ -72,20 +73,28 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-12">
             <button class="btn btn-secondary" id="block"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; margin: 2px 10px 0px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="blockWise()">&nbsp;<strong style="font-family: Arial;">Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; margin: 2px 10px 0px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="clusterWise()">&nbsp;<strong style="font-family: Arial;">Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; margin: 2px 15px 0px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
-        </div>
-        <div class="col-sm-6" style="font-family: Arial;">
+            <span style="font-size: 12px;">Select Semester ➝</span>
+            <select id="choose_semester"
+                style=" padding: 3px;margin:0px 25px 4px 10px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="semester" (change)="semSelect()">
+                <option [value]="semester" disabled selected="selected">Choose semester</option>
+                <option *ngFor="let sem of semesters" [(ngValue)]="sem.id">
+                    {{sem.name}}
+                </option>
+            </select>
+       
             <select id="choose_dist"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin: 0px 10px 10px 0px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.district_id"
@@ -115,16 +124,6 @@
                 </option>
             </select>
 
-        </div>
-        <div class="col-sm-3">
-            <span style="font-size: 12px;margin-left: 27%;">Select Semester ➝</span> <select id="choose_semester"
-                style="float: right; padding: 3px;margin-left: 2%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="semester" (change)="semSelect()">
-                <option [value]="semester" disabled selected="selected">Choose semester</option>
-                <option *ngFor="let sem of semesters" [(ngValue)]="sem.id">
-                    {{sem.name}}
-                </option>
-            </select>
         </div>
 
     </div>

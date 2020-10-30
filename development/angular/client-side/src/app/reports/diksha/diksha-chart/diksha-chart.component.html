@@ -1,4 +1,4 @@
-<div class="container-fluid" style="font-family: Arial; width: 100%;">
+<div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
         <div class="col-sm-7">
             <div *ngIf='all'>
@@ -45,36 +45,32 @@
         </div>
     </div>
 
-    <div class="col-sm-12">
-        <div class="row" style="margin-top: 5px;">
-            <div class="col-sm-2">
-                <select id="choose_dist"
-                    style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                    [(ngModel)]="districtId" (change)="districtWise(districtId)">
-                    <option [value]="districtId" disabled selected="selected">Choose a District</option>
-                    <option *ngFor="let dist of districtsDetails" [(ngValue)]="dist.district_id"
-                        style="font-family: Arial; font-size: 11px;">
-                        {{dist.district_name}}
-                    </option>
-                </select>
-            </div>
-            <div class="col-sm-2">
-                <select id="time_range"
-                    style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                    [(ngModel)]="timePeriod" name="timePeriod" (change)="timeRange(timePeriod)">
-                    <option [value]="timePeriod" disabled selected="selected">Choose Time Range
-                    </option>
-                    <option *ngFor="let time of timeDetails" [(ngValue)]="time.timeRange"
-                        style="font-family: Arial; font-size: 11px;">
-                        {{time.name}}
-                    </option>
-                </select>
-            </div>
-            <div class="col-sm-5"></div>
-            <div class="col-sm-3">
-                <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total Content Usage:</strong>
-                    {{footer}}</span>
-            </div>
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-sm-9">
+            <select id="choose_dist"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="districtId" (change)="districtWise(districtId)">
+                <option [value]="districtId" disabled selected="selected">Choose a District</option>
+                <option *ngFor="let dist of districtsDetails" [(ngValue)]="dist.district_id"
+                    style="font-family: Arial; font-size: 11px;">
+                    {{dist.district_name}}
+                </option>
+            </select>
+
+            <select id="time_range"
+                style="padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="timePeriod" name="timePeriod" (change)="timeRange(timePeriod)">
+                <option [value]="timePeriod" disabled selected="selected">Choose Time Range
+                </option>
+                <option *ngFor="let time of timeDetails" [(ngValue)]="time.timeRange"
+                    style="font-family: Arial; font-size: 11px;">
+                    {{time.name}}
+                </option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total Content Usage:</strong>
+                {{footer}}</span>
         </div>
     </div>
 
@@ -134,9 +130,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
 
-    </div>
 </div>
 <div id="spinner">
     <div class="loading">Loading&#8230;</div>
