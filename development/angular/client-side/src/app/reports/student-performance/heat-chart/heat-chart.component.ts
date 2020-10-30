@@ -33,11 +33,12 @@ export class HeatChartComponent implements OnInit {
   subjects = [];
   examDates = [];
   allViews = [];
-  public year = 2020;
-  public grade = '';
-  public subject = '';
-  public examDate = '';
-  public viewBy = ''
+
+  public year = '2020';
+  public grade = 'all';
+  public subject = 'all';
+  public examDate = 'all';
+  public viewBy = 'indicator';
 
   //to set hierarchy level
   skul = true;
@@ -67,12 +68,15 @@ export class HeatChartComponent implements OnInit {
     public router: Router
   ) {
     service.PATHeatMapMetaData().subscribe(res => {
-      this.metaData = res['data'];
-      this.years = this.metaData['years'];
-      this.grades = this.metaData['grades'];
-      this.subjects = this.metaData['subjects'];
-      this.examDates = this.metaData['examDate'];
-      this.allViews = this.metaData['viewBy'];
+      this.metaData = res['data'][0];
+      this.years.push(this.metaData['year']);
+      this.grades = this.metaData.data['grades'];
+      this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
+      this.subjects = this.metaData.data['subjects'];
+      this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
+      this.examDates = this.metaData.data['examDate'];
+      this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
+      this.allViews = this.metaData.data['viewBy'];
     })
   }
 
@@ -105,10 +109,10 @@ export class HeatChartComponent implements OnInit {
     this.reportData = [];
     let a = {
       year: this.year,
-      grade: this.grade,
-      subject_name: this.subject,
-      exam_date: this.examDate,
-      viewBy: this.viewBy == '' ? 'indicator' : this.viewBy
+      grade: this.grade == 'all' ? '' : this.grade,
+      subject_name: this.subject == 'all' ? '' : this.subject,
+      exam_date: this.examDate == 'all' ? '' : this.examDate,
+      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
     }
 
     if (this.myData) {
@@ -306,6 +310,7 @@ export class HeatChartComponent implements OnInit {
   selectedDistrict(districtId) {
     this.level = 'block';
     this.block = undefined;
+    this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = true;
     document.getElementById('home').style.display = 'block';
@@ -314,10 +319,10 @@ export class HeatChartComponent implements OnInit {
 
     let a = {
       year: this.year,
-      grade: this.grade,
-      subject_name: this.subject,
-      exam_date: this.examDate,
-      viewBy: this.viewBy == '' ? 'indicator' : this.viewBy,
+      grade: this.grade == 'all' ? '' : this.grade,
+      subject_name: this.subject == 'all' ? '' : this.subject,
+      exam_date: this.examDate == 'all' ? '' : this.examDate,
+      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
       districtId: districtId
     }
 
@@ -343,7 +348,6 @@ export class HeatChartComponent implements OnInit {
 
   selectedBlock(blockId) {
     this.level = 'cluster';
-    this.block = undefined;
     this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -353,10 +357,10 @@ export class HeatChartComponent implements OnInit {
 
     let a = {
       year: this.year,
-      grade: this.grade,
-      subject_name: this.subject,
-      exam_date: this.examDate,
-      viewBy: this.viewBy == '' ? 'indicator' : this.viewBy,
+      grade: this.grade == 'all' ? '' : this.grade,
+      subject_name: this.subject == 'all' ? '' : this.subject,
+      exam_date: this.examDate == 'all' ? '' : this.examDate,
+      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
       districtId: this.district,
       blockId: blockId
     }
@@ -392,10 +396,10 @@ export class HeatChartComponent implements OnInit {
 
     let a = {
       year: this.year,
-      grade: this.grade,
-      subject_name: this.subject,
-      exam_date: this.examDate,
-      viewBy: this.viewBy == '' ? 'indicator' : this.viewBy,
+      grade: this.grade == 'all' ? '' : this.grade,
+      subject_name: this.subject == 'all' ? '' : this.subject,
+      exam_date: this.examDate == 'all' ? '' : this.examDate,
+      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
       districtId: this.district,
       blockId: this.block,
       clusterId: clusterId
@@ -427,7 +431,7 @@ export class HeatChartComponent implements OnInit {
 
   genericFunction(response) {
     let a = {
-      viewBy: this.viewBy == '' ? 'indicator' : this.viewBy
+      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
     }
     let yLabel = response['result']['yLabel']
     let xLabel = response['result']['xLabel']
@@ -437,12 +441,15 @@ export class HeatChartComponent implements OnInit {
     this.reportData = response['downloadData']
     if (response['districtDetails']) {
       this.districtNames = response['districtDetails'];
+      this.districtNames = this.districtNames.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
     }
     if (response['blockDetails']) {
       this.blockNames = response['blockDetails'];
+      this.blockNames = this.blockNames.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }
     if (response['clusterDetails']) {
       this.clusterNames = response['clusterDetails'];
+      this.clusterNames = this.clusterNames.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }
     this.chartFun(xLabel, xLabelId, yLabel, zLabel, data, a.viewBy, this.level);
   }
