@@ -40,7 +40,7 @@ const generalFun = (data, level, viewBy) => {
                     let label = item.exam_date + "/"
                         + "grade" + item.grade + "/"
                         + item.subject_name + "/"
-                    label += viewBy == "indicator" ? item.indicator : item.indicator_id
+                    label += viewBy == "indicator" ? item.indicator : item.question_id
 
                     arr[label] = arr.hasOwnProperty(label) ? [...arr[label], ...[item]] : [item];
 
@@ -51,9 +51,9 @@ const generalFun = (data, level, viewBy) => {
                         + item.total_schools.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") + "/"
                         + item.total_students.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") + "/"
 
-                    label1 += viewBy == "indicator" ? item.indicator : item.indicator_id
+                    label1 += viewBy == "indicator" ? item.indicator : item.question_id
 
-                    arr1[label1] = arr1.hasOwnProperty(label1) ? [...arr[label1], ...[item]] : [item];
+                    arr1[label1] = arr1.hasOwnProperty(label1) ? [...arr1[label1], ...[item]] : [item];
 
                 })).then(() => {
                 })

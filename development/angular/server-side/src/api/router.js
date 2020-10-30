@@ -77,6 +77,12 @@ const heatClusterWise = require('./controller/patRoutes/heatChart/clusterWise');
 const heatSchoolWise = require('./controller/patRoutes/heatChart/schoolWise');
 const heatMetaData = require('./controller/patRoutes/heatChart/metaData');
 
+// Pat LO table
+const loTableDistWise = require('./controller/patRoutes/patLoTable/distWise');
+const loTableBlockWise = require('./controller/patRoutes/patLoTable/blockWise');
+const loTableClusterWise = require('./controller/patRoutes/patLoTable/clusterWise');
+const loTableSchoolWise = require('./controller/patRoutes/patLoTable/schoolWise');
+
 // sem routes
 router.use('/sem', semDistrictWise);
 router.use('/sem', semBlockWise);
@@ -154,5 +160,11 @@ router.use('/pat/heatChart', heatBlockWise);
 router.use('/pat/heatChart', heatClusterWise);
 router.use('/pat/heatChart', heatSchoolWise);
 router.use('/pat/heatChart', heatMetaData);
+
+//Pat LO table
+router.use('/pat/lotable', loTableDistWise);
+router.use('/pat/lotable', loTableBlockWise);
+router.use('/pat/lotable', loTableClusterWise);
+router.use('/pat/lotable', loTableSchoolWise);
 
 module.exports = router;

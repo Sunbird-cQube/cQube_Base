@@ -4,13 +4,13 @@
             <div *ngIf='skul'>
                 <p id="dist"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Assessment Test report for: <span (click)="resetToInitPage()"
+                    Periodic Assessment Test LO report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Assessment Test report for: <span (click)="resetToInitPage()"
+                    Periodic Assessment Test LO report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="selectedDistrict(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -19,7 +19,7 @@
             <div *ngIf="blok">
                 <p id="cluster"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Assessment Test report for: <span (click)="resetToInitPage()"
+                    Periodic Assessment Test LO report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="selectedDistrict(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -32,7 +32,7 @@
             <div *ngIf="clust">
                 <p id="school"
                     style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
-                    Periodic Assessment Test report for: <span (click)="resetToInitPage()"
+                    Periodic Assessment Test LO report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="selectedDistrict(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -69,8 +69,8 @@
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="year" (change)="selectedYear()">
                 <option [value]="year" disabled selected="selected">Choose a Year</option>
-                <option *ngFor="let year of years let i =index" [(ngValue)]="year.year">
-                    {{year.year}}
+                <option *ngFor="let year of years let i =index" [(ngValue)]="years[i]">
+                    {{years[i]}}
                 </option>
             </select>
 
@@ -79,7 +79,10 @@
                 [(ngModel)]="grade" (change)="selectedGrade()">
                 <option [value]="grade" disabled selected="selected">Choose a Grade</option>
                 <option *ngFor="let grade of grades, let i =index" [(ngValue)]="grade.grade">
-                    grade {{grade.grade}}
+                    <span *ngIf="grade.grade == 'all'; else other_content">
+                        All Grades
+                    </span>
+                    <ng-template #other_content> Grade {{grade.grade}}</ng-template>
                 </option>
             </select>
 
@@ -88,7 +91,10 @@
                 [(ngModel)]="subject" (change)="selectedSubject()">
                 <option [value]="subject" disabled selected="selected">Choose a Subject</option>
                 <option *ngFor="let subject of subjects, let i =index" [(ngValue)]="subject.subject">
-                    {{subject.subject}}
+                    <span *ngIf="subject.subject == 'all'; else other_content">
+                        All Subjects
+                    </span>
+                    <ng-template #other_content> {{subject.subject}}</ng-template>
                 </option>
             </select>
 
@@ -96,12 +102,15 @@
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="examDate" (change)="selectedExamDate()">
                 <option [value]="examDate" disabled selected="selected">Choose an Examdate</option>
-                <option *ngFor="let examDate of examDates, let i =index" [(ngValue)]="examDate.date">
-                    {{examDate.date}}
+                <option *ngFor="let examDate of examDates, let i =index" [(ngValue)]="examDate.exam_date">
+                    <span *ngIf="examDate.exam_date == 'all'; else other_content">
+                        All Dates
+                    </span>
+                    <ng-template #other_content> {{examDate.exam_date}}</ng-template>
                 </option>
             </select>
 
-            <select [hidden]="" id="viewBy"
+            <select id="viewBy"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="viewBy" (change)="selectedViewBy()">
                 <option [value]="viewBy" disabled selected="selected">Choose View by</option>
@@ -110,7 +119,7 @@
                 </option>
             </select>
 
-            <select [hidden]="" id="district"
+            <select id="district"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="district" (change)="selectedDistrict(district)">
                 <option [value]="district" disabled selected="selected">Choose a District</option>
@@ -120,7 +129,7 @@
             </select>
 
 
-            <select [hidden]="" id="block"
+            <select [hidden]="blockHidden" id="block"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="block" (change)="selectedBlock(block)">
                 <option [value]="block" disabled selected="selected">Choose a Block</option>
@@ -128,7 +137,7 @@
                     {{block.block_name}}
                 </option>
             </select>
-            <select [hidden]="" id="cluster"
+            <select [hidden]="clusterHidden" id="cluster"
                 style="margin-right: 0px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="cluster" (change)="selectedCluster(cluster)">
                 <option [value]="cluster" disabled selected="selected">Choose a Cluster</option>
@@ -141,7 +150,7 @@
     <div class="row">
         <div class="col-sm-12" style="margin-top: 2%;">
             <table #dataTable id="LOtable" class="display responsive cell-border"
-                style="font-size: 11px; text-align: center; width: 100%; border: 1px solid gray;">
+                style="font-size: 13px; text-align: center; width: 100%; border: 1px solid gray;">
             </table>
         </div>
     </div>

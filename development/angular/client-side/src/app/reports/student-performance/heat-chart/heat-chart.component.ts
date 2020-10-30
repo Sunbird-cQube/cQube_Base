@@ -55,7 +55,7 @@ export class HeatChartComponent implements OnInit {
   data;
 
   // to download the excel report
-  public fileName: any = `State_wise_report_${this.year}`
+  public fileName: any = `District_wise_report_${this.year}`
   public reportData: any = [];
 
   public metaData: any;
@@ -91,9 +91,10 @@ export class HeatChartComponent implements OnInit {
     this.dist = false;
     this.blok = false;
     this.clust = false;
-    this.grade = undefined;
-    this.examDate = undefined;
-    this.subject = undefined;
+    this.grade = 'all';
+    this.examDate = 'all';
+    this.subject = 'all';
+    this.viewBy = 'indicator';
     this.district = undefined;
     this.block = undefined;
     this.cluster = undefined;
@@ -172,7 +173,7 @@ export class HeatChartComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: yLabel.length > 1 ? (yLabel.length / 2) : yLabel.length - 1,
+        max: yLabel.length > 1 ? (yLabel.length / 10) : yLabel.length - 1,
         scrollbar: {
           enabled: true
         }
@@ -184,6 +185,7 @@ export class HeatChartComponent implements OnInit {
       },
       // reflow: false,
       series: [{
+        turboThreshold: zLabel.length + 1000,
         borderWidth: 2,
         data: data,
         dataLabels: {
@@ -278,13 +280,7 @@ export class HeatChartComponent implements OnInit {
   selectedYear() {
     this.fileName = "Year_wise_report";
     document.getElementById('home').style.display = 'none';
-    if (this.level == 'district') {
-      this.commonFunc()
-    }
-    if (this.level == 'block') {
-      this.selectedDistrict(this.district);
-    }
-
+    this.levelWiseFilter();
   }
 
   selectedGrade() {
@@ -308,6 +304,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedDistrict(districtId) {
+    this.fileName = "Block_wise_report";
     this.level = 'block';
     this.block = undefined;
     this.cluster = undefined;
@@ -347,6 +344,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
+    this.fileName = "Cluster_wise_report";
     this.level = 'cluster';
     this.cluster = undefined;
     this.blockHidden = false;
@@ -389,6 +387,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
+    this.fileName = "School_wise_report";
     this.level = 'school';
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
