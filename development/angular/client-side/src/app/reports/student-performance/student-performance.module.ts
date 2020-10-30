@@ -6,6 +6,7 @@ import { PATReportComponent } from './pat-report/pat-report.component';
 import { SemViewComponent } from './sem-view/sem-view.component';
 import { FormsModule } from '@angular/forms';
 import { HeatChartComponent } from './heat-chart/heat-chart.component';
+import { PATLOTableComponent } from './pat-lo-table/pat-lo-table.component';
 
 const performRoute: Routes = [
   {
@@ -18,6 +19,9 @@ const performRoute: Routes = [
       },
       {
         path: 'heat-chart', component: HeatChartComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'PAT-LO-table', component: PATLOTableComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
@@ -27,7 +31,8 @@ const performRoute: Routes = [
   declarations: [
     SemViewComponent,
     PATReportComponent,
-    HeatChartComponent
+    HeatChartComponent,
+    PATLOTableComponent
   ],
   imports: [
     CommonModule,

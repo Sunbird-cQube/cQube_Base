@@ -4,9 +4,9 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const helper = require('./helper');
 
-router.post('/clusterWise', async (req, res) => {
+router.post('/clusterWise',auth.authController, async (req, res) => {
     try {
-        logger.info('---PAT heat map block wise api ---');
+        logger.info('---PAT heat map cluster wise api ---');
         let { year, grade, subject_name, exam_date, districtId, blockId, viewBy } = req.body
         let fileName = `pat/heatChart/${year}/blocks/${blockId}.json`
         var data = await s3File.readS3File(fileName);
@@ -56,7 +56,7 @@ router.post('/clusterWise', async (req, res) => {
         data = data.sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1)
         let result = await helper.generalFun(data, 2, viewBy)
 
-        logger.info('--- PAT heat map block wise response sent ---');
+        logger.info('--- PAT heat map cluster wise response sent ---');
         res.status(200).send({ clusterDetails, result, downloadData: data });
     } catch (e) {
         logger.error(`Error :: ${e}`)

@@ -134,7 +134,10 @@
                 Test</span></a>
             <a mat-list-item [routerLink]="['/student-performance/heat-chart']" id="heatChart"
               (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'heatChart')"
-              (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">Heat Chart</span></a>
+              (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">PAT Heat Chart</span></a>
+            <a mat-list-item [routerLink]="['/student-performance/PAT-LO-table']" id="lotable"
+              (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'lotable')"
+              (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">PAT LO Table</span></a>
           </div>
         </mat-nav-list>
 

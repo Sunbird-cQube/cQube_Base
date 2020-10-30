@@ -39,7 +39,9 @@
                         {{clusterHierarchy.districtName}}</span><span>/ </span><span
                         (click)="selectedBlock(clusterHierarchy.blockId)"
                         style="cursor: pointer;text-decoration: underline;">
-                        {{clusterHierarchy.blockName}}</span><span>/ </span><span>
+                        {{clusterHierarchy.blockName}}</span><span>/ </span><span
+                        (click)="selectedCluster(clusterHierarchy.clusterId)"
+                        style="cursor: pointer;text-decoration: underline;">
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
@@ -87,7 +89,7 @@
             <select [hidden]="" id="subject"
                 style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="subject" (change)="selectedSubject()">
-                <option  [value]="subject" disabled selected="selected">Choose a Subject</option>
+                <option [value]="subject" disabled selected="selected">Choose a Subject</option>
                 <option *ngFor="let subject of subjects, let i =index" [(ngValue)]="subject.subject">
                     <span *ngIf="subject.subject == 'all'; else other_content">
                         All Subjects
@@ -146,9 +148,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12" id="container"></div>
+        <div class="col-sm-12" style="margin-top: 2%;">
+            <table #dataTable id="LOtable" class="display responsive cell-border"
+                style="font-size: 13px; text-align: center; width: 100%; border: 1px solid gray;">
+            </table>
+        </div>
     </div>
 </div>
+
 <div id="spinner">
     <div id="loader" class="loading">Loading&#8230;</div>
 </div>

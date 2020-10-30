@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
   tarViews;
   telemDataViews;
   heatChartViews;
+  lotableViews;
 
   constructor(private router: Router, private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
     service.logoutOnTokenExpire();
@@ -108,6 +109,7 @@ export class DashboardComponent implements OnInit {
     this.tarViews = "";
     this.telemDataViews = "";
     this.heatChartViews = "";
+    this.lotableViews = "";
 
 
     var myStr = this.removeUnderscore(views[0].time_range);
@@ -167,7 +169,10 @@ export class DashboardComponent implements OnInit {
         this.telemDataViews = element.number_of_views + " (" + timeStr + ")";
       }
       if (element.reportid == 'heatChart') {
-        this.heatChartViews = element.number_of_views + " (" + timeStr + ")";
+        this.lotableViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'lotable') {
+        this.lotableViews = element.number_of_views + " (" + timeStr + ")";
       }
 
     });

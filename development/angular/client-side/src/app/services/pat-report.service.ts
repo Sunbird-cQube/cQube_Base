@@ -78,5 +78,23 @@ export class PatReportService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/pat/heatChart/schoolWise`, data);
   }
+
+  patLOTableDistData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/lotable/distWise`, data);
+  }
+  patLOTableBlockData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/lotable/blockWise`, data);
+  }
+
+  patLOTableClusterData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/lotable/clusterWise`, data);
+  }
+  patLOTableSchoolData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/lotable/schoolWise`, data);
+  }
 }
 
