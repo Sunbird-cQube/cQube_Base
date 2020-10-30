@@ -74,4 +74,9 @@ export class PatReportService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/pat/heatChart/clusterWise`, data);
   }
+  PATHeatMapClusterData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/heatChart/schoolWise`, data);
+  }
 }
+

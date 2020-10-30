@@ -405,7 +405,7 @@ export class HeatChartComponent implements OnInit {
       clusterId: clusterId
     }
 
-    this.service.PATHeatMapBlockData(a).subscribe(response => {
+    this.service.PATHeatMapClusterData(a).subscribe(response => {
       this.genericFunction(response);
       var cluster = this.clusterNames.find(a => a.cluster_id == clusterId);
       this.clusterHierarchy = {

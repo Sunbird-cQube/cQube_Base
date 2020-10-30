@@ -56,7 +56,7 @@ router.post('/schoolWise', async (req, res) => {
         }
 
         data = data.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1)
-        let result = await helper.generalFun(data, 2, viewBy)
+        let result = await helper.generalFun(data, 3, viewBy)
 
         logger.info('--- PAT heat map block wise response sent ---');
         res.status(200).send({ schoolDetails, result, downloadData: data });
