@@ -14,7 +14,6 @@ declare const $;
   styleUrls: ['./pat-lo-table.component.css']
 })
 export class PATLOTableComponent implements OnInit {
-  name: string;
   level = '';
 
   // For filter implementation
@@ -95,6 +94,10 @@ export class PATLOTableComponent implements OnInit {
     this.subject = 'all';
     this.viewBy = 'indicator';
     this.district = undefined;
+    this.block = undefined;
+    this.cluster = undefined;
+    this.blockHidden = true;
+    this.clusterHidden = true;
     document.getElementById('home').style.display = 'none';
     this.commonFunc();
   }
