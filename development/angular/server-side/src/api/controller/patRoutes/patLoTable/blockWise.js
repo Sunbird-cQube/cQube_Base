@@ -81,16 +81,23 @@ router.post('/blockWise',auth.authController, async (req, res) => {
                 val.push(x);
             }
 
+            var tableData = [];
             // filling the missing key - value to make the object contains same data set
-            let obj = val.reduce((res1, item) => ({ ...res1, ...item }));
-            let keys1 = Object.keys(obj);
-            let def = keys1.reduce((result1, key) => {
-                result1[key] = ''
-                return result1;
-            }, {});
-            let tableData = val.map((item) => ({ ...def, ...item }));
-            logger.info('--- PAT LO table blockWise response sent ---');
+            if (val.length > 0) {
+                let obj = val.reduce((res1, item) => ({ ...res1, ...item }));
+                let keys1 = Object.keys(obj);
+                let def = keys1.reduce((result1, key) => {
+                    result1[key] = ''
+                    return result1;
+                }, {});
+                tableData = val.map((item) => ({ ...def, ...item }));
+                logger.info('--- PAT LO table blockWise response sent ---');
             res.status(200).send({ blockDetails, tableData });
+            } else {
+                logger.info('--- PAT LO table schoolWise response sent ---');
+                res.status(500).send({ errMsg: "No record found" });
+            }
+            
         })
     } catch (e) {
         logger.error(`Error :: ${e}`)
