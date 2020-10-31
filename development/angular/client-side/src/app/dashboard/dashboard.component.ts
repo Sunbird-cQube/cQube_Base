@@ -169,7 +169,7 @@ export class DashboardComponent implements OnInit {
         this.telemDataViews = element.number_of_views + " (" + timeStr + ")";
       }
       if (element.reportid == 'heatChart') {
-        this.lotableViews = element.number_of_views + " (" + timeStr + ")";
+        this.heatChartViews = element.number_of_views + " (" + timeStr + ")";
       }
       if (element.reportid == 'lotable') {
         this.lotableViews = element.number_of_views + " (" + timeStr + ")";
