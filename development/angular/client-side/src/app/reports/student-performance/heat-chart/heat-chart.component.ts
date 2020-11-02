@@ -87,6 +87,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   resetToInitPage() {
+    this.fileName = "District_wise_report";
     this.skul = true;
     this.dist = false;
     this.blok = false;
@@ -147,7 +148,7 @@ export class HeatChartComponent implements OnInit {
           rotation: 270,
           style: {
             color: 'black',
-            fontSize: '14px'            
+            fontSize: '14px'
           }
         },
         min: 0,
@@ -164,7 +165,7 @@ export class HeatChartComponent implements OnInit {
           style: {
             color: 'black',
             fontSize: '11px',
-            fontFamily: 'Arial',          
+            fontFamily: 'Arial',
           }
         },
       }],
@@ -176,14 +177,14 @@ export class HeatChartComponent implements OnInit {
             fontSize: '10px',
             textDecoration: "underline",
             textOverflow: "ellipsis",
-            fontFamily: 'Arial'            
+            fontFamily: 'Arial'
           },
           align: "right"
         },
         title: null,
         reversed: true,
         min: 0,
-        max: yLabel.length > 1 ? (yLabel.length / 10) : yLabel.length - 1,
+        max: yLabel.length > 1 ? (yLabel.length / 5) : yLabel.length - 1,
         scrollbar: {
           enabled: true
         }
