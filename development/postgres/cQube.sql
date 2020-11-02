@@ -4329,6 +4329,36 @@ updated_on  timestamp,
 primary key(academic_year,exam_code,school_id)
 );
 
+alter table periodic_exam_school_result add COLUMN if not exists exam_date date;
+
+alter table periodic_exam_school_result add COLUMN if not exists students_attended int;
+
+create table if not exists periodic_exam_school_qst_result
+(id  serial,
+academic_year  varchar(50),
+exam_code varchar(100),
+exam_date  date,
+school_id  bigint,
+grade  smallint,
+school_name  varchar(200),
+district_id  bigint,
+district_name  varchar(100),
+block_id  bigint,
+block_name  varchar(100),
+cluster_id  bigint,
+cluster_name  varchar(100),
+subject  text,
+question_id	int,
+indicator	text,
+obtained_marks  numeric,
+total_marks  numeric,
+students_attended   int,
+total_students int,
+created_on  timestamp,
+updated_on  timestamp,
+primary key(academic_year,exam_code,school_id,question_id)
+);
+
 /*Composite reports queries*/
 
 /* composite nifi template info */

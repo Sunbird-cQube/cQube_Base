@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
   }
 
   back() {
-    window.location.replace(`${this.appUrl}/#/homePage`);
+    window.location.replace(`${this.appUrl}/#/home`);
   }
 
   mouseenter() {

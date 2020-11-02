@@ -1,175 +1,93 @@
-<div class="container-fluid" style="background-color: rgb(245, 245, 245);">
-    <div class="container" style="margin-bottom: 10px;">
-        <div class="row">
-            <div class="col-sm-9">
-                <div class="col-sm-12 diksha">SCHOOL INFRASTRUCTURE</div>
-                <div class="row outer1">
-                    <div class="col-sm-4">
-                        <div class="inner-1 card" id="imr" [routerLink]="['/home/school-infra-map']"
-                            style="background-color: rgb(160, 233, 205);" (click)="fetchTelemetry($event,'imr')">
+<div class="container-fluid" style="background-color: rgb(245, 245, 245);padding-top: 30px; padding-bottom: 10px">
+    <div class="row" style="padding: 20px;">
+        <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="col-sm-12 diksha">SCHOOL INFRASTRUCTURE</div>
+            <div class="row outer1">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" id="imr" [routerLink]="['/infrastructure/school-infra-map']"
+                        (click)="fetchTelemetry($event,'imr')">
+                        <div class="card-body ">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_location_on.svg" alt="">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="inner-3" style="margin-top: 20px;">
-                                    Infrastructure access <br> by Location
-                                    <div class="views1">
-                                        <p *ngIf="imrViews;else other_content" id="views">views: {{imrViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Infrastructure <br> access</p>
+                                        <p class="card-title" style="font-weight: bold;">by Location</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="inner-1 card" id="cr" [routerLink]="['/home/school-infrastructure']"
-                            style="background-color:rgb(160, 233, 205);" (click)="fetchTelemetry($event,'cr')">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Composite Report
-                                    <div class="views">
-                                        <p *ngIf="crViews;else other_content" id="views">views: {{crViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="inner-1 card" id="udise" [routerLink]="['/home/udise-report']"
-                            style="background-color: rgb(160, 233, 205);" (click)="fetchTelemetry($event,'udise')">
-                            <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    UDISE Report
-                                    <div class="views">
-                                        <p *ngIf="udiseViews;else other_content" id="views">views: {{udiseViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
-                                    </div>
+                                <div class="views">
+                                    <p *ngIf="imrViews;else other_content" id="views">views: {{imrViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="diksha">COMPOSITE</div>
-                <div class="row outer12">
-                    <div class="col-sm-12">
-                        <div class="inner-12 card" id="composite" [routerLink]="['/home/composit-report']"
-                            style="background-color: rgb(243, 228, 203);" (click)="fetchTelemetry($event,'composite')">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" id="cr" [routerLink]="['/infrastructure/school-infrastructure']"
+                        (click)="fetchTelemetry($event,'cr')">
+                        <div class="card-body ">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
-                                </div>
-                                <div class="inner-3" style="margin-top: 20px;">
-                                    Composite Report <br> across metrics
-                                    <div class="views1">
-                                        <p *ngIf="compositeViews;else other_content" id="views">views:
-                                            {{compositeViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_trending_up.svg" alt="">
+                                        </div>
                                     </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Composite </p>
+                                        <p class="card-title" style="font-weight: bold;">Report</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="crViews;else other_content" id="views">views: {{crViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-9">
-                <div class="col-sm-12 diksha">DIKSHA USAGE</div>
-                <div class="row outer1">
-                    <div class="col-sm-4">
-                        <div class="inner-1 card" id="dsc" [routerLink]="['/home/diksha-chart']"
-                            style="background-color: rgb(255, 207, 169);" (click)="fetchTelemetry($event,'dsc')">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" id="udise" [routerLink]="['/infrastructure/udise-report']"
+                        (click)="fetchTelemetry($event,'udise')">
+                        <div class="card-body ">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_location_on.svg" alt="">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="inner-3">
-                                    Usage by user profile
-                                    <div class="views">
-                                        <p *ngIf="dscViews;else other_content" id="views">views: {{dscViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">UDISE </p>
+                                        <p class="card-title" style="font-weight: bold;">Report</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="inner-1 card" id="dcc" [routerLink]="['/home/diksha-column-chart']"
-                            style="background-color: rgb(255, 207, 169);" (click)="fetchTelemetry($event,'dcc')">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_equalizer.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Usage by Location
-                                    <div class="views">
-                                        <p *ngIf="dccViews;else other_content" id="views">views: {{dccViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="inner-1 card" id="dtr" [routerLink]="['/home/diksha-table']"
-                            style="background-color: rgb(255, 207, 169);" (click)="fetchTelemetry($event,'dtr')">
-                            <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_grid_on.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Usage by Content Name
-                                    <div class="views">
-                                        <p *ngIf="dtrViews;else other_content" id="views">views: {{dtrViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="diksha">SCHOOL MONITORING</div>
-                <div class="row outer12">
-                    <div class="col-sm-12">
-                        <div class="inner-12 card" id="crcr" [routerLink]="['/home/crc-report']"
-                            style="background-color: rgb(238, 164, 164);" (click)="fetchTelemetry($event,'crcr')">
-                            <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_trending_up.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    CRC Visit
-                                    <div class="views" style="width: 140px;">
-                                        <p *ngIf="crcrViews;else other_content" id="views">views: {{crcrViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
-                                    </div>
+                                <div class="views">
+                                    <p *ngIf="udiseViews;else other_content" id="views">views: {{udiseViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
@@ -177,157 +95,441 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="diksha">STUDENT PERFORMANCE</div>
-                <div class="row outer12">
-                    <div class="col-sm-6">
-                        <div class="inner-12 card" id="sr" [routerLink]="['/home/semester-report']"
-                            style="background-color: rgb(203, 210, 233);" (click)="fetchTelemetry($event,'sr')">
+        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="diksha">COMPOSITE</div>
+            <div class="row outer12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(243, 228, 203);" id="composite"
+                        [routerLink]="['/composite/composite-report']" (click)="fetchTelemetry($event,'composite')">
+                        <div class="card-body ">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_trending_up.svg" alt="">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="inner-3">
-                                    Semester Report
-                                    <div class="views">
-                                        <p *ngIf="srViews;else other_content" id="views">views: {{srViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Composite <br> Report </p>
+                                        <p class="card-title" style="font-weight: bold;">across metrics</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="inner-12 card" id="pat" [routerLink]="['/home/pat-report']"
-                            style="background-color: rgb(203, 210, 233);" (click)="fetchTelemetry($event,'pat')">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Periodic Assessment Test
-                                    <div class="views">
-                                        <p *ngIf="patViews;else other_content" id="views">views: {{patViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
-                                    </div>
+                                <div class="views">
+                                    <p *ngIf="compositeViews;else other_content" id="views">views:
+                                        {{compositeViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="diksha">EXCEPTION-LIST</div>
-                <div class="row outer12">
-                    <div class="col-sm-6">
-                        <div class="inner-12 card" id="SemExp" [routerLink]="['/home/sem-exception']"
-                            style="background-color: rgb(255, 193, 228);" (click)="fetchTelemetry($event,'SemExp')">
+        </div>
+    </div>
+    <div class="row" style="padding: 20px;">
+        <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="col-sm-12 diksha">TEACHER PROFESSIONAL DEVELOPMENT</div>
+            <div class="row outer1">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="dsc"
+                        [routerLink]="['/diksha/diksha-chart']" (click)="fetchTelemetry($event,'dsc')">
+                        <div class="card-body ">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Semester Exception
-                                    <div class="views">
-                                        <p *ngIf="semExpViews;else other_content" id="views">views: {{semExpViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
+                                        </div>
                                     </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Usage by <br> user </p>
+                                        <p class="card-title" style="font-weight: bold;">profile</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="dscViews;else other_content" id="views">views:
+                                        {{dscViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="inner-12 card" id="isdata" [routerLink]="['/home/download-missing-data']"
-                            style="background-color: rgb(255, 193, 228);" (click)="fetchTelemetry($event,'isdata')">
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="dcc"
+                        [routerLink]="['/diksha/diksha-column-chart']" (click)="fetchTelemetry($event,'dcc')">
+                        <div class="card-body ">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_cloud_download.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Download Exception List
-                                    <div class="views">
-                                        <p *ngIf="isdataViews;else other_content" id="views">views: {{isdataViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
+                                        </div>
                                     </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Usage by </p>
+                                        <p class="card-title" style="font-weight: bold;">Course</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="dccViews;else other_content" id="views">views:
+                                        {{dccViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color:  rgb(255, 207, 169);" id="dtr"
+                        [routerLink]="['/diksha/diksha-table']" (click)="fetchTelemetry($event,'dtr')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Usage by </p>
+                                        <p class="card-title" style="font-weight: bold;">Course Content</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="dtrViews;else other_content" id="views">views:
+                                        {{dtrViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="diksha">SCHOOL MONITORING</div>
+            <div class="row outer12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(238, 164, 164);" id="crcr"
+                        [routerLink]="['/crc/crc-report']" (click)="fetchTelemetry($event,'crcr')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_trending_up.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">CRC </p>
+                                        <p class="card-title" style="font-weight: bold;">Report</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="crcrViews;else other_content" id="views">views:
+                                        {{crcrViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 20px">
+        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="diksha">ENERGISE TEXTBOOK USAGE</div>
+            <div class="row outer12">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(218, 193, 172)" id="ut"
+                        [routerLink]="['/diksha/usage-by-textbook']" (click)="fetchTelemetry($event,'ut')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Usage by </p>
+                                        <p class="card-title" style="font-weight: bold;">Textbook</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="utViews;else other_content" id="views">views:
+                                        {{utViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color:  rgb(218, 193, 172);" id="utc"
+                        [routerLink]="['/diksha/usage-by-textbook-content']" (click)="fetchTelemetry($event,'utc')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Usage by </p>
+                                        <p class="card-title" style="font-weight: bold;">Textbook Content</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="utcViews;else other_content" id="views">views:
+                                        {{utcViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 20px;">
+        <div class="col-lg-12 col-md-12 col-sm-12" style="padding:  0% 2% 0% 2%">
+            <div class="diksha">STUDENT PERFORMANCE</div>
+            <div class="row outer12">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="card card-stats" style="background-color:  rgb(203, 210, 233);" id="sr"
+                        [routerLink]="['/student-performance/semester-report']" (click)="fetchTelemetry($event,'sr')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_location_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Semester </p>
+                                        <p class="card-title" style="font-weight: bold;">Report</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="srViews;else other_content" id="views">views:
+                                        {{srViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="card card-stats" style="background-color:  rgb(203, 210, 233);" id="pat"
+                        [routerLink]="['/student-performance/pat-report']" (click)="fetchTelemetry($event,'pat')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_location_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Periodic <br> Assessment </p>
+                                        <p class="card-title" style="font-weight: bold;">Test</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="patViews;else other_content" id="views">views:
+                                        {{patViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="card card-stats" style="background-color: rgb(203, 210, 233);" id="heatChart"
+                        [routerLink]="['/student-performance/heat-chart']" (click)="fetchTelemetry($event,'heatChart')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/Group 10.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">PAT </p>
+                                        <p class="card-title" style="font-weight: bold;">Heat Chart</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="heatChartViews;else other_content" id="views">views:
+                                        {{heatChartViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="card card-stats" style="background-color: rgb(203, 210, 233);" id="lotable"
+                        [routerLink]="['/student-performance/PAT-LO-table']" (click)="fetchTelemetry($event,'lotable')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">PAT </p>
+                                        <p class="card-title" style="font-weight: bold;">LO Table</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="lotableViews;else other_content" id="views">views:
+                                        {{lotableViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 20px;">
+        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="diksha">EXCEPTION-LIST</div>
+            <div class="row outer12">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="SemExp"
+                        [routerLink]="['/exception/sem-exception']" (click)="fetchTelemetry($event,'SemExp')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_location_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Semester </p>
+                                        <p class="card-title" style="font-weight: bold;">Exception</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="semExpViews;else other_content" id="views">views:
+                                        {{semExpViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="diksha">ATTENDANCE</div>
-                <div class="row outer12">
-                    <div class="col-sm-6">
-                        <div class="inner-12 card" id="sar" [routerLink]="['/home/attendance-report']"
-                            style="background-color: rgb(221, 253, 199);" (click)="fetchTelemetry($event,'sar')">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="isdata"
+                        [routerLink]="['/exception/download-missing-data']" (click)="fetchTelemetry($event,'isdata')">
+                        <div class="card-body ">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt=""> </div>
-                                <div class="inner-3">
-                                    Student Attendance
-                                    <div class="views">
-                                        <p *ngIf="sarViews;else other_content" id="views">views: {{sarViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_cloud_download.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Download <br> Exception </p>
+                                        <p class="card-title" style="font-weight: bold;">List</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="inner-12 card" id="tar" [routerLink]="['/home/teacher-attendance']"
-                            style="background-color:rgb(221, 253, 199);" (click)="fetchTelemetry($event,'tar')">
                             <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/ic_location_on.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Teacher Attendance
-                                    <div class="views">
-                                        <p *ngIf="tarViews;else other_content" id="views">views: {{tarViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="diksha">TELEMETRY DATA</div>
-                <div class="row outer12">
-                    <div class="col-sm-12">
-                        <div class="inner-12 card" id="telemData" [routerLink]="['/home/telemetry']"
-                            style="background-color:rgb(236, 235, 126);" (click)="fetchTelemetry($event,'telemData')">
-                            <div class="row">
-                                <div class="inner-2">
-                                    <img class="ic-equalizer" src="../../assets/Group 10.svg" alt="">
-                                </div>
-                                <div class="inner-3">
-                                    Telemetry
-                                    <div class="views" style="width: 140px;">
-                                        <p *ngIf="telemDataViews;else other_content" id="views">views:
-                                            {{telemDataViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
-                                    </div>
+                                <div class="views">
+                                    <p *ngIf="isdataViews;else other_content" id="views">views:
+                                        {{isdataViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
@@ -336,6 +538,112 @@
             </div>
         </div>
     </div>
-    <div id="spinner" style="display: none;">
-        <div class="loading">Loading&#8230;</div>
+    <div class="row" style="padding: 20px;">
+        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="diksha">ATTENDANCE</div>
+            <div class="row outer12">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color:  rgb(221, 253, 199);" id="sar"
+                        [routerLink]="['/attendance/student-attendance']" (click)="fetchTelemetry($event,'sar')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_location_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Student </p>
+                                        <p class="card-title" style="font-weight: bold;">Attendance</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="sarViews;else other_content" id="views">views:
+                                        {{sarViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color:  rgb(221, 253, 199);" id="tar"
+                        [routerLink]="['/attendance/teacher-attendance']" (click)="fetchTelemetry($event,'tar')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_location_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Teacher </p>
+                                        <p class="card-title" style="font-weight: bold;">Attendance</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="tarViews;else other_content" id="views">views:
+                                        {{tarViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="diksha">TELEMETRY DATA</div>
+            <div class="row outer12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(236, 235, 126);" id="telemData"
+                        [routerLink]="['/telemetry']" (click)="fetchTelemetry($event,'telemData')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/Group 10.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Telemetry </p>
+                                        <p class="card-title" style="font-weight: bold;">Report</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="telemDataViews;else other_content" id="views">views:
+                                        {{telemDataViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+<div id="spinner" style="display: none;">
+    <div class="loading">Loading&#8230;</div>
+</div>

@@ -28,11 +28,19 @@ router.get('/getProcessorDetails/:id', auth.authController, async (req, res) => 
         let processorGroups = process.env.NIFI_PROCESSORS.split(',')
         processorGroups.forEach(groupName => {
             getGroupDetails.data.processGroupFlow.flow.processGroups.forEach(result => {
+                let state
+                if (result.runningCount > 0 && (result.stoppedCount == 0 && result.invalidCount == 0 && result.disabledCount == 0)) {
+                    state = 'RUNNING';
+                } else if (result.runningCount == 0 && (result.stoppedCount > 0 || result.invalidCount > 0 || result.disabledCount > 0)) {
+                    state = 'STOPPED';
+                } else if (result.runningCount > 0 && (result.stoppedCount > 0 || result.invalidCount > 0 || result.disabledCount > 0)) {
+                    state = 'STOPPED'
+                }
                 if (result.component.name == groupName) {
                     let groupNames = {
                         id: result.id,
                         name: result.component.name,
-                        state: 'RUNNING'
+                        state: state
                     };
                     groupObj.push(groupNames)
                 }

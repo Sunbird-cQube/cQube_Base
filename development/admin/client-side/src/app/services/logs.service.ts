@@ -14,22 +14,16 @@ export class LogsService {
   //Logs========================
   getLogMenu() {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/logs/getMenus`, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.get(`${this.baseUrl}/logs/getMenus`);
   }
 
   showLogs(type) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/logs/logType/${type}`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/logs/logType/${type}`, {});
   }
 
   getLogData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/logs/showLogs`, { data: data }, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/logs/showLogs`, { data: data });
   }
 }

@@ -15,7 +15,7 @@ export class DikshaTableComponent implements OnInit {
   public result: any = [];
   public districtId: any = '';
   public timePeriod: any = '';
-  public collectionType = 'all';
+  public collectionType = 'course';
   public allCollections = [];
   public timeDetails: any = [];
   public districtsDetails: any = '';
@@ -35,12 +35,12 @@ export class DikshaTableComponent implements OnInit {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
   ) {
-    this.allCollections = [{ id: "all", name: "Overall" }, { id: "course", name: "Course" }, { id: "textbook", name: "Textbook" }]
+    this.allCollections = [{ id: "course", name: "Course" }]
   }
 
   ngOnInit(): void {
-    document.getElementById('backBtn').style.display = "none";
-    document.getElementById('homeBtn').style.display = "Block";
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
     this.collectionWise();
   }
 
@@ -62,7 +62,6 @@ export class DikshaTableComponent implements OnInit {
   }
 
   default() {
-    this.collectionType = "all";
     this.collectionWise();
   }
 
@@ -88,10 +87,10 @@ export class DikshaTableComponent implements OnInit {
     this.result = [];
     this.reportData = [];
     this.header = this.changeingStringCases(this.collectionType) + " linked";
-    if (this.collectionType == "all") {
-      this.header = "Overall";
-    }
-    this.header = this.header;
+    // if (this.collectionType == "all") {
+    //   this.header = "Overall";
+    // }
+    // this.header = this.header;
     this.service.dikshaAllTableData({ collectionType: this.collectionType }).subscribe(res => {
       this.fileName = `Diksha_All_Data_${this.timePeriod}`;
       this.result = res;
@@ -294,7 +293,7 @@ export class DikshaTableComponent implements OnInit {
       $(`#table`).DataTable({
         "order": [[my_columns.length - 5, "desc"]],
         destroy: true, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: "64vh", scrollX: true,
+        bPaginate: false, scrollY: "60vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: true,
         fixedColumns: {
           leftColumns: 1

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { KeycloakSecurityService } from '../keycloak-security.service';
 import { AppServiceComponent } from '../app.service';
@@ -12,7 +11,8 @@ import { environment } from '../../environments/environment';
 })
 export class HomeComponent implements OnInit {
   edate: Date;
-  constructor(private router: Router, public http: HttpClient, public service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) { }
+  
+  constructor(public http: HttpClient, public service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) { }
   email: any;
   role: any;
   showSubmenu1: any = false;
@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   showSubmenu6: any = false;
   showSubmenu7: any = false;
   showSubmenu8: any = false;
+  showSubmenu9: any = false;
   showsideMenu: boolean = false;
   isExpanded = true;
   showSubmenu: boolean = false;
@@ -43,28 +44,27 @@ export class HomeComponent implements OnInit {
 
   }
 
-
-  logout() {
-    localStorage.clear();
-    let options = {
-      redirectUri: environment.appUrl
-    }
-    this.keyCloakService.kc.logout(options);
+logout() {
+  localStorage.clear();
+  let options = {
+    redirectUri: environment.appUrl
   }
+  this.keyCloakService.kc.logout(options);
+}
 
-  mouseenter() {
-    if (!this.isExpanded) {
-      this.isShowing = true;
-    }
+mouseenter() {
+  if (!this.isExpanded) {
+    this.isShowing = true;
   }
+}
 
-  mouseleave() {
-    if (!this.isExpanded) {
-      this.isShowing = false;
-    }
+mouseleave() {
+  if (!this.isExpanded) {
+    this.isShowing = false;
   }
+}
 
-  fetchTelemetry(event, report) {
-    this.service.getTelemetryData(report, event.type);
-  }
+fetchTelemetry(event, report) {
+  this.service.getTelemetryData(report, event.type);
+}
 }

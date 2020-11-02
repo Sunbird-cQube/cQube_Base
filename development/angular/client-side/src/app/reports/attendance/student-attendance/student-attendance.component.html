@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
         <div class="col-sm-8">
             <div *ngIf='skul'>
@@ -62,7 +62,8 @@
     <div class="row">
         <div class="col-sm-12">
             <p style="text-align: justify; font-size: 11px;">
-                <strong> About the dashboard:</strong> This dashboard provides information about student attendance calculated at a
+                <strong> About the dashboard:</strong> This dashboard provides information about student attendance
+                calculated at a
                 monthly level. The data has been collated at various administrative levels (i.e. District, Block,
                 Cluster and School) and this dashboard allows you to view and download the data at these various
                 administrative levels. You can select a different month/year combination to view student attendance for
@@ -71,25 +72,43 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-12">
             <button class="btn btn-secondary" id="allBlock" name="block"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 10px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="blockWise($event)">&nbsp;<strong id="allBlock" style="font-family: Arial;">Blocks</strong>
             </button>
             <button class="btn btn-secondary" id="allCluster"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 10px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="clusterWise($event)">&nbsp;<strong id="allCluster"
                     style="font-family: Arial;">Clusters</strong>
             </button>
             <button class="btn btn-secondary" id="allSchool"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 5px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 10px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise($event)">&nbsp;<strong id="allSchool" style="font-family: Arial;">Schools</strong>
             </button>
-        </div>
-        <div class="col-sm-6" style="font-family: Arial;">
+            <select id="year"
+                style="padding: 3px;margin-left: 4%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="year" name="year" (change)="getYear()">
+                <option [value]="year" disabled selected="selected">Choose Year
+                </option>
+                <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]"
+                    style="font-family: Arial;font-size: 11px; ">
+                    {{years[i]}}
+                </option>
+            </select>
+            <select id="month"
+                style="margin-left: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="month" name="month" (change)="getMonth($event)">
+                <option [value]="month" disabled selected="selected">Choose Month
+                </option>
+                <option *ngFor="let month of months" [(ngValue)]="month.id"
+                    style="font-family: Arial;font-size: 11px; ">
+                    {{month.name}}
+                </option>
+            </select>
 
             <select id="choose_dist"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin: 0px 10px 0px 4%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="distSelect($event,myDistrict)">
                 <option [value]="myDistrict" disabled selected="selected" style="color: white;">Choose a District
                 </option>
@@ -121,31 +140,7 @@
                     {{cluster.name}}
                 </option>
             </select>
-
         </div>
-        <div class="col-sm-3">
-            <select id="year"
-                style="margin-left: 10%; width: 43%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="year" name="year" (change)="getYear()">
-                <option [value]="year" disabled selected="selected">Choose Year
-                </option>
-                <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]"
-                    style="font-family: Arial;font-size: 11px; ">
-                    {{years[i]}}
-                </option>
-            </select>
-            <select id="month"
-                style="float: right;margin-left: 2%; margin-top: 0.5%;width: 43%; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="month" name="month" (change)="getMonth($event)">
-                <option [value]="month" disabled selected="selected">Choose Month
-                </option>
-                <option *ngFor="let month of months" [(ngValue)]="month.id"
-                    style="font-family: Arial;font-size: 11px; ">
-                    {{month.name}}
-                </option>
-            </select>
-        </div>
-
     </div>
     <div class="row">
         <div class="col-sm-12">
