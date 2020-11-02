@@ -145,9 +145,13 @@ export class HeatChartComponent implements OnInit {
         categories: xLabelId,
         labels: {
           rotation: 270,
+          style: {
+            color: 'black',
+            fontSize: '14px'            
+          }
         },
         min: 0,
-        max: 9,
+        max: 30,
         scrollbar: {
           enabled: true
         }
@@ -156,7 +160,12 @@ export class HeatChartComponent implements OnInit {
         opposite: true,
         categories: xLabel,
         labels: {
-          rotation: 270
+          rotation: 270,
+          style: {
+            color: 'black',
+            fontSize: '11px',
+            fontFamily: 'Arial',          
+          }
         },
       }],
       yAxis: {
@@ -164,9 +173,10 @@ export class HeatChartComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: '14px',
+            fontSize: '10px',
             textDecoration: "underline",
-            textOverflow: "ellipsis"
+            textOverflow: "ellipsis",
+            fontFamily: 'Arial'            
           },
           align: "right"
         },
