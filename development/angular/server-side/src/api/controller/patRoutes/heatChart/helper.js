@@ -37,7 +37,8 @@ const generalFun = (data, level, viewBy) => {
                 data = data.sort((a, b) => (a.grade) > (b.grade) ? 1 : -1)
 
                 Promise.all(data.map(item => {
-                    let label = item.exam_date + "/"
+                    let date = item.exam_date.split('-')
+                    let label = date[0] + "-" + date[1] + "/"
                         + "grade" + item.grade + "/"
                         + item.subject_name + "/"
                     label += viewBy == "indicator" ? item.indicator : item.question_id
