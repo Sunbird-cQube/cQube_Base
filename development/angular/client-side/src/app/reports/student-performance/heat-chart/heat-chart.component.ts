@@ -147,7 +147,7 @@ export class HeatChartComponent implements OnInit {
           rotation: 270,
         },
         min: 0,
-        max: (xLabelId.length / 2),
+        max: 9,
         scrollbar: {
           enabled: true
         }
