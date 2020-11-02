@@ -17,18 +17,9 @@ app.use(compression());
 const router = require('./api/router');
 app.use('/api', router);
 
+const restartSchedular = require('./api/controller/niFiScheduler/restartSchedular');
+
 app.listen(port, '0.0.0.0', () => {
     console.log("Server started at port: ", port);
+    restartSchedular.restartNifiProcess();
 });
-
-function restartNifiProcess() {
-    var schedularData = JSON.parse(fs.readFileSync('./schedulers.json'));
-    schedularData.forEach(myJob => {
-        if (myJob.state == "RUNNING") {
-            let state = myJob.state;
-            let timeToSchedule = myJob.hours + ":" + myJob.mins;
-            let stopTime = myJob.timeToStop - myJob.hours;
-            axios.post(`http://localhost:3001/api/nifi/scheduleProcessor/${myJob.groupId}`, { time: timeToSchedule, stopTime: stopTime, state: state });
-        }
-    });
-}
