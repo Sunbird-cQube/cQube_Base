@@ -4061,4 +4061,23 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
 select * from composite_create_views();
 select composite_jolt_spec();
 
+
+CREATE OR REPLACE FUNCTION insert_diksha_tpd_trans()
+RETURNS text AS
+$$
+DECLARE
+transaction_insert text;
+BEGIN
+transaction_insert='insert into diksha_tpd_trans(collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,enrolment_date,
+completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,created_on,updated_on) 
+select collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,enrolment_date,
+completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,now(),now() 
+from diksha_tpd_content_temp where not exists (select collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,enrolment_date,
+completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score from diksha_tpd_trans)';
+Execute transaction_insert; 
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+
 END;
