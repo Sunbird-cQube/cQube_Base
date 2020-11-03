@@ -83,6 +83,12 @@ const loTableBlockWise = require('./controller/patRoutes/patLoTable/blockWise');
 const loTableClusterWise = require('./controller/patRoutes/patLoTable/clusterWise');
 const loTableSchoolWise = require('./controller/patRoutes/patLoTable/schoolWise');
 
+// Diksha TPD
+const tpdDistWise = require('./controller/diksha/tpd-heatChart/distWise');
+const tpdBlockWise = require('./controller/diksha/tpd-heatChart/blockWise');
+const tpdClusterWise = require('./controller/diksha/tpd-heatChart/clusterWise');
+const tpdSchoolWise = require('./controller/diksha/tpd-heatChart/schoolWise');
+
 // sem routes
 router.use('/sem', semDistrictWise);
 router.use('/sem', semBlockWise);
@@ -166,5 +172,11 @@ router.use('/pat/lotable', loTableDistWise);
 router.use('/pat/lotable', loTableBlockWise);
 router.use('/pat/lotable', loTableClusterWise);
 router.use('/pat/lotable', loTableSchoolWise);
+
+// Diksha TPD
+router.use('/diksha/tpd', tpdDistWise);
+router.use('/diksha/tpd', tpdBlockWise);
+router.use('/diksha/tpd', tpdClusterWise);
+router.use('/diksha/tpd', tpdSchoolWise);
 
 module.exports = router;

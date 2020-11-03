@@ -82,6 +82,12 @@
             <a mat-list-item [routerLink]="['/diksha/diksha-table']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'dtr')" id="dtblReport" (click)="showSubmenu2 = !showSubmenu2"><span
                 style="margin-left: 50px;">Usage by Course Content</span></a>
+            <a mat-list-item [routerLink]="['/diksha/tpd-content-progress']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'tpd-cp')" id="tpd-cp" (click)="showSubmenu2 = !showSubmenu2"><span
+                style="margin-left: 50px;">TPD Content Progress</span></a>
+            <a mat-list-item [routerLink]="['/diksha/tpd-teacher-percentage']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'tpd-tp')" id="tpd-tp" (click)="showSubmenu2 = !showSubmenu2"><span
+                style="margin-left: 50px;">TPD Teacher Percentage</span></a>
           </div>
         </mat-nav-list>
 
