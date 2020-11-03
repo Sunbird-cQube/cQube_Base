@@ -85,6 +85,7 @@ export class PATLOTableComponent implements OnInit {
   }
 
   resetToInitPage() {
+    this.fileName = "District_wise_report";
     this.skul = true;
     this.dist = false;
     this.blok = false;

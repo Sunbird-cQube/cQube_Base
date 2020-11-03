@@ -19,8 +19,9 @@
           - angular_admin
           - prometheus
           - { role: grafana, tags: install }
-          - { role: nifi_params, tags: install }
+
           - nifi_install   
+          - { role: nifi_params, tags: install }
 
           - role: nifi_crc
             tags: install

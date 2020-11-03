@@ -4391,4 +4391,114 @@ CREATE TABLE IF NOT EXISTS composite_config (
   created_on TIMESTAMP without time zone default current_timestamp
   );
 
+Alter table diksha_content_staging
+add column if not exists collection_id text,
+Add column if not exists collection_name text,
+add column if not exists batch_id text,
+add column if not exists batch_name text,
+add column if not exists uuid text,
+Add column if not exists district text,
+add column if not exists state text,
+add column if not exists org_name text,
+add column if not exists school_id bigint,
+Add column if not exists declared_board text,
+Add column if not exists school_name text,
+Add column if not exists block_name text,
+add column if not exists enrolment_date date,
+add column if not exists completion_date date,
+add column if not exists progress double precision,
+add column if not exists certificate_status text,
+add column if not exists total_score double precision,
+Add column if not exists created_on timestamp without time zone,
+Add column if not exists updated_on timestamp without time zone;
+
+Alter table diksha_null_col
+Add column if not exists count_null_collection_id int,
+Add column if not exists count_null_uuid int,
+Add column if not exists count_null_school_id int;
+
+create table IF NOT EXISTS diksha_tpd_dup(
+ ff_uuid text,
+ collection_id text,
+ collection_name text,
+ batch_id text,
+ batch_name text,
+ uuid text,
+ state text,
+ org_name text,
+ school_id bigint,
+ enrolment_date date,
+ completion_date date,
+ progress double precision,
+ certificate_status text,
+ total_score double precision,
+ nested_collection_progress	jsonb,
+assessment_score	jsonb,
+ created_on timestamp without time zone,
+ updated_on timestamp without time zone);
+
+
+create table IF NOT EXISTS diksha_tpd_content_temp(
+ff_uuid text,
+ collection_id text,
+ collection_name text,
+ batch_id text,
+ batch_name text,
+ uuid text,
+ state text,
+ org_name text,
+ school_id bigint,
+ enrolment_date date,
+ completion_date date,
+ progress double precision,
+ certificate_status text,
+ total_score double precision,
+nested_collection_progress	jsonb,
+assessment_score	jsonb,
+ created_on timestamp without time zone,
+ updated_on timestamp without time zone);
+
+create table IF NOT EXISTS diksha_tpd_trans(
+collection_id	text,
+collection_name	text,
+batch_id	text,
+batch_name	text,
+uuid	text,
+state	text,
+org_name	text,
+school_id	bigint,
+enrolment_date	date,
+completion_date	date,
+progress	double precision,
+certificate_status	text,
+total_score	double precision,
+nested_collection_progress	jsonb,
+assessment_score	jsonb,
+created_on	TIMESTAMP without time zone,
+updated_on	TIMESTAMP without time zone,
+primary key(collection_id,uuid,school_id)
+  );
+
+
+alter table log_summary add column IF NOT EXISTS collection_id int;
+alter table log_summary add column IF NOT EXISTS uuid int;
+
+create table IF NOT EXISTS diksha_tpd_agg(
+collection_id	text,
+collection_name	text,
+collection_progress	double precision,
+percentage_teachers double precision,
+enrolled_date date,
+school_id	bigint,
+school_name  varchar(200),
+district_id  bigint,
+district_name  varchar(100),
+block_id  bigint,
+block_name  varchar(100),
+cluster_id  bigint,
+cluster_name  varchar(100),
+created_on	TIMESTAMP without time zone,
+updated_on	TIMESTAMP without time zone,
+primary key(collection_id,enrolled_date,school_id,collection_name)
+  );
 
