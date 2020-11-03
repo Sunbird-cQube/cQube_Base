@@ -157,7 +157,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: yLabel.length > 1 ? (yLabel.length / 10) : yLabel.length - 1,
+        max: yLabel.length > 1 ? (yLabel.length) : yLabel.length - 1,
         scrollbar: {
           enabled: true
         }
@@ -203,52 +203,25 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       if (level == 'district') {
         obj = `<b>DistrictId: ${series['xAxis'].categories[point['x']]}</b> 
         <br> <b>DistrictName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>           
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value}` : ''}</b>`
       }
 
       if (level == 'block') {
         obj = `<b>BlockId: ${series['xAxis'].categories[point['x']]}</b> 
         <br> <b>BlockName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-               
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value}` : ''}</b>`
       }
 
       if (level == 'cluster') {
         obj = `<b>ClusterId: ${series['xAxis'].categories[point['x']]}</b> 
         <br> <b>ClusterName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-               
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value}` : ''}</b>`
       }
 
       if (level == 'school') {
         obj = `<b>SchoolId: ${series['xAxis'].categories[point['x']]}</b> 
         <br> <b>SchoolName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-               
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value}` : ''}</b>`
       }
       return obj
     }
