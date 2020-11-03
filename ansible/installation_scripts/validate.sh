@@ -57,7 +57,7 @@ temp=$(psql -V > /dev/null 2>&1; echo $?)
 
 if [ $temp == 0 ]; then
     version=`psql -V | head -n1 | cut -d" " -f3`
-    if [ $version>=10.12 ]
+    if [[ $(echo "$version >= 10.12" | bc) == 1 ]]
     then
         echo "WARNING: Postgres found."
         echo "Removing Postgres..."
