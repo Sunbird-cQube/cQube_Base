@@ -5,14 +5,14 @@ HeatmapModule(Highcharts);
 import { AppServiceComponent } from '../../../app.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { PatReportService } from '../../../services/pat-report.service';
+import { DikshaReportService } from 'src/app/services/diksha-report.service';
 
 @Component({
-  selector: 'app-heat-chart',
-  templateUrl: './heat-chart.component.html',
-  styleUrls: ['./heat-chart.component.css']
+  selector: 'app-diksha-tpd-content-progress',
+  templateUrl: './diksha-tpd-content-progress.component.html',
+  styleUrls: ['./diksha-tpd-content-progress.component.css']
 })
-export class HeatChartComponent implements OnInit {
+export class DikshaTPDContentProgressComponent implements OnInit {
   Highcharts: typeof Highcharts = Highcharts;
   name: string;
   level = '';
@@ -28,17 +28,9 @@ export class HeatChartComponent implements OnInit {
   clusterNames = [];
   cluster;
 
-  years = [];
-  grades = [];
-  subjects = [];
-  examDates = [];
-  allViews = [];
-
-  public year = '2020';
-  public grade = 'all';
-  public subject = 'all';
-  public examDate = 'all';
-  public viewBy = 'indicator';
+  reportType = "collection_progress";
+  timePeriod = 'All';
+  timePeriods = [{ key: "All", value: "All" }, { key: "Last_Day", value: "Last Day" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_30_Day", value: "Last 30 Days" }]
 
   //to set hierarchy level
   skul = true;
@@ -55,7 +47,7 @@ export class HeatChartComponent implements OnInit {
   data;
 
   // to download the excel report
-  public fileName: any = `District_wise_report_${this.year}`
+  public fileName: any = `District_wise_report`
   public reportData: any = [];
 
   public metaData: any;
@@ -63,22 +55,10 @@ export class HeatChartComponent implements OnInit {
 
   constructor(
     public http: HttpClient,
-    public service: PatReportService,
+    public service: DikshaReportService,
     public commonService: AppServiceComponent,
     public router: Router
-  ) {
-    service.PATHeatMapMetaData().subscribe(res => {
-      this.metaData = res['data'][0];
-      this.years.push(this.metaData['year']);
-      this.grades = this.metaData.data['grades'];
-      this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
-      this.subjects = this.metaData.data['subjects'];
-      this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
-      this.examDates = this.metaData.data['examDate'];
-      this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
-      this.allViews = this.metaData.data['viewBy'];
-    })
-  }
+  ) { }
 
   ngOnInit(): void {
     document.getElementById('homeBtn').style.display = 'block';
@@ -92,10 +72,6 @@ export class HeatChartComponent implements OnInit {
     this.dist = false;
     this.blok = false;
     this.clust = false;
-    this.grade = 'all';
-    this.examDate = 'all';
-    this.subject = 'all';
-    this.viewBy = 'indicator';
     this.district = undefined;
     this.block = undefined;
     this.cluster = undefined;
@@ -110,17 +86,14 @@ export class HeatChartComponent implements OnInit {
     this.level = 'district';
     this.reportData = [];
     let a = {
-      year: this.year,
-      grade: this.grade == 'all' ? '' : this.grade,
-      subject_name: this.subject == 'all' ? '' : this.subject,
-      exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
+      timePeriod: this.timePeriod,
+      reportType: this.reportType
     }
 
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.PATHeatMapAllData(a).subscribe(response => {
+    this.myData = this.service.tpdDistWise(a).subscribe(response => {
       this.genericFunction(response);
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
@@ -130,7 +103,7 @@ export class HeatChartComponent implements OnInit {
     })
   }
 
-  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, viewBy, level) => {
+  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, level) => {
     // var options: Highcharts.Options = 
     Highcharts.chart('container', {
       chart: {
@@ -184,7 +157,7 @@ export class HeatChartComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: yLabel.length > 1 ? (yLabel.length / 5) : yLabel.length - 1,
+        max: yLabel.length > 1 ? (yLabel.length) : yLabel.length - 1,
         scrollbar: {
           enabled: true
         }
@@ -215,12 +188,12 @@ export class HeatChartComponent implements OnInit {
       },
       tooltip: {
         formatter: function () {
-          return '<b>' + getPointCategoryName(this.point, 'y', viewBy, level) + '</b>';
+          return '<b>' + getPointCategoryName(this.point, 'y', level) + '</b>';
         }
       },
     });
 
-    function getPointCategoryName(point, dimension, viewBy, level) {
+    function getPointCategoryName(point, dimension, level) {
       var series = point.series,
         isY = dimension === 'y',
         axis = series[isY ? 'yAxis' : 'xAxis'];
@@ -230,56 +203,25 @@ export class HeatChartComponent implements OnInit {
       if (level == 'district') {
         obj = `<b>DistrictId: ${series['xAxis'].categories[point['x']]}</b> 
         <br> <b>DistrictName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>           
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${splitVal[6]}` : `<b>QuestionId: ${splitVal[6]}</b>`}
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
       if (level == 'block') {
         obj = `<b>BlockId: ${series['xAxis'].categories[point['x']]}</b> 
         <br> <b>BlockName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-               
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${splitVal[6]}` : `<b>QuestionId: ${splitVal[6]}</b>`}
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
       if (level == 'cluster') {
         obj = `<b>ClusterId: ${series['xAxis'].categories[point['x']]}</b> 
         <br> <b>ClusterName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-               
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${splitVal[6]}` : `<b>QuestionId: ${splitVal[6]}</b>`}
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
       if (level == 'school') {
         obj = `<b>SchoolId: ${series['xAxis'].categories[point['x']]}</b> 
         <br> <b>SchoolName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-               
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${splitVal[6]}` : `<b>QuestionId: ${splitVal[6]}</b>`}
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
 
@@ -288,29 +230,7 @@ export class HeatChartComponent implements OnInit {
     }
   }
 
-  selectedYear() {
-    this.fileName = "Year_wise_report";
-    document.getElementById('home').style.display = 'none';
-    this.levelWiseFilter();
-  }
-
-  selectedGrade() {
-    this.fileName = "Grade_wise_report";
-    this.levelWiseFilter();
-  }
-
-  selectedSubject() {
-    this.fileName = "Subject_wise_report";
-    this.levelWiseFilter();
-  }
-
-  selectedExamDate() {
-    this.fileName = "ExamDate_wise_report";
-    this.levelWiseFilter();
-  }
-
-  selectedViewBy() {
-    this.fileName = "ViewBy_report";
+  selectedTimePeriod() {
     this.levelWiseFilter();
   }
 
@@ -326,15 +246,12 @@ export class HeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
-      year: this.year,
-      grade: this.grade == 'all' ? '' : this.grade,
-      subject_name: this.subject == 'all' ? '' : this.subject,
-      exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
+      timePeriod: this.timePeriod,
+      reportType: this.reportType,
       districtId: districtId
     }
 
-    this.service.PATHeatMapDistData(a).subscribe(response => {
+    this.service.tpdBlockWise(a).subscribe(response => {
       this.genericFunction(response);
       var dist = this.districtNames.find(a => a.district_id == districtId);
       this.districtHierarchy = {
@@ -365,16 +282,13 @@ export class HeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
-      year: this.year,
-      grade: this.grade == 'all' ? '' : this.grade,
-      subject_name: this.subject == 'all' ? '' : this.subject,
-      exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
+      timePeriod: this.timePeriod,
+      reportType: this.reportType,
       districtId: this.district,
       blockId: blockId
     }
 
-    this.service.PATHeatMapBlockData(a).subscribe(response => {
+    this.service.tpdClusterWise(a).subscribe(response => {
       this.genericFunction(response);
       var block = this.blockNames.find(a => a.block_id == blockId);
 
@@ -405,17 +319,14 @@ export class HeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
-      year: this.year,
-      grade: this.grade == 'all' ? '' : this.grade,
-      subject_name: this.subject == 'all' ? '' : this.subject,
-      exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
+      timePeriod: this.timePeriod,
+      reportType: this.reportType,
       districtId: this.district,
       blockId: this.block,
       clusterId: clusterId
     }
 
-    this.service.PATHeatMapClusterData(a).subscribe(response => {
+    this.service.tpdSchoolWise(a).subscribe(response => {
       this.genericFunction(response);
       var cluster = this.clusterNames.find(a => a.cluster_id == clusterId);
       this.clusterHierarchy = {
@@ -440,9 +351,6 @@ export class HeatChartComponent implements OnInit {
   }
 
   genericFunction(response) {
-    let a = {
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
-    }
     let yLabel = response['result']['yLabel']
     let xLabel = response['result']['xLabel']
     let xLabelId = response['result']['xLabelId']
@@ -461,7 +369,7 @@ export class HeatChartComponent implements OnInit {
       this.clusterNames = response['clusterDetails'];
       this.clusterNames = this.clusterNames.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }
-    this.chartFun(xLabel, xLabelId, yLabel, zLabel, data, a.viewBy, this.level);
+    this.chartFun(xLabel, xLabelId, yLabel, zLabel, data, this.level);
   }
 
   //level wise filter

@@ -10,7 +10,7 @@ export PGPASSWORD=$db_password
 
 if [ $temp == 0 ]; then
     version=`psql -V | head -n1 | cut -d" " -f3`
-    if [ $version>=10.12 ]
+    if [[ $(echo "$version >= 10.12" | bc) == 1 ]]
     then
         echo "WARNING - Postgres found, taking the backup to current directory..."
         pg_dump -h localhost -U $db_user -F t $db_name > `date +%Y%m%d%H%M`$bk_db_name.tar

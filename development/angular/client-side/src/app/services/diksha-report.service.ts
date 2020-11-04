@@ -72,4 +72,32 @@ export class DikshaReportService {
       'headers': { 'token': "Bearer " + localStorage.getItem('token') }
     });
   }
+
+  tpdDistWise(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/diksha/tpd/distWise`, data, {
+      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+    });
+  }
+
+  tpdBlockWise(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/diksha/tpd/blockWise`, data, {
+      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+    });
+  }
+
+  tpdClusterWise(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/diksha/tpd/clusterWise`, data, {
+      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+    });
+  }
+
+  tpdSchoolWise(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/diksha/tpd/schoolWise`, data, {
+      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
+    });
+  }
 }

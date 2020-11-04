@@ -230,6 +230,10 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <div class="row outer1">
+
+            </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
             <div class="diksha">SCHOOL MONITORING</div>
@@ -257,6 +261,74 @@
                                 <div class="views">
                                     <p *ngIf="crcrViews;else other_content" id="views">views:
                                         {{crcrViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 20px">
+        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="row outer12">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tdp-cp"
+                        [routerLink]="['/diksha/tpd-content-progress']" (click)="fetchTelemetry($event,'tpd-cp')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">TPD Content </p>
+                                        <p class="card-title" style="font-weight: bold;">Progress</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="tpdcpViews;else other_content" id="views">views:
+                                        {{tpdcpViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tpd-tp"
+                        [routerLink]="['/diksha/tpd-teacher-percentage']" (click)="fetchTelemetry($event,'tdp-tp')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">TPD Teacher </p>
+                                        <p class="card-title" style="font-weight: bold;">Percentage</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="tpdtpViews;else other_content" id="views">views:
+                                        {{tpdtpViews}}</p>
                                     <ng-template #other_content>
                                         <p id="errViews">views: 0 {{timePeriod}}</p>
                                     </ng-template>
