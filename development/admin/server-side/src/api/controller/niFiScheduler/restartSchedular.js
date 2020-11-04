@@ -8,7 +8,6 @@ exports.restartNifiProcess = async function () {
     if (fs.existsSync('../schedulers.json')) {
         schedularData = JSON.parse(fs.readFileSync('../schedulers.json'));
     }
-    console.log(schedularData);
     await schedularData.forEach(async myJob => {
         if (myJob.state == "RUNNING") {
             await schedule.scheduleJob(myJob.groupId, `${mins} ${hours} * * *`, async function () {
