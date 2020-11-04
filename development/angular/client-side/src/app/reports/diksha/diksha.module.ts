@@ -16,13 +16,13 @@ const dikshaRoutes: Routes = [
   {
     path: '', canActivate: [AuthGuard], children: [
       {
-        path: 'diksha-chart', component: DikshaChartComponent, canActivateChild: [AuthGuard]
+        path: 'usage-by-user-profile', component: DikshaChartComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'diksha-table', component: DikshaTableComponent, canActivateChild: [AuthGuard]
+        path: 'usage-by-course-content', component: DikshaTableComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'diksha-column-chart', component: DikshaBarChartComponent, canActivateChild: [AuthGuard]
+        path: 'usage-by-course', component: DikshaBarChartComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'usage-by-textbook', component: DikshaUsageByTextBookComponent, canActivateChild: [AuthGuard]

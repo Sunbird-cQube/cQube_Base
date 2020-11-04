@@ -9,7 +9,6 @@
     - .version
 
   roles:
-          - create_base_dir
           - { role: java, tags: install }  
           - { role: python, tags: install }
           - createdb

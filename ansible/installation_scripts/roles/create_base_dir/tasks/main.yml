@@ -8,6 +8,15 @@
     state: directory
   tags: install
 
+- name: Creating Postgres backup directory
+  file: 
+    path: "{{ base_dir }}/cqube/postgres/backups"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  tags: [ install, update ]
+
 - name: Setting timezone to IST
   timezone:
     name: Asia/Kolkata

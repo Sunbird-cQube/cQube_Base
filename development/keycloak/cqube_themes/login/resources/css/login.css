@@ -405,10 +405,9 @@ a.zocial  {
     height: 360px auto;
     width: 300px;
     border-radius: 16px;
-    background: transparent;
+    background-color: rgb(57, 125, 226);;
     opacity: 0.9;
     color: #fff;
-  box-shadow:3px 3px 5px 6px  rgb(57, 125, 226);
   }
     
 label{
@@ -485,4 +484,7 @@ label{
     height: 40px;
     border-radius: 20px;
     background-color: #f75c69 !important;
+}
+.control-label {
+    color: #363636
 }
