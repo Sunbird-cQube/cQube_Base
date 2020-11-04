@@ -73,13 +73,13 @@
               expand_more</mat-icon>
           </mat-list-item>
           <div class="submenu2" [ngClass]="{'expanded' : showSubmenu2}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['/diksha/diksha-chart']" (click)="sidenav.toggle()"
+            <a mat-list-item [routerLink]="['/diksha/usage-by-user-profile']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'dsc')" id="chrtReport" (click)="showSubmenu2 = !showSubmenu2"><span
                 style="margin-left: 50px;">Usage by user profile</span></a>
-            <a mat-list-item [routerLink]="['/diksha/diksha-column-chart']" (click)="sidenav.toggle()"
+            <a mat-list-item [routerLink]="['/diksha/usage-by-course']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'dcc')" id="clmnReport" (click)="showSubmenu2 = !showSubmenu2"><span
                 style="margin-left: 50px;">Usage by Course</span></a>
-            <a mat-list-item [routerLink]="['/diksha/diksha-table']" (click)="sidenav.toggle()"
+            <a mat-list-item [routerLink]="['/diksha/usage-by-course-content']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'dtr')" id="dtblReport" (click)="showSubmenu2 = !showSubmenu2"><span
                 style="margin-left: 50px;">Usage by Course Content</span></a>
             <a mat-list-item [routerLink]="['/diksha/tpd-content-progress']" (click)="sidenav.toggle()"
