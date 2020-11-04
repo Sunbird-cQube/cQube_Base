@@ -85,12 +85,12 @@ reupgrade=0
 if [[ $installed_version == $this_version ]]; then
    echo "cQube is already upgraded to $this_version version.";
    while true; do
-    read -p "Do you wish to rerun the upgrade?" yn
+    read -p "Do you wish to rerun the upgrade (yes/no)? " yn
     case $yn in
-        [yes]* ) continue;
+        yes) 
 	        reupgrade=1	
-		break;;
-        [no]* ) exit;;
+		      break;;
+        no) exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
