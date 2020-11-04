@@ -239,7 +239,7 @@ object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_ty
 collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
 collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging
 """,
-"select_diksha_files_from_log_db":"""select * from log_summary where filename like '%diksha%'""",
+"select_diksha_files_from_log_db":"""select * from log_summary where filename like '%diksha_data%'""",
 "diksha_temp_tb":"""diksha_content_temp""",
 "diksha_tpd_temp_to_trans_fn":"""Select insert_diksha_tpd_trans();""",
 "diksha_tpd_unique_records_same_records":"""select collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
@@ -307,4 +307,33 @@ where content_view_date IS NULL
  OR total_count IS NULL
  OR total_time_spent IS NULL
 """,
+"diksha_tpd_jolt_for_log_summary":"""[{
+		"operation": "shift",
+		"spec": {
+			"*": {
+				"filename": "[&1].filename",
+			   "ff_uuid": "[&1].ff_uuid",
+              "total_records": "[&1].total_records",
+              "blank_lines": "[&1].blank_lines",
+              "duplicate_records": "[&1].duplicate_records",
+              "datatype_mismatch": "[&1].datatype_mismatch",
+             
+              "collection_id": "[&1].records_with_null_value.collection_id" ,
+              "uuid": "[&1].records_with_null_value.uuid",
+              "school_id" : "[&1].records_with_null_value.school_id",
+              
+              
+              "processed_records": "[&1].processed_records",
+              "process_start_time": "[&1].process_start_time",
+              "process_end_time": "[&1].process_end_time"
+              
+              
+              
+              
+              
+			}
+		}
+	}
+]""",
+"select_diksha_tpd_files_from_log_db":"""select * from log_summary where filename like '%diksha_tpd%'"""
 }
