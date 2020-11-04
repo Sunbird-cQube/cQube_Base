@@ -42,7 +42,7 @@ if [ ! $? = 0 ]; then
 tput setaf 1; echo "Error there is a problem installing Ansible"; tput sgr0
 exit
 fi
-ansible-playbook create_base.yml --tags "install"
+ansible-playbook create_base.yml --tags "install" --extra-vars "@config.yml"
 ansible-playbook install.yml --tags "install"
 if [ $? = 0 ]; then
 echo "CQube installed successfully!!"
