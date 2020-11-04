@@ -599,5 +599,6 @@ where crc_inspec_null_col.ff_uuid = log_summary.ff_uuid''',
 "district_filename":'''district_crc_opt_json''',
 "block_filename":'''block_crc_opt_json''',
 "cluster_filename":'''cluster_crc_opt_json''',
-"school_filename":'''school_crc_opt_json'''
+"school_filename":'''school_crc_opt_json''',
+"crc_queries_filename":'''crc_queries.json'''
 }
