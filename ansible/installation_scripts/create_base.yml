@@ -1,0 +1,12 @@
+---
+- name: Creating cQube base directory
+  hosts: localhost
+  remote_user: root
+  vars_files:
+    - config.yml
+    - datasource_config.yml
+    - memory_config.yml
+    - .version
+
+  roles:
+          - create_base_dir

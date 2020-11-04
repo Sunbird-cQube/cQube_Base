@@ -81,13 +81,26 @@ else
    exit 1
 fi
 
-if [[ ! $installed_version < $this_version ]]; then
+reupgrade=0
+if [[ $installed_version == $this_version ]]; then
    echo "cQube is already upgraded to $this_version version.";
-   exit 1
+   while true; do
+    read -p "Do you wish to rerun the upgrade?" yn
+    case $yn in
+        [yes]* ) continue;
+	        reupgrade=1	
+		break;;
+        [no]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 fi
-if [[ ! $installed_version == $version_upgradable_from ]]; then
-   echo "Version $this_version is only upgradeable from $version_upgradable_from version";
-   exit 1
+
+if [[ $reupgrade == 0 ]]; then
+   if [[ ! $installed_version == $version_upgradable_from ]]; then
+        echo "Version $this_version is only upgradeable from $version_upgradable_from version";
+        exit 1
+   fi
 fi
 }
 

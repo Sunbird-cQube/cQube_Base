@@ -17,6 +17,9 @@ chmod u+x upgradation_validate.sh
 
 . "upgradation_validate.sh"
 . "$INS_DIR/validation_scripts/datasource_config_validation.sh"
+
+ansible-playbook create_base.yml --tags "update"
+
 . "$INS_DIR/validation_scripts/backup_postgres.sh"
 
 if [ -e /etc/ansible/ansible.cfg ]; then
