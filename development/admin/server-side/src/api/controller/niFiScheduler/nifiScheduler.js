@@ -3,6 +3,8 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const axios = require('axios');
 var schedule = require('node-schedule');
+const { min } = require('moment');
+const fs = require('fs');
 
 router.get('/getProcessorId', auth.authController, async (req, res) => {
     try {
@@ -57,6 +59,8 @@ router.get('/getProcessorDetails/:id', auth.authController, async (req, res) => 
 router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
     try {
         logger.info('--- schedule processor api ---')
+        var schedularData = [];
+
         let groupId = req.params.id
         let state = req.body.state
         let timeToSchedule = req.body.time
@@ -64,19 +68,46 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
         let hours = parseInt(timeToSchedule[0])
         let mins = parseInt(timeToSchedule[1])
         let timeToStop = req.body.stopTime
+
         timeToStop = hours + timeToStop
 
         if (timeToStop >= 24) {
             timeToStop = timeToStop % 24;
             timeToStop = timeToStop < 0 ? 24 + timeToStop : +timeToStop;
         }
+
         let url = `${process.env.NIFI_URL}/flow/process-groups/${groupId}`
 
         var job = await schedule.scheduledJobs[groupId];
+
         if (job != undefined) {
             job.cancel();
-            await schedule.scheduleJob(groupId, `${mins}  ${hours} * * *`, async function () {
-                // logger.info(`re schedule processor ${groupId} for new time ::::::: ${hours} : ${mins}`);
+            let obj = {
+                groupId: groupId,
+                state: state,
+                mins: mins,
+                hours: hours,
+                timeToStop: timeToStop,
+                scheduleUpdatedAt: `${new Date()}`
+            }
+
+            schedularData = JSON.parse(fs.readFileSync('../schedulers.json'));
+            schedularData.forEach(myJob => {
+                if (myJob.groupId == obj.groupId) {
+                    myJob.groupId = obj.groupId;
+                    myJob.state = obj.state;
+                    myJob.mins = obj.mins;
+                    myJob.hours = obj.hours;
+                    myJob.timeToStop = obj.timeToStop;
+                    myJob.scheduleUpdatedAt = `${obj.scheduleUpdatedAt}`;
+                }
+            });
+            fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                if (err) throw err;
+                logger.info('Re-Scheduled RUNNING Job - Updated to file');
+            });
+
+            await schedule.scheduleJob(groupId, `${mins} ${hours} * * *`, async function () {
                 logger.info(`--- ${groupId} - Nifi processor group re-scheduling started ---`);
                 let response = await startFun()
                 logger.info(JSON.stringify(response))
@@ -85,21 +116,60 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
             await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
                 logger.info(`--- ${groupId} - Nifi processor group re-scheduling stopping initiated ---`);
                 let response = await stopFun()
+                schedularData = JSON.parse(fs.readFileSync('../schedulers.json'));
+                schedularData.forEach(myJob => {
+                    if (myJob.groupId == obj.groupId) {
+                        myJob.state = "STOPPED";
+                        myJob.scheduleUpdatedAt = `${new Date()}`;
+                    }
+                });
+                fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                    if (err) throw err;
+                    logger.info('Re-Scheduled Job status changed to STOPPED - has updated to file');
+                });
                 logger.info(JSON.stringify(response))
                 logger.info(`--- ${groupId} - Nifi processor group re-scheduling stopping completed ---`);
             });
         } else {
-            await schedule.scheduleJob(groupId, `${mins}  ${hours} * * *`, async function () {
-                // logger.info(`schedule processor ${groupId} for default time ::::::: ${hours} : ${mins}`);
+            let obj = {
+                groupId: groupId,
+                state: state,
+                mins: mins,
+                hours: hours,
+                timeToStop: timeToStop,
+                scheduleUpdatedAt: `${new Date()}`
+            }
+
+            if (fs.existsSync('../schedulers.json')) {
+                schedularData = JSON.parse(fs.readFileSync('../schedulers.json'));
+            }
+            schedularData.push(obj);
+            fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                if (err) throw err;
+                logger.info('Scheduled RUNNING Job - Updated to file');
+            });
+
+            await schedule.scheduleJob(groupId, `${mins} ${hours} * * *`, async function () {
                 logger.info(`--- ${groupId} - Nifi processor group scheduling started ---`);
                 let response = await startFun()
                 logger.info(JSON.stringify(response))
                 logger.info(`--- ${groupId} - Nifi processor group scheduling completed ---`);
             });
             await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
-                // logger.info(`schedule processor ${groupId} stop time ::::::: ${timeToStop} : ${mins}`);
                 logger.info(`--- ${groupId} - Nifi processor group scheduling stopping initiated ---`);
                 let response = await stopFun()
+                schedularData = JSON.parse(fs.readFileSync('../schedulers.json'));
+                schedularData.forEach(myJob => {
+                    if (myJob.groupId == obj.groupId) {
+                        myJob.state = "STOPPED";
+                        myJob.scheduleUpdatedAt = `${new Date()}`;
+                    }
+                });
+
+                fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                    if (err) throw err;
+                    logger.info('Scheduled Job status changed to STOPPED - has updated to file');
+                });
                 logger.info(JSON.stringify(response))
                 logger.info(`--- ${groupId} - Nifi processor group scheduling stopping completed ---`);
             });
@@ -140,9 +210,11 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
     }
 })
 
-router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
+router.post('/scheduleProcessor/:id', async (req, res) => {
     try {
-        logger.info('---default schedule nifi processor api ---')
+        logger.info('--- schedule processor api ---')
+        var schedularData = [];
+
         let groupId = req.params.id
         let state = req.body.state
         let timeToSchedule = req.body.time
@@ -150,19 +222,46 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
         let hours = parseInt(timeToSchedule[0])
         let mins = parseInt(timeToSchedule[1])
         let timeToStop = req.body.stopTime
+
         timeToStop = hours + timeToStop
 
         if (timeToStop >= 24) {
             timeToStop = timeToStop % 24;
             timeToStop = timeToStop < 0 ? 24 + timeToStop : +timeToStop;
         }
+
         let url = `${process.env.NIFI_URL}/flow/process-groups/${groupId}`
 
         var job = await schedule.scheduledJobs[groupId];
+
         if (job != undefined) {
             job.cancel();
-            await schedule.scheduleJob(groupId, `${mins}  ${hours} * * *`, async function () {
-                // logger.info(`re schedule processor ${groupId} for new time ::::::: ${hours} : ${mins}`);
+            let obj = {
+                groupId: groupId,
+                state: state,
+                mins: mins,
+                hours: hours,
+                timeToStop: timeToStop,
+                scheduleUpdatedAt: `${new Date()}`
+            }
+
+            schedularData = JSON.parse(fs.readFileSync('../schedulers.json'));
+            schedularData.forEach(myJob => {
+                if (myJob.groupId == obj.groupId) {
+                    myJob.groupId = obj.groupId;
+                    myJob.state = obj.state;
+                    myJob.mins = obj.mins;
+                    myJob.hours = obj.hours;
+                    myJob.timeToStop = obj.timeToStop;
+                    myJob.scheduleUpdatedAt = `${obj.scheduleUpdatedAt}`;
+                }
+            });
+            fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                if (err) throw err;
+                logger.info('Re-Scheduled RUNNING Job - Updated to file');
+            });
+
+            await schedule.scheduleJob(groupId, `${mins} ${hours} * * *`, async function () {
                 logger.info(`--- ${groupId} - Nifi processor group re-scheduling started ---`);
                 let response = await startFun()
                 logger.info(JSON.stringify(response))
@@ -171,21 +270,60 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
             await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
                 logger.info(`--- ${groupId} - Nifi processor group re-scheduling stopping initiated ---`);
                 let response = await stopFun()
+                schedularData = JSON.parse(fs.readFileSync('../schedulers.json'));
+                schedularData.forEach(myJob => {
+                    if (myJob.groupId == obj.groupId) {
+                        myJob.state = "STOPPED";
+                        myJob.scheduleUpdatedAt = `${new Date()}`;
+                    }
+                });
+                fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                    if (err) throw err;
+                    logger.info('Re-Scheduled Job status changed to STOPPED - has updated to file');
+                });
                 logger.info(JSON.stringify(response))
                 logger.info(`--- ${groupId} - Nifi processor group re-scheduling stopping completed ---`);
             });
         } else {
-            await schedule.scheduleJob(groupId, `${mins}  ${hours} * * *`, async function () {
-                // logger.info(`schedule processor ${groupId} for default time ::::::: ${hours} : ${mins}`);
+            let obj = {
+                groupId: groupId,
+                state: state,
+                mins: mins,
+                hours: hours,
+                timeToStop: timeToStop,
+                scheduleUpdatedAt: `${new Date()}`
+            }
+
+            if (fs.existsSync('../schedulers.json')) {
+                schedularData = JSON.parse(fs.readFileSync('../schedulers.json'));
+            }
+            schedularData.push(obj);
+            fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                if (err) throw err;
+                logger.info('Scheduled RUNNING Job - Updated to file');
+            });
+
+            await schedule.scheduleJob(groupId, `${mins} ${hours} * * *`, async function () {
                 logger.info(`--- ${groupId} - Nifi processor group scheduling started ---`);
                 let response = await startFun()
                 logger.info(JSON.stringify(response))
                 logger.info(`--- ${groupId} - Nifi processor group scheduling completed ---`);
             });
             await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
-                // logger.info(`schedule processor ${groupId} stop time ::::::: ${timeToStop} : ${mins}`);
                 logger.info(`--- ${groupId} - Nifi processor group scheduling stopping initiated ---`);
                 let response = await stopFun()
+                schedularData = JSON.parse(fs.readFileSync('../schedulers.json'));
+                schedularData.forEach(myJob => {
+                    if (myJob.groupId == obj.groupId) {
+                        myJob.state = "STOPPED";
+                        myJob.scheduleUpdatedAt = `${new Date()}`;
+                    }
+                });
+
+                fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                    if (err) throw err;
+                    logger.info('Scheduled Job status changed to STOPPED - has updated to file');
+                });
                 logger.info(JSON.stringify(response))
                 logger.info(`--- ${groupId} - Nifi processor group scheduling stopping completed ---`);
             });
@@ -218,13 +356,12 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                 }
             })
         }
-        logger.info('---default schedule nifi processor api response sent ---')
+        logger.info('--- schedule processor api response sent ---')
         res.send({ msg: `Job rescheduled successfully at ${req.body.time} every day` })
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 })
-
 
 module.exports = router;
