@@ -715,5 +715,15 @@ group by b.question_id,b.exam_id,b.indicator_id,b.indicator_title,b."indicator",
 "pat_periodic_exam_result_trans_datatype":"""Optional(parseInt()),Optional(parseInt()),Optional(StrNotNullOrEmpty()),Optional(parseLong()),Optional(parseLong()),Optional(parseLong()),Optional(parseInt()),
 Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(parseDouble())""",
 "sch_hrchy_rm_special_char_1":"""update school_hierarchy_details set school_name=replace(school_name,'[','') where school_name like '%]%';""",
-"sch_hrchy_rm_special_char_2":"""update school_hierarchy_details set school_name=replace(school_name,']','') where school_name like '%]%';"""
+"sch_hrchy_rm_special_char_2":"""update school_hierarchy_details set school_name=replace(school_name,']','') where school_name like '%]%';""",
+"pat_learning_outcome_meta_jolt_spec":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "pat_meta": ""
+      }
+    }
+  }
+]"""
 }

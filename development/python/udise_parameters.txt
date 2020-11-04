@@ -1461,5 +1461,6 @@ smdc_sdp_yn,smdc_bnkac_yn,smdc_sbc_yn,smdc_acadcom_yn,smdc_pta_yn,smdc_pta_meeti
 "udise_district_filename":"""udise_district_wise""",
 "udise_block_filename":"""udise_block_wise""",
 "udise_cluster_filename":"""udise_cluster_wise""",
-"udise_school_filename":"""udise_school_wise"""
+"udise_school_filename":"""udise_school_wise""",
+"udise_queries_filename":"""udise_queries.json"""
 }
