@@ -1,37 +1,36 @@
 const { logger } = require('../../lib/logger');
 var schedule = require('node-schedule');
 const fs = require('fs');
+const axios = require('axios');
 
 exports.restartNifiProcess = async function () {
-    var schedularData = JSON.parse(fs.readFileSync('schedulers.json'));
+    var schedularData = []
+    if (fs.existsSync('../schedulers.json')) {
+        schedularData = JSON.parse(fs.readFileSync('../schedulers.json'));
+    }
+    console.log(schedularData);
     await schedularData.forEach(async myJob => {
         if (myJob.state == "RUNNING") {
-            await schedule.scheduleJob(myJob.groupId, `${myJob.mins}  ${myJob.hours} * * *`, async function () {
-                // logger.info(`schedule processor ${groupId} for default time ::::::: ${hours} : ${mins}`);
+            await schedule.scheduleJob(myJob.groupId, `${mins} ${hours} * * *`, async function () {
                 logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling started ---`);
                 let response = await startFun();
-
-                myJob.updateDateTime = `${new Date()}`;
-                await fs.writeFile("schedulers.json", JSON.stringify(schedularData), function (err) {
+                myJob.scheduleUpdatedAt = `${new Date()}`;
+                await fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
                     if (err) throw err;
-                    console.log('Scheduled Job Updated');
+                    logger.info('Restart process - Scheduled RUNNING Job - Restarted successfully');
                 });
-
                 logger.info(JSON.stringify(response))
                 logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling completed ---`);
             });
-            await schedule.scheduleJob(myJob.groupId, `${myJob.mins} ${myJob.timeToStop} * * *`, async function () {
-                // logger.info(`schedule processor ${groupId} stop time ::::::: ${timeToStop} : ${mins}`);
+            await schedule.scheduleJob(myJob.groupId, `${mins} ${timeToStop} * * *`, async function () {
                 logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling stopping initiated ---`);
                 let response = await stopFun();
-
                 myJob.state = "STOPPED";
-                myJob.updateDateTime = `${new Date()}`;
-                await fs.writeFile("schedulers.json", JSON.stringify(schedularData), function (err) {
+                myJob.scheduleUpdatedAt = `${new Date()}`;
+                await fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
                     if (err) throw err;
-                    console.log('Scheduled Job Updated');
+                    logger.info('Restart process - Scheduled Job status changed to STOPPED - Stopped Successfully');
                 });
-
                 logger.info(JSON.stringify(response))
                 logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling stopping completed ---`);
             });
