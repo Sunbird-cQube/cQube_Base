@@ -39,9 +39,7 @@
                         {{clusterHierarchy.districtName}}</span><span>/ </span><span
                         (click)="selectedBlock(clusterHierarchy.blockId)"
                         style="cursor: pointer;text-decoration: underline;">
-                        {{clusterHierarchy.blockName}}</span><span>/ </span><span
-                        (click)="selectedCluster(clusterHierarchy.clusterId)"
-                        style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.blockName}}</span><span>/ </span><span>
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
@@ -147,7 +145,7 @@
             </select>
         </div>
     </div>
-    <div class="row">
+    <div class="row" id="initTable" style="display: block;">
         <div class="col-sm-12" style="margin-top: 2%;">
             <table #dataTable id="LOtable" class="display responsive cell-border"
                 style="font-size: 13px; text-align: center; width: 100%; border: 1px solid gray;">

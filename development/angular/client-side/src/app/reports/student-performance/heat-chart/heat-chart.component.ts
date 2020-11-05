@@ -87,6 +87,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   resetToInitPage() {
+    this.fileName = "District_wise_report";
     this.skul = true;
     this.dist = false;
     this.blok = false;
@@ -142,12 +143,16 @@ export class HeatChartComponent implements OnInit {
         enabled: false
       },
       xAxis: [{
-        categories: xLabelId,
+        categories: [],
         labels: {
           rotation: 270,
+          style: {
+            color: 'black',
+            fontSize: '14px'
+          }
         },
         min: 0,
-        max: (xLabelId.length / 2),
+        max: 30,
         scrollbar: {
           enabled: true
         }
@@ -156,7 +161,12 @@ export class HeatChartComponent implements OnInit {
         opposite: true,
         categories: xLabel,
         labels: {
-          rotation: 270
+          rotation: 270,
+          style: {
+            color: 'black',
+            fontSize: '11px',
+            fontFamily: 'Arial',
+          }
         },
       }],
       yAxis: {
@@ -164,16 +174,17 @@ export class HeatChartComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: '14px',
+            fontSize: '10px',
             textDecoration: "underline",
-            textOverflow: "ellipsis"
+            textOverflow: "ellipsis",
+            fontFamily: 'Arial'
           },
           align: "right"
         },
         title: null,
         reversed: true,
         min: 0,
-        max: yLabel.length > 1 ? (yLabel.length / 10) : yLabel.length - 1,
+        max: yLabel.length > 1 ? (yLabel.length / 5) : yLabel.length - 1,
         scrollbar: {
           enabled: true
         }
@@ -217,8 +228,7 @@ export class HeatChartComponent implements OnInit {
 
       var obj = '';
       if (level == 'district') {
-        obj = `<b>DistrictId: ${series['xAxis'].categories[point['x']]}</b> 
-        <br> <b>DistrictName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>           
+        obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>           
         <br> <b>Grade: ${splitVal[1]}</b>
         <br> <b>Subject: ${splitVal[2]}</b>
         <br> <b>ExamDate: ${splitVal[0]}</b>
@@ -230,9 +240,7 @@ export class HeatChartComponent implements OnInit {
       }
 
       if (level == 'block') {
-        obj = `<b>BlockId: ${series['xAxis'].categories[point['x']]}</b> 
-        <br> <b>BlockName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-               
+        obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
         <br> <b>Grade: ${splitVal[1]}</b>
         <br> <b>Subject: ${splitVal[2]}</b>
         <br> <b>ExamDate: ${splitVal[0]}</b>
@@ -244,9 +252,7 @@ export class HeatChartComponent implements OnInit {
       }
 
       if (level == 'cluster') {
-        obj = `<b>ClusterId: ${series['xAxis'].categories[point['x']]}</b> 
-        <br> <b>ClusterName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-               
+        obj = `<b>ClusterName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
         <br> <b>Grade: ${splitVal[1]}</b>
         <br> <b>Subject: ${splitVal[2]}</b>
         <br> <b>ExamDate: ${splitVal[0]}</b>
@@ -258,9 +264,7 @@ export class HeatChartComponent implements OnInit {
       }
 
       if (level == 'school') {
-        obj = `<b>SchoolId: ${series['xAxis'].categories[point['x']]}</b> 
-        <br> <b>SchoolName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-               
+        obj = `<b>SchoolName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>    
         <br> <b>Grade: ${splitVal[1]}</b>
         <br> <b>Subject: ${splitVal[2]}</b>
         <br> <b>ExamDate: ${splitVal[0]}</b>
@@ -439,16 +443,16 @@ export class HeatChartComponent implements OnInit {
     let zLabel = response['result']['zLabel']
     this.reportData = response['downloadData']
     if (response['districtDetails']) {
-      this.districtNames = response['districtDetails'];
-      this.districtNames = this.districtNames.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
+      let districts = response['districtDetails'];
+      this.districtNames = districts.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
     }
     if (response['blockDetails']) {
-      this.blockNames = response['blockDetails'];
-      this.blockNames = this.blockNames.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
+      let blocks = response['blockDetails'];
+      this.blockNames = blocks.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }
     if (response['clusterDetails']) {
-      this.clusterNames = response['clusterDetails'];
-      this.clusterNames = this.clusterNames.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
+      let clusters = response['clusterDetails'];
+      this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }
     this.chartFun(xLabel, xLabelId, yLabel, zLabel, data, a.viewBy, this.level);
   }

@@ -1,51 +1,11 @@
-{
-"diksha_check_if_null":'''select * from diksha_content_staging
-where content_view_date IS NULL
- OR dimensions_pdata_id IS NULL
- OR dimensions_pdata_pid IS NULL
- OR content_name IS NULL
- OR content_board IS NULL
- OR content_mimetype IS NULL
- OR content_medium IS NULL
- OR content_gradelevel IS NULL
- OR content_subject IS NULL
- OR content_created_for IS NULL
- OR object_id IS NULL
- OR object_rollup_l1 IS NULL
- OR derived_loc_state IS NULL
- OR derived_loc_dIStrict IS NULL
- OR user_signin_type IS NULL
- OR user_login_type IS NULL
- OR collection_type IS NULL
- OR collection_created_for IS NULL
- OR total_count IS NULL
- OR total_time_spent IS NULL
-''',
-"diksha_count_null_value":'''(select 
-SUM(CASE when content_view_date IS NULL THEN 1 ELSE 0 END) AS count_null_content_view_date,
-SUM(CASE when dimensions_pdata_id IS NULL THEN 1 ELSE 0 END) AS count_null_dimensions_pdata_id,
-SUM(CASE when dimensions_pdata_pid IS NULL THEN 1 ELSE 0 END) AS count_null_dimensions_pdata_pid,
-SUM(CASE when content_name IS NULL THEN 1 ELSE 0 END) AS count_null_content_name,
-SUM(CASE when content_board IS NULL THEN 1 ELSE 0 END) AS count_null_content_board,
-SUM(CASE when "content_mimetype" IS NULL THEN 1 ELSE 0 END) AS count_null_content_mimetype,
-SUM(CASE when "content_medium" IS NULL THEN 1 ELSE 0 END) AS count_null_content_medium,
-SUM(CASE when "content_gradelevel" IS NULL THEN 1 ELSE 0 END) AS count_null_content_gradelevel,
-SUM(CASE when "content_subject" IS NULL THEN 1 ELSE 0 END) AS count_null_content_subject,
-SUM(CASE when "content_created_for" IS NULL THEN 1 ELSE 0 END) AS count_null_content_created_for,
-SUM(CASE when "object_id" IS NULL THEN 1 ELSE 0 END) AS count_null_object_id,
-SUM(CASE when "object_rollup_l1" IS NULL THEN 1 ELSE 0 END) AS count_null_object_rollup_l1,
-SUM(CASE when "derived_loc_state" IS NULL THEN 1 ELSE 0 END) AS count_null_derived_loc_state,
-SUM(CASE when "derived_loc_district" IS NULL THEN 1 ELSE 0 END) AS count_null_derived_loc_district,
-SUM(CASE when "user_signin_type" IS NULL THEN 1 ELSE 0 END) AS count_null_user_signin_type,
-SUM(CASE when "user_login_type" IS NULL THEN 1 ELSE 0 END) AS count_null_user_login_type,
-SUM(CASE when "collection_type" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_type,
-SUM(CASE when "collection_created_for" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_created_for,
-SUM(CASE when "total_count" IS NULL THEN 1 ELSE 0 END) AS count_null_total_count,
-SUM(CASE when "total_time_spent" IS NULL THEN 1 ELSE 0 END) AS count_null_total_time_spent
-from diksha_content_staging)
-''',
-"diksha_save_null_tb_name":"diksha_null_col",
-"diksha_null_to_log_db":'''update log_summary
+{"diksha_normalize":"""
+select "date" as content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent from flowfile""",
+"diksha_tpd_temp_tb":"""diksha_tpd_content_temp""",
+"diksha_null_to_log_db":"""update log_summary
 SET content_view_date = diksha_null_col.count_null_content_view_date,
 dimensions_pdata_id = diksha_null_col.count_null_dimensions_pdata_id,
 dimensions_pdata_pid = diksha_null_col.count_null_dimensions_pdata_pid,
@@ -67,69 +27,8 @@ collection_created_for = diksha_null_col.count_null_collection_created_for,
 total_count = diksha_null_col.count_null_total_count,
 total_time_spent = diksha_null_col.count_null_total_time_spent
 from diksha_null_col
-where diksha_null_col.ff_uuid = log_summary.ff_uuid
-''',
-"diksha_staging_tb_name": "diksha_content_staging",
-"diksha_temp_to_trans_fn":"select insert_diksha_trans();",
-"save_to_diksha_dup":"diksha_dup",
-"diksha_sum_of_dup":"select sum(num_of_times) from flowfile",
-"diksha_temp_tb":"diksha_content_temp",
-"save_to_diksha_total_content_pre_query":"drop view if exists insert_diksha_trans_view",
-"save_to_diksha_total_content_fn":"select insert_diksha_agg()",
-"select_diksha_files_from_log_db":"select * from log_summary where filename like '%diksha%'",
-"diksha_jolt_for_log_summary":'''[{
-		"operation": "shift",
-		"spec": {
-			"*": {
-				"filename": "[&1].filename",
-			   "ff_uuid": "[&1].ff_uuid",
-              "total_records": "[&1].total_records",
-              "blank_lines": "[&1].blank_lines",
-              "duplicate_records": "[&1].duplicate_records",
-              "datatype_mismatch": "[&1].datatype_mismatch",
-              "content_view_date": "[&1].records_with_null_value.content_view_date" ,
-              "dimensions_pdata_id": "[&1].records_with_null_value.dimensions_pdata_id",
-              "dimensions_pdata_pid" : "[&1].records_with_null_value.dimensions_pdata_pid",
-              "content_name": "[&1].records_with_null_value.content_name",
-              "content_board": "[&1].records_with_null_value.content_board",
-              "content_mimetype" : "[&1].records_with_null_value.content_mimetype", 
-              "content_medium": "[&1].records_with_null_value.content_medium",
-              "content_gradelevel": "[&1].records_with_null_value.content_gradelevel",
-              "content_subject": "[&1].records_with_null_value.content_subject",
-              "content_created_f": "[&1].records_with_null_value.content_created_f", 
-              "object_id": "[&1].records_with_null_value.object_id",
-              "object_rollup_l1": "[&1].records_with_null_value.object_rollup_l1", 
-              "derived_loc_state": "[&1].records_with_null_value.derived_loc_state",
-              "derived_loc_district": "[&1].records_with_null_value.derived_loc_dIStrict",
-              "user_signin_type": "[&1].records_with_null_value.user_signin_type", 
-              "user_login_type": "[&1].records_with_null_value.user_login_type", 
-              "collection_type" : "[&1].records_with_null_value.collection_type",
-              "collection_created_f": "[&1].records_with_null_value.collection_created_f",
-              "total_count": "[&1].records_with_null_value.total_count",
-              "total_time_spent": "[&1].records_with_null_value.total_time_spent", 
-              "processed_records": "[&1].processed_records",
-              "process_start_time": "[&1].process_start_time",
-              "process_end_time": "[&1].process_end_time"
-			}
-		}
-	}
-]
-''',
-"diksha_check_same_records":'''SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent
-,count(*)-1  num_of_times
-FROM diksha_content_staging
-GROUP BY content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent
-HAVING  COUNT(*) > 1
-''',
-"diksha_delete_null_values_qry":'''delete  from diksha_content_staging
+where diksha_null_col.ff_uuid = log_summary.ff_uuid""",
+"diksha_delete_null_values_qry":"""delete  from diksha_content_staging
 where content_view_date IS NULL
  OR dimensions_pdata_id IS NULL
  OR dimensions_pdata_pid IS NULL
@@ -149,9 +48,24 @@ where content_view_date IS NULL
  OR collection_type IS NULL
  OR collection_created_for IS NULL
  OR total_count IS NULL
- OR total_time_spent IS NULL
-''',
-"diksha_check_same_records":'''SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+ OR total_time_spent IS NULL""",
+"diksha_tpd_stg_to_temp_qry":"""select ff_uuid,collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
+enrolment_date,completion_date,progress,certificate_status,total_score  
+from  diksha_content_staging""",
+"diksha_tpd_check_same_records":"""SELECT collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
+enrolment_date,completion_date,progress,certificate_status,total_score
+,count(*)-1  num_of_times
+FROM diksha_content_staging
+GROUP BY collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
+enrolment_date,completion_date,progress,certificate_status,total_score
+HAVING  COUNT(*) > 1""",
+"diksha_tpd_null_to_log_db":"""update log_summary
+SET collection_id = diksha_null_col.count_null_collection_id,
+uuid = diksha_null_col.count_null_uuid,
+school_id = diksha_null_col.count_null_school_id
+from diksha_null_col
+where diksha_null_col.ff_uuid = log_summary.ff_uuid""",
+"diksha_check_same_records":"""SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
 content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
 object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
 collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
@@ -163,908 +77,14 @@ content_mimetype,content_medium,content_gradelevel,content_subject,content_creat
 object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
 collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
 collection_created_for,total_count,total_time_spent
-HAVING  COUNT(*) > 1
-''',
-"diksha_unique_records_same_records":'''select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent
-from (SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent,
-row_number() over (partition by content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent) as rn from diksha_content_staging) sq Where rn =1
-''',
-"diksha_stg_to_temp_qry":'''select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging
-''',
-"diskha_table_meta_query":'''select json_build_object('timeRange',timeRange,'districtDetails',
-array_to_json(array_agg(row_to_json(b))))
-from
-(select 
-case when (select exists(select 1 from diksha_total_content where content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) 
-    and (select max(content_view_date) from diksha_total_content)))=True then array['last_day','last_7_days','last_30_days']
-     when (select exists(select 1 from diksha_total_content where content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) 
-    and (select max(content_view_date) from diksha_total_content)))=True then array['last_day','last_7_days']
-     when (select exists(select 1 from diksha_total_content where content_view_date = (select max(content_view_date) from diksha_total_content)))=True then array['last_day']
-     end as timeRange,
-     cast(district_id as text) as district_id,district_name
- from diksha_total_content 
- where district_name is not null and district_id is not null 
-group by district_id,district_name,timeRange )as a
-join (select 
-     cast(district_id as text) as district_id,district_name
- from diksha_total_content 
- where district_name is not null and district_id is not null 
-group by district_id,district_name 
-) as b on a.district_id=b.district_id
-group by timeRange
-''',
-"diksha_stack_last_day_query":'''(select 
-district_id,district_name,
-initcap(user_login_type)as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,
-user_login_type,
-content_gradelevel,content_subject order by 1,3,4,5)
-union 
-(select 
-district_id,district_name,
-'All' as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-content_gradelevel,content_subject order by 1,3,4,5)
-''',
-"diksha_stack_last_7_days_query":'''
-(select 
-district_id,district_name,
-initcap(user_login_type)as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) 
-and (select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-user_login_type,
-content_gradelevel,content_subject order by 1,3,4,5)
-union 
-(select 
-district_id,district_name,
-'All' as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) 
-and (select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-content_gradelevel,content_subject order by 1,3,4,5)
-''',
-"diksha_stack_last_30_days_query":'''(select 
-district_id,district_name,
-initcap(user_login_type)as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-user_login_type,
-content_gradelevel,content_subject order by 1,3,4,5)
-union 
-(select 
-district_id,district_name,
-'All' as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-content_gradelevel,content_subject order by 1,3,4,5)
-''',
-"diksha_stack_all_query":'''(select 
-district_id,district_name,
-initcap(user_login_type)as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as total_count
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-group by district_id,district_name,
-user_login_type,
-content_gradelevel,content_subject order by 1,3,4,5)
-union 
-(select 
-district_id,district_name,
-'All' as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as total_count
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-group by district_id,district_name,
-content_gradelevel,content_subject order by 1,3,4,5)
-''',
-"diksha_stack_meta_query":'''select json_build_object('timeRange',timeRange,'districtDetails',
-array_to_json(array_agg(row_to_json(b))))
-from
-(select 
-case when (select exists(select 1 from diksha_total_content where content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) 
-    and (select max(content_view_date) from diksha_total_content)))=True then array['last_day','last_7_days','last_30_days']
-     when (select exists(select 1 from diksha_total_content where content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) 
-    and (select max(content_view_date) from diksha_total_content)))=True then array['last_day','last_7_days']
-     when (select exists(select 1 from diksha_total_content where content_view_date = (select max(content_view_date) from diksha_total_content)))=True then array['last_day']
-     end as timeRange,
-     cast(district_id as text) as district_id,district_name
- from diksha_total_content 
- where district_name is not null and district_id is not null 
-group by district_id,district_name,timeRange )as a
-join (select 
-     cast(district_id as text) as district_id,district_name
- from diksha_total_content 
- where district_name is not null and district_id is not null 
-group by district_id,district_name 
-) as b on a.district_id=b.district_id
-group by timeRange
-''',
-"diksha_stack_all_last_day_query":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(Total_content_plays) as Total_content_plays
-from ((select 
-district_id,district_name,
-initcap(user_login_type)as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-user_login_type,
-content_gradelevel,content_subject order by 1,3,4,5)
-union 
-(select 
-district_id,district_name,
-'All' as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-content_gradelevel,content_subject order by 1,3,4,5))as a
-group by user_login_type,content_gradelevel,content_subject
-''',
-"diksha_stack_all_last_7_days_query":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(Total_content_plays) as Total_content_plays
-from ((select 
-district_id,district_name,
-initcap(user_login_type)as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-user_login_type,
-content_gradelevel,content_subject order by 1,3,4,5)
-union 
-(select 
-district_id,district_name,
-'All' as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-content_gradelevel,content_subject order by 1,3,4,5))as a
-group by user_login_type,content_gradelevel,content_subject
-''',
-"diksha_stack_all_last_30_days_query":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(Total_content_plays) as Total_content_plays
-from ((select 
-district_id,district_name,
-initcap(user_login_type)as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-user_login_type,
-content_gradelevel,content_subject order by 1,3,4,5)
-union 
-(select 
-district_id,district_name,
-'All' as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,
-content_gradelevel,content_subject order by 1,3,4,5))as a
-group by user_login_type,content_gradelevel,content_subject
-''',
-"diksha_stack_all_all":'''select 'All' as district_id,'' as district_name,user_login_type,content_gradelevel,content_subject,sum(Total_content_plays) as Total_content_plays
-from ((select 
-district_id,district_name,
-initcap(user_login_type)as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-group by district_id,district_name,
-user_login_type,
-content_gradelevel,content_subject order by 1,3,4,5)
-union 
-(select 
-district_id,district_name,
-'All' as user_login_type,
-initcap(content_gradelevel)as content_gradelevel,
-initcap(content_subject)as content_subject,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='TextBook'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-group by district_id,district_name,
-content_gradelevel,content_subject order by 1,3,4,5))as a
-group by user_login_type,content_gradelevel,content_subject
-''',
-"diksha_table_overall_last_day_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,collection_type,collection_name,
-    content_name as Content_Name,sum(total_count) as Total_content_plays,
-    object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where content_view_date = (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,collection_type,object_id,content_medium)
-union
-(select 'All' as  district_id,'' as district_name,collection_type,collection_name,content_name as Content_Name,sum(total_count) as Total_content_plays,
-    object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where content_view_date = (select max(content_view_date) from diksha_total_content)
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium,collection_type,object_id)
-''',
-"diksha_table_overall_last_7_days_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,collection_type,collection_name,content_name as Content_Name
-    ,sum(total_count) as Total_content_plays,
-    object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium 
-from diksha_total_content 
-where content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,content_name,collection_name,content_subject,collection_type,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as  district_id,'' as district_name,collection_type,collection_name,content_name as Content_Name,sum(total_count) as Total_content_plays,
-    object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and (select max(content_view_date) from diksha_total_content)
-group by content_name,collection_name,content_subject,content_gradelevel,collection_type,content_medium,object_id)
-''',
-"diksha_table_overall_last_30_days_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,collection_type,collection_name,content_name as Content_Name,
-    sum(total_count) as Total_content_plays,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium   
-from diksha_total_content 
-where content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,content_name,collection_name,collection_type,content_subject,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as  district_id,'' as district_name,collection_type,collection_name,content_name as Content_Name,sum(total_count) as Total_content_plays,
-    object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and (select max(content_view_date) from diksha_total_content)
-group by content_name,collection_name,content_subject,collection_type,content_gradelevel,content_medium,object_id)
-''',
-"diksha_table_overall_all_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,collection_type,collection_name,content_name as Content_Name,
-    sum(total_count) as Total_content_plays,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium    
-from diksha_total_content 
-group by district_id,district_name,content_name,collection_type,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-union
-(select 'All' as  district_id,'' as district_name,collection_type,collection_name,content_name as Content_Name,sum(total_count) as Total_content_plays,
-    object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium 
-from diksha_total_content 
-group by content_name,collection_name,collection_type,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"diksha_table_crs_last_day_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
-    collection_name as Course,content_name as Content_Name,sum(total_count) as Total_content_plays,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='Course' and
-content_view_date = (select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as district_id,'' as district_name,collection_name as Course,content_name as Content_Name,sum(total_count) as Total_content_plays
-,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium 
-from diksha_total_content 
-where collection_type='Course' and
-content_view_date = (select max(content_view_date) from diksha_total_content )
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"diksha_table_crs_last_7_days_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
-    collection_name as Course,content_name as Content_Name,sum(total_count) as Total_content_plays ,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='Course' and
-content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content ) and 
-(select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as district_id,'' as district_name,collection_name as Course,content_name as Content_Name,sum(total_count) as Total_content_plays 
-,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='Course' and
-content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content ) and 
-(select max(content_view_date) from diksha_total_content)
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"diksha_table_crs_last_30_days_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
-    collection_name as Course,content_name as Content_Name,sum(total_count) as Total_content_plays ,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='Course' and
-content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as district_id,'' as district_name,collection_name as Course,content_name as Content_Name,sum(total_count) as Total_content_plays 
-,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='Course' and
-content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content)
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"diksha_table_crs_all_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
-    collection_name as Course,content_name as Content_Name,sum(total_count) as Total_content_plays ,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='Course' 
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as district_id,'' as district_name,collection_name as Course,content_name as Content_Name,sum(total_count) as Total_content_plays
-,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium 
-from diksha_total_content 
-where collection_type='Course' 
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"diksha_barc_crs_last_day_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,collection_type 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
-    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
-group by collection_name
-    )as a
-''',
-"diksha_barc_crs_last_7_days_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_type 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
-    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by collection_name
-    )as a''',
-"diksha_barc_crs_last_30_days_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_type 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
-    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by collection_name
-    )as a''',
-"diksha_barc_all_qry":'''(select
-district_id,district_name,collection_type,collection_name,
-sum(total_count) as Total_content_plays
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='Course'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)
-union
-(select
-district_id,district_name,collection_type,'All' as collection_name,
-sum(total_count) as Total_content_plays
-from diksha_total_content where user_login_type is not null and collection_type is not null and collection_type ='Course'
-and user_login_type <> 'NA' and district_name is not null
-and district_id is not null
-group by district_id,district_name,collection_type
-order by 1,3)
-''',
-"diksha_barc_overall_last_day_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
-from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
-group by collection_name
-    )as a
-''',
-"diksha_barc_overall_last_7_days_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_name order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
-from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by collection_name
-    )as a''',
-"diksha_barc_overall_last_30_days_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_type 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
-    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by collection_name
-    )as a''',
-"diksha_barc_overall_all_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,collection_name,'all_collections' as type,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-group by district_id,district_name,collection_name order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'All' as collection_name,'all_districts' as type,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-group by district_id,district_name 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,collection_name,'collection_footer' as type,sum(total_count) as Total_content_plays
-from diksha_total_content where user_login_type is not null and collection_type is not null 
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-group by collection_name
-    )as a
-''',
-"diksha_table_txt_bk_last_day_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
-    collection_name as Textbook,object_id as content_id,content_name as Content_Name,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date = (select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as district_id,'' as district_name,collection_name as Textbook
-,object_id as content_id,content_name as Content_Name,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium,sum(total_count) as Total_content_plays 
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date = (select max(content_view_date) from diksha_total_content )
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"diksha_table_txt_bk_last_7_days_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
-    collection_name as Textbook,content_name as Content_Name,sum(total_count) as Total_content_plays,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content ) and 
-(select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as district_id,'' as district_name,collection_name as Textbook,content_name as Content_Name,sum(total_count) as Total_content_plays
-,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium 
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content ) and 
-(select max(content_view_date) from diksha_total_content)
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"diksha_table_txt_bk_last_30_days_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
-    collection_name as Textbook,content_name as Content_Name,sum(total_count) as Total_content_plays,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as district_id,'' as district_name,collection_name as Textbook,content_name as Content_Name,sum(total_count) as Total_content_plays
-,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium 
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content)
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"diksha_table_txt_bk_all_qry":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
-    collection_name as Textbook,content_name as Content_Name,sum(total_count) as Total_content_plays,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='TextBook' 
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as district_id,'' as district_name,collection_name as Textbook,content_name as Content_Name,sum(total_count) as Total_content_plays 
-,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='TextBook' 
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"diksha_barc_crs_all_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-group by district_id,district_name,collection_type 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
-    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='course'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-group by collection_name
-    )as a''',
-"diksha_barc_txt_bk_last_day_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
-group by district_id,district_name,collection_type 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
-    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date = (select max(content_view_date) from diksha_total_content)
-group by collection_name
-    )as a''',
-"diksha_barc_txt_bk_last_7_days_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_type 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-1 as district_id,'' as district_name,'collection_footer' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '7 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by collection_name)as a''',
-"diksha_barc_txt_bk_last_30_days_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,collection_type 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
-    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-and content_view_date between (select max(content_view_date)-INTERVAL '30 DAY' from diksha_total_content) and 
-(select max(content_view_date) from diksha_total_content )
-group by collection_name
-    )as a''',
-"diksha_barc_txt_bk_all_qry":'''select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over(partition by a.collection_name)),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_collections' as type,collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-group by district_id,district_name,collection_name,
-collection_type order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(select 
-district_id,district_name,'all_districts' as type,'All' as collection_name,
-sum(total_count) as Total_content_plays 
-from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-group by district_id,district_name,collection_type 
-order by 1,3)as a
-union
-select a.*,round((coalesce(a.Total_content_plays,0)*100.0/coalesce((sum(a.Total_content_plays) over()),0)),2) as percentage from 
-(
-    select 1 as district_id,'' as district_name,'collection_footer' as type,collection_name,sum(total_count) as Total_content_plays
-    from diksha_total_content where user_login_type is not null and collection_type is not null and lower(collection_type) ='textbook'
-and user_login_type <> 'NA'and district_name is not null
-and district_id is not null
-group by collection_name
-    )as a''',
-"diksha_table_txt_bk_last_day_query":'''(select cast(district_id as text)as district_id,initcap(district_name)as district_name,
-    collection_name as Textbook,content_name as Content_Name,sum(total_count) as Total_content_plays,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date = (select max(content_view_date) from diksha_total_content )
-group by district_id,district_name,content_name,collection_name,content_subject,content_gradelevel,object_id,content_medium)
-union
-(select 'All' as district_id,'' as district_name,collection_name as Textbook,content_name as Content_Name,sum(total_count) as Total_content_plays 
-,object_id as content_id,content_subject as Subject,
-content_gradelevel as Grade,content_medium as Medium
-from diksha_total_content 
-where collection_type='TextBook' and
-content_view_date = (select max(content_view_date) from diksha_total_content )
-group by content_name,collection_name,content_subject,content_gradelevel,content_medium,object_id)
-''',
-"diksha_stack_jolt":'''[
+HAVING  COUNT(*) > 1""",
+"diksha_unique_records_same_records":"""select collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
+enrolment_date,completion_date,progress,certificate_status,total_score
+from (SELECT collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
+enrolment_date,completion_date,progress,certificate_status,total_score
+row_number() over (partition by collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
+enrolment_date,completion_date,progress,certificate_status,total_score) as rn from diksha_content_staging) sq Where rn =1""",
+"diksha_stack_jolt":"""[
   {
     "operation": "shift",
     "spec": {
@@ -1092,9 +112,154 @@ group by content_name,collection_name,content_subject,content_gradelevel,content
       "*": "&"
     }
   }
+]""",
+"diksha_staging_tb_name":"""diksha_content_staging""",
+"diksha_count_null_value":"""(select
+SUM(CASE when content_view_date IS NULL THEN 1 ELSE 0 END) AS count_null_content_view_date,
+SUM(CASE when dimensions_pdata_id IS NULL THEN 1 ELSE 0 END) AS count_null_dimensions_pdata_id,
+SUM(CASE when dimensions_pdata_pid IS NULL THEN 1 ELSE 0 END) AS count_null_dimensions_pdata_pid,
+SUM(CASE when content_name IS NULL THEN 1 ELSE 0 END) AS count_null_content_name,
+SUM(CASE when content_board IS NULL THEN 1 ELSE 0 END) AS count_null_content_board,
+SUM(CASE when "content_mimetype" IS NULL THEN 1 ELSE 0 END) AS count_null_content_mimetype,
+SUM(CASE when "content_medium" IS NULL THEN 1 ELSE 0 END) AS count_null_content_medium,
+SUM(CASE when "content_gradelevel" IS NULL THEN 1 ELSE 0 END) AS count_null_content_gradelevel,
+SUM(CASE when "content_subject" IS NULL THEN 1 ELSE 0 END) AS count_null_content_subject,
+SUM(CASE when "content_created_for" IS NULL THEN 1 ELSE 0 END) AS count_null_content_created_for,
+SUM(CASE when "object_id" IS NULL THEN 1 ELSE 0 END) AS count_null_object_id,
+SUM(CASE when "object_rollup_l1" IS NULL THEN 1 ELSE 0 END) AS count_null_object_rollup_l1,
+SUM(CASE when "derived_loc_state" IS NULL THEN 1 ELSE 0 END) AS count_null_derived_loc_state,
+SUM(CASE when "derived_loc_district" IS NULL THEN 1 ELSE 0 END) AS count_null_derived_loc_district,
+SUM(CASE when "user_signin_type" IS NULL THEN 1 ELSE 0 END) AS count_null_user_signin_type,
+SUM(CASE when "user_login_type" IS NULL THEN 1 ELSE 0 END) AS count_null_user_login_type,
+SUM(CASE when "collection_type" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_type,
+SUM(CASE when "collection_created_for" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_created_for,
+SUM(CASE when "total_count" IS NULL THEN 1 ELSE 0 END) AS count_null_total_count,
+SUM(CASE when "total_time_spent" IS NULL THEN 1 ELSE 0 END) AS count_null_total_time_spent from diksha_content_staging)""",
+"save_to_diksha_total_content_fn":"""select insert_diksha_agg()""",
+"diksha_tpd_check_if_null":"""select ff_uuid,collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
+enrolment_date,completion_date,progress,certificate_status,total_score from diksha_content_staging
+where collection_id IS NULL
+OR uuid IS NULL
+OR school_id IS NULL""",
+"diksha_tpd_delete_null_values_qry":"""delete  from diksha_content_staging
+where collection_id IS NULL
+ OR school_id IS NULL
+ OR uuid IS NULL""",
+"diksha_temp_to_trans_fn":"""select insert_diksha_trans()""",
+"save_to_diksha_tpd_dup":"""diksha_tpd_dup""",
+"diksha_jolt_for_log_summary":"""[{
+		"operation": "shift",
+		"spec": {
+			"*": {
+				"filename": "[&1].filename",
+			   "ff_uuid": "[&1].ff_uuid",
+              "total_records": "[&1].total_records",
+              "blank_lines": "[&1].blank_lines",
+              "duplicate_records": "[&1].duplicate_records",
+              "datatype_mismatch": "[&1].datatype_mismatch",
+             
+              "content_view_date": "[&1].records_with_null_value.content_view_date" ,
+              "dimensions_pdata_id": "[&1].records_with_null_value.dimensions_pdata_id",
+              "dimensions_pdata_pid" : "[&1].records_with_null_value.dimensions_pdata_pid",
+              "content_name": "[&1].records_with_null_value.content_name",
+              "content_board": "[&1].records_with_null_value.content_board",
+              "content_mimetype" : "[&1].records_with_null_value.content_mimetype", 
+              "content_medium": "[&1].records_with_null_value.content_medium",
+              "content_gradelevel": "[&1].records_with_null_value.content_gradelevel",
+              "content_subject": "[&1].records_with_null_value.content_subject",
+              "content_created_f": "[&1].records_with_null_value.content_created_f", 
+              "object_id": "[&1].records_with_null_value.object_id",
+              "object_rollup_l1": "[&1].records_with_null_value.object_rollup_l1", 
+              "derived_loc_state": "[&1].records_with_null_value.derived_loc_state",
+              "derived_loc_district": "[&1].records_with_null_value.derived_loc_dIStrict",
+              "user_signin_type": "[&1].records_with_null_value.user_signin_type", 
+              "user_login_type": "[&1].records_with_null_value.user_login_type", 
+              "collection_type" : "[&1].records_with_null_value.collection_type",
+              "collection_created_f": "[&1].records_with_null_value.collection_created_f",
+              "total_count": "[&1].records_with_null_value.total_count",
+              "total_time_spent": "[&1].records_with_null_value.total_time_spent", 
+              
+              "processed_records": "[&1].processed_records",
+              "process_start_time": "[&1].process_start_time",
+              "process_end_time": "[&1].process_end_time"
+              
+              
+              
+              
+              
+			}
+		}
+	}
 ]
-''',
-"JoltTransformJSON_all_districts":'''[{
+""",
+"save_to_diksha_tpd_agg":"""insert into diksha_tpd_agg(collection_id,collection_name,collection_progress,percentage_teachers,enrolled_date,school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,created_on,updated_on)
+select collection_id,collection_name,avg(progress) as collection_progress,
+round((count(distinct(uuid))*100.0)/((floor(random()*4+1)::int)+(count(distinct(uuid)))),2) as percentage_teachers,
+enrolment_date as enrolled_date,tpd.school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,now(),now() 
+from diksha_tpd_trans as tpd inner join (
+select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
+where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
+where org_name='DIKSHA Custodian Org' and collection_name is not null
+group by collection_id,collection_name,tpd.school_id,enrolment_date,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name 
+on conflict(collection_id, enrolled_date, school_id,collection_name)
+do update set 
+school_id=excluded.school_id,school_name=excluded.school_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,
+block_id=excluded.block_id,block_name=excluded.block_name,district_id=excluded.district_id,district_name=excluded.district_name,
+collection_id=excluded.collection_id,collection_name=excluded.collection_name,collection_progress=excluded.collection_progress,
+percentage_teachers=excluded.percentage_teachers,enrolled_date=excluded.enrolled_date,updated_on=now()""",
+"diksha_tpd_count_null_value":"""(select
+SUM(CASE when "collection_id" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_id,
+SUM(CASE when "uuid" IS NULL THEN 1 ELSE 0 END) AS count_null_uuid,
+SUM(CASE when "school_id" IS NULL THEN 1 ELSE 0 END) AS count_null_school_id
+from diksha_content_staging)""",
+"save_to_diksha_dup":"""diksha_dup""",
+"save_to_diksha_total_content_pre_query":"""drop view if exists insert_diksha_trans_view""",
+"JoltTransformJSON_all_collections":"""[
+   {
+      "operation":"shift",
+      "spec":{
+         "*":{
+            "total_content_plays":"collections.@(1,collection_name)"
+         }
+      }
+   },
+   {
+      "operation":"modify-overwrite-beta",
+      "spec":{
+         "collections":{
+            "*":"=intSum(@(1,&))"
+         }
+      }
+   }
+]""",
+"diksha_queries_filename":"""diksha_queries.json""",
+"diksha_stg_to_temp_qry":"""select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging
+""",
+"select_diksha_files_from_log_db":"""select * from log_summary where filename like '%diksha_data%'""",
+"diksha_temp_tb":"""diksha_content_temp""",
+"diksha_tpd_temp_to_trans_fn":"""Select insert_diksha_tpd_trans();""",
+"diksha_tpd_unique_records_same_records":"""select collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
+enrolment_date,completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
+from (SELECT collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
+enrolment_date,completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
+row_number() over (partition by collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
+enrolment_date,completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score) as rn from diksha_content_staging) sq Where rn =1""",
+"diksha_sum_of_dup":"""select sum(num_of_times) from flowfile""",
+"diksha_meta_jolt":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "json_build_object": ""
+      }
+    }
+    }
+]""",
+"JoltTransformJSON_all_districts":"""[{
     "operation": "shift",
     "spec": {
       "*": {
@@ -1118,23 +283,57 @@ group by content_name,collection_name,content_subject,content_gradelevel,content
     }
  }
 
-]''',
-"JoltTransformJSON_all_collections":'''[
-   {
-      "operation":"shift",
-      "spec":{
-         "*":{
-            "total_content_plays":"collections.@(1,collection_name)"
-         }
-      }
-   },
-   {
-      "operation":"modify-overwrite-beta",
-      "spec":{
-         "collections":{
-            "*":"=intSum(@(1,&))"
-         }
-      }
-   }
-]'''
+]""",
+"diksha_save_null_tb_name":"""diksha_null_col""",
+"diksha_check_if_null":"""select * from diksha_content_staging
+where content_view_date IS NULL
+ OR dimensions_pdata_id IS NULL
+ OR dimensions_pdata_pid IS NULL
+ OR content_name IS NULL
+ OR content_board IS NULL
+ OR content_mimetype IS NULL
+ OR content_medium IS NULL
+ OR content_gradelevel IS NULL
+ OR content_subject IS NULL
+ OR content_created_for IS NULL
+ OR object_id IS NULL
+ OR object_rollup_l1 IS NULL
+ OR derived_loc_state IS NULL
+ OR derived_loc_dIStrict IS NULL
+ OR user_signin_type IS NULL
+ OR user_login_type IS NULL
+ OR collection_type IS NULL
+ OR collection_created_for IS NULL
+ OR total_count IS NULL
+ OR total_time_spent IS NULL
+""",
+"diksha_tpd_jolt_for_log_summary":"""[{
+		"operation": "shift",
+		"spec": {
+			"*": {
+				"filename": "[&1].filename",
+			   "ff_uuid": "[&1].ff_uuid",
+              "total_records": "[&1].total_records",
+              "blank_lines": "[&1].blank_lines",
+              "duplicate_records": "[&1].duplicate_records",
+              "datatype_mismatch": "[&1].datatype_mismatch",
+             
+              "collection_id": "[&1].records_with_null_value.collection_id" ,
+              "uuid": "[&1].records_with_null_value.uuid",
+              "school_id" : "[&1].records_with_null_value.school_id",
+              
+              
+              "processed_records": "[&1].processed_records",
+              "process_start_time": "[&1].process_start_time",
+              "process_end_time": "[&1].process_end_time"
+              
+              
+              
+              
+              
+			}
+		}
+	}
+]""",
+"select_diksha_tpd_files_from_log_db":"""select * from log_summary where filename like '%diksha_tpd%'"""
 }

@@ -9,24 +9,32 @@ import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
 import { DikshaTableComponent } from './diksha-table/diksha-table.component';
 import { DikshaUsageByTextBookComponent } from './diksha-usage-by-text-book/diksha-usage-by-text-book.component';
 import { UsageByTextbookContentComponent } from './usage-by-textbook-content/usage-by-textbook-content.component';
+import { DikshaTPDContentProgressComponent } from './diksha-tpd-content-progress/diksha-tpd-content-progress.component';
+import { DikshaTPDTeachersPercentageComponent } from './diksha-tpd-teachers-percentage/diksha-tpd-teachers-percentage.component';
 
 const dikshaRoutes: Routes = [
   {
     path: '', canActivate: [AuthGuard], children: [
       {
-        path: 'diksha-chart', component: DikshaChartComponent, canActivateChild: [AuthGuard]
+        path: 'usage-by-user-profile', component: DikshaChartComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'diksha-table', component: DikshaTableComponent, canActivateChild: [AuthGuard]
+        path: 'usage-by-course-content', component: DikshaTableComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'diksha-column-chart', component: DikshaBarChartComponent, canActivateChild: [AuthGuard]
+        path: 'usage-by-course', component: DikshaBarChartComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'usage-by-textbook', component: DikshaUsageByTextBookComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'usage-by-textbook-content', component: UsageByTextbookContentComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'tpd-collection-progress', component: DikshaTPDContentProgressComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'tpd-teacher-percentage', component: DikshaTPDTeachersPercentageComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
@@ -38,7 +46,9 @@ const dikshaRoutes: Routes = [
     DikshaTableComponent,
     DikshaBarChartComponent,
     DikshaUsageByTextBookComponent,
-    UsageByTextbookContentComponent
+    UsageByTextbookContentComponent,
+    DikshaTPDContentProgressComponent,
+    DikshaTPDTeachersPercentageComponent
   ],
   imports: [
     CommonModule,

@@ -6,6 +6,15 @@
   file: path={{ base_dir }}/cqube/nifi state=directory
   tags: install
 
+- name: Creates a directory
+  file: 
+    path: nifi_json_files 
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    mode: '1755'
+    state: directory
+  tags: [ install , update ]
+
 - name: Installing curl
   apt: name=curl
   tags: install
@@ -20,12 +29,12 @@
 - name: Check if nifi is present in destination
   stat: path={{ base_dir }}/cqube/nifi/nifi
   register: status
-  tags: install
+  tags: [ install , update ]
 
 - name: stop nifi if its running
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
   when: status.stat.exists == true
-  tags: install
+  tags: [ install , update ]
 
 - name: remove nifi directory if present
   become: yes
@@ -68,6 +77,10 @@
     dest: "{{ base_dir }}/cqube/nifi/nifi_queries/{{ item }}"
     mode: "0644"
   with_items:
+    - crc_queries.json
+    - student_attendance_queries.json
+    - student_assessment_queries.json
+    - diksha_queries.json
     - composite_queries.json
     - pat_queries.json
   tags: [ install , update ]
@@ -138,8 +151,25 @@
     state: absent
   tags: update
 
-- name: start NiFi
-  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
+- name: Nifi systemd setup
+  template:
+    owner: root
+    group: root
+    mode: 0644
+    src: nifi.service.j2
+    dest: /etc/systemd/system/nifi.service
+  tags: [ install, update ]
+
+- name: reload systemd
+  become: yes
+  shell: systemctl daemon-reload
+  tags: [ install, update ]
+
+- name: Starting nifi service
+  service:
+    name: nifi.service 
+    enabled: yes
+    state: started
   tags: install
 
 - pause:
@@ -147,8 +177,11 @@
     prompt: "nifi is starting, kindly do not press any key"
   tags: install
 
-- name: Restart NiFi
-  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh restart"
+- name: Starting nifi service
+  service:
+    name: nifi.service   
+    enabled: yes
+    state: started
   tags: update
 
 - pause:
@@ -167,7 +200,7 @@
     url: http://localhost:{{ nifi_port }}/nifi-api/controller/config
     method: GET
   register: nifi_config  
-  tags: [ install, update ]
+  tags: install
     
 - name: Update the NiFi thread count
   uri:
@@ -175,7 +208,7 @@
     method: PUT
     body_format: json
     body: {"revision":{"version":"{{ nifi_config.json.revision.version }}"},"component":{"maxTimerDrivenThreadCount":"22","maxEventDrivenThreadCount":"10"}}
-  tags: [ install, update ]
+  tags: install
 
 - name: Create the prometheus task
   uri:
@@ -189,9 +222,9 @@
 
 - name: Start the prometheus task
   uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/reporting-tasks/{{ output.json.component.id }}/run-status
+    url: http://localhost:{{ nifi_port }}/nifi-api/reporting-tasks/{{ output.json.component.id }}
     method: PUT
     body_format: json
-    body: {"revision":{"clientId":"","version":1},"disconnectedNodeAcknowledged":false,"state":"RUNNING"}
+    body: '{"component":{"id":"{{ output.json.component.id }}","name":"PrometheusReportingTask","schedulingStrategy":"TIMER_DRIVEN","schedulingPeriod":"30 sec","comments":"","state":"RUNNING","properties":{"prometheus-reporting-task-metrics-send-jvm":"true"}},"revision":{"clientId":"{{ output.json.revision.clientId }}","version":"{{ output.json.revision.version }}"},"disconnectedNodeAcknowledged":false}'
   tags: install  
 

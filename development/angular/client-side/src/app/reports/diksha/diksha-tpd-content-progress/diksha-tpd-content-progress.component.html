@@ -1,0 +1,109 @@
+<div class="container-fluid" style="padding-top:15px !important;">
+    <div class="row">
+        <div class="col-sm-8">
+            <div *ngIf='skul'>
+                <p id="dist"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Diksha TPD Collection Progress report for: <span (click)="resetToInitPage()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+            </div>
+            <div *ngIf='dist'>
+                <p id="block"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Diksha TPD Collection Progress report for: <span (click)="resetToInitPage()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                        (click)="selectedDistrict(districtHierarchy.distId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{districtHierarchy.districtName}}</span> </p>
+            </div>
+            <div *ngIf="blok">
+                <p id="cluster"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Diksha TPD Collection Progress report for: <span (click)="resetToInitPage()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
+                        (click)="selectedDistrict(blockHierarchy.distId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{blockHierarchy.districtName}}</span><span>/ </span><span
+                        (click)="selectedBlock(blockHierarchy.blockId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{blockHierarchy.blockName}}</span></p>
+            </div>
+
+            <div *ngIf="clust">
+                <p id="school"
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    Diksha TPD Collection Progress report for: <span (click)="resetToInitPage()"
+                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
+                        (click)="selectedDistrict(clusterHierarchy.distId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.districtName}}</span><span>/ </span><span
+                        (click)="selectedBlock(clusterHierarchy.blockId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.blockName}}</span><span>/ </span><span>
+                        {{clusterHierarchy.clusterName}}</span></p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-7">
+                    <p id="errMsg"
+                        style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                    </p>
+                </div>
+                <div class="col-sm-5">
+                    <em class="fa fa-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                        (click)="downloadReport()"></em>
+                    <em class="fa fa-home" id="home" title="Home"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        alt="Home" (click)="resetToInitPage()"></em>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom: 10px;">
+            <select id="timePeriod"
+                style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="timePeriod" (change)="selectedTimePeriod()">
+                <option [value]="timePeriod" disabled selected="selected">Choose time period</option>
+                <option *ngFor="let timePeriod of timePeriods, let i =index" [(ngValue)]="timePeriod.key">
+                    {{timePeriod.value}}
+                </option>
+            </select>
+
+            <select id="district"
+                style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="district" (change)="selectedDistrict(district)">
+                <option [value]="district" disabled selected="selected">Choose a District</option>
+                <option *ngFor="let district of districtNames, let i =index" [(ngValue)]="district.district_id">
+                    {{district.district_name}}
+                </option>
+            </select>
+
+
+            <select [hidden]="blockHidden" id="block"
+                style="margin-right: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="block" (change)="selectedBlock(block)">
+                <option [value]="block" disabled selected="selected">Choose a Block</option>
+                <option *ngFor="let block of blockNames, let i =index" [(ngValue)]="block.block_id">
+                    {{block.block_name}}
+                </option>
+            </select>
+            <select [hidden]="clusterHidden" id="cluster"
+                style="margin-right: 0px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="cluster" (change)="selectedCluster(cluster)">
+                <option [value]="cluster" disabled selected="selected">Choose a Cluster</option>
+                <option *ngFor="let cluster of clusterNames, let i =index" [(ngValue)]="cluster.cluster_id">
+                    {{cluster.cluster_name}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="container"></div>
+    </div>
+</div>
+<div id="spinner">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>

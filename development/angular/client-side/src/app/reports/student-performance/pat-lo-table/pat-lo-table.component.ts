@@ -14,7 +14,6 @@ declare const $;
   styleUrls: ['./pat-lo-table.component.css']
 })
 export class PATLOTableComponent implements OnInit {
-  name: string;
   level = '';
 
   // For filter implementation
@@ -86,6 +85,7 @@ export class PATLOTableComponent implements OnInit {
   }
 
   resetToInitPage() {
+    this.fileName = "District_wise_report";
     this.skul = true;
     this.dist = false;
     this.blok = false;
@@ -95,17 +95,17 @@ export class PATLOTableComponent implements OnInit {
     this.subject = 'all';
     this.viewBy = 'indicator';
     this.district = undefined;
+    this.block = undefined;
+    this.cluster = undefined;
+    this.blockHidden = true;
+    this.clusterHidden = true;
     document.getElementById('home').style.display = 'none';
     this.commonFunc();
   }
 
   commonFunc = () => {
-    if(this.reportData.length > 0){
-      this.resetTable();
-    }
     this.commonService.errMsg();
     this.level = 'district';
-    this.reportData = [];
     let a = {
       year: this.year,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -118,15 +118,15 @@ export class PATLOTableComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service.patLOTableDistData(a).subscribe(response => {
+     this.resetTable();
+     this.reportData = [];
      this.reportData = response['tableData'];
      this.districtNames = response['districtDetails'];
      this.districtNames = this.districtNames.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
       this.createTable(response['tableData']);
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
-      this.reportData = [];
-      this.commonService.loaderAndErr(this.reportData);
+      this.handleError();
     })
   }
 
@@ -248,9 +248,7 @@ export class PATLOTableComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
-      this.reportData = [];
-      this.commonService.loaderAndErr(this.reportData);
+      this.handleError();
     })
 
   }
@@ -295,9 +293,7 @@ export class PATLOTableComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
-      this.reportData = [];
-      this.commonService.loaderAndErr(this.reportData);
+      this.handleError();
     })
   }
 
@@ -339,20 +335,20 @@ export class PATLOTableComponent implements OnInit {
 
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
-      this.reportData = [];
-      this.commonService.loaderAndErr(this.reportData);
+      this.handleError();
     })
   }
 
   //resetting table
   resetTable(){
-    $(`#LOtable`).empty();
-     $('#LOtable').DataTable().destroy();
+    if(this.reportData.length > 0){
+      $(`#LOtable`).empty();
+      $('#LOtable').DataTable().destroy();
+    }
   }
 //level wise filter
 levelWiseFilter() {
-  this.resetTable();
+  document.getElementById('initTable').style.display = 'block';
   document.getElementById('home').style.display = 'block';
   if (this.level == 'district') {
     this.commonFunc()
@@ -366,6 +362,14 @@ levelWiseFilter() {
   if (this.level == 'school') {
     this.selectedCluster(this.cluster);
   }
+}
+
+//error handling
+handleError(){
+  $(`#LOtable`).empty();
+  this.reportData = [];
+  this.commonService.loaderAndErr(this.reportData);
+  document.getElementById('initTable').style.display = 'none';
 }
 
 // to download the csv report
