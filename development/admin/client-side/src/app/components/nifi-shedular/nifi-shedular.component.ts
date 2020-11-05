@@ -17,11 +17,21 @@ export class NifiShedularComponent implements OnInit {
   timeArr = [];
   selectedTime = [];
   selectedShedule = '';
-  hoursArr = [{ hours: 1 }, { hours: 2 }, { hours: 3 }, { hours: 4 }, { hours: 5 }, { hours: 6 }, { hours: 7 }, { hours: 8 }, { hours: 9 }, { hours: 10 }];
+  selectMin = '';
+  hoursArr = [];
+  minsArr = [];
   selectedHour = [];
+  selectedMinuts = [];
   selectedDuration = '';
   processorId;
-  constructor(private service: NifiShedularService) { }
+  constructor(private service: NifiShedularService) {
+    for (let i = 1; i <= 10; i++) {
+      this.hoursArr.push({ hours: i });
+    }
+    for (let i = 0; i < 60; i++) {
+      this.minsArr.push({ mins: `${("0" + (i)).slice(-2)}` });
+    }
+  }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = "none";
@@ -35,7 +45,7 @@ export class NifiShedularComponent implements OnInit {
       date.setMinutes(date.getMinutes() + 1);
     }
     for (var i = 0; i < 24; i++) {
-      array.push({ time: ("0" + (date.getHours())).slice(-2) + ':' + ("0" + (date.getMinutes())).slice(-2) });
+      array.push({ time: ("0" + (date.getHours())).slice(-2) });
       date.setMinutes(date.getMinutes() + 60);
     }
     array.sort((a, b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0));
@@ -45,6 +55,10 @@ export class NifiShedularComponent implements OnInit {
 
   onSelectTime(i) {
     this.selectedShedule = this.selectedTime[i];
+  }
+
+  onSelectMinutes(i) {
+    this.selectMin = this.selectedMinuts[i];
   }
 
   onSelectHour(i) {
@@ -79,14 +93,16 @@ export class NifiShedularComponent implements OnInit {
 
   onClickSchedule(data) {
     if (this.selectedDuration != '' && this.selectedShedule != '') {
-      this.service.nifiScheduleProcessor(data.id, { state: data.state, time: this.selectedShedule, stopTime: this.selectedDuration }).subscribe(res => {
+      this.service.nifiScheduleProcessor(data.id, { state: data.state, time: { hours: this.selectedShedule, minutes: this.selectMin }, stopTime: this.selectedDuration }).subscribe(res => {
         if (res['msg']) {
           this.msg = res['msg'];
           this.err = '';
           document.getElementById('success').style.display = "block";
           this.selectedTime = [];
           this.selectedHour = [];
+          this.selectedMinuts = [];
           this.selectedShedule = '';
+          this.selectMin = '';
           this.selectedDuration = '';
           setTimeout(() => {
             document.getElementById('success').style.display = "none";
