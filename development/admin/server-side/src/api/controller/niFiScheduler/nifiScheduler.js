@@ -66,8 +66,12 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
 
         let groupId = req.params.id
         let state = req.body.state
-        let hours = req.body.time.hours;
-        let mins = req.body.time.minutes;
+        let hours = parseInt(req.body.time.hours);
+        var mins = 0;
+        if (req.body.time.minutes) {
+            mins = parseInt(req.body.time.minutes);
+        }
+
         let timeToStop = req.body.stopTime
 
         timeToStop = hours + timeToStop
@@ -103,7 +107,7 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                     myJob.scheduleUpdatedAt = `${obj.scheduleUpdatedAt}`;
                 }
             });
-            fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+            fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                 if (err) throw err;
                 logger.info('Re-Scheduled RUNNING Job - Updated to file');
             });
@@ -124,7 +128,7 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                         myJob.scheduleUpdatedAt = `${new Date()}`;
                     }
                 });
-                fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                     if (err) throw err;
                     logger.info('Re-Scheduled Job status changed to STOPPED - has updated to file');
                 });
@@ -148,7 +152,7 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                 schedularData = JSON.parse(fs.readFileSync(filePath));
             }
             schedularData.push(obj);
-            fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+            fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                 if (err) throw err;
                 logger.info('Scheduled RUNNING Job - Updated to file');
             });
@@ -170,7 +174,7 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                     }
                 });
 
-                fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                     if (err) throw err;
                     logger.info('Scheduled Job status changed to STOPPED - has updated to file');
                 });
@@ -224,8 +228,11 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
 
         let groupId = req.params.id
         let state = req.body.state
-        let hours = req.body.time.hours;
-        let mins = req.body.time.minutes;
+        let hours = parseInt(req.body.time.hours);
+        var mins = 00;
+        if (req.body.time.minutes) {
+            mins = parseInt(req.body.time.minutes);
+        }
         let timeToStop = req.body.stopTime
 
         timeToStop = hours + timeToStop
@@ -261,7 +268,7 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                     myJob.scheduleUpdatedAt = `${obj.scheduleUpdatedAt}`;
                 }
             });
-            fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+            fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                 if (err) throw err;
                 logger.info('Re-Scheduled RUNNING Job - Updated to file');
             });
@@ -282,7 +289,7 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                         myJob.scheduleUpdatedAt = `${new Date()}`;
                     }
                 });
-                fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                     if (err) throw err;
                     logger.info('Re-Scheduled Job status changed to STOPPED - has updated to file');
                 });
@@ -306,7 +313,7 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                 schedularData = JSON.parse(fs.readFileSync(filePath));
             }
             schedularData.push(obj);
-            fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+            fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                 if (err) throw err;
                 logger.info('Scheduled RUNNING Job - Updated to file');
             });
@@ -328,7 +335,7 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                     }
                 });
 
-                fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                     if (err) throw err;
                     logger.info('Scheduled Job status changed to STOPPED - has updated to file');
                 });

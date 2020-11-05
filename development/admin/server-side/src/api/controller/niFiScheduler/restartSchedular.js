@@ -15,7 +15,7 @@ exports.restartNifiProcess = async function () {
                 logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling started ---`);
                 let response = await startFun();
                 myJob.scheduleUpdatedAt = `${new Date()}`;
-                await fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                await fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                     if (err) throw err;
                     logger.info('Restart process - Scheduled RUNNING Job - Restarted successfully');
                 });
@@ -30,7 +30,7 @@ exports.restartNifiProcess = async function () {
                 let response = await stopFun();
                 myJob.state = "STOPPED";
                 myJob.scheduleUpdatedAt = `${new Date()}`;
-                await fs.writeFile("../schedulers.json", JSON.stringify(schedularData), function (err) {
+                await fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                     if (err) throw err;
                     logger.info('Restart process - Scheduled Job status changed to STOPPED - Stopped Successfully');
                 });

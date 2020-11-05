@@ -93,7 +93,7 @@ export class NifiShedularComponent implements OnInit {
 
   onClickSchedule(data) {
     if (this.selectedDuration != '' && this.selectedShedule != '') {
-      this.service.nifiScheduleProcessor(data.id, { state: data.state, time: { hours: this.selectedShedule, minutes: this.selectMin }, stopTime: this.selectedDuration }).subscribe(res => {
+      this.service.nifiScheduleProcessor(data.id, { state: "RUNNING", time: { hours: this.selectedShedule, minutes: this.selectMin }, stopTime: this.selectedDuration }).subscribe(res => {
         if (res['msg']) {
           this.msg = res['msg'];
           this.err = '';
@@ -112,7 +112,7 @@ export class NifiShedularComponent implements OnInit {
         this.err = err.error['errMsg'];
       })
     } else {
-      this.err = "please select time and duration";
+      this.err = "please select hours and duration";
     }
 
   }
