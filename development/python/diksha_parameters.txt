@@ -201,11 +201,12 @@ where collection_id IS NULL
 	}
 ]
 """,
-"save_to_diksha_tpd_agg":"""insert into diksha_tpd_agg(collection_id,collection_name,collection_progress,percentage_teachers,enrolled_date,school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,created_on,updated_on)
+"save_to_diksha_tpd_agg":"""insert into diksha_tpd_agg(collection_id,collection_name,collection_progress,percentage_teachers,enrolled_date,
+    school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,created_on,updated_on)
 select collection_id,collection_name,avg(progress) as collection_progress,
 round((count(distinct(uuid))*100.0)/((floor(random()*4+1)::int)+(count(distinct(uuid)))),2) as percentage_teachers,
-enrolment_date as enrolled_date,tpd.school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,now(),now() 
-from diksha_tpd_trans as tpd inner join (
+enrolment_date as enrolled_date,tpd.school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name) as cluster_name,
+block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,now(),now() from diksha_tpd_trans as tpd inner join (
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
 where org_name='DIKSHA Custodian Org' and collection_name is not null
@@ -216,11 +217,6 @@ school_id=excluded.school_id,school_name=excluded.school_name,cluster_id=exclude
 block_id=excluded.block_id,block_name=excluded.block_name,district_id=excluded.district_id,district_name=excluded.district_name,
 collection_id=excluded.collection_id,collection_name=excluded.collection_name,collection_progress=excluded.collection_progress,
 percentage_teachers=excluded.percentage_teachers,enrolled_date=excluded.enrolled_date,updated_on=now()""",
-"diksha_tpd_count_null_value":"""(select
-SUM(CASE when "collection_id" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_id,
-SUM(CASE when "uuid" IS NULL THEN 1 ELSE 0 END) AS count_null_uuid,
-SUM(CASE when "school_id" IS NULL THEN 1 ELSE 0 END) AS count_null_school_id
-from diksha_content_staging)""",
 "save_to_diksha_dup":"""diksha_dup""",
 "save_to_diksha_total_content_pre_query":"""drop view if exists insert_diksha_trans_view""",
 "JoltTransformJSON_all_collections":"""[
