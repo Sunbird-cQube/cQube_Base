@@ -111,9 +111,14 @@ export class NifiShedularComponent implements OnInit {
       }, err => {
         this.err = err.error['errMsg'];
       })
-    } else {
-      this.err = "please select hours and duration";
+    } else if (this.selectedDuration == '' && this.selectedShedule == '') {
+      this.err = "please select schedule time and stopping hours";
+    } else if (this.selectedShedule == '') {
+      this.err = "please select schedule time";
+    } else if (this.selectedDuration == '') {
+      this.err = "please select stopping hours";
     }
+
 
   }
 }

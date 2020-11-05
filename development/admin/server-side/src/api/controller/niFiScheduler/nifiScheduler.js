@@ -214,7 +214,7 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
             })
         }
         logger.info('--- schedule processor api response sent ---')
-        res.send({ msg: `Job rescheduled successfully at ${req.body.time.hours}: ${req.body.time.minutes} every day` })
+        res.send({ msg: `Job rescheduled successfully at ${hours}: ${mins} every day` })
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
@@ -375,7 +375,7 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
             })
         }
         logger.info('--- schedule processor api response sent ---')
-        res.send({ msg: `Job rescheduled successfully at ${req.body.time.hours}: ${req.body.time.minutes} every day` })
+        res.send({ msg: `Job rescheduled successfully at ${hours}: ${mins} every day` })
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
