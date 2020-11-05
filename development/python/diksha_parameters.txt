@@ -340,5 +340,10 @@ where content_view_date IS NULL
 		}
 	}
 ]""",
-"select_diksha_tpd_files_from_log_db":"""select * from log_summary where filename like '%diksha_tpd%'"""
+"select_diksha_tpd_files_from_log_db":"""select * from log_summary where filename like '%diksha_tpd%'""",
+"diksha_tpd_count_null_value":"""(select
+SUM(CASE when "collection_id" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_id,
+SUM(CASE when "uuid" IS NULL THEN 1 ELSE 0 END) AS count_null_uuid,
+SUM(CASE when "school_id" IS NULL THEN 1 ELSE 0 END) AS count_null_school_id
+from diksha_content_staging)"""
 }
