@@ -21,7 +21,8 @@
                         <th>No.</th>
                         <th>Process Name</th>
                         <th>Process Status</th>
-                        <th>Schedule Time</th>
+                        <th>Schedule Time(Hours)</th>
+                        <th>Schedule Time(Minutes)</th>
                         <th>Stopping Hours</th>
                         <th>Action</th>
                     </tr>
@@ -35,9 +36,10 @@
                             <select class="time" required id="role"
                                 style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
                                 #role="ngModel" [(ngModel)]="selectedTime[i]" name="roleid" (change)="onSelectTime(i)">
-                                <option [value]="selectedTime[i]" disabled selected> Choose Time
+                                <option [value]="selectedTime[i]" disabled selected> Choose Hours
                                 </option>
-                                <option *ngFor="let time of timeArr" [(ngValue)]="time.time">
+                                <option *ngFor="let time of timeArr" [(ngValue)]="time.time"
+                                    style="text-align: center;">
                                     {{time.time}}
                                 </option>
                             </select>
@@ -45,8 +47,19 @@
                         <td>
                             <select class="time" required id="role"
                                 style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                #role="ngModel" [(ngModel)]="selectedMinuts[i]" name="roleid" (change)="onSelectMinutes(i)">
+                                <option [value]="selectedMinuts[i]" disabled selected> Choose Minutes
+                                </option>
+                                <option *ngFor="let min of minsArr" [(ngValue)]="min.mins">
+                                    {{min.mins}}
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="time" required id="role"
+                                style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
                                 #role="ngModel" [(ngModel)]="selectedHour[i]" name="roleid" (change)="onSelectHour(i)">
-                                <option [value]="selectedHour[i]" disabled selected> Choose Hours
+                                <option [value]="selectedHour[i]" disabled selected> Choose Duration
                                 </option>
                                 <option *ngFor="let hour of hoursArr" [(ngValue)]="hour.hours">
                                     {{hour.hours}}

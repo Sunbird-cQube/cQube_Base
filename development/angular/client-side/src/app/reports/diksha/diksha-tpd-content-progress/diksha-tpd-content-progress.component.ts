@@ -116,7 +116,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
         enabled: false
       },
       xAxis: [{
-        categories: xLabelId,
+        categories: [],
         labels: {
           rotation: 270,
           style: {
@@ -201,26 +201,22 @@ export class DikshaTPDContentProgressComponent implements OnInit {
 
       var obj = '';
       if (level == 'district') {
-        obj = `<b>DistrictId: ${series['xAxis'].categories[point['x']]}</b> 
-        <br> <b>DistrictName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>           
+        obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>           
         <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
       if (level == 'block') {
-        obj = `<b>BlockId: ${series['xAxis'].categories[point['x']]}</b> 
-        <br> <b>BlockName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+        obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
         <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
       if (level == 'cluster') {
-        obj = `<b>ClusterId: ${series['xAxis'].categories[point['x']]}</b> 
-        <br> <b>ClusterName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+        obj = `<b>Cluster Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
         <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
       if (level == 'school') {
-        obj = `<b>SchoolId: ${series['xAxis'].categories[point['x']]}</b> 
-        <br> <b>SchoolName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+        obj = `<b>School Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
         <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
@@ -358,16 +354,16 @@ export class DikshaTPDContentProgressComponent implements OnInit {
     let zLabel = response['result']['zLabel']
     this.reportData = response['downloadData']
     if (response['districtDetails']) {
-      this.districtNames = response['districtDetails'];
-      this.districtNames = this.districtNames.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
+      let districts = response['districtDetails'];
+      this.districtNames = districts.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
     }
     if (response['blockDetails']) {
-      this.blockNames = response['blockDetails'];
-      this.blockNames = this.blockNames.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
+      let blocks = response['blockDetails'];
+      this.blockNames = blocks.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }
     if (response['clusterDetails']) {
-      this.clusterNames = response['clusterDetails'];
-      this.clusterNames = this.clusterNames.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
+      let clusters = response['clusterDetails'];
+      this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }
     this.chartFun(xLabel, xLabelId, yLabel, zLabel, data, this.level);
   }

@@ -31,7 +31,7 @@ const dikshaRoutes: Routes = [
         path: 'usage-by-textbook-content', component: UsageByTextbookContentComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'tpd-content-progress', component: DikshaTPDContentProgressComponent, canActivateChild: [AuthGuard]
+        path: 'tpd-collection-progress', component: DikshaTPDContentProgressComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'tpd-teacher-percentage', component: DikshaTPDTeachersPercentageComponent, canActivateChild: [AuthGuard]
