@@ -174,7 +174,9 @@ export class SummaryStatistictsComponent implements OnInit {
       newArr.forEach((columns) => {
         body += '<tr>';
         columns.forEach((column) => {
+          if (column.data != 'ff_uuid') {
             body += `<td>${column.value}</td>`
+          }
         });
         body += '</tr>';
       });
