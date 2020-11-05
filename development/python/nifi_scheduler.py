@@ -16,7 +16,7 @@ def get_processor_groups():
 
 def schedule_processor_groups(pg_list):
 	headers={"Content-Type":"application/json"}
-	payload={"state":"RUNNING", "time":"22:00", "stopTime": 5}
+	payload={"state":"RUNNING", "time": {"hours": "22", "minutes": "00"}, "stopTime": 5}
 	try:
 		for x,y in pg_list.items():
 			uri='http://localhost:3001/api/nifi/scheduleNiFiProcessor/{}'.format(y)
