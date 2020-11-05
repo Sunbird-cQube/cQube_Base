@@ -78,12 +78,21 @@ object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_ty
 collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
 collection_created_for,total_count,total_time_spent
 HAVING  COUNT(*) > 1""",
-"diksha_unique_records_same_records":"""select collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
-enrolment_date,completion_date,progress,certificate_status,total_score
-from (SELECT collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
-enrolment_date,completion_date,progress,certificate_status,total_score
-row_number() over (partition by collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
-enrolment_date,completion_date,progress,certificate_status,total_score) as rn from diksha_content_staging) sq Where rn =1""",
+"diksha_unique_records_same_records":"""select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent
+from (SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent,
+row_number() over (partition by content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
+content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
+object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
+collection_created_for,total_count,total_time_spent) as rn from diksha_content_staging) sq Where rn =1""",
 "diksha_stack_jolt":"""[
   {
     "operation": "shift",
@@ -245,7 +254,7 @@ collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content
 "diksha_tpd_unique_records_same_records":"""select collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
 enrolment_date,completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
 from (SELECT collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
-enrolment_date,completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
+enrolment_date,completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,
 row_number() over (partition by collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
 enrolment_date,completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score) as rn from diksha_content_staging) sq Where rn =1""",
 "diksha_sum_of_dup":"""select sum(num_of_times) from flowfile""",
