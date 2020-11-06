@@ -61,10 +61,10 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
     this.districtWise();
     document.getElementById('spinner').style.display = 'block';
-    document.getElementById('backBtn').style.display = "none";
-    document.getElementById('homeBtn').style.display = "Block";
   }
 
   public tableHead: any;
@@ -397,8 +397,8 @@ export class SchoolInfrastructureComponent implements OnInit {
       l = 6;
     }
     for (i = l; i < Object.keys(result[0]).length; i++) {
-      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').toLocaleUpperCase() });
-      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').toLocaleUpperCase() });
+      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').charAt(0).toUpperCase() + Object.keys(result[0])[i].replace(/_/g, ' ').substr(1).toLowerCase() });
+      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').charAt(0).toUpperCase() + Object.keys(result[0])[i].replace(/_/g, ' ').substr(1).toLowerCase() });
     }
 
     var labels = [];
@@ -538,7 +538,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       $("#table").append(body);
       $('#table').DataTable({
         destroy: true, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: "48vh", scrollX: true,
+        bPaginate: false, scrollY: "40vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: false,
         fixedColumns: {
           leftColumns: 1

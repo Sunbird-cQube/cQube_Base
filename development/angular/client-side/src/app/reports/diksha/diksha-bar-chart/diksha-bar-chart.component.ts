@@ -14,7 +14,6 @@ import { AppServiceComponent } from '../../../app.service';
 })
 export class DikshaBarChartComponent implements OnInit {
   chart: boolean = false;
-
   public colors = [];
   header = '';
   public barChartOptions: ChartOptions = {};
@@ -28,7 +27,7 @@ export class DikshaBarChartComponent implements OnInit {
   ]
   public barChartData: ChartDataSets[] = [];
 
-  collection_type = 'all';
+  collection_type = 'course';
 
   public result: any = [];
   public timePeriod = '';
@@ -40,7 +39,7 @@ export class DikshaBarChartComponent implements OnInit {
   public myChart: Chart;
   public showAllChart: boolean = false;
   public allDataNotFound: any;
-  public collectioTypes: any = [{ id: "all", type: "Overall" }, { id: "course", type: "Course" }, { id: "textbook", type: "TextBook" }, { id: "others", type: "Others" }];
+  public collectioTypes: any = [{ id: "course", type: "Course" }];
   public collectionNames: any = [];
   collectionName = '';
   footer;
@@ -59,8 +58,8 @@ export class DikshaBarChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    document.getElementById('backBtn').style.display = "none";
-    document.getElementById('homeBtn').style.display = "Block";
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
     this.getAllData();
   }
 
@@ -73,21 +72,23 @@ export class DikshaBarChartComponent implements OnInit {
 
   homeClick() {
     document.getElementById('home').style.display = "none";
+    this.timePeriod = '';
     this.getAllData()
   }
-  linkClick() {
-    this.collection_type = "all";
-    document.getElementById('home').style.display = "none";
-    this.getAllData()
-  }
+  // linkClick() {
+  //   document.getElementById('home').style.display = "none";
+  //   this.getAllData()
+  // }
   async getAllData() {
     this.emptyChart();
-    if (this.collection_type != "all") {
+    if (this.timePeriod != "") {
       document.getElementById('home').style.display = "block";
+    } else {
+      document.getElementById('home').style.display = "none";
     }
     this.reportData = [];
     this.commonService.errMsg();
-    this.timePeriod = '';
+    
     this.collectionName = '';
     this.footer = '';
     this.fileName = `collectionType_${this.collection_type}_data`;
@@ -95,10 +96,10 @@ export class DikshaBarChartComponent implements OnInit {
     this.all = true
     this.dist = false;
     this.header = this.changeingStringCases(this.collection_type) + " linked";
-    if (this.collection_type == 'all') {
-      this.header = "Overall";
-    }
-    this.header = this.header;
+    // if (this.collection_type == 'all') {
+    //   this.header = "Overall";
+    // }
+    // this.header = this.header;
     this.listCollectionNames();
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
       this.result = result['chartData'];

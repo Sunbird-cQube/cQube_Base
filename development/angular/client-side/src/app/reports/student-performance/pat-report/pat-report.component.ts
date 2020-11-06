@@ -96,10 +96,10 @@ export class PATReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
     this.commonService.initMap('patMap');
     this.districtWise();
-    document.getElementById('backBtn').style.display = "none";
-    document.getElementById('homeBtn').style.display = "Block";
   }
 
   onPeriodSelect() {
@@ -962,9 +962,13 @@ export class PATReportComponent implements OnInit {
       }
     });
     if (level != 'school') {
-      orgObject['total_schools'] = orgObject['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      if (orgObject['total_schools'] != null) {
+        orgObject['total_schools'] = orgObject['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
     }
-    orgObject['students_count'] = orgObject['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    if (orgObject['total_schools'] != null) {
+      orgObject['students_count'] = orgObject['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }5
     var yourData1;
     if (this.grade) {
       yourData1 = this.commonService.getInfoFrom(orgObject, "Performance", level, "patReport", '', colorText).join(" <br>");

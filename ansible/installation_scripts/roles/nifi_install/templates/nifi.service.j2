@@ -1,0 +1,12 @@
+[Unit]
+Description=Apache NiFi
+After=network.target
+
+[Service]
+Type=forking
+ExecStart={{base_dir}}/cqube/nifi/nifi/bin/nifi.sh start
+ExecStop={{base_dir}}/cqube/nifi/nifi/bin/nifi.sh stop
+ExecReload={{base_dir}}/cqube/nifi/nifi/bin/nifi.sh restart 
+
+[Install]
+WantedBy=multi-user.target

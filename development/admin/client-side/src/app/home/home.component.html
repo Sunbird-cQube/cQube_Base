@@ -10,7 +10,7 @@
   </span>
   <span id="homeBtn" class="headerBtn"
     style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;display: none;color:  rgb(98, 150, 209);"
-    [routerLink]="['/home']">
+    [routerLink]="['/']">
     <strong>Home</strong>
   </span>
   <span id="logout" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()">
@@ -30,7 +30,7 @@
       </mat-toolbar>
       <div *ngIf="!showsideMenu">
         <a id="crtUsr" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['create-user']">
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/create-user']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
@@ -38,7 +38,7 @@
             &nbsp;&nbsp; Create User </td>
         </a>
         <a id="Chpass" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['change-password']">
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/change-password']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
@@ -47,7 +47,7 @@
         </a>
 
         <a id="user" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['users']">
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/users']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
@@ -56,7 +56,7 @@
         </a>
 
         <a id="logs" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['all-logs']">
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/all-logs']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
@@ -65,7 +65,7 @@
         </a>
 
         <a id="downloads" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['s3FileDownload']">
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/s3FileDownload']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
@@ -81,7 +81,7 @@
             &nbsp;&nbsp; Monitoring Details </td>
         </a>
         <a id="summary" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['summary-statistics']">
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/summary-statistics']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
@@ -89,7 +89,7 @@
             &nbsp;&nbsp; Summary Statistics </td>
         </a>
         <a id="nifi" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['nifi-shedular']">
+          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/nifi-shedular']">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
@@ -101,8 +101,8 @@
 
       <span class="toolbar-filler"></span>
     </mat-nav-list>
-    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.5 </span>
-    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 16/10/2020</span>
+    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.6 </span>
+    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 06/11/2020</span>
 
   </mat-sidenav>
   <mat-sidenav-content>

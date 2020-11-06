@@ -1,15 +1,15 @@
-<div class="container-fluid" style="font-family: Arial; width: 100%;">
+<div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     School Infrastructure report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     School Infrastructure report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
@@ -17,7 +17,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     School Infrastructure report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 0.8em; margin-top: 5px;">
+                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     School Infrastructure report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
@@ -38,11 +38,11 @@
                         {{hierName}}</span></p>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <div class="row">
                 <div class="col-sm-6">
                     <p id="errMsg"
-                        style="display: none; text-align: center;line-height: 0.8em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; font-family: Arial;">
                     </p>
                 </div>
                 <div class="col-sm-6">
@@ -75,7 +75,8 @@
     <div class="row">
         <div class="col-sm-12">
             <p style="text-align: justify; font-size: 11px;">
-                <strong> About the dashboard:</strong> The dashboard here provides insights on selected infrastructure metrics
+                <strong> About the dashboard:</strong> The dashboard here provides insights on selected infrastructure
+                metrics
                 calculated using the UDISE data. A key feature of this dashboard is its ability to Zoom In and Out at
                 various administrative levels. The administrative levels include District, Block and Cluster. This has
                 been done to provide relevant insights at the appropriate administrative level. In addition to
@@ -96,9 +97,9 @@
         <div class="row" style="height: 80vh;">
             <div class="col-sm-6">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         X-AXIS: <select id="x_axis"
-                            style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                            style="padding: 2px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                             [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
                             <option [value]="xAxis" disabled selected="selected">choose
                                 x-axis
@@ -109,9 +110,9 @@
                             </option>
                         </select>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         Y-AXIS: <select id="y_axis"
-                            style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                            style="padding: 2px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                             [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
                             <option [value]="yAxis" disabled selected="selected">choose
                                 y-axis
@@ -123,18 +124,18 @@
                         </select>
                     </div>
                 </div>
-                <p style="text-align: justify; font-size: 11px;">
+                <p style="text-align: justify; font-size: 11px; margin-top: 5px;">
                     <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
                     dropdown below. You can alter the metrics to update the scatter plot.
                 </p>
                 <div class="row">
-                    <canvas id="myChart" height="170vh"></canvas>
+                    <canvas id="myChart" height="160vh"></canvas>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="row">
                     <select id="choose_dist"
-                        style="margin-right: 10px; padding: 1px;margin-left: 2%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                        style="margin-right: 10px; padding: 2px;margin-left: 2%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
                         <option [value]="myDistrict" disabled selected="selected">Choose a District
                         </option>
@@ -145,7 +146,7 @@
                     </select>
 
                     <select [hidden]="blockHidden" id="choose_block"
-                        style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                        style="margin-right: 10px; padding: 2px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
                         <option [value]="myBlock" disabled selected="selected">Choose a Block
                         </option>
@@ -155,7 +156,7 @@
                     </select>
 
                     <select [hidden]="clusterHidden" id="choose_cluster"
-                        style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                        style="margin-right: 10px; padding: 2px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
                         <option [value]="myCluster" disabled selected="selected">Choose a Cluster
                         </option>
@@ -166,7 +167,7 @@
                         </option>
                     </select>
                 </div>
-                <p style="text-align: justify; font-size: 11px;">
+                <p style="text-align: justify; font-size: 11px; margin-top: 7px;">
                     <strong> NOTE:</strong> The table provides information about the various metrics. You can sort the
                     entire table based on any metrics available in this table.
                 </p>

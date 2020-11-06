@@ -30,10 +30,9 @@ where SchoolId IS NULL
 "crc_insp_not_null":'''select * from flowfile
 where SchoolId IS NOT NULL
 ''',
-"crc_insp_count_null":'''(select
+"crc_insp_count_null":'''(select 
 SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
-SUM(CASE when InspectionId IS NULL THEN 1 ELSE 0 END) AS count_null_inspectionid,
-SUM(CASE when CreatedOn IS NULL THEN 1 ELSE 0 END) AS count_null_createdon from flowfile)
+SUM(CASE when InspectionId IS NULL THEN 1 ELSE 0 END) AS count_null_inspectionid from flowfile)
 ''',
 "crc_inspec_dup_check":'''SELECT inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline,count(inspectionid)-1  num_of_times
 FROM flowfile
@@ -580,5 +579,26 @@ do update set year= excluded.year,month=excluded.month,school_id=excluded.school
 district_id=excluded.district_id,district_name=excluded.district_name,
 block_id=excluded.block_id,block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
 visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,updated_on=now(),created_on=excluded.created_on
-'''
+''',
+"crc_loc_null_table":'''crc_loc_null_col''',
+"crc_inspec_null_table":'''crc_inspec_null_col''',
+"crc_loc_null_log_summary":'''update log_summary
+SET school_id = crc_loc_null_col.count_null_schoolid,
+inspection_id = crc_loc_null_col.count_null_inspectionid,
+in_school_location = crc_loc_null_col.inschoolloc,
+created_on = crc_loc_null_col.count_null_createdon,
+latitude = crc_loc_null_col.count_latitude,
+longitude = crc_loc_null_col.count_longitude
+from crc_loc_null_col
+where crc_loc_null_col.ff_uuid = log_summary.ff_uuid''',
+"crc_inspec_null_log_summary":'''update log_summary
+SET school_id = crc_inspec_null_col.count_null_schoolid,
+inspection_id = crc_inspec_null_col.count_null_inspectionid
+from crc_inspec_null_col
+where crc_inspec_null_col.ff_uuid = log_summary.ff_uuid''',
+"district_filename":'''district_crc_opt_json''',
+"block_filename":'''block_crc_opt_json''',
+"cluster_filename":'''cluster_crc_opt_json''',
+"school_filename":'''school_crc_opt_json''',
+"crc_queries_filename":'''crc_queries.json'''
 }

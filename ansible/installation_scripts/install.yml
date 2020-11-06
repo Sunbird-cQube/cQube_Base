@@ -9,7 +9,6 @@
     - .version
 
   roles:
-          - create_base_dir
           - { role: java, tags: install }  
           - { role: python, tags: install }
           - createdb
@@ -19,8 +18,9 @@
           - angular_admin
           - prometheus
           - { role: grafana, tags: install }
-          - { role: nifi_params, tags: install }
+
           - nifi_install   
+          - { role: nifi_params, tags: install }
 
           - role: nifi_crc
             tags: install

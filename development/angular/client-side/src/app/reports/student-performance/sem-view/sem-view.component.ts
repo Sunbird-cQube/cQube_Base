@@ -106,15 +106,14 @@ export class SemViewComponent implements OnInit, OnDestroy {
   ngOnDestroy() { }
 
   ngOnInit() {
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
     var eventType = "pageLoad";
     this.btnId = "";
     var date = new Date();
     this.trackInteract(date, this.btnId, eventType);
-
-    document.getElementById('backBtn').style.display = "none";
     this.commonService.initMap('semMap');
     this.districtWise();
-    document.getElementById('homeBtn').style.display = "Block";
   }
 
   homeClick(event) {
@@ -163,6 +162,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.districtId = undefined;
       this.commonService.errMsg();
       this.levelWise = "district";
+      this.districtMarkers = [];
       this.reportData = [];
       this.schoolCount = '';
       this.studentCount = '';
@@ -454,7 +454,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
     this.blockId = undefined;
-
+    this.blockMarkers = [];
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = true;
@@ -530,7 +530,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
     this.clusterId = undefined;
-
+    this.clusterMarkers = [];
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -613,7 +613,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
-
+    this.schoolMarkers = [];
     this.blockHidden = false;
     this.clusterHidden = false;
     // api call to get the schoolwise data for selected district, block, cluster

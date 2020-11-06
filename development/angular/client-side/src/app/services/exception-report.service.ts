@@ -19,38 +19,38 @@ export class ExceptionReportService {
   //Semester Completion
   semCompletionDist(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/semCompDist/allDistrictWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompDist/allDistrictWise`, data);
   }
 
   semCompletionBlock(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/semCompBlock/allBlockWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompBlock/allBlockWise`, data);
   }
   semCompletionCluster(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/semCompCluster/allClusterWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompCluster/allClusterWise`, data);
   }
   semCompletionSchool(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/semCompSchool/allSchoolWise`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompSchool/allSchoolWise`, data);
   }
   semCompletionBlockPerDist(distId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/semCompBlock/blockWise/${distId}`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompBlock/blockWise/${distId}`, data);
   }
   semCompletionClusterPerBlock(distId, blockId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/semCompCluster/clusterWise/${distId}/${blockId}`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompCluster/clusterWise/${distId}/${blockId}`, data);
   }
   semCompletionSchoolPerClustter(distId, blockId, clusterId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/semCompSchool/schoolWise/${distId}/${blockId}/${clusterId}`, data, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.post(`${this.baseUrl}/semCompSchool/schoolWise/${distId}/${blockId}/${clusterId}`, data);
   }
 
   //missing school data api
   school_invalid() {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/school_invalid/school_invalid_data`, { 'headers': { 'token': "Bearer " + localStorage.getItem('token') } });
+    return this.http.get(`${this.baseUrl}/school_invalid/school_invalid_data`);
   }
 
 }

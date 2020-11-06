@@ -715,5 +715,87 @@ group by b.question_id,b.exam_id,b.indicator_id,b.indicator_title,b."indicator",
 "pat_periodic_exam_result_trans_datatype":"""Optional(parseInt()),Optional(parseInt()),Optional(StrNotNullOrEmpty()),Optional(parseLong()),Optional(parseLong()),Optional(parseLong()),Optional(parseInt()),
 Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(parseDouble())""",
 "sch_hrchy_rm_special_char_1":"""update school_hierarchy_details set school_name=replace(school_name,'[','') where school_name like '%]%';""",
-"sch_hrchy_rm_special_char_2":"""update school_hierarchy_details set school_name=replace(school_name,']','') where school_name like '%]%';"""
+"sch_hrchy_rm_special_char_2":"""update school_hierarchy_details set school_name=replace(school_name,']','') where school_name like '%]%';""",
+"pat_learning_outcome_meta_jolt_spec":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "pat_meta": ""
+      }
+    }
+  }
+]""",
+"pat_trans_qst_agg":"""insert into periodic_exam_school_qst_result(school_id,exam_code,exam_date,grade,total_marks,obtained_marks,indicator,question_id
+,academic_year,students_attended,subject,school_name,cluster_id,cluster_name,total_students,
+block_id,block_name,district_id,district_name,created_on,updated_on)
+select data.school_id,data.exam_code,data.exam_date,data.grade,data.total_marks,data.obtained_marks,data.indicator,data.question_id
+,date_part('year', data.exam_date) as academic_year,e.students_attended,
+d.subject_name as subject,initcap(b.school_name)as school_name,b.cluster_id,initcap(b.cluster_name)as cluster_name,c.students_count,
+b.block_id,initcap(b.block_name)as block_name,b.district_id,initcap(b.district_name)as district_name, 
+now(),now()
+from
+(select data.* from 
+(select a.school_id,a.exam_code,to_date(substr(exam_code,8,14)::text,'ddmmyyyy')as exam_date,
+    a.studying_class as grade,b.question_id,b.indicator,b.question_marks*sum(students_attended) as total_marks,sum(a.obtained_marks)as obtained_marks,b.exam_id
+from
+(select exam_id,school_id,exam_code,studying_class,question_id,sum(obtained_marks)as obtained_marks,count(distinct(student_uid)) as students_attended
+from periodic_exam_result_trans 
+group by exam_id,school_id,exam_code,studying_class,question_id)as a
+left join (select exam_id,question_id,indicator,question_marks from periodic_exam_qst_mst group by exam_id,question_id,indicator,question_marks) as b 
+on a.exam_id=b.exam_id and a.question_id=b.question_id
+group by a.school_id,a.exam_code,a.studying_class,b.question_id,b.indicator,b.exam_id,b.question_marks,a.question_id)as data
+where data.total_marks is not null)as data
+inner join 
+(select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
+a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
+from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
+where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
+)as b 
+on data.school_id=b.school_id
+left join 
+(select school_id,count(distinct(student_uid)) as students_count from periodic_exam_result_trans group by school_id)as c on data.school_id=c.school_id
+left join
+(select exam_id,assessment_year,exam_code,subject_name from periodic_exam_mst) as d on data.exam_id=d.exam_id and data.exam_code=d.exam_code
+left join
+(select exam_code,exam_id,question_id,school_id,studying_class,count(distinct(student_uid)) as students_attended from periodic_exam_result_trans 
+    group by exam_code,exam_id,question_id,school_id,studying_class) as e
+on data.school_id=e.school_id and data.grade=e.studying_class and data.exam_code=e.exam_code and data.question_id=e.question_id
+where total_marks>=obtained_marks
+on conflict(school_id,exam_code,academic_year,question_id)
+do update set 
+school_id=excluded.school_id,exam_code=excluded.exam_code,exam_date=excluded.exam_date,grade=excluded.grade,total_marks=excluded.total_marks,
+obtained_marks=excluded.obtained_marks,indicator=excluded.indicator,question_id=excluded.question_id,academic_year=excluded.academic_year,subject=excluded.subject,
+students_attended=excluded.students_attended,school_name=excluded.school_name,total_students=excluded.total_students,
+cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,block_id=excluded.block_id,block_name=excluded.block_name,
+district_id=excluded.district_id,district_name=excluded.district_name,updated_on=now()""",
+"pat_qst_to_agg":"""insert into periodic_exam_school_result(school_id,exam_code,exam_date,grade,academic_year,subject,total_marks,obtained_marks
+,school_name,school_latitude,school_longitude,cluster_id,cluster_name,cluster_latitude,cluster_longitude,students_count,students_attended,
+block_id,block_name,block_latitude,block_longitude,district_id,district_name,district_latitude,district_longitude,created_on,updated_on)
+select a.school_id,exam_code,exam_date,grade,academic_year,subject,total_marks,obtained_marks
+,school_name,school_latitude,school_longitude,a.cluster_id,cluster_name,cluster_latitude,cluster_longitude,students_count,students_attended,
+a.block_id,block_name,block_latitude,block_longitude,a.district_id,district_name,district_latitude,district_longitude,now(),now()
+from
+(select school_id,exam_code,exam_date,grade,academic_year,subject,sum(total_marks)as total_marks,sum(obtained_marks)as obtained_marks,school_name,
+cluster_id,cluster_name,
+total_students students_count,sum(students_attended)as students_attended,block_id,block_name,
+district_id,district_name
+from periodic_exam_school_qst_result
+group by school_id,exam_code,exam_date,grade,academic_year,subject,school_name,cluster_id,cluster_name,total_students,
+block_id,block_name,district_id,district_name
+) as a inner join 
+(
+    select a.school_id,b.school_latitude,b.school_longitude,a.cluster_id,b.cluster_latitude,b.cluster_longitude,
+a.block_id,b.block_latitude,b.block_longitude,a.district_id,b.district_latitude,b.district_longitude
+from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
+where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
+)as b on a.school_id=b.school_id
+on conflict(school_id,exam_code,academic_year)
+do update set 
+school_id=excluded.school_id,exam_code=excluded.exam_code,exam_date=excluded.exam_date,grade=excluded.grade,academic_year=excluded.academic_year,subject=excluded.subject,
+total_marks=excluded.total_marks,obtained_marks=excluded.obtained_marks,school_name=excluded.school_name,students_count=excluded.students_count,students_attended=excluded.students_attended,
+school_latitude=excluded.school_latitude,school_longitude=excluded.school_longitude,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,
+cluster_latitude=excluded.cluster_latitude,cluster_longitude=excluded.cluster_longitude,block_id=excluded.block_id,block_name=excluded.block_name,
+block_latitude=excluded.block_latitude,block_longitude=excluded.block_longitude,district_id=excluded.district_id,district_name=excluded.district_name,
+district_latitude=excluded.district_latitude,district_longitude=excluded.district_longitude,updated_on=now()"""
 }

@@ -125,6 +125,11 @@ img{
   transition: 300ms ease-in-out;
   height: 0;
 }
+.submenu9{
+  overflow-y: hidden;
+  transition: 300ms ease-in-out;
+  height: 0;
+}
 .submenu.expanded {
   height: 48px;
 }
@@ -134,7 +139,7 @@ img{
 }
 
 .submenu2.expanded {
-  height: 144px;
+  height: 240px;
 }
 
 .submenu3.expanded {
@@ -150,7 +155,7 @@ img{
 }
 
 .submenu6.expanded {
-  height: 96px;
+  height: 192px;
 }
 
 .submenu7.expanded {
@@ -158,6 +163,10 @@ img{
 }
 .submenu8.expanded {
   height: 48px;
+}
+
+.submenu9.expanded {
+  height: 96px;
 }
 
 a{

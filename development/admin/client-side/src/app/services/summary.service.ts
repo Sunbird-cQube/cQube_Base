@@ -14,74 +14,52 @@ export class SummaryService {
   //summary statistics
   getAttendanceSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/stdAttendance`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/stdAttendance`, {});
   }
   getSemSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/sem`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/sem`, {});
   }
 
   getCrcSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/crc`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/crc`, {});
   }
 
   getInfraSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/infra`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/infra`, {});
   }
   getInspecSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/inspec`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/inspec`, {});
   }
 
   getstDistSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/stDist`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/stDist`, {});
   }
 
   getstBlockSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/stBlock`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/stBlock`, {});
   }
   getstClusterSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/stCluster`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/stCluster`, {});
   }
   getstSchoolSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/stSchool`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/stSchool`, {});
   }
 
   getDikshaSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/summaryDiksha`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/summaryDiksha`, {});
   }
 
   getUdiseSummary() {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/summary/summaryUDISE`, {}, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/summary/summaryUDISE`, {});
   }
 }
