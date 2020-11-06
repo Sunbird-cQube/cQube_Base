@@ -133,12 +133,12 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                     logger.info('Re-Scheduled Job status changed to STOPPED - has updated to file');
                 });
                 setTimeout(() => {
-                    console.log(' --- executing stop shell command ----');
+                    logger.info(' --- executing stop shell command ----');
                     shell.exec(`sudo systemctl stop nifi.service`);
                 }, 120000);
 
                 setTimeout(() => {
-                    console.log(' --- executing start shell command ----');
+                    logger.info(' --- executing start shell command ----');
                     shell.exec(`sudo systemctl start nifi.service`);
                 }, 180000);
                 logger.info(JSON.stringify(response))
@@ -185,12 +185,12 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                     logger.info('Scheduled Job status changed to STOPPED - has updated to file');
                 });
                 setTimeout(() => {
-                    console.log(' --- executing stop shell command ----');
+                    logger.info(' --- executing stop shell command ----');
                     shell.exec(`sudo systemctl stop nifi.service`);
                 }, 120000);
 
                 setTimeout(() => {
-                    console.log(' --- executing start shell command ----');
+                    logger.info(' --- executing start shell command ----');
                     shell.exec(`sudo systemctl start nifi.service`);
                 }, 180000);
                 logger.info(JSON.stringify(response))
@@ -306,12 +306,12 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                     logger.info('Re-Scheduled Job status changed to STOPPED - has updated to file');
                 });
                 setTimeout(() => {
-                    console.log(' --- executing stop shell command ----');
+                    logger.info(' --- executing stop shell command ----');
                     shell.exec(`sudo systemctl stop nifi.service`);
                 }, 120000);
 
                 setTimeout(() => {
-                    console.log(' --- executing start shell command ----');
+                    logger.info(' --- executing start shell command ----');
                     shell.exec(`sudo systemctl start nifi.service`);
                 }, 180000);
                 logger.info(JSON.stringify(response))
@@ -358,12 +358,12 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                     logger.info('Scheduled Job status changed to STOPPED - has updated to file');
                 });
                 setTimeout(() => {
-                    console.log(' --- executing stop shell command ----');
+                    logger.info(' --- executing stop shell command ----');
                     shell.exec(`sudo systemctl stop nifi.service`);
                 }, 120000);
 
                 setTimeout(() => {
-                    console.log(' --- executing start shell command ----');
+                    logger.info(' --- executing start shell command ----');
                     shell.exec(`sudo systemctl start nifi.service`);
                 }, 180000);
                 logger.info(JSON.stringify(response))
