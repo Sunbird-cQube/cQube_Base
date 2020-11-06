@@ -20,8 +20,14 @@ exports.restartNifiProcess = async function () {
                     logger.info('Restart process - Scheduled RUNNING Job - Restarted successfully');
                 });
                 setTimeout(() => {
-                    shell.exec(`sudo systemctl restart nifi.service`);
+                    console.log(' --- executing stop shell command ----');
+                    shell.exec(`sudo systemctl stop nifi.service`);
                 }, 120000);
+
+                setTimeout(() => {
+                    console.log(' --- executing start shell command ----');
+                    shell.exec(`sudo systemctl start nifi.service`);
+                }, 180000);
                 logger.info(JSON.stringify(response))
                 logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling completed ---`);
             });
@@ -35,8 +41,14 @@ exports.restartNifiProcess = async function () {
                     logger.info('Restart process - Scheduled Job status changed to STOPPED - Stopped Successfully');
                 });
                 setTimeout(() => {
-                    shell.exec(`sudo systemctl restart nifi.service`);
+                    console.log(' --- executing stop shell command ----');
+                    shell.exec(`sudo systemctl stop nifi.service`);
                 }, 120000);
+
+                setTimeout(() => {
+                    console.log(' --- executing start shell command ----');
+                    shell.exec(`sudo systemctl start nifi.service`);
+                }, 180000);
                 logger.info(JSON.stringify(response))
                 logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling stopping completed ---`);
             });
