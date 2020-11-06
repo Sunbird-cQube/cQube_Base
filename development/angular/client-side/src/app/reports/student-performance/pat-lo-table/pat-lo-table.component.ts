@@ -176,7 +176,7 @@ export class PATLOTableComponent implements OnInit {
       $(`#LOtable`).append(body);
       $(`#LOtable`).DataTable({
         destroy: true, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: "63vh", scrollX: true,
+        bPaginate: false, scrollY: "60vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: false,
         fixedColumns: {
           leftColumns: 1

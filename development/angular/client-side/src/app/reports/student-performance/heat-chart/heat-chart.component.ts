@@ -184,7 +184,7 @@ export class HeatChartComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: yLabel.length > 1 ? (yLabel.length / 5) : yLabel.length - 1,
+        max: yLabel.length > 1 ? (yLabel.length / 4) : yLabel.length - 1,
         scrollbar: {
           enabled: true
         }
