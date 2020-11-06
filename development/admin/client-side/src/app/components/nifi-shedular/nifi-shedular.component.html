@@ -47,7 +47,8 @@
                         <td>
                             <select class="time" required id="role"
                                 style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
-                                #role="ngModel" [(ngModel)]="selectedMinuts[i]" name="roleid" (change)="onSelectMinutes(i)">
+                                #role="ngModel" [(ngModel)]="selectedMinuts[i]" name="roleid"
+                                (change)="onSelectMinutes(i)">
                                 <option [value]="selectedMinuts[i]" disabled selected> Choose Minutes
                                 </option>
                                 <option *ngFor="let min of minsArr" [(ngValue)]="min.mins">
@@ -75,6 +76,6 @@
         </div>
     </div>
 </div>
-<div id="spinner" style="display: none;">
+<div id="spinner" style="display: block;">
     <div id="loader" class="loading">Loading&#8230;</div>
 </div>
