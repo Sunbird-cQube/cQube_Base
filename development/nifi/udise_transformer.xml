@@ -17183,7 +17183,7 @@ ${query_type:startsWith('udise_school_wise_qry'):ifElse(#{udise_school_jolt_spec
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -18168,7 +18168,7 @@ ${query_type:startsWith('udise_school_wise_qry'):ifElse(#{udise_school_jolt_spec
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -24976,7 +24976,7 @@ ${query_type:startsWith('udise_school_wise_qry'):ifElse('udise_school_wise.json'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -25062,7 +25062,7 @@ ${query_type:startsWith('udise_school_wise_qry'):ifElse('udise_school_wise.json'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -25075,5 +25075,5 @@ ${query_type:startsWith('udise_school_wise_qry'):ifElse('udise_school_wise.json'
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>11/06/2020 18:36:42 IST</timestamp>
+    <timestamp>11/06/2020 18:58:47 IST</timestamp>
 </template>
