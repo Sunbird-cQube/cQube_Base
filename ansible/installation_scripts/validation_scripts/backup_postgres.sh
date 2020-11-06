@@ -13,7 +13,7 @@ if [ $temp == 0 ]; then
     version=`psql -V | head -n1 | cut -d" " -f3`
     if [[ $(echo "$version >= 10.12" | bc) == 1 ]]
     then
-        echo "WARNING - Postgres found, taking the backup to current directory..."
+        echo "WARNING - Postgres found, taking the backup to base directory.."
         pg_dump -h localhost -U $db_user -F t $db_name > $base_dir/cqube/postgres/backups/`date +%Y%m%d%H%M`$bk_db_name.tar
         if [[ ! $? == 0 ]]; then
             echo "There is a problem dumping the database"; tput sgr0 ;
