@@ -83,6 +83,7 @@
     - diksha_queries.json
     - composite_queries.json
     - pat_queries.json
+    - udise_queries.json
   tags: [ install , update ]
 
 - name: Touch a file
