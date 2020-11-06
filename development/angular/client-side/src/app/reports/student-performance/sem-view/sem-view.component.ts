@@ -454,7 +454,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
     this.blockId = undefined;
-
+    this.blockMarkers = [];
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = true;
@@ -530,7 +530,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
     this.clusterId = undefined;
-
+    this.clusterMarkers = [];
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -613,7 +613,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
-
+    this.schoolMarkers = [];
     this.blockHidden = false;
     this.clusterHidden = false;
     // api call to get the schoolwise data for selected district, block, cluster
@@ -693,7 +693,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
   // common function for all the data to show in the map
   genericFun(data, options, fileName) {
     this.reportData = [];
-    this.markers = [];
     this.schoolCount = '';
     this.studentCount = '';
 
