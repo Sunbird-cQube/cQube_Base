@@ -162,6 +162,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.districtId = undefined;
       this.commonService.errMsg();
       this.levelWise = "district";
+      this.districtMarkers = [];
       this.reportData = [];
       this.schoolCount = '';
       this.studentCount = '';
@@ -692,6 +693,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
   // common function for all the data to show in the map
   genericFun(data, options, fileName) {
     this.reportData = [];
+    this.markers = [];
     this.schoolCount = '';
     this.studentCount = '';
 
