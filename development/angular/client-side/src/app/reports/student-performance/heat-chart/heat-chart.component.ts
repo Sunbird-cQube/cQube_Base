@@ -149,7 +149,8 @@ export class HeatChartComponent implements OnInit {
           style: {
             color: 'black',
             fontSize: '14px'
-          }
+          },
+          enabled: false
         },
         min: 0,
         max: 30,
@@ -184,7 +185,7 @@ export class HeatChartComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: yLabel.length > 1 ? (yLabel.length / 4) : yLabel.length - 1,
+        max: 12,
         scrollbar: {
           enabled: true
         }
@@ -433,6 +434,8 @@ export class HeatChartComponent implements OnInit {
   }
 
   genericFunction(response) {
+    var xlab = [];
+    var ylab = [];
     let a = {
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
     }
@@ -454,7 +457,18 @@ export class HeatChartComponent implements OnInit {
       let clusters = response['clusterDetails'];
       this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }
-    this.chartFun(xLabel, xLabelId, yLabel, zLabel, data, a.viewBy, this.level);
+    if (xLabel.length <= 30) {
+      for (let i = 0; i <= 30; i++) {
+        xlab.push(xLabel[i] ? xLabel[i] : ' ')
+      }
+    }
+
+    if (yLabel.length <= 12) {
+      for (let i = 0; i <= 12; i++) {
+        ylab.push(yLabel[i] ? yLabel[i] : ' ')
+      }
+    }
+    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, a.viewBy, this.level);
   }
 
   //level wise filter
