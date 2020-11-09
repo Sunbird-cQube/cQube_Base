@@ -77,6 +77,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
     this.cluster = undefined;
     this.blockHidden = true;
     this.clusterHidden = true;
+    this.timePeriod = 'All';
     document.getElementById('home').style.display = 'none';
     this.commonFunc();
   }

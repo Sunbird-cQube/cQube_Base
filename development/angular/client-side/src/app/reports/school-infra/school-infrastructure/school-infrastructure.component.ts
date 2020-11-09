@@ -397,8 +397,8 @@ export class SchoolInfrastructureComponent implements OnInit {
       l = 6;
     }
     for (i = l; i < Object.keys(result[0]).length; i++) {
-      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').toLocaleUpperCase() });
-      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').toLocaleUpperCase() });
+      this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').charAt(0).toUpperCase() + Object.keys(result[0])[i].replace(/_/g, ' ').substr(1).toLowerCase() });
+      this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ').charAt(0).toUpperCase() + Object.keys(result[0])[i].replace(/_/g, ' ').substr(1).toLowerCase() });
     }
 
     var labels = [];
