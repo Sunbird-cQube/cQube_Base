@@ -17222,7 +17222,7 @@ file: ${filename} columns did not match.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -24561,7 +24561,7 @@ blank line validation of file:${filename} started.</value>
 ${query_type:startsWith('crc_block_agg'):ifElse('block_crc_opt_json.json',
 ${query_type:startsWith('crc_cluster_agg'):ifElse('cluster_crc_opt_json.json',
 ${query_type:startsWith('crc_schools_agg'):ifElse('school_crc_opt_json.json','None')} 
-)} )} )} </value>
+)} )} )}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -28494,5 +28494,5 @@ where ff_uuid= '${zip_identifier}'
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>11/06/2020 18:26:39 IST</timestamp>
+    <timestamp>11/06/2020 18:58:24 IST</timestamp>
 </template>
