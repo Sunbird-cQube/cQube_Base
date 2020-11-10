@@ -183,7 +183,7 @@ export class HeatChartComponent implements OnInit {
           rotation: 270,
           style: {
             color: 'black',
-            fontSize: '11px',
+            fontSize: '12px',
             fontFamily: 'Arial',
           }
         },
@@ -193,7 +193,7 @@ export class HeatChartComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: '10px',
+            fontSize: '12px',
             textDecoration: "underline",
             textOverflow: "ellipsis",
             fontFamily: 'Arial'
