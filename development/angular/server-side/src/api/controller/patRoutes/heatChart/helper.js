@@ -1,3 +1,4 @@
+const colorsHelper = require('../../../lib/colors');
 const generalFun = (data, level, viewBy) => {
     return new Promise((resolve, reject) => {
         try {
@@ -60,12 +61,12 @@ const generalFun = (data, level, viewBy) => {
                 })
             }
             let finalData = []
-
+            let colors = colorsHelper.colors;
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
                     let mark = Array.isArray(entry[1]) ? entry[1].filter(itemValue => itemValue[hierarchySelection] == totalDistLen[y])[0] : 0;
                     mark = mark ? parseFloat(mark.marks) : null;
-                    finalData.push([y, index, mark])
+                    finalData.push({ x: y, y: index, value: mark, color: colors[mark] })
                 }
             })).then(() => {
                 let arrNew = Object.keys(arr).map(a => {
