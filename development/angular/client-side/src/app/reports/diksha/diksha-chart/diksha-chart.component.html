@@ -2,14 +2,12 @@
     <div class="row">
         <div class="col-sm-7">
             <div *ngIf='all'>
-                <p id="dist_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Textbook linked content usage: <span (click)="getAllData()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
-                <p id="block_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="block_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Textbook linked content usage: <span (click)="getAllData()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
@@ -20,7 +18,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <p id="errMsg"
-                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
                 <div class="col-sm-6">
@@ -51,8 +49,7 @@
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="districtWise(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
-                <option *ngFor="let dist of districtsDetails" [(ngValue)]="dist.district_id"
-                    style="font-family: Arial; font-size: 11px;">
+                <option *ngFor="let dist of districtsDetails" [(ngValue)]="dist.district_id" style=" font-size: 11px;">
                     {{dist.district_name}}
                 </option>
             </select>
@@ -62,8 +59,7 @@
                 [(ngModel)]="timePeriod" name="timePeriod" (change)="timeRange(timePeriod)">
                 <option [value]="timePeriod" disabled selected="selected">Choose Time Range
                 </option>
-                <option *ngFor="let time of timeDetails" [(ngValue)]="time.timeRange"
-                    style="font-family: Arial; font-size: 11px;">
+                <option *ngFor="let time of timeDetails" [(ngValue)]="time.timeRange" style=" font-size: 11px;">
                     {{time.name}}
                 </option>
             </select>

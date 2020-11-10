@@ -2,14 +2,13 @@
     <div class="row">
         <div class="col-sm-7">
             <div *ngIf='all'>
-                <p id="dist_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     {{header}} content usage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <!-- <div *ngIf='dist'>
                 <p id="block_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Diksha Report: <span (click)="getAllData()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
@@ -20,7 +19,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <p id="errMsg"
-                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
                 <div class="col-sm-6">
@@ -44,8 +43,7 @@
                     [(ngModel)]="timePeriod" name="timePeriod" (change)="chooseTimeRange()">
                     <option [value]="timePeriod" disabled selected="selected">Choose Time Range
                     </option>
-                    <option *ngFor="let time of timeDetails" [(ngValue)]="time.id"
-                        style="font-family: Arial; font-size: 11px;">
+                    <option *ngFor="let time of timeDetails" [(ngValue)]="time.id" style=" font-size: 11px;">
                         {{time.name}}
                     </option>
                 </select>
@@ -56,7 +54,7 @@
                     <option [value]="collectionName" disabled selected="selected">Choose collection name
                     </option>
                     <option *ngFor="let collectionName of collectionNames; let i = index"
-                        [(ngValue)]="collectionNames[i]" style="font-family: Arial; font-size: 11px;">
+                        [(ngValue)]="collectionNames[i]" style=" font-size: 11px;">
                         {{collectionNames[i]}}
                     </option>
                 </select>
