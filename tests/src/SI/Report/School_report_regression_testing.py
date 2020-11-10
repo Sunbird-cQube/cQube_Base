@@ -96,7 +96,6 @@ class cQube_SI_Report(unittest.TestCase):
         print("homeicon is working..")
         self.data.page_loading(self.driver)
 
-
     def test_homebutton(self):
         b = home(self.driver)
         res = b.test_homebtn()

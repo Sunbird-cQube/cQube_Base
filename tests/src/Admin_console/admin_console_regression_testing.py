@@ -124,7 +124,7 @@ class Admin_console_regression(unittest.TestCase):
     def test_application_logs(self):
         self.driver.find_element_by_id(Data.Dashboard).click()
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id("logs").click()
+        self.driver.find_element_by_xpath("//a[@id='logs']").click()
         self.data.page_loading(self.driver)
         log_type =Select(self.driver.find_element_by_name("logTypeName"))
         log_name = Select(self.driver.find_element_by_name("logName"))
@@ -143,7 +143,7 @@ class Admin_console_regression(unittest.TestCase):
     def test_admin_logs(self):
         self.driver.find_element_by_id(Data.Dashboard).click()
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id("logs").click()
+        self.driver.find_element_by_xpath("//a[@id='logs']").click()
         self.data.page_loading(self.driver)
         log_type = Select(self.driver.find_element_by_name("logTypeName"))
         log_name = Select(self.driver.find_element_by_name("logName"))
@@ -161,7 +161,7 @@ class Admin_console_regression(unittest.TestCase):
     def test_nifi_logs(self):
         self.driver.find_element_by_id(Data.Dashboard).click()
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id("logs").click()
+        self.driver.find_element_by_xpath("//a[@id='logs']").click()
         self.data.page_loading(self.driver)
         log_type = Select(self.driver.find_element_by_name("logTypeName"))
         log_name = Select(self.driver.find_element_by_name("logName"))
@@ -178,7 +178,7 @@ class Admin_console_regression(unittest.TestCase):
     def test_emission_logs(self):
         self.driver.find_element_by_id(Data.Dashboard).click()
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id("logs").click()
+        self.driver.find_element_by_xpath("//a[@id='logs']").click()
         self.data.page_loading(self.driver)
         log_type = Select(self.driver.find_element_by_name("logTypeName"))
         log_name = Select(self.driver.find_element_by_name("logName"))
@@ -197,7 +197,7 @@ class Admin_console_regression(unittest.TestCase):
     def test_System_logs(self):
         self.driver.find_element_by_id(Data.Dashboard).click()
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id("logs").click()
+        self.driver.find_element_by_xpath("//a[@id='logs']").click()
         self.data.page_loading(self.driver)
         log_type = Select(self.driver.find_element_by_name("logTypeName"))
         log_name = Select(self.driver.find_element_by_name("logName"))
@@ -215,7 +215,7 @@ class Admin_console_regression(unittest.TestCase):
     def test_postgress_logs(self):
         self.driver.find_element_by_id(Data.Dashboard).click()
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id("logs").click()
+        self.driver.find_element_by_xpath("//a[@id='logs']").click()
         self.data.page_loading(self.driver)
         log_type = Select(self.driver.find_element_by_name("logTypeName"))
         log_name = Select(self.driver.find_element_by_name("logName"))

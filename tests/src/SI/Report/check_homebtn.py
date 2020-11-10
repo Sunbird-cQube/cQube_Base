@@ -26,7 +26,9 @@ class home():
         self.data = GetData()
         self.driver.find_element_by_xpath(Data.hyper).click()
         self.data.page_loading(self.driver)
-        if 'home' in self.driver.current_url:
+        self.driver.find_element_by_id(Data.home).click()
+        self.data.page_loading(self.driver)
+        if 'dashboard' in self.driver.current_url:
             print("Landing page is displayed ")
         else:
             print('Home button is not working ')

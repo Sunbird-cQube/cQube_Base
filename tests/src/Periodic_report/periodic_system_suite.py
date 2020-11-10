@@ -47,6 +47,7 @@ class periodic_system_testing(unittest.TestCase):
     def test_DistrictwiseCsv(self):
         cls = DistrictwiseCsv(self.driver)
         func = cls.click_download_icon()
+        self.assertEqual(0, func, msg='Mismatch found at Districtwise footer values')
         print('Downloading district level csv file is working')
         self.data.page_loading(self.driver)
 

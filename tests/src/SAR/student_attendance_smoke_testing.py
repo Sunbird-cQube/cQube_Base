@@ -36,7 +36,7 @@ class cQube_Student_Attendance(unittest.TestCase):
     def test_click_on_student_attendence_report(self):
         sar = DahboardSar(self.driver)
         result = sar.click_on_sar()
-        if "Student Attendance Report" in result:
+        if "student-attendance" in result:
             print("Student Attendance Report is Working")
         else:
             raise self.failureException("Student Attendance Report Is Not Working")
@@ -177,7 +177,7 @@ class cQube_Student_Attendance(unittest.TestCase):
         home = Home(self.driver)
         home.click_on_blocks_click_on_home_icon()
         result = home.click_HomeButton()
-        if "Student Attendance Report" in result:
+        if "student-attendance" in result:
             print("Home Icon is Working")
         else:
             raise self.failureException('Home Icon is not working')
@@ -226,8 +226,8 @@ class cQube_Student_Attendance(unittest.TestCase):
         self.driver.find_element_by_id('homeBtn').click()
         time.sleep(2)
         self.data.navigate_to_student_report()
-        if result != 0:
-         raise self.failureException('Data Range in correct')
+        self.data.page_loading(self.driver)
+
 
     @classmethod
     def tearDownClass(cls):
