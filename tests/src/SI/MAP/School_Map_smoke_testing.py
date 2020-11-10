@@ -62,13 +62,10 @@ class cQube_SI_Map_Report(unittest.TestCase):
         self.assertEqual(res2, "Infrastructure access by Location", msg="option is not available")
         self.data.page_loading(self.driver)
 
-    def test_download(self):
+    def test_districtwise_download(self):
         b = download_icon(self.driver)
         res = b.test_donwload()
-        if "school-infra-map" in self.driver.current_url:
-            print("School infrastructure map based report present")
-        else:
-            print("School infra map report is not exist")
+        self.assertEqual(0, res, msg="mismatch found at no of school values")
         self.data.page_loading(self.driver)
 
     def test_click_on_home(self):

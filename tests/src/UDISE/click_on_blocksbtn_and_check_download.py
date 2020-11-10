@@ -28,5 +28,6 @@ class Blockwise_csv_download():
         self.filename = cal.get_download_dir() + '/' + self.fname.udise_block()
         self.p.page_loading(self.driver)
         file = os.path.isfile(self.filename)
+        os.remove(self.filename)
         return file ,dots
 

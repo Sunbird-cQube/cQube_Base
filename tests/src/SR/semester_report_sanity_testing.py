@@ -42,13 +42,13 @@ class cQube_Semester_Report(unittest.TestCase):
         dashboard = Dashboard(self.driver)
         dashboard.click_on_dashboard()
 
-    def test_click_on_semester_report(self):
-        sr = SemesterReport(self.driver)
-        result = sr.click_on_semester()
-        if "Semester Report" in result:
-            print("This is Semester Report page")
-        else:
-            raise self.failureException("Semester Report Not Found")
+    # def test_click_on_semester_report(self):
+    #     sr = SemesterReport(self.driver)
+    #     result = sr.click_on_semester()
+    #     if "Semester Report" in result:
+    #         print("This is Semester Report page")
+    #     else:
+    #         raise self.failureException("Semester Report Not Found")
 
 
     def test_click_on_blocks(self):
@@ -88,12 +88,14 @@ class cQube_Semester_Report(unittest.TestCase):
         result = csv.click_download_icon_of_district()
         if result == "File Not Downloaded":
             raise self.failureException(result)
+        self.data.page_loading(self.driver)
 
     def test_blockwise_csv_download(self):
         csv = BlockwiseCsv(self.driver)
         result = csv.click_download_icon_of_blocks()
         if result == "File Not Downloaded":
             raise self.failureException(result)
+        self.data.page_loading(self.driver)
 
     def test_clusterwise_csv_download(self):
         csv = ClusterwiseCsv(self.driver)

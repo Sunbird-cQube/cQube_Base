@@ -10,7 +10,7 @@ class cQube_login():
         count = 0
         self.data.login_cqube(self.driver)
         self.data.page_loading(self.driver)
-        if 'home' in self.driver.current_url:
+        if 'dashboard' in self.driver.current_url:
             print('login to cQube is successfull ')
         else:
             print('Login to cQube is failed ')

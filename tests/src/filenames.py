@@ -1,362 +1,432 @@
-import configparser
-import os
 
+from files import Files
 
 class file_extention():
 
-    def get_config_ini_path(self):
-        cwd = os.path.dirname(__file__)
-        ini = os.path.join(cwd, 'config.ini')
-        return ini
 
     # Semester Report
     def sr_block(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sr_block']
-
+        name = Files()
+        sr_block = name.sr_block
+        return sr_block
+    
     def sr_cluster(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sr_cluster']
+        name = Files()
+        sr_cluster = name.sr_cluster
+        return sr_cluster
 
     def sr_school(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sr_school']
+        name = Files()
+        sr_school = name.sr_school
+        return sr_school
 
     def sr_districtwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sr_districtwise']
+        name = Files()
+        sr_districtwise = name.sr_districtwise
+        return sr_districtwise
 
     def sr_blockwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sr_blockwise']
+        name = Files()
+        sr_blockwise = name.sr_blockwise
+        return sr_blockwise
+
 
     def sr_clusterwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sr_clusterwise']
+        name = Files()
+        sr_clusterwise = name.sr_clusterwise
+        return sr_clusterwise
+       
 
     def sr_district(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sr_district']
+        name = Files()
+        sr_district = name.sr_district
+        return sr_district
+       
 
     #exception
     def exception_block(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['exception_block']
+        name = Files()
+        exception_block = name.exception_block
+        return exception_block
 
     def exception_cluster(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['exception_cluster']
+        name = Files()
+        exception_cluster = name.exception_cluster
+        return exception_cluster
+
 
     def exception_school(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['exception_school']
+        name = Files()
+        exception_school = name.exception_school
+        return exception_school
 
     def exception_districtwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['exception_districtwise']
+            name = Files()
+            exception_districtwise = name.exception_districtwise
+            return exception_districtwise
 
     def exception_blockwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['exception_blockwise']
+            name = Files()
+            exception_blockwise = name.exception_blockwise
+            return exception_blockwise
 
     def exception_clusterwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['exception_clusterwise']
+            name = Files()
+            exception_clusterwise = name.exception_clusterwise
+            return exception_clusterwise
 
     def exception_district(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['exception_district']
+            name = Files()
+            exception_district = name.exception_district
+            return exception_district
 
     #crc report
     def crc_block(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['crc_block']
+        name = Files()
+        crc_block = name.crc_block
+        return crc_block
 
     def crc_cluster(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['crc_cluster']
+        name = Files()
+        crc_cluster = name.crc_cluster
+        return crc_cluster
 
     def crc_school(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['crc_school']
+        name = Files()
+        crc_school = name.crc_school
+        return crc_school
+
 
     def crc_districtwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['crc_districtwise']
+        name = Files()
+        crc_districtwise = name.crc_districtwise
+        return crc_districtwise
 
     def crc_blockwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['crc_blockwise']
+        name = Files()
+        crc_blockwise = name.crc_blockwise
+        return crc_blockwise
 
     def crc_clusterwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['crc_clusterwise']
+        name = Files()
+        crc_clusterwise = name.crc_clusterwise
+        return crc_clusterwise
 
     def crc_district(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['crc_district']
+         name = Files()
+         crc_district = name.crc_district
+         return crc_district
+
 
     # composite report
     def composite_block(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['composite_block']
+        name = Files()
+        composite_block = name.composite_block
+        return composite_block
 
     def composite_cluster(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['composite_cluster']
+            name = Files()
+            composite_cluster = name.composite_cluster
+            return composite_cluster
 
     def composite_districtwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['composite_districtwise']
+            name = Files()
+            composite_districtwise = name.composite_districtwise
+            return composite_districtwise
 
     def composite_blockwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['composite_blockwise']
+            name = Files()
+            composite_blockwise = name.composite_blockwise
+            return composite_blockwise
 
     def composite_clusterwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['composite_clusterwise']
+            name = Files()
+            composite_clusterwise = name.composite_clusterwise
+            return composite_clusterwise
 
     def composite_district(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['composite_district']
-    
+            name = Files()
+            composite_district = name.composite_district
+            return composite_district
+
     #School infra map report
     def scmap_block(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['scmap_block']
+            name = Files()
+            scmap_block = name.scmap_block
+            return scmap_block
 
     def scmap_cluster(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['scmap_cluster']
+            name = Files()
+            scmap_cluster = name.scmap_cluster
+            return scmap_cluster
 
     def scmap_school(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['scmap_school']
+            name = Files()
+            scmap_school = name.scmap_school
+            return scmap_school
 
     def scmap_districtwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['scmap_districtwise']
+            name = Files()
+            scmap_districtwise = name.scmap_districtwise
+            return scmap_districtwise
 
     def scmap_blockwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['scmap_blockwise']
+            name = Files()
+            scmap_blockwise = name.scmap_blockwise
+            return scmap_blockwise
 
     def scmap_clusterwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['scmap_clusterwise']
+            name = Files()
+            scmap_clusterwise = name.scmap_clusterwise
+            return scmap_clusterwise
 
     def scmap_district(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['scmap_district']
-    
+            name = Files()
+            scmap_district = name.scmap_district
+            return scmap_district
+
     #udise
     def udise_block(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['udise_block']
+            name = Files()
+            udise_block = name.udise_block
+            return udise_block
 
     def udise_cluster(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['udise_cluster']
+            name = Files()
+            udise_cluster = name.udise_cluster
+            return udise_cluster
 
     def udise_school(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['udise_school']
+            name = Files()
+            udise_school = name.udise_school
+            return udise_school
 
     def udise_districtwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['udise_districtwise']
+            name = Files()
+            udise_districtwise = name.udise_districtwise
+            return udise_districtwise
 
     def udise_blockwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['udise_blockwise']
+            name = Files()
+            udise_blockwise = name.udise_blockwise
+            return udise_blockwise
 
     def udise_clusterwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['udise_clusterwise']
+            name = Files()
+            udise_clusterwise = name.udise_clusterwise
+            return udise_clusterwise
 
     def udise_district(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['udise_district']
-    
+            name = Files()
+            udise_district = name.udise_district
+            return udise_district
+
     #School infra scattor plot
     def sc_block(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sc_block']
+            name = Files()
+            sc_block = name.sc_block
+            return sc_block
 
     def sc_district(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sc_district']
+            name = Files()
+            sc_district = name.sc_district
+            return sc_district
 
     def sc_cluster(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sc_cluster']
+            name = Files()
+            sc_cluster = name.sc_cluster
+            return sc_cluster
 
     def sc_school(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sc_school']
+            name = Files()
+            sc_school = name.sc_school
+            return sc_school
 
     def sc_districtwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sc_districtwise']
+            name = Files()
+            sc_districtwise = name.sc_districtwise
+            return sc_districtwise
 
     def sc_blockwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sc_blockwise']
+            name = Files()
+            sc_blockwise = name.sc_blockwise
+            return sc_blockwise
 
     def sc_clusterwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['sc_clusterwise']
+            name = Files()
+            sc_clusterwise = name.sc_clusterwise
+            return sc_clusterwise
 
     #Disha stacked
     def diksha_stack_all(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['diksha_stack_all']
+            name = Files()
+            diksha_stack_all = name.diksha_stack_all
+            return diksha_stack_all
 
     def diksha_stack_teacher(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['diksha_stack_teacher']
+            name = Files()
+            diksha_stack_teacher = name.diksha_stack_teacher
+            return diksha_stack_teacher
 
     def diskha_stack_student(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['diskha_stack_student']
+            name = Files()
+            diskha_stack_student = name.diskha_stack_student
+            return diskha_stack_student
 
     def diskha_stack_others(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['diskha_stack_others']
+            name = Files()
+            diskha_stack_others = name.diskha_stack_others
+            return diskha_stack_others
 
     # Telemetry report
 
     def telemtry_block(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['telemtry_block']
+            name = Files()
+            telemtry_block = name.telemtry_block
+            return telemtry_block
 
     def telemetry_cluster(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['telemetry_cluster']
+            name = Files()
+            telemetry_cluster = name.telemetry_cluster
+            return telemetry_cluster
 
     def telemetry_school(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['telemetry_school']
+            name = Files()
+            telemetry_school = name.telemetry_school
+            return telemetry_school
 
     def telemetry_overall(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['telemetry_overall']
+            name = Files()
+            telemetry_overall = name.telemetry_overall
+            return telemetry_overall
 
     def telemetry_last7days(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['telemetry_last7days']
+            name = Files()
+            telemetry_last7days = name.telemetry_last7days
+            return telemetry_last7days
 
     def telemetry_lastday(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['telemetry_lastday']
+            name = Files()
+            telemetry_lastday = name.telemetry_lastday
+            return telemetry_lastday
+
 
     def telemetry_lastmonth(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['telemetry_lastmonth']
+            name = Files()
+            telemetry_lastmonth = name.telemetry_lastmonth
+            return telemetry_lastmonth
 
     # completion error
     def school_invalid_data(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['completion_error']
+            name = Files()
+            completion_error = name.completion_error
+            return completion_error
 
     #Periodic report
     def pat_block(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['pat_block']
+            name = Files()
+            pat_block = name.pat_block
+            return pat_block
 
     def pat_cluster(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['pat_cluster']
+            name = Files()
+            pat_cluster = name.pat_cluster
+            return pat_cluster
 
     def pat_school(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['pat_school']
+            name = Files()
+            pat_school = name.pat_school
+            return pat_school
 
     def pat_districtwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['pat_districtwise']
+            name = Files()
+            pat_districtwise = name.pat_districtwise
+            return pat_districtwise
 
     def pat_blockwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['pat_blockwise']
+            name = Files()
+            pat_blockwise = name.pat_blockwise
+            return pat_blockwise
 
     def pat_clusterwise(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['pat_clusterwise']
+            name = Files()
+            pat_clusterwise = name.pat_clusterwise
+            return pat_clusterwise
 
     def pat_district(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['pat_district']
+            name = Files()
+            pat_district = name.pat_district
+            return pat_district
 
     def completion_error(self):
-        config = configparser.ConfigParser()
-        config.read(self.get_config_ini_path())
-        return config['config']['completion_error']
+            name = Files()
+            completion_error = name.completion_error
+            return completion_error
+
+    def location_course(self):
+        name = Files()
+        location_course = name.location_course
+        return location_course
+
+    def location_textbook(self):
+        name = Files()
+        location_textbook = name.location_textbook
+        return location_textbook
+
+    def pchart_districts(self):
+        name = Files()
+        pchart_districtwise = name.pchart_districtwise
+        return pchart_districtwise
+
+    def pchart_blocks(self):
+        name = Files()
+        pchart_blocks = name.pchart_blocks
+        return pchart_blocks
+
+    def pchart_clusters(self):
+        name = Files()
+        pchart_clusters = name.pchart_clusters
+        return pchart_clusters
+
+    def pchart_schools(self):
+        name = Files()
+        pchart_schools = name.pchart_schools
+        return pchart_schools
+
+    def pchart_views(self):
+        name = Files()
+        pchart_view = name.pchart_view
+        return pchart_view
+
+    def pchart_subjects(self):
+        name = Files()
+        pchart_subjects = name.subject_wise
+        return pchart_subjects
+
+    def pchart_grades(self):
+        name = Files()
+        pchart_grades = name.pchart_grades
+        return pchart_grades
+
+    def lpd_districts(self):
+        name = Files()
+        lpd_districtwise = name.lpd_district
+        return lpd_districtwise
+
+    def lpd_block(self):
+        name = Files()
+        lpd_blockwise = name.lpd_block
+        return lpd_blockwise
+
+    def lpd_cluster(self):
+        name = Files()
+        lpd_clusterwise = name.lpd_cluster
+        return lpd_clusterwise
+
+    def lpd_school(self):
+        name = Files()
+        lpd_schoolwise = name.lpd_school
+        return lpd_schoolwise
+
+
+

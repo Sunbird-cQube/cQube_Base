@@ -30,7 +30,7 @@ class Homeicon():
        self.p.page_loading(self.driver)
        self.driver.find_element_by_id('homeBtn').click()
        self.p.page_loading(self.driver)
-       if 'home' in self.driver.current_url:
+       if 'dashboard' in self.driver.current_url:
            print("home button is working fine , landing page is displayed ")
        else:
            print("Landing page is not displayed due to homebutton click not happened")
