@@ -90,7 +90,7 @@ class cQube_Semester_Report(unittest.TestCase):
     def test_districtwise_csv_download(self):
         csv = DistrictwiseCsv(self.driver)
         result = csv.click_download_icon_of_district()
-        if result == "File Not Downloaded":
+        if result == "Mismatch found at footer values":
             raise self.failureException(result)
         else:
             print("District wise csv report download is working")
