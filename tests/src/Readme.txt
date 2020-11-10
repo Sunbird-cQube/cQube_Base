@@ -1,10 +1,10 @@
 
-cQube Release_1.5
+cQube Release-1.6 
 
 Prerequisites:
   To Run Selenium python scripts ,Install pycharm in your system
   Google Chrome need to be installed in the server or local machine.
-  Chrome driver need to be downloaded and placed in the cQubeTesting-1.5/Driver folder
+  Chrome driver need to be downloaded and placed in the cQubeTesting-1.6/Driver folder
   awscli must be installed and configured
    
 Steps to install the google chrome
@@ -28,12 +28,12 @@ Steps to install and configure the awscli
 
 Steps to execute the test script
 	1.Open the Terminal (Ctrl+Alt+t) in the ubuntu
-	2.Clone the cQubeTesting-1.5 project from github i.e git clone [repository url] 
+	2.Clone the cQubeTesting-1.6 project from github i.e git clone [repository url] 
 	2.sudo apt update
 	3.sudo apt install python3-pip
-	4.Execute the Requirement.txt in the terminal (Requirement.txt file present in the cQubeTesting-1.5 Folder) [mandatory]
+	4.Execute the Requirement.txt in the terminal (Requirement.txt file present in the cQubeTesting-1.6 Folder) [mandatory]
 	    sudo pip3 install -r Requirement.txt 
-	5.Fill the config.ini file (config.ini file present in the cQubeTesting-1.5 Folder).
+	5.Fill the config.ini file (config.ini file present in the cQubeTesting-1.6 Folder).
 	        Mandatory fields for installation and upgradation of backend configuration and also to check the json files in the s3 output bucket
 		
                     [config]
@@ -80,20 +80,26 @@ Steps to execute the test script
                   emissionpassword= # Enter password for new emission user
 
     6.To Run the Test scripts
-        for functinal testing of periodic report and composite fallow commnad
+        for functinal testing of pat heatchart , lo table ,TPD Collection progress  and TPD Teacher Progress fallow commnad
             python3 -m unittest TestSuites/FunctionalTestSuite/Functional_suite.py
-    Navigate to cQubeTesting-1.3 Directory in the terminal (ex cd /home/ubuntu/cQubeTesting-1.5)
+	    
+    Navigate to cQubeTesting-1.3 Directory in the terminal (ex cd /home/ubuntu/cQubeTesting-1.6)
             For Regression:
                 python3 -m unittest TestSuites/Regression_suite/regression_test_suite.py
+		python3 -m unittest TestSuites/Regression_suite/regression_suite_2.py
                 python3 -m unittest Admin_console/admin_console_regression_testing.py
-            For System Testing:
+            
+	    For System Testing:
                 python3 -m unittest TestSuites/System_testing_suite/system_testing_suite.py
+		python3 -m unittest TestSuites/System_testing_suite/smoke_test_suite_2.py
                 python3 -m unittest Admin_console/admin_console_system_testing.py
-            For Smoke Testing:
+           
+	   For Smoke Testing:
                 python3 -m unittest TestSuites/SmokeTestSuite/Smoke_Testing.py
+		python3 -m unittest TestSuites/SmokeTestSuite/system_suite_2.py
                 python3 -m unittest Admin_console/Admin_smoke_testsuit.py
 
-    if any  ImportError: bad magic number in : b'\x03\xf3\r\n' then use this command and again restart execution
+    if any errors like : ImportError: bad magic number in : b'\x03\xf3\r\n' then use this command and again restart execution
                 sudo find . -name "*.pyc" -exec rm -f {} \;
 
     VPN CONNECTION:To navigate to Admin console page please fallow steps

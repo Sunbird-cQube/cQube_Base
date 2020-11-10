@@ -1,5 +1,6 @@
 import time
 import unittest
+
 from Data.parameters import Data
 from UDISE.click_on_clusters import cluster_button
 from UDISE.click_on_schools import click_schoolbutton
@@ -29,24 +30,24 @@ class cQube_udise_Report(unittest.TestCase):
         self.data.navigate_to_udise_report()
         time.sleep(3)
 
-    # def test_udise_icon(self):
-    #     count =0
-    #     self.driver.find_element_by_id(Data.home).click()
-    #     self.data.page_loading(self.driver)
-    #     if 'home' in self.driver.current_url:
-    #         print('cQube Landing page is displayed and home button is working fine')
-    #     else:
-    #         print('Home button is not working')
-    #         count = count + 1
-    #     self.driver.find_element_by_id('udise').click()
-    #     self.data.page_loading(self.driver)
-    #     if 'UDISE report' in self.driver.page_source:
-    #         print('UDISE Report home page is displayed ')
-    #     else:
-    #         print("Udise report is not exists ")
-    #         count = count + 1
-    #     self.assertEqual(0,count,msg='Udise report icon not working ')
-    #     self.data.page_loading(self.driver)
+    def test_udise_icon(self):
+        count =0
+        self.driver.find_element_by_id(Data.home).click()
+        self.data.page_loading(self.driver)
+        if 'dashboard' in self.driver.current_url:
+            print('cQube Landing page is displayed and home button is working fine')
+        else:
+            print('Home button is not working')
+            count = count + 1
+        self.driver.find_element_by_id('udise').click()
+        self.data.page_loading(self.driver)
+        if 'UDISE report' in self.driver.page_source:
+            print('UDISE Report home page is displayed ')
+        else:
+            print("Udise report is not exists ")
+            count = count + 1
+        self.assertEqual(0,count,msg='Udise report icon not working ')
+        self.data.page_loading(self.driver)
 
     def test_hyperlink(self):
         b = click_on_hyperlink(self.driver)
@@ -99,24 +100,24 @@ class cQube_udise_Report(unittest.TestCase):
         self.assertNotEqual(res1,0,msg='Markers are missing on school level map ')
         print('Schoolwise csv file download is working')
 
-    # def test_homebtn(self):
-    #     count = 0
-    #     self.driver.find_element_by_id(Data.home).click()
-    #     self.data.page_loading(self.driver)
-    #     if 'home' in self.driver.current_url:
-    #         print('cQube Landing page is displayed and home button is working fine')
-    #     else:
-    #         print('Home button is not working')
-    #         count = count + 1
-    #     self.driver.find_element_by_id('udise').click()
-    #     self.data.page_loading(self.driver)
-    #     if 'UDISE report' in self.driver.page_source:
-    #         print('UDISE Report home page is displayed ')
-    #     else:
-    #         print("Udise report is not exists ")
-    #         count = count + 1
-    #     self.assertEqual(0, count, msg='Udise report icon not working ')
-    #     self.data.page_loading(self.driver)
+    def test_homebtn(self):
+        count = 0
+        self.driver.find_element_by_id(Data.home).click()
+        self.data.page_loading(self.driver)
+        if 'dashboard' in self.driver.current_url:
+            print('cQube Landing page is displayed and home button is working fine')
+        else:
+            print('Home button is not working')
+            count = count + 1
+        self.driver.find_element_by_id('udise').click()
+        self.data.page_loading(self.driver)
+        if 'UDISE report' in self.driver.page_source:
+            print('UDISE Report home page is displayed ')
+        else:
+            print("Udise report is not exists ")
+            count = count + 1
+        self.assertEqual(0, count, msg='Udise report icon not working ')
+        self.data.page_loading(self.driver)
 
 
     def test_block_btn_scores(self):
@@ -135,7 +136,6 @@ class cQube_udise_Report(unittest.TestCase):
 
     def test_indices_download(self):
         b = udiseindices_scores(self.driver)
-
         indices_score = b.infrastructure_score()
         b.remove_csv()
         self.assertNotEqual(0, indices_score, msg='Failed')

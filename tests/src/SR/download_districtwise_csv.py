@@ -27,9 +27,28 @@ class DistrictwiseCsv():
         self.filename = p.get_download_dir() + "/" + self.fname.sr_district()
         if os.path.isfile(self.filename) != True:
            return "File Not Downloaded"
-        if os.path.isfile(self.filename) == True:
-            print('File is downloaded')
+        else:
+            with open(self.filename) as fin:
+                csv_reader = csv.reader(fin, delimiter=',')
+                header = next(csv_reader)
+                total = 0
+                schools = 0
+                for row in csv.reader(fin):
+                    total += int(row[9])
+                    schools += int(row[10])
+                students = self.driver.find_element_by_id("students").text
+                res = re.sub('\D', "", students)
+
+                school = self.driver.find_element_by_id("schools").text
+                sc = re.sub('\D', "", school)
+                if int(res) != total:
+                    print("student count mismatched")
+                    count = count + 1
+                if int(sc) != schools:
+                    print("school count mismatched")
+                    count = count + 1
             os.remove(self.filename)
+        return  count
 
 
 
