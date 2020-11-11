@@ -98,7 +98,7 @@ export class PATReportComponent implements OnInit {
   ngOnInit() {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.commonService.initMap('patMap');
+    this.commonService.initMap('patMap',[[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
   }
 

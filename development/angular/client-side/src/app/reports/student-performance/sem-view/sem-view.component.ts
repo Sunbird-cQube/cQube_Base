@@ -112,7 +112,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.btnId = "";
     var date = new Date();
     this.trackInteract(date, this.btnId, eventType);
-    this.commonService.initMap('semMap');
+    this.commonService.initMap('semMap',[[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
   }
 

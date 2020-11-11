@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../src/environments/environment';
 import { KeycloakSecurityService } from './keycloak-security.service';
-import * as data from '../assets/india.json';
 import * as L from 'leaflet';
 import { ExportToCsv } from 'export-to-csv';
 export var globalMap;
@@ -66,24 +65,16 @@ export class AppServiceComponent {
     }
 
     //Initialisation of Map  
-    initMap(map) {
+    initMap(map, maxBounds) {
         const lat = 22.3660414123535;
         const lng = 71.48396301269531;
-        globalMap = L.map(map, { zoomControl: false }).setView([lat, lng], 7);
-        applyCountryBorder(globalMap);
-        function applyCountryBorder(map) {
-            L.geoJSON(data['features'][0], {
-                color: "#a9a9a9",
-                weight: 1,
-                fillOpacity: 0
-            }).addTo(map);
-        }
+        globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([lat, lng], 7);
         L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
             {
                 token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
                 id: 'mapbox.streets',
                 subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                minZoom: 4,
+                minZoom: 7,
                 maxZoom: 18,
             }
         ).addTo(globalMap);
