@@ -8,6 +8,8 @@
                         (click)="fetchTelemetry($event,'imr')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="imrTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -38,6 +40,8 @@
                         (click)="fetchTelemetry($event,'cr')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="crTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -68,6 +72,8 @@
                         (click)="fetchTelemetry($event,'udise')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="udiseTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -103,6 +109,8 @@
                         [routerLink]="['/composite/composite-report']" (click)="fetchTelemetry($event,'composite')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="compositeTooltip"
+                                    style="position: absolute; right:10px; top:0px"></app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -141,6 +149,8 @@
                         [routerLink]="['/diksha/usage-by-user-profile']" (click)="fetchTelemetry($event,'dsc')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="dscTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -172,6 +182,8 @@
                         [routerLink]="['/diksha/usage-by-course']" (click)="fetchTelemetry($event,'dcc')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="dccTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -203,6 +215,8 @@
                         [routerLink]="['/diksha/usage-by-course-content']" (click)="fetchTelemetry($event,'dtr')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="dtrTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -243,6 +257,8 @@
                         [routerLink]="['/crc/crc-report']" (click)="fetchTelemetry($event,'crcr')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="crcrTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -280,6 +296,8 @@
                         [routerLink]="['/diksha/tpd-collection-progress']" (click)="fetchTelemetry($event,'tpd-cp')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="tpdcpTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -311,6 +329,8 @@
                         [routerLink]="['/diksha/tpd-teacher-percentage']" (click)="fetchTelemetry($event,'tdp-tp')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="tpdtpTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -349,6 +369,8 @@
                         [routerLink]="['/diksha/usage-by-textbook']" (click)="fetchTelemetry($event,'ut')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="utTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -380,6 +402,8 @@
                         [routerLink]="['/diksha/usage-by-textbook-content']" (click)="fetchTelemetry($event,'utc')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="utcTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -418,6 +442,8 @@
                         [routerLink]="['/student-performance/semester-report']" (click)="fetchTelemetry($event,'sr')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="srTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -449,6 +475,8 @@
                         [routerLink]="['/student-performance/pat-report']" (click)="fetchTelemetry($event,'pat')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="patTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -480,6 +508,8 @@
                         [routerLink]="['/student-performance/heat-chart']" (click)="fetchTelemetry($event,'heatChart')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="heatChartTooltip"
+                                    style="position: absolute; right:10px; top:0px"></app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -511,6 +541,8 @@
                         [routerLink]="['/student-performance/PAT-LO-table']" (click)="fetchTelemetry($event,'lotable')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="lotableTooltip"
+                                    style="position: absolute; right:10px; top:0px"></app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -549,6 +581,8 @@
                         [routerLink]="['/exception/sem-exception']" (click)="fetchTelemetry($event,'SemExp')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="semExpTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -581,6 +615,8 @@
                         [routerLink]="['/exception/download-missing-data']" (click)="fetchTelemetry($event,'isdata')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="isdataTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -619,6 +655,8 @@
                         [routerLink]="['/attendance/student-attendance']" (click)="fetchTelemetry($event,'sar')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="sarTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -650,6 +688,8 @@
                         [routerLink]="['/attendance/teacher-attendance']" (click)="fetchTelemetry($event,'tar')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="tarTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -686,6 +726,8 @@
                         [routerLink]="['/telemetry']" (click)="fetchTelemetry($event,'telemData')">
                         <div class="card-body ">
                             <div class="row">
+                                <app-info [tooltipText]="telemDataTooltip"
+                                    style="position: absolute; right:10px; top:0px"></app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
