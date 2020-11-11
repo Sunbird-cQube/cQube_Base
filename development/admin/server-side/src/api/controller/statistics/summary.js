@@ -200,7 +200,7 @@ router.post('/stBlock', auth.authController, async (req, res) => {
     }
 });
 
-router.post('/stCluster',  async (req, res) => {
+router.post('/stCluster', async (req, res) => {
     try {
         logger.info('---cluster static summary api ---');
         const_data['getParams']['Key'] = 'log_summary/static/log_summary_cluster.json';
@@ -286,7 +286,7 @@ router.post('/summaryDiksha', auth.authController, async (req, res) => {
 
 router.post('/summaryUDISE', auth.authController, async (req, res) => {
     try {
-        logger.info('---diksha summary api ---');
+        logger.info('---udise summary api ---');
         const_data['getParams']['Key'] = 'log_summary/log_summary_udise.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
@@ -298,7 +298,7 @@ router.post('/summaryUDISE', auth.authController, async (req, res) => {
             } else {
                 let summaryData = data.Body.toString();
                 summaryData = JSON.parse(summaryData);
-                logger.info('--- diksha summary api response sent---');
+                logger.info('--- udise summary api response sent---');
                 if (summaryData == null || summaryData == '') {
                     res.send([]);
                 } else {
@@ -312,5 +312,59 @@ router.post('/summaryUDISE', auth.authController, async (req, res) => {
     }
 });
 
+router.post('/summaryPAT', auth.authController, async (req, res) => {
+    try {
+        logger.info('---pat summary api ---');
+        const_data['getParams']['Key'] = 'log_summary/log_summary_pat.json';
+        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
+            if (err) {
+                logger.error(err);
+                res.status(500).json({ errMsg: "Something went wrong" });
+            } else if (!data) {
+                logger.error("No data found in s3 file");
+                res.status(403).json({ errMsg: "No such data found" });
+            } else {
+                let summaryData = data.Body.toString();
+                summaryData = JSON.parse(summaryData);
+                logger.info('--- pat summary api response sent---');
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
+            }
+        });
+    } catch (e) {
+        logger.error(`Error :: ${e}`);
+        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
+    }
+});
+router.post('/summaryDikshaTPD', auth.authController, async (req, res) => {
+    try {
+        logger.info('---diksha TPD summary api ---');
+        const_data['getParams']['Key'] = 'log_summary/log_summary_diksha_tpd.js';
+        const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
+            if (err) {
+                logger.error(err);
+                res.status(500).json({ errMsg: "Something went wrong" });
+            } else if (!data) {
+                logger.error("No data found in s3 file");
+                res.status(403).json({ errMsg: "No such data found" });
+            } else {
+                let summaryData = data.Body.toString();
+                summaryData = JSON.parse(summaryData);
+                logger.info('--- diksha TPD summary api response sent---');
+                if (summaryData == null || summaryData == '') {
+                    res.send([]);
+                } else {
+                    res.send(summaryData)
+                }
+            }
+        });
+    } catch (e) {
+        logger.error(`Error :: ${e}`);
+        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
+    }
+});
 
 module.exports = router
