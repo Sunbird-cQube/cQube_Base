@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 declare const $;
 
 @Component({
@@ -7,14 +7,27 @@ declare const $;
   styleUrls: ['./info.component.css']
 })
 export class InfoComponent implements OnInit {
-
+  @Input() tooltipText: string;
   constructor() { }
 
   ngOnInit(): void {
   }
 
   public fun = $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-  })
+    $('[data-toggle="tooltip"]').tooltip().on('inserted.bs.tooltip', function () {
+      $("body div.tooltip-inner").css({
+        "max-width": "500px",
+        "padding": "3%",
+        "text-align": "justify",
+        "border-radius": "20px",
+        "border": "2px solid powderblue",
+        "background-color": "white",
+        "color": "black"
+      });
+      // $('.tooltip-arrow').css('background-color', 'red');
+    });
+    $('[data-toggle="tooltip"]').tooltip("hide")
+  });
+  // })
 
 }

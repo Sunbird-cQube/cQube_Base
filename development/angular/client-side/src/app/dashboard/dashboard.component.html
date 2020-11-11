@@ -8,7 +8,7 @@
                         (click)="fetchTelemetry($event,'imr')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info style="position: absolute; right:10px; top:0px"></app-info>
+                                <app-info [tooltipText]="imrTooltip" style="position: absolute; right:10px; top:0px"></app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">
@@ -39,7 +39,7 @@
                         (click)="fetchTelemetry($event,'cr')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info style="position: absolute; right:10px; top:0px"></app-info>
+                                <app-info [tooltipText]="crTooltip" style="position: absolute; right:10px; top:0px"></app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv">

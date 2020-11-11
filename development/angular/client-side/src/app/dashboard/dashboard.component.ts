@@ -9,6 +9,9 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  imrTooltip = "The School Infrastructure dashboard visualises the data on school infrastructure metrics for Gujarat based on the data collected through UDISE 2020.";
+  crTooltip = "The dashboard here provides insights on selected infrastructure metrics calculated using the UDISE data. A key feature of this dashboard is its ability to Zoom In and Out at various administrative levels. The administrative levels include District, Block and Cluster. This has been done to provide relevant insights at the appropriate administrative level. In addition to visualising data, the dashboard also gives you the ability to download the data at various administrative levels. This feature has been enabled to provide freedom to power users to derive additional insights that may not be captured in this dashboard. You can download the data using the dropdown option on the top right corner.";
+
   hiddenPass = false;
   edate: Date;
   telemetryData = [];
