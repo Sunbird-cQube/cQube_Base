@@ -19,14 +19,14 @@ class block_btn_scores():
         count = 0
         self.p.page_loading(self.driver)
         scores = Select(self.driver.find_element_by_id("choose_infra"))
-        for i in range(len(scores.options)-1):
+        for i in range(1,len(scores.options)-1):
             time.sleep(2)
             scores.select_by_index(i)
-            time.sleep(5)
+            time.sleep(8)
             markers = self.driver.find_elements_by_class_name(Data.dots)
             dots = len(markers)-1
             if dots == 0:
-                print(scores.options[i].text , 'does not contains markers on map ')
+                # print(scores.options[i].text , 'does not contains markers on map ')
                 count = count + 1
         self.p.page_loading(self.driver)
         return count

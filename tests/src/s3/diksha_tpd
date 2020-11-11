@@ -1,0 +1,53 @@
+import unittest
+from reuse_func import GetData
+
+
+class DikshaTpd(unittest.TestCase):
+    @classmethod
+    def setUpClass(self):
+        self.cal = GetData()
+
+    # diksha tpd district files
+    def test_district_wise_diksha_tpd_files(self):
+        all_files_in_s3 = []
+        bucket = self.cal.get_bucket()
+        comparision_files = self.cal.get_cmp_diksha_tpd_files("district")
+        for x in comparision_files:
+            for key in bucket.list(prefix=x, delimiter='*.json'):
+                all_files_in_s3.append(key.name)
+        self.assertListEqual(comparision_files, all_files_in_s3, "files are missing")
+    
+    # diksha tpd block files
+    def test_block_wise_diksha_tpd_files(self):
+        all_files_in_s3 = []
+        bucket = self.cal.get_bucket()
+        comparision_files = self.cal.get_cmp_diksha_tpd_files("block")
+        for x in comparision_files:
+            for key in bucket.list(prefix=x, delimiter='*.json'):
+                all_files_in_s3.append(key.name)
+        self.assertListEqual(comparision_files, all_files_in_s3, "files are missing")
+
+    # diksha tpd cluster files
+    def test_cluster_wise_diksha_tpd_files(self):
+        all_files_in_s3 = []
+        bucket = self.cal.get_bucket()
+        comparision_files = self.cal.get_cmp_diksha_tpd_files("cluster")
+        for x in comparision_files:
+            for key in bucket.list(prefix=x, delimiter='*.json'):
+                all_files_in_s3.append(key.name)
+        self.assertListEqual(comparision_files, all_files_in_s3, "files are missing")
+
+    # diksha tpd school files
+    def test_school_wise_diksha_tpd_files(self):
+        all_files_in_s3 = []
+        bucket = self.cal.get_bucket()
+        comparision_files = self.cal.get_cmp_diksha_tpd_files("school")
+        for x in comparision_files:
+            for key in bucket.list(prefix=x, delimiter='*.json'):
+                all_files_in_s3.append(key.name)
+        self.assertListEqual(comparision_files, all_files_in_s3, "files are missing")
+
+
+
+
+

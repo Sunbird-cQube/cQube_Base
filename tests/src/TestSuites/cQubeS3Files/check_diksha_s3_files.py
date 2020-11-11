@@ -3,7 +3,8 @@ import unittest
 from HTMLTestRunner import HTMLTestRunner
 
 from get_dir import pwd
-from s3 import diksha_barchart, diksha_stackbar, diksha_table_report
+from s3 import diksha_barchart, diksha_stackbar, diksha_table_report, diksha_tpd
+
 
 class MyTestSuite(unittest.TestCase):
     def test_Issue(self):
@@ -12,7 +13,8 @@ class MyTestSuite(unittest.TestCase):
             # file name .class name
             unittest.defaultTestLoader.loadTestsFromTestCase(diksha_barchart.DikshaBarChart),
             unittest.defaultTestLoader.loadTestsFromTestCase(diksha_stackbar.DikshaStackBar),
-            unittest.defaultTestLoader.loadTestsFromTestCase(diksha_table_report.DikshaTableReport)
+            unittest.defaultTestLoader.loadTestsFromTestCase(diksha_table_report.DikshaTableReport),
+            unittest.defaultTestLoader.loadTestsFromTestCase(diksha_tpd.DikshaTpd)
 
         ])
         p = pwd()

@@ -28,4 +28,5 @@ class udise_districts_csv():
             print('Districtwise csv file is not downloaded ')
             count = count + 1
         self.p.page_loading(self.driver)
+        os.remove(self.filename)
         return count

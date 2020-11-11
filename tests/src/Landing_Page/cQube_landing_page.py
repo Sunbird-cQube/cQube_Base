@@ -48,16 +48,6 @@ class cQube_Home(unittest.TestCase):
         result = b.test_diksha_chart()
         self.data.page_loading(self.driver)
 
-    def test_diksha_table(self):
-        b = cQube_landing_page(self.driver)
-        res = b.test_diksha_table()
-        self.data.page_loading(self.driver)
-
-    def test_diksha_column(self):
-        b = cQube_landing_page(self.driver)
-        res = b.test_diksha_column()
-        self.data.page_loading(self.driver)
-
     def test_sem_exception(self):
         b = cQube_landing_page(self.driver)
         res = b.test_diksha_column()

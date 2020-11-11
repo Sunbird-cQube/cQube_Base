@@ -27,11 +27,8 @@ class cQube_SI_Map_Report(unittest.TestCase):
     def test_districtwise_download(self):
         b = download_icon(self.driver)
         res = b.test_donwload()
-        if "school-infra-map" in self.driver.current_url:
-            print("School infrastructure map based report present")
-        else:
-            print("School infra map report is not exist")
-
+        self.assertEqual(0, res, msg="mismatch found at no of school values")
+        self.data.page_loading(self.driver)
 
     def test_schools_per_cluster_csv_download1(self):
         school = test_school_map_schoollevel_records(self.driver)

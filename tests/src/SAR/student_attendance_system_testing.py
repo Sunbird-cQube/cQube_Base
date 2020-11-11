@@ -44,12 +44,9 @@ class cQube_Student_Attendance(unittest.TestCase):
     def test_districtwise_csv_download(self):
         csv = DistrictwiseCsv(self.driver, self.year, self.month)
         result = csv.click_download_icon_of_district()
-        if result:
-            print("District wise csv report download is working")
-            csv.remove_csv()
-        else:
-            raise self.failureException("District wise csv report download is not working")
-
+        self.assertEqual(0,result,msg='Mis match found at footer informations')
+        print('Districtwise csv file is downloaded')
+        self.data.page_loading(self.driver)
 
     def test_choose_district_block_cluster(self):
         dist = DistrictCsvDownload(self.driver, self.year, self.month)
