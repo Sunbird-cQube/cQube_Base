@@ -2,14 +2,12 @@
     <div class="row">
         <div class="col-sm-8">
             <div *ngIf='skul'>
-                <p id="dist"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Periodic Assessment Test report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
-                <p id="block"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Periodic Assessment Test report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="ondistLinkClick(districtHierarchy.distId)"
@@ -17,8 +15,7 @@
                         {{districtHierarchy.districtName}}</span> </p>
             </div>
             <div *ngIf="blok">
-                <p id="cluster"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Periodic Assessment Test report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="ondistLinkClick(blockHierarchy.distId)"
@@ -30,8 +27,7 @@
             </div>
 
             <div *ngIf="clust">
-                <p id="school"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Periodic Assessment Test report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="ondistLinkClick(clusterHierarchy.distId)"
@@ -49,7 +45,7 @@
             <div class="row">
                 <div class="col-sm-7">
                     <p id="errMsg"
-                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
                 <div class="col-sm-5">
@@ -85,13 +81,13 @@
             </select>
             <button class="btn btn-secondary" id="block"
                 style="font-size: 11px; width: 65px; float: left;margin: 2px 7px 10px 15px;padding: 2px; background-color: rgb(152, 160, 163);"
-                (click)="blockClick()">&nbsp;<strong style="font-family: Arial;">Blocks</strong> </button>
+                (click)="blockClick()">&nbsp;<strong>Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
                 style="font-size: 11px; width: 65px; float: left;margin: 2px 7px 10px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
-                (click)="clusterClick()">&nbsp;<strong style="font-family: Arial;">Clusters</strong> </button>
+                (click)="clusterClick()">&nbsp;<strong>Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
                 style="font-size: 11px; width: 65px; float: left;margin: 2px 0px 10px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
-                (click)="schoolClick()">&nbsp;<strong style="font-family: Arial;">Schools</strong> </button>
+                (click)="schoolClick()">&nbsp;<strong>Schools</strong> </button>
 
             <!-- </div>
         <div class="col-sm-3"> -->
@@ -113,13 +109,13 @@
                 </option>
             </select>
         </div>
-        <div class="col-sm-6" style="font-family: Arial;">
+        <div class="col-sm-6">
             <select id="choose_dist"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="ondistLinkClick(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.Details.district_id"
-                    style="font-family: Arial; font-size: 11px;">
+                    style=" font-size: 11px;">
                     {{dist.Details.district_name}}
                 </option>
             </select>
@@ -129,7 +125,7 @@
                 [(ngModel)]="blockId" (change)="onblockLinkClick(blockId)">
                 <option [value]="blockId" disabled selected="selected">Choose a Block</option>
                 <option *ngFor="let block of blockMarkers" [(ngValue)]="block.Details.block_id"
-                    style="font-family: Arial;font-size: 11px;">
+                    style="font-size: 11px;">
                     {{block.Details.block_name}}
                 </option>
             </select>
@@ -139,7 +135,7 @@
                 [(ngModel)]="clusterId" (change)="onclusterLinkClick(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.Details.cluster_id"
-                    style="font-family: Arial;font-size: 11px; "
+                    style="font-size: 11px; "
                     [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                     {{cluster.Details.cluster_name}}
                 </option>
@@ -152,7 +148,7 @@
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;font-family: Arial; padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
+        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px; padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-6">
             <span id="schools" style="text-align: center;">Number of schools: {{schoolCount}}</span>
         </div>

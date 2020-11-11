@@ -8,7 +8,7 @@
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family:  Arial; }
+body { margin: 0; font-family: Arial !important; font-size: 20px;}
 
 table {
     width: 100%;
