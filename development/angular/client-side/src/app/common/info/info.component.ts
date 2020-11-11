@@ -16,18 +16,18 @@ export class InfoComponent implements OnInit {
   public fun = $(function () {
     $('[data-toggle="tooltip"]').tooltip().on('inserted.bs.tooltip', function () {
       $("body div.tooltip-inner").css({
-        "max-width": "500px",
+        "max-width": "350px",
         "padding": "3%",
         "text-align": "justify",
         "border-radius": "20px",
-        "border": "2px solid powderblue",
-        "background-color": "white",
-        "color": "black"
+        "background-color": "black",
+        "color": "white",
+        "font-family": "Arial",
+        "font-size": "11px"
       });
-      // $('.tooltip-arrow').css('background-color', 'red');
     });
-    $('[data-toggle="tooltip"]').tooltip("hide")
+    $('[data-toggle="tooltip"]').click(function () {
+      $('[data-toggle="tooltip"]').tooltip("hide");
+    });
   });
-  // })
-
 }
