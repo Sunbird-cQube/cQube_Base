@@ -83,7 +83,7 @@ export class TelemetryDataComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.timePeriod = 'overall';
-    this.commonService.initMap('map');
+    this.commonService.initMap('map',[[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
 
   }

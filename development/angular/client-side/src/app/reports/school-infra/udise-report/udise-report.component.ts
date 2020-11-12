@@ -86,7 +86,7 @@ export class UdiseReportComponent implements OnInit {
   ngOnInit() {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.commonService.initMap('udisemap');
+    this.commonService.initMap('udisemap', [[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
   }
 
