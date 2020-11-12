@@ -57,7 +57,4 @@
             tags: update
             when: nifi_composite
 
-            
-          - { role: nifi_scheduler, tags: update }
-
           - cqube_version
