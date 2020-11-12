@@ -62,4 +62,14 @@ export class SummaryService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/summary/summaryUDISE`, {});
   }
+
+  getPATSummary() {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/summary/summaryPAT`, {});
+  }
+  getDiskhaTPDummary() {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/summary/summaryDikshaTPD`, {});
+  }
+  
 }
