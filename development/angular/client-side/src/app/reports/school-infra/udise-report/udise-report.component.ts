@@ -725,6 +725,14 @@ export class UdiseReportComponent implements OnInit {
     this.schoolCount = data['footer'];
     this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
+    if (this.level == 'school') {
+      globalMap.doubleClickZoom.enable();
+      globalMap.scrollWheelZoom.enable();
+      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+    } else {
+      this.commonService.restrictZoom(globalMap);
+      globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
+    }
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 

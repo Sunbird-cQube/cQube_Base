@@ -23,7 +23,7 @@ export class InfoComponent implements OnInit {
         "background-color": "black",
         "color": "white",
         "font-family": "Arial",
-        "font-size": "11px"
+        "font-size": "12px"
       });
     });
     $('[data-toggle="tooltip"]').click(function () {
