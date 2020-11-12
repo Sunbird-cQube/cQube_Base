@@ -30,7 +30,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
   reportType = "percentage_teachers";
   timePeriod = 'All';
-  timePeriods = [{ key: "All", value: "All" }, { key: "Last_Day", value: "Last Day" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_30_Day", value: "Last 30 Days" }]
+  timePeriods = [{ key: "Last_Day", value: "Last Day" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_30_Day", value: "Last 30 Days" }, { key: "All", value: "Overall" }]
 
   //to set hierarchy level
   skul = true;
@@ -220,22 +220,26 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
       var obj = '';
       if (level == 'district') {
-        obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>           
+        obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
+        <br> <b>Indicator: ${splitVal[1]}  <b>      
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
 
       if (level == 'block') {
-        obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+        obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
+        <br> <b>Indicator: ${splitVal[1]}  <b>     
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
 
       if (level == 'cluster') {
-        obj = `<b>Cluster Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+        obj = `<b>Cluster Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
+        <br> <b>Indicator: ${splitVal[1]}  <b>     
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
 
       if (level == 'school') {
-        obj = `<b>School Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+        obj = `<b>School Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>  
+        <br> <b>Indicator: ${splitVal[1]}  <b>    
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
       return obj
