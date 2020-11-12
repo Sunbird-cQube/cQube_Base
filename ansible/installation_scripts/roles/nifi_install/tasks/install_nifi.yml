@@ -29,12 +29,12 @@
 - name: Check if nifi is present in destination
   stat: path={{ base_dir }}/cqube/nifi/nifi
   register: status
-  tags: [ install , update ]
+  tags: install
 
 - name: stop nifi if its running
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
   when: status.stat.exists == true
-  tags: [ install , update ]
+  tags: [ install, update ]
 
 - name: remove nifi directory if present
   become: yes
@@ -84,7 +84,7 @@
     - composite_queries.json
     - pat_queries.json
     - udise_queries.json
-  tags: [ install , update ]
+  tags: [ install, update ]
 
 - name: Touch a file
   file:
@@ -122,7 +122,7 @@
     path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
     regexp: '^java.arg.2='
     line: "java.arg.2={{ java_arg_2 }}"
-  tags: [ install ,update ]
+  tags: [ install, update ]
 
 - name: Enabling the garbage collector value
   lineinfile:
@@ -152,37 +152,36 @@
     state: absent
   tags: update
 
-- name: Nifi systemd setup
-  template:
-    owner: root
-    group: root
-    mode: 0644
-    src: nifi.service.j2
-    dest: /etc/systemd/system/nifi.service
-  tags: [ install, update ]
+- name: start NiFi
+  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
+  tags: install
+
+- name: stopping nifi service
+  service:
+    name: nifi.service 
+    enabled: yes
+    state: stopped
+  tags: update
+
+- name: Remove nifi.service file
+  become: yes
+  file:
+    path: "/etc/systemd/system/nifi.service"
+    state: absent
+  tags: update
 
 - name: reload systemd
   become: yes
   shell: systemctl daemon-reload
-  tags: [ install, update ]
-
-- name: Starting nifi service
-  service:
-    name: nifi.service 
-    enabled: yes
-    state: started
-  tags: install
+  tags: update
 
 - pause:
     minutes: 3
     prompt: "nifi is starting, kindly do not press any key"
   tags: install
 
-- name: Starting nifi service
-  service:
-    name: nifi.service   
-    enabled: yes
-    state: started
+- name: Restart NiFi
+  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
   tags: update
 
 - pause:
@@ -219,7 +218,7 @@
     status_code: 201
     body: {"revision":{"clientId":"","version":0},"disconnectedNodeAcknowledged":false,"component":{"type":"org.apache.nifi.reporting.prometheus.PrometheusReportingTask","bundle":{"group":"org.apache.nifi","artifact":"nifi-prometheus-nar","version":"1.11.4"}}}
   register: output
-  tags: install
+  tags: [ install, update ]
 
 - name: Start the prometheus task
   uri:
@@ -227,5 +226,5 @@
     method: PUT
     body_format: json
     body: '{"component":{"id":"{{ output.json.component.id }}","name":"PrometheusReportingTask","schedulingStrategy":"TIMER_DRIVEN","schedulingPeriod":"30 sec","comments":"","state":"RUNNING","properties":{"prometheus-reporting-task-metrics-send-jvm":"true"}},"revision":{"clientId":"{{ output.json.revision.clientId }}","version":"{{ output.json.revision.version }}"},"disconnectedNodeAcknowledged":false}'
-  tags: install  
+  tags: [ install, update ]  
 
