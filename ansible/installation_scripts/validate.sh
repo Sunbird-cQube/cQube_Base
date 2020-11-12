@@ -185,7 +185,7 @@ else
           echo "Error - FQDN exceeding 255 characters. Please provide the proper api endpoint for $1"; fail=1
         fi
     else
-        echo "Error - Please provide the proper api point for $1"; fail=1
+        echo "Error - Please provide the proper api endpoint for $1"; fail=1
     fi
 fi
 }
