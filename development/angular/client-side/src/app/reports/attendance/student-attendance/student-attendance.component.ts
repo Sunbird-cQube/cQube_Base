@@ -276,7 +276,8 @@ export class StudengtAttendanceComponent implements OnInit {
         distNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         this.districtsNames = distNames;
 
-        globalMap.setMaxBounds([[17.7515, 64.7139], [27.0238, 78.4179]]);
+        this.commonService.restrictZoom(globalMap);
+        globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -326,7 +327,9 @@ export class StudengtAttendanceComponent implements OnInit {
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
           this.blocksNames = blockNames;
-          globalMap.setMaxBounds([[17.7515, 64.7139], [27.0238, 78.4179]]);
+
+          this.commonService.restrictZoom(globalMap);
+          globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
           globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -390,7 +393,9 @@ export class StudengtAttendanceComponent implements OnInit {
           this.clusterNames = clustNames;
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
           this.blocksNames = blockNames;
-          globalMap.setMaxBounds([[17.7515, 64.7139], [27.0238, 78.4179]]);
+
+          this.commonService.restrictZoom(globalMap);
+          globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
           globalMap.setView(new L.LatLng(this.lat, this.lng), 7);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -440,7 +445,9 @@ export class StudengtAttendanceComponent implements OnInit {
             var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 0, 0, 0, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
-          globalMap.setMaxBounds([[17.7515, 64.7139], [27.0238, 78.4179]]);
+
+          this.commonService.restrictZoom(globalMap);
+          globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
           globalMap.setView(new L.LatLng(this.lat, this.lng), 7.3);
           this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -664,7 +671,8 @@ export class StudengtAttendanceComponent implements OnInit {
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         this.blocksNames = blokName;
 
-        globalMap.setMaxBounds([[17.7515, 64.7139], [27.0238, 78.4179]]);
+        this.commonService.restrictZoom(globalMap);
+        globalMap.setMaxBounds([[this.lat, this.lng]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), 8.3)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -778,7 +786,8 @@ export class StudengtAttendanceComponent implements OnInit {
         clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         this.clusterNames = clustNames;
 
-        globalMap.setMaxBounds([[17.7515, 64.7139], [27.0238, 78.4179]]);
+        this.commonService.restrictZoom(globalMap);
+        globalMap.setMaxBounds([[this.lat, this.lng]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), 10)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -908,7 +917,9 @@ export class StudengtAttendanceComponent implements OnInit {
           var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.1, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
-        globalMap.setMaxBounds([[17.7515, 64.7139], [27.0238, 78.4179]]);
+        globalMap.doubleClickZoom.enable();
+        globalMap.scrollWheelZoom.enable();
+        globalMap.setMaxBounds([[this.lat, this.lng]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), 12)
         this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
