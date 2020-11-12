@@ -342,7 +342,7 @@ router.post('/summaryPAT', auth.authController, async (req, res) => {
 router.post('/summaryDikshaTPD', auth.authController, async (req, res) => {
     try {
         logger.info('---diksha TPD summary api ---');
-        const_data['getParams']['Key'] = 'log_summary/log_summary_diksha_tpd.js';
+        const_data['getParams']['Key'] = 'log_summary/log_summary_diksha_tpd.json';
         const_data['s3'].getObject(const_data['getParams'], async function (err, data) {
             if (err) {
                 logger.error(err);

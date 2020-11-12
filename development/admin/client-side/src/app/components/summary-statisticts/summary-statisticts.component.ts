@@ -111,7 +111,6 @@ export class SummaryStatistictsComponent implements OnInit {
     });
 
     this.service.getDiskhaTPDummary().subscribe((res: any) => {
-      console.log(res);
       this.tableData12 = res;
       if (this.tableData12.length > 0) {
         this.tableWithSubHeaders(this.tableData12, "table13");
