@@ -13,6 +13,7 @@ from Semester_Exception.click_on_dashboard import sem_dashboard
 from Semester_Exception.click_on_icon import semester_exception_icon
 from Semester_Exception.click_on_schools import semeste_schools
 from Semester_Exception.click_on_semester_report_and_logout import sem_exception_Logout
+from Semester_Exception.download_districtwise_csv import check_DistrictwiseCsv
 
 from reuse_func import GetData
 
@@ -95,6 +96,11 @@ class cQube_semester_exception_report(unittest.TestCase):
         self.data.navigate_to_semester_exception()
         self.data.page_loading(self.driver)
 
+    def test_check_DistrictwiseCsv(self):
+        b = check_DistrictwiseCsv(self.driver)
+        res = b.click_download_csv_of_districts()
+        self.assertEqual(0, res, msg='mis match found at footer information')
+        self.data.page_loading(self.driver)
 
     def test_homepage(self):
         self.driver.find_element_by_xpath(Data.hyper_link).click()

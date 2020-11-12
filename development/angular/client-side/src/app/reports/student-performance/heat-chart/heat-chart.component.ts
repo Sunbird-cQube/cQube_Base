@@ -130,7 +130,21 @@ export class HeatChartComponent implements OnInit {
     })
   }
 
-  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, viewBy, level) => {
+  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, viewBy, level, xLabel1, yLabel1) => {
+    let scrollBarX
+    let scrollBarY
+
+    if (xLabel1.length <= 30) {
+      scrollBarX = false
+    } else {
+      scrollBarX = true
+    }
+
+    if (yLabel1.length <= 12) {
+      scrollBarY = false
+    } else {
+      scrollBarY = true
+    }
     // var options: Highcharts.Options = 
     Highcharts.chart('container', {
       chart: {
@@ -148,23 +162,28 @@ export class HeatChartComponent implements OnInit {
           rotation: 270,
           style: {
             color: 'black',
-            fontSize: '14px'
-          }
+            fontSize: '14px',
+          },
+          enabled: false
         },
+        lineColor: '#FFFFFF',
+        gridLineColor: 'transparent',
         min: 0,
         max: 30,
         scrollbar: {
-          enabled: true
-        }
+          enabled: scrollBarX
+        },
       }, {
+        lineColor: '#FFFFFF',
         linkedTo: 0,
         opposite: true,
         categories: xLabel,
+        gridLineColor: 'transparent',
         labels: {
           rotation: 270,
           style: {
             color: 'black',
-            fontSize: '11px',
+            fontSize: '12px',
             fontFamily: 'Arial',
           }
         },
@@ -174,30 +193,29 @@ export class HeatChartComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: '10px',
+            fontSize: '12px',
             textDecoration: "underline",
             textOverflow: "ellipsis",
             fontFamily: 'Arial'
           },
           align: "right"
         },
+        gridLineColor: 'transparent',
         title: null,
         reversed: true,
         min: 0,
-        max: yLabel.length > 1 ? (yLabel.length / 4) : yLabel.length - 1,
+        max: 12,
         scrollbar: {
-          enabled: true
+          enabled: scrollBarY
         }
       },
       colorAxis: {
         min: 0,
         minColor: '#ff3300',
-        maxColor: '#99ff99'
+        maxColor: '#99ff99',
       },
-      // reflow: false,
       series: [{
-        turboThreshold: zLabel.length + 1000,
-        borderWidth: 2,
+        turboThreshold: data.length + 100,
         data: data,
         dataLabels: {
           enabled: true,
@@ -208,7 +226,7 @@ export class HeatChartComponent implements OnInit {
           overflow: false,
           crop: true,
         },
-        type: 'heatmap',
+        type: 'heatmap'
       }],
       title: {
         text: null
@@ -274,12 +292,10 @@ export class HeatChartComponent implements OnInit {
         <br> <b>Students Attended: ${splitVal[3]}</b>
         <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
       }
-
-
-
       return obj
     }
   }
+
 
   selectedYear() {
     this.fileName = "Year_wise_report";
@@ -433,6 +449,8 @@ export class HeatChartComponent implements OnInit {
   }
 
   genericFunction(response) {
+    var xlab = [];
+    var ylab = [];
     let a = {
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
     }
@@ -454,7 +472,20 @@ export class HeatChartComponent implements OnInit {
       let clusters = response['clusterDetails'];
       this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }
-    this.chartFun(xLabel, xLabelId, yLabel, zLabel, data, a.viewBy, this.level);
+    if (xLabel.length <= 30) {
+      for (let i = 0; i <= 30; i++) {
+        xlab.push(xLabel[i] ? xLabel[i] : ' ')
+      }
+    }
+
+    if (yLabel.length <= 12) {
+      for (let i = 0; i <= 12; i++) {
+        ylab.push(yLabel[i] ? yLabel[i] : ' ')
+      }
+    }
+    let xLabel1 = xLabel
+    let yLabel1 = yLabel
+    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, a.viewBy, this.level, xLabel1, yLabel1);
   }
 
   //level wise filter

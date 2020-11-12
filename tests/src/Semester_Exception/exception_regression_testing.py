@@ -78,7 +78,8 @@ class cQube_semester_exception_report(unittest.TestCase):
     def test_check_DistrictwiseCsv(self):
         b = check_DistrictwiseCsv(self.driver)
         res = b.click_download_csv_of_districts()
-        # self.assertEqual(0,res,msg='some districts not downloaded csv files')
+        self.assertEqual(0,res,msg='mis match found at footer information')
+        self.data.page_loading(self.driver)
 
 
     def test_exception_Home(self):

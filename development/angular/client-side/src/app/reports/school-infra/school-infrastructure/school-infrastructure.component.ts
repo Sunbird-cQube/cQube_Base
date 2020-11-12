@@ -630,7 +630,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       let headers = Object.keys(value);
       let newObj = {}
       for (var i = 0; i < Object.keys(value).length; i++) {
-        if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
+        if (headers[i] != 'district' && headers[i] != 'block' && headers[i] != 'cluster' && headers[i] != 'school' && headers[i] != 'total_schools' && headers[i] != 'total_schools_data_received') {
           if (value[headers[i]].value >= 0) {
             newObj[`${headers[i]}_value`] = value[headers[i]].value;
           }

@@ -12,7 +12,7 @@ exports.restartNifiProcess = async function () {
         }
         await schedularData.forEach(async myJob => {
             if (myJob.state == "RUNNING") {
-                await schedule.scheduleJob(myJob.groupId, `${mins} ${hours} * * *`, async function () {
+                await schedule.scheduleJob(myJob.groupId, `${myJob.mins} ${myJob.hours} * * *`, async function () {
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling started ---`);
                     let response = await startFun();
                     myJob.scheduleUpdatedAt = `${new Date()}`;
@@ -32,7 +32,7 @@ exports.restartNifiProcess = async function () {
                     logger.info(JSON.stringify(response))
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling completed ---`);
                 });
-                await schedule.scheduleJob(myJob.groupId, `${mins} ${timeToStop} * * *`, async function () {
+                await schedule.scheduleJob(myJob.groupId, `${myJob.mins} ${myJob.timeToStop} * * *`, async function () {
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling stopping initiated ---`);
                     let response = await stopFun();
                     myJob.state = "STOPPED";

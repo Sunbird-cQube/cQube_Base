@@ -60,6 +60,7 @@ class periodic_smoke(unittest.TestCase):
     def test_DistrictwiseCsv(self):
         cls = DistrictwiseCsv(self.driver)
         func = cls.click_download_icon()
+        self.assertEqual(0, func, msg='Mismatch found at Districtwise footer values')
         print('Downloading district level csv file is working')
         self.data.page_loading(self.driver)
 
@@ -98,17 +99,17 @@ class periodic_smoke(unittest.TestCase):
         print('School level records are working fine')
         self.data.page_loading(self.driver)
 
-    # def test_TotalStudentsSchools(self):
-    #     b = TotalStudentsSchools(self.driver)
-    #     res1, res2, res3, res4, res5, res6, res7, res8 = b.block_cluster_schools_footer_info()
-    #     self.assertEqual(int(res1), int(res3), msg='Block level student info is mis matched')
-    #     self.assertEqual(int(res2), int(res4), msg='Block level school info is mis matched')
-    #     self.assertEqual(int(res1), int(res5), msg='Cluster level student info is mis matched')
-    #     self.assertEqual(int(res2), int(res6), msg='Cluster level school info is mis matched')
-    #     self.assertEqual(int(res1), int(res7), msg='School level student info is mis matched')
-    #     self.assertEqual(int(res2), int(res8), msg='School level school info is mis matched')
-    #     print('Checked with footer values accross block ,cluster , school levels ')
-    #     self.data.page_loading(self.driver)
+    def test_TotalStudentsSchools(self):
+        b = TotalStudentsSchools(self.driver)
+        res1, res2, res3, res4, res5, res6, res7, res8 = b.block_cluster_schools_footer_info()
+        self.assertEqual(int(res1), int(res3), msg='Block level student info is mis matched')
+        self.assertEqual(int(res2), int(res4), msg='Block level school info is mis matched')
+        self.assertEqual(int(res1), int(res5), msg='Cluster level student info is mis matched')
+        self.assertEqual(int(res2), int(res6), msg='Cluster level school info is mis matched')
+        self.assertEqual(int(res1), int(res7), msg='School level student info is mis matched')
+        self.assertEqual(int(res2), int(res8), msg='School level school info is mis matched')
+        print('Checked with footer values accross block ,cluster , school levels ')
+        self.data.page_loading(self.driver)
 
     def test_Homeicon(self):
         b = Home(self.driver)

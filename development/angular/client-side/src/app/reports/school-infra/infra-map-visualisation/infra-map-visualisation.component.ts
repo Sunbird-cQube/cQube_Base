@@ -86,7 +86,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   ngOnInit() {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.commonService.initMap('infraMap');
+    this.commonService.initMap('infraMap',[[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
   }
   // to load all the districts for state data on the map

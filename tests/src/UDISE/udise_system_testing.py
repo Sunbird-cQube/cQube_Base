@@ -24,7 +24,7 @@ class cQube_udise_Report(unittest.TestCase):
         count =0
         self.driver.find_element_by_id(Data.home).click()
         self.data.page_loading(self.driver)
-        if 'home' in self.driver.current_url:
+        if 'dashboard' in self.driver.current_url:
             print('cQube Landing page is displayed and home button is working fine')
         else:
             print('Home button is not working')
