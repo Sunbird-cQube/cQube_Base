@@ -359,11 +359,13 @@ export class DikshaChartComponent implements OnInit {
               color: "rgba(252, 239, 252)",
             },
             ticks: {
+              fontColor: 'black',
               min: 0
             },
             scaleLabel: {
+              fontColor: "black",
               display: true,
-              labelString: "Content-Gradelevel(Group)",
+              labelString: "Content-Grade(Group)",
               fontSize: 12,
               // fontColor: "dark gray"
             }
@@ -373,10 +375,12 @@ export class DikshaChartComponent implements OnInit {
               color: "rgba(252, 239, 252)",
             },
             ticks: {
+              fontColor: 'black',
               min: 0,
               max: this.y_axisValue
             },
             scaleLabel: {
+              fontColor: "black",
               display: true,
               labelString: "Total Content Play",
               fontSize: 12,

@@ -14,7 +14,7 @@ declare const $;
 export class DikshaTableComponent implements OnInit {
   public result: any = [];
   public districtId: any = '';
-  public timePeriod: any = '';
+  public timePeriod: any = 'all';
   public collectionType = 'course';
   public allCollections = [];
   public timeDetails: any = [];
@@ -69,16 +69,17 @@ export class DikshaTableComponent implements OnInit {
     document.getElementById('home').style.display = "none";
     this.errMsg();
     this.districtId = '';
-    this.timePeriod = '';
+    this.timePeriod = 'all';
     this.all = true
     this.dist = false;
     this.timeDetails = [];
-    this.service.dikshaMetaData().subscribe(result => {
+    this.service.dikshaMetaData().subscribe(async result => {
       this.districtsDetails = result['districtDetails']
-      result['timeRange'].forEach((element) => {
+      await result['timeRange'].forEach((element) => {
         var obj = { timeRange: element, name: this.changeingStringCases(element.replace(/_/g, ' ')) }
         this.timeDetails.push(obj);
       });
+      await this.timeDetails.push({ timeRange: "all", name: "Overall" });
     })
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
@@ -123,7 +124,8 @@ export class DikshaTableComponent implements OnInit {
     this.errMsg();
     document.getElementById('home').style.display = "Block";
     this.districtId = districtId
-    if (this.timePeriod != '' && districtId != '') {
+    var period = this.timePeriod == 'all' ? '' : this.timePeriod;
+    if (period != '' && districtId != '') {
       this.all = false
       this.dist = true
       let d = this.districtsDetails.filter(item => {
@@ -173,14 +175,14 @@ export class DikshaTableComponent implements OnInit {
     if (this.districtId == '') {
       this.districtId = undefined
     }
-    this.timePeriod = timePeriod
+    this.timePeriod = timePeriod == 'all' ? '' : timePeriod
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
       $('#table').empty();
     }
     this.result = [];
     this.reportData = [];
-    this.service.dikshaTimeRangeTableData({ districtId: this.districtId, timePeriod: timePeriod, collectionType: this.collectionType }).subscribe(res => {
+    this.service.dikshaTimeRangeTableData({ districtId: this.districtId, timePeriod: this.timePeriod, collectionType: this.collectionType }).subscribe(res => {
       this.result = res;
       this.tableCreation(this.result);
       if (this.hierName) {

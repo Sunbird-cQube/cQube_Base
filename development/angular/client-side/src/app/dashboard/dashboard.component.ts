@@ -10,27 +10,27 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
 })
 export class DashboardComponent implements OnInit {
   //tooltip texts::::::::::::::
-  imrTooltip = "The School Infrastructure dashboard visualises the data on school infrastructure metrics for Gujarat based on the data collected through UDISE 2020.";
-  crTooltip = "The dashboard here provides insights on selected infrastructure metrics calculated using the UDISE data. A key feature of this dashboard is its ability to Zoom In and Out at various administrative levels. The administrative levels include District, Block and Cluster. This has been done to provide relevant insights at the appropriate administrative level. In addition to visualising data, the dashboard also gives you the ability to download the data at various administrative levels. This feature has been enabled to provide freedom to power users to derive additional insights that may not be captured in this dashboard. You can download the data using the dropdown option on the top right corner.";
-  udiseTooltip = "The dashboard visualises data on various indices calculated using the metrics captured in the UDISE 2019 for Gujarat. Each of the indices has been derived using multiple metrics that have been normalised and benchmarked for a fair comparison. The data here can be broken at multiple administrative levels (i.e. District, Block, Cluster and School) and you can view and download the data for any of the available indices.";
-  compositeTooltip = "Composite report is the combination of multiple existing reports and creating the scatter plot visualisation based on the metrics derived for individual reports.";
-  dscTooltip = "Report Description";
-  dccTooltip = "Report Description";
-  utTooltip = "Report Description";
-  dtrTooltip = "Report Description";
-  utcTooltip = "Report Description";
-  crcrTooltip = "The dashboard here provides insights using the CRC App data. We have derived several normalised metrics using the raw data and you can read more about them using the following link. A key feature of this dashboard is its ability to Zoom In and Out at various administrative levels. The administrative levels include District, Block and Cluster. This has been done to provide relevant insights at the appropriate administrative level. In addition to visualising data, the dashboard also gives you the ability to download the data at various administrative levels. This feature has been enabled to provide freedom to power users to derive additional insights that may not be captured in this dashboard. You can download the data using the dropdown option on the top right corner.";
-  srTooltip = "This dashboard provides information about student's performance in the semester exams across all subjects and grades. The data has been collated at various administrative levels (i.e. District, Block, Cluster and School) and this dashboard allows you to view and download the data at these various administrative levels.";
-  patTooltip = "This dashboard provides information about student's performance in the Periodic Assessment Test across all subjects and grades. The data has been collated at various administrative levels (i.e. District, Block, Cluster and School) and this dashboard allows you to view and download the data at these various administrative levels.";
-  semExpTooltip = "This dashboard provides information about those schools whose data is missing from the Semester Exam results. The data has been collated at various administrative levels (i.e. District, Block, Cluster and School) and this dashboard allows you to view and download the data at these various administrative levels.";
-  isdataTooltip = "Report Description";
-  sarTooltip = "This dashboard provides information about student attendance calculated at a monthly level. The data has been collated at various administrative levels (i.e. District, Block, Cluster and School) and this dashboard allows you to view and download the data at these various administrative levels. You can select a different month/year combination to view student attendance for any other time period.";
-  tarTooltip = "Report Description";
-  telemDataTooltip = "Report Description";
-  heatChartTooltip = "Report Description";
-  lotableTooltip = "Report Description";
-  tpdtpTooltip = "Report Description";
-  tpdcpTooltip = "Report Description";
+  imrTooltip = "This geo-location-based dashboard provides insights on school infrastructure access across Gujarat.";
+  crTooltip = "This dashboard allows users to correlate various available metrics on school infrastructure data using a combined visualisation of the scatter plot and table.";
+  udiseTooltip = "This geo-location dashboard converts data available in UDISE into actionable indices that can be visualised at various administrative levels across Gujarat";
+  compositeTooltip = "This dashboard brings metrics from other dashboards and allows users to correlate various metrics among each other.";
+  dscTooltip = "This dashboard provides insights on grade and subject-wise consumption of TPD courses broken by user type.";
+  dccTooltip = "This dashboard provides insight on district-wise usage of TPD courses";
+  utTooltip = "This dashboard provides insights on district-wise usage of ETB";
+  dtrTooltip = "This dashboard provides insights on total usage at the course content level.";
+  utcTooltip = " This dashboard provides insights on the total usage at the ETB content level.";
+  crcrTooltip = "This dashboard allows users to correlate various available metrics calculated from the CRC visit data using a combined visualisation of the scatter plot and table.";
+  srTooltip = "This geo-location-based dashboard provides insights on student semester performance across Gujarat.";
+  patTooltip = " This geo-location-based dashboard provides insights on student Periodic Assessment Test (PAT) performance across Gujarat.";
+  semExpTooltip = "This geo-location-based dashboard provides insights on those schools that did not upload their semester scores.";
+  isdataTooltip = "This dashboard allows you to download exception reports for the different dashboards available on cQube";
+  sarTooltip = "This geo-location-based dashboard provides insights on Student Attendance across Gujarat.";
+  tarTooltip = "This geo-location-based dashboard provides insights on Teacher Attendance across Gujarat ";
+  telemDataTooltip = "This dashboard provides insights on usage statistics for cQube";
+  heatChartTooltip = "This dashboard provides insights on student performance at the question level.";
+  lotableTooltip = "This dashboard provides insights on student performance at the learning outcome level.";
+  tpdtpTooltip = "This dashboard provides details on district-wise TPD course enrolment progress broken at the individual course level.";
+  tpdcpTooltip = "This dashboard provides details on district-wise TPD course progress broken at the individual course level.";
 
   hiddenPass = false;
   edate: Date;
