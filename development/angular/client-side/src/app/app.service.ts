@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../src/environments/environment';
 import { KeycloakSecurityService } from './keycloak-security.service';
+import * as data from '../assets/gujarat.json';
 import * as L from 'leaflet';
 import { ExportToCsv } from 'export-to-csv';
 export var globalMap;
@@ -69,7 +70,15 @@ export class AppServiceComponent {
         const lat = 22.3660414123535;
         const lng = 71.48396301269531;
         globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([lat, lng], 7);
-        L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
+        applyCountryBorder(globalMap);
+        function applyCountryBorder(map) {
+            L.geoJSON(data.default['features'], {
+                color: "#a9a9a9",
+                weight: 1.5,
+                fillOpacity: 0
+            }).addTo(map);
+        }
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',
             {
                 token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
                 id: 'mapbox.streets',
@@ -78,6 +87,14 @@ export class AppServiceComponent {
                 maxZoom: 18,
             }
         ).addTo(globalMap);
+    }
+
+    restrictZoom(globalMap){
+        globalMap.touchZoom.disable();
+        globalMap.doubleClickZoom.disable();
+        globalMap.scrollWheelZoom.disable();
+        globalMap.boxZoom.disable();
+        globalMap.keyboard.disable();
     }
 
 
