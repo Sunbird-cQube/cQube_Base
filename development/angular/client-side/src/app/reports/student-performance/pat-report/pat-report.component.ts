@@ -337,9 +337,13 @@ export class PATReportComponent implements OnInit {
 
             //schoolCount
             this.schoolCount = res['footer'].total_schools;
-            this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            if (this.schoolCount != null) {
+              this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            }
             this.studentCount = res['footer'].students_count;
-            this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            if (this.studentCount != null) {
+              this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            }
 
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
@@ -452,9 +456,13 @@ export class PATReportComponent implements OnInit {
 
             //schoolCount
             this.schoolCount = res['footer'].total_schools;
-            this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            if (this.schoolCount != null) {
+              this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            }
             this.studentCount = res['footer'].students_count;
-            this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            if (this.studentCount != null) {
+              this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            }
 
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
@@ -572,10 +580,13 @@ export class PATReportComponent implements OnInit {
 
             //schoolCount
             this.schoolCount = res['footer'].total_schools;
-            this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            if (this.schoolCount != null) {
+              this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            }
             this.studentCount = res['footer'].students_count;
-            this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
+            if (this.studentCount != null) {
+              this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            }
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
@@ -954,11 +965,15 @@ export class PATReportComponent implements OnInit {
       this.commonService.loaderAndErr(this.data);
       this.changeDetection.markForCheck();
     }
-    // schoolCount
+    //schoolCount
     this.schoolCount = data['footer'].total_schools;
-    this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    if (this.schoolCount != null) {
+      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
     this.studentCount = data['footer'].students_count;
-    this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    if (this.studentCount != null) {
+      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
 
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
