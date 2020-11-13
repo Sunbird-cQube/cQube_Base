@@ -89,10 +89,8 @@
                 style="font-size: 11px; width: 65px; float: left;margin: 2px 0px 10px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
                 (click)="schoolClick()">&nbsp;<strong>Schools</strong> </button>
 
-            <!-- </div>
-        <div class="col-sm-3"> -->
             <select [hidden]="" id="grades"
-                style="margin-left: 25px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-left: 15px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="grade" (change)="onGradeSelect(grade)">
                 <option [value]="grade" disabled selected="selected">Choose a Grade</option>
                 <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="grade.grade">
