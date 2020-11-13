@@ -29,7 +29,7 @@
 - name: Check if nifi is present in destination
   stat: path={{ base_dir }}/cqube/nifi/nifi
   register: status
-  tags: install
+  tags: [ install, update ]
 
 - name: stop nifi if its running
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
