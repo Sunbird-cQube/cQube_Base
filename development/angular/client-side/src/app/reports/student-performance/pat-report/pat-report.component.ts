@@ -1103,6 +1103,26 @@ export class PATReportComponent implements OnInit {
 
   // getting data to download........
   getDownloadableData(markers, level) {
+    if (markers['Grade Wise Performance']) {
+      if (markers['Grade Wise Performance']['Grade 3'] == undefined) {
+        markers['Grade Wise Performance']['Grade 3'] = '';
+      }
+      if (markers['Grade Wise Performance']['Grade 4'] == undefined) {
+        markers['Grade Wise Performance']['Grade 4'] = '';
+      }
+      if (markers['Grade Wise Performance']['Grade 5'] == undefined) {
+        markers['Grade Wise Performance']['Grade 5'] = '';
+      }
+      if (markers['Grade Wise Performance']['Grade 6'] == undefined) {
+        markers['Grade Wise Performance']['Grade 6'] = '';
+      }
+      if (markers['Grade Wise Performance']['Grade 7'] == undefined) {
+        markers['Grade Wise Performance']['Grade 7'] = '';
+      }
+      if (markers['Grade Wise Performance']['Grade 8'] == undefined) {
+        markers['Grade Wise Performance']['Grade 8'] = '';
+      }
+    }
     var details = {};
     var orgObject = {};
     Object.keys(markers.Details).forEach(key => {
