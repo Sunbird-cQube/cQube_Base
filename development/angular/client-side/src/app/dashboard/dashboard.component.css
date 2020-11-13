@@ -215,7 +215,7 @@
     font-size: 2em; }
     .card-stats .card-body .numbers p {
       margin-bottom: 0; }
-    .card-stats .card-body .numbers .card-category {
+    .card-stats .card-body .numbers .card-category, .card-stats .card-body .numbers .card-title {
       font-size: 12px;
       font-weight: bold;
       line-height: 1.4em; 
