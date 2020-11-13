@@ -1105,22 +1105,22 @@ export class PATReportComponent implements OnInit {
   getDownloadableData(markers, level) {
     if (markers['Grade Wise Performance']) {
       if (markers['Grade Wise Performance']['Grade 3'] == undefined) {
-        markers['Grade Wise Performance']['Grade 3'] = 0;
+        markers['Grade Wise Performance']['Grade 3'] = '';
       }
       if (markers['Grade Wise Performance']['Grade 4'] == undefined) {
-        markers['Grade Wise Performance']['Grade 4'] = 0;
+        markers['Grade Wise Performance']['Grade 4'] = '';
       }
       if (markers['Grade Wise Performance']['Grade 5'] == undefined) {
-        markers['Grade Wise Performance']['Grade 5'] = 0;
+        markers['Grade Wise Performance']['Grade 5'] = '';
       }
       if (markers['Grade Wise Performance']['Grade 6'] == undefined) {
-        markers['Grade Wise Performance']['Grade 6'] = 0;
+        markers['Grade Wise Performance']['Grade 6'] = '';
       }
       if (markers['Grade Wise Performance']['Grade 7'] == undefined) {
-        markers['Grade Wise Performance']['Grade 7'] = 0;
+        markers['Grade Wise Performance']['Grade 7'] = '';
       }
       if (markers['Grade Wise Performance']['Grade 8'] == undefined) {
-        markers['Grade Wise Performance']['Grade 8'] = 0;
+        markers['Grade Wise Performance']['Grade 8'] = '';
       }
     }
     var details = {};
