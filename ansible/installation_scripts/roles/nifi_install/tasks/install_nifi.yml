@@ -156,13 +156,6 @@
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
   tags: install
 
-- name: stopping nifi service
-  service:
-    name: nifi.service 
-    enabled: yes
-    state: stopped
-  tags: update
-
 - name: Remove nifi.service file
   become: yes
   file:
