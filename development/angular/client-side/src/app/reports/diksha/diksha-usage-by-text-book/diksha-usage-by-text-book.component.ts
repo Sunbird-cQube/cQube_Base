@@ -34,7 +34,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
   public hierName: any;
   public dist: boolean = false;
   public all: boolean = false;
-  public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" },{ id: "all", name: "Overall" }];
+  public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" }, { id: "all", name: "Overall" }];
   public districtsDetails: any = '';
   public myChart: Chart;
   public showAllChart: boolean = false;
@@ -80,7 +80,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
     this.emptyChart();
     if (this.timePeriod != "all") {
       document.getElementById('home').style.display = "block";
-    }else{
+    } else {
       document.getElementById('home').style.display = "none";
     }
     this.reportData = [];
@@ -120,7 +120,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
     this.collectionName = '';
     this.footer = '';
     this.reportData = [];
-    this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: 'all' ? '' : this.timePeriod }).subscribe(res => {
+    this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod }).subscribe(res => {
       this.collectionNames = [];
       this.collectionNames = res['uniqueCollections'];
       this.collectionNames.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0));
@@ -156,7 +156,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
     this.result = [];
     this.all = true
     this.dist = false
-    this.service.getDataByCollectionNames({ collection_type: this.collection_type, timePeriod: 'all' ? '' : this.timePeriod, collection_name: this.collectionName }).subscribe(res => {
+    this.service.getDataByCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod, collection_name: this.collectionName }).subscribe(res => {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
       this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
