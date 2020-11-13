@@ -100,6 +100,7 @@ export class DikshaBarChartComponent implements OnInit {
     //   this.header = "Overall";
     // }
     // this.header = this.header;
+
     this.listCollectionNames();
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
       this.result = result['chartData'];
@@ -146,7 +147,11 @@ export class DikshaBarChartComponent implements OnInit {
 
   chooseTimeRange() {
     document.getElementById('home').style.display = "block";
-    this.listCollectionNames();
+    if(this.timePeriod== 'all'){
+      this.getAllData();
+    }else{
+      this.listCollectionNames();
+    }
   }
 
   getDataBasedOnCollections() {

@@ -143,7 +143,12 @@ export class DikshaUsageByTextBookComponent implements OnInit {
   }
 
   chooseTimeRange() {
-    this.listCollectionNames();
+    document.getElementById('home').style.display = "block";
+    if (this.timePeriod == 'all') {
+      this.getAllData();
+    } else {
+      this.listCollectionNames();
+    }
   }
 
   getDataBasedOnCollections() {
