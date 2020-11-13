@@ -18,7 +18,7 @@ export class InfoComponent implements OnInit {
       $("body div.tooltip-inner").css({
         "max-width": "350px",
         "padding": "3%",
-        "text-align": "justify",
+        "text-align": "center",
         "border-radius": "20px",
         "background-color": "black",
         "color": "white",

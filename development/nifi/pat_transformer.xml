@@ -2776,6 +2776,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>785148b8-a0b3-381e-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>563b6cf7-4595-3903-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>fd443871-57b7-37f5-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>78935460-bb3b-3480-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -4793,31 +4818,6 @@
                             <source>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>c795eec7-9ba7-3ed0-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>da591f29-399a-3e4e-0000-000000000000</id>
-                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>563b6cf7-4595-3903-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>fd443871-57b7-37f5-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -7968,10 +7968,14 @@ where ff_uuid= '${zip_identifier}'
               "blank_lines": "[&amp;1].blank_lines",
               "duplicate_records": "[&amp;1].duplicate_records",
               "datatype_mismatch": "[&amp;1].datatype_mismatch",
-              "student_id": "[&amp;1].records_with_null_value.student_id",
+              "exam_id": "[&amp;1].records_with_null_value.exam_id",
+              "exam_code": "[&amp;1].records_with_null_value.exam_code",
+              "id": "[&amp;1].records_with_null_value.id",
+              "student_uid": "[&amp;1].records_with_null_value.student_uid",
               "school_id": "[&amp;1].records_with_null_value.school_id",
-              "semester": "[&amp;1].records_with_null_value.semester",
-              "grade": "[&amp;1].records_with_null_value.grade",
+              "studying_class": "[&amp;1].records_with_null_value.studying_class",
+              "question_id": "[&amp;1].records_with_null_value.question_id",
+              "obtained_marks": "[&amp;1].records_with_null_value.obtained_marks",
               "processed_records": "[&amp;1].processed_records",
               "process_start_time": "[&amp;1].process_start_time",
               "process_end_time": "[&amp;1].process_end_time"
@@ -8135,7 +8139,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -9073,7 +9077,7 @@ same id data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -12905,8 +12909,8 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
                             <id>563b6cf7-4595-3903-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>8208.0</x>
-<y>1408.0</y>
+<x>8224.0</x>
+<y>1472.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -12916,7 +12920,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>Database Connection Pooling Service</key>
@@ -13035,7 +13039,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingPeriod>1 day</schedulingPeriod>
 <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -13049,7 +13053,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -14151,7 +14155,7 @@ same id data validation of file:${filename}, same id records found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -15960,7 +15964,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -18567,7 +18571,7 @@ file:${filename} Error during partition_by_level of "${query_type}" file.</value
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -20738,7 +20742,7 @@ file:${filename} Error during jolt transformation of "${query_type}" query.</val
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -21544,7 +21548,7 @@ same id data validation of file:${filename} error while same id mirror data</val
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -21754,7 +21758,7 @@ same id data validation of file:${filename} error while same id mirror data</val
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -23516,7 +23520,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -28805,25 +28809,14 @@ filename,
 ff_uuid,
 blank_lines,
 duplicate_records,
-attendance_id,
-student_id,
+id,
+exam_id,
+exam_code,
+student_uid,
 school_id,
-"year",
-"month", 
-semester,
-grade,
-inspection_id,
-in_school_location,
-created_on,
-school_name,
-cluster_name,
-block_name ,
-district_name ,
-cluster_id ,
-block_id ,
-district_id ,
-latitude ,
-longitude ,
+studying_class,
+question_id,
+obtained_marks,
 process_start_time,
 datatype_mismatch
 )
@@ -28838,19 +28831,8 @@ VALUES
 '0',
 '0',
 '0',
+'0',
 '0', 
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
 '0',
 '${now():format("yyyy-MM-dd HH:mm:ss")}',
 '0'
@@ -32394,5 +32376,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>11/12/2020 20:31:25 IST</timestamp>
+    <timestamp>11/13/2020 14:03:13 IST</timestamp>
 </template>
