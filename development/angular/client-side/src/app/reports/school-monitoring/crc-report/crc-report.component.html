@@ -2,22 +2,19 @@
     <div class="row">
         <div class="col-sm-7">
             <div *ngIf='skul'>
-                <p id="dist_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
             </div>
             <div *ngIf='dist'>
-                <p id="block_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="block_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div>
             <div *ngIf="blok">
-                <p id="cluster_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="cluster_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
@@ -27,8 +24,7 @@
             </div>
 
             <div *ngIf="clust">
-                <p id="school_level"
-                    style="font-family: Arial; color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="school_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
@@ -42,7 +38,7 @@
             <div class="row">
                 <div class="col-sm-5">
                     <p id="errMsg"
-                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; font-family: Arial;">
+                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
                 <div class="col-sm-7">
@@ -106,8 +102,7 @@
                         <option [value]="xAxis" disabled selected="selected">choose
                             x-axis
                         </option>
-                        <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis.key"
-                            style="font-family: Arial; font-size: 11px;">
+                        <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis.key" style=" font-size: 11px;">
                             {{xaxis.value}}
                         </option>
                     </select>
@@ -119,8 +114,7 @@
                         <option [value]="yAxis" disabled selected="selected">choose
                             y-axis
                         </option>
-                        <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key"
-                            style="font-family: Arial; font-size: 11px;">
+                        <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key" style=" font-size: 11px;">
                             {{yaxis.value}}
                         </option>
                     </select>
@@ -143,7 +137,7 @@
                     <option [value]="myDistrict" disabled selected="selected">Choose a District
                     </option>
                     <option *ngFor="let dist of crcDistrictsNames" [(ngValue)]="dist.districtId"
-                        style="font-family: Arial; font-size: 11px;">
+                        style=" font-size: 11px;">
                         {{dist.districtName}}
                     </option>
                 </select>
@@ -164,7 +158,7 @@
                     <option [value]="myCluster" disabled selected="selected">Choose a Cluster
                     </option>
                     <option *ngFor="let cluster of crcClusterNames" [(ngValue)]="cluster.clusterId"
-                        style="font-family: Arial;font-size: 11px; "
+                        style="font-size: 11px; "
                         [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                         {{cluster.clusterName}}
                     </option>
@@ -182,7 +176,7 @@
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; padding: 5px 0px 5px 0px;margin: 0px 0px 0px 0px;font-family: Arial;position: fixed; bottom: 0; left: 0;">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; padding: 5px 0px 5px 0px;margin: 0px 0px 0px 0px;position: fixed; bottom: 0; left: 0;">
         <div style="margin-right: 7%; margin-left: 1%;">
             <span id="visits">Total Number of visits: {{visitCount}}</span>
         </div>

@@ -3,8 +3,6 @@ import time
 from CRC import crc_report_smoke_testing
 from Composite_report import composite_smoke_testing
 from Diksha_Reports.Diksha_charts import diksha_chart_smoke_testing
-from Diksha_Reports.Diksha_column_chart import column_smoke_testing
-from Diksha_Reports.Diksha_table_report import diksha_table_smoke_testing
 
 from Landing_Page import cQube_landing_page
 from Login import login_page
@@ -192,44 +190,7 @@ class MyTestSuite(unittest.TestCase):
             runner1.run(smoke_test)
             outfile.close()
 
-    def test_issue12(self):
 
-        smoke_test = unittest.TestSuite()
-        smoke_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(
-                column_smoke_testing.cQube_diskha_column_report)
-        ])
-        p = pwd()
-        outfile = open(p.get_smoke_report_path(), "a")
-
-        runner1 = HTMLTestRunner.HTMLTestRunner(
-            stream=outfile,
-            title='Diksha column smoke Test Report',
-            verbosity=1,
-
-        )
-
-        runner1.run(smoke_test)
-        outfile.close()
-
-    def test_issue09(self):
-
-            smoke_test = unittest.TestSuite()
-            smoke_test.addTests([
-                unittest.defaultTestLoader.loadTestsFromTestCase(diksha_table_smoke_testing.cQube_diskha_report)
-            ])
-            p = pwd()
-            outfile = open(p.get_smoke_report_path(), "a")
-
-            runner1 = HTMLTestRunner.HTMLTestRunner(
-                stream=outfile,
-                title='Diksha Table Test Report',
-                verbosity=1,
-
-            )
-
-            runner1.run(smoke_test)
-            outfile.close()
 
     def test_issue10(self):
 

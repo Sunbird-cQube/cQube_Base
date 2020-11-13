@@ -21,6 +21,8 @@ export class SummaryStatistictsComponent implements OnInit {
   tableData8: any = [];
   tableData9: any = [];
   tableData10: any = [];
+  tableData11: any = [];
+  tableData12: any = [];
   constructor(private router: Router, private service: SummaryService) { }
 
   ngOnInit(): void {
@@ -100,7 +102,21 @@ export class SummaryStatistictsComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
       }
     });
+    this.service.getPATSummary().subscribe((res: any) => {
+      this.tableData11 = res;
+      if (this.tableData11.length > 0) {
+        this.tableWithSubHeaders(this.tableData11, "table12");
+        document.getElementById('spinner').style.display = 'none';
+      }
+    });
 
+    this.service.getDiskhaTPDummary().subscribe((res: any) => {
+      this.tableData12 = res;
+      if (this.tableData12.length > 0) {
+        this.tableWithSubHeaders(this.tableData12, "table13");
+        document.getElementById('spinner').style.display = 'none';
+      }
+    });
   }
 
   tableWithSubHeaders(dataSet, tablename) {

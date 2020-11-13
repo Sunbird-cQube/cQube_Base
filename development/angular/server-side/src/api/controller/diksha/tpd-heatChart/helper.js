@@ -1,3 +1,4 @@
+const colorsHelper = require('../../../lib/colors');
 const generalFun = (data, level, reportType) => {
     return new Promise((resolve, reject) => {
         try {
@@ -46,7 +47,8 @@ const generalFun = (data, level, reportType) => {
                 })
             }
             let finalData = []
-
+            let colors = colorsHelper.tpdColors;
+            var keys = Object.keys(colors);
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
                     let percentVal = Array.isArray(entry[1]) ? entry[1].filter(itemValue => itemValue[hierarchySelection] == totalDistLen[y])[0] : 0;
@@ -55,7 +57,17 @@ const generalFun = (data, level, reportType) => {
                     } else {
                         percentVal = percentVal ? parseFloat(percentVal.collection_progress) : null;
                     }
-                    finalData.push([y, index, percentVal])
+                    var color = '';
+                    for (let i = 0; i < keys.length; i++) {
+                        if (percentVal <= keys[i]) {
+                            color = colors[keys[i]];
+                            break;
+                        } else if (percentVal > keys[i] && percentVal <= keys[i + 1]) {
+                            color = colors[keys[i + 1]];
+                            break;
+                        }
+                    }
+                    finalData.push({ x: y, y: index, value: percentVal, color: color })
                 }
             })).then(() => {
                 let arrNew = Object.keys(arr).map(a => {

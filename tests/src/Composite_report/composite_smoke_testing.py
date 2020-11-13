@@ -33,7 +33,7 @@ class composite_smoke_testing(unittest.TestCase):
         count = 0
         self.driver.find_element_by_id(Data.home).click()
         self.data.page_loading(self.driver)
-        if 'home' in self.driver.current_url:
+        if 'dashboard' in self.driver.current_url:
             print("Landing page is displayed ")
         else:
             print('Home button is not working ')

@@ -86,7 +86,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   ngOnInit() {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.commonService.initMap('infraMap');
+    this.commonService.initMap('infraMap', [[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
   }
   // to load all the districts for state data on the map
@@ -124,7 +124,8 @@ export class InfraMapVisualisationComponent implements OnInit {
           centerLng: 71.48396301269531,
           level: 'district'
         }
-
+        this.commonService.restrictZoom(globalMap);
+        globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
         this.genericFun(this.myDistData, options, this.fileName);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.details.district_name > b.details.district_name) ? 1 : ((b.details.district_name > a.details.district_name) ? -1 : 0));
@@ -151,6 +152,8 @@ export class InfraMapVisualisationComponent implements OnInit {
             centerLng: 71.48396301269531,
             level: 'district'
           }
+          this.commonService.restrictZoom(globalMap);
+          globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
           this.data.sort((a, b) => (`${a[this.infraData]}` > `${b[this.infraData]}`) ? 1 : ((`${b[this.infraData]}` > `${a[this.infraData]}`) ? -1 : 0));
           this.genericFun(this.myDistData, options, this.fileName);
 
@@ -225,7 +228,8 @@ export class InfraMapVisualisationComponent implements OnInit {
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.blockMarkers[i], options.level);
             }
-
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
 
@@ -303,7 +307,8 @@ export class InfraMapVisualisationComponent implements OnInit {
             //schoolCount
             this.schoolCount = res['footer'];
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
             this.commonService.loaderAndErr(this.data);
@@ -372,7 +377,8 @@ export class InfraMapVisualisationComponent implements OnInit {
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
-
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
             //schoolCount
@@ -444,7 +450,8 @@ export class InfraMapVisualisationComponent implements OnInit {
         centerLng: this.data[0].details.longitude,
         level: 'block'
       }
-
+      this.commonService.restrictZoom(globalMap);
+      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
       this.genericFun(res, options, fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));
@@ -517,6 +524,8 @@ export class InfraMapVisualisationComponent implements OnInit {
         level: 'cluster'
       }
 
+      this.commonService.restrictZoom(globalMap);
+      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
       this.genericFun(res, options, fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.details.cluster_name > b.details.cluster_name) ? 1 : ((b.details.cluster_name > a.details.cluster_name) ? -1 : 0));
@@ -601,6 +610,9 @@ export class InfraMapVisualisationComponent implements OnInit {
           centerLng: this.data[0].details.longitude,
           level: "school"
         }
+        globalMap.doubleClickZoom.enable();
+        globalMap.scrollWheelZoom.enable();
+        globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
         this.level = options.level;
         var fileName = "School_per_cluster_report";
         this.genericFun(res, options, fileName);
@@ -643,7 +655,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     //schoolCount
     this.schoolCount = data['footer'];
     this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 

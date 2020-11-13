@@ -82,7 +82,7 @@ export class SemesterExceptionComponent implements OnInit {
   ngOnInit() {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.commonService.initMap('semExMap');
+    this.commonService.initMap('semExMap', [[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
 
   }
@@ -155,6 +155,9 @@ export class SemesterExceptionComponent implements OnInit {
           centerLng: 71.48396301269531,
           level: 'district'
         }
+
+        this.commonService.restrictZoom(globalMap);
+        globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
         var fileName = "District_wise_report";
         this.genericFun(this.data, options, fileName);
 
@@ -226,6 +229,8 @@ export class SemesterExceptionComponent implements OnInit {
               this.fileName = "Block_wise_report";
             }
 
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
             this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -301,6 +306,8 @@ export class SemesterExceptionComponent implements OnInit {
               this.fileName = "Cluster_wise_report";
             }
 
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
             this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -372,6 +379,8 @@ export class SemesterExceptionComponent implements OnInit {
               this.fileName = "School_wise_report";
             }
 
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
             this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -436,6 +445,9 @@ export class SemesterExceptionComponent implements OnInit {
         centerLng: this.data['data'][0].block_longitude,
         level: 'block'
       }
+
+      this.commonService.restrictZoom(globalMap);
+      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
       var fileName = "Block_per_dist_report";
       this.genericFun(this.data, options, fileName);
       // sort the blockname alphabetically
@@ -501,6 +513,9 @@ export class SemesterExceptionComponent implements OnInit {
         centerLng: this.data['data'][0].cluster_longitude,
         level: 'cluster'
       }
+
+      this.commonService.restrictZoom(globalMap);
+      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
       var fileName = "Cluster_per_block_report";
       this.genericFun(this.data, options, fileName);
       // sort the clusterName alphabetically
@@ -583,6 +598,9 @@ export class SemesterExceptionComponent implements OnInit {
           centerLng: this.data['data'][0].school_longitude,
           level: 'school'
         }
+        globalMap.doubleClickZoom.enable();
+        globalMap.scrollWheelZoom.enable();
+        globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
         var fileName = "School_per_cluster_report";
         this.genericFun(this.data, options, fileName);
       }, err => {

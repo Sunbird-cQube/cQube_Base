@@ -22,7 +22,7 @@
 
 <mat-sidenav-container style="background-color: rgb(245, 245, 245);">
   <mat-sidenav #sidenav>
-    <mat-nav-list style="font-family: Arial;" class=sidenav>
+    <mat-nav-list class=sidenav>
       <mat-toolbar style="height: 80px; background-color: white; border-bottom: 1px solid lightgray;">
         <mat-toolbar-row style="color: rgb(84, 116, 223);">
           <span class="span" style="font-size: 15px;"><strong>Logged in as: </strong><br>
@@ -32,8 +32,7 @@
 
       <div *ngIf="!showsideMenu">
         <mat-nav-list>
-          <mat-list-item (click)="showSubmenu = !showSubmenu" class="abc1"
-            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+          <mat-list-item (click)="showSubmenu = !showSubmenu" class="abc1" style=" border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
             <span class="full-width" id="schInfra" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; "> School
               Infrastructure</span>
@@ -54,7 +53,7 @@
           </div>
         </mat-nav-list>
 
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
+        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;"
           [routerLink]="['/composite/composite-report']" (click)="fetchTelemetry($event,'composite')" id="compositRep">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -65,7 +64,7 @@
 
         <mat-nav-list>
           <mat-list-item (click)="showSubmenu2 = !showSubmenu2" class="abc1"
-            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            style=" border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
             <span class="full-width" id="diksha" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
               Teacher Professional Development</span>
@@ -93,7 +92,7 @@
 
         <mat-nav-list>
           <mat-list-item (click)="showSubmenu9 = !showSubmenu9" class="abc1"
-            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            style=" border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
             <span class="full-width" id="stdPerform" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
               Energise Textbook Usage
@@ -111,7 +110,7 @@
           </div>
         </mat-nav-list>
 
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
+        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;"
           [routerLink]="['/crc/crc-report']" (click)="fetchTelemetry($event,'crcr')" id="crcReport">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -122,7 +121,7 @@
 
         <mat-nav-list>
           <mat-list-item (click)="showSubmenu6 = !showSubmenu6" class="abc1"
-            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            style=" border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
             <span class="full-width" id="stdPerform" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">Student
               Performance
@@ -149,7 +148,7 @@
 
         <mat-nav-list>
           <mat-list-item (click)="showSubmenu4 = !showSubmenu4" class="abc1"
-            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            style=" border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
             <span class="full-width" id="excpList" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; "> Exception
               List</span>
@@ -168,7 +167,7 @@
 
         <mat-nav-list>
           <mat-list-item (click)="showSubmenu3 = !showSubmenu3" class="abc1"
-            style="font-family: Arial; border-bottom: 1px solid lightgray;">
+            style=" border-bottom: 1px solid lightgray;">
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
             <span class="full-width" id="attedReport" *ngIf="isExpanded || isShowing" style=" margin-left: 4%; ">
               Attendance</span>
@@ -187,7 +186,7 @@
           </div>
         </mat-nav-list>
 
-        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;font-family: Arial;"
+        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;"
           [routerLink]="['/telemetry']" (click)="fetchTelemetry($event,'telemData')" id="telemReport">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -196,9 +195,8 @@
             &nbsp;&nbsp; Telemetry </td>
         </a>
 
-        <a *ngIf="showUser" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray;font-family: Arial;" [routerLink]="['/user/changePassword']"
-          (click)="fetchTelemetry($event,'chPass')" id="chPass">
+        <a *ngIf="showUser" mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;"
+          [routerLink]="['/user/changePassword']" (click)="fetchTelemetry($event,'chPass')" id="chPass">
           <td>
             <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
           </td>
@@ -208,8 +206,8 @@
       </div>
 
     </mat-nav-list>
-    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.6 </span>
-    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 06/11/2020</span>
+    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.6.1 </span>
+    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 13/11/2020</span>
   </mat-sidenav>
 
   <mat-sidenav-content>

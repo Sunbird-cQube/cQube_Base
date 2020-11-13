@@ -112,7 +112,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.btnId = "";
     var date = new Date();
     this.trackInteract(date, this.btnId, eventType);
-    this.commonService.initMap('semMap');
+    this.commonService.initMap('semMap', [[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
   }
 
@@ -196,6 +196,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
           centerLng: 71.48396301269531,
           level: 'district'
         }
+        this.commonService.restrictZoom(globalMap);
+        globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
         this.fileName = "district_wise_sem_report";
         this.genericFun(this.data, options, this.fileName);
 
@@ -268,7 +270,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
               var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, this.colors[i], 3.5, 1, 0.01, this.levelWise);
               this.generateToolTip(markerIcon, this.blockMarkers[i], this.levelWise);
             }
-
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
             this.schoolCount = this.data['totalValues'].totalSchools;
@@ -344,7 +347,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
               var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, this.colors[i], 0, 1, 0.01, this.levelWise);
               this.generateToolTip(markerIcon, this.clusterMarkers[i], this.levelWise);
             }
-
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
             this.schoolCount = this.data['totalValues'].totalSchools;
@@ -418,6 +422,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
               this.generateToolTip(markerIcon, this.schoolMarkers[i], this.levelWise);
             }
 
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
 
 
@@ -491,6 +497,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
         centerLng: this.data['sortedData'][0].lng,
         level: 'block'
       }
+      this.commonService.restrictZoom(globalMap);
+      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
       this.fileName = "Blocks_per_district_sem_report";
       this.genericFun(this.data, options, this.fileName);
       // sort the blockname alphabetically
@@ -576,6 +584,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
         centerLng: this.data['sortedData'][0].lng,
         level: 'cluster'
       }
+      this.commonService.restrictZoom(globalMap);
+      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
       this.fileName = "clusters_per_block_sem_report";
       this.genericFun(this.data, options, this.fileName);
       // sort the clusterName alphabetically
@@ -676,6 +686,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
           centerLng: this.data['sortedData'][0].lng,
           level: "school"
         }
+        globalMap.doubleClickZoom.enable();
+        globalMap.scrollWheelZoom.enable();
+        globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
         this.fileName = "Schools_per_cluster_sem_report";
         this.genericFun(this.data, options, this.fileName);
       }, err => {
@@ -759,6 +772,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.reportData.push(orgObject);
 
     var yourData = this.commonService.getInfoFrom(orgObject, "semester_performance", levelWise, "std-attd", undefined, undefined).join(" <br>");
+    yourData = [yourData.slice(0, yourData.search("Grade")), '<br>', yourData.slice(yourData.search("Grade"))].join('');
+    yourData = [yourData.slice(0, yourData.search("Number")), '<br>', yourData.slice(yourData.search("Number"))].join('')
+    yourData = [yourData.slice(0, yourData.search("% ")), '<br>', yourData.slice(yourData.search("% "))].join('');
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);

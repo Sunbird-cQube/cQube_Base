@@ -83,7 +83,7 @@ export class TelemetryDataComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.timePeriod = 'overall';
-    this.commonService.initMap('map');
+    this.commonService.initMap('map', [[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
 
   }
@@ -622,6 +622,14 @@ export class TelemetryDataComponent implements OnInit {
       this.changeDetection.markForCheck();
     }
     this.schoolCount = this.data['footer'];
+    if (options.level == 'school') {
+      globalMap.doubleClickZoom.enable();
+      globalMap.scrollWheelZoom.enable();
+      globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
+    } else {
+      this.commonService.restrictZoom(globalMap);
+      globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
+    }
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 

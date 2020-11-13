@@ -148,6 +148,30 @@
                 No Data Available
             </div>
         </div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-12">
+            <h5 style="color: #284d8a">PAT data Summary:</h5>
+            <div *ngIf="tableData11.length > 0 " style="border: 1px solid gray">
+                <table #DataTable id="table12" class="display nowrap" width="100%"
+                    style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData11.length === 0 " style="text-align: center; color: red;">
+                No Data Available
+            </div>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-12">
+            <h5 style="color: #284d8a">Diksha TPD data Summary:</h5>
+            <div *ngIf="tableData12.length > 0 " style="border: 1px solid gray">
+                <table #DataTable id="table13" class="display nowrap" width="100%"
+                    style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData12.length === 0 " style="text-align: center; color: red;">
+                No Data Available
+            </div>
+        </div>
     </div>
 
 </div>

@@ -583,10 +583,12 @@ export class CompositReportComponent implements OnInit {
               color: "rgba(252, 239, 252)",
             },
             ticks: {
+              fontColor: 'black',
               min: 0,
               // max: 100
             },
             scaleLabel: {
+              fontColor: "black",
               display: true,
               labelString: obj.xAxis,
               fontSize: 12,
@@ -598,10 +600,12 @@ export class CompositReportComponent implements OnInit {
               color: "rgba(252, 239, 252)",
             },
             ticks: {
+              fontColor: 'black',
               min: 0,
               // max: 100
             },
             scaleLabel: {
+              fontColor: "black",
               display: true,
               labelString: obj.yAxis,
               fontSize: 12,

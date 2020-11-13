@@ -26,7 +26,7 @@ export class HomePageComponent implements OnInit {
         this.router.navigate(['/home']);
       } else if (this.keycloakService.kc.tokenParsed.realm_access.roles.includes('report_viewer')) {
         localStorage.setItem('roleName', 'report_viewer');
-        this.router.navigate(['/home']);
+        this.router.navigate(['/dashboard']);
       } else {
         if (!this.keycloakService.kc.tokenParsed.realm_access.roles.includes('report_viewer')
           || !this.keycloakService.kc.tokenParsed.realm_access.roles.includes('admin')) {

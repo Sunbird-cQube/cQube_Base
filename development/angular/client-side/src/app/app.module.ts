@@ -18,6 +18,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AuthInterceptor } from './auth.interceptor';
+import { InfoComponent } from './common/info/info.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -29,6 +30,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     HomeComponent,
     DashboardComponent,
     HomePageComponent,
+    InfoComponent,
   ],
   imports: [
     BrowserModule,

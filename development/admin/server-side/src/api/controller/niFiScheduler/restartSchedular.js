@@ -3,6 +3,7 @@ var schedule = require('node-schedule');
 const fs = require('fs');
 const axios = require('axios');
 var filePath = `${process.env.BASE_DIR}/cqube/admin_dashboard/schedulers.json`;
+var shell = require('shelljs');
 
 exports.restartNifiProcess = async function () {
     try {
@@ -10,31 +11,32 @@ exports.restartNifiProcess = async function () {
         if (fs.existsSync(filePath)) {
             schedularData = JSON.parse(fs.readFileSync(filePath));
         }
+        var url = ''
         await schedularData.forEach(async myJob => {
+            url = `${process.env.NIFI_URL}/flow/process-groups/${myJob.groupId}`
             if (myJob.state == "RUNNING") {
-                await schedule.scheduleJob(myJob.groupId, `${mins} ${hours} * * *`, async function () {
+                await schedule.scheduleJob(myJob.groupId, `${myJob.mins} ${myJob.hours} * * *`, async function () {
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling started ---`);
-                    let response = await startFun();
+                    let response = await startFun(url, myJob.groupId, myJob.state);
                     myJob.scheduleUpdatedAt = `${new Date()}`;
                     await fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                         if (err) throw err;
                         logger.info('Restart process - Scheduled RUNNING Job - Restarted successfully');
                     });
                     setTimeout(() => {
-                        logger.info(' --- executing stop shell command ----');
-                        shell.exec(`sudo systemctl stop nifi.service`);
+                        logger.info(' --- executing nifi restart shell command ----');
+                        shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
+                            console.log('Exit code:', code);
+                            console.log('Program output:', stdout);
+                            console.log('Program stderr:', stderr);
+                        });
                     }, 120000);
-
-                    setTimeout(() => {
-                        logger.info(' --- executing start shell command ----');
-                        shell.exec(`sudo systemctl start nifi.service`);
-                    }, 180000);
                     logger.info(JSON.stringify(response))
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling completed ---`);
                 });
-                await schedule.scheduleJob(myJob.groupId, `${mins} ${timeToStop} * * *`, async function () {
+                await schedule.scheduleJob(myJob.groupId, `${myJob.mins} ${myJob.timeToStop} * * *`, async function () {
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling stopping initiated ---`);
-                    let response = await stopFun();
+                    let response = await stopFun(url, myJob.groupId);
                     myJob.state = "STOPPED";
                     myJob.scheduleUpdatedAt = `${new Date()}`;
                     await fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
@@ -42,14 +44,13 @@ exports.restartNifiProcess = async function () {
                         logger.info('Restart process - Scheduled Job status changed to STOPPED - Stopped Successfully');
                     });
                     setTimeout(() => {
-                        logger.info(' --- executing stop shell command ----');
-                        shell.exec(`sudo systemctl stop nifi.service`);
+                        logger.info(' --- executing nifi restart shell command ----');
+                        shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
+                            console.log('Exit code:', code);
+                            console.log('Program output:', stdout);
+                            console.log('Program stderr:', stderr);
+                        });
                     }, 120000);
-
-                    setTimeout(() => {
-                        logger.info(' --- executing start shell command ----');
-                        shell.exec(`sudo systemctl start nifi.service`);
-                    }, 180000);
                     logger.info(JSON.stringify(response))
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling stopping completed ---`);
                 });
@@ -61,7 +62,7 @@ exports.restartNifiProcess = async function () {
     }
 }
 
-const startFun = () => {
+const startFun = (url, groupId, state) => {
     return new Promise(async (resolve, reject) => {
         try {
             let result = await axios.put(url, {
@@ -75,7 +76,7 @@ const startFun = () => {
         }
     })
 }
-const stopFun = () => {
+const stopFun = (url, groupId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let result = await axios.put(url, {

@@ -30,7 +30,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
   reportType = "percentage_teachers";
   timePeriod = 'All';
-  timePeriods = [{ key: "All", value: "All" }, { key: "Last_Day", value: "Last Day" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_30_Day", value: "Last 30 Days" }]
+  timePeriods = [{ key: "Last_Day", value: "Last Day" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_30_Day", value: "Last 30 Days" }, { key: "All", value: "Overall" }]
 
   //to set hierarchy level
   skul = true;
@@ -104,7 +104,21 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     })
   }
 
-  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, level) => {
+  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, level, xLabel1, yLabel1) => {
+    let scrollBarX
+    let scrollBarY
+
+    if (xLabel1.length <= 30) {
+      scrollBarX = false
+    } else {
+      scrollBarX = true
+    }
+
+    if (yLabel1.length <= 12) {
+      scrollBarY = false
+    } else {
+      scrollBarY = true
+    }
     // var options: Highcharts.Options = 
     Highcharts.chart('container', {
       chart: {
@@ -122,18 +136,23 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
           rotation: 270,
           style: {
             color: 'black',
-            fontSize: '14px'
-          }
+            fontSize: '14px',
+          },
+          enabled: false
         },
+        lineColor: '#FFFFFF',
+        gridLineColor: 'transparent',
         min: 0,
         max: 30,
         scrollbar: {
-          enabled: true
-        }
+          enabled: scrollBarX
+        },
       }, {
+        lineColor: '#FFFFFF',
         linkedTo: 0,
         opposite: true,
         categories: xLabel,
+        gridLineColor: 'transparent',
         labels: {
           rotation: 270,
           style: {
@@ -155,23 +174,22 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
           },
           align: "right"
         },
+        gridLineColor: 'transparent',
         title: null,
         reversed: true,
         min: 0,
-        max: yLabel.length > 1 ? (yLabel.length) : yLabel.length - 1,
+        max: 12,
         scrollbar: {
-          enabled: true
+          enabled: scrollBarY
         }
       },
       colorAxis: {
         min: 0,
         minColor: '#ff3300',
-        maxColor: '#99ff99'
+        maxColor: '#99ff99',
       },
-      // reflow: false,
       series: [{
-        turboThreshold: zLabel.length + 1000,
-        borderWidth: 2,
+        turboThreshold: data.length + 100,
         data: data,
         dataLabels: {
           enabled: true,
@@ -182,7 +200,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
           overflow: false,
           crop: true,
         },
-        type: 'heatmap',
+        type: 'heatmap'
       }],
       title: {
         text: null
@@ -202,22 +220,26 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
       var obj = '';
       if (level == 'district') {
-        obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>           
+        obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
+        <br> <b>Indicator: ${splitVal[1]}  <b>      
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
 
       if (level == 'block') {
-        obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+        obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
+        <br> <b>Indicator: ${splitVal[1]}  <b>     
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
 
       if (level == 'cluster') {
-        obj = `<b>Cluster Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+        obj = `<b>Cluster Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
+        <br> <b>Indicator: ${splitVal[1]}  <b>     
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
 
       if (level == 'school') {
-        obj = `<b>School Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
+        obj = `<b>School Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>  
+        <br> <b>Indicator: ${splitVal[1]}  <b>    
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
       return obj
@@ -345,6 +367,8 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   genericFunction(response) {
+    var xlab = [];
+    var ylab = [];
     let yLabel = response['result']['yLabel']
     let xLabel = response['result']['xLabel']
     let xLabelId = response['result']['xLabelId']
@@ -363,7 +387,20 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       let clusters = response['clusterDetails'];
       this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }
-    this.chartFun(xLabel, xLabelId, yLabel, zLabel, data, this.level);
+    if (xLabel.length <= 30) {
+      for (let i = 0; i <= 30; i++) {
+        xlab.push(xLabel[i] ? xLabel[i] : ' ')
+      }
+    }
+
+    if (yLabel.length <= 12) {
+      for (let i = 0; i <= 12; i++) {
+        ylab.push(yLabel[i] ? yLabel[i] : ' ')
+      }
+    }
+    let xLabel1 = xLabel
+    let yLabel1 = yLabel
+    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, this.level, xLabel1, yLabel1);
   }
 
   //level wise filter
