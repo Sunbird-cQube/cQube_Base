@@ -9143,7 +9143,7 @@ VALUES
 <properties>
     <entry>
         <key>HTTP Method</key>
-        <value>#{HTTP Method}</value>
+        <value>GET</value>
     </entry>
     <entry>
         <key>Remote URL</key>
@@ -9189,7 +9189,7 @@ VALUES
     </entry>
     <entry>
         <key>Proxy Type</key>
-        <value>#{Proxy Type}</value>
+        <value>http</value>
     </entry>
     <entry>
         <key>invokehttp-proxy-user</key>
@@ -30115,5 +30115,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>11/12/2020 20:29:18 IST</timestamp>
+    <timestamp>11/13/2020 11:29:46 IST</timestamp>
 </template>
