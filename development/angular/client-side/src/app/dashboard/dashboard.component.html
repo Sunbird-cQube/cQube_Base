@@ -141,43 +141,10 @@
         </div>
     </div>
     <div class="row" style="padding: 20px;">
-        <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
             <div class="col-sm-12 diksha">TEACHER PROFESSIONAL DEVELOPMENT</div>
             <div class="row outer1">
-                <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="dsc"
-                        [routerLink]="['/diksha/usage-by-user-profile']" (click)="fetchTelemetry($event,'dsc')">
-                        <div class="card-body ">
-                            <div class="row">
-                                <app-info [tooltipText]="dscTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
-                                <div class="col-3 col-md-2">
-                                    <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
-                                            <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-9 col-md-10">
-                                    <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">Usage by <br> user </p>
-                                        <p class="card-title" >profile</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="views">
-                                    <p *ngIf="dscViews;else other_content" id="views">views:
-                                        {{dscViews}}</p>
-                                    <ng-template #other_content>
-                                        <p id="errViews">views: 0 {{timePeriod}}</p>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="dcc"
                         [routerLink]="['/diksha/usage-by-course']" (click)="fetchTelemetry($event,'dcc')">
                         <div class="card-body ">
@@ -210,7 +177,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color:  rgb(255, 207, 169);" id="dtr"
                         [routerLink]="['/diksha/usage-by-course-content']" (click)="fetchTelemetry($event,'dtr')">
                         <div class="card-body ">
@@ -361,11 +328,44 @@
         </div>
     </div>
     <div class="row" style="padding: 20px">
-        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
             <div class="diksha">ENERGISE TEXTBOOK USAGE</div>
             <div class="row outer12">
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(218, 193, 172)" id="ut"
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(218, 193, 172);" id="dsc"
+                        [routerLink]="['/diksha/usage-by-user-profile']" (click)="fetchTelemetry($event,'dsc')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="dscTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Usage by <br> user </p>
+                                        <p class="card-title" >profile</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="dscViews;else other_content" id="views">views:
+                                        {{dscViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(218, 193, 172);" id="ut"
                         [routerLink]="['/diksha/usage-by-textbook']" (click)="fetchTelemetry($event,'ut')">
                         <div class="card-body ">
                             <div class="row">
@@ -397,7 +397,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color:  rgb(218, 193, 172);" id="utc"
                         [routerLink]="['/diksha/usage-by-textbook-content']" (click)="fetchTelemetry($event,'utc')">
                         <div class="card-body ">
