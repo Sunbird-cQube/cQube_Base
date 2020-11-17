@@ -100,6 +100,7 @@ export class DikshaBarChartComponent implements OnInit {
     //   this.header = "Overall";
     // }
     // this.header = this.header;
+
     this.listCollectionNames();
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
       this.result = result['chartData'];
@@ -123,7 +124,7 @@ export class DikshaBarChartComponent implements OnInit {
     this.collectionName = '';
     this.footer = '';
     this.reportData = [];
-    this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: 'all' ? '' : this.timePeriod }).subscribe(res => {
+    this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod }).subscribe(res => {
       this.collectionNames = [];
       this.collectionNames = res['uniqueCollections'];
       this.collectionNames.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0));
@@ -145,8 +146,12 @@ export class DikshaBarChartComponent implements OnInit {
   }
 
   chooseTimeRange() {
-     document.getElementById('home').style.display = "block";
-    this.listCollectionNames();
+    document.getElementById('home').style.display = "block";
+    if(this.timePeriod== 'all'){
+      this.getAllData();
+    }else{
+      this.listCollectionNames();
+    }
   }
 
   getDataBasedOnCollections() {
@@ -159,7 +164,7 @@ export class DikshaBarChartComponent implements OnInit {
     this.result = [];
     this.all = true
     this.dist = false
-    this.service.getDataByCollectionNames({ collection_type: this.collection_type, timePeriod: 'all' ? '' : this.timePeriod, collection_name: this.collectionName }).subscribe(res => {
+    this.service.getDataByCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod, collection_name: this.collectionName }).subscribe(res => {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
       this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
