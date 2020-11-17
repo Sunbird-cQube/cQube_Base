@@ -69,6 +69,10 @@ export class TelemetryDataComponent implements OnInit {
 
   timePeriod = '';
   timeDetails = [{ id: "overall", time: "Over All" }, { id: "last_30_days", time: "Last 30 Days" }, { id: "last_7_days", time: "Last 7 Days" }, { id: "last_day", time: "Last Day" }];
+  state: string;
+  // initial center position for the map
+  public lat: any;
+  public lng: any;
 
   constructor(
     public http: HttpClient,
@@ -80,10 +84,14 @@ export class TelemetryDataComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.state = this.commonService.state;
+    this.lat = this.commonService.mapCenterLatlng.lat;
+    this.lng = this.commonService.mapCenterLatlng.lng;
+    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.commonService.initMap('map', [[this.lat, this.lng]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.timePeriod = 'overall';
-    this.commonService.initMap('map', [[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
 
   }
@@ -143,9 +151,9 @@ export class TelemetryDataComponent implements OnInit {
           radius: 5,
           fillOpacity: 1,
           strokeWeight: 0.01,
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: 'district'
         }
         var fileName = "District_wise_report";
@@ -197,9 +205,9 @@ export class TelemetryDataComponent implements OnInit {
       this.myData = this.service.telemetryBlock(obj).subscribe(res => {
         this.data = res
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: "block"
         }
         if (this.data['data'].length > 0) {
@@ -266,9 +274,9 @@ export class TelemetryDataComponent implements OnInit {
       this.myData = this.service.telemetryCluster(obj).subscribe(res => {
         this.data = res
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: "cluster"
         }
         if (this.data['data'].length > 0) {
@@ -331,9 +339,9 @@ export class TelemetryDataComponent implements OnInit {
       this.myData = this.service.telemetrySchool(obj).subscribe(res => {
         this.data = res
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: "school"
         }
         this.schoolMarkers = [];
@@ -625,10 +633,10 @@ export class TelemetryDataComponent implements OnInit {
     if (options.level == 'school') {
       globalMap.doubleClickZoom.enable();
       globalMap.scrollWheelZoom.enable();
-      globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
+      globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
     } else {
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
+      globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
     }
     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }

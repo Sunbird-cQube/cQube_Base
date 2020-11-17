@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
+import { AppServiceComponent } from 'src/app/app.service';
 
 @Component({
   selector: 'app-diksha-chart',
@@ -66,16 +67,18 @@ export class DikshaChartComponent implements OnInit {
   reportData: any = [];
   y_axisValue;
   footer;
+  state: string;
 
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
-    public router: Router,
-    private changeDetection: ChangeDetectorRef,
+    public commonService: AppServiceComponent,
+    public router: Router
   ) {
   }
 
   ngOnInit(): void {
+    this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.metaData();

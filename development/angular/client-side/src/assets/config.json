@@ -1,0 +1,12 @@
+{
+    "Gujarat": {
+        "lat": 22.3660414123535,
+        "lng": 71.48396301269531,
+        "zoomLevel": 7
+    },
+    "Madhya Pradesh": {
+        "lat": 23.9259,
+        "lng": 78.8383,
+        "zoomLevel": 7
+    }
+}
