@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../src/environments/environment';
 import { KeycloakSecurityService } from './keycloak-security.service';
-import * as data from '/home/dheeraj/Desktop/states_for_cQube.json';
+import * as data from '../assets/states_india.json';
 import * as config from '../assets/config.json';
 import * as L from 'leaflet';
 import { ExportToCsv } from 'export-to-csv';
+
 export var globalMap;
 
 @Injectable({
@@ -73,24 +74,38 @@ export class AppServiceComponent {
     //Initialisation of Map  
     initMap(map, maxBounds) {
         var lat, lng;
-            lat = this.mapCenterLatlng.lat;
-            lng = this.mapCenterLatlng.lng;
-            this.zoomLevel = this.mapCenterLatlng.zoomLevel;
-        globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([lat, lng], this.zoomLevel);
-        applyCountryBorder(globalMap);
+        lat = this.mapCenterLatlng.lat;
+        lng = this.mapCenterLatlng.lng;
+        var stateCode = this.mapCenterLatlng.stateCode;
+        this.zoomLevel = this.mapCenterLatlng.zoomLevel;
+        globalMap = L.map(map, { zoomControl: false }).setView([lat, lng], this.zoomLevel);
+        // applyCountryBorder(globalMap);
         function applyCountryBorder(map) {
-            L.geoJSON(data.default['features'], {
-                color: "#a9a9a9",
-                weight: 1.5,
-                fillOpacity: 0
+            L.geoJSON((data.default['features']), {
+                style: style_states1,
+                // color: "#a9a9a9",
+                // weight: 1.5,
+                // fillOpacity: data.default['features'].properties.state_code == stateCode ? 0.2 : 1
             }).addTo(map);
+        }
+       
+        function style_states1(feature) {
+            console.log(stateCode);
+            return {
+                fillColor: "#8bc3cc",
+                weight: 1,
+                opacity: 1,
+                color: 'white',
+                dashArray: '0',
+                fillOpacity: feature.properties.state_code == stateCode ? 0.2 : 1
+            };
         }
         L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
             {
                 token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
                 id: 'mapbox.streets',
                 subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                minZoom: this.zoomLevel,
+                minZoom: 3,
                 maxZoom: 16,
             }
         ).addTo(globalMap);

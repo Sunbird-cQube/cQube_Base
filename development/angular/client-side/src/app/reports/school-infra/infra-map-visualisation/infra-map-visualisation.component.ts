@@ -459,7 +459,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         level: 'block'
       }
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat-2, options.centerLng-1.5],[options.centerLat+2, options.centerLng+2]]);
       this.genericFun(res, options, fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));

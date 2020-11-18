@@ -10,7 +10,7 @@ export const environment = {
   keycloakUrl: "http://localhost:8080/auth",
   realm: "cQube",
   clientId: "cQube_Application",
-  stateName: "Madhya Pradesh"
+  stateName: "Gujarat"
 };
 
 /*
