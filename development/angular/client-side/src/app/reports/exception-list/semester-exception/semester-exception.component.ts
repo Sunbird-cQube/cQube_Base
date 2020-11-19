@@ -166,6 +166,7 @@ export class SemesterExceptionComponent implements OnInit {
 
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         var fileName = "District_wise_report";
         this.genericFun(this.data, options, fileName);
 
@@ -456,6 +457,7 @@ export class SemesterExceptionComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       var fileName = "Block_per_dist_report";
       this.genericFun(this.data, options, fileName);
       // sort the blockname alphabetically
@@ -524,6 +526,7 @@ export class SemesterExceptionComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       var fileName = "Cluster_per_block_report";
       this.genericFun(this.data, options, fileName);
       // sort the clusterName alphabetically
@@ -609,6 +612,7 @@ export class SemesterExceptionComponent implements OnInit {
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         var fileName = "School_per_cluster_report";
         this.genericFun(this.data, options, fileName);
       }, err => {
@@ -670,8 +674,6 @@ export class SemesterExceptionComponent implements OnInit {
           markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, undefined, options.level);
         }
 
-        globalMap.setZoom(options.mapZoom);
-
         // data to show on the tooltip for the desired levels
         if (options.level) {
           this.generateToolTip(this.markers[i], options.level, markerIcon, strLat, strLng);
@@ -684,7 +686,6 @@ export class SemesterExceptionComponent implements OnInit {
       this.changeDetection.markForCheck();
     }
     this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
   popups(markerIcon, markers, level) {

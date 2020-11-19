@@ -134,6 +134,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         }
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.genericFun(this.myDistData, options, this.fileName);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.details.district_name > b.details.district_name) ? 1 : ((b.details.district_name > a.details.district_name) ? -1 : 0));
@@ -162,6 +163,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           }
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+          globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
           this.data.sort((a, b) => (`${a[this.infraData]}` > `${b[this.infraData]}`) ? 1 : ((`${b[this.infraData]}` > `${a[this.infraData]}`) ? -1 : 0));
           this.genericFun(this.myDistData, options, this.fileName);
 
@@ -459,7 +461,8 @@ export class InfraMapVisualisationComponent implements OnInit {
         level: 'block'
       }
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat-2, options.centerLng-1.5],[options.centerLat+2, options.centerLng+2]]);
+      globalMap.setMaxBounds([[options.centerLat - 2, options.centerLng - 1.5], [options.centerLat + 2, options.centerLng + 2]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.genericFun(res, options, fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));
@@ -534,6 +537,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.genericFun(res, options, fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.details.cluster_name > b.details.cluster_name) ? 1 : ((b.details.cluster_name > a.details.cluster_name) ? -1 : 0));
@@ -621,6 +625,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.level = options.level;
         var fileName = "School_per_cluster_report";
         this.genericFun(res, options, fileName);
@@ -648,7 +653,6 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.colorGredient(this.markers[i], this.infraData);
 
         var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, this.setColor, options.radius, options.strokeWeight, 1, options.level);
-        globalMap.setZoom(options.mapZoom);
 
         // data to show on the tooltip for the desired levels
         this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
@@ -663,7 +667,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     //schoolCount
     this.schoolCount = data['footer'];
     this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
   //infra filters.....

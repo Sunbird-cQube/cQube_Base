@@ -219,6 +219,7 @@ export class PATReportComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+          globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
           this.genericFun(this.myDistData, options, this.fileName);
 
           // sort the districtname alphabetically
@@ -695,6 +696,7 @@ export class PATReportComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.genericFun(res, options, fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.Details.block_name > b.Details.block_name) ? 1 : ((b.Details.block_name > a.Details.block_name) ? -1 : 0));
@@ -791,6 +793,7 @@ export class PATReportComponent implements OnInit {
       }
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.genericFun(res, options, fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.Details.cluster_name > b.Details.cluster_name) ? 1 : ((b.Details.cluster_name > a.Details.cluster_name) ? -1 : 0));
@@ -901,6 +904,7 @@ export class PATReportComponent implements OnInit {
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.genericFun(res, options, fileName);
       }, err => {
         this.data = [];
@@ -958,7 +962,6 @@ export class PATReportComponent implements OnInit {
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, this.colors[i], options.radius, options.strokeWeight, 1, options.level);
-        globalMap.setZoom(options.mapZoom);
         // if (this.markers[i]['grades']) {
         //   this.allGrades = Object.keys(this.markers[i]['grades']);
         // }
@@ -982,8 +985,6 @@ export class PATReportComponent implements OnInit {
     if (this.studentCount != null) {
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-
-    globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {

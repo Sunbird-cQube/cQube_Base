@@ -156,6 +156,7 @@ export class TelemetryDataComponent implements OnInit {
           centerLng: this.lng,
           level: 'district'
         }
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         var fileName = "District_wise_report";
         this.genericFun(this.data, options, fileName);
 
@@ -617,8 +618,6 @@ export class TelemetryDataComponent implements OnInit {
 
         var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, "#42a7f5", options.radius, options.strokeWeight, undefined, options.level);
 
-        globalMap.setZoom(options.mapZoom);
-
         // data to show on the tooltip for the desired levels
         if (options.level) {
           this.generateToolTip(this.markers[i], options.level, markerIcon, "lat", "lng");
@@ -638,7 +637,6 @@ export class TelemetryDataComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
     }
-    globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
   popups(markerIcon, markers, level) {

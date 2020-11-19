@@ -154,6 +154,7 @@ export class UdiseReportComponent implements OnInit {
           centerLng: this.lng,
           level: 'district'
         }
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.genericFun(this.myDistData, options, fileName);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.details.District_Name > b.details.District_Name) ? 1 : ((b.details.District_Name > a.details.District_Name) ? -1 : 0));
@@ -183,6 +184,7 @@ export class UdiseReportComponent implements OnInit {
           }
 
           this.data.sort((a, b) => (`${a[this.indiceData]}` > `${b[this.indiceData]}`) ? 1 : ((`${b[this.indiceData]}` > `${a[this.indiceData]}`) ? -1 : 0));
+          globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
           this.genericFun(this.myDistData, options, fileName);
 
           // sort the districtname alphabetically
@@ -509,7 +511,7 @@ export class UdiseReportComponent implements OnInit {
         centerLng: this.data[0].details.longitude,
         level: 'block'
       }
-
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.genericFun(res, options, fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.details.Block_Name > b.details.Block_Name) ? 1 : ((b.details.Block_Name > a.details.Block_Name) ? -1 : 0));
@@ -582,7 +584,7 @@ export class UdiseReportComponent implements OnInit {
         centerLng: this.data[0].details.longitude,
         level: 'cluster'
       }
-
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.genericFun(res, options, fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.details.Cluster_Name > b.details.Cluster_Name) ? 1 : ((b.details.Cluster_Name > a.details.Cluster_Name) ? -1 : 0));
@@ -668,7 +670,7 @@ export class UdiseReportComponent implements OnInit {
           centerLng: this.data[0].details.longitude,
           level: 'school'
         }
-
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.genericFun(res, options, fileName);
       }, err => {
         this.data = [];
@@ -714,8 +716,6 @@ export class UdiseReportComponent implements OnInit {
           })
         }
 
-        globalMap.setZoom(options.mapZoom);
-
         // data to show on the tooltip for the desired levels
         if (options.level) {
           // data to show on the tooltip for the desired levels
@@ -741,7 +741,6 @@ export class UdiseReportComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
     }
-    globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
   //generate tooltip........

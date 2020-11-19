@@ -205,6 +205,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
         }
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+        
         this.fileName = "district_wise_sem_report";
         this.genericFun(this.data, options, this.fileName);
 
@@ -506,6 +508,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       }
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.fileName = "Blocks_per_district_sem_report";
       this.genericFun(this.data, options, this.fileName);
       // sort the blockname alphabetically
@@ -593,6 +596,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       }
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.fileName = "clusters_per_block_sem_report";
       this.genericFun(this.data, options, this.fileName);
       // sort the clusterName alphabetically
@@ -696,6 +700,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.fileName = "Schools_per_cluster_sem_report";
         this.genericFun(this.data, options, this.fileName);
       }, err => {
@@ -726,7 +731,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], options.radius, options.strokeWeight, 1, options.level);
-        globalMap.setZoom(options.mapZoom);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {
@@ -740,7 +744,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
     }
     this.schoolCount = this.data['totalValues'].totalSchools;
     this.studentCount = this.data['totalValues'].totalStudents;
-    globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
   popups(markerIcon, markers, level) {

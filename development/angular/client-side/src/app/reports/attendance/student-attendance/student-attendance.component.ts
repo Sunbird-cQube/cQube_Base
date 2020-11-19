@@ -327,7 +327,6 @@ export class StudengtAttendanceComponent implements OnInit {
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
 
             var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 0, this.levelWise);
-            globalMap.setZoom(7);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
