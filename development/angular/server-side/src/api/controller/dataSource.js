@@ -7,7 +7,7 @@ const csv = require('csvtojson')
 router.get('/', async function (req, res) {
     try {
         logger.info('---dataSource api ---');
-        var csvFilePath = '/home/dheeraj/Documents/cQube_Project/cQube/development/angular/server-side/src/api/lib/data.csv';
+        var csvFilePath = `${process.env.BASE_DIR}/cqube/datasource.csv`;
         var jsonArray;
         if (fs.existsSync(csvFilePath)) {
             jsonArray = await csv().fromFile(csvFilePath);

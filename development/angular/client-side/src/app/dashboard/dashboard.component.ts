@@ -96,7 +96,6 @@ export class DashboardComponent implements OnInit {
 
   changeDataSourceStatus() {
     this.service.getDataSource().subscribe((res: any) => {
-      console.log(res);
       res.forEach(element => {
         if (element.template == 'nifi_crc') {
           this.nifi_crc = element.status;
