@@ -62,9 +62,23 @@ export class DashboardComponent implements OnInit {
   tpdtpViews;
   tpdcpViews;
 
+  //for coming soon page
+  nifi_crc;
+  nifi_attendance;
+  nifi_semester;
+  nifi_infra;
+  nifi_diksha;
+  nifi_telemetry;
+  nifi_udise;
+  nifi_pat;
+  nifi_composite;
+
+
   constructor(private router: Router, private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
     service.logoutOnTokenExpire();
+    this.changeDataSourceStatus();
   }
+
   ngOnInit() {
     document.getElementById('spinner').style.display = 'none';
     document.getElementById('homeBtn').style.display = 'none';
@@ -78,6 +92,41 @@ export class DashboardComponent implements OnInit {
     setInterval(() => {
       this.callOnInterval();
     }, 30000);
+  }
+
+  changeDataSourceStatus() {
+    this.service.getDataSource().subscribe((res: any) => {
+      console.log(res);
+      res.forEach(element => {
+        if (element.template == 'nifi_crc') {
+          this.nifi_crc = element.status;
+        }
+        if (element.template == 'nifi_attendance') {
+          this.nifi_attendance = element.status;
+        }
+        if (element.template == 'nifi_semester') {
+          this.nifi_semester = element.status;
+        }
+        if (element.template == 'nifi_infra') {
+          this.nifi_infra = element.status;
+        }
+        if (element.template == 'nifi_diksha') {
+          this.nifi_diksha = element.status;
+        }
+        if (element.template == 'nifi_telemetry') {
+          this.nifi_telemetry = element.status;
+        }
+        if (element.template == 'nifi_udise') {
+          this.nifi_udise = element.status;
+        }
+        if (element.template == 'nifi_pat') {
+          this.nifi_pat = element.status;
+        }
+        if (element.template === 'nifi_composite') {
+          this.nifi_composite = element.status;
+        }
+      });
+    })
   }
 
   callOnInterval() {

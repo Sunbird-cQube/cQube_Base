@@ -29,6 +29,7 @@ export class AppServiceComponent {
         localStorage.setItem('token', this.token);
     }
 
+
     homeControl() {
         if (window.location.hash == '#/dashboard') {
             this.showBack = true;
@@ -311,7 +312,13 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/telemetry/data`, { period: data });
     }
 
-    //
+    //data-source::::::::::::
+    getDataSource() {
+        this.logoutOnTokenExpire();
+        return this.http.get(`${this.baseUrl}/dataSource`, {});
+    }
+
+
     edate;
     getTelemetryData(reportId, event) {
         this.telemetryData = [];

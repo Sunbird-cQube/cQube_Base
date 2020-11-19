@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { TeacherAttendanceComponent } from './teacher-attendance/teacher-attendance.component';
 import { StudengtAttendanceComponent } from './student-attendance/student-attendance.component';
 import { RouterModule, Routes } from '@angular/router';
-import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { FormsModule } from '@angular/forms';
 import { AuthGuard } from 'src/app/auth.guard';
+import { ComingSoonComponent } from 'src/app/common/coming-soon/coming-soon.component';
 
 const sttendanceRoutes: Routes = [
   {

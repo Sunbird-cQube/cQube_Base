@@ -179,4 +179,7 @@ router.use('/diksha/tpd', tpdBlockWise);
 router.use('/diksha/tpd', tpdClusterWise);
 router.use('/diksha/tpd', tpdSchoolWise);
 
+const dataSource = require('./controller/dataSource');
+router.use('/dataSource', dataSource);
+
 module.exports = router;
