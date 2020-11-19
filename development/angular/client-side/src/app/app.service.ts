@@ -73,40 +73,24 @@ export class AppServiceComponent {
 
     //Initialisation of Map  
     initMap(map, maxBounds) {
-        var lat, lng;
-        lat = this.mapCenterLatlng.lat;
-        lng = this.mapCenterLatlng.lng;
-        var stateCode = this.mapCenterLatlng.stateCode;
-        this.zoomLevel = this.mapCenterLatlng.zoomLevel;
-        globalMap = L.map(map, { zoomControl: false }).setView([lat, lng], this.zoomLevel);
-        // applyCountryBorder(globalMap);
+        const lat = 22.3660414123535;
+        const lng = 71.48396301269531;
+        globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([lat, lng], 7);
+        applyCountryBorder(globalMap);
         function applyCountryBorder(map) {
-            L.geoJSON((data.default['features']), {
-                style: style_states1,
-                // color: "#a9a9a9",
-                // weight: 1.5,
-                // fillOpacity: data.default['features'].properties.state_code == stateCode ? 0.2 : 1
+            L.geoJSON(data.default['features'], {
+                color: "#a9a9a9",
+                weight: 1.5,
+                fillOpacity: 0
             }).addTo(map);
-        }
-       
-        function style_states1(feature) {
-            console.log(stateCode);
-            return {
-                fillColor: "#8bc3cc",
-                weight: 1,
-                opacity: 1,
-                color: 'white',
-                dashArray: '0',
-                fillOpacity: feature.properties.state_code == stateCode ? 0.2 : 1
-            };
         }
         L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
             {
                 token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
                 id: 'mapbox.streets',
                 subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                minZoom: 3,
-                maxZoom: 16,
+                minZoom: 7,
+                maxZoom: 18,
             }
         ).addTo(globalMap);
     }
