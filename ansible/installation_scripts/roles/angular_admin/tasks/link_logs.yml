@@ -12,12 +12,14 @@
     group: "{{ system_user_name }}"
     recurse: yes
     state: directory
-  tags: install
+  tags: [ install, update ]
 
 - name: Create a symbolic link
-  shell: ln -s "{{ item.src }}" "{{ base_dir }}/cqube/logs/{{ item.dest }}"
-  args:
-    warn: false
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ base_dir }}/cqube/logs/{{ item.dest }}"
+    state: link
+    force: yes
   with_items:
     - { src: "{{base_dir}}/cqube/nifi/nifi/logs/nifi-app.log", dest: "nifi-app.log" }
     - { src: "{{base_dir}}/cqube/nifi/nifi/logs/nifi-bootstrap.log", dest: "nifi-bootstrap.log" }
@@ -35,4 +37,4 @@
     - { src: "/var/log/syslog", dest: "syslog"}
     - { src: "{{base_dir}}/cqube/keycloak/standalone/log/server.log", dest: "server.log"}
     - { src: "{{base_dir}}/cqube/keycloak/standalone/log/audit.log", dest: "audit.log"}
-  tags: install
+  tags: [ install, update ]

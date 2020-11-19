@@ -30,11 +30,11 @@ export class DikshaBarChartComponent implements OnInit {
   collection_type = 'course';
 
   public result: any = [];
-  public timePeriod = '';
+  public timePeriod = 'all';
   public hierName: any;
   public dist: boolean = false;
   public all: boolean = false;
-  public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" }];
+  public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" }, { id: "all", name: "Overall" }];
   public districtsDetails: any = '';
   public myChart: Chart;
   public showAllChart: boolean = false;
@@ -72,7 +72,7 @@ export class DikshaBarChartComponent implements OnInit {
 
   homeClick() {
     document.getElementById('home').style.display = "none";
-    this.timePeriod = '';
+    this.timePeriod = 'all';
     this.getAllData()
   }
   // linkClick() {
@@ -81,14 +81,14 @@ export class DikshaBarChartComponent implements OnInit {
   // }
   async getAllData() {
     this.emptyChart();
-    if (this.timePeriod != "") {
+    if (this.timePeriod != 'all') {
       document.getElementById('home').style.display = "block";
     } else {
       document.getElementById('home').style.display = "none";
     }
     this.reportData = [];
     this.commonService.errMsg();
-    
+
     this.collectionName = '';
     this.footer = '';
     this.fileName = `collectionType_${this.collection_type}_data`;
@@ -100,6 +100,7 @@ export class DikshaBarChartComponent implements OnInit {
     //   this.header = "Overall";
     // }
     // this.header = this.header;
+
     this.listCollectionNames();
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
       this.result = result['chartData'];
@@ -123,12 +124,11 @@ export class DikshaBarChartComponent implements OnInit {
     this.collectionName = '';
     this.footer = '';
     this.reportData = [];
-    this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod }).subscribe(res => {
+    this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod }).subscribe(res => {
       this.collectionNames = [];
       this.collectionNames = res['uniqueCollections'];
       this.collectionNames.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0));
       if (res['chartData']) {
-        document.getElementById('home').style.display = "block";
         this.result = [];
         this.emptyChart();
         this.result = res['chartData'];
@@ -146,7 +146,12 @@ export class DikshaBarChartComponent implements OnInit {
   }
 
   chooseTimeRange() {
-    this.listCollectionNames();
+    document.getElementById('home').style.display = "block";
+    if(this.timePeriod== 'all'){
+      this.getAllData();
+    }else{
+      this.listCollectionNames();
+    }
   }
 
   getDataBasedOnCollections() {
@@ -159,7 +164,7 @@ export class DikshaBarChartComponent implements OnInit {
     this.result = [];
     this.all = true
     this.dist = false
-    this.service.getDataByCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod, collection_name: this.collectionName }).subscribe(res => {
+    this.service.getDataByCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod, collection_name: this.collectionName }).subscribe(res => {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
       this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -182,7 +187,7 @@ export class DikshaBarChartComponent implements OnInit {
     chartData.push(obj);
     this.barChartOptions = {
       legend: {
-        display: true
+        display: false
       },
       responsive: true,
       tooltips: {
@@ -212,13 +217,18 @@ export class DikshaBarChartComponent implements OnInit {
             color: "rgba(252, 239, 252)",
           },
           ticks: {
-            min: 0
+            fontColor: 'black',
+            min: 0,
+            callback: function (value, index, values) {
+              value = value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
+              return value;
+            }
           },
           scaleLabel: {
+            fontColor: "black",
             display: true,
             labelString: "Total Content Play",
             fontSize: 12,
-            // fontColor: "dark gray"
           }
         }],
         yAxes: [{
@@ -226,14 +236,15 @@ export class DikshaBarChartComponent implements OnInit {
             color: "rgba(252, 239, 252)",
           },
           ticks: {
+            fontColor: 'black',
             min: 0,
-            max: this.y_axisValue
+            max: this.y_axisValue,
           },
           scaleLabel: {
+            fontColor: "black",
             display: true,
             labelString: "District Names",
             fontSize: 12,
-            // fontColor: "dark gray",
           }
         }]
       }
@@ -241,6 +252,7 @@ export class DikshaBarChartComponent implements OnInit {
 
     this.barChartLabels = data.labels;
     this.barChartData = chartData;
+
   }
 
 

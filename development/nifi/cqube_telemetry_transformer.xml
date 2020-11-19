@@ -8577,7 +8577,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>36e98e8c-803c-3a32-0000-000000000000</groupId>
-<id>1ba07b2c-b81c-3d7d-0000-000000000000</id>
+<id>41e07004-d5c4-32a7-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -9923,6 +9923,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>36e98e8c-803c-3a32-0000-000000000000</groupId>
 <id>48b630e2-2222-3429-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>f71d554f-354f-3368-0000-000000000000</id>
+                            <parentGroupId>36e98e8c-803c-3a32-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>36e98e8c-803c-3a32-0000-000000000000</groupId>
+<id>1ba07b2c-b81c-3d7d-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>36e98e8c-803c-3a32-0000-000000000000</groupId>
+<id>41e07004-d5c4-32a7-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -11345,7 +11370,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <id>11c4589a-544a-3f86-0000-000000000000</id>
                             <parentGroupId>36e98e8c-803c-3a32-0000-000000000000</parentGroupId>
                             <position>
-<x>-4208.0</x>
+<x>-4216.0</x>
 <y>712.0</y>
                             </position>
                             <bundle>
@@ -11459,7 +11484,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
     </entry>
     <entry>
         <key>dbf-user-logical-types</key>
-        <value>true</value>
+        <value>false</value>
     </entry>
     <entry>
         <key>esql-max-rows</key>
@@ -11497,8 +11522,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <id>12b1da56-dd13-3e68-0000-000000000000</id>
                             <parentGroupId>36e98e8c-803c-3a32-0000-000000000000</parentGroupId>
                             <position>
-<x>-3032.0</x>
-<y>704.0</y>
+<x>-3616.0</x>
+<y>280.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
@@ -11869,8 +11894,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <id>1ba07b2c-b81c-3d7d-0000-000000000000</id>
                             <parentGroupId>36e98e8c-803c-3a32-0000-000000000000</parentGroupId>
                             <position>
-<x>-3528.0</x>
-<y>696.0</y>
+<x>-3616.0</x>
+<y>480.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -12688,6 +12713,100 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
+                            <id>41e07004-d5c4-32a7-0000-000000000000</id>
+                            <parentGroupId>36e98e8c-803c-3a32-0000-000000000000</parentGroupId>
+                            <position>
+<x>-3616.0</x>
+<y>712.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>record-reader</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+            <name>record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>replacement-value-strategy</key>
+        <value>
+            <name>replacement-value-strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>/process_end_time</key>
+        <value>
+            <name>/process_end_time</name>
+        </value>
+    </entry>
+    <entry>
+        <key>/process_start_time</key>
+        <value>
+            <name>/process_start_time</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>record-reader</key>
+        <value>edc3febf-9f26-3de1-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>7cc47efe-fd5d-3e86-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>replacement-value-strategy</key>
+        <value>literal-value</value>
+    </entry>
+    <entry>
+        <key>/process_end_time</key>
+        <value>${field.value:format('yyyy-MM-dd HH:mm:ss','IST')}</value>
+    </entry>
+    <entry>
+        <key>/process_start_time</key>
+        <value>${field.value:format('yyyy-MM-dd HH:mm:ss','IST')}</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>telemetry_convert_to_ist</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.UpdateRecord</type>
+                        </processors>
+                        <processors>
                             <id>467ab87b-0363-3545-0000-000000000000</id>
                             <parentGroupId>36e98e8c-803c-3a32-0000-000000000000</parentGroupId>
                             <position>
@@ -13292,7 +13411,7 @@ ${emission_filename:startsWith('telemetry/telemetry_view'):ifElse(#{telemetry_vi
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -13317,7 +13436,7 @@ ${emission_filename:startsWith('telemetry/telemetry_view'):ifElse(#{telemetry_vi
                             <id>5fbfd388-253a-348f-0000-000000000000</id>
                             <parentGroupId>36e98e8c-803c-3a32-0000-000000000000</parentGroupId>
                             <position>
-<x>-4224.0</x>
+<x>-4216.0</x>
 <y>480.0</y>
                             </position>
                             <bundle>
@@ -13854,7 +13973,7 @@ ${emission_filename:startsWith('telemetry/telemetry_view'):ifElse(#{telemetry_vi
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1 day</schedulingPeriod>
+<schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -14706,8 +14825,8 @@ ${emission_filename:startsWith('telemetry/telemetry_view'):ifElse(#{telemetry_vi
                             <id>99c23fc4-e89f-3961-0000-000000000000</id>
                             <parentGroupId>36e98e8c-803c-3a32-0000-000000000000</parentGroupId>
                             <position>
-<x>-4232.0</x>
-<y>160.0</y>
+<x>-4216.0</x>
+<y>280.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -16127,5 +16246,5 @@ where ff_uuid= '${files_uuid}'</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>10/12/2020 14:28:19 IST</timestamp>
+    <timestamp>11/12/2020 20:29:40 IST</timestamp>
 </template>

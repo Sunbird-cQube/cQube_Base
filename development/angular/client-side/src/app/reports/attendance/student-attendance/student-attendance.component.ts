@@ -110,7 +110,7 @@ export class StudengtAttendanceComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.skul = true;
-    this.commonService.initMap('mapContainer', [[22.3660414123535, 71.48396301269531], [27.0238, 74.2179]]);
+    this.commonService.initMap('mapContainer', [[22.3660414123535, 71.48396301269531]]);
 
   }
 
