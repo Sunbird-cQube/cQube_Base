@@ -206,7 +206,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-        
+
         this.fileName = "district_wise_sem_report";
         this.genericFun(this.data, options, this.fileName);
 
@@ -281,7 +281,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.schoolCount = this.data['totalValues'].totalSchools;
             this.studentCount = this.data['totalValues'].totalStudents;
@@ -358,7 +358,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.schoolCount = this.data['totalValues'].totalSchools;
             this.studentCount = this.data['totalValues'].totalStudents;
@@ -433,7 +433,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
 
             this.schoolCount = this.data['totalValues'].totalSchools;

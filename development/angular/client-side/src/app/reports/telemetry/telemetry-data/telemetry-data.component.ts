@@ -224,7 +224,7 @@ export class TelemetryDataComponent implements OnInit {
               this.fileName = "Block_wise_report";
             }
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.schoolCount = this.data['footer'];
 
@@ -293,7 +293,7 @@ export class TelemetryDataComponent implements OnInit {
               this.fileName = "Cluster_wise_report";
             }
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.schoolCount = this.data['footer'];
 
@@ -358,7 +358,7 @@ export class TelemetryDataComponent implements OnInit {
               this.fileName = "School_wise_report";
             }
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.schoolCount = this.data['footer'];
 

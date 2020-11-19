@@ -270,7 +270,7 @@ export class UdiseReportComponent implements OnInit {
               this.getDownloadableData(this.blockMarkers[i], options.level);
             }
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
 
             //schoolCount
@@ -359,7 +359,7 @@ export class UdiseReportComponent implements OnInit {
             this.schoolCount = res['footer'];
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.loaderAndErr();
             this.changeDetection.markForCheck();
@@ -439,7 +439,7 @@ export class UdiseReportComponent implements OnInit {
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             //schoolCount
             this.schoolCount = res['footer'];

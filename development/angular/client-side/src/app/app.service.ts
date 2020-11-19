@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../src/environments/environment';
 import { KeycloakSecurityService } from './keycloak-security.service';
-import * as data from '../assets/states_india.json';
+import * as data from '../assets/states_for_cQube.json';
 import * as config from '../assets/config.json';
 import * as L from 'leaflet';
 import { ExportToCsv } from 'export-to-csv';
