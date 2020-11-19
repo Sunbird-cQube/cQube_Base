@@ -11,7 +11,7 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
 })
 export class DashboardComponent implements OnInit {
   state = environment.stateName;
-  
+
   //tooltip texts::::::::::::::
   imrTooltip = `This geo-location-based dashboard provides insights on school infrastructure access across ${this.state}.`;
   crTooltip = `This dashboard allows users to correlate various available metrics on school infrastructure data using a combined visualisation of the scatter plot and table.`;
@@ -61,6 +61,8 @@ export class DashboardComponent implements OnInit {
   lotableViews;
   tpdtpViews;
   tpdcpViews;
+  tpdenrollViews;
+  tpdcompViews;
 
   //for coming soon page
   nifi_crc;
@@ -188,6 +190,8 @@ export class DashboardComponent implements OnInit {
     this.lotableViews = "";
     this.tpdcpViews = "";
     this.tpdtpViews = "";
+    this.tpdenrollViews = "";
+    this.tpdcompViews = "";
 
     var myStr = this.removeUnderscore(views[0].time_range);
     this.timePeriod = " (" + myStr + ")";
@@ -256,6 +260,12 @@ export class DashboardComponent implements OnInit {
       }
       if (element.reportid == 'tpd-tp') {
         this.tpdtpViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'tpd-enroll') {
+        this.tpdenrollViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'tpd-comp') {
+        this.tpdcompViews = element.number_of_views + " (" + timeStr + ")";
       }
 
     });

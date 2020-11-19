@@ -11,6 +11,8 @@ import { DikshaUsageByTextBookComponent } from './diksha-usage-by-text-book/diks
 import { UsageByTextbookContentComponent } from './usage-by-textbook-content/usage-by-textbook-content.component';
 import { DikshaTPDContentProgressComponent } from './diksha-tpd-content-progress/diksha-tpd-content-progress.component';
 import { DikshaTPDTeachersPercentageComponent } from './diksha-tpd-teachers-percentage/diksha-tpd-teachers-percentage.component';
+import { DikshaTpdEnrollmentComponent } from './diksha-tpd-enrollment/diksha-tpd-enrollment.component';
+import { DikshaTpdCompletionComponent } from './diksha-tpd-completion/diksha-tpd-completion.component';
 
 const dikshaRoutes: Routes = [
   {
@@ -35,6 +37,12 @@ const dikshaRoutes: Routes = [
       },
       {
         path: 'tpd-teacher-percentage', component: DikshaTPDTeachersPercentageComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'tpd-enrollment', component: DikshaTpdEnrollmentComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'tpd-completion', component: DikshaTpdCompletionComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
@@ -48,7 +56,9 @@ const dikshaRoutes: Routes = [
     DikshaUsageByTextBookComponent,
     UsageByTextbookContentComponent,
     DikshaTPDContentProgressComponent,
-    DikshaTPDTeachersPercentageComponent
+    DikshaTPDTeachersPercentageComponent,
+    DikshaTpdEnrollmentComponent,
+    DikshaTpdCompletionComponent
   ],
   imports: [
     CommonModule,

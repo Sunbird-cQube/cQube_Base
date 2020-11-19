@@ -1,0 +1,92 @@
+<div class="container-fluid" style="padding-top:15px !important;">
+    <div class="row">
+        <div class="col-sm-7">
+            <div *ngIf='all'>
+                <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    Diksha TPD report for enrollment: <span (click)="homeClick()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
+            </div>
+            <!-- <div *ngIf='dist'>
+                <p id="block_level"
+                    style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    Diksha Report: <span (click)="getAllData()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
+                        (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
+                        {{hierName}}</span> </p>
+            </div> -->
+        </div>
+        <div class="col-sm-5">
+            <div class="row">
+                <div class="col-sm-6">
+                    <p id="errMsg"
+                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <em class="fa fa-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                        (click)="downloadRoport()"></em>
+
+                    <em class="fa fa-home" id="home" title="Home"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        alt="Home" (click)="homeClick()"></em>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="row" style="margin-top: 5px;">
+            <div class="col-sm-9">
+                <select id="time_range"
+                    style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    [(ngModel)]="timePeriod" name="timePeriod" (change)="chooseTimeRange()">
+                    <option [value]="timePeriod" disabled selected="selected">Choose Time Range
+                    </option>
+                    <option *ngFor="let time of timeDetails" [(ngValue)]="time.id" style=" font-size: 11px;">
+                        {{time.name}}
+                    </option>
+                </select>
+
+                <select id="coll_name"
+                    style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    [(ngModel)]="collectionName" name="collectionName" (change)="getDataBasedOnCollections()">
+                    <option [value]="collectionName" disabled selected="selected">Choose collection name
+                    </option>
+                    <option *ngFor="let collectionName of collectionNames; let i = index"
+                        [(ngValue)]="collectionNames[i]" style=" font-size: 11px;">
+                        {{collectionNames[i]}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total Content
+                        Play:</strong>
+                    {{footer}}</span>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 10px;" id="chart">
+            <div class="col-lg-1">
+
+            </div>
+            <div class="col-lg-10" id="r1">
+                <div *ngIf="barChartData[0]['data'].length > 0">
+                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                        [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType"
+                        [colors]="barChartColors">
+                    </canvas>
+                </div>
+                <div *ngIf="barChartData[0]['data'].length === 0"
+                    style="position: absolute; left: 40%; top: 120px;color: red;">
+                    No Data Available
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
+    </div>
+    <div id="spinner">
+        <div class="loading">Loading&#8230;</div>
+    </div>
