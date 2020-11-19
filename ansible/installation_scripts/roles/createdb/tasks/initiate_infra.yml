@@ -80,6 +80,14 @@
     path_to_script: /tmp/postgres/config.sql
   tags: [ install, update ]
 
-- name: restart postgresql
-  service: name=postgresql state=restarted
+- name: Stopping postgresql
+  service: 
+    name: postgresql
+    state: stopped
+  tags: [ install, update ]
+
+- name: Starting postgresql
+  service: 
+    name: postgresql
+    state: started
   tags: [ install, update ]
