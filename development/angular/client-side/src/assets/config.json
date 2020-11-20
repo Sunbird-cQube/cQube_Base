@@ -1,11 +1,13 @@
 {
-    "Gujarat": {
+    "GJ": {
+        "name": "Gujarat",
         "lat": 22.3660414123535,
         "lng": 71.48396301269531,
         "zoomLevel": 7,
         "stateCode": 24
     },
-    "Madhya Pradesh": {
+    "MP": {
+        "name": "Madhya Pradehs",
         "lat": 23.9259,
         "lng": 78.8383,
         "zoomLevel": 7,
