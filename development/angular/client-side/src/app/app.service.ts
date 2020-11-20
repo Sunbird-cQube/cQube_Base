@@ -22,7 +22,7 @@ export class AppServiceComponent {
     zoomLevel = 7;
     mapCenterLatlng = config.default[`${environment.stateName}`];
 
-    public state = environment.stateName;
+    public state = this.mapCenterLatlng.name;
 
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
         this.token = keyCloakService.kc.token;
