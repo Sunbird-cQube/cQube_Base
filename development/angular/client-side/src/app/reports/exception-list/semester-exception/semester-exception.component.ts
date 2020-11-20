@@ -69,6 +69,10 @@ export class SemesterExceptionComponent implements OnInit {
   public levelWise = '';
 
   public myData;
+  state: string;
+  // initial center position for the map
+  public lat: any;
+  public lng: any;
 
   constructor(
     public http: HttpClient,
@@ -80,9 +84,13 @@ export class SemesterExceptionComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.state = this.commonService.state;
+    this.lat = this.commonService.mapCenterLatlng.lat;
+    this.lng = this.commonService.mapCenterLatlng.lng;
+    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.commonService.initMap('semExMap', [[this.lat, this.lng]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.commonService.initMap('semExMap', [[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
 
   }
@@ -150,14 +158,15 @@ export class SemesterExceptionComponent implements OnInit {
           radius: 5,
           fillOpacity: 1,
           strokeWeight: 0.01,
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: 'district'
         }
 
         this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
+        globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         var fileName = "District_wise_report";
         this.genericFun(this.data, options, fileName);
 
@@ -206,9 +215,9 @@ export class SemesterExceptionComponent implements OnInit {
       this.myData = this.service.semCompletionBlock({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: "Block"
         }
         if (this.data['data'].length > 0) {
@@ -230,8 +239,8 @@ export class SemesterExceptionComponent implements OnInit {
             }
 
             this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
@@ -282,9 +291,9 @@ export class SemesterExceptionComponent implements OnInit {
       this.myData = this.service.semCompletionCluster({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: "Cluster"
         }
         if (this.data['data'].length > 0) {
@@ -307,8 +316,8 @@ export class SemesterExceptionComponent implements OnInit {
             }
 
             this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
@@ -355,9 +364,9 @@ export class SemesterExceptionComponent implements OnInit {
       this.myData = this.service.semCompletionSchool({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: 'school'
         }
         this.schoolMarkers = [];
@@ -380,8 +389,8 @@ export class SemesterExceptionComponent implements OnInit {
             }
 
             this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
@@ -440,7 +449,7 @@ export class SemesterExceptionComponent implements OnInit {
         radius: 3.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
-        mapZoom: 8.3,
+        mapZoom: this.commonService.zoomLevel + 1,
         centerLat: this.data['data'][0].block_latitude,
         centerLng: this.data['data'][0].block_longitude,
         level: 'block'
@@ -448,6 +457,7 @@ export class SemesterExceptionComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       var fileName = "Block_per_dist_report";
       this.genericFun(this.data, options, fileName);
       // sort the blockname alphabetically
@@ -508,7 +518,7 @@ export class SemesterExceptionComponent implements OnInit {
         radius: 3,
         fillOpacity: 1,
         strokeWeight: 0.01,
-        mapZoom: 10,
+        mapZoom: this.commonService.zoomLevel + 3,
         centerLat: this.data['data'][0].cluster_latitude,
         centerLng: this.data['data'][0].cluster_longitude,
         level: 'cluster'
@@ -516,6 +526,7 @@ export class SemesterExceptionComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       var fileName = "Cluster_per_block_report";
       this.genericFun(this.data, options, fileName);
       // sort the clusterName alphabetically
@@ -593,7 +604,7 @@ export class SemesterExceptionComponent implements OnInit {
           fillOpacity: 1,
           strokeWeight: 0.01,
           weight: 1,
-          mapZoom: 12,
+          mapZoom: this.commonService.zoomLevel + 5,
           centerLat: this.data['data'][0].school_latitude,
           centerLng: this.data['data'][0].school_longitude,
           level: 'school'
@@ -601,6 +612,7 @@ export class SemesterExceptionComponent implements OnInit {
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         var fileName = "School_per_cluster_report";
         this.genericFun(this.data, options, fileName);
       }, err => {
@@ -662,8 +674,6 @@ export class SemesterExceptionComponent implements OnInit {
           markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, undefined, options.level);
         }
 
-        globalMap.setZoom(options.mapZoom);
-
         // data to show on the tooltip for the desired levels
         if (options.level) {
           this.generateToolTip(this.markers[i], options.level, markerIcon, strLat, strLng);
@@ -676,7 +686,6 @@ export class SemesterExceptionComponent implements OnInit {
       this.changeDetection.markForCheck();
     }
     this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
   popups(markerIcon, markers, level) {

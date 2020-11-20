@@ -4,12 +4,12 @@
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     School Infrastructure report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     School Infrastructure report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{districtHierarchy.districtName}}</span> </p>
@@ -17,7 +17,7 @@
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     School Infrastructure report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{blockHierarchy.districtName}}</span><span>/ </span><span
@@ -29,7 +29,7 @@
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     School Infrastructure report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{clusterHierarchy.districtName}}</span><span>/ </span><span
@@ -62,7 +62,7 @@
             <p style="text-align: justify; font-size: 11px;">
                 <strong> About the dashboard:</strong> The School Infrastructure dashboard visualises the data on school
                 infrastructure
-                metrics for Gujarat based on the data collected through UDISE 2020.
+                metrics for {{state}} based on the data collected through UDISE 2020.
             </p>
         </div>
     </div>
@@ -70,13 +70,13 @@
         <div class="col-sm-12">
             <button class="btn btn-secondary" id="block"
                 style="margin-right: 10px; font-size: 11px; width: 65px;padding: 2.2px; background-color: rgb(152, 160, 163);"
-                (click)="blockWise()">&nbsp;<strong >Blocks</strong> </button>
+                (click)="blockWise()">&nbsp;<strong>Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
                 style="margin-right: 10px; font-size: 11px; width: 65px;padding: 2.2px; background-color: rgb(152, 160, 163);"
-                (click)="clusterWise()">&nbsp;<strong >Clusters</strong> </button>
+                (click)="clusterWise()">&nbsp;<strong>Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
                 style="margin-right: 25px; font-size: 11px; width: 65px;padding: 2.2px; background-color: rgb(152, 160, 163);"
-                (click)="schoolWise()">&nbsp;<strong >Schools</strong> </button>
+                (click)="schoolWise()">&nbsp;<strong>Schools</strong> </button>
 
             <select id="choose_infra"
                 style="margin-right: 25px;padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
@@ -123,7 +123,7 @@
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px; padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
+        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px; padding: 2px 0px 2px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-6">
             <span id="schools" style="text-align: center;">Number of schools: {{schoolCount}}</span>
         </div>

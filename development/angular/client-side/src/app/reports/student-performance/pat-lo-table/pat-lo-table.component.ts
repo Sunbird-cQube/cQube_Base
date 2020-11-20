@@ -58,6 +58,7 @@ export class PATLOTableComponent implements OnInit {
 
   public metaData: any;
   myData;
+  state: string;
 
   constructor(
     public http: HttpClient,
@@ -79,6 +80,7 @@ export class PATLOTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.commonFunc()

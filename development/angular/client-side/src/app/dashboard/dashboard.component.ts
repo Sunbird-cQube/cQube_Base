@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
+import { environment } from 'src/environments/environment';
 import { AppServiceComponent } from '../app.service';
 import { KeycloakSecurityService } from '../keycloak-security.service';
 
@@ -9,28 +10,30 @@ import { KeycloakSecurityService } from '../keycloak-security.service';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  state = environment.stateName;
+  
   //tooltip texts::::::::::::::
-  imrTooltip = "This geo-location-based dashboard provides insights on school infrastructure access across Gujarat.";
-  crTooltip = "This dashboard allows users to correlate various available metrics on school infrastructure data using a combined visualisation of the scatter plot and table.";
-  udiseTooltip = "This geo-location dashboard converts data available in UDISE into actionable indices that can be visualised at various administrative levels across Gujarat";
-  compositeTooltip = "This dashboard brings metrics from other dashboards and allows users to correlate various metrics among each other.";
-  dscTooltip = "This dashboard provides insights on grade and subject-wise consumption of TPD courses broken by user type.";
-  dccTooltip = "This dashboard provides insight on district-wise usage of TPD courses";
-  utTooltip = "This dashboard provides insights on district-wise usage of ETB";
-  dtrTooltip = "This dashboard provides insights on total usage at the course content level.";
-  utcTooltip = " This dashboard provides insights on the total usage at the ETB content level.";
-  crcrTooltip = "This dashboard allows users to correlate various available metrics calculated from the CRC visit data using a combined visualisation of the scatter plot and table.";
-  srTooltip = "This geo-location-based dashboard provides insights on student semester performance across Gujarat.";
-  patTooltip = " This geo-location-based dashboard provides insights on student Periodic Assessment Test (PAT) performance across Gujarat.";
-  semExpTooltip = "This geo-location-based dashboard provides insights on those schools that did not upload their semester scores.";
-  isdataTooltip = "This dashboard allows you to download exception reports for the different dashboards available on cQube";
-  sarTooltip = "This geo-location-based dashboard provides insights on Student Attendance across Gujarat.";
-  tarTooltip = "This geo-location-based dashboard provides insights on Teacher Attendance across Gujarat ";
-  telemDataTooltip = "This dashboard provides insights on usage statistics for cQube";
-  heatChartTooltip = "This dashboard provides insights on student performance at the question level.";
-  lotableTooltip = "This dashboard provides insights on student performance at the learning outcome level.";
-  tpdtpTooltip = "This dashboard provides details on district-wise TPD course enrolment progress broken at the individual course level.";
-  tpdcpTooltip = "This dashboard provides details on district-wise TPD course progress broken at the individual course level.";
+  imrTooltip = `This geo-location-based dashboard provides insights on school infrastructure access across ${this.state}.`;
+  crTooltip = `This dashboard allows users to correlate various available metrics on school infrastructure data using a combined visualisation of the scatter plot and table.`;
+  udiseTooltip = `This geo-location dashboard converts data available in UDISE into actionable indices that can be visualised at various administrative levels across ${this.state}`;
+  compositeTooltip = `This dashboard brings metrics from other dashboards and allows users to correlate various metrics among each other.`;
+  dscTooltip = `This dashboard provides insights on grade and subject-wise consumption of TPD courses broken by user type.`;
+  dccTooltip = `This dashboard provides insight on district-wise usage of TPD courses`;
+  utTooltip = `This dashboard provides insights on district-wise usage of ETB`;
+  dtrTooltip = `This dashboard provides insights on total usage at the course content level.`;
+  utcTooltip = `This dashboard provides insights on the total usage at the ETB content level.`;
+  crcrTooltip = `This dashboard allows users to correlate various available metrics calculated from the CRC visit data using a combined visualisation of the scatter plot and table.`;
+  srTooltip = `This geo-location-based dashboard provides insights on student semester performance across ${this.state}.`;
+  patTooltip = `This geo-location-based dashboard provides insights on student Periodic Assessment Test (PAT) performance across ${this.state}.`;
+  semExpTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their semester scores.`;
+  isdataTooltip = `This dashboard allows you to download exception reports for the different dashboards available on cQube`;
+  sarTooltip = `This geo-location-based dashboard provides insights on Student Attendance across ${this.state}.`;
+  tarTooltip = `This geo-location-based dashboard provides insights on Teacher Attendance across ${this.state} `;
+  telemDataTooltip = `This dashboard provides insights on usage statistics for cQube`;
+  heatChartTooltip = `This dashboard provides insights on student performance at the question level.`;
+  lotableTooltip = `This dashboard provides insights on student performance at the learning outcome level.`;
+  tpdtpTooltip = `This dashboard provides details on district-wise TPD course enrolment progress broken at the individual course level.`;
+  tpdcpTooltip = `This dashboard provides details on district-wise TPD course progress broken at the individual course level.`;
 
   hiddenPass = false;
   edate: Date;
@@ -59,9 +62,23 @@ export class DashboardComponent implements OnInit {
   tpdtpViews;
   tpdcpViews;
 
+  //for coming soon page
+  nifi_crc;
+  nifi_attendance;
+  nifi_semester;
+  nifi_infra;
+  nifi_diksha;
+  nifi_telemetry;
+  nifi_udise;
+  nifi_pat;
+  nifi_composite;
+
+
   constructor(private router: Router, private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
     service.logoutOnTokenExpire();
+    this.changeDataSourceStatus();
   }
+
   ngOnInit() {
     document.getElementById('spinner').style.display = 'none';
     document.getElementById('homeBtn').style.display = 'none';
@@ -75,6 +92,40 @@ export class DashboardComponent implements OnInit {
     setInterval(() => {
       this.callOnInterval();
     }, 30000);
+  }
+
+  changeDataSourceStatus() {
+    this.service.getDataSource().subscribe((res: any) => {
+      res.forEach(element => {
+        if (element.template == 'nifi_crc') {
+          this.nifi_crc = element.status;
+        }
+        if (element.template == 'nifi_attendance') {
+          this.nifi_attendance = element.status;
+        }
+        if (element.template == 'nifi_semester') {
+          this.nifi_semester = element.status;
+        }
+        if (element.template == 'nifi_infra') {
+          this.nifi_infra = element.status;
+        }
+        if (element.template == 'nifi_diksha') {
+          this.nifi_diksha = element.status;
+        }
+        if (element.template == 'nifi_telemetry') {
+          this.nifi_telemetry = element.status;
+        }
+        if (element.template == 'nifi_udise') {
+          this.nifi_udise = element.status;
+        }
+        if (element.template == 'nifi_pat') {
+          this.nifi_pat = element.status;
+        }
+        if (element.template === 'nifi_composite') {
+          this.nifi_composite = element.status;
+        }
+      });
+    })
   }
 
   callOnInterval() {

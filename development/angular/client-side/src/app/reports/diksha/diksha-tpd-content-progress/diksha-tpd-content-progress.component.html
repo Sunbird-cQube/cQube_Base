@@ -4,12 +4,12 @@
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Diksha TPD Collection Progress report for: <span (click)="resetToInitPage()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Diksha TPD Collection Progress report for: <span (click)="resetToInitPage()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="selectedDistrict(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{districtHierarchy.districtName}}</span> </p>
@@ -17,7 +17,7 @@
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Diksha TPD Collection Progress report for: <span (click)="resetToInitPage()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="selectedDistrict(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{blockHierarchy.districtName}}</span><span>/ </span><span
@@ -29,7 +29,7 @@
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Diksha TPD Collection Progress report for: <span (click)="resetToInitPage()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="selectedDistrict(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{clusterHierarchy.districtName}}</span><span>/ </span><span
