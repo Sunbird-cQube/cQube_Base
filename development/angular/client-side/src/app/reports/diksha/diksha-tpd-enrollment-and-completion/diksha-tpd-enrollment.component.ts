@@ -104,7 +104,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.clusterHidden = true;
     this.getAllData()
   }
- 
+
   async getAllData() {
     this.emptyChart();
     if (this.timePeriod != 'overall') {
@@ -117,7 +117,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
 
     this.collectionName = '';
     this.footer = '';
-    this.fileName = `collectionType_data`;
+    this.fileName = `all_${this.type}_data`;
     this.result = [];
     this.all = true;
     this.skul = true;
@@ -166,6 +166,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   onTypeSelect(type) {
     this.commonService.errMsg();
     this.createChart(this.result);
+
     document.getElementById('spinner').style.display = 'none';
   }
 
@@ -188,6 +189,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
         distId: res['downloadData'][0].district_id,
         districtName: res['downloadData'][0].district_name
       }
+      this.fileName = `TPD_data_of_district_${this.districtHierarchy.districtName}`;
       this.blocks = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.createChart(this.result);
@@ -222,6 +224,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
         blockId: res['downloadData'][0].block_id,
         blockName: res['downloadData'][0].block_name
       }
+      this.fileName = `TPD_data_of_block_${this.blockHierarchy.blockName}`;
       this.clusters = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.createChart(this.result);
@@ -255,6 +258,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
         clusterId: res['downloadData'][0].cluster_id,
         clusterName: res['downloadData'][0].cluster_name
       }
+      this.fileName = `TPD_data_of_cluster_${this.clusterHierarchy.clusterName}`;
       this.clusters = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.createChart(this.result);
@@ -368,8 +372,35 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     document.getElementById('errMsg').style.display = 'none';
   }
 
+  //to filter downloadable data
+  dataToDownload = [];
+  newDownload(element) {
+    var data1 = {}, data2 = {}, data3 = {};
+    Object.keys(element).forEach(key => {
+      if (key !== "percentage_completion") {
+        data1[key] = element[key];
+      }
+    });
+    Object.keys(data1).forEach(key => {
+      if (key !== "percentage_teachers") {
+        data2[key] = data1[key];
+      }
+    });
+    var myKey = this.type == 'enrollment' ? "total_completed" : "total_enrolled";
+    Object.keys(data2).forEach(key => {
+      if (key !== myKey) {
+        data3[key] = data2[key];
+      }
+    });
+    this.dataToDownload.push(data3);
+  }
+
   downloadRoport() {
-    this.commonService.download(this.fileName, this.reportData);
+    this.dataToDownload = [];
+    this.reportData.forEach(element => {
+      this.newDownload(element);
+    });
+    this.commonService.download(this.fileName, this.dataToDownload);
   }
 
   changeingStringCases(str) {
