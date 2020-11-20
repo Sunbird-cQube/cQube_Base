@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from '../../../services/diksha-report.service';
 import { Router } from '@angular/router';
@@ -7,14 +7,36 @@ import { Label, Color } from 'ng2-charts';
 import { AppServiceComponent } from '../../../app.service';
 
 @Component({
-  selector: 'app-diksha-tpd-enrollment',
-  templateUrl: './diksha-tpd-enrollment.component.html',
-  styleUrls: ['./diksha-tpd-enrollment.component.css']
+  selector: 'app-diksha-tpd-completion',
+  templateUrl: './diksha-tpd-completion.component.html',
+  styleUrls: ['./diksha-tpd-completion.component.css']
 })
-export class DikshaTpdEnrollmentComponent implements OnInit {
+export class DikshaTpdCompletionComponent implements OnInit {
   chart: boolean = false;
   public colors = [];
   header = '';
+
+  districts = [];
+  districtId;
+  blocks = [];
+  blockId;
+  clusters = [];
+  clusterId;
+
+  blockHidden = true;
+  clusterHidden = true;
+
+  // to hide and show the hierarchy details
+  public skul: boolean = false;
+  public dist: boolean = false;
+  public blok: boolean = false;
+  public clust: boolean = false;
+
+  // to set the hierarchy names
+  public districtHierarchy: any = '';
+  public blockHierarchy: any = '';
+  public clusterHierarchy: any = '';
+
   public barChartOptions: ChartOptions = {};
   public barChartLabels: Label[] = [];
   public barChartType: ChartType = 'horizontalBar';
@@ -31,7 +53,6 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   public result: any = [];
   public timePeriod = 'all';
   public hierName: any;
-  public dist: boolean = false;
   public all: boolean = false;
   public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" }, { id: "all", name: "Overall" }];
   public districtsDetails: any = '';
@@ -74,6 +95,9 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   homeClick() {
     document.getElementById('home').style.display = "none";
     this.timePeriod = 'all';
+    this.districtId = undefined;
+    this.blockHidden = true;
+    this.clusterHidden = true;
     this.getAllData()
   }
   // linkClick() {
@@ -95,7 +119,10 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.fileName = `collectionType_${this.collection_type}_data`;
     this.result = [];
     this.all = true
+    this.skul = true;
     this.dist = false;
+    this.blok = false;
+    this.clust = false;
     this.header = this.changeingStringCases(this.collection_type) + " linked";
     // if (this.collection_type == 'all') {
     //   this.header = "Overall";
@@ -104,8 +131,9 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
 
     this.listCollectionNames();
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
+      console.log(result);
       this.result = result['chartData'];
-      this.reportData = result['downloadData'];
+      this.districts = this.reportData = result['downloadData'];
       this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.createChart(this.result);
       if (result['data']) {
@@ -148,11 +176,37 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
 
   chooseTimeRange() {
     document.getElementById('home').style.display = "block";
-    if(this.timePeriod== 'all'){
+    if (this.timePeriod == 'all') {
       this.getAllData();
-    }else{
+    } else {
       this.listCollectionNames();
     }
+  }
+
+  onDistSelect(districtId) {
+    this.blockHidden = false;
+    this.clusterHidden = true;
+    this.skul = false;
+    this.dist = true;
+    this.blok = false;
+    this.clust = false;
+
+    var district = this.districts.find(a => a.district_id == districtId);
+    this.districtHierarchy = {
+      distId: districtId,
+      districtName: district.district_name
+    }
+    document.getElementById('home').style.display = "block";
+    this.result = [];
+    this.commonService.loaderAndErr(this.result);
+  }
+
+  onBlockSelect(blockId) {
+
+  }
+
+  onClusterSelect(clusterId) {
+
   }
 
   getDataBasedOnCollections() {
@@ -274,3 +328,4 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     );
   }
 }
+
