@@ -29,12 +29,12 @@
 - name: Check if nifi is present in destination
   stat: path={{ base_dir }}/cqube/nifi/nifi
   register: status
-  tags: [ install, update ]
+  tags: install
 
 - name: stop nifi if its running
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
   when: status.stat.exists == true
-  tags: [ install, update ]
+  tags: install
 
 - name: remove nifi directory if present
   become: yes
@@ -156,25 +156,13 @@
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
   tags: install
 
-- name: Remove nifi.service file
-  become: yes
-  file:
-    path: "/etc/systemd/system/nifi.service"
-    state: absent
-  tags: update
-
-- name: reload systemd
-  become: yes
-  shell: systemctl daemon-reload
-  tags: update
-
 - pause:
     minutes: 3
     prompt: "nifi is starting, kindly do not press any key"
   tags: install
 
 - name: Restart NiFi
-  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
+  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh restart"
   tags: update
 
 - pause:

@@ -1,0 +1,6 @@
+- name: Creating the datasource csv
+  template:
+    src: datasource.csv.j2
+    dest: "{{ base_dir }}/cqube/datasource.csv"
+    mode: "0644"
+  tags: [ install, update ]

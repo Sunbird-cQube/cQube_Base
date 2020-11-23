@@ -335,6 +335,78 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="row outer12">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tdp-enroll"
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-enrollment']"
+                        (click)="fetchTelemetry($event,'tpd-enroll')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="tpdcpTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">TPD </p>
+                                        <p class="card-title">Enrollment</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="tpdenrollViews;else other_content" id="views">views:
+                                        {{tpdenrollViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tpd-comp"
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-completion']"
+                        (click)="fetchTelemetry($event,'tdp-comp')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="tpdtpTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">TPD </p>
+                                        <p class="card-title">Completion</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="tpdcompViews;else other_content" id="views">views:
+                                        {{tpdcompViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row" style="padding: 20px">
         <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">

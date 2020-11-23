@@ -79,7 +79,7 @@ export class AppServiceComponent {
         globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([lat, lng], 7);
         applyCountryBorder(globalMap);
         function applyCountryBorder(map) {
-            L.geoJSON(data.default['features'], {
+            L.geoJSON(data.default[`${environment.stateName}`]['features'], {
                 color: "#a9a9a9",
                 weight: 1.5,
                 fillOpacity: 0
