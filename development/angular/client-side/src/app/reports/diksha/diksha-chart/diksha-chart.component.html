@@ -4,12 +4,12 @@
             <div *ngIf='all'>
                 <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Textbook linked content usage: <span (click)="getAllData()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Textbook linked content usage: <span (click)="getAllData()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div>

@@ -105,11 +105,13 @@ export class CrcReportComponent implements OnInit {
   ]
 
   myData;
+  state: string;
   constructor(public http: HttpClient, public service: CrcReportService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent,) {
     localStorage.removeItem('resData');
   }
 
   ngOnInit() {
+    this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.createChart(["clg"], [], '', {});

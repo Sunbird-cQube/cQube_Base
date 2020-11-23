@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { ComingSoonComponent } from './common/coming-soon/coming-soon.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,9 @@ const routes: Routes = [
     path: '', component: HomeComponent, canActivate: [AuthGuard], children: [
       {
         path: 'dashboard', component: DashboardComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'coming-soon', component: ComingSoonComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'diksha', loadChildren: () => import('./reports/diksha/diksha.module').then(m => m.DikshaModule)
