@@ -285,8 +285,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
 
 
   createChart(data) {
-    this.chartHeight = `${(data.data.length * 35) / 6}`;
-    // console.log(this.chartHeight);
+    // this.chartHeight = `${(data.data.length * 35) / 6}`;
     var percentTeachers = [],
       percentCompletion = [];
     var yLable = this.level.charAt(0).toUpperCase() + this.level.slice(1);

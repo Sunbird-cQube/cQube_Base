@@ -74,7 +74,6 @@ export class AppServiceComponent {
 
     //Initialisation of Map  
     initMap(map, maxBounds) {
-        console.log(data.default);
         const lat = 22.3660414123535;
         const lng = 71.48396301269531;
         globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([lat, lng], 7);
