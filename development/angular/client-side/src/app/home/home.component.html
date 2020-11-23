@@ -72,9 +72,6 @@
               expand_more</mat-icon>
           </mat-list-item>
           <div class="submenu2" [ngClass]="{'expanded' : showSubmenu2}" *ngIf="isShowing || isExpanded">
-            <a mat-list-item [routerLink]="['/diksha/usage-by-user-profile']" (click)="sidenav.toggle()"
-              (click)="fetchTelemetry($event,'dsc')" id="chrtReport" (click)="showSubmenu2 = !showSubmenu2"><span
-                style="margin-left: 50px;">Usage by user profile</span></a>
             <a mat-list-item [routerLink]="['/diksha/usage-by-course']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'dcc')" id="clmnReport" (click)="showSubmenu2 = !showSubmenu2"><span
                 style="margin-left: 50px;">Usage by Course</span></a>
@@ -87,6 +84,12 @@
             <a mat-list-item [routerLink]="['/diksha/tpd-teacher-percentage']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'tpd-tp')" id="tpd-tp" (click)="showSubmenu2 = !showSubmenu2"><span
                 style="margin-left: 50px;">TPD Teacher Percentage</span></a>
+            <a mat-list-item [routerLink]="['/diksha/tpd-enrollment']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'tpd-enroll')" id="tpd-enroll" (click)="showSubmenu2 = !showSubmenu2"><span
+                style="margin-left: 50px;">TPD Enrollmeent</span></a>
+            <a mat-list-item [routerLink]="['/diksha/tpd-completion']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'tpd-comp')" id="tpd-comp" (click)="showSubmenu2 = !showSubmenu2"><span
+                style="margin-left: 50px;">TPD Completion</span></a>
           </div>
         </mat-nav-list>
 
@@ -101,6 +104,9 @@
               expand_more</mat-icon>
           </mat-list-item>
           <div class="submenu9" [ngClass]="{'expanded' : showSubmenu9}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item [routerLink]="['/diksha/usage-by-user-profile']" (click)="sidenav.toggle()"
+              (click)="fetchTelemetry($event,'dsc')" id="chrtReport" (click)="showSubmenu2 = !showSubmenu2"><span
+                style="margin-left: 50px;">Usage by user profile</span></a>
             <a mat-list-item [routerLink]="['/diksha/usage-by-textbook']" (click)="sidenav.toggle()"
               (click)="fetchTelemetry($event,'dtr')" id="ut" (click)="showSubmenu9 = !showSubmenu9"><span
                 style="margin-left: 50px;">Usage by Textbook</span></a>
