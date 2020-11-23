@@ -15,6 +15,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
   chart: boolean = false;
   public colors = [];
   header = '';
+  chartHeight;
 
   districts = [];
   districtId;
@@ -37,7 +38,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
   public blockHierarchy: any = '';
   public clusterHierarchy: any = '';
 
-  public barChartOptions: ChartOptions = {};
+  public barChartOptions = {};
   public barChartLabels: Label[] = [];
   public barChartType: ChartType = 'horizontalBar';
   public barChartLegend = true;
@@ -48,13 +49,12 @@ export class DikshaTpdCompletionComponent implements OnInit {
   ]
   public barChartData: ChartDataSets[] = [];
 
-  collection_type = 'course';
 
   public result: any = [];
-  public timePeriod = 'all';
+  public timePeriod = 'overall';
   public hierName: any;
   public all: boolean = false;
-  public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" }, { id: "all", name: "Overall" }];
+  public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" }, { id: "overall", name: "Overall" }];
   public districtsDetails: any = '';
   public myChart: Chart;
   public showAllChart: boolean = false;
@@ -67,16 +67,16 @@ export class DikshaTpdCompletionComponent implements OnInit {
   downloadType;
   fileName: any;
   reportData: any = [];
-  y_axisValue;
   state: string;
+  level: string = "district";;
+  globalId: any;
 
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
     public commonService: AppServiceComponent,
     public router: Router,
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.state = this.commonService.state;
@@ -94,7 +94,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
 
   homeClick() {
     document.getElementById('home').style.display = "none";
-    this.timePeriod = 'all';
+    this.timePeriod = 'overall';
     this.districtId = undefined;
     this.blockHidden = true;
     this.clusterHidden = true;
@@ -106,7 +106,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
   // }
   async getAllData() {
     this.emptyChart();
-    if (this.timePeriod != 'all') {
+    if (this.timePeriod != 'overall') {
       document.getElementById('home').style.display = "block";
     } else {
       document.getElementById('home').style.display = "none";
@@ -116,30 +116,23 @@ export class DikshaTpdCompletionComponent implements OnInit {
 
     this.collectionName = '';
     this.footer = '';
-    this.fileName = `collectionType_${this.collection_type}_data`;
+    this.fileName = `overall_data`;
     this.result = [];
-    this.all = true
+    this.all = true;
     this.skul = true;
     this.dist = false;
     this.blok = false;
     this.clust = false;
-    this.header = this.changeingStringCases(this.collection_type) + " linked";
-    // if (this.collection_type == 'all') {
-    //   this.header = "Overall";
-    // }
-    // this.header = this.header;
 
     this.listCollectionNames();
-    this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
-      console.log(result);
+    this.service.tpdDistEnrollCompAll({ timePeriod: this.timePeriod }).subscribe(async result => {
       this.result = result['chartData'];
       this.districts = this.reportData = result['downloadData'];
-      this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.createChart(this.result);
       if (result['data']) {
         this.chart = (result['data'][0].length > 0);
       }
-      document.getElementById('spinner').style.display = 'none';
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -151,23 +144,12 @@ export class DikshaTpdCompletionComponent implements OnInit {
   listCollectionNames() {
     this.commonService.errMsg();
     this.collectionName = '';
-    this.footer = '';
-    this.reportData = [];
-    this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod }).subscribe(res => {
+    this.service.tpdgetCollection({ timePeriod: this.timePeriod, level: this.level, id: this.globalId }).subscribe(res => {
       this.collectionNames = [];
-      this.collectionNames = res['uniqueCollections'];
+      this.collectionNames = res['allCollections'];
       this.collectionNames.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0));
-      if (res['chartData']) {
-        this.result = [];
-        this.emptyChart();
-        this.result = res['chartData'];
-        this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.createChart(this.result);
-        this.reportData = res['downloadData'];
-      }
       document.getElementById('spinner').style.display = 'none';
     }, err => {
-      this.collectionNames = [];
       this.result = [];
       this.emptyChart();
       this.commonService.loaderAndErr(this.result);
@@ -176,37 +158,110 @@ export class DikshaTpdCompletionComponent implements OnInit {
 
   chooseTimeRange() {
     document.getElementById('home').style.display = "block";
-    if (this.timePeriod == 'all') {
-      this.getAllData();
-    } else {
-      this.listCollectionNames();
-    }
+    this.getAllData();
   }
 
   onDistSelect(districtId) {
+    document.getElementById('home').style.display = "block";
+    this.globalId = districtId;
     this.blockHidden = false;
     this.clusterHidden = true;
+    this.level = "block"
     this.skul = false;
     this.dist = true;
     this.blok = false;
     this.clust = false;
-
-    var district = this.districts.find(a => a.district_id == districtId);
-    this.districtHierarchy = {
-      distId: districtId,
-      districtName: district.district_name
-    }
-    document.getElementById('home').style.display = "block";
-    this.result = [];
-    this.commonService.loaderAndErr(this.result);
+    this.blockId = undefined;
+    this.clusterId = undefined;
+    this.listCollectionNames();
+    this.service.tpdBlockEnrollCompAll({ timePeriod: this.timePeriod, districtId: districtId }).subscribe(res => {
+      this.result = res['chartData'];
+      this.districtHierarchy = {
+        distId: res['downloadData'][0].district_id,
+        districtName: res['downloadData'][0].district_name
+      }
+      this.fileName = `TPD_data_of_district_${this.districtHierarchy.districtName}`;
+      this.blocks = this.reportData = res['downloadData'];
+      // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.createChart(this.result);
+      if (res['data']) {
+        this.chart = (res['data'][0].length > 0);
+      }
+      this.commonService.loaderAndErr(this.result);
+    }, err => {
+      this.result = [];
+      this.emptyChart();
+      this.commonService.loaderAndErr(this.result);
+    });
   }
 
   onBlockSelect(blockId) {
-
+    document.getElementById('home').style.display = "block";
+    this.globalId = blockId;
+    this.blockHidden = false;
+    this.clusterHidden = false;
+    this.level = "cluster"
+    this.skul = false;
+    this.dist = false;
+    this.blok = true;
+    this.clust = false;
+    this.clusterId = undefined;
+    this.listCollectionNames();
+    this.service.tpdClusterEnrollCompAll({ timePeriod: this.timePeriod, blockId: blockId }).subscribe(res => {
+      this.result = res['chartData'];
+      this.blockHierarchy = {
+        distId: res['downloadData'][0].district_id,
+        districtName: res['downloadData'][0].district_name,
+        blockId: res['downloadData'][0].block_id,
+        blockName: res['downloadData'][0].block_name
+      }
+      this.fileName = `TPD_data_of_block_${this.blockHierarchy.blockName}`;
+      this.clusters = this.reportData = res['downloadData'];
+      // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.createChart(this.result);
+      if (res['data']) {
+        this.chart = (res['data'][0].length > 0);
+      }
+      this.commonService.loaderAndErr(this.result);
+    }, err => {
+      this.result = [];
+      this.emptyChart();
+      this.commonService.loaderAndErr(this.result);
+    });
   }
 
   onClusterSelect(clusterId) {
-
+    document.getElementById('home').style.display = "block";
+    this.globalId = this.blockId;
+    this.level = "school"
+    this.skul = false;
+    this.dist = false;
+    this.blok = false;
+    this.clust = true;
+    this.listCollectionNames();
+    this.service.tpdSchoolEnrollCompAll({ timePeriod: this.timePeriod, blockId: this.blockId, clusterId: clusterId }).subscribe(res => {
+      this.result = res['chartData'];
+      this.clusterHierarchy = {
+        distId: res['downloadData'][0].district_id,
+        districtName: res['downloadData'][0].district_name,
+        blockId: res['downloadData'][0].block_id,
+        blockName: res['downloadData'][0].block_name,
+        clusterId: res['downloadData'][0].cluster_id,
+        clusterName: res['downloadData'][0].cluster_name
+      }
+      this.fileName = `TPD_data_of_cluster_${this.clusterHierarchy.clusterName}`;
+      this.clusters = this.reportData = res['downloadData'];
+      // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.createChart(this.result);
+      if (res['data']) {
+        this.chart = (res['data'][0].length > 0);
+      }
+      this.commonService.loaderAndErr(this.result);
+    }, err => {
+      this.result = [];
+      this.emptyChart();
+      this.commonService.loaderAndErr(this.result);
+    });
   }
 
   getDataBasedOnCollections() {
@@ -214,15 +269,13 @@ export class DikshaTpdCompletionComponent implements OnInit {
     this.reportData = [];
     document.getElementById('home').style.display = "block";
     this.commonService.errMsg();
-    this.fileName = `collectionType_${this.collection_type}_data_of_${this.collectionName}`;
+    this.fileName = `TPD_data_of_${this.collectionName}`;
     this.footer = '';
     this.result = [];
-    this.all = true
-    this.dist = false
-    this.service.getDataByCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod, collection_name: this.collectionName }).subscribe(res => {
+    this.service.getCollectionData({ timePeriod: this.timePeriod, collection_name: this.collectionName, level: this.level, id: this.globalId, clusterId: this.clusterId }).subscribe(res => {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
-      this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      // this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.createChart(this.result);
       document.getElementById('spinner').style.display = 'none';
     }, err => {
@@ -230,15 +283,19 @@ export class DikshaTpdCompletionComponent implements OnInit {
     });
   }
 
+
   createChart(data) {
+    this.chartHeight = `${(data.data.length * 35) / 6}`;
+    // console.log(this.chartHeight);
+    var percentTeachers = [],
+      percentCompletion = [];
+    var yLable = this.level.charAt(0).toUpperCase() + this.level.slice(1);
     var chartData = [];
-    var percentage = [];
-    var contentPlays = [];
     data.data.forEach(element => {
-      contentPlays.push(element.total_content_plays);
-      percentage.push(element.percentage);
+      percentTeachers.push(element[`percent_teachers`]);
+      percentCompletion.push(element[`percent_completion`]);
     });
-    var obj = { data: contentPlays, label: "Total Content Play" }
+    var obj = { data: percentTeachers, label: `percent_teachers` }
     chartData.push(obj);
     this.barChartOptions = {
       legend: {
@@ -252,22 +309,29 @@ export class DikshaTpdCompletionComponent implements OnInit {
         },
         callbacks: {
           label: function (tooltipItem, data) {
-            var label = data.labels[tooltipItem.index];
-            var content = data.datasets[0].data;
-            var scores = content[tooltipItem.index];
-            var percent = percentage[tooltipItem.index]
-            // var subject = data.datasets[tooltipItem.index].label
+            var percentTeachers = data.datasets[0].data;
+            var scores = percentTeachers[tooltipItem.index];
+            var completion = percentCompletion[tooltipItem.index];
             var multistringText = [];
-            multistringText.push("Total Content Plays" + ": " + scores.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"));
-            multistringText.push("Percentage" + ": " + percent + " %");
-            // multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
+            // multistringText.push(`Percent Teachers` + ": " + scores + " %");
+            multistringText.push(`Percent Completion` + ": " + completion + " %");
             return multistringText;
           }
         }
       },
-
+      plotOptions: {
+        bar: {
+          groupPadding: 0,
+          pointPadding: 0,
+          dataLabels: {
+            enabled: true,
+          }
+        }
+      },
       scales: {
         xAxes: [{
+          type: 'linear',
+          position: 'top',
           gridLines: {
             color: "rgba(252, 239, 252)",
           },
@@ -282,25 +346,33 @@ export class DikshaTpdCompletionComponent implements OnInit {
           scaleLabel: {
             fontColor: "black",
             display: true,
-            labelString: "Total Content Play",
+            labelString: "Percentage",
             fontSize: 12,
           }
         }],
         yAxes: [{
+
+          // type: 'linear',
+          // categoryPercentage: .5,
+          // barThickness: 12,
+          // minBarLength: 100,
           gridLines: {
             color: "rgba(252, 239, 252)",
           },
           ticks: {
             fontColor: 'black',
+
+            beginAtZero: true,
             min: 0,
-            max: this.y_axisValue,
+            max: 5
           },
           scaleLabel: {
             fontColor: "black",
             display: true,
-            labelString: "District Names",
+            labelString: `${yLable} Names`,
             fontSize: 12,
-          }
+          },
+
         }]
       }
     }

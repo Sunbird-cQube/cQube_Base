@@ -317,7 +317,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
             var content = data.datasets[0].data;
             var scores = content[tooltipItem.index];
             var multistringText = [];
-            multistringText.push(`${type.name}` + ": " + scores);
+            multistringText.push(`${type.name}` + ": " + scores.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"));
             return multistringText;
           }
         }
@@ -325,6 +325,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
 
       scales: {
         xAxes: [{
+          type: 'linear',
+          position: 'top',
           gridLines: {
             color: "rgba(252, 239, 252)",
           },

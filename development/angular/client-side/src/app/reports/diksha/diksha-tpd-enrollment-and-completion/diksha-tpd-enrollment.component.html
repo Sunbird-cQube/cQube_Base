@@ -85,7 +85,7 @@
             <select id="coll_name"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="collectionName" name="collectionName" (change)="getDataBasedOnCollections()">
-                <option [value]="collectionName" disabled selected="selected">Choose collection name
+                <option [value]="collectionName" disabled selected="selected">Choose course name
                 </option>
                 <option *ngFor="let collectionName of collectionNames; let i = index" [(ngValue)]="collectionNames[i]"
                     style=" font-size: 11px;">
@@ -115,13 +115,12 @@
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="clusterId" (change)="onClusterSelect(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
-                <option *ngFor="let cluster of clusters" [(ngValue)]="cluster.cluster_id"
-                    style="font-size: 11px; "
+                <option *ngFor="let cluster of clusters" [(ngValue)]="cluster.cluster_id" style="font-size: 11px; "
                     [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                     {{cluster.cluster_name}}
                 </option>
             </select>
-<!-- 
+            <!-- 
             <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total Content
                     Play:</strong>
                 {{footer}}</span> -->
@@ -132,8 +131,8 @@
         <div class="col-lg-1">
 
         </div>
-        <div class="col-lg-10" id="r1">
-            <div *ngIf="barChartData[0]['data'].length > 0">
+        <div class="col-lg-10 chartWrapper" id="r1">
+            <div *ngIf="barChartData[0]['data'].length > 0" class="chartAreaWrapper">
                 <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
                     [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType"
                     [colors]="barChartColors">
