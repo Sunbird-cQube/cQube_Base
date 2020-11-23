@@ -11,6 +11,7 @@
 #NOTE: Please fill the value with a space between ":" and the value. 
 #Example-   `system_user_name: ubuntu`
 
+state_code:                               # Enter the 2 character state code for which cQube is being deployed. Please refer state_list file.
 system_user_name:                          # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
 base_dir:                                  # provide the absolute path where cqube installed
 

@@ -18,6 +18,20 @@ if ! [[ $2 == "true" || $2 == "false" ]]; then
 fi
 }
 
+check_state()
+{
+state_found=0
+while read line; do
+converted_line=`echo $2 | tr '[:lower:]' '[:upper:]'`
+  if [[ $line == $converted_line ]] ; then
+   state_found=1
+  fi
+done < validation_scripts/state_codes
+if [[ $state_found == 0 ]] ; then
+  echo "Error - Invalid State code. Please refer the state_list file and enter the correct value."; fail=1
+fi
+}
+
 check_base_dir(){
 base_dir_status=0
 if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
@@ -242,7 +256,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
+declare -a arr=("state_code" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
 		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" )
 
@@ -271,7 +285,7 @@ db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=1.6
+version_upgradable_from=1.6.1
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
@@ -285,6 +299,13 @@ do
 key=$i
 value=${vals[$key]}
 case $key in
+   state_code)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_state $key $value
+       fi
+       ;;
    system_user_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
