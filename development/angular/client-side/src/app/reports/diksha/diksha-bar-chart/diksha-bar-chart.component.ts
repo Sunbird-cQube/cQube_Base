@@ -48,6 +48,7 @@ export class DikshaBarChartComponent implements OnInit {
   fileName: any;
   reportData: any = [];
   y_axisValue;
+  state: string;
 
   constructor(
     public http: HttpClient,
@@ -58,6 +59,7 @@ export class DikshaBarChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.getAllData();

@@ -64,7 +64,7 @@
 
       NODE_ENV= "DEVELOPMENT"
       LOG= "console"
-      LOG_DIRECTORY= "/opt/cQube/logs"
+      LOG_DIRECTORY= ""
   tags: [ install, update ]
 
 

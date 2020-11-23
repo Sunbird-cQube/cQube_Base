@@ -11,6 +11,7 @@
   roles:
           - { role: java, tags: install }  
           - { role: python, tags: install }
+          - datasource
           - createdb
           - python_flask
           - keycloak
