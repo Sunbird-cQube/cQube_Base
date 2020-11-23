@@ -11,6 +11,20 @@ check_length(){
     fi
 }
 
+check_state()
+{
+state_found=0
+while read line; do
+converted_line=`echo $2 | tr '[:lower:]' '[:upper:]'`
+  if [[ $line == $converted_line ]] ; then
+   state_found=1
+  fi
+done < validation_scripts/state_codes
+if [[ $state_found == 0 ]] ; then
+  echo "Error - Invalid State code. Please refer the state_list file and enter the correct value."; fail=1
+fi
+}
+
 check_base_dir(){
 if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
   echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
@@ -218,7 +232,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
+declare -a arr=("state_code" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
 		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp") 
 
@@ -246,6 +260,14 @@ do
 key=$i
 value=${vals[$key]}
 case $key in
+
+   state_code)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_state $key $value
+       fi
+       ;;
    system_user_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
