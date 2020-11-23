@@ -8,7 +8,6 @@ import { AppServiceComponent } from '../../../app.service';
   encapsulation: ViewEncapsulation.None
 })
 export class TeacherAttendanceComponent implements OnInit {
-
   constructor(service: AppServiceComponent) {
     service.logoutOnTokenExpire();
   }

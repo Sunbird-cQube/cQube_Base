@@ -55,12 +55,14 @@ export class SchoolInfrastructureComponent implements OnInit {
   public fileName: any;
   public reportData: any;
   public myData;
+  state: string;
 
   constructor(public http: HttpClient, public service: SchoolInfraService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent,) {
     localStorage.removeItem('resData');
   }
 
   ngOnInit() {
+    this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.districtWise();

@@ -4,7 +4,8 @@
             <div class="col-sm-12 diksha">SCHOOL INFRASTRUCTURE</div>
             <div class="row outer1">
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card card-stats" id="imr" [routerLink]="['/infrastructure/school-infra-map']"
+                    <div class="card card-stats" id="imr"
+                        [routerLink]="!nifi_infra ? ['/coming-soon'] :['/infrastructure/school-infra-map']"
                         (click)="fetchTelemetry($event,'imr')">
                         <div class="card-body ">
                             <div class="row">
@@ -20,7 +21,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Infrastructure <br> access</p>
-                                        <p class="card-title" >by Location</p>
+                                        <p class="card-title">by Location</p>
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +37,8 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card card-stats" id="cr" [routerLink]="['/infrastructure/school-infrastructure']"
+                    <div class="card card-stats" id="cr"
+                        [routerLink]="!nifi_infra ? ['/coming-soon'] :['/infrastructure/school-infrastructure']"
                         (click)="fetchTelemetry($event,'cr')">
                         <div class="card-body ">
                             <div class="row">
@@ -52,7 +54,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Composite </p>
-                                        <p class="card-title" >Report</p>
+                                        <p class="card-title">Report</p>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +70,8 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card card-stats" id="udise" [routerLink]="['/infrastructure/udise-report']"
+                    <div class="card card-stats" id="udise"
+                        [routerLink]="!nifi_udise ? ['/coming-soon'] :['/infrastructure/udise-report']"
                         (click)="fetchTelemetry($event,'udise')">
                         <div class="card-body ">
                             <div class="row">
@@ -84,7 +87,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">UDISE </p>
-                                        <p class="card-title" >Report</p>
+                                        <p class="card-title">Report</p>
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +109,8 @@
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(243, 228, 203);" id="composite"
-                        [routerLink]="['/composite/composite-report']" (click)="fetchTelemetry($event,'composite')">
+                        [routerLink]="!nifi_composite ? ['/coming-soon'] :['/composite/composite-report']"
+                        (click)="fetchTelemetry($event,'composite')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="compositeTooltip"
@@ -121,7 +125,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Composite <br> Report </p>
-                                        <p class="card-title" >across metrics</p>
+                                        <p class="card-title">across metrics</p>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +150,8 @@
             <div class="row outer1">
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="dcc"
-                        [routerLink]="['/diksha/usage-by-course']" (click)="fetchTelemetry($event,'dcc')">
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-course']"
+                        (click)="fetchTelemetry($event,'dcc')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="dccTooltip" style="position: absolute; right:10px; top:0px">
@@ -161,7 +166,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Usage by </p>
-                                        <p class="card-title" >Course</p>
+                                        <p class="card-title">Course</p>
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +184,8 @@
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color:  rgb(255, 207, 169);" id="dtr"
-                        [routerLink]="['/diksha/usage-by-course-content']" (click)="fetchTelemetry($event,'dtr')">
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-course-content']"
+                        (click)="fetchTelemetry($event,'dtr')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="dtrTooltip" style="position: absolute; right:10px; top:0px">
@@ -194,7 +200,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Usage by </p>
-                                        <p class="card-title" >Course Content</p>
+                                        <p class="card-title">Course Content</p>
                                     </div>
                                 </div>
                             </div>
@@ -221,7 +227,8 @@
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(238, 164, 164);" id="crcr"
-                        [routerLink]="['/crc/crc-report']" (click)="fetchTelemetry($event,'crcr')">
+                        [routerLink]="!nifi_crc ? ['/coming-soon'] :['/crc/crc-report']"
+                        (click)="fetchTelemetry($event,'crcr')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="crcrTooltip" style="position: absolute; right:10px; top:0px">
@@ -236,7 +243,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">CRC </p>
-                                        <p class="card-title" >Report</p>
+                                        <p class="card-title">Report</p>
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +267,8 @@
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tdp-cp"
-                        [routerLink]="['/diksha/tpd-collection-progress']" (click)="fetchTelemetry($event,'tpd-cp')">
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-collection-progress']"
+                        (click)="fetchTelemetry($event,'tpd-cp')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="tpdcpTooltip" style="position: absolute; right:10px; top:0px">
@@ -275,7 +283,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">TPD Collection </p>
-                                        <p class="card-title" >Progress</p>
+                                        <p class="card-title">Progress</p>
                                     </div>
                                 </div>
                             </div>
@@ -293,7 +301,8 @@
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tpd-tp"
-                        [routerLink]="['/diksha/tpd-teacher-percentage']" (click)="fetchTelemetry($event,'tdp-tp')">
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-teacher-percentage']"
+                        (click)="fetchTelemetry($event,'tdp-tp')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="tpdtpTooltip" style="position: absolute; right:10px; top:0px">
@@ -308,7 +317,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">TPD Teacher </p>
-                                        <p class="card-title" >Percentage</p>
+                                        <p class="card-title">Percentage</p>
                                     </div>
                                 </div>
                             </div>
@@ -333,7 +342,8 @@
             <div class="row outer12">
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(218, 193, 172);" id="dsc"
-                        [routerLink]="['/diksha/usage-by-user-profile']" (click)="fetchTelemetry($event,'dsc')">
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-user-profile']"
+                        (click)="fetchTelemetry($event,'dsc')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="dscTooltip" style="position: absolute; right:10px; top:0px">
@@ -348,7 +358,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Usage by <br> user </p>
-                                        <p class="card-title" >profile</p>
+                                        <p class="card-title">profile</p>
                                     </div>
                                 </div>
                             </div>
@@ -366,7 +376,8 @@
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(218, 193, 172);" id="ut"
-                        [routerLink]="['/diksha/usage-by-textbook']" (click)="fetchTelemetry($event,'ut')">
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook']"
+                        (click)="fetchTelemetry($event,'ut')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="utTooltip" style="position: absolute; right:10px; top:0px">
@@ -381,7 +392,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Usage by </p>
-                                        <p class="card-title" >Textbook</p>
+                                        <p class="card-title">Textbook</p>
                                     </div>
                                 </div>
                             </div>
@@ -399,7 +410,8 @@
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color:  rgb(218, 193, 172);" id="utc"
-                        [routerLink]="['/diksha/usage-by-textbook-content']" (click)="fetchTelemetry($event,'utc')">
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook-content']"
+                        (click)="fetchTelemetry($event,'utc')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="utcTooltip" style="position: absolute; right:10px; top:0px">
@@ -414,7 +426,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Usage by </p>
-                                        <p class="card-title" >Textbook Content</p>
+                                        <p class="card-title">Textbook Content</p>
                                     </div>
                                 </div>
                             </div>
@@ -439,7 +451,8 @@
             <div class="row outer12">
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="card card-stats" style="background-color:  rgb(203, 210, 233);" id="sr"
-                        [routerLink]="['/student-performance/semester-report']" (click)="fetchTelemetry($event,'sr')">
+                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/student-performance/semester-report']"
+                        (click)="fetchTelemetry($event,'sr')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="srTooltip" style="position: absolute; right:10px; top:0px">
@@ -454,7 +467,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Semester </p>
-                                        <p class="card-title" >Report</p>
+                                        <p class="card-title">Report</p>
                                     </div>
                                 </div>
                             </div>
@@ -472,7 +485,8 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="card card-stats" style="background-color:  rgb(203, 210, 233);" id="pat"
-                        [routerLink]="['/student-performance/pat-report']" (click)="fetchTelemetry($event,'pat')">
+                        [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/pat-report']"
+                        (click)="fetchTelemetry($event,'pat')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="patTooltip" style="position: absolute; right:10px; top:0px">
@@ -487,7 +501,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Periodic <br> Assessment </p>
-                                        <p class="card-title" >Test</p>
+                                        <p class="card-title">Test</p>
                                     </div>
                                 </div>
                             </div>
@@ -505,7 +519,8 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="card card-stats" style="background-color: rgb(203, 210, 233);" id="heatChart"
-                        [routerLink]="['/student-performance/heat-chart']" (click)="fetchTelemetry($event,'heatChart')">
+                        [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/heat-chart']"
+                        (click)="fetchTelemetry($event,'heatChart')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="heatChartTooltip"
@@ -520,7 +535,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">PAT </p>
-                                        <p class="card-title" >Heat Chart</p>
+                                        <p class="card-title">Heat Chart</p>
                                     </div>
                                 </div>
                             </div>
@@ -538,7 +553,8 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="card card-stats" style="background-color: rgb(203, 210, 233);" id="lotable"
-                        [routerLink]="['/student-performance/PAT-LO-table']" (click)="fetchTelemetry($event,'lotable')">
+                        [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/PAT-LO-table']"
+                        (click)="fetchTelemetry($event,'lotable')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="lotableTooltip"
@@ -553,7 +569,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">PAT </p>
-                                        <p class="card-title" >LO Table</p>
+                                        <p class="card-title">LO Table</p>
                                     </div>
                                 </div>
                             </div>
@@ -578,7 +594,8 @@
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="SemExp"
-                        [routerLink]="['/exception/sem-exception']" (click)="fetchTelemetry($event,'SemExp')">
+                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/sem-exception']"
+                        (click)="fetchTelemetry($event,'SemExp')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="semExpTooltip" style="position: absolute; right:10px; top:0px">
@@ -593,7 +610,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Semester </p>
-                                        <p class="card-title" >Exception</p>
+                                        <p class="card-title">Exception</p>
                                     </div>
                                 </div>
                             </div>
@@ -612,7 +629,8 @@
 
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="isdata"
-                        [routerLink]="['/exception/download-missing-data']" (click)="fetchTelemetry($event,'isdata')">
+                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/download-missing-data']"
+                        (click)="fetchTelemetry($event,'isdata')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="isdataTooltip" style="position: absolute; right:10px; top:0px">
@@ -627,7 +645,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Download <br> Exception </p>
-                                        <p class="card-title" >List</p>
+                                        <p class="card-title">List</p>
                                     </div>
                                 </div>
                             </div>
@@ -652,7 +670,8 @@
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color:  rgb(221, 253, 199);" id="sar"
-                        [routerLink]="['/attendance/student-attendance']" (click)="fetchTelemetry($event,'sar')">
+                        [routerLink]="!nifi_attendance ? ['/coming-soon'] :['/attendance/student-attendance']"
+                        (click)="fetchTelemetry($event,'sar')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="sarTooltip" style="position: absolute; right:10px; top:0px">
@@ -667,7 +686,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Student </p>
-                                        <p class="card-title" >Attendance</p>
+                                        <p class="card-title">Attendance</p>
                                     </div>
                                 </div>
                             </div>
@@ -700,7 +719,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Teacher </p>
-                                        <p class="card-title" >Attendance</p>
+                                        <p class="card-title">Attendance</p>
                                     </div>
                                 </div>
                             </div>
@@ -723,7 +742,8 @@
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(236, 235, 126);" id="telemData"
-                        [routerLink]="['/telemetry']" (click)="fetchTelemetry($event,'telemData')">
+                        [routerLink]="!nifi_telemetry ? ['/coming-soon'] :['/telemetry']"
+                        (click)="fetchTelemetry($event,'telemData')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="telemDataTooltip"
@@ -738,7 +758,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Telemetry </p>
-                                        <p class="card-title" >Report</p>
+                                        <p class="card-title">Report</p>
                                     </div>
                                 </div>
                             </div>

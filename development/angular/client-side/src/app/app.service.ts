@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../src/environments/environment';
 import { KeycloakSecurityService } from './keycloak-security.service';
-import * as data from '../assets/gujarat.json';
+import * as data from '../assets/states_for_cQube.json';
+import * as config from '../assets/config.json';
 import * as L from 'leaflet';
 import { ExportToCsv } from 'export-to-csv';
+
 export var globalMap;
 
 @Injectable({
@@ -17,11 +19,16 @@ export class AppServiceComponent {
     telemetryData: any;
     showBack = true;
     showHome = true;
+    zoomLevel = 7;
+    mapCenterLatlng = config.default[`${environment.stateName}`];
+
+    public state = this.mapCenterLatlng.name;
 
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
         this.token = keyCloakService.kc.token;
         localStorage.setItem('token', this.token);
     }
+
 
     homeControl() {
         if (window.location.hash == '#/dashboard') {
@@ -89,7 +96,7 @@ export class AppServiceComponent {
         ).addTo(globalMap);
     }
 
-    restrictZoom(globalMap){
+    restrictZoom(globalMap) {
         globalMap.touchZoom.disable();
         globalMap.doubleClickZoom.disable();
         globalMap.scrollWheelZoom.disable();
@@ -305,7 +312,13 @@ export class AppServiceComponent {
         return this.http.post(`${this.baseUrl}/telemetry/data`, { period: data });
     }
 
-    //
+    //data-source::::::::::::
+    getDataSource() {
+        this.logoutOnTokenExpire();
+        return this.http.get(`${this.baseUrl}/dataSource`, {});
+    }
+
+
     edate;
     getTelemetryData(reportId, event) {
         this.telemetryData = [];

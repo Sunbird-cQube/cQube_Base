@@ -48,6 +48,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
   fileName: any;
   reportData: any = [];
   y_axisValue;
+  state: string;
 
   constructor(
     public http: HttpClient,
@@ -58,6 +59,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.state = this.commonService.state;
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
     this.getAllData();

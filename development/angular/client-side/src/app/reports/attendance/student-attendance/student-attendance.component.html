@@ -4,12 +4,12 @@
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Attendance report for: <span id="state" (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Attendance report for: <span id="state" (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span>
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span>
                     <span id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span>
@@ -18,7 +18,7 @@
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Attendance report for: <span id="state" (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span id="dist"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span id="dist"
                         (click)="clickedMarker($event,distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span id="block" (click)="clickedMarker($event,blockName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Attendance report for: <span id="state" (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span>
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span>
                     <span id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span id="block" (click)="clickedMarker($event,blockName)"
@@ -138,7 +138,7 @@
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
+        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;padding: 2px 0px 2px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-4">
             <span id="students">Number of students: {{studentCount}}</span>
         </div>

@@ -1,10 +1,3 @@
-- name: Creating the datasource csv
-  template:
-    src: datasource.csv.j2
-    dest: datasource.csv
-    mode: "0644"
-  tags: [ install, update ]
-
 - name: Create directory with mode setting 
   file:
     path: /tmp/postgres
@@ -24,14 +17,6 @@
     - config.sql
     - infrastructure_master.csv
     - udise_config.csv
-  tags: [ install, update ]
-
-- name: copy datasource.csv files to /tmp/postgres
-  copy:
-    src: datasource.csv
-    dest: /tmp/postgres
-    owner: postgres
-    mode: "0644"
   tags: [ install, update ]
 
 - name: Run queries from SQL script
@@ -68,7 +53,7 @@
   tags: [ install, update ]
 
 - name: Copying table structure from csv file
-  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy nifi_template_info(template,status) from '/tmp/postgres/datasource.csv' delimiter ',' csv header;"
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy nifi_template_info(template,status) from '{{ base_dir }}/cqube/datasource.csv' delimiter ',' csv header;"
   when: output_nifi.stdout_lines[2].strip() == "0"
   tags: [ install, update ]
 
@@ -80,6 +65,14 @@
     path_to_script: /tmp/postgres/config.sql
   tags: [ install, update ]
 
-- name: restart postgresql
-  service: name=postgresql state=restarted
+- name: Stopping postgresql
+  service: 
+    name: postgresql
+    state: stopped
+  tags: [ install, update ]
+
+- name: Starting postgresql
+  service: 
+    name: postgresql
+    state: started
   tags: [ install, update ]

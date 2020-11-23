@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from '../../../services/diksha-report.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
+import { AppServiceComponent } from 'src/app/app.service';
 declare const $;
 
 @Component({
@@ -28,17 +29,19 @@ export class DikshaTableComponent implements OnInit {
   fileName;
   reportData: any = [];
   header = '';
+  state: string;
 
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
     public router: Router,
-    private changeDetection: ChangeDetectorRef,
+    public commonService: AppServiceComponent
   ) {
     this.allCollections = [{ id: "course", name: "Course" }]
   }
 
   ngOnInit(): void {
+    this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.collectionWise();
