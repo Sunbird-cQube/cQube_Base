@@ -4502,3 +4502,7 @@ updated_on	TIMESTAMP without time zone,
 primary key(collection_id,enrolled_date,school_id,collection_name)
   );
 
+alter table diksha_tpd_agg add column IF NOT EXISTS total_enrolled int;
+alter table diksha_tpd_agg add column IF NOT EXISTS total_completed int;
+
+
