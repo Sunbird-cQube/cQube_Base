@@ -80,6 +80,9 @@ export class DikshaTpdCompletionComponent implements OnInit {
     this.result = [];
     this.chartData = [];
     this.category = [];
+    this.districtHierarchy = [];
+    this.blockHierarchy = [];
+    this.clusterHierarchy = [];
   }
 
   homeClick() {
@@ -117,11 +120,8 @@ export class DikshaTpdCompletionComponent implements OnInit {
     this.service.tpdDistEnrollCompAll({ timePeriod: this.timePeriod }).subscribe(async result => {
       this.result = result['chartData'];
       this.districts = this.reportData = result['downloadData'];
-      this.getBarChartData();
-      if (result['data']) {
-        this.chart = (result['data'][0].length > 0);
-      }
-      this.commonService.loaderAndErr(this.result);
+      await this.getBarChartData();
+      await this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -133,7 +133,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
   listCollectionNames() {
     this.commonService.errMsg();
     this.collectionName = '';
-    this.service.tpdgetCollection({ timePeriod: this.timePeriod, level: this.level, id: this.globalId }).subscribe(res => {
+    this.service.tpdgetCollection({ timePeriod: this.timePeriod, level: this.level, id: this.globalId }).subscribe(async (res) => {
       this.collectionNames = [];
       this.collectionNames = res['allCollections'];
       this.collectionNames.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0));
@@ -151,8 +151,8 @@ export class DikshaTpdCompletionComponent implements OnInit {
   }
 
   getBarChartData() {
-    if (this.result.labels.length <= 4) {
-      for (let i = 0; i <= 4; i++) {
+    if (this.result.labels.length <= 25) {
+      for (let i = 0; i <= 25; i++) {
         this.category.push(this.result.labels[i] ? this.result.labels[i] : ' ')
       }
     } else {
@@ -178,7 +178,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
     this.clusterId = undefined;
     this.yAxisLabel = "Block Names"
     this.listCollectionNames();
-    this.service.tpdBlockEnrollCompAll({ timePeriod: this.timePeriod, districtId: districtId }).subscribe(res => {
+    this.service.tpdBlockEnrollCompAll({ timePeriod: this.timePeriod, districtId: districtId }).subscribe(async (res) => {
       this.result = res['chartData'];
       this.districtHierarchy = {
         distId: res['downloadData'][0].district_id,
@@ -187,11 +187,8 @@ export class DikshaTpdCompletionComponent implements OnInit {
       this.fileName = `TPD_data_of_district_${this.districtHierarchy.districtName}`;
       this.blocks = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      this.getBarChartData();
-      if (res['data']) {
-        this.chart = (res['data'][0].length > 0);
-      }
-      this.commonService.loaderAndErr(this.result);
+      await this.getBarChartData();
+      await this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -213,7 +210,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
     this.clusterId = undefined;
     this.yAxisLabel = "Cluster Names"
     this.listCollectionNames();
-    this.service.tpdClusterEnrollCompAll({ timePeriod: this.timePeriod, blockId: blockId }).subscribe(res => {
+    this.service.tpdClusterEnrollCompAll({ timePeriod: this.timePeriod, blockId: blockId }).subscribe(async (res) => {
       this.result = res['chartData'];
       this.blockHierarchy = {
         distId: res['downloadData'][0].district_id,
@@ -224,11 +221,8 @@ export class DikshaTpdCompletionComponent implements OnInit {
       this.fileName = `TPD_data_of_block_${this.blockHierarchy.blockName}`;
       this.clusters = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      this.getBarChartData();
-      if (res['data']) {
-        this.chart = (res['data'][0].length > 0);
-      }
-      this.commonService.loaderAndErr(this.result);
+      await this.getBarChartData();
+      await this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -247,7 +241,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
     this.clust = true;
     this.yAxisLabel = "School Names"
     this.listCollectionNames();
-    this.service.tpdSchoolEnrollCompAll({ timePeriod: this.timePeriod, blockId: this.blockId, clusterId: clusterId }).subscribe(res => {
+    this.service.tpdSchoolEnrollCompAll({ timePeriod: this.timePeriod, blockId: this.blockId, clusterId: clusterId }).subscribe(async (res) => {
       this.result = res['chartData'];
       this.clusterHierarchy = {
         distId: res['downloadData'][0].district_id,
@@ -260,11 +254,8 @@ export class DikshaTpdCompletionComponent implements OnInit {
       this.fileName = `TPD_data_of_cluster_${this.clusterHierarchy.clusterName}`;
       this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      this.getBarChartData();
-      if (res['data']) {
-        this.chart = (res['data'][0].length > 0);
-      }
-      this.commonService.loaderAndErr(this.result);
+      await this.getBarChartData();
+      await this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -279,12 +270,12 @@ export class DikshaTpdCompletionComponent implements OnInit {
     this.commonService.errMsg();
     this.fileName = `TPD_data_of_${this.collectionName}`;
     this.footer = '';
-    this.service.getCollectionData({ timePeriod: this.timePeriod, collection_name: this.collectionName, level: this.level, id: this.globalId, clusterId: this.clusterId }).subscribe(res => {
+    this.service.getCollectionData({ timePeriod: this.timePeriod, collection_name: this.collectionName, level: this.level, id: this.globalId, clusterId: this.clusterId }).subscribe(async (res) => {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
       // this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      this.getBarChartData();
-      document.getElementById('spinner').style.display = 'none';
+      await this.getBarChartData();
+      await this.commonService.loaderAndErr(this.result);
     }, err => {
       this.commonService.loaderAndErr(this.result);
     });

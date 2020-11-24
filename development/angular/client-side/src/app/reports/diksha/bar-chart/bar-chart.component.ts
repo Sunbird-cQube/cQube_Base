@@ -19,33 +19,65 @@ export class BarChartComponent implements OnInit {
     this.createBarChart();
   }
 
-  createBarChart() {  
+  createBarChart() {
+    let scrollBarX
+
+    if (this.data.length < 25) {
+      scrollBarX = false
+    } else {
+      scrollBarX = true
+    }
+    console.log(scrollBarX);
+
     this.chartOptions = {
       chart: {
         type: "bar",
+        backgroundColor: 'transparent',
       },
       title: {
         text: null
       },
       xAxis: {
+        labels: {
+          style: {
+            color: 'black',
+            fontSize: "10px"
+          }
+        },
         type: "category",
         gridLineColor: 'transparent',
         categories: this.category,
         title: {
-          text: this.yAxisLabel
+          text: this.yAxisLabel,
+          style: {
+            color: 'black',
+            fontSize: "10px"
+          }
         },
         min: 0,
-        max: 4,
+        max: 25,
         scrollbar: {
-          enabled: true
+          enabled: scrollBarX,
         },
         tickLength: 0
       },
       yAxis: {
+        labels: {
+          style: {
+            color: 'black',
+            fontSize: "10px"
+          }
+        },
         min: 0,
+        opposite: true,
+        max: Math.max.apply(Math, this.data),
         gridLineColor: 'transparent',
         title: {
           text: this.xAxisLabel,
+          style: {
+            color: 'black',
+            fontSize: "10px"
+          }
         }
       },
       plotOptions: {
@@ -53,10 +85,14 @@ export class BarChartComponent implements OnInit {
           dataLabels: {
             enabled: true
           }
+        },
+        series: {
+          pointPadding: 0,
+          groupPadding: 0
         }
       },
       legend: {
-        enabled: false
+        enabled: false,
       },
       credits: {
         enabled: false
@@ -66,7 +102,12 @@ export class BarChartComponent implements OnInit {
           name: this.xAxisLabel,
           data: this.data
         }
-      ]
+      ],
+      // tooltip: {
+      //   formatter: function () {
+      //     // return '<b>' + getPointCategoryName(this.point, 'y', level) + '</b>';
+      //   }
+      // }
     }
     this.Highcharts.chart("container", this.chartOptions);
   }
