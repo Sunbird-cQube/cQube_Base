@@ -20,7 +20,6 @@ export class BarChartComponent implements OnInit {
   }
 
   createBarChart() {  
-    console.log(this.category);  
     this.chartOptions = {
       chart: {
         type: "bar",
