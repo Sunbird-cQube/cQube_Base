@@ -297,17 +297,18 @@ export class DikshaTpdCompletionComponent implements OnInit {
   //to filter downloadable data
   dataToDownload = [];
   newDownload(element) {
-    var data1 = {}, data2 = {}
+    var data1 = {}, data2 = {};
     Object.keys(element).forEach(key => {
-      if (key !== "enrollment") {
+      if (key !== "total_completed") {
         data1[key] = element[key];
       }
     });
     Object.keys(data1).forEach(key => {
-      if (key !== "completion") {
+      if (key !== "total_enrolled") {
         data2[key] = data1[key];
       }
     });
+
     this.dataToDownload.push(data2);
   }
 
