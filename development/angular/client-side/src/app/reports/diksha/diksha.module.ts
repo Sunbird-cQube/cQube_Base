@@ -44,9 +44,6 @@ const dikshaRoutes: Routes = [
       },
       {
         path: 'tpd-completion', component: DikshaTpdCompletionComponent, canActivateChild: [AuthGuard]
-      },
-      {
-        path: 'bar', component: BarChartComponent, canActivateChild: [AuthGuard]
       }
     ]
   }

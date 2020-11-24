@@ -1,6 +1,6 @@
 <div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Diksha TPD report for enrollment: <span (click)="homeClick()"
@@ -41,7 +41,7 @@
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <div class="row">
                 <div class="col-sm-6">
                     <p id="errMsg"
@@ -131,15 +131,10 @@
         <div class="col-lg-1">
 
         </div>
-        <div class="col-lg-10 chartWrapper" id="r1">
-            <div *ngIf="barChartData[0]['data'].length > 0" class="chartAreaWrapper">
-                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-                    [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType"
-                    [colors]="barChartColors">
-                </canvas>
-            </div>
-            <div *ngIf="barChartData[0]['data'].length === 0"
-                style="position: absolute; left: 40%; top: 120px;color: red;">
+        <div class="col-lg-10" id="r1">
+            <app-bar-chart *ngIf="chartData.length > 0" [category]="category" [data]="chartData"
+                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"></app-bar-chart>
+            <div *ngIf="chartData.length === 0" style="position: absolute; left: 40%; top: 120px;color: red;">
                 No Data Available
             </div>
         </div>
