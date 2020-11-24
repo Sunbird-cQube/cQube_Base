@@ -18,6 +18,12 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   level = "district";
   globalId;
 
+  public category: String[] = [];
+  public chartData: Number[] = [];
+  public xAxisLabel: String = "Enrollment";
+  public yAxisLabel: String;
+
+
   enrollTypes = [{ key: 'enrollment', name: 'Enrollment' }, { key: 'completion', name: 'Completion' }];
   type = 'enrollment';
   districts = [];
@@ -40,18 +46,6 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   public districtHierarchy: any = '';
   public blockHierarchy: any = '';
   public clusterHierarchy: any = '';
-
-  public barChartOptions: ChartOptions = {};
-  public barChartLabels: Label[] = [];
-  public barChartType: ChartType = 'horizontalBar';
-  public barChartLegend = true;
-  public barChartPlugins = [];
-
-  public barChartColors: Color[] = [
-    { backgroundColor: '#0e92b0' }
-  ]
-  public barChartData: ChartDataSets[] = [];
-
 
   public result: any = [];
   public timePeriod = 'overall';
@@ -89,11 +83,11 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   }
 
   emptyChart() {
-    this.barChartData = [
-      { data: [], label: '' }
-    ];
     this.result = [];
+    this.chartData = [];
+    this.category = [];
   }
+
 
   homeClick() {
     document.getElementById('home').style.display = "none";
@@ -102,6 +96,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.districtId = undefined;
     this.blockHidden = true;
     this.clusterHidden = true;
+    this.yAxisLabel = "District Names"
+    this.emptyChart();
     this.getAllData()
   }
 
@@ -124,12 +120,14 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.dist = false;
     this.blok = false;
     this.clust = false;
+    this.yAxisLabel = "District Names"
 
     this.listCollectionNames();
     this.service.tpdDistEnrollCompAll({ timePeriod: this.timePeriod }).subscribe(async result => {
       this.result = result['chartData'];
       this.districts = this.reportData = result['downloadData'];
-      this.createChart(this.result);
+      this.getBarChartData();
+      this.xAxisLabel = this.type.charAt(0).toUpperCase() + this.type.slice(1);
       if (result['data']) {
         this.chart = (result['data'][0].length > 0);
       }
@@ -159,18 +157,50 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
 
   chooseTimeRange() {
     document.getElementById('home').style.display = "block";
-    this.getAllData();
-
+    if (this.level == 'district') {
+      this.getAllData();
+    }
+    if (this.level == 'block') {
+      this.onDistSelect(this.districtId);
+    }
+    if (this.level == 'cluster') {
+      this.onBlockSelect(this.blockId);
+    }
+    if (this.level == 'school') {
+      this.onClusterSelect(this.clusterId);
+    }
   }
 
   onTypeSelect(type) {
-    this.commonService.errMsg();
-    this.createChart(this.result);
+    if (this.level == 'district') {
+      this.getAllData();
+    }
+    if (this.level == 'block') {
+      this.onDistSelect(this.districtId);
+    }
+    if (this.level == 'cluster') {
+      this.onBlockSelect(this.blockId);
+    }
+    if (this.level == 'school') {
+      this.onClusterSelect(this.clusterId);
+    }
+  }
 
-    document.getElementById('spinner').style.display = 'none';
+  getBarChartData() {
+    if (this.result.labels.length <= 4) {
+      for (let i = 0; i <= 4; i++) {
+        this.category.push(this.result.labels[i] ? this.result.labels[i] : ' ')
+      }
+    } else {
+      this.category = this.result.labels;
+    }
+    this.result.data.forEach(element => {
+      this.chartData.push(Number(element[`${this.type}`]));
+    });
   }
 
   onDistSelect(districtId) {
+    this.emptyChart();
     document.getElementById('home').style.display = "block";
     this.globalId = districtId;
     this.blockHidden = false;
@@ -182,6 +212,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.clust = false;
     this.blockId = undefined;
     this.clusterId = undefined;
+    this.yAxisLabel = "Block Names"
     this.listCollectionNames();
     this.service.tpdBlockEnrollCompAll({ timePeriod: this.timePeriod, districtId: districtId }).subscribe(res => {
       this.result = res['chartData'];
@@ -192,7 +223,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
       this.fileName = `TPD_data_of_district_${this.districtHierarchy.districtName}`;
       this.blocks = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      this.createChart(this.result);
+      this.getBarChartData();
+      this.xAxisLabel = this.type.charAt(0).toUpperCase() + this.type.slice(1);
       if (res['data']) {
         this.chart = (res['data'][0].length > 0);
       }
@@ -205,6 +237,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   }
 
   onBlockSelect(blockId) {
+    this.emptyChart();
     document.getElementById('home').style.display = "block";
     this.globalId = blockId;
     this.blockHidden = false;
@@ -215,6 +248,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.blok = true;
     this.clust = false;
     this.clusterId = undefined;
+    this.yAxisLabel = "Cluster Names"
     this.listCollectionNames();
     this.service.tpdClusterEnrollCompAll({ timePeriod: this.timePeriod, blockId: blockId }).subscribe(res => {
       this.result = res['chartData'];
@@ -227,7 +261,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
       this.fileName = `TPD_data_of_block_${this.blockHierarchy.blockName}`;
       this.clusters = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      this.createChart(this.result);
+      this.getBarChartData();
+      this.xAxisLabel = this.type.charAt(0).toUpperCase() + this.type.slice(1);
       if (res['data']) {
         this.chart = (res['data'][0].length > 0);
       }
@@ -240,6 +275,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   }
 
   onClusterSelect(clusterId) {
+    this.emptyChart();
     document.getElementById('home').style.display = "block";
     this.globalId = this.blockId;
     this.level = "school"
@@ -247,6 +283,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.dist = false;
     this.blok = false;
     this.clust = true;
+    this.yAxisLabel = "School Names"
     this.listCollectionNames();
     this.service.tpdSchoolEnrollCompAll({ timePeriod: this.timePeriod, blockId: this.blockId, clusterId: clusterId }).subscribe(res => {
       this.result = res['chartData'];
@@ -259,9 +296,10 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
         clusterName: res['downloadData'][0].cluster_name
       }
       this.fileName = `TPD_data_of_cluster_${this.clusterHierarchy.clusterName}`;
-      this.clusters = this.reportData = res['downloadData'];
+      this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      this.createChart(this.result);
+      this.getBarChartData();
+      this.xAxisLabel = this.type.charAt(0).toUpperCase() + this.type.slice(1);
       if (res['data']) {
         this.chart = (res['data'][0].length > 0);
       }
@@ -285,93 +323,12 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
       // this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      this.createChart(this.result);
+      this.getBarChartData();
+      this.xAxisLabel = this.type.charAt(0).toUpperCase() + this.type.slice(1);
       document.getElementById('spinner').style.display = 'none';
     }, err => {
       this.commonService.loaderAndErr(this.result);
     });
-  }
-
-  createChart(data) {
-    var yLable = this.level.charAt(0).toUpperCase() + this.level.slice(1);
-    var type = this.enrollTypes.find(a => a.key == this.type);
-    var chartData = [];
-    var content = [];
-    data.data.forEach(element => {
-      content.push(element[`${this.type}`]);
-    });
-    var obj = { data: content, label: `${type.name}` }
-    chartData.push(obj);
-    this.barChartOptions = {
-      legend: {
-        display: false
-      },
-      responsive: true,
-      tooltips: {
-        custom: function (tooltip) {
-          if (!tooltip) return;
-          tooltip.displayColors = false;
-        },
-        callbacks: {
-          label: function (tooltipItem, data) {
-            var content = data.datasets[0].data;
-            var scores = content[tooltipItem.index];
-            var multistringText = [];
-            multistringText.push(`${type.name}` + ": " + scores.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"));
-            return multistringText;
-          }
-        }
-      },
-
-      scales: {
-        xAxes: [{
-          type: 'linear',
-          position: 'top',
-          gridLines: {
-            color: "rgba(252, 239, 252)",
-          },
-          ticks: {
-            fontColor: 'black',
-            min: 0,
-            callback: function (value, index, values) {
-              value = value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
-              return value;
-            }
-          },
-          scaleLabel: {
-            fontColor: "black",
-            display: true,
-            labelString: `${type.name}`,
-            fontSize: 12,
-          }
-        }],
-        yAxes: [{
-          gridLines: {
-            color: "rgba(252, 239, 252)",
-          },
-          ticks: {
-            fontColor: 'black',
-            min: 0,
-            max: this.y_axisValue,
-          },
-          scaleLabel: {
-            fontColor: "black",
-            display: true,
-            labelString: `${yLable} Name`,
-            fontSize: 12,
-          }
-        }]
-      }
-    }
-
-    this.barChartLabels = data.labels;
-    this.barChartData = chartData;
-
-  }
-
-
-  onChange() {
-    document.getElementById('errMsg').style.display = 'none';
   }
 
   //to filter downloadable data
