@@ -63,6 +63,7 @@
       NIFI_URL= "http://localhost:8096/nifi-api"
 
       NODE_ENV= "DEVELOPMENT"
+      SYSTEM_USERNAME = {{ system_user_name }}
       LOG= "console"
       LOG_DIRECTORY= ""
   tags: [ install, update ]
