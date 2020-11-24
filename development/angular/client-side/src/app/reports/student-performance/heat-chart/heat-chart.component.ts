@@ -132,7 +132,7 @@ export class HeatChartComponent implements OnInit {
     })
   }
 
-  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, viewBy, level, xLabel1, yLabel1) => {
+  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, viewBy, level, xLabel1, yLabel1, tooltipData) => {
     let scrollBarX
     let scrollBarY
 
@@ -246,54 +246,56 @@ export class HeatChartComponent implements OnInit {
         axis = series[isY ? 'yAxis' : 'xAxis'];
       let splitVal = zLabel[point[isY ? 'y' : 'x']].split('/')
 
+      let totalSchools;
+      let totalStudents;
+      let studentAttended;
+      let indicator;
+      let grade;
+      let subject;
+      let exam_date;
+      tooltipData.map(a => {
+        if (point.x == a.x && point.y == a.y) {
+          totalSchools = a.total_schools
+          totalStudents = a.total_students
+          studentAttended = a.students_attended
+          grade = a.grade
+          subject = a.subject
+          exam_date = a.exam_date
+          if (viewBy == 'indicator') {
+            indicator = a.indicator
+          } else {
+            indicator = a.qusetion_id
+          }
+        }
+      })
+
       var obj = '';
       if (level == 'district') {
-        obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>           
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${splitVal[6]}` : `<b>QuestionId: ${splitVal[6]}</b>`}
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>`
       }
 
       if (level == 'block') {
-        obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${splitVal[6]}` : `<b>QuestionId: ${splitVal[6]}</b>`}
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>`
+
       }
 
       if (level == 'cluster') {
-        obj = `<b>ClusterName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>   
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${splitVal[6]}` : `<b>QuestionId: ${splitVal[6]}</b>`}
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        obj = `<b>ClusterName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>`
+
       }
 
       if (level == 'school') {
-        obj = `<b>SchoolName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>    
-        <br> <b>Grade: ${splitVal[1]}</b>
-        <br> <b>Subject: ${splitVal[2]}</b>
-        <br> <b>ExamDate: ${splitVal[0]}</b>
-        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${splitVal[6]}` : `<b>QuestionId: ${splitVal[6]}</b>`}
-        <br> <b>Total Schools: ${splitVal[4]}</b>
-        <br> <b>Total Students: ${splitVal[5]}</b>
-        <br> <b>Students Attended: ${splitVal[3]}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        obj = `<b>SchoolName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>`
+
       }
+      obj += `<br> <b>Grade: ${grade}</b>
+        <br> <b>Subject: ${subject}</b>
+        <br> <b>ExamDate: ${exam_date}</b>
+        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>`}
+        <br> <b>Total Schools: ${totalSchools}</b>
+        <br> <b>Total Students: ${totalStudents}</b>
+        <br> <b>Students Attended: ${studentAttended}</b>
+        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
       return obj
     }
   }
@@ -487,7 +489,7 @@ export class HeatChartComponent implements OnInit {
     }
     let xLabel1 = xLabel
     let yLabel1 = yLabel
-    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, a.viewBy, this.level, xLabel1, yLabel1);
+    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, a.viewBy, this.level, xLabel1, yLabel1, response['result']['tooltipData']);
   }
 
   //level wise filter

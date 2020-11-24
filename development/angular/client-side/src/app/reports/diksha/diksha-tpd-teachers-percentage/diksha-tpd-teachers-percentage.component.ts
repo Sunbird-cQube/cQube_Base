@@ -106,7 +106,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     })
   }
 
-  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, level, xLabel1, yLabel1) => {
+  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, level, xLabel1, yLabel1, tooltipData) => {
     let scrollBarX
     let scrollBarY
 
@@ -215,33 +215,34 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     });
 
     function getPointCategoryName(point, dimension, level) {
-      var series = point.series,
-        isY = dimension === 'y',
-        axis = series[isY ? 'yAxis' : 'xAxis'];
-      let splitVal = zLabel[point[isY ? 'y' : 'x']].split('/')
-
+      let indicator;
+      tooltipData.map(a => {
+        if (point.x == a.x && point.y == a.y) {
+          indicator = a.indicator;
+        }
+      })
       var obj = '';
       if (level == 'district') {
         obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
-        <br> <b>Indicator: ${splitVal[1]}  <b>      
+        <br> <b>Indicator: ${indicator}  <b>      
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
 
       if (level == 'block') {
         obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
-        <br> <b>Indicator: ${splitVal[1]}  <b>     
+        <br> <b>Indicator: ${indicator}  <b>     
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
 
       if (level == 'cluster') {
         obj = `<b>Cluster Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
-        <br> <b>Indicator: ${splitVal[1]}  <b>     
+        <br> <b>Indicator: ${indicator}  <b>     
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
 
       if (level == 'school') {
         obj = `<b>School Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>  
-        <br> <b>Indicator: ${splitVal[1]}  <b>    
+        <br> <b>Indicator: ${indicator}  <b>    
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
       return obj
@@ -402,7 +403,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     }
     let xLabel1 = xLabel
     let yLabel1 = yLabel
-    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, this.level, xLabel1, yLabel1);
+    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, this.level, xLabel1, yLabel1, response['result']['tooltipData']);
   }
 
   //level wise filter
