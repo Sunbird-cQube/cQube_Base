@@ -338,7 +338,7 @@
         <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tdp-enroll"
+                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tpd-enroll"
                         [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-enrollment']"
                         (click)="fetchTelemetry($event,'tpd-enroll')">
                         <div class="card-body ">
@@ -354,8 +354,8 @@
                                 </div>
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">TPD </p>
-                                        <p class="card-title">Enrollment</p>
+                                        <p class="card-category"> TPD Total </p>
+                                        <p class="card-title">Enrolments / Completions</p>
                                     </div>
                                 </div>
                             </div>
@@ -374,7 +374,7 @@
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tpd-comp"
                         [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-completion']"
-                        (click)="fetchTelemetry($event,'tdp-comp')">
+                        (click)="fetchTelemetry($event,'tpd-comp')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="tpdtpTooltip" style="position: absolute; right:10px; top:0px">
@@ -388,8 +388,8 @@
                                 </div>
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">TPD </p>
-                                        <p class="card-title">Completion</p>
+                                        <p class="card-category">TPD Completion </p>
+                                        <p class="card-title">Percentage</p>
                                     </div>
                                 </div>
                             </div>
@@ -410,7 +410,7 @@
     </div>
     <div class="row" style="padding: 20px">
         <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="diksha">ENERGISE TEXTBOOK USAGE</div>
+            <div class="diksha">ENERGISED TEXTBOOK USAGE</div>
             <div class="row outer12">
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background-color: rgb(218, 193, 172);" id="dsc"
