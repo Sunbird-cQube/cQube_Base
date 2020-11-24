@@ -13,6 +13,7 @@ import { DikshaTPDContentProgressComponent } from './diksha-tpd-content-progress
 import { DikshaTPDTeachersPercentageComponent } from './diksha-tpd-teachers-percentage/diksha-tpd-teachers-percentage.component';
 import { DikshaTpdEnrollmentComponent } from './diksha-tpd-enrollment-and-completion/diksha-tpd-enrollment.component';
 import { DikshaTpdCompletionComponent } from './diksha-tpd-completion-percentage/diksha-tpd-completion.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
 
 const dikshaRoutes: Routes = [
   {
@@ -43,6 +44,9 @@ const dikshaRoutes: Routes = [
       },
       {
         path: 'tpd-completion', component: DikshaTpdCompletionComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'bar', component: BarChartComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
@@ -58,7 +62,8 @@ const dikshaRoutes: Routes = [
     DikshaTPDContentProgressComponent,
     DikshaTPDTeachersPercentageComponent,
     DikshaTpdEnrollmentComponent,
-    DikshaTpdCompletionComponent
+    DikshaTpdCompletionComponent,
+    BarChartComponent
   ],
   imports: [
     CommonModule,
