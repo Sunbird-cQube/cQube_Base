@@ -104,8 +104,8 @@ export class DikshaUsageByTextBookComponent implements OnInit {
       this.result = result['chartData'];
       this.reportData = result['downloadData'];
       this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      await this.getBarChartData();
-      await this.commonService.loaderAndErr(this.result);
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -128,10 +128,10 @@ export class DikshaUsageByTextBookComponent implements OnInit {
         this.emptyChart();
         this.result = res['chartData'];
         this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        await this.getBarChartData();
+        this.getBarChartData();
         this.reportData = res['downloadData'];
       }
-      await this.commonService.loaderAndErr(this.result);
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.collectionNames = [];
       this.result = [];
@@ -141,12 +141,12 @@ export class DikshaUsageByTextBookComponent implements OnInit {
   }
 
   async chooseTimeRange() {
-    await this.emptyChart();
+    this.emptyChart();
     document.getElementById('home').style.display = "block";
     if (this.timePeriod == 'all') {
       await this.getAllData();
     } else {
-      await this.listCollectionNames();
+      this.listCollectionNames();
     }
   }
 
@@ -164,8 +164,8 @@ export class DikshaUsageByTextBookComponent implements OnInit {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
       this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      await this.getBarChartData();
-      await this.commonService.loaderAndErr(this.result);
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.commonService.loaderAndErr(this.result);
     });
