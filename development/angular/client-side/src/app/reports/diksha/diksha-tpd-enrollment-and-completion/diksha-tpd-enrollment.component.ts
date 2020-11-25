@@ -127,8 +127,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.service.tpdDistEnrollCompAll({ timePeriod: this.timePeriod }).subscribe(async result => {
       this.result = result['chartData'];
       this.districts = this.reportData = result['downloadData'];
-      await this.getBarChartData();
-      await this.commonService.loaderAndErr(this.result);
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -221,8 +221,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
       this.fileName = `TPD_data_of_district_${this.districtHierarchy.districtName}`;
       this.blocks = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      await this.getBarChartData();
-      await this.commonService.loaderAndErr(this.result);
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -255,8 +255,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
       this.fileName = `TPD_data_of_block_${this.blockHierarchy.blockName}`;
       this.clusters = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      await this.getBarChartData();
-      await this.commonService.loaderAndErr(this.result);
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -288,8 +288,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
       this.fileName = `TPD_data_of_cluster_${this.clusterHierarchy.clusterName}`;
       this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      await this.getBarChartData();
-      await this.commonService.loaderAndErr(this.result);
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -309,8 +309,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
       // this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      await this.getBarChartData();
-      await this.commonService.loaderAndErr(this.result);
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.commonService.loaderAndErr(this.result);
     });

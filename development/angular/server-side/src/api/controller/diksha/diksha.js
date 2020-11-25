@@ -100,7 +100,7 @@ router.post('/dikshaData', auth.authController, async (req, res) => {
             res.status(200).send({ funRes, footer: footer.total_content_plays })
         } else {
             logger.info('--- dikshaData district & time range api no data found response sent ---');
-            res.send({ msg: "No data found" })
+            res.status(403).send({ errMsg: "No data found" })
         }
     } catch (e) {
         logger.error(`Error :: ${e}`)
