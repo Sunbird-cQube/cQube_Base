@@ -105,8 +105,8 @@ export class DikshaBarChartComponent implements OnInit {
       this.result = result['chartData'];
       this.reportData = result['downloadData'];
       this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      await this.getBarChartData();
-      await this.commonService.loaderAndErr(this.result);
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -130,10 +130,10 @@ export class DikshaBarChartComponent implements OnInit {
         this.emptyChart();
         this.result = res['chartData'];
         this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        await this.getBarChartData();
+        this.getBarChartData();
         this.reportData = res['downloadData'];
       }
-      await this.commonService.loaderAndErr(this.result);
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.collectionNames = [];
       this.result = [];
@@ -166,8 +166,8 @@ export class DikshaBarChartComponent implements OnInit {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
       this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      await this.getBarChartData();
-      await this.commonService.loaderAndErr(this.result);
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.commonService.loaderAndErr(this.result);
     });
