@@ -94,7 +94,7 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                 timeToStop: timeToStop,
                 scheduleUpdatedAt: `${new Date()}`
             }
-
+            await changePermission();
             schedularData = JSON.parse(fs.readFileSync(filePath));
             schedularData.forEach(myJob => {
                 if (myJob.groupId == obj.groupId) {
@@ -120,6 +120,7 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
             await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
                 logger.info(`--- ${groupId} - Nifi processor group re-scheduling stopping initiated ---`);
                 let response = await stopFun()
+                await changePermission();
                 schedularData = JSON.parse(fs.readFileSync(filePath));
                 schedularData.forEach(myJob => {
                     if (myJob.groupId == obj.groupId) {
@@ -151,10 +152,11 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                 timeToStop: timeToStop,
                 scheduleUpdatedAt: `${new Date()}`
             }
-
             if (fs.existsSync(filePath)) {
+                await changePermission();
                 schedularData = JSON.parse(fs.readFileSync(filePath));
             }
+
             schedularData.push(obj);
             fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                 if (err) throw err;
@@ -170,6 +172,7 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
             await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
                 logger.info(`--- ${groupId} - Nifi processor group scheduling stopping initiated ---`);
                 let response = await stopFun()
+                await changePermission();
                 schedularData = JSON.parse(fs.readFileSync(filePath));
                 schedularData.forEach(myJob => {
                     if (myJob.groupId == obj.groupId) {
@@ -177,7 +180,6 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                         myJob.scheduleUpdatedAt = `${new Date()}`;
                     }
                 });
-
                 fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                     if (err) throw err;
                     logger.info('Scheduled Job status changed to STOPPED - has updated to file');
@@ -266,7 +268,7 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                 timeToStop: timeToStop,
                 scheduleUpdatedAt: `${new Date()}`
             }
-
+            await changePermission();
             schedularData = JSON.parse(fs.readFileSync(filePath));
             schedularData.forEach(myJob => {
                 if (myJob.groupId == obj.groupId) {
@@ -292,6 +294,7 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
             await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
                 logger.info(`--- ${groupId} - Nifi processor group re-scheduling stopping initiated ---`);
                 let response = await stopFun()
+                await changePermission();
                 schedularData = JSON.parse(fs.readFileSync(filePath));
                 schedularData.forEach(myJob => {
                     if (myJob.groupId == obj.groupId) {
@@ -323,10 +326,11 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                 timeToStop: timeToStop,
                 scheduleUpdatedAt: `${new Date()}`
             }
-
             if (fs.existsSync(filePath)) {
+                await changePermission();
                 schedularData = JSON.parse(fs.readFileSync(filePath));
             }
+
             schedularData.push(obj);
             fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                 if (err) throw err;
@@ -342,6 +346,7 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
             await schedule.scheduleJob(groupId, `${mins} ${timeToStop} * * *`, async function () {
                 logger.info(`--- ${groupId} - Nifi processor group scheduling stopping initiated ---`);
                 let response = await stopFun()
+                await changePermission();
                 schedularData = JSON.parse(fs.readFileSync(filePath));
                 schedularData.forEach(myJob => {
                     if (myJob.groupId == obj.groupId) {
@@ -349,7 +354,6 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                         myJob.scheduleUpdatedAt = `${new Date()}`;
                     }
                 });
-
                 fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                     if (err) throw err;
                     logger.info('Scheduled Job status changed to STOPPED - has updated to file');
@@ -401,5 +405,16 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 })
+
+const changePermission = async () => {
+    try {
+        let username = process.env.SYSTEM_USERNAME;
+        username = username.replace(/\n/g, '');
+        shell.exec(`sudo chown ${username}:${username} ${filePath}`);
+        logger.info("File permission change succcessful");
+    } catch (error) {
+        logger.info(error);
+    }
+};
 
 module.exports = router;

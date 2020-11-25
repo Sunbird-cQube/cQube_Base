@@ -62,9 +62,22 @@ const generalFun = (data, level, viewBy) => {
             }
             let finalData = []
             let colors = colorsHelper.colors;
+            var tooltipData = [];
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
                     let mark = Array.isArray(entry[1]) ? entry[1].filter(itemValue => itemValue[hierarchySelection] == totalDistLen[y])[0] : 0;
+                    tooltipData.push({
+                        x: y,
+                        y: index,
+                        grade: mark ? mark.grade : '',
+                        subject: mark ? mark.subject_name : '',
+                        exam_date: mark ? mark.exam_date : '',
+                        qusetion_id: mark ? parseInt(mark.question_id) : '',
+                        indicator: mark ? mark.indicator : '',
+                        students_attended: mark ? parseInt(mark.students_attended) : '',
+                        total_schools: mark ? parseInt(mark.total_schools) : '',
+                        total_students: mark ? parseInt(mark.total_students) : ''
+                    })
                     mark = mark ? parseFloat(mark.marks) : null;
                     finalData.push({ x: y, y: index, value: mark, color: colors[mark] })
                 }
@@ -77,7 +90,8 @@ const generalFun = (data, level, viewBy) => {
                     zLabel: Object.keys(arr1),
                     xLabel: totalDistLen,
                     xLabelId: totalDistIds,
-                    data: finalData
+                    data: finalData,
+                    tooltipData: tooltipData
                 }
                 resolve(obj)
             })

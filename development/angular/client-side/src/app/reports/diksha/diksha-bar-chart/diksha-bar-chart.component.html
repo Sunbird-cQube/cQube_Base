@@ -71,14 +71,9 @@
 
             </div>
             <div class="col-lg-10" id="r1">
-                <div *ngIf="barChartData[0]['data'].length > 0">
-                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-                        [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType"
-                        [colors]="barChartColors">
-                    </canvas>
-                </div>
-                <div *ngIf="barChartData[0]['data'].length === 0"
-                    style="position: absolute; left: 40%; top: 120px;color: red;">
+                <app-bar-chart *ngIf="chartData.length > 0" [category]="category" [data]="chartData"
+                    [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"></app-bar-chart>
+                <div *ngIf="chartData.length === 0" style="position: absolute; left: 40%; top: 120px;color: red;">
                     No Data Available
                 </div>
             </div>
