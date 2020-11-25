@@ -18,6 +18,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
   public chartData: Number[] = [];
   public xAxisLabel: String = "Completion Percentage";
   public yAxisLabel: String;
+  public reportName: String = "completion";
 
   districts = [];
   districtId;

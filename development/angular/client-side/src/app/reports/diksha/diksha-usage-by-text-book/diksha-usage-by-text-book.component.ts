@@ -19,7 +19,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
   public xAxisLabel: String = "Total Content Plays";
   public yAxisLabel: String = "District Names"
 
-  collection_type = 'textbook';
+  public collection_type: String = 'textbook';
 
   public result: any = [];
   public timePeriod = 'all';
