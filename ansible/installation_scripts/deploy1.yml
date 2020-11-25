@@ -1,0 +1,15 @@
+---
+- name: Upgrading cQube
+  hosts: localhost
+  remote_user: root
+  vars_files:
+    - upgradation_config.yml
+    - datasource_config.yml
+    - memory_config.yml
+    - .version
+
+  roles:
+          - datasource
+          - angular
+          - angular_admin
+
