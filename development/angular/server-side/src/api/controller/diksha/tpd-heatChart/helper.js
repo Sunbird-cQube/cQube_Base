@@ -56,7 +56,7 @@ const generalFun = (data, level, reportType) => {
                     tooltipData.push({
                         x: y,
                         y: index,
-                        indicator: percentVal ? parseFloat(percentVal.collection_name) : '',
+                        indicator: percentVal ? percentVal.collection_name : '',
                     })
                     if (reportType == 'percentage_teachers') {
                         percentVal = percentVal ? parseFloat(percentVal.percentage_teachers) : null;
