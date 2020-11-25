@@ -27,7 +27,6 @@ export class BarChartComponent implements OnInit {
     } else {
       scrollBarX = true
     }
-    console.log(scrollBarX);
 
     this.chartOptions = {
       chart: {
