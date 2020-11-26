@@ -20,7 +20,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   public chartData: Number[] = [];
   public xAxisLabel: String = "Enrollment";
   public yAxisLabel: String;
-
+  public reportName: String = "enroll/comp";
 
   enrollTypes = [{ key: 'enrollment', name: 'Enrollment' }, { key: 'completion', name: 'Completion' }];
   type = 'enrollment';
@@ -87,6 +87,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.districtHierarchy = [];
     this.blockHierarchy = [];
     this.clusterHierarchy = [];
+    this.footer = undefined;
   }
 
 
@@ -182,7 +183,6 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
       this.onClusterSelect(this.clusterId);
     }
   }
-
   getBarChartData() {
     if (this.result.labels.length <= 25) {
       for (let i = 0; i <= 25; i++) {
@@ -194,6 +194,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.result.data.forEach(element => {
       this.chartData.push(Number(element[`${this.type}`]));
     });
+    this.footer = (this.chartData.reduce((a, b) => Number(a) + Number(b), 0)).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+
     this.xAxisLabel = this.type.charAt(0).toUpperCase() + this.type.slice(1);
   }
 
@@ -342,6 +344,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   downloadRoport() {
     this.dataToDownload = [];
     this.reportData.forEach(element => {
+      element['total_enrolled'] = element.total_enrolled.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      element['total_completed'] = element.total_completed.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.newDownload(element);
     });
     this.commonService.download(this.fileName, this.dataToDownload);

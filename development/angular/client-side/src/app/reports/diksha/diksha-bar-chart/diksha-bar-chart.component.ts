@@ -17,9 +17,9 @@ export class DikshaBarChartComponent implements OnInit {
   public category: String[] = [];
   public chartData: Number[] = [];
   public xAxisLabel: String = "Total Content Plays";
-  public yAxisLabel: String = "District Names"
+  public yAxisLabel: String = "District Names";
 
-  collection_type = 'course';
+  public collection_type: String = 'course';
 
   public result: any = [];
   public timePeriod = 'all';
@@ -101,7 +101,6 @@ export class DikshaBarChartComponent implements OnInit {
 
     this.listCollectionNames();
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
-      console.log(result);
       this.result = result['chartData'];
       this.reportData = result['downloadData'];
       this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");

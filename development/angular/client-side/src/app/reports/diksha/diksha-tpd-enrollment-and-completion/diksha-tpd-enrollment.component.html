@@ -120,10 +120,9 @@
                     {{cluster.cluster_name}}
                 </option>
             </select>
-            <!-- 
-            <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total Content
-                    Play:</strong>
-                {{footer}}</span> -->
+            
+            <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total {{type}}:</strong>
+                {{footer}}</span>
         </div>
     </div>
 
@@ -133,7 +132,8 @@
         </div>
         <div class="col-lg-10" id="r1">
             <app-bar-chart *ngIf="chartData.length > 0" [category]="category" [data]="chartData"
-                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"></app-bar-chart>
+                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [reportName]="reportName" [level]="level"
+                [type]="type"></app-bar-chart>
             <div *ngIf="chartData.length === 0" style="position: absolute; left: 40%; top: 120px;color: red;">
                 No Data Available
             </div>
