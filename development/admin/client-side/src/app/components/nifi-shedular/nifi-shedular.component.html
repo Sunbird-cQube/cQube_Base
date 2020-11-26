@@ -21,6 +21,7 @@
                         <th>No.</th>
                         <th>Process Name</th>
                         <th>Process Status</th>
+                        <th>Time Range</th>
                         <th>Schedule Time(Hours)</th>
                         <th>Schedule Time(Minutes)</th>
                         <th>Stopping Hours</th>
@@ -32,10 +33,38 @@
                         <td>{{i+1}}</td>
                         <td>{{d.name}}</td>
                         <td>{{d.state}}</td>
+                        <td style="width: 250px;">
+                            <select class="time" required id="role"
+                                style="float: left; padding: 9px;width: 120px; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                [(ngModel)]="selectedTimeRange[i]" (change)="onSelectTimeRange(i)">
+                                <option [value]="selectedTimeRange[i]" disabled selected> TimeRange
+                                </option>
+                                <option *ngFor="let time of timeRange" [(ngValue)]="time.key"
+                                    style="text-align: center;">
+                                    {{time.value}}
+                                </option>
+                            </select>
+                            <select [hidden]="showDay[i]" class="time" required id="role"
+                                style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                [(ngModel)]="selectedDay[i]" (change)="onSelectDay(i)">
+                                <option [value]="selectedDay[i]" disabled selected> Day
+                                </option>
+                                <option *ngFor="let day of allDays" [(ngValue)]="day.key" style="text-align: center;">
+                                    {{day.name}}
+                                </option>
+                            </select>
+
+                            <input [hidden]="showMonth[i]" type="text" 
+                                (bsValueChange)="showDate[i] ?  onSelectMonth(myDateValue[i]): onSelectDate(myDateValue[i])"
+                                style="width:120px; margin:0px auto; margin-left: 2px; float: left;"
+                                placeholder="{{placeHolder}}" class="form-control" #dp="bsDatepicker" bsDatepicker
+                                [(ngModel)]="myDateValue[i]"
+                                [bsConfig]="{dateInputFormat: showDate[i] ? 'DD': 'DD/MM' , showWeekNumbers:false }">
+                        </td>
                         <td>
                             <select class="time" required id="role"
-                                style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
-                                #role="ngModel" [(ngModel)]="selectedTime[i]" name="roleid" (change)="onSelectTime(i)">
+                                style="padding: 9px;width: 90%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                [(ngModel)]="selectedTime[i]" (change)="onSelectTime(i)">
                                 <option [value]="selectedTime[i]" disabled selected> Choose Hours
                                 </option>
                                 <option *ngFor="let time of timeArr" [(ngValue)]="time.time"
@@ -46,9 +75,8 @@
                         </td>
                         <td>
                             <select class="time" required id="role"
-                                style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
-                                #role="ngModel" [(ngModel)]="selectedMinuts[i]" name="roleid"
-                                (change)="onSelectMinutes(i)">
+                                style="padding: 9px;width: 90%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                [(ngModel)]="selectedMinuts[i]" (change)="onSelectMinutes(i)">
                                 <option [value]="selectedMinuts[i]" disabled selected> Choose Minutes
                                 </option>
                                 <option *ngFor="let min of minsArr" [(ngValue)]="min.mins">
@@ -58,8 +86,8 @@
                         </td>
                         <td>
                             <select class="time" required id="role"
-                                style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
-                                #role="ngModel" [(ngModel)]="selectedHour[i]" name="roleid" (change)="onSelectHour(i)">
+                                style="padding: 9px;width: 90%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                [(ngModel)]="selectedHour[i]" (change)="onSelectHour(i)">
                                 <option [value]="selectedHour[i]" disabled selected> Choose Duration
                                 </option>
                                 <option *ngFor="let hour of hoursArr" [(ngValue)]="hour.hours">
@@ -75,6 +103,7 @@
             <!-- </div> -->
         </div>
     </div>
+
 </div>
 <div id="spinner" style="display: block;">
     <div id="loader" class="loading">Loading&#8230;</div>
