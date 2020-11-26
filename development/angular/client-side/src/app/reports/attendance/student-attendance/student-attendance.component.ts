@@ -673,7 +673,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.blocksNames = blokName;
 
         this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[this.lat, this.lng]]);
+        globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 1)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -788,7 +788,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.clusterNames = clustNames;
 
         this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[this.lat, this.lng]]);
+        globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 3)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -920,7 +920,7 @@ export class StudengtAttendanceComponent implements OnInit {
         }
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
-        globalMap.setMaxBounds([[this.lat, this.lng]]);
+        globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 5)
         this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
