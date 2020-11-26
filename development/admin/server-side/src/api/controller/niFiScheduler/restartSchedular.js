@@ -17,18 +17,18 @@ exports.restartNifiProcess = async function () {
         var url = ''
         await schedularData.forEach(async myJob => {
             //::::::::::::::::::::::::::::::::::::::
-            if (day) {
+            if (myJob.day != "*") {
                 schedulerTime = `${myJob.mins} ${myJob.hours} * * ${myJob.day}`;
-                stopTime = `${mins} ${myJob.timeToStop} * * ${myJob.day}`;
-            } else if (date) {
+                stopTime = `${myJob.mins} ${myJob.timeToStop} * * ${myJob.day}`;
+            } else if (myJob.date != "*") {
                 schedulerTime = `${myJob.mins} ${myJob.hours} ${myJob.date} * *`;
                 stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} * *`;
-            } else if (date && month) {
+            } else if (myJob.date != "*" && myJob.month != "*") {
                 schedulerTime = `${myJob.mins} ${myJob.hours} ${myJob.date} ${myJob.month} *`;
                 stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} ${myJob.month} *`;
             } else {
                 schedulerTime = `${myJob.mins} ${myJob.hours} * * *`;
-                stopTime = `${mins} ${myJob.timeToStop} * * *`;
+                stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
             }
 
             url = `${process.env.NIFI_URL}/flow/process-groups/${myJob.groupId}`
@@ -45,9 +45,9 @@ exports.restartNifiProcess = async function () {
                     setTimeout(() => {
                         logger.info(' --- executing nifi restart shell command ----');
                         shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
-                            console.log('Exit code:', code);
-                            console.log('Program output:', stdout);
-                            console.log('Program stderr:', stderr);
+                            logger.info('Exit code:', code);
+                            logger.info('Program output:', stdout);
+                            logger.info('Program stderr:', stderr);
                         });
                     }, 120000);
                     logger.info(JSON.stringify(response))
@@ -66,9 +66,9 @@ exports.restartNifiProcess = async function () {
                     setTimeout(() => {
                         logger.info(' --- executing nifi restart shell command ----');
                         shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
-                            console.log('Exit code:', code);
-                            console.log('Program output:', stdout);
-                            console.log('Program stderr:', stderr);
+                            logger.info('Exit code:', code);
+                            logger.info('Program output:', stdout);
+                            logger.info('Program stderr:', stderr);
                         });
                     }, 120000);
                     logger.info(JSON.stringify(response))

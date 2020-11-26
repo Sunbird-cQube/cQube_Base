@@ -5,6 +5,7 @@ const axios = require('axios');
 var schedule = require('node-schedule');
 const fs = require('fs');
 var shell = require('shelljs');
+const { time } = require('console');
 
 var filePath = `${process.env.BASE_DIR}/cqube/admin_dashboard/schedulers.json`;
 
@@ -64,12 +65,22 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
         var schedularData = [];
         var schedulerTime;
         var stopTime;
+        var timePeriod = "daily"
 
         let groupId = req.params.id
         let state = req.body.state
-        let day = req.body.time.day
-        let month = req.body.time.month
-        let date = req.body.time.date
+        let day = '*'
+        if (req.body.time.day) {
+            day = req.body.time.day;
+        }
+        let month = '*'
+        if (req.body.time.month) {
+            day = req.body.time.month;
+        }
+        let date = '*'
+        if (req.body.time.date) {
+            day = req.body.time.date;
+        }
         let hours = parseInt(req.body.time.hours);
         var mins = 0;
         if (req.body.time.minutes) {
@@ -86,21 +97,23 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
         }
 
         //::::::::::::::::::::::::::::::::::::::
-        if (day) {
+        if (day != "*") {
+            timePeriod = "weekly";
             schedulerTime = `${mins} ${hours} * * ${day}`;
             stopTime = `${mins} ${timeToStop} * * ${day}`;
-        } else if (date) {
+        } else if (date != "*") {
+            timePeriod = "monthly";
             schedulerTime = `${mins} ${hours} ${date} * *`;
             stopTime = `${mins} ${timeToStop} ${date} * *`;
-        } else if (date && month) {
+        } else if (date != "*" && month != "*") {
+            timePeriod = "yearly";
             schedulerTime = `${mins} ${hours} ${date} ${month} *`;
             stopTime = `${mins} ${timeToStop} ${date} ${month} *`;
         } else {
+            timePeriod = "daily";
             schedulerTime = `${mins} ${hours} * * *`;
             stopTime = `${mins} ${timeToStop} * * *`;
         }
-
-        console.log(schedulerTime, stopTime);
 
         let url = `${process.env.NIFI_URL}/flow/process-groups/${groupId}`
 
@@ -163,9 +176,9 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                 setTimeout(() => {
                     logger.info(' --- executing nifi restart shell command ----');
                     shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
-                        console.log('Exit code:', code);
-                        console.log('Program output:', stdout);
-                        console.log('Program stderr:', stderr);
+                        logger.info('Exit code:', code);
+                        logger.info('Program output:', stdout);
+                        logger.info('Program stderr:', stderr);
                     });
                 }, 120000);
                 logger.info(JSON.stringify(response))
@@ -218,9 +231,9 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
                 setTimeout(() => {
                     logger.info(' --- executing nifi restart shell command ----');
                     shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
-                        console.log('Exit code:', code);
-                        console.log('Program output:', stdout);
-                        console.log('Program stderr:', stderr);
+                        logger.info('Exit code:', code);
+                        logger.info('Program output:', stdout);
+                        logger.info('Program stderr:', stderr);
                     });
                 }, 120000);
                 logger.info(JSON.stringify(response))
@@ -256,7 +269,7 @@ router.post('/scheduleProcessor/:id', auth.authController, async (req, res) => {
             })
         }
         logger.info('--- schedule processor api response sent ---')
-        res.send({ msg: `Job rescheduled successfully at ${hours}: ${mins} every day` })
+        res.send({ msg: `Job rescheduled successfully at ${hours}: ${mins} ${timePeriod}` })
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
@@ -269,14 +282,22 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
         var schedularData = [];
         var schedulerTime;
         var stopTime;
-
-        console.log(req.body);
+        var timePeriod = "daily"
 
         let groupId = req.params.id
         let state = req.body.state
-        let day = req.body.time.day
-        let month = req.body.time.month
-        let date = req.body.time.date
+        let day = '*'
+        if (req.body.time.day) {
+            day = req.body.time.day;
+        }
+        let month = '*'
+        if (req.body.time.month) {
+            day = req.body.time.month;
+        }
+        let date = '*'
+        if (req.body.time.date) {
+            day = req.body.time.date;
+        }
         let hours = parseInt(req.body.time.hours);
         var mins = 0;
         if (req.body.time.minutes) {
@@ -293,19 +314,23 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
         }
 
         //::::::::::::::::::::::::::::::::::::::
-        if (day) {
+        if (day != "*") {
+            timePeriod = "weekly";
             schedulerTime = `${mins} ${hours} * * ${day}`;
             stopTime = `${mins} ${timeToStop} * * ${day}`;
-        }
-        if (date) {
+        } else if (date != "*") {
+            timePeriod = "monthly";
             schedulerTime = `${mins} ${hours} ${date} * *`;
             stopTime = `${mins} ${timeToStop} ${date} * *`;
-        }
-        if (date && month) {
+        } else if (date != "*" && month != "*") {
+            timePeriod = "yearly";
             schedulerTime = `${mins} ${hours} ${date} ${month} *`;
             stopTime = `${mins} ${timeToStop} ${date} ${month} *`;
+        } else {
+            timePeriod = "daily";
+            schedulerTime = `${mins} ${hours} * * *`;
+            stopTime = `${mins} ${timeToStop} * * *`;
         }
-
 
         let url = `${process.env.NIFI_URL}/flow/process-groups/${groupId}`
 
@@ -368,9 +393,9 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                 setTimeout(() => {
                     logger.info(' --- executing nifi restart shell command ----');
                     shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
-                        console.log('Exit code:', code);
-                        console.log('Program output:', stdout);
-                        console.log('Program stderr:', stderr);
+                        logger.info('Exit code:', code);
+                        logger.info('Program output:', stdout);
+                        logger.info('Program stderr:', stderr);
                     });
                 }, 120000);
                 logger.info(JSON.stringify(response))
@@ -423,9 +448,9 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
                 setTimeout(() => {
                     logger.info(' --- executing nifi restart shell command ----');
                     shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
-                        console.log('Exit code:', code);
-                        console.log('Program output:', stdout);
-                        console.log('Program stderr:', stderr);
+                        logger.info('Exit code:', code);
+                        logger.info('Program output:', stdout);
+                        logger.info('Program stderr:', stderr);
                     });
                 }, 120000);
                 logger.info(JSON.stringify(response))
@@ -461,7 +486,7 @@ router.post('/scheduleNiFiProcessor/:id', async (req, res) => {
             })
         }
         logger.info('--- schedule processor api response sent ---')
-        res.send({ msg: `Job rescheduled successfully at ${hours}: ${mins} every day` })
+        res.send({ msg: `Job rescheduled successfully at ${hours}: ${mins} ${timePeriod}` })
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
