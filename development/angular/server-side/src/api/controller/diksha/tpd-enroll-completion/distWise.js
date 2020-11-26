@@ -14,7 +14,7 @@ router.post('/allDistData', async (req, res) => {
             data: ''
         }
         // var footer = districtsData['footer'];
-        districtsData = districtsData.sort((a, b) => (a.district_name > b.district_name) ? 1 : -1)
+        districtsData = districtsData.data.sort((a, b) => (a.district_name > b.district_name) ? 1 : -1)
         chartData['labels'] = districtsData.map(a => {
             return a.district_name
         })
@@ -46,7 +46,7 @@ router.post('/getCollections', async (req, res) => {
 
         if (collectionsList) {
             let collections;
-            collections = collectionsList.map(val => {
+            collections = collectionsList.data.map(val => {
                 return val.collection_name
             })
             allCollections = collections.filter(function (elem, pos) {
@@ -80,7 +80,7 @@ router.post('/getCollectionData', async (req, res) => {
         }
 
         var collectionData = await s3File.readS3File(fileName);
-        collectionData = collectionData.filter(a => {
+        collectionData = collectionData.data.filter(a => {
             return a.collection_name == collection_name
         })
         var chartData = {
