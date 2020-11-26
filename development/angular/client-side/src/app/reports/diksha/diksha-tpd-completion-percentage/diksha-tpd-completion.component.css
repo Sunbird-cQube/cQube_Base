@@ -8,4 +8,8 @@
     position: relative;
       overflow-y: scroll;
   }
+
+  .highcharts-title{
+    display: none;
+}
   

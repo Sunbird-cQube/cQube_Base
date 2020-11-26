@@ -1,14 +1,14 @@
 <div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-10">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Diksha TPD report for percentage: <span (click)="homeClick()"
+                    Diksha TPD report for completion percentage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Diksha TPD report for percentage: <span (click)="homeClick()"
+                    Diksha TPD report for completion percentage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistSelect(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -16,7 +16,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Diksha TPD report for percentage: <span (click)="homeClick()"
+                    Diksha TPD report for completion percentage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Diksha TPD report for percentage: <span (click)="homeClick()"
+                    Diksha TPD report for completion percentage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -41,14 +41,14 @@
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-2">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-0" style="display: none;">
                     <p id="errMsg"
                         style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <em class="fa fa-download" title="Download Report" id="download"
                         style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
                         (click)="downloadRoport()"></em>
@@ -63,16 +63,6 @@
 
     <div class="row" style="margin-top: 5px;">
         <div class="col-sm-12">
-            <select id="time_range"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="timePeriod" name="timePeriod" (change)="chooseTimeRange()">
-                <option [value]="timePeriod" disabled selected="selected">Choose Time Range
-                </option>
-                <option *ngFor="let time of timeDetails" [(ngValue)]="time.id" style=" font-size: 11px;">
-                    {{time.name}}
-                </option>
-            </select>
-
             <select id="coll_name"
                 style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="collectionName" name="collectionName" (change)="getDataBasedOnCollections()">
@@ -111,28 +101,17 @@
                     {{cluster.cluster_name}}
                 </option>
             </select>
-            <!-- </div>
-            <div class="col-sm-3">
-                <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total Content
-                        Play:</strong>
-                    {{footer}}</span>
-            </div> -->
+
         </div>
     </div>
 
     <div class="row" style="margin-top: 10px;" id="chart">
-        <div class="col-lg-1">
-
-        </div>
-        <div class="col-lg-10 chartWrapper" id="r1">
-            <div *ngIf="barChartData[0]['data'].length > 0" class="chartAreaWrapper" >
-                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-                    [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType"
-                    [colors]="barChartColors">
-                </canvas>
-            </div>
-            <div *ngIf="barChartData[0]['data'].length === 0"
-                style="position: absolute; left: 40%; top: 120px;color: red;">
+        <div class="col-lg-1"> </div>
+        <div class="col-lg-10" id="r1">
+            <app-bar-chart *ngIf="chartData.length > 0" [category]="category" [data]="chartData"
+                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [reportName]="reportName" [level]="level">
+            </app-bar-chart>
+            <div *ngIf="chartData.length === 0" style="position: absolute; left: 40%; top: 120px;color: red;">
                 No Data Available
             </div>
         </div>

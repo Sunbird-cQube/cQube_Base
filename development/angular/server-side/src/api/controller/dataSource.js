@@ -13,11 +13,11 @@ router.get('/', async function (req, res) {
             jsonArray = await csv().fromFile(csvFilePath);
         }
         jsonArray = jsonArray.map(a => {
-            if (a.status == "true") {
+            if (a.status == 1) {
                 a.status = true;
                 return a;
             }
-            if (a.status == "false") {
+            if (a.status == 0) {
                 a.status = false;
                 return a;
             }
