@@ -10,7 +10,7 @@ router.post('/clusterData',auth.authController, async (req, res) => {
         let blockId = req.body.blockId;
         var fileName = `diksha_tpd/report2/${timePeriod}/cluster/all_collections/${blockId}.json`;
         var clsuetrData = await s3File.readS3File(fileName);
-        clsuetrData = clsuetrData.filter(a => {
+        clsuetrData = clsuetrData.data.filter(a => {
             return a.block_id == blockId;
         });
         var chartData = {

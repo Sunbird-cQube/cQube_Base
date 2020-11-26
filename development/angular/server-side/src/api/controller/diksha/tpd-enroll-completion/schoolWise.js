@@ -11,7 +11,7 @@ router.post('/schoolData',auth.authController, async (req, res) => {
         let clusterId = req.body.clusterId
         var fileName = `diksha_tpd/report2/${timePeriod}/school/all_collections/${blockId}.json`;
         var schoolData = await s3File.readS3File(fileName);
-        schoolData = schoolData.filter(a => {
+        schoolData = schoolData.data.filter(a => {
             return a.cluster_id == clusterId;
         });
         var chartData = {
