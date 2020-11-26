@@ -22,8 +22,7 @@ check_state()
 {
 state_found=0
 while read line; do
-converted_line=`echo $2 | tr '[:lower:]' '[:upper:]'`
-  if [[ $line == $converted_line ]] ; then
+  if [[ $line == $2 ]] ; then
    state_found=1
   fi
 done < validation_scripts/state_codes
