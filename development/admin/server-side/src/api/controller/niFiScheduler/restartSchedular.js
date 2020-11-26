@@ -7,6 +7,8 @@ var shell = require('shelljs');
 
 exports.restartNifiProcess = async function () {
     try {
+        var schedulerTime;
+        var stopTime;
         var schedularData = []
         if (fs.existsSync(filePath)) {
             await changePermission();
@@ -14,10 +16,25 @@ exports.restartNifiProcess = async function () {
         }
         var url = ''
         await schedularData.forEach(async myJob => {
+            //::::::::::::::::::::::::::::::::::::::
+            if (day) {
+                schedulerTime = `${myJob.mins} ${myJob.hours} * * ${myJob.day}`;
+                stopTime = `${mins} ${myJob.timeToStop} * * ${myJob.day}`;
+            } else if (date) {
+                schedulerTime = `${myJob.mins} ${myJob.hours} ${myJob.date} * *`;
+                stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} * *`;
+            } else if (date && month) {
+                schedulerTime = `${myJob.mins} ${myJob.hours} ${myJob.date} ${myJob.month} *`;
+                stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} ${myJob.month} *`;
+            } else {
+                schedulerTime = `${myJob.mins} ${myJob.hours} * * *`;
+                stopTime = `${mins} ${myJob.timeToStop} * * *`;
+            }
+
             url = `${process.env.NIFI_URL}/flow/process-groups/${myJob.groupId}`
             if (myJob.state == "RUNNING") {
                 logger.info('Rescheduling jobs due to nodejs restart');
-                await schedule.scheduleJob(myJob.groupId, `${myJob.mins} ${myJob.hours} * * *`, async function () {
+                await schedule.scheduleJob(myJob.groupId, schedulerTime, async function () {
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling started ---`);
                     let response = await startFun(url, myJob.groupId, myJob.state);
                     myJob.scheduleUpdatedAt = `${new Date()}`;
@@ -36,7 +53,7 @@ exports.restartNifiProcess = async function () {
                     logger.info(JSON.stringify(response))
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling completed ---`);
                 });
-                await schedule.scheduleJob(myJob.groupId, `${myJob.mins} ${myJob.timeToStop} * * *`, async function () {
+                await schedule.scheduleJob(myJob.groupId, stopTime, async function () {
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling stopping initiated ---`);
                     let response = await stopFun(url, myJob.groupId);
                     myJob.state = "STOPPED";

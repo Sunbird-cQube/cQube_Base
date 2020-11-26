@@ -32,6 +32,7 @@ export class NifiShedularComponent implements OnInit {
 
   timeRange = [{ key: "daily", value: "Daily" }, { key: "weekly", value: "Weekly" }, { key: "monthly", value: "Monthly" }, { key: "yearly", value: "Yearly" }];
   selectedTimeRange = [];
+  oneTimeRange = '';
 
   allDays = [{ key: 1, name: "Monday" }, { key: 2, name: "Tuesday" }, { key: 3, name: "Wednesday" }, { key: 4, name: "Thursday" }, { key: 5, name: "Friday" }, { key: 6, name: "Saturday" }, { key: 7, name: "Sunday" }];
   selectedDay = [];
@@ -90,6 +91,7 @@ export class NifiShedularComponent implements OnInit {
   }
 
   onSelectTimeRange(i) {
+    this.oneTimeRange = this.selectedTimeRange[i];
     if (this.selectedTimeRange[i] == 'daily') {
       this.showDay[i] = true;
       this.showMonth[i] = true;
@@ -115,25 +117,28 @@ export class NifiShedularComponent implements OnInit {
   }
 
   onSelectDay(i) {
+    this.myDateValue = [];
     this.day = this.selectedDay[i];
     this.month = undefined;
     this.date = undefined;
     this.myDateValue = [];
-    console.log(this.day);
   }
 
   onSelectMonth(event) {
     if (event) {
-      this.month = event.getDay() + 1;
-      console.log(this.month);
+      this.month = undefined;
+      this.date = undefined;
+      this.day = undefined;
+      this.date = event.getDay() + 1;
     }
   }
 
   onSelectDate(event) {
     if (event) {
+      this.month = undefined;
+      this.day = undefined;
       this.date = event.getDay() + 1;
       this.month = event.getMonth() + 1;
-      console.log(this.date, this.month);
     }
   }
 
@@ -175,8 +180,9 @@ export class NifiShedularComponent implements OnInit {
     })
   }
 
-  onClickSchedule(data) {
-    if (this.selectedDuration != '' && this.selectedShedule != '') {
+  onClickSchedule(data, i) {
+    if (this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange == 'daily' || this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.day ||
+      this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.date || this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.date && this.month) {
       this.service.nifiScheduleProcessor(data.id, { state: "RUNNING", time: { day: this.day, date: this.date, month: this.month, hours: this.selectedShedule, minutes: this.selectMin }, stopTime: this.selectedDuration }).subscribe(res => {
         if (res['msg']) {
           this.msg = res['msg'];
@@ -188,6 +194,16 @@ export class NifiShedularComponent implements OnInit {
           this.selectedShedule = '';
           this.selectMin = '';
           this.selectedDuration = '';
+          this.day = undefined;
+          this.date = undefined;
+          this.month = undefined;
+          this.selectedTimeRange = [];
+          this.selectedDay = [];
+          this.myDateValue = [];
+          this.showDay[i] = true;
+          this.showMonth[i] = true;
+          this.showDate[i] = true;
+
           setTimeout(() => {
             document.getElementById('success').style.display = "none";
           }, 2000);
@@ -195,12 +211,21 @@ export class NifiShedularComponent implements OnInit {
       }, err => {
         this.err = err.error['errMsg'];
       })
+
+    } else if (this.selectedDuration == '' && this.selectedShedule == '' && this.oneTimeRange == '') {
+      this.err = "please select timeRange, schedule time and stopping hours";
     } else if (this.selectedDuration == '' && this.selectedShedule == '') {
       this.err = "please select schedule time and stopping hours";
     } else if (this.selectedShedule == '') {
       this.err = "please select schedule time";
     } else if (this.selectedDuration == '') {
       this.err = "please select stopping hours";
+    } else if (this.day == undefined && this.oneTimeRange == 'weekly') {
+      this.err = "please select day";
+    } else if (this.date == undefined && this.oneTimeRange == 'monthly') {
+      this.err = "please select date";
+    } else if (this.month == undefined && this.oneTimeRange == 'yearly') {
+      this.err = "please select month";
     }
 
 

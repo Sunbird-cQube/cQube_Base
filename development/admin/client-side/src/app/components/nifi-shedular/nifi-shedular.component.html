@@ -35,7 +35,7 @@
                         <td>{{d.state}}</td>
                         <td style="width: 250px;">
                             <select class="time" required id="role"
-                                style="float: left; padding: 9px;width: 120px; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                style="float: left; padding: 9px;width: 48%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
                                 [(ngModel)]="selectedTimeRange[i]" (change)="onSelectTimeRange(i)">
                                 <option [value]="selectedTimeRange[i]" disabled selected> TimeRange
                                 </option>
@@ -45,18 +45,18 @@
                                 </option>
                             </select>
                             <select [hidden]="showDay[i]" class="time" required id="role"
-                                style="padding: 9px;width: 50%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                style="padding: 9px;width: 48%; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
                                 [(ngModel)]="selectedDay[i]" (change)="onSelectDay(i)">
-                                <option [value]="selectedDay[i]" disabled selected> Day
+                                <option [value]="selectedDay[i]" disabled selected> Select Day
                                 </option>
                                 <option *ngFor="let day of allDays" [(ngValue)]="day.key" style="text-align: center;">
                                     {{day.name}}
                                 </option>
                             </select>
 
-                            <input [hidden]="showMonth[i]" type="text" 
+                            <input [hidden]="showMonth[i]" type="text"
                                 (bsValueChange)="showDate[i] ?  onSelectMonth(myDateValue[i]): onSelectDate(myDateValue[i])"
-                                style="width:120px; margin:0px auto; margin-left: 2px; float: left;"
+                                style="width:48%; margin:0px auto; margin-left: 2px; float: left;"
                                 placeholder="{{placeHolder}}" class="form-control" #dp="bsDatepicker" bsDatepicker
                                 [(ngModel)]="myDateValue[i]"
                                 [bsConfig]="{dateInputFormat: showDate[i] ? 'DD': 'DD/MM' , showWeekNumbers:false }">
@@ -95,7 +95,8 @@
                                 </option>
                             </select>
                         </td>
-                        <td><button id="schedule" class="btn btn-primary" (click)="onClickSchedule(d)">Schedule</button>
+                        <td><button id="schedule" class="btn btn-primary"
+                                (click)="onClickSchedule(d, i)">Schedule</button>
                         </td>
                     </tr>
                 </tbody>
