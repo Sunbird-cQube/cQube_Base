@@ -3,18 +3,19 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/allDistData', async (req, res) => {
+router.post('/allDistData', auth.authController, async (req, res) => {
     try {
         logger.info('--- diksha chart allData api ---');
         let timePeriod = req.body.timePeriod;
         var fileName = `diksha_tpd/report2/${timePeriod}/district/all_collections.json`;
         var districtsData = await s3File.readS3File(fileName);
+        var footer = districtsData['footer'];
         var chartData = {
             labels: '',
             data: ''
         }
-        // var footer = districtsData['footer'];
-        districtsData = districtsData.sort((a, b) => (a.district_name > b.district_name) ? 1 : -1)
+        
+        districtsData = districtsData.data.sort((a, b) => (a.district_name > b.district_name) ? 1 : -1)
         chartData['labels'] = districtsData.map(a => {
             return a.district_name
         })
@@ -22,14 +23,14 @@ router.post('/allDistData', async (req, res) => {
             return { enrollment: a.total_enrolled, completion: a.total_completed, percent_teachers: a.percentage_teachers, percent_completion: a.percentage_completion }
         })
         logger.info('--- diksha chart allData api response sent ---');
-        res.send({ chartData, downloadData: districtsData });
+        res.send({ chartData, downloadData: districtsData, footer });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 })
 
-router.post('/getCollections', async (req, res) => {
+router.post('/getCollections', auth.authController, async (req, res) => {
     try {
         logger.info('--- diksha chart dikshaGetCollections api ---');
         var fileName;
@@ -46,7 +47,7 @@ router.post('/getCollections', async (req, res) => {
 
         if (collectionsList) {
             let collections;
-            collections = collectionsList.map(val => {
+            collections = collectionsList.data.map(val => {
                 return val.collection_name
             })
             allCollections = collections.filter(function (elem, pos) {
@@ -62,7 +63,7 @@ router.post('/getCollections', async (req, res) => {
     }
 });
 
-router.post('/getCollectionData', async (req, res) => {
+router.post('/getCollectionData', auth.authController, async (req, res) => {
     try {
         logger.info('--- diksha get data on collection select api ---');
         let collection_name = req.body.collection_name
@@ -80,7 +81,7 @@ router.post('/getCollectionData', async (req, res) => {
         }
 
         var collectionData = await s3File.readS3File(fileName);
-        collectionData = collectionData.filter(a => {
+        collectionData = collectionData.data.filter(a => {
             return a.collection_name == collection_name
         })
         var chartData = {

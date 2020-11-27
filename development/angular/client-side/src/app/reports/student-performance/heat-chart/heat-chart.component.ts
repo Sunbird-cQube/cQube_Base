@@ -147,6 +147,9 @@ export class HeatChartComponent implements OnInit {
     } else {
       scrollBarY = true
     }
+    for (let i = 0; i < xLabel.length; i++) {
+      xLabel[i] = xLabel[i].substr(0, 15);
+    }
     // var options: Highcharts.Options = 
     Highcharts.chart('container', {
       chart: {
@@ -253,6 +256,7 @@ export class HeatChartComponent implements OnInit {
       let grade;
       let subject;
       let exam_date;
+      let name;
       tooltipData.map(a => {
         if (point.x == a.x && point.y == a.y) {
           totalSchools = a.total_schools
@@ -266,26 +270,27 @@ export class HeatChartComponent implements OnInit {
           } else {
             indicator = a.qusetion_id
           }
+          name = a.name;
         }
       })
 
       var obj = '';
       if (level == 'district') {
-        obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>`
+        obj = `<b>District Name: ${name}</b>`
       }
 
       if (level == 'block') {
-        obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>`
+        obj = `<b>Block Name: ${name}</b>`
 
       }
 
       if (level == 'cluster') {
-        obj = `<b>ClusterName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>`
+        obj = `<b>ClusterName: ${name}</b>`
 
       }
 
       if (level == 'school') {
-        obj = `<b>SchoolName: ${point.series.chart.xAxis[1].categories[point['x']]}</b>`
+        obj = `<b>SchoolName: ${name}</b>`
 
       }
       obj += `<br> <b>Grade: ${grade}</b>
