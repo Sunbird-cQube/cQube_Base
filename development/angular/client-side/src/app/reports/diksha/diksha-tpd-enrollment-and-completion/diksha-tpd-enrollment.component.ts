@@ -84,6 +84,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.result = [];
     this.chartData = [];
     this.category = [];
+    this.reportData = [];
     this.districtHierarchy = [];
     this.blockHierarchy = [];
     this.clusterHierarchy = [];
@@ -110,7 +111,12 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     } else {
       document.getElementById('home').style.display = "none";
     }
-    this.reportData = [];
+    this.districts = [];
+    this.blocks = [];
+    this.clusters = [];
+    this.blockId = undefined;
+    this.clusterId = undefined;
+    this.collectionNames = [];
     this.commonService.errMsg();
     this.level = "district"
     this.collectionName = '';
@@ -210,6 +216,9 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.dist = true;
     this.blok = false;
     this.clust = false;
+    this.blocks = [];
+    this.clusters = [];
+    this.collectionNames = [];
     this.blockId = undefined;
     this.clusterId = undefined;
     this.yAxisLabel = "Block Names"
@@ -226,6 +235,13 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
       this.getBarChartData();
       this.commonService.loaderAndErr(this.result);
     }, err => {
+      
+      var obj = this.districts.find(a => a.district_id == this.globalId);
+      console.log(obj.district_name)
+      this.districtHierarchy = {
+        distId: this.globalId,
+        districtName: obj.district_name
+      }
       this.result = [];
       this.emptyChart();
       this.commonService.loaderAndErr(this.result);
