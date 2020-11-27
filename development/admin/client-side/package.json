@@ -27,6 +27,7 @@
     "datatables.net-dt": "^1.10.21",
     "jquery": "^3.5.1",
     "keycloak-js": "^10.0.2",
+    "ngx-bootstrap": "^6.2.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
