@@ -22,6 +22,7 @@ import { S3FilesDownloadComponent } from './components/s3-files-download/s3-file
 import { SummaryStatistictsComponent } from './components/summary-statisticts/summary-statisticts.component';
 import { NifiShedularComponent } from './components/nifi-shedular/nifi-shedular.component';
 import { AuthInterceptor } from './auth.interceptor';
+import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -39,7 +40,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     S3FilesDownloadComponent,
     DashboardComponent,
     SummaryStatistictsComponent,
-    NifiShedularComponent
+    NifiShedularComponent,
   ],
   imports: [
     FormsModule,
@@ -52,7 +53,9 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    DatepickerModule.forRoot() 
   ],
   providers: [
     {

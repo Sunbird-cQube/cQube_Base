@@ -3,7 +3,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/allDistData', async (req, res) => {
+router.post('/allDistData', auth.authController, async (req, res) => {
     try {
         logger.info('--- diksha chart allData api ---');
         let timePeriod = req.body.timePeriod;
@@ -30,7 +30,7 @@ router.post('/allDistData', async (req, res) => {
     }
 })
 
-router.post('/getCollections', async (req, res) => {
+router.post('/getCollections', auth.authController, async (req, res) => {
     try {
         logger.info('--- diksha chart dikshaGetCollections api ---');
         var fileName;
@@ -63,7 +63,7 @@ router.post('/getCollections', async (req, res) => {
     }
 });
 
-router.post('/getCollectionData', async (req, res) => {
+router.post('/getCollectionData', auth.authController, async (req, res) => {
     try {
         logger.info('--- diksha get data on collection select api ---');
         let collection_name = req.body.collection_name
