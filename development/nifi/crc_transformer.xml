@@ -19476,7 +19476,7 @@ Optional(StrNotNullOrEmpty()),Optional(Parsedouble()),Optional(Parsedouble()),Op
     <entry>
         <key>log-message</key>
         <value>NULL value validation, 
-file: ${filename} null values found. </value>
+file: ${filename} with ${count.valid.lines} null values found. </value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -19611,7 +19611,7 @@ file: ${filename} null values found. </value>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
 <x>-10056.0</x>
-<y>272.0</y>
+<y>280.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -28344,5 +28344,5 @@ file:${filename} process_end_time updated to log summary table</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>11/12/2020 20:28:55 IST</timestamp>
+    <timestamp>11/27/2020 17:38:48 IST</timestamp>
 </template>
