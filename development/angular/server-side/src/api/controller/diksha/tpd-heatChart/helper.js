@@ -48,10 +48,16 @@ const generalFun = (data, level, reportType) => {
             }
             let finalData = []
             let colors = colorsHelper.tpdColors;
+            let tooltipData = [];
             var keys = Object.keys(colors);
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
                     let percentVal = Array.isArray(entry[1]) ? entry[1].filter(itemValue => itemValue[hierarchySelection] == totalDistLen[y])[0] : 0;
+                    tooltipData.push({
+                        x: y,
+                        y: index,
+                        indicator: percentVal ? percentVal.collection_name : '',
+                    })
                     if (reportType == 'percentage_teachers') {
                         percentVal = percentVal ? parseFloat(percentVal.percentage_teachers) : null;
                     } else {
@@ -78,7 +84,8 @@ const generalFun = (data, level, reportType) => {
                     zLabel: Object.keys(arr1),
                     xLabel: totalDistLen,
                     xLabelId: totalDistIds,
-                    data: finalData
+                    data: finalData,
+                    tooltipData: tooltipData
                 }
                 resolve(obj)
             })

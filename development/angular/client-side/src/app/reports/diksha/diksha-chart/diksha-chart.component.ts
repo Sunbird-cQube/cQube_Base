@@ -130,6 +130,11 @@ export class DikshaChartComponent implements OnInit {
       { data: [], label: '', stack: 'a' }
     ];
   }
+
+  homeClick (){
+    this.timePeriod = 'last_30_days';
+    this.getAllData();
+  }
   async getAllData() {
     this.emptyChart();
     document.getElementById('home').style.display = "none";

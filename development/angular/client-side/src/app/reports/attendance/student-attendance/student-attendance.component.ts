@@ -112,8 +112,8 @@ export class StudengtAttendanceComponent implements OnInit {
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
     this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
-
     this.commonService.initMap('mapContainer', [[this.lat, this.lng]]);
+    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.skul = true;
@@ -488,7 +488,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.titleName = '';
     this.clustName = '';
     this.lat = this.commonService.mapCenterLatlng.lat;
-    this.lng = this.commonService.mapCenterLatlng.lng;
+    this.lng = this.commonService.mapCenterLatlng.lng; globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
     this.markerData = {};
     this.myDistrict = null;
@@ -673,7 +673,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.blocksNames = blokName;
 
         this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[this.lat, this.lng]]);
+        globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 1)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -788,7 +788,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.clusterNames = clustNames;
 
         this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[this.lat, this.lng]]);
+        globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 3)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -920,7 +920,7 @@ export class StudengtAttendanceComponent implements OnInit {
         }
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
-        globalMap.setMaxBounds([[this.lat, this.lng]]);
+        globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 5)
         this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");

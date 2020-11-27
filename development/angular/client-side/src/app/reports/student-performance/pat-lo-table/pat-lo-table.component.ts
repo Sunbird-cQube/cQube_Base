@@ -182,7 +182,9 @@ export class PATLOTableComponent implements OnInit {
         scrollCollapse: true, paging: false, searching: false,
         fixedColumns: {
           leftColumns: 1
-        }
+        },
+        columnDefs : [{"targets":0, "type":"date-dd-mm-yyyy"}],
+        order: [[ 0, 'asc' ]]
       });
     });
   }

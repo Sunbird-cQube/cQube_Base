@@ -3,4 +3,6 @@
     src: datasource.csv.j2
     dest: "{{ base_dir }}/cqube/datasource.csv"
     mode: "0644"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
   tags: [ install, update ]

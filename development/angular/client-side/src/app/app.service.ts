@@ -76,13 +76,14 @@ export class AppServiceComponent {
     initMap(map, maxBounds) {
         const lat = 22.3660414123535;
         const lng = 71.48396301269531;
-        globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([lat, lng], 7);
+        globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([lat, lng], this.mapCenterLatlng.zoomLevel);
         applyCountryBorder(globalMap);
         function applyCountryBorder(map) {
-            L.geoJSON(data.default['features'], {
-                color: "#a9a9a9",
-                weight: 1.5,
-                fillOpacity: 0
+            L.geoJSON(data.default[`${environment.stateName}`]['features'], {
+                color: "#6e6d6d",
+                weight: 2,
+                fillOpacity: 0,
+                fontWeight: "bold"
             }).addTo(map);
         }
         L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?access_token={token}',
@@ -90,8 +91,8 @@ export class AppServiceComponent {
                 token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
                 id: 'mapbox.streets',
                 subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                minZoom: 7,
-                maxZoom: 18,
+                minZoom: this.mapCenterLatlng.zoomLevel,
+                maxZoom: this.mapCenterLatlng.zoomLevel + 10,
             }
         ).addTo(globalMap);
     }

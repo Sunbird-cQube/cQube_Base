@@ -7,15 +7,34 @@ var shell = require('shelljs');
 
 exports.restartNifiProcess = async function () {
     try {
+        var schedulerTime;
+        var stopTime;
         var schedularData = []
         if (fs.existsSync(filePath)) {
+            await changePermission();
             schedularData = JSON.parse(fs.readFileSync(filePath));
         }
         var url = ''
         await schedularData.forEach(async myJob => {
+            //::::::::::::::::::::::::::::::::::::::
+            if (myJob.day != "*") {
+                schedulerTime = `${myJob.mins} ${myJob.hours} * * ${myJob.day}`;
+                stopTime = `${myJob.mins} ${myJob.timeToStop} * * ${myJob.day}`;
+            } else if (myJob.date != "*") {
+                schedulerTime = `${myJob.mins} ${myJob.hours} ${myJob.date} * *`;
+                stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} * *`;
+            } else if (myJob.date != "*" && myJob.month != "*") {
+                schedulerTime = `${myJob.mins} ${myJob.hours} ${myJob.date} ${myJob.month} *`;
+                stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} ${myJob.month} *`;
+            } else {
+                schedulerTime = `${myJob.mins} ${myJob.hours} * * *`;
+                stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
+            }
+
             url = `${process.env.NIFI_URL}/flow/process-groups/${myJob.groupId}`
             if (myJob.state == "RUNNING") {
-                await schedule.scheduleJob(myJob.groupId, `${myJob.mins} ${myJob.hours} * * *`, async function () {
+                logger.info('Rescheduling jobs due to nodejs restart');
+                await schedule.scheduleJob(myJob.groupId, schedulerTime, async function () {
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling started ---`);
                     let response = await startFun(url, myJob.groupId, myJob.state);
                     myJob.scheduleUpdatedAt = `${new Date()}`;
@@ -26,19 +45,20 @@ exports.restartNifiProcess = async function () {
                     setTimeout(() => {
                         logger.info(' --- executing nifi restart shell command ----');
                         shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
-                            console.log('Exit code:', code);
-                            console.log('Program output:', stdout);
-                            console.log('Program stderr:', stderr);
+                            logger.info('Exit code:', code);
+                            logger.info('Program output:', stdout);
+                            logger.info('Program stderr:', stderr);
                         });
                     }, 120000);
                     logger.info(JSON.stringify(response))
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling completed ---`);
                 });
-                await schedule.scheduleJob(myJob.groupId, `${myJob.mins} ${myJob.timeToStop} * * *`, async function () {
+                await schedule.scheduleJob(myJob.groupId, stopTime, async function () {
                     logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling stopping initiated ---`);
                     let response = await stopFun(url, myJob.groupId);
                     myJob.state = "STOPPED";
                     myJob.scheduleUpdatedAt = `${new Date()}`;
+                    await changePermission();
                     await fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                         if (err) throw err;
                         logger.info('Restart process - Scheduled Job status changed to STOPPED - Stopped Successfully');
@@ -46,9 +66,9 @@ exports.restartNifiProcess = async function () {
                     setTimeout(() => {
                         logger.info(' --- executing nifi restart shell command ----');
                         shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
-                            console.log('Exit code:', code);
-                            console.log('Program output:', stdout);
-                            console.log('Program stderr:', stderr);
+                            logger.info('Exit code:', code);
+                            logger.info('Program output:', stdout);
+                            logger.info('Program stderr:', stderr);
                         });
                     }, 120000);
                     logger.info(JSON.stringify(response))
@@ -58,7 +78,6 @@ exports.restartNifiProcess = async function () {
         });
     } catch (e) {
         logger.error(`Error :: ${e}`);
-        res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 }
 
@@ -90,3 +109,14 @@ const stopFun = (url, groupId) => {
         }
     })
 }
+
+const changePermission = async () => {
+    try {
+        let username = process.env.SYSTEM_USERNAME;
+        username = username.replace(/\n/g, '');
+        shell.exec(`sudo chown ${username}:${username} ${filePath}`);
+        logger.info("File permission change succcessful");
+    } catch (error) {
+        logger.info(error);
+    }
+};
