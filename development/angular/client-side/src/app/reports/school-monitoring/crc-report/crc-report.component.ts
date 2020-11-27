@@ -301,7 +301,7 @@ export class CrcReportComponent implements OnInit {
       this.result = JSON.parse(localStorage.getItem('resData'));
       this.result = this.result.visits;
       this.reportData = this.result;
-      this.downloadRoport();
+      this.downloadReport();
     } else {
       alert("No data found to download");
     }
@@ -322,7 +322,7 @@ export class CrcReportComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
         element1[0].disabled = false;
       }
-      this.downloadRoport();
+      this.downloadReport();
       this.changeDetection.markForCheck();
     }, err => {
       alert("No data found to download");
@@ -346,7 +346,7 @@ export class CrcReportComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
         element1[0].disabled = false;
       }
-      this.downloadRoport();
+      this.downloadReport();
       this.changeDetection.markForCheck();
     }, err => {
       alert("No data found to download");
@@ -370,7 +370,7 @@ export class CrcReportComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
         element1[0].disabled = false;
       }
-      this.downloadRoport();
+      this.downloadReport();
       this.changeDetection.markForCheck();
     }, err => {
       alert("No data found to download");
@@ -781,19 +781,18 @@ export class CrcReportComponent implements OnInit {
   downloadReportofState(downloadType) {
     if (downloadType == 'Dist Wise') {
       this.distWise();
-    }
-    if (downloadType == 'Block Wise') {
+    } else if (downloadType == 'Block Wise') {
       this.blockWise();
-    }
-    if (downloadType == 'Cluster Wise') {
+    } else if (downloadType == 'Cluster Wise') {
       this.clusterWise();
-    }
-    if (downloadType == 'School Wise') {
+    } else if (downloadType == 'School Wise') {
       this.schoolWise();
+    } else {
+      alert("Please select download type");
     }
   }
 
-  downloadRoport() {
+  downloadReport() {
     if (this.reportData.length <= 0) {
       alert("No data found to download");
     } else {
