@@ -4549,4 +4549,7 @@ primary key(collection_id,enrolled_date,school_id,collection_name)
 alter table diksha_tpd_agg add column IF NOT EXISTS total_enrolled int;
 alter table diksha_tpd_agg add column IF NOT EXISTS total_completed int;
 
+create table  if not exists diksha_api_meta (request_id text,encryption_key text,batch_id text,channel_id text,from_date date,to_date date,request_status text,
+cqube_process_status text,expiry_time timestamp,requested_on timestamp,dataset text,request_channel text, ff_uuid text primary key);
+
 
