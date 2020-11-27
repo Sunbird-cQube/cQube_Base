@@ -168,6 +168,20 @@
 - name: Run python code
   shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
 
+- name: creating python code for parameters
+  template:
+    src: update_nifi_cqube_raw_params.py.j2
+    dest: "{{ base_dir }}/cqube/emission_app/python/update_nifi_cqube_raw_params.py"
+    mode: "0644"
+
+- name: Run python code
+  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_cqube_raw_params.py"
+
+- name: Deleting params file if exists
+  file:
+    path: "{{ base_dir }}/cqube/emission_app/python/update_nifi_cqube_raw_params.py"
+    state: absent
+
 #--- starting of controllers --- 
 - name: Get controllers
   uri:
