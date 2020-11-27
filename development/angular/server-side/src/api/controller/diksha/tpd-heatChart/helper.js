@@ -57,6 +57,7 @@ const generalFun = (data, level, reportType) => {
                         x: y,
                         y: index,
                         indicator: percentVal ? percentVal.collection_name : '',
+                        name: percentVal ? percentVal.district_name && !percentVal.block_name && !percentVal.cluster_name && !percentVal.school_name ? percentVal.district_name : '' || percentVal.district_name && percentVal.block_name && !percentVal.cluster_name && !percentVal.school_name ? percentVal.block_name : '' || percentVal.block_name && percentVal.cluster_name && !percentVal.school_name ? percentVal.cluster_name : '' || percentVal.cluster_name && percentVal.school_name ? percentVal.school_name : '' : ''
                     })
                     if (reportType == 'percentage_teachers') {
                         percentVal = percentVal ? parseFloat(percentVal.percentage_teachers) : null;

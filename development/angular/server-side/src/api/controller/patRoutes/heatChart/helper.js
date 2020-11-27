@@ -76,7 +76,9 @@ const generalFun = (data, level, viewBy) => {
                         indicator: mark ? mark.indicator : '',
                         students_attended: mark ? parseInt(mark.students_attended) : '',
                         total_schools: mark ? parseInt(mark.total_schools) : '',
-                        total_students: mark ? parseInt(mark.total_students) : ''
+                        total_students: mark ? parseInt(mark.total_students) : '',
+                        name: mark ? mark.district_name && !mark.block_name && !mark.cluster_name && !mark.school_name ? mark.district_name : '' || mark.district_name && mark.block_name && !mark.cluster_name && !mark.school_name ? mark.block_name : '' || mark.block_name && mark.cluster_name && !mark.school_name ? mark.cluster_name : '' || mark.cluster_name && mark.school_name ? mark.school_name : '' : ''
+
                     })
                     mark = mark ? parseFloat(mark.marks) : null;
                     finalData.push({ x: y, y: index, value: mark, color: colors[mark] })
