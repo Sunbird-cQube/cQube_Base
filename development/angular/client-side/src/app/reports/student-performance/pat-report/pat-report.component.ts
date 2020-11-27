@@ -696,7 +696,7 @@ export class PATReportComponent implements OnInit {
       });
 
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.genericFun(res, options, fileName);
       // sort the blockname alphabetically
@@ -793,7 +793,7 @@ export class PATReportComponent implements OnInit {
         level: 'cluster'
       }
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.genericFun(res, options, fileName);
       // sort the clusterName alphabetically
@@ -904,7 +904,7 @@ export class PATReportComponent implements OnInit {
 
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
-        globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+        globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.genericFun(res, options, fileName);
       }, err => {
