@@ -2930,9 +2930,9 @@ trained_comp  smallint
 alter table udise_tch_profile drop constraint if exists udise_tch_profile_pkey;
 alter table udise_tch_profile add primary key(udise_sch_code,tch_code);
 
-alter table udise_sch_profile_dup drop column if exists name;
-alter table udise_sch_profile_dup drop column if exists gender;
-alter table udise_sch_profile_dup drop column if exists dob;  
+alter table udise_tch_profile drop column if exists name;
+alter table udise_tch_profile drop column if exists gender;
+alter table udise_tch_profile drop column if exists dob;  
 
 /*alter table udise_tch_profile drop constraint if exists udise_tch_profile_pkey;
 alter table udise_tch_profile add primary key(udise_sch_code,name,dob);
