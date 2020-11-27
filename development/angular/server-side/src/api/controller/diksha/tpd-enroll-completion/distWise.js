@@ -9,11 +9,12 @@ router.post('/allDistData', async (req, res) => {
         let timePeriod = req.body.timePeriod;
         var fileName = `diksha_tpd/report2/${timePeriod}/district/all_collections.json`;
         var districtsData = await s3File.readS3File(fileName);
+        var footer = districtsData['footer'];
         var chartData = {
             labels: '',
             data: ''
         }
-        // var footer = districtsData['footer'];
+        
         districtsData = districtsData.data.sort((a, b) => (a.district_name > b.district_name) ? 1 : -1)
         chartData['labels'] = districtsData.map(a => {
             return a.district_name
@@ -22,7 +23,7 @@ router.post('/allDistData', async (req, res) => {
             return { enrollment: a.total_enrolled, completion: a.total_completed, percent_teachers: a.percentage_teachers, percent_completion: a.percentage_completion }
         })
         logger.info('--- diksha chart allData api response sent ---');
-        res.send({ chartData, downloadData: districtsData });
+        res.send({ chartData, downloadData: districtsData, footer });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
