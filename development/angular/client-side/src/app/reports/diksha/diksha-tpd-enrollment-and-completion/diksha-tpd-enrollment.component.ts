@@ -41,9 +41,9 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   public clust: boolean = false;
 
   // to set the hierarchy names
-  public districtHierarchy: any = '';
-  public blockHierarchy: any = '';
-  public clusterHierarchy: any = '';
+  public districtHierarchy: any = {};
+  public blockHierarchy: any = {};
+  public clusterHierarchy: any = {};
 
   public result: any = [];
   public timePeriod = 'overall';
@@ -85,9 +85,9 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.chartData = [];
     this.category = [];
     this.reportData = [];
-    this.districtHierarchy = [];
-    this.blockHierarchy = [];
-    this.clusterHierarchy = [];
+    this.districtHierarchy = {};
+    this.blockHierarchy = {};
+    this.clusterHierarchy = {};
     this.footer = undefined;
   }
 
@@ -235,13 +235,6 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
       this.getBarChartData();
       this.commonService.loaderAndErr(this.result);
     }, err => {
-      
-      var obj = this.districts.find(a => a.district_id == this.globalId);
-      console.log(obj.district_name)
-      this.districtHierarchy = {
-        distId: this.globalId,
-        districtName: obj.district_name
-      }
       this.result = [];
       this.emptyChart();
       this.commonService.loaderAndErr(this.result);
@@ -259,6 +252,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.dist = false;
     this.blok = true;
     this.clust = false;
+    this.clusters = [];
+    this.collectionNames = [];
     this.clusterId = undefined;
     this.yAxisLabel = "Cluster Names"
     this.listCollectionNames();
@@ -291,6 +286,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.dist = false;
     this.blok = false;
     this.clust = true;
+    this.collectionNames = [];
     this.yAxisLabel = "School Names"
     this.listCollectionNames();
     this.service.tpdSchoolEnrollCompAll({ timePeriod: this.timePeriod, blockId: this.blockId, clusterId: clusterId }).subscribe(async (res) => {
