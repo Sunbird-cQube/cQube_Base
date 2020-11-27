@@ -456,7 +456,7 @@ export class SemesterExceptionComponent implements OnInit {
       }
 
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       var fileName = "Block_per_dist_report";
       this.genericFun(this.data, options, fileName);
@@ -525,7 +525,7 @@ export class SemesterExceptionComponent implements OnInit {
       }
 
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       var fileName = "Cluster_per_block_report";
       this.genericFun(this.data, options, fileName);
@@ -611,7 +611,7 @@ export class SemesterExceptionComponent implements OnInit {
         }
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
-        globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+        globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         var fileName = "School_per_cluster_report";
         this.genericFun(this.data, options, fileName);

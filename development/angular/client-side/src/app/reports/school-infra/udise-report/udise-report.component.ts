@@ -90,7 +90,7 @@ export class UdiseReportComponent implements OnInit {
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
-    this.lng = this.commonService.mapCenterLatlng.lng; 
+    this.lng = this.commonService.mapCenterLatlng.lng;
     this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
     this.commonService.initMap('udisemap', [[this.lat, this.lng]]);
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
@@ -737,7 +737,7 @@ export class UdiseReportComponent implements OnInit {
     if (this.level == 'school') {
       globalMap.doubleClickZoom.enable();
       globalMap.scrollWheelZoom.enable();
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
     } else {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
