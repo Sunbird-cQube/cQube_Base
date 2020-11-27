@@ -121,6 +121,10 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     } else {
       scrollBarY = true
     }
+
+    for (let i = 0; i < xLabel.length; i++) {
+      xLabel[i] = xLabel[i].substr(0, 15);
+    }
     // var options: Highcharts.Options = 
     Highcharts.chart('container', {
       chart: {
@@ -216,14 +220,16 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
     function getPointCategoryName(point, dimension, level) {
       let indicator;
+      let name;
       tooltipData.map(a => {
         if (point.x == a.x && point.y == a.y) {
           indicator = a.indicator;
+          name = a.name;
         }
       })
       var obj = '';
       if (level == 'district') {
-        obj = `<b>District Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
+        obj = `<b>District Name: ${name}</b> 
         <br> <b>Indicator: ${indicator}  <b>      
         <br> ${point.value !== null ? `<b>Percentage Teachers:${point.value} %` : ''}</b>`
       }
