@@ -112,7 +112,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     }
     this.reportData = [];
     this.commonService.errMsg();
-
+    this.level = "district"
     this.collectionName = '';
     this.footer = '';
     this.fileName = `all_${this.type}_data`;
