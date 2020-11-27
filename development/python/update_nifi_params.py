@@ -31,6 +31,7 @@ def nifi_params_config():
         'student_attendance_parameters':'student_attendance_parameters.txt',
         'student_assessment_parameters':'student_assessment_parameters.txt',
         'cqube_telemetry_parameters':'cqube_telemetry_parameters.txt',
+        'cQube-raw-data-fetch-parameters':'cQube-raw-data-fetch-parameters.txt',
         'udise_parameters':'udise_parameters.txt',
         'composite_parameters':'composite_parameters.txt',
         'pat_parameters':'pat_parameters.txt'
