@@ -8,6 +8,11 @@ declare const $;
   styleUrls: ['./nifi-shedular.component.css']
 })
 export class NifiShedularComponent implements OnInit {
+  //Bootstrap Date picker
+  myDateValue = [];
+  placeHolder;
+  model = '';
+
   result: any = [];
   data: any = [];
   user_status = 1;
@@ -24,12 +29,44 @@ export class NifiShedularComponent implements OnInit {
   selectedMinuts = [];
   selectedDuration = '';
   processorId;
+
+  timeRange = [{ key: "daily", value: "Daily" }, { key: "weekly", value: "Weekly" }, { key: "monthly", value: "Monthly" }, { key: "yearly", value: "Yearly" }];
+  selectedTimeRange = [];
+  oneTimeRange = '';
+
+  allDays = [{ key: 1, name: "Monday" }, { key: 2, name: "Tuesday" }, { key: 3, name: "Wednesday" }, { key: 4, name: "Thursday" }, { key: 5, name: "Friday" }, { key: 6, name: "Saturday" }, { key: 7, name: "Sunday" }];
+  selectedDay = [];
+  day;
+
+  allMonths = [];
+  selectedMonth = [];
+  month;
+
+  allDates = [];
+  selectedDate = [];
+  date;
+
+  showDay = [true, true, true, true, true, true, true];
+  showMonth = [];
+  showDate = [];
+
+  today = new Date();
+  minDate = `${this.today.getFullYear()}-${("0" + (this.today.getMonth() + 1)).slice(-2)}-${("0" + (this.today.getDate())).slice(-2)}`;
+
   constructor(private service: NifiShedularService) {
     for (let i = 1; i <= 10; i++) {
       this.hoursArr.push({ hours: i });
     }
     for (let i = 0; i < 60; i++) {
       this.minsArr.push({ mins: `${("0" + (i)).slice(-2)}` });
+    }
+    for (let i = 1; i < 13; i++) {
+      this.allMonths.push({ key: i });
+      this.showMonth.push(true);
+    }
+    for (let i = 1; i < 29; i++) {
+      this.allDates.push({ key: i });
+      this.showDate.push(true);
     }
   }
 
@@ -51,6 +88,58 @@ export class NifiShedularComponent implements OnInit {
     array.sort((a, b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0));
 
     this.timeArr = array;
+  }
+
+  onSelectTimeRange(i) {
+    this.oneTimeRange = this.selectedTimeRange[i];
+    if (this.selectedTimeRange[i] == 'daily') {
+      this.showDay[i] = true;
+      this.showMonth[i] = true;
+      this.showDate[i] = true;
+    }
+    if (this.selectedTimeRange[i] == 'weekly') {
+      this.showDay[i] = false;
+      this.showMonth[i] = true;
+      this.showDate[i] = true;
+    }
+    if (this.selectedTimeRange[i] == 'monthly') {
+      this.showDay[i] = true;
+      this.showMonth[i] = false;
+      this.showDate[i] = true;
+      this.placeHolder = "Select Date"
+    }
+    if (this.selectedTimeRange[i] == 'yearly') {
+      this.showDay[i] = true;
+      this.showMonth[i] = false;
+      this.showDate[i] = false;
+      this.placeHolder = "Select Date"
+    }
+  }
+
+  onSelectDay(i) {
+    this.myDateValue = [];
+    this.day = this.selectedDay[i];
+    this.month = undefined;
+    this.date = undefined;
+    this.myDateValue = [];
+  }
+
+  onSelectMonth(event) {
+    if (event) {
+      this.month = undefined;
+      this.date = undefined;
+      this.day = undefined;
+      this.date = event.getDay() + 1;
+    }
+  }
+
+  onSelectDate(event) {
+    if (event) {
+      this.month = undefined;
+      this.day = undefined;
+      this.date = event.getDay() + 1;
+      this.month = event.getMonth() + 1;
+    }
   }
 
   onSelectTime(i) {
@@ -91,9 +180,10 @@ export class NifiShedularComponent implements OnInit {
     })
   }
 
-  onClickSchedule(data) {
-    if (this.selectedDuration != '' && this.selectedShedule != '') {
-      this.service.nifiScheduleProcessor(data.id, { state: "RUNNING", time: { hours: this.selectedShedule, minutes: this.selectMin }, stopTime: this.selectedDuration }).subscribe(res => {
+  onClickSchedule(data, i) {
+    if (this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange == 'daily' || this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.day ||
+      this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.date || this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.date && this.month) {
+      this.service.nifiScheduleProcessor(data.id, { state: "RUNNING", time: { day: this.day, date: this.date, month: this.month, hours: this.selectedShedule, minutes: this.selectMin }, stopTime: this.selectedDuration }).subscribe(res => {
         if (res['msg']) {
           this.msg = res['msg'];
           this.err = '';
@@ -104,6 +194,16 @@ export class NifiShedularComponent implements OnInit {
           this.selectedShedule = '';
           this.selectMin = '';
           this.selectedDuration = '';
+          this.day = undefined;
+          this.date = undefined;
+          this.month = undefined;
+          this.selectedTimeRange = [];
+          this.selectedDay = [];
+          this.myDateValue = [];
+          this.showDay[i] = true;
+          this.showMonth[i] = true;
+          this.showDate[i] = true;
+
           setTimeout(() => {
             document.getElementById('success').style.display = "none";
           }, 2000);
@@ -111,12 +211,21 @@ export class NifiShedularComponent implements OnInit {
       }, err => {
         this.err = err.error['errMsg'];
       })
+
+    } else if (this.selectedDuration == '' && this.selectedShedule == '' && this.oneTimeRange == '') {
+      this.err = "please select timeRange, schedule time and stopping hours";
     } else if (this.selectedDuration == '' && this.selectedShedule == '') {
       this.err = "please select schedule time and stopping hours";
     } else if (this.selectedShedule == '') {
       this.err = "please select schedule time";
     } else if (this.selectedDuration == '') {
       this.err = "please select stopping hours";
+    } else if (this.day == undefined && this.oneTimeRange == 'weekly') {
+      this.err = "please select day";
+    } else if (this.date == undefined && this.oneTimeRange == 'monthly') {
+      this.err = "please select date";
+    } else if (this.month == undefined && this.oneTimeRange == 'yearly') {
+      this.err = "please select month";
     }
 
 

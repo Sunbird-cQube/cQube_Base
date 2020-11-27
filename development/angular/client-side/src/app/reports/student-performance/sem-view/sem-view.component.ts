@@ -111,7 +111,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
-    this.lng = this.commonService.mapCenterLatlng.lng; 
+    this.lng = this.commonService.mapCenterLatlng.lng;
     this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
     this.commonService.initMap('semMap', [[this.lat, this.lng]]);
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
@@ -508,7 +508,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         level: 'block'
       }
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.fileName = "Blocks_per_district_sem_report";
       this.genericFun(this.data, options, this.fileName);
@@ -596,7 +596,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         level: 'cluster'
       }
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.fileName = "clusters_per_block_sem_report";
       this.genericFun(this.data, options, this.fileName);
@@ -700,7 +700,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         }
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
-        globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+        globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.fileName = "Schools_per_cluster_sem_report";
         this.genericFun(this.data, options, this.fileName);
