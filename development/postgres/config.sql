@@ -1,4 +1,4 @@
-BEGIN;
+
 
 /*Drop functions if exists*/
 
@@ -2517,10 +2517,10 @@ select * from udise_scl_perf_exception();
 
 create or replace view pat_date_range as 
 (select exam_code,'last30days' as date_range from periodic_exam_mst where exam_date between 
-(select max(exam_date)-INTERVAL '30 day' from periodic_exam_mst) and (select max(exam_date) from periodic_exam_mst) )
+(select ((now()::Date)-INTERVAL '30 DAY')::Date) and (select now()::DATE) )
 union
 (select exam_code,'last7days' as date_range from periodic_exam_mst where exam_date between 
-(select max(exam_date)-INTERVAL '7 day' from periodic_exam_mst) and (select max(exam_date) from periodic_exam_mst) );
+(select ((now()::Date)-INTERVAL '7 DAY')::Date) and (select now()::DATE) );
 
 /*------------------------Over all--------------------------------------------------------------------------------------------------------*/
 
@@ -4080,4 +4080,4 @@ END;
 $$LANGUAGE plpgsql;
 
 
-END;
+
