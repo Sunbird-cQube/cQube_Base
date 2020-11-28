@@ -241,6 +241,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.levelWise = "block";
       this.fileName = "block_wise_sem_report"
       this.reportData = [];
+      this.districtMarkers = [];
+      this.blockMarkers = [];
       this.schoolCount = '';
       this.studentCount = '';
 
@@ -314,7 +316,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "cluster";
-      this.fileName = "cluster_wise_sem_report"
+      this.fileName = "cluster_wise_sem_report";
+      this.districtMarkers = [];
+      this.blockMarkers = [];
+      this.clusterMarkers = [];
       this.reportData = [];
       this.schoolCount = '';
       this.studentCount = '';
@@ -392,7 +397,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "school";
-      this.fileName = "school_wise_sem_report"
+      this.fileName = "school_wise_sem_report";
+      this.districtMarkers = [];
+      this.blockMarkers = [];
+      this.clusterMarkers = [];
+      this.schoolMarkers = [];
       this.reportData = [];
       this.schoolCount = '';
       this.studentCount = '';
@@ -471,9 +480,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.commonService.errMsg();
     this.blockId = undefined;
     this.blockMarkers = [];
-    // to show and hide the dropdowns
-    this.blockHidden = false;
-    this.clusterHidden = true;
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -483,6 +489,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.data = res;
 
       this.blockMarkers = this.data['sortedData'];
+      // to show and hide the dropdowns
+      this.blockHidden = false;
+      this.clusterHidden = true;
+
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data['sortedData'][0].district_id,
@@ -515,6 +525,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }, err => {
+      this.blockHidden = true;
+      this.clusterHidden = true;
+      this.districtMarkers = [];
       this.data = [];
       this.commonService.loaderAndErr(this.data);
     });
@@ -550,9 +563,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.commonService.errMsg();
     this.clusterId = undefined;
     this.clusterMarkers = [];
-    // to show and hide the dropdowns
-    this.blockHidden = false;
-    this.clusterHidden = false;
 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
@@ -562,6 +572,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.data = res;
       this.clusterMarkers = this.data['sortedData'];
       var myBlocks = [];
+      // to show and hide the dropdowns
+      this.blockHidden = false;
+      this.clusterHidden = false;
+
       this.blockMarkers.forEach(element => {
         if (element.district_id === this.districtHierarchy.distId) {
           myBlocks.push(element);
@@ -603,6 +617,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }, err => {
+      this.districtMarkers = [];
+      this.blockMarkers = [];
       this.data = [];
       this.commonService.loaderAndErr(this.data);
     });
@@ -636,8 +652,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
     this.schoolMarkers = [];
-    this.blockHidden = false;
-    this.clusterHidden = false;
+
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
@@ -646,6 +661,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.myData = this.service.school_wise_sem_data(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { sem: this.semester }).subscribe(res => {
         this.data = res;
         this.schoolMarkers = this.data['sortedData'];
+
+        this.blockHidden = false;
+        this.clusterHidden = false;
 
         var markers = result['sortedData'];
         var myBlocks = [];
@@ -705,6 +723,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
         this.fileName = "Schools_per_cluster_sem_report";
         this.genericFun(this.data, options, this.fileName);
       }, err => {
+        this.blockHidden = true;
+        this.clusterHidden = true;
+        this.districtMarkers = [];
+        this.blockMarkers = [];
+        this.clusterMarkers = [];
         this.data = [];
         this.commonService.loaderAndErr(this.data);
       });
