@@ -15,15 +15,15 @@ exports.restartNifiProcess = async function () {
             schedularData = JSON.parse(fs.readFileSync(filePath));
         }
         var url = ''
-        await schedularData.forEach(async myJob => {
+        await schedularData.map(async (myJob, index) => {
             //::::::::::::::::::::::::::::::::::::::
-            if (myJob.day != "*") {
+            if (myJob.day && myJob.day != "*") {
                 schedulerTime = `${myJob.mins} ${myJob.hours} * * ${myJob.day}`;
                 stopTime = `${myJob.mins} ${myJob.timeToStop} * * ${myJob.day}`;
-            } else if (myJob.date != "*") {
+            } else if (myJob.date && myJob.date != "*") {
                 schedulerTime = `${myJob.mins} ${myJob.hours} ${myJob.date} * *`;
                 stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} * *`;
-            } else if (myJob.date != "*" && myJob.month != "*") {
+            } else if (myJob.date && myJob.date != "*" && myJob.month && myJob.month != "*") {
                 schedulerTime = `${myJob.mins} ${myJob.hours} ${myJob.date} ${myJob.month} *`;
                 stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} ${myJob.month} *`;
             } else {
@@ -31,30 +31,37 @@ exports.restartNifiProcess = async function () {
                 stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
             }
 
-            url = `${process.env.NIFI_URL}/flow/process-groups/${myJob.groupId}`
             if (myJob.state == "RUNNING") {
                 logger.info('Rescheduling jobs due to nodejs restart');
-                await schedule.scheduleJob(myJob.groupId, schedulerTime, async function () {
-                    logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling started ---`);
+
+                await schedule.scheduleJob(myJob.groupName, schedulerTime, async function () {
+                    var processorsList = await axios.get(`${process.env.NIFI_URL}/process-groups/root/process-groups`);
+                    processorsList.data.processGroups.map(process => {
+                        if (myJob.groupName == process.component.name) {
+                            myJob.groupId = process.component.id;
+                        }
+                    })
+                    url = `${process.env.NIFI_URL}/flow/process-groups/${myJob.groupId}`;
+                    logger.info(`--- ${myJob.groupName} - Nifi processor group scheduling started ---`);
                     let response = await startFun(url, myJob.groupId, myJob.state);
                     myJob.scheduleUpdatedAt = `${new Date()}`;
                     await fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                         if (err) throw err;
                         logger.info('Restart process - Scheduled RUNNING Job - Restarted successfully');
                     });
-                    setTimeout(() => {
-                        logger.info(' --- executing nifi restart shell command ----');
-                        shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
-                            logger.info('Exit code:', code);
-                            logger.info('Program output:', stdout);
-                            logger.info('Program stderr:', stderr);
-                        });
-                    }, 120000);
                     logger.info(JSON.stringify(response))
-                    logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling completed ---`);
+                    logger.info(`--- ${myJob.groupName} - Nifi processor group scheduling completed ---`);
                 });
-                await schedule.scheduleJob(myJob.groupId, stopTime, async function () {
-                    logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling stopping initiated ---`);
+
+                await schedule.scheduleJob(myJob.groupName, stopTime, async function () {
+                    var processorsList = await axios.get(`${process.env.NIFI_URL}/process-groups/root/process-groups`);
+                    processorsList.data.processGroups.map(process => {
+                        if (myJob.groupName == process.component.name) {
+                            myJob.groupId = process.component.id;
+                        }
+                    })
+                    url = `${process.env.NIFI_URL}/flow/process-groups/${myJob.groupId}`;
+                    logger.info(`--- ${myJob.groupName} - Nifi processor group scheduling stopping initiated ---`);
                     let response = await stopFun(url, myJob.groupId);
                     myJob.state = "STOPPED";
                     myJob.scheduleUpdatedAt = `${new Date()}`;
@@ -72,8 +79,9 @@ exports.restartNifiProcess = async function () {
                         });
                     }, 120000);
                     logger.info(JSON.stringify(response))
-                    logger.info(`--- ${myJob.groupId} - Nifi processor group scheduling stopping completed ---`);
+                    logger.info(`--- ${myJob.groupName} - Nifi processor group scheduling stopping completed ---`);
                 });
+
             }
         });
     } catch (e) {
