@@ -41,9 +41,9 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   public clust: boolean = false;
 
   // to set the hierarchy names
-  public districtHierarchy: any = '';
-  public blockHierarchy: any = '';
-  public clusterHierarchy: any = '';
+  public districtHierarchy: any = {};
+  public blockHierarchy: any = {};
+  public clusterHierarchy: any = {};
 
   public result: any = [];
   public timePeriod = 'overall';
@@ -84,9 +84,10 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.result = [];
     this.chartData = [];
     this.category = [];
-    this.districtHierarchy = [];
-    this.blockHierarchy = [];
-    this.clusterHierarchy = [];
+    this.reportData = [];
+    this.districtHierarchy = {};
+    this.blockHierarchy = {};
+    this.clusterHierarchy = {};
     this.footer = undefined;
   }
 
@@ -110,7 +111,12 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     } else {
       document.getElementById('home').style.display = "none";
     }
-    this.reportData = [];
+    this.districts = [];
+    this.blocks = [];
+    this.clusters = [];
+    this.blockId = undefined;
+    this.clusterId = undefined;
+    this.collectionNames = [];
     this.commonService.errMsg();
     this.level = "district"
     this.collectionName = '';
@@ -210,6 +216,9 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.dist = true;
     this.blok = false;
     this.clust = false;
+    this.blocks = [];
+    this.clusters = [];
+    this.collectionNames = [];
     this.blockId = undefined;
     this.clusterId = undefined;
     this.yAxisLabel = "Block Names"
@@ -243,6 +252,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.dist = false;
     this.blok = true;
     this.clust = false;
+    this.clusters = [];
+    this.collectionNames = [];
     this.clusterId = undefined;
     this.yAxisLabel = "Cluster Names"
     this.listCollectionNames();
@@ -275,6 +286,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.dist = false;
     this.blok = false;
     this.clust = true;
+    this.collectionNames = [];
     this.yAxisLabel = "School Names"
     this.listCollectionNames();
     this.service.tpdSchoolEnrollCompAll({ timePeriod: this.timePeriod, blockId: this.blockId, clusterId: clusterId }).subscribe(async (res) => {
@@ -345,6 +357,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   //to filter downloadable data
   dataToDownload = [];
   newDownload(element) {
+    element['total_enrolled'] = element.total_enrolled.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    element['total_completed'] = element.total_completed.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     var data1 = {}, data2 = {}, data3 = {};
     Object.keys(element).forEach(key => {
       if (key !== "percentage_completion") {
@@ -368,8 +382,6 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   downloadRoport() {
     this.dataToDownload = [];
     this.reportData.forEach(element => {
-      element['total_enrolled'] = element.total_enrolled.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      element['total_completed'] = element.total_completed.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.newDownload(element);
     });
     this.commonService.download(this.fileName, this.dataToDownload);

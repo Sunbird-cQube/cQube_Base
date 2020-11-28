@@ -2752,7 +2752,7 @@
 <id>fc149dc4-87c0-3bbb-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
-                            <zIndex>0</zIndex>
+                            <zIndex>5</zIndex>
                         </connections>
                         <connections>
                             <id>b823fc51-a665-3ee0-0000-000000000000</id>
@@ -3451,6 +3451,39 @@
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
 <id>97a2b1f7-c4b7-3022-0000-000000000000</id>
 <type>INPUT_PORT</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>f324107a-4733-3dca-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>-7808.0</x>
+<y>-584.0</y>
+                            </bends>
+                            <bends>
+<x>-7824.0</x>
+<y>-984.0</y>
+                            </bends>
+                            <destination>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>dad49369-0408-3f55-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>valid_columns</selectedRelationships>
+                            <source>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>fc149dc4-87c0-3bbb-0000-000000000000</id>
+<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -6975,7 +7008,7 @@ file: ${filename} columns did not match.</value>
                             <id>13bd346c-fc75-335d-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>-7072.0</x>
+<x>-7080.0</x>
 <y>1776.0</y>
                             </position>
                             <bundle>
@@ -14093,8 +14126,8 @@ file:${filename},Error while executing "${query_type}" query.</value>
                             <id>b450e0e5-1766-3442-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>-7072.0</x>
-<y>1624.0</y>
+<x>-7080.0</x>
+<y>1616.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -16079,6 +16112,75 @@ file: ${filename} Error while extracting columns from file.</value>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
+                            <id>dad49369-0408-3f55-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <position>
+<x>-7712.0</x>
+<y>-1080.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>log-level</key>
+        <value>
+            <name>log-level</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>
+            <name>log-prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>
+            <name>log-message</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>log-level</key>
+        <value>info</value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>---TRANSFORMATION---</value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>Data validation, student attendance
+file: ${filename} blank line validation started.</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>LogMessage</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
+                        <processors>
                             <id>db077b05-5400-3506-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
@@ -16903,7 +17005,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
     <entry>
         <key>log-message</key>
         <value>null validation
-file: ${filename} null values are found.</value>
+file: ${filename} with ${count.valid.lines} null values are found.</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -20331,7 +20433,7 @@ from flowfile</value>
 <y>-1192.0</y>
                             </position>
                             <height>48.0</height>
-                            <label>2. Route the files from S3 input bucket</label>
+                            <label>Route the files from S3 input bucket</label>
                             <style>
 <entry>
     <key>background-color</key>
@@ -26618,5 +26720,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>11/12/2020 20:28:34 IST</timestamp>
+    <timestamp>11/27/2020 17:36:28 IST</timestamp>
 </template>
