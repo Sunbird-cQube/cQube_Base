@@ -128,7 +128,7 @@ export class NifiShedularComponent implements OnInit {
       this.month = undefined;
       this.date = undefined;
       this.day = undefined;
-      this.date = event.getDay() + 1;
+      this.date = event.getDate();
     }
   }
 
@@ -136,7 +136,7 @@ export class NifiShedularComponent implements OnInit {
     if (event) {
       this.month = undefined;
       this.day = undefined;
-      this.date = event.getDay() + 1;
+      this.date = event.getDate();
       this.month = event.getMonth() + 1;
     }
   }
