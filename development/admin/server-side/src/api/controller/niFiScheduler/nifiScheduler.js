@@ -74,11 +74,11 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
         }
         let month = '*'
         if (req.body.time.month) {
-            day = req.body.time.month;
+            month = req.body.time.month;
         }
         let date = '*'
         if (req.body.time.date) {
-            day = req.body.time.date;
+            date = req.body.time.date;
         }
         let hours = parseInt(req.body.time.hours);
         var mins = 0;
@@ -100,7 +100,7 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
             timePeriod = "weekly";
             schedulerTime = `${mins} ${hours} * * ${day}`;
             stopTime = `${mins} ${timeToStop} * * ${day}`;
-        } else if (date != "*") {
+        } else if (date != "*" && month == "*") {
             timePeriod = "monthly";
             schedulerTime = `${mins} ${hours} ${date} * *`;
             stopTime = `${mins} ${timeToStop} ${date} * *`;
@@ -322,11 +322,11 @@ router.post('/scheduleNiFiProcessor/:id/:name', async (req, res) => {
         }
         let month = '*'
         if (req.body.time.month) {
-            day = req.body.time.month;
+            month = req.body.time.month;
         }
         let date = '*'
         if (req.body.time.date) {
-            day = req.body.time.date;
+            date = req.body.time.date;
         }
         let hours = parseInt(req.body.time.hours);
         var mins = 0;
@@ -348,7 +348,7 @@ router.post('/scheduleNiFiProcessor/:id/:name', async (req, res) => {
             timePeriod = "weekly";
             schedulerTime = `${mins} ${hours} * * ${day}`;
             stopTime = `${mins} ${timeToStop} * * ${day}`;
-        } else if (date != "*") {
+        } else if (date != "*" && month == "*") {
             timePeriod = "monthly";
             schedulerTime = `${mins} ${hours} ${date} * *`;
             stopTime = `${mins} ${timeToStop} ${date} * *`;
