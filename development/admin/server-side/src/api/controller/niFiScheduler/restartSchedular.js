@@ -31,6 +31,8 @@ exports.restartNifiProcess = async function () {
                 stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
             }
 
+            console.log(schedulerTime, ":::", stopTime);
+
             if (myJob.state == "RUNNING") {
                 logger.info('Rescheduling jobs due to nodejs restart');
 
