@@ -357,6 +357,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   //to filter downloadable data
   dataToDownload = [];
   newDownload(element) {
+    element['total_enrolled'] = element.total_enrolled.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    element['total_completed'] = element.total_completed.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     var data1 = {}, data2 = {}, data3 = {};
     Object.keys(element).forEach(key => {
       if (key !== "percentage_completion") {
@@ -380,8 +382,6 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   downloadRoport() {
     this.dataToDownload = [];
     this.reportData.forEach(element => {
-      element['total_enrolled'] = element.total_enrolled.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      element['total_completed'] = element.total_completed.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.newDownload(element);
     });
     this.commonService.download(this.fileName, this.dataToDownload);
