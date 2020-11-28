@@ -513,7 +513,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.fileName = "Blocks_per_district_sem_report";
       this.genericFun(this.data, options, this.fileName);
       // sort the blockname alphabetically
-      this.blockMarkers.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
+      this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }, err => {
       this.data = [];
       this.commonService.loaderAndErr(this.data);
@@ -601,7 +601,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.fileName = "clusters_per_block_sem_report";
       this.genericFun(this.data, options, this.fileName);
       // sort the clusterName alphabetically
-      this.clusterMarkers.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
+      this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }, err => {
       this.data = [];
       this.commonService.loaderAndErr(this.data);
