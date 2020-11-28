@@ -87,7 +87,6 @@
 
 ]
 """,
-"db_driver_class_name":"""org.postgresql.Driver""",
 "crc_inspec_duplicate_data":"""Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
 BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
 ActualClassRooms as "actual_class_rooms",
@@ -97,7 +96,6 @@ FROM flowfile
 GROUP BY inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline
 HAVING  COUNT(*) > 1
 """,
-"s3_access_key":"""********""",
 "distinct_crc_loc_records":"""select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude ,Longitude ,InSchoolLocation ,CreatedOn  from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn, row_number() over (partition by  UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn) as rn from flowfile)sq where rn=1""",
 "crc_loc_check_for_non_blank":"""select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude,Longitude ,InSchoolLocation ,CreatedOn 
 from flowfile where has_records = non_empty_records""",
@@ -127,7 +125,6 @@ block_id=excluded.block_id,block_name=excluded.block_name,cluster_id=excluded.cl
 visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,updated_on=now(),created_on=excluded.created_on
 """,
 "school_filename":"""school_crc_opt_json""",
-"db_driver_dir":"""jars/postgresql-42.2.10.jar""",
 "crc_loc_null_log_summary":"""update log_summary
 SET school_id = crc_loc_null_col.count_null_schoolid,
 inspection_id = crc_loc_null_col.count_null_inspectionid,
@@ -251,8 +248,6 @@ FROM flowfile
 GROUP BY UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
 HAVING  COUNT(*) > 1
 """,
-"db_name":"""cqube_db""",
-"db_connection_url":"""jdbc:postgresql://localhost:5432/""",
 "crc_loc_null_table":"""crc_loc_null_col""",
 "crc_inspec_duplicate_records":"""Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
 BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
@@ -428,7 +423,6 @@ GROUP BY InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStan
 ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline
 HAVING  COUNT(*) > 1
 """,
-"s3_secret_key":"""********""",
 "crc_queries_filename":"""crc_queries.json""",
 "crc_inspec_dup_check":"""SELECT inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline,count(inspectionid)-1  num_of_times
 FROM flowfile
@@ -493,7 +487,6 @@ select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b
   and b.school_name is not null
   group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id,
 b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year""",
-"db_password":"""********""",
 "district_filename":"""district_crc_opt_json""",
 "crc_inspec_trans_table_name":"""crc_inspection_trans""",
 "crc_loc_duplicate_data":"""select UserLocationMasterId as "crc_location_id",UserMasterId as "crc_id",SchoolId as "school_id",InspectionId as "inspection_id",Latitude as "latitude",Longitude as "longitude",InSchoolLocation as "in_school_location",CreatedOn as "created_on",count(UserLocationMasterId)-1  num_of_times
@@ -507,14 +500,11 @@ from flowfile""",
 "crc_loc_blank_lines_check":"""select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude,Longitude ,InSchoolLocation ,CreatedOn
 from flowfile where has_records = non_empty_records
 """,
-"s3_output_bucket":"""cqube-qa11-output""",
 "crc_loc_dup_tb_name":"""crc_location_dup""",
 "same_id_crc_loc_check":"""select *,count(*) as num_of_times from (
 select UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(*)
 over (partition by UserMasterId,CreatedOn) as rn from FLOWFILE) sq Where rn >1) group by  UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
 """,
-"db_user":"""cqube_db_user""",
-"base_dir":"""/opt""",
 "unique_crc_inspec_records":"""SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
 VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline from
 (SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
@@ -608,5 +598,5 @@ from crc_visits_frequency
 where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1)
 and visit_count>0 and crc_name is not null and cluster_name is not null
 group by cluster_id,visit_count) d group by cluster_id) t on s.cluster_id=t.clt_id) spd
-""",
+"""
 }
