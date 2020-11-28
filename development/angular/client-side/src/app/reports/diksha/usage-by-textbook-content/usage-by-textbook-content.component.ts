@@ -179,14 +179,14 @@ export class UsageByTextbookContentComponent implements OnInit {
     if (this.districtId == '') {
       this.districtId = undefined
     }
-    this.timePeriod = timePeriod == 'all' ? '' : timePeriod
+    var myTime = timePeriod == 'all' ? undefined : timePeriod;
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
       $('#table').empty();
     }
     this.result = [];
     this.reportData = [];
-    this.service.dikshaTimeRangeTableData({ districtId: this.districtId, timePeriod: this.timePeriod, collectionType: this.collectionType }).subscribe(res => {
+    this.service.dikshaTimeRangeTableData({ districtId: this.districtId, timePeriod: myTime, collectionType: this.collectionType }).subscribe(res => {
       this.result = res;
       this.tableCreation(this.result);
       if (this.hierName) {
