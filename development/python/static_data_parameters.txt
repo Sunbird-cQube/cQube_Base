@@ -69,7 +69,7 @@ or block IS NULL""",
 "static_cluster_exception":"""select school_id,school_name,block_id,district_id,cluster_id from school_hierarchy_details where cluster_name is null """,
 "static_school_not_null":"""select * from flowfile 
 where school is not NULL""",
-"static_data_type_school":"""Optional(ParseLong()),Optional(StrNotNullOrEmpty()),Optional(ParseInt()),Optional(ParseLong()),Optional(ParseLong()),Optional(ParseLong()),ParseBigDecimal(),ParseBigDecimal()""",
+"static_data_type_school":"""Optional(ParseLong()),Optional(StrNotNullOrEmpty()),Optional(ParseInt()),Optional(ParseLong()),Optional(ParseLong()),Optional(ParseLong()),Optional(ParseBigDecimal()),Optional(ParseBigDecimal())""",
 "static_district_columns":"""SELECT DistrictId as " district_id",District as "district_name" from flowfile""",
 "static_same_id_district_check":"""select *,count(*) as num_of_times from (
 select DistrictId,District from (SELECT DistrictId,District,count(*)
@@ -195,7 +195,7 @@ where BlockId IS NOT NULL
 AND DistrictId IS NOT NULL
 AND Block IS NOT NULL""",
 "static_school_dup_check":"""SELECT schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,districtid,blockid,clusterid,latitude,longitude,
-count(schoolid)  num_of_times
+count(schoolid)-1  num_of_times
 FROM flowfile
 GROUP BY schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,districtid,blockid,clusterid,latitude,longitude
 HAVING  COUNT(*) > 1""",
@@ -252,7 +252,7 @@ over (partition by DistrictId) as rn from FLOWFILE) sq Where rn =1""",
 "static_distinct_cluster_records":"""select ClusterId,Cluster,BlockId from (SELECT ClusterId,Cluster,BlockId ,row_number() over (partition by  ClusterId,Cluster,BlockId) as rn from flowfile)sq where rn=1""",
 "static_select_cols_cluster_mp":"""select cluster_name as cluster,udise_block_code as blockid,udise_cluster_code as clusterid from flowfile""",
 "static_log_summary_school_qry":"""select * from log_summary where filename like '%school%'""",
-"static_block_dup_check":"""SELECT BlockId,Block,DistrictId,count(BlockId)  num_of_times
+"static_block_dup_check":"""SELECT BlockId,Block,DistrictId,count(BlockId)-1  num_of_times
 FROM flowfile
 GROUP BY BlockId,Block,DistrictId
 HAVING  COUNT(*) > 1""",
@@ -264,7 +264,7 @@ created_on=excluded.created_on,updated_on=now()""",
 "static_distinct_school_records":"""select schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,districtid,blockid,clusterid,latitude,longitude from(select schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,districtid,blockid,clusterid,latitude,longitude,row_number() over (partition by  schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,districtid,blockid,clusterid,latitude,longitude) as rn from flowfile)sq where rn=1""",
 "static_select_cols_school":"""select udise_sch_code as schoolid,school_name as school,state_cd as stateid,district_cd as districtid,block_cd_1 as blockid,cluster_cd as clusterid,latitude,longitude from flowfile""",
 "static_data_type_cluster":"""Optional(StrNotNullOrEmpty()),Optional(ParseLong()),Optional(ParseLong())""",
-"static_district_dup_check":"""SELECT DistrictId,District,count(DistrictId)  num_of_times
+"static_district_dup_check":"""SELECT DistrictId,District,count(DistrictId)-1  num_of_times
 FROM flowfile
 GROUP BY DistrictId,District
 HAVING  COUNT(*) > 1""",
@@ -303,7 +303,7 @@ from flowfile)""",
 "static_district_not_null":"""select * from flowfile
 where DistrictId IS NOT NULL
 and District IS NOT NULL""",
-"static_cluster_dup_check":"""SELECT ClusterId,Cluster,BlockId,count(ClusterId)  num_of_times
+"static_cluster_dup_check":"""SELECT ClusterId,Cluster,BlockId,count(ClusterId)-1  num_of_times
 FROM flowfile
 GROUP BY ClusterId,Cluster,BlockId
 HAVING  COUNT(*) > 1""",
@@ -329,7 +329,6 @@ do update set school_id=excluded.school_id,district_id=excluded.district_id ,
 block_id=excluded.block_id,cluster_id=excluded.cluster_id,school_latitude=excluded.school_latitude,school_longitude=excluded.school_longitude,
 created_on=excluded.created_on,updated_on=now()""",
 "static_distinct_district_records":"""select DistrictId,District from (SELECT DistrictId,District, row_number() over (partition by  DistrictId,District) as rn from flowfile)sq where rn=1""",
-
 "static_select_school_records":"""select udise_sch_code as schoolid,school_name as school,state_cd as stateid,district_cd as districtid,block_cd_1 as blockid,cluster_cd as clusterid,latitude,longitude from flowfile""",
 "static_process_rec_block":"""update log_summary as b
 	set processed_records= a.processed_records
@@ -337,4 +336,23 @@ created_on=excluded.created_on,updated_on=now()""",
 		select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records+datatype_mismatch)-sum(district_id+block_name+block_id))as processed_records 
 		from log_summary group by ff_uuid) as a
 	where a.ff_uuid=b.ff_uuid""",
+"static_school_not_null_lat_long":"""select * from flowfile 
+where school is not NULL
+AND latitude > 0
+AND longitude > 0""",
+"static_school_check_if_null_lat_long":"""select * from flowfile 
+where school is NULL
+or latitude is NULL
+or longitude is NULL
+or latitude = 0
+or longitude = 0""",
+"static_school_null_count_lat_long":"""(select 
+SUM(CASE when school IS NULL THEN 1 ELSE 0 END) AS count_null_school,
+SUM(CASE when (latitude IS NULL OR latitude = '0.0') THEN 1 ELSE 0 END) AS count_null_latitude,
+SUM(CASE when (longitude IS NULL OR longitude = '0.0') THEN 1 ELSE 0 END) AS count_null_longitude
+from flowfile)""",
+"static_school_null_log_lat_long":"""update log_summary
+SET latitude = school_null_col.count_null_latitude,
+longitude = school_null_col.count_null_longitude from school_null_col
+where school_null_col.ff_uuid = log_summary.ff_uuid""",
 }
