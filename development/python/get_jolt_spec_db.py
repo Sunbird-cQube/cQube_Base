@@ -14,7 +14,6 @@ def remove_special_characters(data):
     data = data.replace("\\t","")
     data = data.replace("('","")
     data = data.replace("',)","")
-    data = data.replace(" ","")
     return data
 
 
