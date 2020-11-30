@@ -270,31 +270,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>074489cc-4cdc-3e2e-0000-000000000000</id>
-                            <parentGroupId>1820f637-1d93-3ff8-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>1820f637-1d93-3ff8-0000-000000000000</groupId>
-<id>f6451392-5ec5-384f-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>not_null</selectedRelationships>
-                            <source>
-<groupId>1820f637-1d93-3ff8-0000-000000000000</groupId>
-<id>5c48e24a-0ef6-3989-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>0b7211d6-b422-39d9-0000-000000000000</id>
                             <parentGroupId>1820f637-1d93-3ff8-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -1735,6 +1710,31 @@
                             <source>
 <groupId>1820f637-1d93-3ff8-0000-000000000000</groupId>
 <id>f564c0a6-e745-37bf-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>7ae01edc-a726-3d92-0000-000000000000</id>
+                            <parentGroupId>1820f637-1d93-3ff8-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>1820f637-1d93-3ff8-0000-000000000000</groupId>
+<id>f6451392-5ec5-384f-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>unmatched</selectedRelationships>
+                            <source>
+<groupId>1820f637-1d93-3ff8-0000-000000000000</groupId>
+<id>9cfa4be2-442f-347e-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -14551,7 +14551,7 @@ where ff_uuid= '${files_uuid}'</value>
 <name>check_empty_file</name>
                             </relationships>
                             <relationships>
-<autoTerminate>true</autoTerminate>
+<autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
                             <state>STOPPED</state>
@@ -16350,8 +16350,8 @@ same id data validation of file:${filename}, same id records found </value>
                             <id>d4be921d-0f40-3d2e-0000-000000000000</id>
                             <parentGroupId>1820f637-1d93-3ff8-0000-000000000000</parentGroupId>
                             <position>
-<x>-7480.0</x>
-<y>1528.0</y>
+<x>-7472.0</x>
+<y>1696.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -26178,5 +26178,5 @@ file:${filename} with total records are added to log summary table</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>11/28/2020 21:49:26 IST</timestamp>
+    <timestamp>11/30/2020 14:04:51 IST</timestamp>
 </template>

@@ -516,31 +516,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>184eb8b2-fd81-3b2a-0000-000000000000</id>
-                            <parentGroupId>38fb6275-da99-3dea-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>38fb6275-da99-3dea-0000-000000000000</groupId>
-<id>d50d68c0-fc3c-3a37-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>not_null</selectedRelationships>
-                            <source>
-<groupId>38fb6275-da99-3dea-0000-000000000000</groupId>
-<id>c0f6a078-d882-3e47-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>187b4218-5137-35d8-0000-000000000000</id>
                             <parentGroupId>38fb6275-da99-3dea-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -4157,6 +4132,31 @@
                             <source>
 <groupId>38fb6275-da99-3dea-0000-000000000000</groupId>
 <id>81fce9ea-8686-3135-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>eba81511-dfe8-3f59-0000-000000000000</id>
+                            <parentGroupId>38fb6275-da99-3dea-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>38fb6275-da99-3dea-0000-000000000000</groupId>
+<id>d50d68c0-fc3c-3a37-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>unmatched</selectedRelationships>
+                            <source>
+<groupId>38fb6275-da99-3dea-0000-000000000000</groupId>
+<id>8e0ccc1f-c251-33f8-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -14872,7 +14872,7 @@ Mirror data validation of file:${filename} started</value>
 <name>check_empty_file</name>
                             </relationships>
                             <relationships>
-<autoTerminate>true</autoTerminate>
+<autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
                             <state>STOPPED</state>
@@ -27935,5 +27935,5 @@ VALUES
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>11/28/2020 21:49:59 IST</timestamp>
+    <timestamp>11/30/2020 14:04:25 IST</timestamp>
 </template>
