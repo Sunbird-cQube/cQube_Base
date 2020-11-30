@@ -9,7 +9,7 @@ import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
 import { DikshaTableComponent } from './diksha-table/diksha-table.component';
 import { DikshaUsageByTextBookComponent } from './diksha-usage-by-text-book/diksha-usage-by-text-book.component';
 import { UsageByTextbookContentComponent } from './usage-by-textbook-content/usage-by-textbook-content.component';
-import { DikshaTPDContentProgressComponent } from './diksha-tpd-content-progress/diksha-tpd-content-progress.component';
+import { DikshaTPDContentProgressComponent } from './diksha-tpd-course-progress/diksha-tpd-content-progress.component';
 import { DikshaTPDTeachersPercentageComponent } from './diksha-tpd-teachers-percentage/diksha-tpd-teachers-percentage.component';
 import { DikshaTpdEnrollmentComponent } from './diksha-tpd-enrollment-and-completion/diksha-tpd-enrollment.component';
 import { DikshaTpdCompletionComponent } from './diksha-tpd-completion-percentage/diksha-tpd-completion.component';
@@ -34,7 +34,7 @@ const dikshaRoutes: Routes = [
         path: 'usage-by-textbook-content', component: UsageByTextbookContentComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'tpd-collection-progress', component: DikshaTPDContentProgressComponent, canActivateChild: [AuthGuard]
+        path: 'tpd-course-progress', component: DikshaTPDContentProgressComponent, canActivateChild: [AuthGuard]
       },
       {
         path: 'tpd-teacher-percentage', component: DikshaTPDTeachersPercentageComponent, canActivateChild: [AuthGuard]

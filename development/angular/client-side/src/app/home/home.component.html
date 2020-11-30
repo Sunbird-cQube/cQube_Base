@@ -79,7 +79,7 @@
             <a mat-list-item [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-course-content']"
               (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'dtr')" id="dtblReport"
               (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">Usage by Course Content</span></a>
-            <a mat-list-item [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-collection-progress']"
+            <a mat-list-item [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-course-progress']"
               (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'tpd-cp')" id="tpd-cp"
               (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">TPD Collection Progress</span></a>
             <a mat-list-item [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-teacher-percentage']"
