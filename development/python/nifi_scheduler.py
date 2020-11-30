@@ -19,7 +19,7 @@ def schedule_processor_groups(pg_list):
 	payload={"state":"RUNNING", "time": {"hours": "22", "minutes": "00"}, "stopTime": 5}
 	try:
 		for x,y in pg_list.items():
-			uri='http://localhost:3001/api/nifi/scheduleNiFiProcessor/{}'.format(y)
+			uri='http://localhost:3001/api/nifi/scheduleNiFiProcessor/{}/{}'.format(y,x)
 			pg_resp=requests.post(uri,headers=headers,json=payload)
 			if pg_resp.status_code==200:
 				logging.info("Sucessfully scheduled the processor group {}".format(x))

@@ -1017,7 +1017,8 @@ from insert_diksha_trans_view
 where not exists (select district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent from diksha_total_content)';
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent from diksha_total_content)
+and content_subject is not null';
 Execute agg_insert; 
 return 0;
 END;
@@ -4079,5 +4080,46 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+create or replace view school_teachers_count as 
+select udise_sch_code,count(distinct(tch_code)) as total_teachers,clust_id,blk_id,dist_id from udise_tch_profile as tch_cnt inner join 
+(select school_id ,cluster_id as clust_id,block_id as blk_id,district_id as dist_id from school_hierarchy_details where school_name is not null and cluster_name is not null
+and block_name is not null and district_name is not null) as scl on tch_cnt.udise_sch_code=scl.school_id group by udise_sch_code,clust_id,blk_id,dist_id;
+
+create or replace view school_diksha_enrolled as 
+select a.*,cnt.total_teachers from
+(select collection_id,collection_name,
+count(distinct(uuid)) as total_enrolled,'Last_Day' as time_range,  
+tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
+select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
+where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
+where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date = (select now()::DATE)
+group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
+union
+select collection_id,collection_name,
+count(distinct(uuid)) as total_enrolled,'Last_7_Day' as time_range,  
+tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
+select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
+where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
+where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '7 DAY')::Date) and 
+(select (now()::Date))
+group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
+union
+select collection_id,collection_name,
+count(distinct(uuid)) as total_enrolled,'Last_30_Day' as time_range,  
+tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
+select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
+where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
+where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '30 DAY')::Date) and 
+(select (now()::Date))
+group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
+union
+select collection_id,collection_name,
+count(distinct(uuid)) as total_enrolled,'All' as time_range,  
+tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
+select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
+where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
+where org_name='DIKSHA Custodian Org' and collection_name is not null 
+group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id) as a
+left join school_teachers_count as cnt on a.school_id=cnt.udise_sch_code;
 
 

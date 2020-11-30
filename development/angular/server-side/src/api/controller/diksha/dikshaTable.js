@@ -65,10 +65,20 @@ router.post('/dikshaTimeRangeTableData', auth.authController, async (req, res) =
         var timePeriod = req.body.timePeriod;
         var fileName;
         var tableData;
-        if (distId) {
+        if (req.body.collectionType && distId && timePeriod) {
             fileName = `diksha/table_reports/${collectionType}/${timePeriod}/${distId}.json`;
             tableData = await s3File.readS3File(fileName);
-        } else {
+        } else if (!timePeriod) {
+            fileName = `diksha/table_reports/${collectionType}/All.json`;
+            tableData = await s3File.readS3File(fileName);
+            tableData = tableData.filter(obj => {
+                if (obj.district_id == "All" && obj.district_name == '') {
+                    delete obj.district_id
+                    delete obj.district_name
+                    return obj
+                }
+            })
+        } else if (req.body.collectionType && timePeriod) {
             fileName = `diksha/table_reports/${collectionType}/${timePeriod}/All.json`;
             tableData = await s3File.readS3File(fileName);
             tableData = tableData.filter(obj => {

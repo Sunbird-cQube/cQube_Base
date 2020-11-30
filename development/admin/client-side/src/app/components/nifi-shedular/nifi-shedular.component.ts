@@ -46,7 +46,7 @@ export class NifiShedularComponent implements OnInit {
   selectedDate = [];
   date;
 
-  showDay = [true, true, true, true, true, true, true];
+  showDay = [];
   showMonth = [];
   showDate = [];
 
@@ -62,11 +62,10 @@ export class NifiShedularComponent implements OnInit {
     }
     for (let i = 1; i < 13; i++) {
       this.allMonths.push({ key: i });
-      this.showMonth.push(true);
+
     }
     for (let i = 1; i < 29; i++) {
       this.allDates.push({ key: i });
-      this.showDate.push(true);
     }
   }
 
@@ -129,7 +128,7 @@ export class NifiShedularComponent implements OnInit {
       this.month = undefined;
       this.date = undefined;
       this.day = undefined;
-      this.date = event.getDay() + 1;
+      this.date = event.getDate();
     }
   }
 
@@ -137,7 +136,7 @@ export class NifiShedularComponent implements OnInit {
     if (event) {
       this.month = undefined;
       this.day = undefined;
-      this.date = event.getDay() + 1;
+      this.date = event.getDate();
       this.month = event.getMonth() + 1;
     }
   }
@@ -164,6 +163,11 @@ export class NifiShedularComponent implements OnInit {
       this.service.nifiGetProcessorDetails(this.processorId).subscribe(details => {
         this.result = details;
         this.data = this.result;
+        for (let i = 0; i < this.result.length; i++) {
+          this.showDay.push(true);
+          this.showDate.push(true);
+          this.showMonth.push(true);
+        }
 
         $(document).ready(function () {
           $('#table').DataTable({
@@ -183,7 +187,7 @@ export class NifiShedularComponent implements OnInit {
   onClickSchedule(data, i) {
     if (this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange == 'daily' || this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.day ||
       this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.date || this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.date && this.month) {
-      this.service.nifiScheduleProcessor(data.id, { state: "RUNNING", time: { day: this.day, date: this.date, month: this.month, hours: this.selectedShedule, minutes: this.selectMin }, stopTime: this.selectedDuration }).subscribe(res => {
+      this.service.nifiScheduleProcessor(data.id, data.name, { state: "RUNNING", time: { day: this.day, date: this.date, month: this.month, hours: this.selectedShedule, minutes: this.selectMin }, stopTime: this.selectedDuration }).subscribe(res => {
         if (res['msg']) {
           this.msg = res['msg'];
           this.err = '';
