@@ -1,0 +1,33 @@
+[2020-12-01 11:38:49 +0530] [11326] [INFO] Starting gunicorn 20.0.4
+[2020-12-01 11:38:49 +0530] [11326] [INFO] Listening at: http://0.0.0.0:5000 (11326)
+[2020-12-01 11:38:49 +0530] [11326] [INFO] Using worker: sync
+[2020-12-01 11:38:49 +0530] [11329] [INFO] Booting worker with pid: 11329
+[2020-12-01 11:38:49 +0530] [11330] [INFO] Booting worker with pid: 11330
+[2020-12-01 11:38:49 +0530] [11331] [INFO] Booting worker with pid: 11331
+[2020-12-01 11:42:08 +0530] [11326] [INFO] Handling signal: int
+[2020-12-01 11:42:08 +0530] [11330] [INFO] Worker exiting (pid: 11330)
+[2020-12-01 11:42:08 +0530] [11329] [INFO] Worker exiting (pid: 11329)
+[2020-12-01 11:42:08 +0530] [11331] [INFO] Worker exiting (pid: 11331)
+[2020-12-01 11:42:08 +0530] [11326] [INFO] Shutting down: Master
+[2020-12-01 11:42:43 +0530] [11410] [INFO] Starting gunicorn 20.0.4
+[2020-12-01 11:42:43 +0530] [11410] [INFO] Listening at: http://0.0.0.0:5000 (11410)
+[2020-12-01 11:42:43 +0530] [11410] [INFO] Using worker: sync
+[2020-12-01 11:42:43 +0530] [11413] [INFO] Booting worker with pid: 11413
+[2020-12-01 11:42:43 +0530] [11414] [INFO] Booting worker with pid: 11414
+[2020-12-01 11:42:43 +0530] [11415] [INFO] Booting worker with pid: 11415
+[2020-12-01 11:43:12 +0530] [11410] [INFO] Handling signal: int
+[2020-12-01 11:43:12 +0530] [11415] [INFO] Worker exiting (pid: 11415)
+[2020-12-01 11:43:12 +0530] [11414] [INFO] Worker exiting (pid: 11414)
+[2020-12-01 11:43:12 +0530] [11413] [INFO] Worker exiting (pid: 11413)
+[2020-12-01 11:43:13 +0530] [11410] [INFO] Shutting down: Master
+[2020-12-01 11:57:15 +0530] [11644] [INFO] Starting gunicorn 20.0.4
+[2020-12-01 11:57:15 +0530] [11644] [INFO] Listening at: http://0.0.0.0:5000 (11644)
+[2020-12-01 11:57:15 +0530] [11644] [INFO] Using worker: sync
+[2020-12-01 11:57:15 +0530] [11647] [INFO] Booting worker with pid: 11647
+[2020-12-01 11:57:15 +0530] [11648] [INFO] Booting worker with pid: 11648
+[2020-12-01 11:57:15 +0530] [11650] [INFO] Booting worker with pid: 11650
+[2020-12-01 11:57:26 +0530] [11644] [INFO] Handling signal: int
+[2020-12-01 11:57:26 +0530] [11650] [INFO] Worker exiting (pid: 11650)
+[2020-12-01 11:57:26 +0530] [11648] [INFO] Worker exiting (pid: 11648)
+[2020-12-01 11:57:26 +0530] [11647] [INFO] Worker exiting (pid: 11647)
+[2020-12-01 11:57:26 +0530] [11644] [INFO] Shutting down: Master
