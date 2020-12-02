@@ -1,5 +1,5 @@
 const colorsHelper = require('../../../lib/colors');
-const generalFun = (data, level, viewBy) => {
+const generalFun = (grade, data, level, viewBy) => {
     return new Promise((resolve, reject) => {
         try {
             let totalDistLen = [];
@@ -41,8 +41,9 @@ const generalFun = (data, level, viewBy) => {
                     let date = item.exam_date.split('-')
                     let label = date[0] + "-" + date[1] + "/"
                         + "grade" + item.grade + "/"
-                        + item.subject_name + "/"
-                    label += viewBy == "indicator" ? item.indicator : item.question_id
+                        + item.subject_name
+
+                    label += grade != "" ? viewBy == "indicator" ? "/" + item.indicator : "/" + item.question_id : ''
 
                     arr[label] = arr.hasOwnProperty(label) ? [...arr[label], ...[item]] : [item];
 
@@ -53,7 +54,7 @@ const generalFun = (data, level, viewBy) => {
                         + item.total_schools.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") + "/"
                         + item.total_students.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") + "/"
 
-                    label1 += viewBy == "indicator" ? item.indicator : item.question_id
+                    label1 += grade != "" ? viewBy == "indicator" ? "/" + item.indicator : "/" + item.question_id : ''
 
                     arr1[label1] = arr1.hasOwnProperty(label1) ? [...arr1[label1], ...[item]] : [item];
 
@@ -61,7 +62,8 @@ const generalFun = (data, level, viewBy) => {
                 })
             }
             let finalData = []
-            let colors = colorsHelper.colors;
+
+            let colors = grade != "" ? colorsHelper.colors: colorsHelper.colors1
             var tooltipData = [];
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
