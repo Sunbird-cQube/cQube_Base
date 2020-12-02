@@ -7,8 +7,8 @@ const helper = require('./helper');
 router.post('/clusterWise',auth.authController, async (req, res) => {
     try {
         logger.info('---PAT heat map cluster wise api ---');
-        let { year, grade, subject_name, exam_date, districtId, blockId, viewBy } = req.body
-        let fileName = `pat/heatChart/${year}/blocks/${blockId}.json`
+        let { year,month, grade, subject_name, exam_date, blockId, viewBy } = req.body
+        let fileName = `pat/heatChart/${year}/${month}/blocks/${blockId}.json`
         var data = await s3File.readS3File(fileName);
 
         if (blockId) {

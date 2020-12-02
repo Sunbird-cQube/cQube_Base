@@ -7,8 +7,8 @@ const helper = require('./helper');
 router.post('/schoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT heat map school wise api ---');
-        let { year, grade, subject_name, exam_date, districtId, blockId, clusterId, viewBy } = req.body
-        let fileName = `pat/heatChart/${year}/clusters/${blockId}.json`
+        let { year, month, grade, subject_name, exam_date, blockId, clusterId, viewBy } = req.body
+        let fileName = `pat/heatChart/${year}/${month}/clusters/${blockId}.json`
         var data = await s3File.readS3File(fileName);
 
         if (clusterId) {
