@@ -33,7 +33,6 @@ FROM diksha_content_staging
 GROUP BY collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
 enrolment_date,completion_date,progress,certificate_status,total_score
 HAVING  COUNT(*) > 1""",
-"db_driver_class_name":"""org.postgresql.Driver""",
 "diksha_stack_jolt":"""[
   {
     "operation": "shift",
@@ -63,7 +62,6 @@ HAVING  COUNT(*) > 1""",
     }
   }
 ]""",
-"s3_access_key":"""********""",
 "diksha_tpd_r2_jolt":"""[{
     "operation": "shift",
     "spec": {
@@ -111,7 +109,6 @@ collection_id=excluded.collection_id,collection_name=excluded.collection_name,co
 percentage_teachers=excluded.percentage_teachers,total_enrolled=excluded.total_enrolled,total_completed=excluded.total_completed,
 enrolled_date=excluded.enrolled_date,updated_on=now()""",
 "save_to_diksha_dup":"""diksha_dup""",
-"db_driver_dir":"""/opt/nifi/jars/postgresql-42.2.10.jar""",
 "JoltTransformJSON_all_collections":"""[
    {
       "operation":"shift",
@@ -137,7 +134,6 @@ from (SELECT collection_id,collection_name,batch_id,batch_name,uuid,state,org_na
 enrolment_date,completion_date,progress,certificate_status,total_score,
 row_number() over (partition by collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
 enrolment_date,completion_date,progress,certificate_status,total_score) as rn from diksha_content_staging) sq Where rn =1""",
-"db_name":"""cqubedev""",
 "diksha_meta_jolt":"""[
   {
     "operation": "shift",
@@ -148,7 +144,6 @@ enrolment_date,completion_date,progress,certificate_status,total_score) as rn fr
     }
     }
 ]""",
-"db_connection_url":"""jdbc:postgresql://localhost:5432/""",
 "diksha_tpd_temp_tb":"""diksha_tpd_content_temp""",
 "diksha_tpd_stg_to_temp_qry":"""select ff_uuid,collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,
 enrolment_date,completion_date,progress,certificate_status,total_score  
@@ -159,7 +154,6 @@ uuid = diksha_null_col.count_null_uuid,
 school_id = diksha_null_col.count_null_school_id
 from diksha_null_col
 where diksha_null_col.ff_uuid = log_summary.ff_uuid""",
-"s3_secret_key":"""********""",
 "diksha_tpd_school_r2_jolt":"""[
    {
     "operation": "modify-overwrite-beta",
@@ -200,7 +194,6 @@ enrolment_date,completion_date,progress,certificate_status,total_score from diks
 where collection_id IS NULL
 OR uuid IS NULL
 OR school_id IS NULL""",
-"db_password":"""********""",
 "diksha_jolt_for_log_summary":"""[{
 		"operation": "shift",
 		"spec": {
@@ -277,7 +270,6 @@ from diksha_content_staging)""",
 
 ]""",
 "diksha_queries_filename":"""diksha_queries.json""",
-"s3_output_bucket":"""cqube-gj-output""",
 "diksha_temp_tb":"""diksha_content_temp""",
 "select_diksha_files_from_log_db":"""select * from log_summary where filename like '%diksha_data%'""",
 "diksha_tpd_cluster_r2_jolt":"""[
@@ -304,8 +296,6 @@ from diksha_content_staging)""",
   }
 
 ]""",
-"db_user":"""postgres""",
-"base_dir":"""/home/ubuntu/nifi/tmp""",
 "JoltTransformJSON_all_districts":"""[{
     "operation": "shift",
     "spec": {
