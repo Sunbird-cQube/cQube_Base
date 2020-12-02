@@ -8,7 +8,14 @@ router.post('/blockWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT heat map block wise api ---');
         let { year, month, grade, subject_name, exam_date, districtId, viewBy } = req.body
-        let fileName = `pat/heatChart/${year}/${month}/districts/${districtId}.json`;
+        let fileName = ''
+
+        if (grade == "") {
+            fileName = `pat/heatmap-summary/${year}/${month}/districts/${districtId}.json`;
+        } else {
+            fileName = `pat/heatChart/${year}/${month}/districts/${districtId}.json`;
+        }
+
         var data = await s3File.readS3File(fileName);
         if (districtId) {
             data = data.filter(val => {
@@ -49,7 +56,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         }
         // res.send(data)
         data = data.sort((a, b) => (a.block_name) > (b.block_name) ? 1 : -1)
-        let result = await helper.generalFun(data, 1, viewBy)
+        let result = await helper.generalFun(grade, data, 1, viewBy)
 
         logger.info('--- PAT heat map block wise response sent ---');
         res.status(200).send({ blockDetails, result, downloadData: data });
