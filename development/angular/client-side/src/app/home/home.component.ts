@@ -33,6 +33,8 @@ export class HomeComponent implements OnInit {
   public userType = localStorage.getItem('roleName') === "admin";
   public roleName;
 
+  // diksha columns
+  diksha_column = 'diksha_columns' in environment ? environment['diksha_columns'] : true
 
   //for coming soon page
   nifi_crc;

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { AppServiceComponent } from '../app.service';
 import { KeycloakSecurityService } from '../keycloak-security.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -74,13 +75,17 @@ export class DashboardComponent implements OnInit {
   nifi_pat;
   nifi_composite;
 
-
+  // diksha columns
+  diksha_column = 'diksha_columns' in environment ? environment['diksha_columns'] : true
+  
+  
   constructor(private router: Router, private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
     service.logoutOnTokenExpire();
     this.changeDataSourceStatus();
   }
 
   ngOnInit() {
+    console.log('diksha_columns' in environment);
     document.getElementById('spinner').style.display = 'none';
     document.getElementById('homeBtn').style.display = 'none';
     document.getElementById('backBtn').style.display = 'block';
