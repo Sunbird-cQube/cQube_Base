@@ -408,7 +408,9 @@
             </div>
         </div>
     </div>
-    <div class="row" style="padding: 20px">
+
+    <!-- ENERGISED TEXTBOOK USAGE rows -- added two blocks for enabling and disabling -->
+    <div *ngIf="diksha_column" class="row" style="padding: 20px">
         <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
             <div class="diksha">ENERGISED TEXTBOOK USAGE</div>
             <div class="row outer12">
@@ -517,6 +519,85 @@
             </div>
         </div>
     </div>
+
+    <div *ngIf="!diksha_column" class="row" style="padding: 20px;">
+        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="diksha">ENERGISED TEXTBOOK USAGE</div>
+            <div class="row outer12">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color: rgb(218, 193, 172);" id="ut"
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook']"
+                        (click)="fetchTelemetry($event,'ut')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="utTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Usage by </p>
+                                        <p class="card-title">Textbook</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="utViews;else other_content" id="views">views:
+                                        {{utViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color:  rgb(218, 193, 172);" id="utc"
+                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook-content']"
+                        (click)="fetchTelemetry($event,'utc')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="utcTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Usage by </p>
+                                        <p class="card-title">Textbook Content</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="utcViews;else other_content" id="views">views:
+                                        {{utcViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="row" style="padding: 20px;">
         <div class="col-lg-12 col-md-12 col-sm-12" style="padding:  0% 2% 0% 2%">
             <div class="diksha">STUDENT PERFORMANCE</div>
