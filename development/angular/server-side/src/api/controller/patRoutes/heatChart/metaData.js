@@ -9,7 +9,9 @@ router.post('/metaData', auth.authController, async (req, res) => {
         logger.info('---PAT meta data api ---');
         let fileName = `pat/heatChart/metaData.json`
         var data = await s3File.readS3File(fileName);
+        // data = data['grades'].sort((a, b) => (a.block_name) > (b.block_name) ? 1 : -1)
         data.map(a => {
+            a.data['grades'].sort((x, y) => (x.grade) > (y.grade) ? 1 : -1)
             a.data["viewBy"] = [
                 { key: "question_id", value: "Question Id" },
                 { key: "indicator", value: "Indicator" }

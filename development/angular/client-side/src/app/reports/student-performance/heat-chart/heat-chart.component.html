@@ -81,14 +81,14 @@
                 [(ngModel)]="grade" (change)="selectedGrade()">
                 <option [value]="grade" disabled selected="selected">Choose a Grade</option>
                 <option *ngFor="let grade of grades, let i =index" [(ngValue)]="grade.grade">
-                    <span *ngIf="grade.grade == 'all'; else other_content">
-                        All Grades
+                    <span *ngIf="grade.grade !== 'all'">
+                        Grade {{grade.grade}}
                     </span>
-                    <ng-template #other_content> Grade {{grade.grade}}</ng-template>
+                    <!-- <ng-template #other_content> Grade {{grade.grade}}</ng-template> -->
                 </option>
             </select>
 
-            <select [hidden]="" id="subject"
+            <select *ngIf="gradeSelected" [hidden]="" id="subject"
                 style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="subject" (change)="selectedSubject()">
                 <option [value]="subject" disabled selected="selected">Choose a Subject</option>
@@ -100,7 +100,7 @@
                 </option>
             </select>
 
-            <select [hidden]="" id="examDate"
+            <select *ngIf="gradeSelected" [hidden]="" id="examDate"
                 style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="examDate" (change)="selectedExamDate()">
                 <option [value]="examDate" disabled selected="selected">Choose an Examdate</option>
@@ -112,7 +112,7 @@
                 </option>
             </select>
 
-            <select id="viewBy"
+            <select *ngIf="gradeSelected" id="viewBy"
                 style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="viewBy" (change)="selectedViewBy()">
                 <option [value]="viewBy" disabled selected="selected">Choose View by</option>
