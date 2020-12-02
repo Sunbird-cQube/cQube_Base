@@ -8,5 +8,6 @@
 "diksha_api_summary_roll_up_api_token":''' ''',
 "diksha_api_summary_roll_up_x_channel_id":''' ''',
 "diksha_api_url_progress_exhaust":''' ''',
-"diksha_api_url_summary_roll_up":''' '''
+"diksha_api_url_summary_roll_up":''' ''',
+"diksha_columns":''' '''
 }
