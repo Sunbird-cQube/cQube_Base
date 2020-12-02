@@ -62,7 +62,8 @@ const generalFun = (grade, data, level, viewBy) => {
                 })
             }
             let finalData = []
-            let colors = colorsHelper.colors;
+
+            let colors = grade != "" ? colorsHelper.colors: colorsHelper.colors1
             var tooltipData = [];
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
