@@ -68,7 +68,7 @@ const generalFun = (grade, data, level, viewBy) => {
             if (grade == "") {
                 keys = Object.keys(colors);
             }
-            console.log(keys);
+            
             var tooltipData = [];
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
@@ -89,7 +89,7 @@ const generalFun = (grade, data, level, viewBy) => {
                     })
                     mark = mark ? parseFloat(mark.marks) : null;
 
-                    if (grade == "") {
+                    if (grade == "" && mark != null) {
                         var color = '';
                         for (let i = 0; i < keys.length; i++) {
                             if (mark <= keys[i]) {
