@@ -72,7 +72,7 @@ export class CompositReportComponent implements OnInit {
     this.myData = this.service.dist_wise_data().subscribe(res => {
       this.result = res;
       this.xAxis = Object.keys(this.result[0])[1];
-      this.yAxis = Object.keys(this.result[0])[1];
+      this.yAxis = Object.keys(this.result[0])[2];
       this.districtWise();
     }, err => {
       this.result = [];
