@@ -39,8 +39,8 @@ const generalFun = (grade, data, level, viewBy) => {
 
                 Promise.all(data.map(item => {
                     let date = item.exam_date.split('-')
-                    let label = date[0] + "-" + date[1] + "/"
-                        + "grade" + item.grade + "/"
+                    let label = "grade" + item.grade + "/"
+                        + date[0] + "-" + date[1] + "/"
                         + item.subject_name
 
                     label += grade != "" ? viewBy == "indicator" ? "/" + item.indicator : "/" + item.question_id : ''
@@ -63,7 +63,12 @@ const generalFun = (grade, data, level, viewBy) => {
             }
             let finalData = []
 
-            let colors = grade != "" ? colorsHelper.colors: colorsHelper.colors1
+            let colors = grade != "" ? colorsHelper.colors : colorsHelper.colors1
+            var keys;
+            if (grade == "") {
+                keys = Object.keys(colors);
+            }
+            console.log(keys);
             var tooltipData = [];
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
@@ -83,7 +88,22 @@ const generalFun = (grade, data, level, viewBy) => {
 
                     })
                     mark = mark ? parseFloat(mark.marks) : null;
-                    finalData.push({ x: y, y: index, value: mark, color: colors[mark] })
+
+                    if (grade == "") {
+                        var color = '';
+                        for (let i = 0; i < keys.length; i++) {
+                            if (mark <= keys[i]) {
+                                color = colors[keys[i]];
+                                break;
+                            } else if (mark > keys[i] && mark <= keys[i + 1]) {
+                                color = colors[keys[i + 1]];
+                                break;
+                            }
+                        }
+                        finalData.push({ x: y, y: index, value: mark, color: color })
+                    } else {
+                        finalData.push({ x: y, y: index, value: mark, color: colors[mark] })
+                    }
                 }
             })).then(() => {
                 let arrNew = Object.keys(arr).map(a => {
