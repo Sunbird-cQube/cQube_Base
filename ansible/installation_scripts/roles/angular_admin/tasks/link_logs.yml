@@ -19,6 +19,7 @@
     dest: "{{ base_dir }}/cqube/logs/{{ item.dest }}"
     state: link
     force: yes
+    follow: false
   with_items:
     - { src: "{{base_dir}}/cqube/nifi/nifi/logs/nifi-app.log", dest: "nifi-app.log" }
     - { src: "{{base_dir}}/cqube/nifi/nifi/logs/nifi-bootstrap.log", dest: "nifi-bootstrap.log" }

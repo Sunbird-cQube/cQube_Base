@@ -48,6 +48,8 @@ export class HeatChartComponent implements OnInit {
   blok = false;
   clust = false;
 
+  gradeSelected = false
+
   // to set hierarchy values
   districtHierarchy: any;
   blockHierarchy: any;
@@ -88,7 +90,7 @@ export class HeatChartComponent implements OnInit {
       };
       this.month = this.months[this.months.length - 1];
       this.examDates = this.metaData[i].data['months'][`${this.month}`]['examDate'];
-      this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
+      this.grades = [...this.grades.filter(item => item !== { grade: "all" })];
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
       this.commonFunc();
@@ -107,7 +109,7 @@ export class HeatChartComponent implements OnInit {
       }
     };
     this.examDates = metaData[i].data['months'][`${this.month}`]['examDate'];
-    this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
+    this.grades = [...this.grades.filter(item => item !== { grade: "all" })];
     this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
     this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
   }
@@ -128,6 +130,7 @@ export class HeatChartComponent implements OnInit {
     this.examDate = 'all';
     this.subject = 'all';
     this.viewBy = 'indicator';
+    this.gradeSelected = false;
     this.district = undefined;
     this.block = undefined;
     this.cluster = undefined;
@@ -164,7 +167,7 @@ export class HeatChartComponent implements OnInit {
     })
   }
 
-  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, viewBy, level, xLabel1, yLabel1, tooltipData) => {
+  chartFun = (xLabel, xLabelId, yLabel, zLabel, data, viewBy, level, xLabel1, yLabel1, tooltipData, grade) => {
     let scrollBarX
     let scrollBarY
 
@@ -270,12 +273,12 @@ export class HeatChartComponent implements OnInit {
       },
       tooltip: {
         formatter: function () {
-          return '<b>' + getPointCategoryName(this.point, 'y', viewBy, level) + '</b>';
+          return '<b>' + getPointCategoryName(this.point, 'y', viewBy, level, grade) + '</b>';
         }
       },
     });
 
-    function getPointCategoryName(point, dimension, viewBy, level) {
+    function getPointCategoryName(point, dimension, viewBy, level, grades) {
       var series = point.series,
         isY = dimension === 'y',
         axis = series[isY ? 'yAxis' : 'xAxis'];
@@ -328,7 +331,7 @@ export class HeatChartComponent implements OnInit {
       obj += `<br> <b>Grade: ${grade}</b>
         <br> <b>Subject: ${subject}</b>
         <br> <b>ExamDate: ${exam_date}</b>
-        <br> ${viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>`}
+        <br> ${grades !="all" ? viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>`: ''}
         <br> <b>Total Schools: ${totalSchools}</b>
         <br> <b>Total Students: ${totalStudents}</b>
         <br> <b>Students Attended: ${studentAttended}</b>
@@ -352,6 +355,7 @@ export class HeatChartComponent implements OnInit {
 
   selectedGrade() {
     this.fileName = "Grade_wise_report";
+    this.gradeSelected = true
     this.levelWiseFilter();
   }
 
@@ -535,7 +539,7 @@ export class HeatChartComponent implements OnInit {
     }
     let xLabel1 = xLabel
     let yLabel1 = yLabel
-    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, a.viewBy, this.level, xLabel1, yLabel1, response['result']['tooltipData']);
+    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, a.viewBy, this.level, xLabel1, yLabel1, response['result']['tooltipData'], this.grade);
   }
 
   //level wise filter

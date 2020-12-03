@@ -11,6 +11,13 @@ check_length(){
     fi
 }
 
+check_timeout()
+{
+  if [[ ! $2 -ge 30 && $2 -le 720 ]]; then
+    echo "Error - Invalid Timeout value. Please enter number of minutes between 30 and 720."; fail=1
+  fi
+}
+
 check_state()
 {
 state_found=0
@@ -231,9 +238,9 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("state_code" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
+declare -a arr=("diksha_columns" "state_code" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
-		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp") 
+		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" "session_timeout") 
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -259,7 +266,14 @@ do
 key=$i
 value=${vals[$key]}
 case $key in
-
+   
+   diksha_columns)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_kc_config_otp $key $value
+       fi
+       ;;
    state_code)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
@@ -376,6 +390,13 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check. Recommended value is ap-south-1"; fail=1
        else
            check_aws_default_region
+       fi
+       ;;
+   session_timeout)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_timeout $key $value
        fi
        ;;
    *)

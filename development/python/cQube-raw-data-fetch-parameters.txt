@@ -8,5 +8,9 @@
 "diksha_api_summary_roll_up_api_token":''' ''',
 "diksha_api_summary_roll_up_x_channel_id":''' ''',
 "diksha_api_url_progress_exhaust":''' ''',
-"diksha_api_url_summary_roll_up":''' '''
+"diksha_api_url_summary_roll_up":''' ''',
+"diksha_columns":''' ''',
+"diksha_data_summary_select_less_columns":'''select "Date",dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_subject,content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,collection_type,collection_medium,collection_subject,collection_created_for,total_count,total_timespent  from flowfile''',
+"diksha_data_summary_select_all_columns":'''select "Date",dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_timespent from flowfile'''
+
 }
