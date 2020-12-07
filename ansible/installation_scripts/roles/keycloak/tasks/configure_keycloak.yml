@@ -109,6 +109,34 @@
     executable: /bin/bash
   tags: [ install, update ] 
 
+# 1.7 update - keycloak access token timeout changes
+
+- name: Creating the template to update the timeout
+  template:
+    src: cQube_realm_timeout.json.j2
+    dest: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm_timeout.json"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    mode: '0644'
+  tags: [ install, update ]
+
+- name: Getting the clients list
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh get clients -r {{ realm_name }} --fields id,clientId --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    executable: /bin/bash
+  register: clients_list
+  tags: [ install, update ]
+
+- name: debuging
+  shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh update clients/{{ item.id }} -r {{ realm_name }} -f {{ cQube_realm_timeout_json }} --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
+  args:
+    chdir: /bin/bash
+  when: item.clientId == angular_app_client_id
+  loop: '{{ clients_list.stdout }}'
+  tags: [ install, update ]
+
+# End of 1.7 update
+
 - name: Adding the client roles to admin realm role
   shell: "{{ base_dir }}/cqube/keycloak/bin/kcadm.sh add-roles -r {{ realm_name }} --rname {{ admin_role }} --cclientid realm-management --rolename manage-users --rolename manage-realm --no-config --server http://localhost:8080/auth --realm master --user {{ keycloak_adm_user }} --password {{ keycloak_adm_passwd }}"
   args:

@@ -20,9 +20,31 @@ fi
 
 check_timeout()
 {
-  if [[ ! $2 -ge 30 && $2 -le 720 ]]; then
-    echo "Error - Invalid Timeout value. Please enter number of minutes between 30 and 720."; fail=1
-  fi
+  if [[ $2 =~ ^[0-9]+[M|D]$  ]] ; then
+        raw_value="$( echo "$2" | sed -e 's/[M|D]$//' )"
+        if [[ ! $raw_value == 0 ]]; then
+		    if [[ $2 =~ M$ ]] ; then
+		    	if [[ $raw_value -ge 30 && $raw_value -le 5256000 ]]; then 
+		    		timeout_value=$(($raw_value*60))
+		    	else
+		    		echo "Minutes should be between 30 and 5256000" 
+		    	fi
+		    fi
+		    if [[ $2 =~ D$ ]] ; then
+		    	if [[ $raw_value -ge 1 && $raw_value -le 3650 ]]; then 
+		    		timeout_value=$(($raw_value*24*60*60))
+		    	else
+		    		echo "Days should be between 1 and 3650"
+		    	fi
+		    fi
+		else
+			echo "error should not be 0"
+	    fi
+    else
+        echo "please enter proper value"
+    fi
+sed -i '/session_timeout_in_seconds:/d' roles/keycloak/vars/main.yml
+echo "session_timeout_in_seconds: $timeout_value" >> roles/keycloak/vars/main.yml
 }
 
 check_state()
