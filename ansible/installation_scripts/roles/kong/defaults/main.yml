@@ -1,0 +1,20 @@
+---
+
+sansible_kong_access_log_format: combined  # or json
+kong_admin_api_listen: 0.0.0.0:8001
+kong_db_host: localhost
+kong_db_name: kong
+kong_db_password: kong
+kong_db_port: 5432
+sansible_kong_db_root_password: ~
+sansible_kong_db_root_user: ~
+kong_db_user: kong
+kong_dependencies:
+  - apt-transport-https 
+  - curl 
+  - lsb-core
+sansible_kong_nginx_template: default_nginx.template
+kong_proxy_listen: 0.0.0.0:8000
+kong_proxy_listen_ssl: 0.0.0.0:8443
+sansible_kong_startup_requires: postgresql  # or ~ or cassandra
+sansible_kong_version: 0.9.*

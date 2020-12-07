@@ -19,7 +19,7 @@ state_code:                               # Enter the 2 character (upper case) s
 #Enter the value as `true`,  if content_gradelevel & collection_gradelevel columns are available.
 #Enter the value as `false`, if content_gradelevel & collection_gradelevel columns are not available.
 
-diksha_columns: false                     # Enter `true` or `false`. 
+diksha_columns:                     # Enter `true` or `false`. 
 
 system_user_name:                         # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
 

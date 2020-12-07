@@ -1,0 +1,66 @@
+---
+
+- name: Update apt cache - Kong
+  become: yes
+  apt:
+    update_cache: true
+
+- name: Install Kong Dependencies
+  become: yes
+  apt:
+    name: "{{ kong_dependencies }}"
+    state: present
+
+- name: Add BinTray deb repository
+  become: yes
+  apt_repository:
+    repo: "deb https://kong.bintray.com/kong-deb {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+    mode: "0644"
+
+- name: Import Grafana GPG signing key [Debian/Ubuntu]
+  apt_key:
+    url: "https://bintray.com/user/downloadSubjectPublicKey?username=bintray"
+    state: present
+    validate_certs: true
+
+- name: "Install Kong"
+  become: yes
+  apt:
+    name: "kong"
+    force: yes  
+    state: present
+#config
+- name: Ensure database is created
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ kong_db_name}}"
+    encoding: 'UTF-8'
+    state: present
+  tags: install
+
+- name: Ensure Kong DB user
+  become: true
+  become_user: postgres
+  postgresql_user:
+    db: "{{ kong_db_name }}"
+    name: "{{ kong_db_user }}"
+    password: "{{ kong_db_password }}"
+    priv: "ALL"
+    state: present
+
+## this part missing
+## kong migrations bootstrap [-c /path/to/kong.conf]
+
+- name: Write kong config
+  become: yes
+  template:
+    dest: /etc/kong/kong.conf
+    group: root
+    mode: 0644
+    owner: root
+    src: kong.conf.j2
+
+
