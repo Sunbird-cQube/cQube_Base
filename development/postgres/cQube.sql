@@ -4157,6 +4157,20 @@ count_null_studying_class int,
 count_null_obtained_marks int
 );
 
+create table if not exists pat_trans_null_col(
+filename varchar(200) ,
+ff_uuid varchar(200),
+count_null_exam_id int,
+count_null_question_id int,
+count_null_exam_code int,
+count_null_exam_date int,
+count_null_id int,
+count_null_student_uid int,
+count_null_school_id int,
+count_null_studying_class int,
+count_null_obtained_marks int
+);
+
 create table if not exists periodic_exam_mst_dup(
 exam_id	int,
 assessment_year	varchar(20),
