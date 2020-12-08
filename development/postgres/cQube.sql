@@ -4552,4 +4552,16 @@ alter table diksha_tpd_agg drop column IF EXISTS percentage_teachers;
 create table  if not exists diksha_api_meta (request_id text,encryption_key text,batch_id text,channel_id text,from_date date,to_date date,request_status text,
 cqube_process_status text,expiry_time timestamp,requested_on timestamp,dataset text,request_channel text, ff_uuid text primary key);
 
+ALTER TABLE school_tmp ALTER COLUMN created_on DROP NOT NULL;
+ALTER TABLE school_tmp ALTER COLUMN updated_on DROP NOT NULL;
+ALTER TABLE school_master ALTER COLUMN created_on DROP NOT NULL;
+ALTER TABLE school_master ALTER COLUMN updated_on DROP NOT NULL;
+ALTER TABLE school_management_master ALTER COLUMN created_on DROP NOT NULL;
+ALTER TABLE school_management_master ALTER COLUMN updated_on DROP NOT NULL;
+ALTER TABLE school_category_master ALTER COLUMN created_on DROP NOT NULL;
+ALTER TABLE school_category_master ALTER COLUMN updated_on DROP NOT NULL;
+ALTER TABLE school_medium_master ALTER COLUMN created_on DROP NOT NULL;
+ALTER TABLE school_medium_master ALTER COLUMN updated_on DROP NOT NULL;
+
+
 
