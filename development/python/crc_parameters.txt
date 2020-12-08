@@ -290,7 +290,7 @@ group by district_id,visit_count) d group by district_id) t on s.district_id=t.d
 "crc_inspec_null_table":"""crc_inspec_null_col""",
 "crc_insp_not_null":"""select * from flowfile
 where SchoolId IS NOT NULL
-OR InspectionId IS NOT NULL
+AND InspectionId IS NOT NULL
 """,
 "unique_crc_loc_records":"""select UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
 from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(*)
