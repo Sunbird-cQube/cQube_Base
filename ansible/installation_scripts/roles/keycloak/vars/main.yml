@@ -24,3 +24,7 @@ cQube_realm_config_otp_json: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_r
 # Login Theme variables
 login_theme_name: cqube_themes
 
+# Session timeout variable in seconds
+cQube_realm_timeout_json: "{{ base_dir }}/cqube/keycloak/kc_templates/cQube_realm_timeout.json"
+session_timeout_in_seconds: 1800
+

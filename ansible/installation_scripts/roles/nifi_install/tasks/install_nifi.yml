@@ -80,7 +80,8 @@
     - crc_queries.json
     - student_attendance_queries.json
     - student_assessment_queries.json
-    - diksha_queries.json
+    - diksha_queries_all.json
+    - diksha_queries_less.json
     - composite_queries.json
     - pat_queries.json
     - udise_queries.json

@@ -12,7 +12,11 @@
 
 - name: Add BinTray deb repository
   become: yes
-  shell: echo "deb https://kong.bintray.com/kong-deb {{ ansible_distribution_release }} main" | sudo tee -a /etc/apt/sources.list
+  apt_repository:
+    repo: "deb https://kong.bintray.com/kong-deb {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+    mode: "0644"
 
 - name: Import Grafana GPG signing key [Debian/Ubuntu]
   apt_key:
@@ -23,11 +27,10 @@
 - name: "Install Kong"
   become: yes
   apt:
-    update_cache: true
     name: "kong"
     force: yes  
     state: present
-
+#config
 - name: Ensure database is created
   become: true
   become_user: postgres
@@ -47,16 +50,8 @@
     priv: "ALL"
     state: present
 
-- name: Inserting configuration in pg_hba.conf file
-  lineinfile:
-    path: /etc/postgresql/10/main/pg_hba.conf
-    line: "host    all     kong       127.0.0.1/32      trust"
-    insertafter: "host    all             postgres             127.0.0.1/32            trust"
-
-- name: postgresql systemd service restart
-  service:
-    name: postgresql
-    state: restarted
+## this part missing
+## kong migrations bootstrap [-c /path/to/kong.conf]
 
 - name: Write kong config
   become: yes
@@ -66,27 +61,5 @@
     mode: 0644
     owner: root
     src: kong.conf.j2
-
-- name: kong migrations bootstrap
-  shell: kong migrations bootstrap -c /etc/kong/kong.conf
-
-- name: kong systemd setup
-  template:
-    owner: root
-    group: root
-    mode: 0644
-    src: kong.service.j2
-    dest: /etc/systemd/system/kong.service
-
-- name: reload systemd
-  become: yes
-  shell: systemctl daemon-reload
-
-- name: kong systemd service enable and start
-  service: 
-    name: kong
-    enabled: yes
-    state: started
-
 
 

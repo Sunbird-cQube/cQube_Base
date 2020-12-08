@@ -16,22 +16,12 @@ emission_url= emission_url
 if emission_url[-1]!='/':
     emission_url+='/'
 headers = { "Content-Type" : "application/json" }
-payload = { "username": username,"password": password }
-
-def get_access_token(emission_url,headers,payload):
-    """Login to cQube data emission server and get the access token"""
-    req = requests.post(emission_url+'auth', headers = headers, data= json.dumps(payload))
-    try:
-        access_token = req.json()
-    except Exception as err:
-        logging.error("username {} error{}".format(payload["username"],err))
-        exit()
-    return access_token
+access_token=access_token
 
 def get_s3_url(filename,access_token):
     """creates one time pre-signed s3 url with given filename"""
     s3_url = emission_url+"upload-url"
-    headers = { "Authorization" :"Bearer " + access_token['access_token']}
+    headers = { "Authorization" :"Bearer " + access_token}
     payload = { "filename": filename }
     res_s3_url = requests.post(s3_url, headers = headers, data=payload)
     return res_s3_url
@@ -56,7 +46,6 @@ def abs_file_path(file_path):
 
 def main():
     file_list = abs_file_path(file_path)
-    access_token = get_access_token(emission_url,headers,payload)
     if isdir(file_path):
         filelist = abs_file_path(file_path)
         for full_path,rel_path in filelist:

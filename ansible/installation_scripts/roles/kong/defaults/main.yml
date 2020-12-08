@@ -15,7 +15,6 @@ kong_dependencies:
   - lsb-core
 sansible_kong_nginx_template: default_nginx.template
 kong_proxy_listen: 0.0.0.0:8000
-kong_proxy_listen_ssl: 0.0.0.0:8444
+kong_proxy_listen_ssl: 0.0.0.0:8443
 sansible_kong_startup_requires: postgresql  # or ~ or cassandra
-kong_service_config: {"name":"flask-api","url":"http://localhost:5000"}
-kong_route_obj: {"hosts":["localhost"],"paths":["/diksha_api","/infra_score"],"strip_path":false,"methods":["GET"]}
+sansible_kong_version: 0.9.*
