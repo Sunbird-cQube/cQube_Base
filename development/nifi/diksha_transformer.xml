@@ -13927,9 +13927,9 @@ where ff_uuid='${ff_uuid}';</value>
         <value>wn.*</value>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
+<runDurationMillis>25</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>60 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -14708,7 +14708,8 @@ where ff_uuid='${ff_uuid}';</value>
     </entry>
     <entry>
         <key>diksha</key>
-        <value>${filename:startsWith('diksha')}</value>
+        <value>${filename:startsWith('diksha_data'):or(
+${filename:startsWith('diksha_tpd')} )}</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -15050,60 +15051,65 @@ filename,
 ff_uuid,
 blank_lines,
 duplicate_records,
-attendance_id,
-student_id,
-school_id,
-"year",
-"month", 
-semester,
-grade,
-inspection_id,
-in_school_location,
-created_on,
-school_name,
-cluster_name,
-block_name ,
-district_name ,
-cluster_id ,
-block_id ,
-district_id ,
-latitude ,
-longitude ,
-process_start_time,
 datatype_mismatch,
+total_time_spent,
+content_view_date,
+dimensions_pdata_id,
+dimensions_pdata_pid,
+content_name,
+content_board, 
+content_mimetype,
+content_medium,
+content_gradelevel,
+content_subject,
+content_created_for,
+object_id,
+object_rollup_l1,
+derived_loc_state ,
+derived_loc_district ,
+user_signin_type ,
+user_login_type ,
+collection_type ,
+collection_created_for ,
+total_count ,
+processed_records,
+process_start_time,
+uuid,
 collection_id,
-uuid
+school_id
 )
 VALUES
 (
 '${emission_filename:substringAfter('/')}',
 '${source.uuid}',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0', 
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
-'0',
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0, 
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
 '${now():format("yyyy-MM-dd HH:mm:ss")}',
-'0',
-'0',
-'0'
-) </value>
+0,
+0,
+0)</value>
     </entry>
     <entry>
         <key>Support Fragmented Transactions</key>
@@ -22964,7 +22970,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
 <x>-1656.0</x>
-<y>-880.0</y>
+<y>-832.0</y>
                             </bends>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
@@ -24766,8 +24772,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-2392.0</x>
-<y>-520.0</y>
+<x>-2416.0</x>
+<y>-480.0</y>
                             </bends>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
@@ -27504,8 +27510,8 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_count_null_value},'None'
                             <id>03df2f06-192c-351f-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>-1680.0</x>
-<y>-680.0</y>
+<x>-1640.0</x>
+<y>-672.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -30724,7 +30730,7 @@ ${query_type:startsWith('diksha_table_txtb_last_day'):ifElse('diksha/table_repor
 ${query_type:startsWith('diksha_table_txtb_last_7_days'):ifElse('diksha/table_reports/textbook/last_7_days/${type}.json',
 ${query_type:startsWith('diksha_table_txtb_last_30_days'):ifElse('diksha/table_reports/textbook/last_30_days/${type}.json',
 ${query_type:startsWith('diksha_table_txtb_all'):ifElse('diksha/table_reports/textbook/${type}.json',
-${query_type:startsWith('diksha_table_txtb_meta'):ifElse('diksha/table_reports/textbook/diksha_metadata.json',
+${query_type:startsWith('diksha_table_txtb_meta'):ifElse('diksha/table_reports/diksha_metadata.json',
 ${query_type:startsWith('diksha_table_crs_last_day'):ifElse('diksha/table_reports/course/last_day/${type}.json',
 ${query_type:startsWith('diksha_table_crs_last_7_days'):ifElse('diksha/table_reports/course/last_7_days/${type}.json',
 ${query_type:startsWith('diksha_table_crs_last_30_days'):ifElse('diksha/table_reports/course/last_30_days/${type}.json',
@@ -30902,7 +30908,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('diksha_tpd/repor
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -30921,7 +30927,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('diksha_tpd/repor
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>5</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>release-signal-id</key>
@@ -30989,9 +30995,9 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('diksha_tpd/repor
         <key>attribute-cache-regex</key>
     </entry>
 </properties>
-<runDurationMillis>2000</runDurationMillis>
+<runDurationMillis>25</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -33094,7 +33100,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
     </entry>
     <entry>
         <key>putsql-sql-statement</key>
-        <value>update log_summary set processed_records= ${processed_records} where ff_uuid='${zip_identifier}'</value>
+        <value>update log_summary set processed_records=${processed_records} where ff_uuid='${zip_identifier}'</value>
     </entry>
     <entry>
         <key>Support Fragmented Transactions</key>
@@ -35851,7 +35857,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -36048,7 +36054,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>4</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>Database Connection Pooling Service</key>
@@ -36166,7 +36172,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -36180,7 +36186,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -36601,7 +36607,7 @@ ${query_type:startsWith('diksha_tpd_school_wise'):ifElse('/time_range','/type')}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -36701,7 +36707,7 @@ ${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_select_less_column
 <autoTerminate>true</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -36807,7 +36813,7 @@ ${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_select_less_column
         <value>${filename:startsWith('diksha_data_summary'):ifElse(${diksha_columns:equals('true'):ifElse(#{diksha_data_summary_all_tmp_to_trans},
 ${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_less_tmp_to_trans},'None')}
 )},
-${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_stg_to_temp_qry},'None')}
+${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_temp_to_trans_fn},'None')}
 )}</value>
     </entry>
     <entry>
@@ -38244,5 +38250,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/08/2020 11:00:49 IST</timestamp>
+    <timestamp>12/08/2020 23:27:40 IST</timestamp>
 </template>
