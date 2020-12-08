@@ -113,7 +113,7 @@ export class HeatChartComponent implements OnInit {
     }
     this.examDates = metaData[i].data['months'][`${this.month}`]['examDate'];
     this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
-    this.grades = [...this.grades.filter(item => item !== { grade: "all" })];
+    this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
     this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
   }
 
@@ -125,20 +125,7 @@ export class HeatChartComponent implements OnInit {
 
   resetToInitPage() {
     this.fileName = "District_wise_report";
-    this.skul = true;
-    this.dist = false;
-    this.blok = false;
-    this.clust = false;
-    this.grade = 'all';
-    this.examDate = 'all';
-    this.subject = 'all';
-    this.viewBy = 'indicator';
-    this.gradeSelected = false;
-    this.district = undefined;
-    this.block = undefined;
-    this.cluster = undefined;
-    this.blockHidden = true;
-    this.clusterHidden = true;
+    this.resetOnAllGrades();
     this.year = this.years[this.years.length - 1];
     this.commonFunc();
 
@@ -361,6 +348,7 @@ export class HeatChartComponent implements OnInit {
   selectedMonth() {
     this.fileName = "Month_wise_report";
     this.fetchFilters(this.metaData);
+    this.grade = 'all';
     this.examDate = 'all';
     this.subject = 'all';
     document.getElementById('home').style.display = 'none';
@@ -371,9 +359,31 @@ export class HeatChartComponent implements OnInit {
       alert("Please select month!");
     } else {
       this.fileName = "Grade_wise_report";
-      this.gradeSelected = true
+      if (this.grade !== 'all') {
+        this.gradeSelected = true;
+      } else {
+        this.resetOnAllGrades();
+      }
       this.levelWiseFilter();
     }
+  }
+
+  resetOnAllGrades(){
+    this.level = 'district';
+        this.skul = true;
+        this.dist = false;
+        this.blok = false;
+        this.clust = false;
+        this.grade = 'all';
+        this.examDate = 'all';
+        this.subject = 'all';
+        this.viewBy = 'indicator';
+        this.gradeSelected = false;
+        this.district = undefined;
+        this.block = undefined;
+        this.cluster = undefined;
+        this.blockHidden = true;
+        this.clusterHidden = true;
   }
 
   selectedSubject() {
@@ -539,43 +549,43 @@ export class HeatChartComponent implements OnInit {
 
   genericFunction(response) {
     this.reportData = [];
-      var xlab = [];
-      var ylab = [];
-      let a = {
-        viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
+    var xlab = [];
+    var ylab = [];
+    let a = {
+      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
+    }
+    let yLabel = response['result']['yLabel']
+    let xLabel = response['result']['xLabel']
+    let xLabelId = response['result']['xLabelId']
+    let data = response['result']['data']
+    let zLabel = response['result']['zLabel']
+    this.reportData = response['downloadData']
+    if (response['districtDetails']) {
+      let districts = response['districtDetails'];
+      this.districtNames = districts.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
+    }
+    if (response['blockDetails']) {
+      let blocks = response['blockDetails'];
+      this.blockNames = blocks.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
+    }
+    if (response['clusterDetails']) {
+      let clusters = response['clusterDetails'];
+      this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
+    }
+    if (xLabel.length <= 30) {
+      for (let i = 0; i <= 30; i++) {
+        xlab.push(xLabel[i] ? xLabel[i] : ' ')
       }
-      let yLabel = response['result']['yLabel']
-      let xLabel = response['result']['xLabel']
-      let xLabelId = response['result']['xLabelId']
-      let data = response['result']['data']
-      let zLabel = response['result']['zLabel']
-      this.reportData = response['downloadData']
-      if (response['districtDetails']) {
-        let districts = response['districtDetails'];
-        this.districtNames = districts.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
-      }
-      if (response['blockDetails']) {
-        let blocks = response['blockDetails'];
-        this.blockNames = blocks.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
-      }
-      if (response['clusterDetails']) {
-        let clusters = response['clusterDetails'];
-        this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
-      }
-      if (xLabel.length <= 30) {
-        for (let i = 0; i <= 30; i++) {
-          xlab.push(xLabel[i] ? xLabel[i] : ' ')
-        }
-      }
+    }
 
-      if (yLabel.length <= 12) {
-        for (let i = 0; i <= 12; i++) {
-          ylab.push(yLabel[i] ? yLabel[i] : ' ')
-        }
+    if (yLabel.length <= 12) {
+      for (let i = 0; i <= 12; i++) {
+        ylab.push(yLabel[i] ? yLabel[i] : ' ')
       }
-      let xLabel1 = xLabel
-      let yLabel1 = yLabel
-      this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, a.viewBy, this.level, xLabel1, yLabel1, response['result']['tooltipData'], this.grade);
+    }
+    let xLabel1 = xLabel
+    let yLabel1 = yLabel
+    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, a.viewBy, this.level, xLabel1, yLabel1, response['result']['tooltipData'], this.grade);
   }
 
   //level wise filter
