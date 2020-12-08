@@ -90,7 +90,7 @@ export class HeatChartComponent implements OnInit {
       };
       this.month = this.months[this.months.length - 1];
       this.examDates = this.metaData[i].data['months'][`${this.month}`]['examDate'];
-      this.grades = [...this.grades.filter(item => item !== { grade: "all" })];
+      this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
       this.commonFunc();
@@ -107,11 +107,14 @@ export class HeatChartComponent implements OnInit {
         this.allViews = metaData[i].data['viewBy'];
         break;
       }
-    };
+    }
+    if (!this.months.includes(this.month)) {
+      this.month = this.months[this.months.length - 1];
+    }
     this.examDates = metaData[i].data['months'][`${this.month}`]['examDate'];
-    this.grades = [...this.grades.filter(item => item !== { grade: "all" })];
-    this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
     this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
+    this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
+    this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
   }
 
   ngOnInit(): void {
@@ -122,30 +125,18 @@ export class HeatChartComponent implements OnInit {
 
   resetToInitPage() {
     this.fileName = "District_wise_report";
-    this.skul = true;
-    this.dist = false;
-    this.blok = false;
-    this.clust = false;
-    this.grade = 'all';
-    this.examDate = 'all';
-    this.subject = 'all';
-    this.viewBy = 'indicator';
-    this.gradeSelected = false;
-    this.district = undefined;
-    this.block = undefined;
-    this.cluster = undefined;
-    this.blockHidden = true;
-    this.clusterHidden = true;
+    this.resetOnAllGrades();
     this.year = this.years[this.years.length - 1];
-    this.month = this.months[this.months.length - 1];
-    document.getElementById('home').style.display = 'none';
     this.commonFunc();
+
+    document.getElementById('home').style.display = 'none';
   }
 
   commonFunc = () => {
     this.commonService.errMsg();
     this.level = 'district';
     this.reportData = [];
+    this.fetchFilters(this.metaData);
     let a = {
       year: this.year,
       month: this.month,
@@ -154,6 +145,7 @@ export class HeatChartComponent implements OnInit {
       exam_date: this.examDate == 'all' ? '' : this.examDate,
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
     }
+    this.month = a.month;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -161,12 +153,15 @@ export class HeatChartComponent implements OnInit {
       this.genericFunction(response);
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
       this.reportData = [];
-      this.commonService.loaderAndErr(this.districtNames);
+      this.commonService.loaderAndErr(this.reportData);
+      if (this.chart) {
+        this.chart.destroy();
+      }
     })
   }
 
+  chart;
   chartFun = (xLabel, xLabelId, yLabel, zLabel, data, viewBy, level, xLabel1, yLabel1, tooltipData, grade) => {
     let scrollBarX
     let scrollBarY
@@ -186,7 +181,7 @@ export class HeatChartComponent implements OnInit {
       xLabel[i] = xLabel[i].substr(0, 15);
     }
     // var options: Highcharts.Options = 
-    Highcharts.chart('container', {
+    this.chart = Highcharts.chart('container', {
       chart: {
         type: 'heatmap'
       },
@@ -331,7 +326,7 @@ export class HeatChartComponent implements OnInit {
       obj += `<br> <b>Grade: ${grade}</b>
         <br> <b>Subject: ${subject}</b>
         <br> <b>ExamDate: ${exam_date}</b>
-        <br> ${grades !="all" ? viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>`: ''}
+        <br> ${grades != "all" ? viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>` : ''}
         <br> <b>Total Schools: ${totalSchools}</b>
         <br> <b>Total Students: ${totalStudents}</b>
         <br> <b>Students Attended: ${studentAttended}</b>
@@ -343,35 +338,79 @@ export class HeatChartComponent implements OnInit {
 
   selectedYear() {
     document.getElementById('home').style.display = 'none';
+    this.month = '';
+    this.examDate = 'all';
+    this.subject = 'all';
     this.fetchFilters(this.metaData);
     this.levelWiseFilter();
   }
 
   selectedMonth() {
     this.fileName = "Month_wise_report";
+    this.fetchFilters(this.metaData);
+    this.grade = 'all';
+    this.examDate = 'all';
+    this.subject = 'all';
     document.getElementById('home').style.display = 'none';
     this.levelWiseFilter();
   }
-
   selectedGrade() {
-    this.fileName = "Grade_wise_report";
-    this.gradeSelected = true
-    this.levelWiseFilter();
+    if (!this.month) {
+      alert("Please select month!");
+    } else {
+      this.fileName = "Grade_wise_report";
+      if (this.grade !== 'all') {
+        this.gradeSelected = true;
+      } else {
+        this.resetOnAllGrades();
+      }
+      this.levelWiseFilter();
+    }
+  }
+
+  resetOnAllGrades(){
+    this.level = 'district';
+        this.skul = true;
+        this.dist = false;
+        this.blok = false;
+        this.clust = false;
+        this.grade = 'all';
+        this.examDate = 'all';
+        this.subject = 'all';
+        this.viewBy = 'indicator';
+        this.gradeSelected = false;
+        this.district = undefined;
+        this.block = undefined;
+        this.cluster = undefined;
+        this.blockHidden = true;
+        this.clusterHidden = true;
   }
 
   selectedSubject() {
-    this.fileName = "Subject_wise_report";
-    this.levelWiseFilter();
+    if (!this.month) {
+      alert("Please select month!");
+    } else {
+      this.fileName = "Subject_wise_report";
+      this.levelWiseFilter();
+    }
   }
 
   selectedExamDate() {
-    this.fileName = "ExamDate_wise_report";
-    this.levelWiseFilter();
+    if (!this.month) {
+      alert("Please select month!");
+    } else {
+      this.fileName = "ExamDate_wise_report";
+      this.levelWiseFilter();
+    }
   }
 
   selectedViewBy() {
-    this.fileName = "ViewBy_report";
-    this.levelWiseFilter();
+    if (!this.month) {
+      alert("Please select month!");
+    } else {
+      this.fileName = "ViewBy_report";
+      this.levelWiseFilter();
+    }
   }
 
   selectedDistrict(districtId) {
@@ -408,9 +447,11 @@ export class HeatChartComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart) {
+        this.chart.destroy();
+      }
     })
 
   }
@@ -453,9 +494,11 @@ export class HeatChartComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart) {
+        this.chart.destroy();
+      }
     })
   }
 
@@ -496,13 +539,16 @@ export class HeatChartComponent implements OnInit {
 
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart) {
+        this.chart.destroy();
+      }
     })
   }
 
   genericFunction(response) {
+    this.reportData = [];
     var xlab = [];
     var ylab = [];
     let a = {

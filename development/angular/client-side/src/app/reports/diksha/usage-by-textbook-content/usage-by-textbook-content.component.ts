@@ -77,7 +77,7 @@ export class UsageByTextbookContentComponent implements OnInit {
     this.all = true
     this.dist = false;
     this.timeDetails = [];
-    this.service.dikshaMetaData().subscribe(async result => {
+    this.service.dikshaTableMetaData().subscribe(async result => {
       this.districtsDetails = result['districtDetails']
       await result['timeRange'].forEach((element) => {
         var obj = { timeRange: element, name: this.changeingStringCases(element.replace(/_/g, ' ')) }

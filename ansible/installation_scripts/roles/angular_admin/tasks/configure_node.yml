@@ -66,6 +66,7 @@
       SYSTEM_USERNAME = {{ system_user_name }}
       LOG= "console"
       LOG_DIRECTORY= ""
+      KONG_BASE_URL = "http://localhost:8001/consumers"
   tags: [ install, update ]
 
 

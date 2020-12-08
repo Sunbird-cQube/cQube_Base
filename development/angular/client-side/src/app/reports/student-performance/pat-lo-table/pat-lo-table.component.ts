@@ -59,6 +59,8 @@ export class PATLOTableComponent implements OnInit {
   public metaData: any;
   myData;
   state: string;
+  months: string[];
+  month: string = '';
 
   constructor(
     public http: HttpClient,
@@ -67,15 +69,27 @@ export class PATLOTableComponent implements OnInit {
     public router: Router
   ) {
     service.PATHeatMapMetaData().subscribe(res => {
-      this.metaData = res['data'][0];
-      this.years.push(this.metaData['year']);
-      this.grades = this.metaData.data['grades'];
+      this.metaData = res['data'];
+      for (let i = 0; i < this.metaData.length; i++) {
+        this.years.push(this.metaData[i]['year']);
+      }
+      this.year = this.years[this.years.length - 1];
+      let i;
+      for (i = 0; i < this.metaData.length; i++) {
+        if (this.metaData[i]['year'] == this.year) {
+          this.months = (Object.keys(res['data'][i].data.months));
+          this.grades = this.metaData[i].data['grades'];
+          this.subjects = this.metaData[i].data['subjects'];
+          this.allViews = this.metaData[i].data['viewBy'];
+          break;
+        }
+      };
+      this.month = this.months[this.months.length - 1];
+      this.examDates = this.metaData[i].data['months'][`${this.month}`]['examDate'];
       this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
-      this.subjects = this.metaData.data['subjects'];
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
-      this.examDates = this.metaData.data['examDate'];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
-      this.allViews = this.metaData.data['viewBy'];
+      this.commonFunc();
     })
   }
 
@@ -83,10 +97,31 @@ export class PATLOTableComponent implements OnInit {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.commonFunc()
+  }
+
+  fetchFilters(metaData) {
+    let i;
+    for (i = 0; i < metaData.length; i++) {
+      if (metaData[i]['year'] == this.year) {
+        this.months = (Object.keys(this.metaData[i].data.months));
+        this.grades = metaData[i].data['grades'];
+        this.subjects = metaData[i].data['subjects'];
+        this.allViews = metaData[i].data['viewBy'];
+        break;
+      }
+    }
+    if (!this.months.includes(this.month)) {
+      this.month = this.months[this.months.length - 1];
+    }
+    this.examDates = metaData[i].data['months'][`${this.month}`]['examDate'];
+    this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
+
+    this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
+    this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
   }
 
   resetToInitPage() {
+    this.resetTable();
     this.fileName = "District_wise_report";
     this.skul = true;
     this.dist = false;
@@ -101,31 +136,34 @@ export class PATLOTableComponent implements OnInit {
     this.cluster = undefined;
     this.blockHidden = true;
     this.clusterHidden = true;
-    document.getElementById('home').style.display = 'none';
+    this.year = this.years[this.years.length - 1];
     this.commonFunc();
+    document.getElementById('home').style.display = 'none';
   }
 
   commonFunc = () => {
     this.commonService.errMsg();
     this.level = 'district';
+    this.fetchFilters(this.metaData);
+    // $(`#LOtable`).empty();
     let a = {
       year: this.year,
+      month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
       subject_name: this.subject == 'all' ? '' : this.subject,
       exam_date: this.examDate == 'all' ? '' : this.examDate,
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
     }
-
+    this.month = a.month;
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service.patLOTableDistData(a).subscribe(response => {
-     this.resetTable();
-     this.reportData = [];
-     this.reportData = response['tableData'];
-     this.districtNames = response['districtDetails'];
-     this.districtNames = this.districtNames.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
-      this.createTable(response['tableData']);
+      this.resetTable();
+      this.reportData = response['tableData'];
+      this.districtNames = response['districtDetails'];
+      this.districtNames = this.districtNames.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
+      this.createTable(this.reportData);
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       this.handleError();
@@ -140,25 +178,25 @@ export class PATLOTableComponent implements OnInit {
       my_item['value'] = value;
       my_columns.push(my_item);
     });
-    
+
     $(document).ready(function () {
       var headers = '<thead><tr>'
       var body = '<tbody>';
       my_columns.forEach((column, i) => {
-          var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-          });
-          headers += `<th>${col}</th>`
+        var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+        headers += `<th>${col}</th>`
       });
 
       let newArr = [];
       $.each(dataSet, function (a, b) {
         let temp = [];
         $.each(b, function (key, value) {
-            var new_item = {};
-            new_item['data'] = key;
-            new_item['value'] = value;
-            temp.push(new_item);
+          var new_item = {};
+          new_item['data'] = key;
+          new_item['value'] = value;
+          temp.push(new_item);
         });
         newArr.push(temp)
       });
@@ -166,31 +204,47 @@ export class PATLOTableComponent implements OnInit {
       newArr.forEach((columns) => {
         body += '<tr>';
         columns.forEach((column) => {
-            body += `<td>${column.value}</td>`
+          body += `<td>${column.value}</td>`
         });
         body += '</tr>';
       });
 
-      headers += `</tr></thead>`
+
+
+      headers += `</tr></thead>`;
       body += '</tbody>';
       $(`#LOtable`).empty();
       $(`#LOtable`).append(headers);
       $(`#LOtable`).append(body);
       $(`#LOtable`).DataTable({
-        destroy: true, bLengthChange: false, bInfo: false,
+        destroy: false, bLengthChange: false, bInfo: false,
         bPaginate: false, scrollY: "60vh", scrollX: true,
         scrollCollapse: true, paging: false, searching: false,
         fixedColumns: {
           leftColumns: 1
         },
-        columnDefs : [{"targets":0, "type":"date-dd-mm-yyyy"}],
-        order: [[ 0, 'asc' ]]
+        columnDefs: [{ "targets": 0, "type": "date-dd-mm-yyyy" }],
+        order: [[0, 'asc']]
       });
     });
   }
 
   selectedYear() {
-    this.fileName = "Year_wise_report";
+    document.getElementById('home').style.display = 'none';
+    this.month = '';
+    this.grade = 'all';
+    this.examDate = 'all';
+    this.subject = 'all';
+    this.fetchFilters(this.metaData);
+    this.levelWiseFilter();
+  }
+
+  selectedMonth() {
+    this.fileName = "Month_wise_report";
+    this.fetchFilters(this.metaData);
+    this.grade = 'all';
+    this.examDate = 'all';
+    this.subject = 'all';
     document.getElementById('home').style.display = 'none';
     this.levelWiseFilter();
   }
@@ -216,6 +270,7 @@ export class PATLOTableComponent implements OnInit {
   }
 
   selectedDistrict(districtId) {
+    this.resetTable();
     this.fileName = "Block_wise_report";
     this.level = 'block';
     this.block = undefined;
@@ -224,10 +279,10 @@ export class PATLOTableComponent implements OnInit {
     this.clusterHidden = true;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
-    this.reportData = [];
 
     let a = {
       year: this.year,
+      month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
       subject_name: this.subject == 'all' ? '' : this.subject,
       exam_date: this.examDate == 'all' ? '' : this.examDate,
@@ -235,12 +290,13 @@ export class PATLOTableComponent implements OnInit {
       districtId: districtId
     }
 
+
     this.service.patLOTableBlockData(a).subscribe(response => {
-    this.reportData = response['tableData'];
-     this.blockNames = response['blockDetails'];
-     this.blockNames = this.blockNames.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
-     this.resetTable();
-      this.createTable(response['tableData']);
+      this.reportData = response['tableData'];
+      this.blockNames = response['blockDetails'];
+      this.blockNames = this.blockNames.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
+ 
+      this.createTable(this.reportData);
       var dist = this.districtNames.find(a => a.district_id == districtId);
       this.districtHierarchy = {
         districtName: dist.district_name,
@@ -258,6 +314,7 @@ export class PATLOTableComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
+    this.resetTable();
     this.fileName = "Cluster_wise_report";
     this.level = 'cluster';
     this.cluster = undefined;
@@ -265,10 +322,10 @@ export class PATLOTableComponent implements OnInit {
     this.clusterHidden = false;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
-    this.reportData = [];
 
     let a = {
       year: this.year,
+      month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
       subject_name: this.subject == 'all' ? '' : this.subject,
       exam_date: this.examDate == 'all' ? '' : this.examDate,
@@ -279,10 +336,9 @@ export class PATLOTableComponent implements OnInit {
 
     this.service.patLOTableClusterData(a).subscribe(response => {
       this.reportData = response['tableData'];
-     this.clusterNames = response['clusterDetails'];
-     this.clusterNames = this.clusterNames.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
-     this.resetTable();
-      this.createTable(response['tableData']);
+      this.clusterNames = response['clusterDetails'];
+      this.clusterNames = this.clusterNames.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
+      this.createTable(this.reportData);
       var block = this.blockNames.find(a => a.block_id == blockId);
       this.blockHierarchy = {
         districtName: block.district_name,
@@ -302,14 +358,15 @@ export class PATLOTableComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
+    this.resetTable();
     this.fileName = "School_wise_report";
     this.level = 'school';
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
-    this.reportData = [];
 
     let a = {
       year: this.year,
+      month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
       subject_name: this.subject == 'all' ? '' : this.subject,
       exam_date: this.examDate == 'all' ? '' : this.examDate,
@@ -321,8 +378,7 @@ export class PATLOTableComponent implements OnInit {
 
     this.service.patLOTableSchoolData(a).subscribe(response => {
       this.reportData = response['tableData'];
-     this.resetTable();
-      this.createTable(response['tableData']);
+      this.createTable(this.reportData);
       var cluster = this.clusterNames.find(a => a.cluster_id == clusterId);
       this.clusterHierarchy = {
         districtName: cluster.district_name,
@@ -344,40 +400,42 @@ export class PATLOTableComponent implements OnInit {
   }
 
   //resetting table
-  resetTable(){
-    if(this.reportData.length > 0){
+  resetTable() {
+    if (this.reportData.length > 0) {
+      this.reportData = [];
       $(`#LOtable`).empty();
       $('#LOtable').DataTable().destroy();
     }
   }
-//level wise filter
-levelWiseFilter() {
-  document.getElementById('initTable').style.display = 'block';
-  document.getElementById('home').style.display = 'block';
-  if (this.level == 'district') {
-    this.commonFunc()
+  //level wise filter
+  levelWiseFilter() {
+    document.getElementById('initTable').style.display = 'block';
+    document.getElementById('home').style.display = 'block';
+    if (this.level == 'district') {
+      this.resetTable();
+      this.commonFunc()
+    }
+    if (this.level == 'block') {
+      this.selectedDistrict(this.district);
+    }
+    if (this.level == 'cluster') {
+      this.selectedBlock(this.block)
+    }
+    if (this.level == 'school') {
+      this.selectedCluster(this.cluster);
+    }
   }
-  if (this.level == 'block') {
-    this.selectedDistrict(this.district);
-  }
-  if (this.level == 'cluster') {
-    this.selectedBlock(this.block)
-  }
-  if (this.level == 'school') {
-    this.selectedCluster(this.cluster);
-  }
-}
 
-//error handling
-handleError(){
-  $(`#LOtable`).empty();
-  this.reportData = [];
-  this.commonService.loaderAndErr(this.reportData);
-  document.getElementById('initTable').style.display = 'none';
-}
+  //error handling
+  handleError() {
+    $(`#LOtable`).empty();
+    this.reportData = [];
+    this.commonService.loaderAndErr(this.reportData);
+    document.getElementById('initTable').style.display = 'none';
+  }
 
-// to download the csv report
-downloadReport() {
-  this.commonService.download(this.fileName, this.reportData);
-}
+  // to download the csv report
+  downloadReport() {
+    this.commonService.download(this.fileName, this.reportData);
+  }
 }

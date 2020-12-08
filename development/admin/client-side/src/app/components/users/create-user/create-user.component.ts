@@ -17,6 +17,9 @@ export class CreateUserComponent implements OnInit {
   errUsername;
   roleIds: any = [];
   selectedRole = {};
+  hidePassword = false;
+  showToken = false;
+  token;
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   constructor(private service: UsersService, private router: Router) { }
@@ -24,6 +27,12 @@ export class CreateUserComponent implements OnInit {
   onSelectRole() {
     this.roleId = this.logData['roleid'];
     this.selectedRole = this.roleIds.find(o => o.id == this.roleId);
+    this.showToken = false;
+    if (this.selectedRole['name'] == 'emission') {
+      this.hidePassword = true;
+    } else {
+      this.hidePassword = false;
+    }
   }
 
   ngOnInit() {
@@ -34,8 +43,11 @@ export class CreateUserComponent implements OnInit {
     })
   }
 
-  verifyEmail() {
-
+  resetForm(formData: NgForm) {
+    this.err = '';
+    this.showToken = false;
+    this.hidePassword = false;
+    formData.resetForm();
   }
 
 
@@ -43,34 +55,51 @@ export class CreateUserComponent implements OnInit {
     var currUser = this.logData;
     document.getElementById('spinner').style.display = 'block';
     this.logData['createrId'] = localStorage.getItem('user_id');
-    this.service.addUser(this.logData).subscribe(res => {
-      this.msg = res['msg'];
+    if (this.selectedRole['name'] == 'emission') {
+      this.service.getToken(this.logData.username).subscribe(res => {
+        this.token = res['token'];
+        this.showToken = true;
+        if (res['errMsg']) {
+          this.err = res['errMsg'];
+          document.getElementById('spinner').style.display = 'none';
+        } else {
+          this.msg = res['msg'];
+          formData.resetForm();
+          document.getElementById('spinner').style.display = 'none';
+          document.getElementById('success').style.display = "block";
+        }
+      }, err => {
 
-      this.err = '';
-      this.errUsername = undefined;
-      this.errMail = undefined;
-      setTimeout(() => {
-        this.service.getCreatedUser(currUser).subscribe(user => {
-          this.service.addRole(user['id'], this.selectedRole).subscribe();
-        });
-        formData.resetForm();
+      })
+    } else {
+      this.service.addUser(this.logData).subscribe(res => {
+        this.msg = res['msg'];
+
+        this.err = '';
+        this.errUsername = undefined;
+        this.errMail = undefined;
+        setTimeout(() => {
+          this.service.getCreatedUser(currUser).subscribe(user => {
+            this.service.addRole(user['id'], this.selectedRole).subscribe();
+          });
+          formData.resetForm();
+          document.getElementById('spinner').style.display = 'none';
+          document.getElementById('success').style.display = "block";
+        }, 2000);
+        setTimeout(() => {
+          document.getElementById('success').style.display = "none";
+        }, 4000);
+      }, err => {
+        this.errMail = undefined; this.errUsername = undefined;
+        if (err.error['errMsg'] == "User exists with same username") {
+          this.errUsername = err.error['errMsg'];
+        } else if (err.error['errMsg'] == "User exists with same email") {
+          this.errMail = err.error['errMsg'];
+        } else {
+          this.err = err.error['errMsg'];
+        }
         document.getElementById('spinner').style.display = 'none';
-        document.getElementById('success').style.display = "block";
-      }, 2000);
-      setTimeout(() => {
-        document.getElementById('success').style.display = "none";
-      }, 4000);
-    }, err => {
-      this.errMail = undefined; this.errUsername = undefined;
-      if (err.error['errMsg'] == "User exists with same username") {
-        this.errUsername = err.error['errMsg'];
-      } else if (err.error['errMsg'] == "User exists with same email") {
-        this.errMail = err.error['errMsg'];
-      } else {
-        this.err = err.error['errMsg'];
-      }
-      document.getElementById('spinner').style.display = 'none';
-    });
-
+      });
+    }
   }
 }

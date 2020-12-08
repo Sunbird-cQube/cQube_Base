@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-12">
-                                <div class="form-group" style="margin-bottom: 15px;">
+                                <div *ngIf="!hidePassword" class="form-group" style="margin-bottom: 15px;">
                                     <label for="password" style="color: blue; font-family: Arial;">Password <span
                                             style="color:red">*</span></label>
                                     <input type="password" id="passswd" #cnfpass="ngModel" [(ngModel)]="logData.cnfpass"
@@ -81,6 +81,10 @@
                                         minimum 8
                                         characters</span>
                                 </div>
+                                <div *ngIf="showToken">
+                                    <label for="token" style="color: blue; font-family: Arial;">Token </label>
+                                    <textarea name="token" id="" disabled cols="43" rows="5" [value]="token"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -91,9 +95,13 @@
                 <div class="row">
                     <div class="col-sm-5"></div>
                     <div class="col-sm-2">
-                        <button id="btn" style="background-color: #0549dd;" class="btn btn-primary btn-user btn-block"
+                        <button *ngIf="!showToken" id="btn" style="background-color: #0549dd;" class="btn btn-primary btn-user btn-block"
                             type="submit">
                             Create User
+                        </button>
+                        <button *ngIf="showToken" id="btn" class="btn btn-secondary btn-user btn-block" type="reset"
+                            (click)=resetForm(formData)>
+                            Reset
                         </button>
                     </div>
                 </div>

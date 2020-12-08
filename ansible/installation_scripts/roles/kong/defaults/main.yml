@@ -1,0 +1,14 @@
+---
+
+kong_admin_api_listen: 0.0.0.0:8001
+kong_db_host: localhost
+kong_db_name: kong
+kong_db_password: kong
+kong_db_port: 5432
+kong_db_user: kong
+kong_dependencies:
+  - apt-transport-https 
+  - curl 
+  - lsb-core
+kong_proxy_listen: 0.0.0.0:8000
+kong_proxy_listen_ssl: 0.0.0.0:8444

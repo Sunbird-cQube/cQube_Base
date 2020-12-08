@@ -85,7 +85,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('diksha_columns' in environment);
     document.getElementById('spinner').style.display = 'none';
     document.getElementById('homeBtn').style.display = 'none';
     document.getElementById('backBtn').style.display = 'block';

@@ -4157,6 +4157,20 @@ count_null_studying_class int,
 count_null_obtained_marks int
 );
 
+create table if not exists pat_trans_null_col(
+filename varchar(200) ,
+ff_uuid varchar(200),
+count_null_exam_id int,
+count_null_question_id int,
+count_null_exam_code int,
+count_null_exam_date int,
+count_null_id int,
+count_null_student_uid int,
+count_null_school_id int,
+count_null_studying_class int,
+count_null_obtained_marks int
+);
+
 create table if not exists periodic_exam_mst_dup(
 exam_id	int,
 assessment_year	varchar(20),
@@ -4250,7 +4264,7 @@ alter table log_summary add COLUMN if not exists nsqf_faculty_id int;
 /*PAT data tables*/
 
 create table if not exists periodic_exam_mst(
-exam_id  int primary key not null,
+exam_id  int,
 assessment_year  varchar(20),
 medium  varchar(20),
 standard  int,
@@ -4264,7 +4278,12 @@ exam_date  date,
 total_questions  int,
 total_marks  numeric,
 created_on  timestamp,
-updated_on  timestamp);
+updated_on  timestamp,
+primary key(exam_id,assessment_year)
+);
+
+alter table periodic_exam_mst drop constraint if exists periodic_exam_mst_pkey;
+alter table periodic_exam_mst add primary key(exam_id,assessment_year);
 
 create table if not exists periodic_exam_qst_mst(
 question_id  int primary key not null,
