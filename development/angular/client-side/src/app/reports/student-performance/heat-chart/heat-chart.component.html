@@ -67,7 +67,7 @@
                     {{years[i]}}
                 </option>
             </select>
-            <select [hidden]="" id="month"
+            <select [hidden]="" id="month" required
                 style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="month" (change)="selectedMonth()">
                 <option [value]="month" disabled selected="selected">Choose a Month</option>
@@ -81,10 +81,10 @@
                 [(ngModel)]="grade" (change)="selectedGrade()">
                 <option [value]="grade" disabled selected="selected">Choose a Grade</option>
                 <option *ngFor="let grade of grades, let i =index" [(ngValue)]="grade.grade">
-                    <span *ngIf="grade.grade !== 'all'">
-                        Grade {{grade.grade}}
+                    <span *ngIf="grade.grade == 'all'; else other_content">
+                        All Grades
                     </span>
-                    <!-- <ng-template #other_content> Grade {{grade.grade}}</ng-template> -->
+                    <ng-template #other_content> Grade {{grade.grade}}</ng-template>
                 </option>
             </select>
 
