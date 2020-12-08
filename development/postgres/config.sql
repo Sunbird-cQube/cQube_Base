@@ -988,7 +988,7 @@ select b.district_id,b.district_latitude,b.district_longitude,Initcap(b.district
 	   a.collection_type,a.collection_medium,a.collection_gradelevel,a.collection_subject,a.collection_created_for,a.total_count,a.total_time_spent
         from (select case when replace(upper(derived_loc_district),'' '','''') in (''CHHOTAUDEPUR'',''CHHOTAUDAIPUR'') then ''CHHOTAUDEPUR'' 
        when replace(upper(derived_loc_district),'' '','''') in (''DOHAD'',''DAHOD'') then ''DOHAD''																									
-       when replace(upper(derived_loc_district),'' '','''') in (''PANCHMAHALS'',''PANCHMAHAL'') then ''PANCH MAHALS'' 
+       when replace(upper(derived_loc_district),'' '','''') in (''PANCHMAHALS'',''PANCHMAHAL'') then ''DOHAD'' 
        when replace(upper(derived_loc_district),'' '','''') in (''MAHESANA'',''MEHSANA'') then ''MAHESANA''
        when replace(upper(derived_loc_district),'' '','''') in (''THEDANGS'',''DANG'',''DANGS'') then ''THEDANGS'' 
        else replace(upper(derived_loc_district),'' '','''') end as district_name,
@@ -1018,7 +1018,7 @@ where not exists (select district_id,district_latitude,district_longitude,distri
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent from diksha_total_content)
-and content_subject is not null';
+and content_subject is not null and content_subject <> ''''';
 Execute agg_insert; 
 return 0;
 END;
