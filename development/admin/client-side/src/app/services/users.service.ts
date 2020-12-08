@@ -62,4 +62,9 @@ export class UsersService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/allUsers/getUser/${id}`, {});
   }
+
+  getToken(username) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/addUser/getToken`, { username });
+  }
 }
