@@ -569,4 +569,5 @@ collection_created_for,total_count,total_time_spent
 HAVING  COUNT(*) > 1""",
 "diksha_queries_less_filename":"""diksha_queries_less.json""",
 "diksha_queries_all_filename":"""diksha_queries_all.json""",
+"diksha_tpd_temp_to_trans_fn":'''Select insert_diksha_tpd_trans();'''
 }
