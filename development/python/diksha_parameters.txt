@@ -371,43 +371,36 @@ collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content
 		"operation": "shift",
 		"spec": {
 			"*": {
-				"filename": "[&1].filename",
-			   "ff_uuid": "[&1].ff_uuid",
-              "total_records": "[&1].total_records",
-              "blank_lines": "[&1].blank_lines",
-              "duplicate_records": "[&1].duplicate_records",
-              "datatype_mismatch": "[&1].datatype_mismatch",
-             
-              "content_view_date": "[&1].records_with_null_value.content_view_date" ,
-              "dimensions_pdata_id": "[&1].records_with_null_value.dimensions_pdata_id",
-              "dimensions_pdata_pid" : "[&1].records_with_null_value.dimensions_pdata_pid",
-              "content_name": "[&1].records_with_null_value.content_name",
-              "content_board": "[&1].records_with_null_value.content_board",
-              "content_mimetype" : "[&1].records_with_null_value.content_mimetype", 
-              "content_medium": "[&1].records_with_null_value.content_medium",
-              "content_gradelevel": "[&1].records_with_null_value.content_gradelevel",
-              "content_subject": "[&1].records_with_null_value.content_subject",
-              "content_created_f": "[&1].records_with_null_value.content_created_f", 
-              "object_id": "[&1].records_with_null_value.object_id",
-              "object_rollup_l1": "[&1].records_with_null_value.object_rollup_l1", 
-              "derived_loc_state": "[&1].records_with_null_value.derived_loc_state",
-              "derived_loc_district": "[&1].records_with_null_value.derived_loc_dIStrict",
-              "user_signin_type": "[&1].records_with_null_value.user_signin_type", 
-              "user_login_type": "[&1].records_with_null_value.user_login_type", 
-              "collection_type" : "[&1].records_with_null_value.collection_type",
-              "collection_created_f": "[&1].records_with_null_value.collection_created_f",
-              "total_count": "[&1].records_with_null_value.total_count",
-              "total_time_spent": "[&1].records_with_null_value.total_time_spent", 
-              
-              "processed_records": "[&1].processed_records",
-              "process_start_time": "[&1].process_start_time",
-              "process_end_time": "[&1].process_end_time"
-              
-              
-              
-              
-              
-			}
+			      "filename": "[&1].filename",
+			      "ff_uuid": "[&1].ff_uuid",
+			      "total_records": "[&1].total_records",
+			      "blank_lines": "[&1].blank_lines",
+			      "duplicate_records": "[&1].duplicate_records",
+			      "datatype_mismatch": "[&1].datatype_mismatch",
+			      "content_view_date": "[&1].records_with_null_value.content_view_date" ,
+			      "dimensions_pdata_id": "[&1].records_with_null_value.dimensions_pdata_id",
+			      "dimensions_pdata_pid" : "[&1].records_with_null_value.dimensions_pdata_pid",
+			      "content_name": "[&1].records_with_null_value.content_name",
+			      "content_board": "[&1].records_with_null_value.content_board",
+			      "content_mimetype" : "[&1].records_with_null_value.content_mimetype", 
+			      "content_medium": "[&1].records_with_null_value.content_medium",
+			      "content_gradelevel": "[&1].records_with_null_value.content_gradelevel",
+			      "content_subject": "[&1].records_with_null_value.content_subject",
+			      "content_created_for": "[&1].records_with_null_value.content_created_for", 
+			      "object_id": "[&1].records_with_null_value.object_id",
+			      "object_rollup_l1": "[&1].records_with_null_value.object_rollup_l1", 
+			      "derived_loc_state": "[&1].records_with_null_value.derived_loc_state",
+			      "derived_loc_district": "[&1].records_with_null_value.derived_loc_district",
+			      "user_signin_type": "[&1].records_with_null_value.user_signin_type", 
+			      "user_login_type": "[&1].records_with_null_value.user_login_type", 
+			      "collection_type" : "[&1].records_with_null_value.collection_type",
+			      "collection_created_for": "[&1].records_with_null_value.collection_created_for",
+			      "total_count": "[&1].records_with_null_value.total_count",
+			      "total_time_spent": "[&1].records_with_null_value.total_time_spent", 
+			      "processed_records": "[&1].processed_records",
+			      "process_start_time": "[&1].process_start_time",
+			      "process_end_time": "[&1].process_end_time"
+       }
 		}
 	}
 ]

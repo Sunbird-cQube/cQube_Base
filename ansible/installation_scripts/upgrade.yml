@@ -13,7 +13,7 @@
           - datasource
           - createdb
           - python_flask
-          - { role: kong, tags: udpate }
+          - { role: kong, tags: update }
           - keycloak
           - angular
           - angular_admin
