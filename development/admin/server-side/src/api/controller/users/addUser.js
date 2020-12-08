@@ -3,6 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const axios = require('axios');
 const qs = require('querystring');
+var jwt = require('jsonwebtoken');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -156,6 +157,32 @@ router.get('/roles', auth.authController, async (req, res) => {
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
     }
 });
+
+router.post('/getToken', async (req, res, next) => {
+    logger.info("Generating Token for emission user");
+    let userName = req.body.username;
+    let url = `${process.env.KONG_BASE_URL}`;
+    axios.get(`${url}/${userName}`).then(user => {
+        axios.post(`${url}/${userName}/jwt`, {}).then(data => {
+            var token = jwt.sign({ "iss": `${data.data.key}` }, `${data.data.secret}`, { algorithm: 'HS256' });
+            res.status(200).json({ token, errMsg: "User already exixt" });
+        }).catch(e => {
+            res.status(403).json({ errMsg: "Something went wrong" });
+        })
+    }).catch(err => {
+        axios.post(`${url}`, { username: userName }).then(response => {
+            axios.post(`${url}/${userName}/jwt`, {}).then(data => {
+                var token = jwt.sign({ "iss": `${data.data.key}` }, `${data.data.secret}`, { algorithm: 'HS256' });
+                res.status(200).json({ token, msg: "User Created" });
+            }).catch(e => {
+                res.status(403).json({ errMsg: "Something went wrong" });
+            }).catch(error => {
+                res.status(403).json({ errMsg: "Something went wrong" });
+            })
+        })
+    });
+
+})
 
 
 

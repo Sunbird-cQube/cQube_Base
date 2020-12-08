@@ -86,7 +86,7 @@ export class PATLOTableComponent implements OnInit {
       };
       this.month = this.months[this.months.length - 1];
       this.examDates = this.metaData[i].data['months'][`${this.month}`]['examDate'];
-      this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
+      this.grades = [...this.grades.filter(item => item !== { grade: "all" })];
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
       this.commonFunc();
@@ -116,7 +116,7 @@ export class PATLOTableComponent implements OnInit {
     this.examDates = metaData[i].data['months'][`${this.month}`]['examDate'];
     this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
 
-    this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
+    this.grades = [...this.grades.filter(item => item !== { grade: "all" })];
     this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
   }
 
@@ -297,7 +297,9 @@ export class PATLOTableComponent implements OnInit {
       this.reportData = response['tableData'];
       this.blockNames = response['blockDetails'];
       this.blockNames = this.blockNames.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
-      this.resetTable();
+      if (this.grade == 'all') {
+        this.resetTable();
+      }
       this.createTable(this.reportData);
       var dist = this.districtNames.find(a => a.district_id == districtId);
       this.districtHierarchy = {

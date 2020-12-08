@@ -113,7 +113,7 @@ export class HeatChartComponent implements OnInit {
     }
     this.examDates = metaData[i].data['months'][`${this.month}`]['examDate'];
     this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
-    this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
+    this.grades = [...this.grades.filter(item => item !== { grade: "all" })];
     this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
   }
 
@@ -352,7 +352,6 @@ export class HeatChartComponent implements OnInit {
   selectedYear() {
     document.getElementById('home').style.display = 'none';
     this.month = '';
-    this.grade = 'all';
     this.examDate = 'all';
     this.subject = 'all';
     this.fetchFilters(this.metaData);
@@ -362,7 +361,6 @@ export class HeatChartComponent implements OnInit {
   selectedMonth() {
     this.fileName = "Month_wise_report";
     this.fetchFilters(this.metaData);
-    this.grade = 'all';
     this.examDate = 'all';
     this.subject = 'all';
     document.getElementById('home').style.display = 'none';
@@ -541,7 +539,6 @@ export class HeatChartComponent implements OnInit {
 
   genericFunction(response) {
     this.reportData = [];
-    if (response['downloadData'].length > 0) {
       var xlab = [];
       var ylab = [];
       let a = {
@@ -579,7 +576,6 @@ export class HeatChartComponent implements OnInit {
       let xLabel1 = xLabel
       let yLabel1 = yLabel
       this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, a.viewBy, this.level, xLabel1, yLabel1, response['result']['tooltipData'], this.grade);
-    }
   }
 
   //level wise filter
