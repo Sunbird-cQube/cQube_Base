@@ -1,59 +1,35 @@
 ---
+- name: Add service object to kong
+  uri:
+    url:    "http://localhost:8001/services/"
+    method: POST
+    body:   "{{ kong_service_config }}"
+    status_code: "201"
+    body_format: json
+  ignore_errors: yes
 
-- name: Ensure Kong DB database
-  postgresql_db:
-    name: "{{ sansible_kong_db_name}}"
-    state: present
-    login_host: "{{ sansible_kong_db_host }}"
-    login_user: "{{ sansible_kong_db_root_user }}"
-    login_password: "{{ sansible_kong_db_root_password }}"
-  register: create_db
-  when:
-    - sansible_kong_db_root_user is not none
-    - sansible_kong_db_root_password is not none
+- name: Add new route object to kong service object
+  uri:
+    url:    "http://localhost:8001/services/flask-api/routes"
+    method: POST
+    body:   "{{ kong_route_obj }}"
+    status_code: "201"
+    body_format: json
+  ignore_errors: yes
 
-- name: Ensure Kong DB user
-  postgresql_user:
-    db: "{{ sansible_kong_db_name }}"
-    login_host: "{{ sansible_kong_db_host }}"
-    login_password: "{{ sansible_kong_db_root_password }}"
-    login_user: "{{ sansible_kong_db_root_user }}"
-    name: "{{ sansible_kong_db_user }}"
-    password: "{{ sansible_kong_db_password }}"
-    priv: "ALL"
-    state: present
-  when:
-    - sansible_kong_db_root_user is not none
-    - sansible_kong_db_root_password is not none
-    - create_db.changed
+- name: three
+  uri:
+    url: "http://localhost:8001/routes"
+  register: resp
 
-- name: Write kong nginx config
-  become: yes
-  template:
-    dest: /etc/kong/default_nginx.template
-    group: root
-    mode: 0644
-    owner: root
-    src: default_nginx.template.j2
-  notify:
-    - restart kong
+- name: result
+  debug: msg={{ resp.json | json_query(jmesquery) }}
+  vars:
+    jmesquery: "data[*].id"
+  register: route_id
 
-- name: Write kong config
-  become: yes
-  template:
-    dest: /etc/kong/kong.conf
-    group: root
-    mode: 0644
-    owner: root
-    src: kong.conf.j2
-  notify:
-    - restart kong
-
-- name: Flush handlers to ensure everything is up to date
-  meta: flush_handlers
-
-- name: Ensure Kong is running
-  become: yes
-  service:
-    name: kong
-    state: started
+- name: last
+  uri:
+    url: "http://localhost:8001/routes/{{ item[*]}}/plugins"
+    body: '{"name":"jwt"}'
+  loop: "{{ route_id }}"

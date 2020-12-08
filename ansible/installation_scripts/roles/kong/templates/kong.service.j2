@@ -1,0 +1,14 @@
+[Unit]
+Description=manages node exporter as a service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+PIDFile=/usr/local/kong/pids/nginx.pid
+ExecStart=/usr/local/bin/kong start -c /etc/kong/kong.conf
+ExecStop=/usr/local/bin/kong stop
+ExecReload=/usr/local/bin/kong reload
+
+[Install]
+WantedBy=multi-user.target
