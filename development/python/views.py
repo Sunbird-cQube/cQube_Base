@@ -1,9 +1,5 @@
-import json
 from config import *
-from flask import Flask, g
-from flask_oidc import OpenIDConnect
-from flask_restful import reqparse
-import requests
+from flask import Flask
 from flask import abort, Response, request, send_from_directory
 from flask_restful import reqparse
 from werkzeug.utils import secure_filename
@@ -19,41 +15,10 @@ from json import dumps
 import pandas as pd
 from io import BytesIO
 
-def update_client_secrets():
-    KEYCLOAK_URL="{DOMAIN_NAME}/auth/realms/{REALM_NAME}".format(DOMAIN_NAME=DOMAIN_NAME,REALM_NAME=REALM_NAME)
-    issuer=KEYCLOAK_URL
-    auth_uri="{KEYCLOAK_URL}/protocol/openid-connect/auth".format(KEYCLOAK_URL=KEYCLOAK_URL)
-    client_id=CLIENT_ID
-    client_secret=CLIENT_SECRET
-    redirect_uris="{EMISSION_URL}/*".format(EMISSION_URL=EMISSION_URL)
-    userinfo_uri="{KEYCLOAK_URL}/protocol/openid-connect/userinfo".format(KEYCLOAK_URL=KEYCLOAK_URL)
-    token_uri="{KEYCLOAK_URL}/protocol/openid-connect/token".format(KEYCLOAK_URL=KEYCLOAK_URL)
-    token_introspection_uri="{KEYCLOAK_URL}/protocol/openid-connect/token/introspect".format(KEYCLOAK_URL=KEYCLOAK_URL)
-    clientsecret={ "web": { "issuer": KEYCLOAK_URL, "auth_uri": auth_uri, "client_id": CLIENT_ID, "client_secret": CLIENT_SECRET, "redirect_uris": [ redirect_uris ], "userinfo_uri": userinfo_uri, "token_uri": token_uri, "token_introspection_uri": token_introspection_uri, "OIDC-SCOPES": ["openid"] } }
-    client_secrets=json.dumps(clientsecret)
-    with open("client_secrets.json","w") as fd:
-        fd.write(client_secrets)
-update_client_secrets()
-
 app = Flask(__name__)
-app.config.update({
-    'SECRET_KEY': 'secret_key',
-    'OIDC_CLIENT_SECRETS': 'client_secrets.json',
-    'OIDC_ID_TOKEN_COOKIE_SECURE': False,
-    'OIDC_REQUIRE_VERIFIED_EMAIL': False,
-    'OIDC_USER_INFO_ENABLED': True,
-    'OIDC_OPENID_REALM': REALM_NAME,
-    'OIDC_TOKEN_TYPE_HINT': 'access_token',
-    'OIDC_SCOPES': ['openid', 'email', 'profile'],
-    'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
-})
-
 app.logger.addHandler(file_handler)
 app.logger.addHandler(access_handler)
 app.debug=False
-
-
-oidc = OpenIDConnect(app)
 
 
 def get_s3_client():
@@ -81,40 +46,6 @@ def create_presigned_post(bucket_name, object_name,
         return None
     return response
 
-@app.route('/auth', methods=['POST'])
-def api_login():
-    url=DOMAIN_NAME+"/auth/realms/"+REALM_NAME+"/protocol/openid-connect/token"
-    headers = { 'content-type': "application/x-www-form-urlencoded" }
-    parser = reqparse.RequestParser()
-    username = parser.add_argument("username")
-    password = parser.add_argument("password")
-    args = parser.parse_args()
-    if username and password:
-        try:
-            payload= {"client_id" :CLIENT_ID,"grant_type":"password","client_secret":CLIENT_SECRET,"scope":"openid",
-            "username":args["username"],"password":args["password"]}
-            resp=requests.post(url,data=payload,headers=headers)
-            return resp.json()
-        except Exception as err:
-            logging.error(err)
-            abort(404, f'Unable to login')
-    else:
-        abort(401, f'User unauthorized')
-
-def validate_role(token):
-    user_role = token.get("realm_access")
-    if "admin" in user_role["roles"]:
-        return "Valid role"
-    else:
-        abort(401, f'Invalid user roles to access api')
-
-def validate_emission_role(token):
-    user_role = token.get("realm_access")
-    if "emission" in user_role["roles"]:
-        return "Valid role"
-    else:
-        abort(401, f'Invalid user roles to access api')
-
 def add_timestamp(file):
     if '.' in file:
         fn=file.split('.')
@@ -124,9 +55,7 @@ def add_timestamp(file):
     return file
 
 @app.route('/upload-url',methods=['POST'])
-@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_upload_url():
-    validate_emission_role(g.oidc_token_info)
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
     args = parser.parse_args()
@@ -138,9 +67,7 @@ def aws_upload_url():
         abort(400, f'Bad request, validate the payload')
 
 @app.route('/download_url',methods=['POST'])
-@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_file_download():
-    validate_role(g.oidc_token_info)
     s3_client = get_s3_client()
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
@@ -152,16 +79,14 @@ def aws_file_download():
     try:
         response = s3_client.generate_presigned_url('get_object',
                                                      Params={'Bucket':bucket_name,'Key':file_name},
-                                                     ExpiresIn=300)
+                                                     ExpiresIn=86400)
     except ClientError as e:
         logging.error(e)
         return None
     return response
 
 @app.route('/download_uri',methods=['POST'])
-@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def aws_file_downloads():
-    validate_role(g.oidc_token_info)
     s3_client = get_s3_client()
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename", action='append')
@@ -176,32 +101,15 @@ def aws_file_downloads():
         try:
             response = s3_client.generate_presigned_url('get_object',
                                                          Params={'Bucket':bucket_name,'Key':file},
-                                                         ExpiresIn=300)
+                                                         ExpiresIn=3600)
             file_resp[file]=response
         except ClientError as e:
             logging.error(e)
             return None
     return file_resp
 
-def get_total_bytes(s3,bucket_name,file_name):
-    result = s3.list_objects(Bucket=bucket_name)
-    for item in result['Contents']:
-        if item['Key'] == file_name:
-            return item['Size']
-
-def get_object(s3,bucket_name,file_name, total_bytes):
-    if total_bytes > 1000000:
-        return get_object_range(s3, bucket_name, file_name, total_bytes)
+def get_object(s3,bucket_name,file_name):
     return s3.get_object(Bucket=bucket_name, Key=file_name)['Body'].read()
-
-def get_object_range(s3,bucket_name, file_name, total_bytes):
-    offset = 0
-    while total_bytes > 0:
-        end = offset + 999999 if total_bytes > 1000000 else ""
-        total_bytes -= 1000000
-        byte_range = 'bytes={offset}-{end}'.format(offset=offset, end=end)
-        offset = end + 1 if not isinstance(end, str) else None
-        yield s3.get_object(Bucket=bucket_name, Key=file_name, Range=byte_range)['Body'].read()
 
 def get_bucket_name(bucket):
     if bucket==INPUT_BUCKET_NAME or bucket==OUTPUT_BUCKET_NAME or bucket==EMISSION_BUCKET_NAME:
@@ -214,23 +122,8 @@ def valid_path(filename):
     if not exists(full_path):
         return abort(404, f'Bad request, unable to find the file - validate the filename in payload')
 
-def valid_file(bucket,key):
-    bucket_name = get_bucket_name(bucket)
-    s3_client = get_s3_client()
-    try:
-        s3_files=s3_client.list_objects(Bucket=bucket_name)
-        files = [file_name['Key'] for file_name in s3_files['Contents']]
-        if key in files:
-            return True
-        else:
-            abort(404, f'Bad request, unable to find the key')
-    except Exception as err:
-        abort(404, f'Requested key not found')
-
 @app.route('/list_s3_files',methods=['POST'])
-@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def list_s3_files():
-    validate_role(g.oidc_token_info)
     parser = reqparse.RequestParser()
     bucket = parser.add_argument("bucket")
     args = parser.parse_args()
@@ -239,9 +132,7 @@ def list_s3_files():
     return s3_client.list_objects(Bucket=bucket_name)
 
 @app.route('/download', methods=['POST'])
-@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def index():
-    validate_role(g.oidc_token_info)
     s3 = get_s3_client()
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
@@ -249,9 +140,8 @@ def index():
     args = parser.parse_args()
     bucket_name = get_bucket_name(args["bucket"])
     if args["filename"]:
-        total_bytes = get_total_bytes(s3,bucket_name,args["filename"])
         return Response(
-            get_object(s3, bucket_name, args["filename"], total_bytes),
+            get_object(s3, bucket_name, args["filename"]),
             mimetype='text/plain',
             headers={"Content-Disposition": "attachment;filename={}".format(args["filename"].split('/')[-1])}
         )
@@ -259,24 +149,18 @@ def index():
         abort(400, f'Bad request, validate the filename in payload')
 
 @app.route('/list_s3_buckets',methods=['GET'])
-@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def list_s3_buckets():
-    validate_role(g.oidc_token_info)
     return dumps({"input":INPUT_BUCKET_NAME,"output":OUTPUT_BUCKET_NAME,"emission":EMISSION_BUCKET_NAME})
 
 @app.route('/list_log_files',methods=['GET'])
-@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def files_list(file_path=BASE_DIR):
-    validate_role(g.oidc_token_info)
     file_list=list()
     for root, dirs, files in walk(file_path):
         file_list.append({"path": path.relpath(root, file_path), "directories": dirs, "files": files})
     return dumps(file_list)
 
 @app.route('/log-download', methods=['POST'])
-@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def log_download():
-    validate_role(g.oidc_token_info)
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
     args = parser.parse_args()
@@ -306,9 +190,7 @@ def validate_weights(wdf):
         abort(400,err)
 
 @app.route('/infra_weights',methods=['POST'])
-@oidc.accept_token(require_token=True, scopes_required= ['openid'])
 def upload_file():
-    validate_emission_role(g.oidc_token_info)
     uploaded_file = request.files['file']
     content_type = 'application/json'
     filename = secure_filename(uploaded_file.filename)
@@ -324,17 +206,14 @@ def upload_file():
         return resp
 
 @app.route('/infra_score', methods=['GET'])
-@oidc.accept_token(require_token=True, scopes_required=['openid'])
 def get_infra_score():
-    validate_emission_role(g.oidc_token_info)
     s3_client = get_s3_client()
     key="infrastructure_score/infrastructure_score.csv"
-    if valid_file(OUTPUT_BUCKET_NAME,key):
-        total_bytes = get_total_bytes(s3_client, OUTPUT_BUCKET_NAME, key)
+    try:
         return Response(
-            get_object(s3_client, OUTPUT_BUCKET_NAME, key , total_bytes),
+            get_object(s3_client, OUTPUT_BUCKET_NAME, key ),
             mimetype='text/plain',
             headers={"Content-Disposition": "attachment;filename={}".format(key.split('/')[-1])}
         )
-    else:
-        abort(400, f'Bad request, validate the filename in payload')
+    except Exception as err:
+        abort(400, f'Bad request, validate the payload')
