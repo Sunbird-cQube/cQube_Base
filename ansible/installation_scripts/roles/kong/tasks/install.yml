@@ -53,6 +53,9 @@
     line: "host    all     kong       127.0.0.1/32      trust"
     insertafter: "host    all             postgres             127.0.0.1/32            trust"
 
+- name: reload pghba
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "SELECT pg_reload_conf();"
+
 - name: postgresql systemd service restart
   service:
     name: postgresql
