@@ -1,0 +1,36 @@
+---
+
+- name: Add service object to kong
+  uri:
+    url:    "http://localhost:8001/services/"
+    method: POST
+    body:   "{{ kong_service_config }}"
+    status_code: "201"
+    body_format: json
+  ignore_errors: yes
+
+- name: Add new route object to kong service object
+  uri:
+    url:    "http://localhost:8001/services/flask-api/routes"
+    method: POST
+    body:   "{{ kong_route_obj }}"
+    status_code: "201"
+    body_format: json
+  ignore_errors: yes
+
+- name: three
+  uri:
+    url: "http://localhost:8001/routes"
+  register: resp
+ 
+- name: result
+  debug: msg={{ resp.json | json_query(jmesquery) }}
+  vars:
+    jmesquery: "data[*].id"
+  register: route_id
+
+- name: last
+  uri:
+    url: "http://localhost:8001/routes/{{ item[*]}}/plugins"
+    body: '{"name":"jwt"}'
+  loop: "{{ route_id }}"

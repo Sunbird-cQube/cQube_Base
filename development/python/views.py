@@ -338,3 +338,12 @@ def get_infra_score():
         )
     else:
         abort(400, f'Bad request, validate the filename in payload')
+
+
+@app.route('/diksha_api', methods=['GET'])
+def get_test():
+    return 'Welcome to cQube' 
+
+@app.route('/', methods=['GET'])
+def get_t():
+    return 'Welcome to cQube home'

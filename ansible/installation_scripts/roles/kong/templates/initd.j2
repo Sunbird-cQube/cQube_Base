@@ -1,0 +1,73 @@
+### BEGIN INIT INFO
+# Provides:          kong
+# Required-Start:    {{ sansible_kong_startup_requires }}
+# Required-Stop:     {{ sansible_kong_startup_requires }}
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: start kong
+### END INIT INFO
+
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
+DESC="Kong API Service"
+NAME=kong
+DAEMON=/usr/local/bin/kong
+DAEMON_ARGS="--nginx-conf=/etc/kong/{{ sansible_kong_nginx_template }}"
+PIDFILE=/usr/local/kong/pids/nginx.pid
+
+case "$1" in
+	start)
+		printf "%-50s" "Starting $NAME..."
+		if [ -f $PIDFILE ]; then
+			echo "Process is running already"
+		else
+			$DAEMON start "$DAEMON_ARGS"
+			printf "%s\n" "Ok"
+		fi
+	;;
+
+	status)
+		printf "%-50s" "Checking $NAME..."
+		if [ -f $PIDFILE ]; then
+			 echo "Running"
+		else
+			printf "%s\n" "Service not running"
+		fi
+	;;
+
+	stop)
+		printf "%-50s" "Stopping $NAME..."
+		if [ -f $PIDFILE ]; then
+			$DAEMON stop
+			printf "%s\n" "Ok"
+			rm -f $PIDFILE
+		else
+			 echo "Process is not running"
+		fi
+	;;
+
+	restart)
+		printf "%-50s" "Restarting $NAME..."
+		if [ -f $PIDFILE ]; then
+			$DAEMON restart
+			printf "%s\n" "Ok"
+		else
+			printf "%s\n" "Process is not running, starting..."
+			$0 start
+		fi
+	;;
+
+	reload)
+		printf "%-50s" "Reloading $NAME..."
+		if [ -f $PIDFILE ]; then
+			$DAEMON reload
+			printf "%s\n" "Ok"
+		else
+			 echo "Process is not running"
+		fi
+	;;
+
+	*)
+		echo "Usage: $0 {status|start|stop|restart|reload}"
+		exit 1
+esac
