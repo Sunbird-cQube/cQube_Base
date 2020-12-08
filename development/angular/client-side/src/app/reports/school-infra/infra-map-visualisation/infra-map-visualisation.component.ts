@@ -162,8 +162,11 @@ export class InfraMapVisualisationComponent implements OnInit {
             centerLng: this.lng,
             level: 'district'
           }
-          this.commonService.restrictZoom(globalMap);
-          globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+          globalMap.on('click', function (e) {
+            console.log(`${`[` + e.latlng.lng + ',' + e.latlng.lat + ']'}`);
+          });
+          // this.commonService.restrictZoom(globalMap);
+          // globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
           globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
           this.data.sort((a, b) => (`${a[this.infraData]}` > `${b[this.infraData]}`) ? 1 : ((`${b[this.infraData]}` > `${a[this.infraData]}`) ? -1 : 0));
           this.genericFun(this.myDistData, options, this.fileName);

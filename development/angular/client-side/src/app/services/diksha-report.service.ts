@@ -36,6 +36,11 @@ export class DikshaReportService {
     return this.http.get(`${this.baseUrl}/diksha/dikshaMetaData`);
   }
 
+  dikshaTableMetaData() {
+    this.service.logoutOnTokenExpire();
+    return this.http.get(`${this.baseUrl}/dikshaTable/dikshaMetaData`);
+  }  
+
   dikshaAllTableData(data) {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/dikshaTable/dikshaAllTableData`, data);
