@@ -4264,7 +4264,7 @@ alter table log_summary add COLUMN if not exists nsqf_faculty_id int;
 /*PAT data tables*/
 
 create table if not exists periodic_exam_mst(
-exam_id  int primary key not null,
+exam_id  int,
 assessment_year  varchar(20),
 medium  varchar(20),
 standard  int,
@@ -4278,7 +4278,12 @@ exam_date  date,
 total_questions  int,
 total_marks  numeric,
 created_on  timestamp,
-updated_on  timestamp);
+updated_on  timestamp,
+primary key(exam_id,assessment_year)
+);
+
+alter table periodic_exam_mst drop constraint if exists periodic_exam_mst_pkey;
+alter table periodic_exam_mst add primary key(exam_id,assessment_year);
 
 create table if not exists periodic_exam_qst_mst(
 question_id  int primary key not null,
