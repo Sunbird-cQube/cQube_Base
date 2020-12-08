@@ -8,8 +8,8 @@ export const environment = {
   appUrl: "http://localhost:4200",
   grafanaEndPoint: "http://localhost:9000",
   keycloakUrl: "http://localhost:8080/auth",
-  realm: "Test",
-  clientId: "cqube_admin"
+  realm: "cQube",
+  clientId: "cQube_Admin"
 };
 
 /*
