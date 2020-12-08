@@ -12,5 +12,3 @@ kong_dependencies:
   - lsb-core
 kong_proxy_listen: 0.0.0.0:8000
 kong_proxy_listen_ssl: 0.0.0.0:8444
-kong_service_config: {"name":"flask-api","url":"http://localhost:5000"}
-kong_route_obj: {"hosts[]":"localhost","paths[]":"/diksha_api","strip_path":"false","methods[]":"GET"}
