@@ -2,7 +2,7 @@ import requests
 
 kong_admin_url='http://localhost:8001'
 emission_url="http://localhost:5000"
-emission_access_paths=["/infra_score","/upload-url","/download_url","/download_uri","/list_s3_files","/download","/list_s3_buckets","/list_log_files","/log-download","/infra_weights","/infra_score"]
+emission_access_paths=["/data/infra_score","/data/upload-url","/data/download_url","/data/download_uri","/data/list_s3_files","/data/download","/data/list_s3_buckets","/data/list_log_files","/data/log-download","/data/infra_weights","/data/infra_score"]
 
 service_list=requests.get("{}/{}".format(kong_admin_url,"services")).json()
 if len(service_list.get("data"))<1:
