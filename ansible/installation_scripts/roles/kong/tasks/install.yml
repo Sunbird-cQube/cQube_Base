@@ -93,7 +93,15 @@
     name: requests
     executable: pip3
 
+- name: Creating the python script
+  template:
+    src: update_api_auth.py.j2
+    dest: "{{ base_dir }}/cqube/emission_app/python/update_api_auth.py"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    mode: 0644
+
 - name: Run a script using an executable in a system path
-  script: ../../development/python/update_api_auth.py
+  script: "{{ base_dir }}/cqube/emission_app/python/update_api_auth.py"
   args:
     executable: python3
