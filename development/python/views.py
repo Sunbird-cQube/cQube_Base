@@ -54,7 +54,7 @@ def add_timestamp(file):
         file=str(file)+'_'+datetime.now().strftime('%Y%m%d%H%M%S')
     return file
 
-@app.route('/upload-url',methods=['POST'])
+@app.route('/data/upload-url',methods=['POST'])
 def aws_upload_url():
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
@@ -66,7 +66,7 @@ def aws_upload_url():
     else:
         abort(400, f'Bad request, validate the payload')
 
-@app.route('/download_url',methods=['POST'])
+@app.route('/data/download_url',methods=['POST'])
 def aws_file_download():
     s3_client = get_s3_client()
     parser = reqparse.RequestParser()
@@ -85,7 +85,7 @@ def aws_file_download():
         return None
     return response
 
-@app.route('/download_uri',methods=['POST'])
+@app.route('/data/download_uri',methods=['POST'])
 def aws_file_downloads():
     s3_client = get_s3_client()
     parser = reqparse.RequestParser()
@@ -122,7 +122,7 @@ def valid_path(filename):
     if not exists(full_path):
         return abort(404, f'Bad request, unable to find the file - validate the filename in payload')
 
-@app.route('/list_s3_files',methods=['POST'])
+@app.route('/data/list_s3_files',methods=['POST'])
 def list_s3_files():
     parser = reqparse.RequestParser()
     bucket = parser.add_argument("bucket")
@@ -131,7 +131,7 @@ def list_s3_files():
     s3_client = get_s3_client()
     return s3_client.list_objects(Bucket=bucket_name)
 
-@app.route('/download', methods=['POST'])
+@app.route('/data/download', methods=['POST'])
 def index():
     s3 = get_s3_client()
     parser = reqparse.RequestParser()
@@ -148,18 +148,18 @@ def index():
     else:
         abort(400, f'Bad request, validate the filename in payload')
 
-@app.route('/list_s3_buckets',methods=['GET'])
+@app.route('/data/list_s3_buckets',methods=['GET'])
 def list_s3_buckets():
     return dumps({"input":INPUT_BUCKET_NAME,"output":OUTPUT_BUCKET_NAME,"emission":EMISSION_BUCKET_NAME})
 
-@app.route('/list_log_files',methods=['GET'])
+@app.route('/data/list_log_files',methods=['GET'])
 def files_list(file_path=BASE_DIR):
     file_list=list()
     for root, dirs, files in walk(file_path):
         file_list.append({"path": path.relpath(root, file_path), "directories": dirs, "files": files})
     return dumps(file_list)
 
-@app.route('/log-download', methods=['POST'])
+@app.route('/data/log-download', methods=['POST'])
 def log_download():
     parser = reqparse.RequestParser()
     filename = parser.add_argument("filename")
@@ -189,7 +189,7 @@ def validate_weights(wdf):
     except Exception as err:
         abort(400,err)
 
-@app.route('/infra_weights',methods=['POST'])
+@app.route('/data/infra_weights',methods=['POST'])
 def upload_file():
     uploaded_file = request.files['file']
     content_type = 'application/json'
@@ -205,7 +205,7 @@ def upload_file():
                           ContentType=content_type)
         return resp
 
-@app.route('/infra_score', methods=['GET'])
+@app.route('/data/infra_score', methods=['GET'])
 def get_infra_score():
     s3_client = get_s3_client()
     key="infrastructure_score/infrastructure_score.csv"
