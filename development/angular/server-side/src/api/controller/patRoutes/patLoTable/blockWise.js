@@ -3,12 +3,12 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/blockWise',auth.authController, async (req, res) => {
+router.post('/blockWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT LO table blockWise api ---');
 
-        let { year, grade, subject_name, exam_date, viewBy, districtId } = req.body
-        let fileName = `pat/heatChart/${year}/districts/${districtId}.json`
+        let { year, grade, month, subject_name, exam_date, viewBy, districtId } = req.body
+        let fileName = `pat/heatChart/${year}/${month}/districts/${districtId}.json`;
         var data = await s3File.readS3File(fileName);
 
         if (districtId) {
@@ -92,12 +92,12 @@ router.post('/blockWise',auth.authController, async (req, res) => {
                 }, {});
                 tableData = val.map((item) => ({ ...def, ...item }));
                 logger.info('--- PAT LO table blockWise response sent ---');
-            res.status(200).send({ blockDetails, tableData });
+                res.status(200).send({ blockDetails, tableData });
             } else {
                 logger.info('--- PAT LO table schoolWise response sent ---');
                 res.status(500).send({ errMsg: "No record found" });
             }
-            
+
         })
     } catch (e) {
         logger.error(`Error :: ${e}`)
