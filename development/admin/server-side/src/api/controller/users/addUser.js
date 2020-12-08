@@ -165,7 +165,7 @@ router.post('/getToken', async (req, res, next) => {
     axios.get(`${url}/${userName}`).then(user => {
         axios.post(`${url}/${userName}/jwt`, {}).then(data => {
             var token = jwt.sign({ "iss": `${data.data.key}` }, `${data.data.secret}`, { algorithm: 'HS256' });
-            res.status(200).json({ token, errMsg: "User already exixt" });
+            res.status(200).json({ token, errMsg: "User already exists" });
         }).catch(e => {
             res.status(403).json({ errMsg: "Something went wrong" });
         })
