@@ -19,7 +19,7 @@ state_code:                               # Enter the 2 character state code for
 #Enter the value as `true`,  if content_gradelevel & collection_gradelevel columns are available.
 #Enter the value as `false`, if content_gradelevel & collection_gradelevel columns are not available.
 
-diksha_columns:                     # Enter `true` or `false`. 
+diksha_columns: false                    # Enter `true` or `false`. 
 
 system_user_name:                          # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
 base_dir:                                  # provide the absolute path where cqube installed
@@ -41,4 +41,4 @@ local_ipv4_address:                         # Enter the private ip of this serve
 keycloak_adm_user:                          # Enter existing keycloak admin user.
 keycloak_adm_passwd:                        # Enter existing keycloak admin password.
 keycloak_config_otp:                        # Enter true or false to enable OTP authentication for all users 
-session_timeout:                            # enter the value between 30 Minutes to 3650 Days. Eg. For minutes `60M`  Eg. For days `15D`. Make sure M and D should be mentioned upper case.
+session_timeout: 7D                           # enter the value between 30 Minutes to 3650 Days. Eg. For minutes `60M`  Eg. For days `15D`. Make sure M and D should be mentioned upper case.

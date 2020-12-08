@@ -12,8 +12,8 @@
   roles: 
           - datasource
           - createdb
-          - kong
           - python_flask
+          - { role: kong, tags: udpate }
           - keycloak
           - angular
           - angular_admin

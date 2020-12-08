@@ -14,8 +14,8 @@
           - { role: python, tags: install }
           - datasource
           - createdb
-          - kong
           - python_flask
+          - { role: kong, tags: install }
           - keycloak
           - angular
           - angular_admin
