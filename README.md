@@ -12,13 +12,13 @@ The following ports have to be configured in the nginix server with reverse prox
 1) Port 4200 should be proxied to the '/' 
 2) Port 8080 should be proxied to the '/auth'
 3) Port 3000 should be proxied to the '/api'
-4) Port 5000 should be proxied to the '/data'
+4) Port 8000 should be proxied to the '/data'
 
 <b>Nginx - cQube server firewall configuration</b>
 1) Port 4200 should be open from nginx to the cQube server
 2) Port 8080 should be open from nginx to the cQube server
 3) Port 3000 should be open from nginx to the cQube server
-4) Port 5000 should be open from nginx to the cQube server
+4) Port 8000 should be open from nginx to the cQube server
 
 <b>Openvpn - cQube server firewall configuration</b>
 1) Port 9000 should be open from openvpn to the cQube server
@@ -33,7 +33,7 @@ Note: For <b>Installation:</b> follow the below steps directly, for upgradation 
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.5
+git checkout release-1.7
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
@@ -61,6 +61,8 @@ git checkout release-1.5
 - To edit below mentioned UDISE details `nano udise_config.csv` 
 - Save and Close the file
 - For more information to configure the weights & columns for udise/infrastucture, please refer operational document.
+
+- Update the diksha parameters(api_url,token,encryption key,dataset name channel_id,org_id) in the `development/python/cQube-raw-data-fetch-parameters.txt` 
 
 - Give the following permission to the install.sh file
 ```
@@ -120,6 +122,9 @@ cqube_emission
 ├── pat
 │   └── periodic_exam_qst_mst.zip
 │       └── periodic_exam_qst_mst.csv
+├── diksha
+│   └── diksha_api_progress_exhaust_batch_ids.zip
+│       └── diksha_api_progress_exhaust_batch_ids.csv
 ```
 
 Transactional Files:
@@ -170,7 +175,7 @@ python3 client.py
 - Navigate to the directory where cQube has been downloaded or cloned
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.5
+git checkout release-1.7
 ```
 - Copy the upgradation_config.yml.template to upgradation_config.yml 
 `cp upgradation_config.yml.template upgradation_config.yml`
