@@ -55,6 +55,7 @@ export class CompositReportComponent implements OnInit {
   public reportData: any;
   public myData;
   public downloadType: string;
+  state: string;
 
 
   constructor(public http: HttpClient, public service: CompositReportService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent,) {
@@ -62,6 +63,7 @@ export class CompositReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     if (this.myData) {
@@ -70,7 +72,7 @@ export class CompositReportComponent implements OnInit {
     this.myData = this.service.dist_wise_data().subscribe(res => {
       this.result = res;
       this.xAxis = Object.keys(this.result[0])[1];
-      this.yAxis = Object.keys(this.result[0])[1];
+      this.yAxis = Object.keys(this.result[0])[2];
       this.districtWise();
     }, err => {
       this.result = [];

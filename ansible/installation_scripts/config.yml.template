@@ -11,7 +11,18 @@
 #NOTE: Please fill the value with a space between ":" and the value. 
 #Example-   `system_user_name: ubuntu`
 
-system_user_name:                          # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
+state_code:                               # Enter the 2 character (upper case) state code for which cQube is being deployed. Please refer state_list file. 
+
+# Diksha Columns
+# will be applicable,  if diksha datasource is enabled at datasource.yml.
+
+#Enter the value as `true`,  if content_gradelevel & collection_gradelevel columns are available.
+#Enter the value as `false`, if content_gradelevel & collection_gradelevel columns are not available.
+
+diksha_columns: false                    # Enter `true` or `false`. 
+
+system_user_name:                         # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
+
 base_dir: /opt                            # provide the absolute path where cqube needs to be installed and served. Eg. /opt  ( in this case cqube will be installed under /opt/cqube)
 
 #Database variables naming convention, the variable length should be between [3-63] characters and should contain upper/lower characters, it should start with _ or lower or upper characters.
@@ -46,3 +57,4 @@ local_ipv4_address:                         # enter the private ip of this serve
 keycloak_adm_user:                          # enter the keycloak admin user to be created 
 keycloak_adm_passwd:                        # enter the keycloak admin password. password should contain atleast 1 lower,upper,number,special character and minimum 8 characters
 keycloak_config_otp:                        # enter true or false to enable OTP authentication for all users 
+session_timeout: 7D                           # enter the value between 30 Minutes to 3650 Days. Eg. For minutes `60M`  Eg. For days `15D`. Make sure M and D should be mentioned upper case. 

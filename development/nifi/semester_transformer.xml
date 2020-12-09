@@ -217,30 +217,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>05011dd3-3674-3fe9-0000-000000000000</id>
-                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
-<id>4cb07448-1736-3ef4-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <source>
-<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
-<id>f7c26e48-6cf9-30b2-0000-000000000000</id>
-<type>FUNNEL</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>0539510b-2a08-31df-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -453,12 +429,12 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-4146.0029296875</x>
-<y>1490.1544189453125</y>
+<x>-4162.74755859375</x>
+<y>1598.996337890625</y>
                             </bends>
                             <bends>
-<x>-4146.0029296875</x>
-<y>1540.1544189453125</y>
+<x>-4162.74755859375</x>
+<y>1648.996337890625</y>
                             </bends>
                             <destination>
 <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
@@ -476,6 +452,31 @@
                             <source>
 <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
 <id>e1c76a71-3739-383c-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>0ed7f9e8-9110-3920-0000-000000000000</id>
+                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
+<id>e1c76a71-3739-383c-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>matched</selectedRelationships>
+                            <source>
+<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
+<id>2fc4d8b2-ac99-3c62-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -2070,7 +2071,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
-<id>e1c76a71-3739-383c-0000-000000000000</id>
+<id>7bf896b6-60a8-3aee-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -2684,6 +2685,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>c9e53b81-27df-3e59-0000-000000000000</id>
+                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
+<id>2fc4d8b2-ac99-3c62-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>get_sem_value</selectedRelationships>
+                            <source>
+<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
+<id>7bf896b6-60a8-3aee-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>cbdb5355-be82-3cb3-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -2715,7 +2741,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
-<id>2f61187a-90f6-3045-0000-000000000000</id>
+<id>0d220c47-92b2-3e0e-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -2992,31 +3018,6 @@
                             <source>
 <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
 <id>35ab11ac-b990-38b1-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>dfe22a26-255f-3b33-0000-000000000000</id>
-                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
-<id>0d220c47-92b2-3e0e-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
-<id>2f61187a-90f6-3045-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -3320,31 +3321,6 @@
                             <source>
 <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
 <id>4cc280df-44c0-38c2-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>f7f48a1a-3b50-35ea-0000-000000000000</id>
-                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
-<id>1bf4acaf-4baa-36d2-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>get_sem_value</selectedRelationships>
-                            <source>
-<groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
-<id>4cb07448-1736-3ef4-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -4496,7 +4472,7 @@
     <value>-1</value>
 </entry>
                             </properties>
-                            <state>ENABLED</state>
+                            <state>ENABLING</state>
                             <type>org.apache.nifi.dbcp.DBCPConnectionPool</type>
                         </controllerServices>
                         <controllerServices>
@@ -4929,8 +4905,8 @@
                             <id>f7c26e48-6cf9-30b2-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <position>
-<x>-4424.0</x>
-<y>1656.0</y>
+<x>-4464.0</x>
+<y>1808.0</y>
                             </position>
                         </funnels>
                         <inputPorts>
@@ -5184,8 +5160,8 @@
                             <id>006ec56c-38a4-3309-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <position>
-<x>-4552.0</x>
-<y>1176.0</y>
+<x>-4560.0</x>
+<y>1016.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -5999,7 +5975,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <position>
 <x>4360.0</x>
-<y>1496.0</y>
+<y>1320.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -6090,7 +6066,7 @@ where ff_uuid= '${files_uuid}'</value>
     </entry>
     <entry>
         <key>sql-pre-query</key>
-        <value>select semester_no_schools(${semester.value})</value>
+        <value>select semester_no_schools(${semester_value})</value>
     </entry>
     <entry>
         <key>SQL select query</key>
@@ -6272,89 +6248,6 @@ file: ${filename} columns validation started.</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
-                        </processors>
-                        <processors>
-                            <id>1bf4acaf-4baa-36d2-0000-000000000000</id>
-                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
-                            <position>
-<x>-4680.0</x>
-<y>2072.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>Cache Entry Identifier</key>
-        <value>
-            <name>Cache Entry Identifier</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Distributed Cache Service</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.distributed.cache.client.DistributedMapCacheClient</identifiesControllerService>
-            <name>Distributed Cache Service</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Cache update strategy</key>
-        <value>
-            <name>Cache update strategy</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Max cache entry size</key>
-        <value>
-            <name>Max cache entry size</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>Cache Entry Identifier</key>
-        <value>semester_value</value>
-    </entry>
-    <entry>
-        <key>Distributed Cache Service</key>
-        <value>525ed7e2-e6da-3de6-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>Cache update strategy</key>
-        <value>replace</value>
-    </entry>
-    <entry>
-        <key>Max cache entry size</key>
-        <value>1 MB</value>
-    </entry>
-</properties>
-<runDurationMillis>1000</runDurationMillis>
-<schedulingPeriod>2 secs</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>PutDistributedMapCache</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>failure</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.PutDistributedMapCache</type>
                         </processors>
                         <processors>
                             <id>1e287747-d960-30fb-0000-000000000000</id>
@@ -6929,103 +6822,6 @@ same id data validation of file:${filename}, same id records found </value>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
-                            <id>2f61187a-90f6-3045-0000-000000000000</id>
-                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
-                            <position>
-<x>4368.0</x>
-<y>1304.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>Cache Entry Identifier</key>
-        <value>
-            <name>Cache Entry Identifier</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Distributed Cache Service</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.distributed.cache.client.DistributedMapCacheClient</identifiesControllerService>
-            <name>Distributed Cache Service</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Put Cache Value In Attribute</key>
-        <value>
-            <name>Put Cache Value In Attribute</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Max Length To Put In Attribute</key>
-        <value>
-            <name>Max Length To Put In Attribute</name>
-        </value>
-    </entry>
-    <entry>
-        <key>Character Set</key>
-        <value>
-            <name>Character Set</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>Cache Entry Identifier</key>
-        <value>semester_value</value>
-    </entry>
-    <entry>
-        <key>Distributed Cache Service</key>
-        <value>525ed7e2-e6da-3de6-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>Put Cache Value In Attribute</key>
-        <value>semester.value</value>
-    </entry>
-    <entry>
-        <key>Max Length To Put In Attribute</key>
-        <value>256</value>
-    </entry>
-    <entry>
-        <key>Character Set</key>
-        <value>UTF-8</value>
-    </entry>
-</properties>
-<runDurationMillis>500</runDurationMillis>
-<schedulingPeriod>2 secs</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>get_semester_value_from_cache</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>failure</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>not-found</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.FetchDistributedMapCache</type>
-                        </processors>
-                        <processors>
                             <id>2fa69442-84e7-302d-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <position>
@@ -7127,6 +6923,198 @@ Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(parseLong()),Optiona
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ValidateCsv</type>
+                        </processors>
+                        <processors>
+                            <id>2fc4d8b2-ac99-3c62-0000-000000000000</id>
+                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
+                            <position>
+<x>-4584.0</x>
+<y>1384.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Character Set</key>
+        <value>
+            <name>Character Set</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Maximum Buffer Size</key>
+        <value>
+            <name>Maximum Buffer Size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Maximum Capture Group Length</key>
+        <value>
+            <name>Maximum Capture Group Length</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Enable Canonical Equivalence</key>
+        <value>
+            <name>Enable Canonical Equivalence</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Enable Case-insensitive Matching</key>
+        <value>
+            <name>Enable Case-insensitive Matching</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Permit Whitespace and Comments in Pattern</key>
+        <value>
+            <name>Permit Whitespace and Comments in Pattern</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Enable DOTALL Mode</key>
+        <value>
+            <name>Enable DOTALL Mode</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Enable Literal Parsing of the Pattern</key>
+        <value>
+            <name>Enable Literal Parsing of the Pattern</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Enable Multiline Mode</key>
+        <value>
+            <name>Enable Multiline Mode</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Enable Unicode-aware Case Folding</key>
+        <value>
+            <name>Enable Unicode-aware Case Folding</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Enable Unicode Predefined Character Classes</key>
+        <value>
+            <name>Enable Unicode Predefined Character Classes</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Enable Unix Lines Mode</key>
+        <value>
+            <name>Enable Unix Lines Mode</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Include Capture Group 0</key>
+        <value>
+            <name>Include Capture Group 0</name>
+        </value>
+    </entry>
+    <entry>
+        <key>extract-text-enable-repeating-capture-group</key>
+        <value>
+            <name>extract-text-enable-repeating-capture-group</name>
+        </value>
+    </entry>
+    <entry>
+        <key>semester_value</key>
+        <value>
+            <name>semester_value</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Character Set</key>
+        <value>UTF-8</value>
+    </entry>
+    <entry>
+        <key>Maximum Buffer Size</key>
+        <value>1 MB</value>
+    </entry>
+    <entry>
+        <key>Maximum Capture Group Length</key>
+        <value>1024</value>
+    </entry>
+    <entry>
+        <key>Enable Canonical Equivalence</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Enable Case-insensitive Matching</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Permit Whitespace and Comments in Pattern</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Enable DOTALL Mode</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Enable Literal Parsing of the Pattern</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Enable Multiline Mode</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Enable Unicode-aware Case Folding</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Enable Unicode Predefined Character Classes</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Enable Unix Lines Mode</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Include Capture Group 0</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>extract-text-enable-repeating-capture-group</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>semester_value</key>
+        <value>^(.*)</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>semester_extract_semester_value</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>matched</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.ExtractText</type>
                         </processors>
                         <processors>
                             <id>30a7d6d3-2505-3042-0000-000000000000</id>
@@ -9258,7 +9246,7 @@ same id data validation of file:${filename} started</value>
                             <id>4a6cdbce-f0f1-316a-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <position>
-<x>4352.0</x>
+<x>4360.0</x>
 <y>1088.0</y>
                             </position>
                             <bundle>
@@ -9315,104 +9303,6 @@ same id data validation of file:${filename} started</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
-                        </processors>
-                        <processors>
-                            <id>4cb07448-1736-3ef4-0000-000000000000</id>
-                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
-                            <position>
-<x>-4680.0</x>
-<y>1872.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>5</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>record-reader</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
-            <name>record-reader</name>
-        </value>
-    </entry>
-    <entry>
-        <key>record-writer</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
-            <name>record-writer</name>
-        </value>
-    </entry>
-    <entry>
-        <key>include-zero-record-flowfiles</key>
-        <value>
-            <name>include-zero-record-flowfiles</name>
-        </value>
-    </entry>
-    <entry>
-        <key>cache-schema</key>
-        <value>
-            <name>cache-schema</name>
-        </value>
-    </entry>
-    <entry>
-        <key>get_sem_value</key>
-        <value>
-            <name>get_sem_value</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>record-reader</key>
-        <value>d11e57c2-cb4e-33fa-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>record-writer</key>
-        <value>58874303-8666-34d2-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>include-zero-record-flowfiles</key>
-        <value>true</value>
-    </entry>
-    <entry>
-        <key>cache-schema</key>
-        <value>true</value>
-    </entry>
-    <entry>
-        <key>get_sem_value</key>
-        <value>#{get_sem_value}</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>get_semester_value</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>failure</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>get_sem_value</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>original</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
                         <processors>
                             <id>4cc280df-44c0-38c2-0000-000000000000</id>
@@ -11440,6 +11330,104 @@ file: ${filename} null values are found.</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
+                        <processors>
+                            <id>7bf896b6-60a8-3aee-0000-000000000000</id>
+                            <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
+                            <position>
+<x>-4560.0</x>
+<y>1208.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>record-reader</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+            <name>record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>include-zero-record-flowfiles</key>
+        <value>
+            <name>include-zero-record-flowfiles</name>
+        </value>
+    </entry>
+    <entry>
+        <key>cache-schema</key>
+        <value>
+            <name>cache-schema</name>
+        </value>
+    </entry>
+    <entry>
+        <key>get_sem_value</key>
+        <value>
+            <name>get_sem_value</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>record-reader</key>
+        <value>d11e57c2-cb4e-33fa-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>58874303-8666-34d2-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>include-zero-record-flowfiles</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>cache-schema</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>get_sem_value</key>
+        <value>#{get_sem_value}</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>get_semester_value</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>get_sem_value</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>original</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
                         <processors>
                             <id>7c07aa2c-8390-3c9e-0000-000000000000</id>
@@ -16629,8 +16617,8 @@ file: ${filename} blank lines count updated to log summary db.</value>
                             <id>e1c76a71-3739-383c-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <position>
-<x>-4608.0</x>
-<y>1448.0</y>
+<x>-4624.0</x>
+<y>1560.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -26178,5 +26166,5 @@ WHERE ff_uuid = '${source.uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>11/12/2020 20:28:45 IST</timestamp>
+    <timestamp>12/09/2020 00:23:13 IST</timestamp>
 </template>

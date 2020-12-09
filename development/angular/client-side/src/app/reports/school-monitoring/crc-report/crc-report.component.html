@@ -4,19 +4,19 @@
             <div *ngIf='skul'>
                 <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div>
             <div *ngIf="blok">
                 <p id="cluster_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -26,7 +26,7 @@
             <div *ngIf="clust">
                 <p id="school_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     CRC report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -59,7 +59,7 @@
                     <ng-template #ng_else>
                         <em class="fa fa-download" title="Download Report" id="download"
                             style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
-                            (click)="downloadRoport()"></em>
+                            (click)="downloadReport()"></em>
                     </ng-template>
                     <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
@@ -176,7 +176,7 @@
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; padding: 5px 0px 5px 0px;margin: 0px 0px 0px 0px;position: fixed; bottom: 0; left: 0;">
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; padding: 2px 0px 2px 0px;margin: 0px 0px 0px 0px;position: fixed; bottom: 0; left: 0;">
         <div style="margin-right: 7%; margin-left: 1%;">
             <span id="visits">Total Number of visits: {{visitCount}}</span>
         </div>

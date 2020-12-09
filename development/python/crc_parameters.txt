@@ -1,56 +1,93 @@
-{
-"crc_check_if_null":'''select * from flowfile 
-where SchoolId IS NULL
-or InspectionId IS NULL
-or InSchoolLocation IS NULL
-or CreatedOn IS NULL
-or Latitude IS NULL
-or Longitude IS NULL
-''',
-"crc_not_null":'''select * from flowfile 
-where SchoolId IS NOT NULL
-AND InspectionId IS NOT NULL
-AND InSchoolLocation IS NOT NULL
-AND CreatedOn IS NOT NULL
-AND Latitude IS NOT NULL
-AND Longitude IS NOT NULL
-''',
-"crc_count_null":'''(select
-SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
-SUM(CASE when InspectionId IS NULL THEN 1 ELSE 0 END) AS count_null_inspectionid,
-SUM(CASE when InSchoolLocation IS NULL THEN 1 ELSE 0 END) AS inschoolloc,
-SUM(CASE when CreatedOn IS NULL THEN 1 ELSE 0 END) AS count_null_createdon,
-SUM(CASE when  Latitude IS NULL THEN 1 ELSE 0 END) AS count_latitude,
-SUM(CASE when  Longitude IS NULL THEN 1 ELSE 0 END) AS count_longitude
-from flowfile)
-''',
-"crc_insp_check_if_null":'''select * from flowfile
-where SchoolId IS NULL
-''',
-"crc_insp_not_null":'''select * from flowfile
-where SchoolId IS NOT NULL
-''',
-"crc_insp_count_null":'''(select 
-SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
-SUM(CASE when InspectionId IS NULL THEN 1 ELSE 0 END) AS count_null_inspectionid from flowfile)
-''',
-"crc_inspec_dup_check":'''SELECT inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline,count(inspectionid)-1  num_of_times
-FROM flowfile
-GROUP BY inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline
-HAVING  COUNT(*) > 1
-''',
-"crc_loc_dup_check":'''SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(UserLocationMasterId)  num_of_times
-FROM flowfile
-GROUP BY UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
-HAVING  COUNT(*) > 1
-''',
-"crc_loc_duplicate_data":'''select UserLocationMasterId as "crc_location_id",UserMasterId as "crc_id",SchoolId as "school_id",InspectionId as "inspection_id",Latitude as "latitude",Longitude as "longitude",InSchoolLocation as "in_school_location",CreatedOn as "created_on",count(UserLocationMasterId)-1  num_of_times
-FROM flowfile
-GROUP BY UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
-HAVING  COUNT(*) > 1
-''',
-"crc_loc_dup_tb_name":"crc_location_dup",
-"crc_inspec_duplicate_data":'''Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
+{"block_filename":"""block_crc_opt_json""",
+"update_crc_name":"""update school_hierarchy_details as b
+    set crc_name=a.crc_name,
+    updated_on=now()
+    from crc_inspection_trans as a
+    where a.school_id=b.school_id
+""",
+"crc_transform_block_wise_jolt":"""[{
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "district_id": "data.[&1].districtId",
+        "district_name": "data.[&1].districtName",
+        "block_id": "data.[&1].blockId",
+        "block_name": "data.[&1].blockName",
+        "schools_0": "data.[&1].visit_0",
+        "schools_1_2": "data.[&1].visit_1_2",
+        "schools_3_5": "data.[&1].visit_3_5",
+        "schools_6_10": "data.[&1].visit_6_10",
+        "schools_10": "data.[&1].visit_10_more",
+        "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
+        "visit_percent_per_school": "data.[&1].visits_per_school",
+        "@total_schools": "data.[&1].totalSchools",
+        "@visited_school_count": "data.[&1].visitedSchoolCount",
+        "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
+        "@total_crc_visits": "data.[&1].totalVisits",
+        "total_schools": "footer.@(1,district_id).totalNumberOfSchools[]",
+        "total_crc_visits": "footer.@(1,district_id).totalNumberOfVisits[]",
+        "visited_school_count": "footer.@(1,district_id).totalSchoolsVisited[]",
+        "not_visited_school_count": "footer.@(1,district_id).totalSchoolsNotVisited[]"
+      }
+    }
+},
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "totalNumberOfVisits": "=intSum(@(1,totalNumberOfVisits))",
+          "totalSchoolsVisited": "=intSum(@(1,totalSchoolsVisited))",
+          "totalNumberOfSchools": "=intSum(@(1,totalNumberOfSchools))",
+          "totalSchoolsNotVisited": "=intSum(@(1,totalSchoolsNotVisited))"
+        }
+      }
+    }
+ },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "districtId": "data.[&1].districtId",
+          "districtName": "data.[&1].districtName",
+          "blockId": "data.[&1].blockId",
+          "blockName": "data.[&1].blockName",
+          "visit_0": "data.[&1].visit_0",
+          "visit_1_2": "data.[&1].visit_1_2",
+          "visit_3_5": "data.[&1].visit_3_5",
+          "visit_6_10": "data.[&1].visit_6_10",
+          "visit_10_more": "data.[&1].visit_10_more",
+          "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
+          "visits_per_school": "data.[&1].visits_per_school",
+          "@totalSchools": "data.[&1].totalSchools",
+          "@visitedSchoolCount": "data.[&1].visitedSchoolCount",
+          "@totalVisits": "data.[&1].totalVisits",
+          "totalSchools": "allBlocksFooter.totalNumberOfSchools[]",
+          "totalVisits": "allBlocksFooter.totalNumberOfVisits[]",
+          "visitedSchoolCount": "allBlocksFooter.totalSchoolsVisited[]",
+          "totalSchoolsNotVisited": "allBlocksFooter.totalSchoolsNotVisited[]"
+        }
+      },
+      "footer": "&"
+    }
+ },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "totalNumberOfVisits": "=intSum(@(1,totalNumberOfVisits))",
+        "totalSchoolsVisited": "=intSum(@(1,totalSchoolsVisited))",
+        "totalNumberOfSchools": "=intSum(@(1,totalNumberOfSchools))",
+        "totalSchoolsNotVisited": "=intSum(@(1,totalSchoolsNotVisited))"
+      }
+    }
+ }
+
+]
+""",
+"crc_inspec_duplicate_data":"""Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
 BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
 ActualClassRooms as "actual_class_rooms",
 TotalSuggestionLastMonth as "total_suggestion_last_month",ResolvedFromThat as "resolved_from_that",IsInspection as "is_inspection",ReasonType as "reason_type",ReasonDesc as "reason_desc",
@@ -58,247 +95,46 @@ TotalScore as "total_score",Score as "score",IsOffline as "is_offline",count(Ins
 FROM flowfile
 GROUP BY inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline
 HAVING  COUNT(*) > 1
-''',
-"crc_insp_dup_tb_name":"crc_inspection_dup",
-"distinct_crc_loc_records":"select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude ,Longitude ,InSchoolLocation ,CreatedOn  from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn, row_number() over (partition by  UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn) as rn from flowfile)sq where rn=1",
-"distinct_crc_inspec_records":'''Select  inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline from (select inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline, row_number() over(partition by
+""",
+"distinct_crc_loc_records":"""select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude ,Longitude ,InSchoolLocation ,CreatedOn  from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn, row_number() over (partition by  UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn) as rn from flowfile)sq where rn=1""",
+"crc_loc_check_for_non_blank":"""select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude,Longitude ,InSchoolLocation ,CreatedOn 
+from flowfile where has_records = non_empty_records""",
+"distinct_crc_inspec_records":"""Select  inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline from (select inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline, row_number() over(partition by
 inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline) as rn from flowfile) sq where rn=1
-''',
-"same_id_crc_loc_check":'''select *,count(*) as num_of_times from (
-select UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(*)
-over (partition by UserMasterId,CreatedOn) as rn from FLOWFILE) sq Where rn >1) group by  UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
-''',
-"same_id_crc_inspec_check":'''SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,VisitEndTime,
-ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline,count(InspectionId)-1  num_of_times
-FROM flowfile
-GROUP BY InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,VisitEndTime,
-ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline
-HAVING  COUNT(*) > 1
-''',
-"crc_loc_duplicate_records":'''select  UserLocationMasterId as "crc_location_id",UserMasterId as "crc_id",SchoolId as "school_id",InspectionId as "inspection_id",Latitude as "latitude",Longitude as "longitude",InSchoolLocation as "in_school_location",CreatedOn as "created_on",count(*) as num_of_times from (
-select UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(*)
-over (partition by UserMasterId,CreatedOn) as rn from FLOWFILE) sq Where rn >1) group by  UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
-''',
-"unique_crc_loc_records":'''select UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
-from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(*)
- over (partition by UserMasterId,CreatedOn) as rn from FLOWFILE) sq Where rn =1
-''',
-"crc_inspec_duplicate_records":'''Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
-BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
-ActualClassRooms as "actual_class_rooms",
-TotalSuggestionLastMonth as "total_suggestion_last_month",ResolvedFromThat as "resolved_from_that",IsInspection as "is_inspection",ReasonType as "reason_type",ReasonDesc as "reason_desc",
-TotalScore as "total_score",Score as "score",CreatedOn as "created_on",UpdatedOn as "updated_on",IsOffline as "is_offline",count(*) as num_of_times from (
-select InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
-VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline from (SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
-VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline,count(*)
-over (partition by ObserverId,CreatedOn) as rn from FLOWFILE) sq Where rn >1) group by  InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
-VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline
-''',
-"unique_crc_inspec_records":'''SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
-VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline from
-(SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
-VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline,count(*)
-over (partition by ObserverId,CreatedOn) as rn from FLOWFILE) sq Where rn =1
-''',
-"crc_loc_blank_lines_check":'''select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude,Longitude ,InSchoolLocation ,CreatedOn
-from flowfile where has_records = non_empty_records
-''',
-"crc_inspec_check_for_non_blank":'''Select  inspectionid,observerid,observername,schoolid,beginningstandard ,endstandard ,totalclassrooms ,visitstarttime ,visitendtime ,
-actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc ,totalscore,score,isoffline
-from flowfile where has_records = non_empty_records
-''',
-"update_crc_name":'''update school_hierarchy_details as b
-    set crc_name=a.crc_name,
-    updated_on=now()
-    from crc_inspection_trans as a
-    where a.school_id=b.school_id
-''',
-"crc_user_loc_normalize":'''select UserLocationMasterId as "crc_location_id",UserMasterId as "crc_id",SchoolId as "school_id",InspectionId as "inspection_id",Latitude as "latitude",Longitude as "longitude",InSchoolLocation as "in_school_location",CreatedOn as "created_on"
-from flowfile''',
-"crc_inspec_trans_table_name":"crc_inspection_trans",
-"crc_inpsec_master_column_change":'''Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
+""",
+"cluster_filename":"""cluster_crc_opt_json""",
+"crc_insp_check_if_null":"""select * from flowfile
+where SchoolId IS NULL
+or InspectionId IS NULL""",
+"crc_loc_trans_table_name":"""crc_location_trans""",
+"crc_inpsec_master_column_change":"""Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
 BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
 ActualClassRooms as "actual_class_rooms",
 TotalSuggestionLastMonth as "total_suggestion_last_month",ResolvedFromThat as "resolved_from_that",IsInspection as "is_inspection",ReasonType as "reason_type",ReasonDesc as "reason_desc",
 TotalScore as "total_score",Score as "score",IsOffline as "is_offline"
 FROM flowfile
-''',
-"crc_inspec_trans_table_name":"crc_inspection_trans",
-"crc_loc_trans_table_name":"crc_location_trans",
-"crc_loc_trans_table_name":"crc_location_trans",
-"crc_trans_to_crc_visits_frequency_pre_query":'''create or replace view crc_trans_to_aggregate as 
-select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b.district_name)as district_name,b.block_id,
-  INITCAP(b.block_name)as block_name,b.cluster_id,
-  INITCAP(b.cluster_name)as cluster_name ,INITCAP(b.crc_name)as crc_name,
-  sum(cast((case when in_school_location='true' or in_school_location='t' then 1 else 0 end ) as int)) as visit_count,
-  sum(cast((case when in_school_location='false' or in_school_location='f' then 1 else 0 end ) as int)) as missed_visit_count,
-      a.month,
-    a.year,
-  now() as created_on,
-  now() as updated_on
-  from crc_location_trans as a left join school_hierarchy_details as b on a.school_id=b.school_id
-  where a.school_id<>0 and a.inspection_id<>0 and b.cluster_name is not null
-  group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id,
-  b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year;
-''',
-"crc_district_agg":'''select spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
-coalesce(spd.total_visits,0) total_crc_visits,coalesce(spd.visited_school_count,0) as visited_school_count,
-(spd.total_schools-coalesce(spd.visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
-from (
-(select district_id,district_name,count(distinct school_id) as total_schools,
-    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2)) as no_of_schools_per_crc 
-    from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-    group by district_id,district_name) s left join 
-(select district_id as dist_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
-sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
-coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
-from
-(
-select district_id,visit_count,count(school_id)*visit_count as school_count,
-case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
-case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
-case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
-case when visit_count >10 then count(school_id) end as schools_10
-from crc_visits_frequency
-where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1)
- and visit_count>0 and crc_name is not null and cluster_name is not null
-group by district_id,visit_count) d group by district_id) t on s.district_id=t.dist_id) spd
-''',
-"crc_block_agg":'''select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.total_schools,
-coalesce(spd.total_visits,0) total_crc_visits,coalesce(spd.visited_school_count,0) as visited_school_count,
-(spd.total_schools-coalesce(spd.visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
-from (
-(select district_id,district_name,block_id,block_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
-    from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null
-     group by district_id,district_name,block_id,block_name) s left join 
-(select block_id as blk_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
-sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
-coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
-from
-(
-select block_id,visit_count,count(school_id)*visit_count as school_count,
-case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
-case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
-case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
-case when visit_count >10 then count(school_id) end as schools_10
-from crc_visits_frequency
-where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1)
-and visit_count>0 and crc_name is not null and cluster_name is not null
-group by block_id,visit_count) d group by block_id) t on s.block_id=t.blk_id) spd
-''',
-"crc_cluster_agg":'''select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.cluster_id,
-initcap(spd.cluster_name)as cluster_name,spd.total_schools,
-coalesce(spd.total_visits,0) total_crc_visits,coalesce(spd.visited_school_count,0) as visited_school_count,
-(spd.total_schools-coalesce(spd.visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
-from (
-(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc
-     from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null
-      group by district_id,district_name,block_id,block_name,cluster_id,cluster_name) s left join 
-(select cluster_id as clt_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
-sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
-coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
-from
-(
-select cluster_id,visit_count,count(school_id)*visit_count as school_count,
-case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
-case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
-case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
-case when visit_count >10 then count(school_id) end as schools_10
-from crc_visits_frequency
-where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1)
-and visit_count>0 and crc_name is not null and cluster_name is not null
-group by cluster_id,visit_count) d group by cluster_id) t on s.cluster_id=t.clt_id) spd
-''',
-"crc_schools_agg":'''select spd.district_id,initcap(spd.district_name)as district_name,spd.block_id,initcap(spd.block_name) as block_name,spd.cluster_id,initcap(spd.cluster_name)as cluster_name,spd.school_id,
-initcap(spd.school_name) as school_name,spd.total_schools,
-coalesce(spd.total_visits,0) total_crc_visits,coalesce(spd.visited_school_count,0) as visited_school_count,
-(spd.total_schools-coalesce(spd.visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
-from (
-(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
-    from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null
-    group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name) s left join 
-(select school_id as schl_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
-sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
-coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
-from
-(
-select school_id,visit_count,count(school_id)*visit_count as school_count,
-case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
-case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
-case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
-case when visit_count >10 then count(school_id) end as schools_10
-from crc_visits_frequency
-where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1) 
-and visit_count>0 and crc_name is not null and cluster_name is not null
-group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id) spd
-''',
-"crc_transform_district_wise_jolt":'''[{
-        "operation": "shift",
-        "spec": {
-            "*": {
-                
-                "district_name": "data.[&1].districtName",
-                "district_id": "data.[&1].districtId",
-              "schools_0": "data.[&1].visit_0",
-              "schools_1_2": "data.[&1].visit_1_2",
-              "schools_3_5": "data.[&1].visit_3_5",
-              "schools_6_10": "data.[&1].visit_6_10",
-              "schools_10": "data.[&1].visit_10_more",
-              "total_crc_visits": "data.[&1].totalVisits",
-              "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
-              "visit_percent_per_school": "data.[&1].visits_per_school",
-              
-              
-                
-                
-               
-                "@total_schools": "data.[&1].totalSchools",
-                "@visited_school_count": "data.[&1].visitedSchoolCount",
-              "@total_crc_visits": "data.[&1].totalVisits",
-                "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
-                "total_schools": "allDistrictsFooter.totalNumberOfSchools[]",
-                "total_crc_visits": "allDistrictsFooter.totalNumberOfVisits[]",
-                "visited_school_count": "allDistrictsFooter.totalSchoolsVisited[]",
-                "not_visited_school_count": "allDistrictsFooter.totalSchoolsNotVisited[]"
-              
-              
-              
-            }
-        }
-    }, {
-        "operation": "modify-overwrite-beta",
-        "spec": {
-            "*": {
-        "totalNumberOfVisits": "=intSum(@(1,totalNumberOfVisits))",
-        "totalSchoolsVisited": "=intSum(@(1,totalSchoolsVisited))",
-        "totalNumberOfSchools": "=intSum(@(1,totalNumberOfSchools))",
-        "totalSchoolsNotVisited": "=intSum(@(1,totalSchoolsNotVisited))"
-            }
-        }
-    }
-
-]
-''',
-"crc_transform_school_wise_jolt":'''[
+""",
+"crc_trans_to_crc_visits_frequency_insert_query":"""insert into crc_visits_frequency as a (year,month,school_id,school_name,district_id,district_name,
+block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on)
+select year,month,school_id,school_name,district_id,district_name,
+block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on from crc_trans_to_aggregate
+on conflict (month,year,school_id)
+do update set year= excluded.year,month=excluded.month,school_id=excluded.school_id,school_name=excluded.school_name,
+district_id=excluded.district_id,district_name=excluded.district_name,
+block_id=excluded.block_id,block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
+visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,updated_on=now(),created_on=excluded.created_on
+""",
+"school_filename":"""school_crc_opt_json""",
+"crc_loc_null_log_summary":"""update log_summary
+SET school_id = crc_loc_null_col.count_null_schoolid,
+inspection_id = crc_loc_null_col.count_null_inspectionid,
+in_school_location = crc_loc_null_col.inschoolloc,
+created_on = crc_loc_null_col.count_null_createdon,
+latitude = crc_loc_null_col.count_latitude,
+longitude = crc_loc_null_col.count_longitude
+from crc_loc_null_col
+where crc_loc_null_col.ff_uuid = log_summary.ff_uuid""",
+"crc_transform_school_wise_jolt":"""[
   {
     "operation": "modify-overwrite-beta",
     "spec": {
@@ -398,8 +234,98 @@ group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id
  }
 
 ]
-''',
-"crc_transform_cluster_wise_jolt":'''[{
+""",
+"crc_not_null":"""select * from flowfile 
+where SchoolId IS NOT NULL
+AND InspectionId IS NOT NULL
+AND InSchoolLocation IS NOT NULL
+AND CreatedOn IS NOT NULL
+AND Latitude IS NOT NULL
+AND Longitude IS NOT NULL
+""",
+"crc_loc_dup_check":"""SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(UserLocationMasterId)  num_of_times
+FROM flowfile
+GROUP BY UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
+HAVING  COUNT(*) > 1
+""",
+"crc_loc_null_table":"""crc_loc_null_col""",
+"crc_inspec_duplicate_records":"""Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
+BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
+ActualClassRooms as "actual_class_rooms",
+TotalSuggestionLastMonth as "total_suggestion_last_month",ResolvedFromThat as "resolved_from_that",IsInspection as "is_inspection",ReasonType as "reason_type",ReasonDesc as "reason_desc",
+TotalScore as "total_score",Score as "score",CreatedOn as "created_on",UpdatedOn as "updated_on",IsOffline as "is_offline",count(*) as num_of_times from (
+select InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
+VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline from (SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
+VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline,count(*)
+over (partition by ObserverId,CreatedOn) as rn from FLOWFILE) sq Where rn >1) group by  InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
+VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline
+""",
+"crc_district_agg":"""select spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(spd.visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(spd.visited_school_count,0)) as not_visited_school_count,
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
+from (
+(select district_id,district_name,count(distinct school_id) as total_schools,
+    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2)) as no_of_schools_per_crc 
+    from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
+    group by district_id,district_name) s left join 
+(select district_id as dist_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
+coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
+from
+(
+select district_id,visit_count,count(school_id)*visit_count as school_count,
+case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
+case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
+case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
+case when visit_count >10 then count(school_id) end as schools_10
+from crc_visits_frequency
+where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1)
+ and visit_count>0 and crc_name is not null and cluster_name is not null
+group by district_id,visit_count) d group by district_id) t on s.district_id=t.dist_id) spd
+""",
+"crc_inspec_null_table":"""crc_inspec_null_col""",
+"crc_insp_not_null":"""select * from flowfile
+where SchoolId IS NOT NULL
+AND InspectionId IS NOT NULL
+""",
+"unique_crc_loc_records":"""select UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
+from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(*)
+ over (partition by UserMasterId,CreatedOn) as rn from FLOWFILE) sq Where rn =1
+""",
+"crc_schools_agg":"""select spd.district_id,initcap(spd.district_name)as district_name,spd.block_id,initcap(spd.block_name) as block_name,spd.cluster_id,initcap(spd.cluster_name)as cluster_name,spd.school_id,
+initcap(spd.school_name) as school_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(spd.visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(spd.visited_school_count,0)) as not_visited_school_count,
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
+from (
+(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,count(distinct school_id) as total_schools,
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
+    from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null
+    group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name) s left join 
+(select school_id as schl_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
+coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
+from
+(
+select school_id,visit_count,count(school_id)*visit_count as school_count,
+case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
+case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
+case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
+case when visit_count >10 then count(school_id) end as schools_10
+from crc_visits_frequency
+where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1) 
+and visit_count>0 and crc_name is not null and cluster_name is not null
+group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id) spd
+""",
+"crc_insp_dup_tb_name":"""crc_inspection_dup""",
+"crc_transform_cluster_wise_jolt":"""[{
     "operation": "shift",
     "spec": {
       "*": {
@@ -484,121 +410,193 @@ group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id
  }
 
 ]
-''',
-"crc_loc_check_for_non_blank":'''select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude,Longitude ,InSchoolLocation ,CreatedOn 
-from flowfile where has_records = non_empty_records''',
-"crc_transform_block_wise_jolt":'''[{
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "district_id": "data.[&1].districtId",
-        "district_name": "data.[&1].districtName",
-        "block_id": "data.[&1].blockId",
-        "block_name": "data.[&1].blockName",
-        "schools_0": "data.[&1].visit_0",
-        "schools_1_2": "data.[&1].visit_1_2",
-        "schools_3_5": "data.[&1].visit_3_5",
-        "schools_6_10": "data.[&1].visit_6_10",
-        "schools_10": "data.[&1].visit_10_more",
-        "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
-        "visit_percent_per_school": "data.[&1].visits_per_school",
-        "@total_schools": "data.[&1].totalSchools",
-        "@visited_school_count": "data.[&1].visitedSchoolCount",
-        "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
-        "@total_crc_visits": "data.[&1].totalVisits",
-        "total_schools": "footer.@(1,district_id).totalNumberOfSchools[]",
-        "total_crc_visits": "footer.@(1,district_id).totalNumberOfVisits[]",
-        "visited_school_count": "footer.@(1,district_id).totalSchoolsVisited[]",
-        "not_visited_school_count": "footer.@(1,district_id).totalSchoolsNotVisited[]"
-      }
-    }
-},
-
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "footer": {
-        "*": {
-          "totalNumberOfVisits": "=intSum(@(1,totalNumberOfVisits))",
-          "totalSchoolsVisited": "=intSum(@(1,totalSchoolsVisited))",
-          "totalNumberOfSchools": "=intSum(@(1,totalNumberOfSchools))",
-          "totalSchoolsNotVisited": "=intSum(@(1,totalSchoolsNotVisited))"
+""",
+"crc_inspec_null_log_summary":"""update log_summary
+SET school_id = crc_inspec_null_col.count_null_schoolid,
+inspection_id = crc_inspec_null_col.count_null_inspectionid
+from crc_inspec_null_col
+where crc_inspec_null_col.ff_uuid = log_summary.ff_uuid""",
+"same_id_crc_inspec_check":"""SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,VisitEndTime,
+ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline,count(InspectionId)-1  num_of_times
+FROM flowfile
+GROUP BY InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,VisitEndTime,
+ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline
+HAVING  COUNT(*) > 1
+""",
+"crc_queries_filename":"""crc_queries.json""",
+"crc_inspec_dup_check":"""SELECT inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline,count(inspectionid)-1  num_of_times
+FROM flowfile
+GROUP BY inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline
+HAVING  COUNT(*) > 1
+""",
+"crc_loc_duplicate_records":"""select  UserLocationMasterId as "crc_location_id",UserMasterId as "crc_id",SchoolId as "school_id",InspectionId as "inspection_id",Latitude as "latitude",Longitude as "longitude",InSchoolLocation as "in_school_location",CreatedOn as "created_on",count(*) as num_of_times from (
+select UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(*)
+over (partition by UserMasterId,CreatedOn) as rn from FLOWFILE) sq Where rn >1) group by  UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
+""",
+"crc_block_agg":"""select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(spd.visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(spd.visited_school_count,0)) as not_visited_school_count,
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
+from (
+(select district_id,district_name,block_id,block_name,count(distinct school_id) as total_schools,
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
+    from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null
+     group by district_id,district_name,block_id,block_name) s left join 
+(select block_id as blk_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
+coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
+from
+(
+select block_id,visit_count,count(school_id)*visit_count as school_count,
+case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
+case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
+case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
+case when visit_count >10 then count(school_id) end as schools_10
+from crc_visits_frequency
+where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1)
+and visit_count>0 and crc_name is not null and cluster_name is not null
+group by block_id,visit_count) d group by block_id) t on s.block_id=t.blk_id) spd
+""",
+"crc_insp_count_null":"""(select 
+SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
+SUM(CASE when InspectionId IS NULL THEN 1 ELSE 0 END) AS count_null_inspectionid from flowfile)
+""",
+"crc_check_if_null":"""select * from flowfile 
+where SchoolId IS NULL
+or InspectionId IS NULL
+or InSchoolLocation IS NULL
+or CreatedOn IS NULL
+or Latitude IS NULL
+or Longitude IS NULL
+""",
+"crc_trans_to_crc_visits_frequency_pre_query":"""create or replace view crc_trans_to_aggregate as 
+select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b.district_name)as district_name,b.block_id,
+  INITCAP(b.block_name)as block_name,b.cluster_id,
+  INITCAP(b.cluster_name)as cluster_name ,INITCAP(b.crc_name)as crc_name,
+  sum(cast((case when in_school_location='true' or in_school_location='t' then 1 else 0 end ) as int)) as visit_count,
+  sum(cast((case when in_school_location='false' or in_school_location='f' then 1 else 0 end ) as int)) as missed_visit_count,
+      a.month,
+    a.year,
+  now() as created_on,
+  now() as updated_on
+  from crc_location_trans as a left join school_hierarchy_details as b on a.school_id=b.school_id
+  where a.school_id<>0 and a.inspection_id<>0 and b.cluster_name is not null and b.district_name is not null and b.block_name is not null
+  and b.school_name is not null
+  group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id,
+b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year""",
+"district_filename":"""district_crc_opt_json""",
+"crc_inspec_trans_table_name":"""crc_inspection_trans""",
+"crc_loc_duplicate_data":"""select UserLocationMasterId as "crc_location_id",UserMasterId as "crc_id",SchoolId as "school_id",InspectionId as "inspection_id",Latitude as "latitude",Longitude as "longitude",InSchoolLocation as "in_school_location",CreatedOn as "created_on",count(UserLocationMasterId)-1  num_of_times
+FROM flowfile
+GROUP BY UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
+HAVING  COUNT(*) > 1
+""",
+"crc_user_loc_normalize":"""select UserLocationMasterId as "crc_location_id",UserMasterId as "crc_id",SchoolId as "school_id",InspectionId as "inspection_id",Latitude as "latitude",Longitude as "longitude",InSchoolLocation as "in_school_location",CreatedOn as "created_on"
+from flowfile""",
+"crc_inspec_count_qry":"""select count(*) from crc_inspection_trans""",
+"crc_loc_blank_lines_check":"""select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude,Longitude ,InSchoolLocation ,CreatedOn
+from flowfile where has_records = non_empty_records
+""",
+"crc_loc_dup_tb_name":"""crc_location_dup""",
+"same_id_crc_loc_check":"""select *,count(*) as num_of_times from (
+select UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(*)
+over (partition by UserMasterId,CreatedOn) as rn from FLOWFILE) sq Where rn >1) group by  UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
+""",
+"unique_crc_inspec_records":"""SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
+VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline from
+(SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitStartTime,
+VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,CreatedOn,UpdatedOn,IsOffline,count(*)
+over (partition by ObserverId,CreatedOn) as rn from FLOWFILE) sq Where rn =1
+""",
+"crc_count_null":"""(select
+SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
+SUM(CASE when InspectionId IS NULL THEN 1 ELSE 0 END) AS count_null_inspectionid,
+SUM(CASE when InSchoolLocation IS NULL THEN 1 ELSE 0 END) AS inschoolloc,
+SUM(CASE when CreatedOn IS NULL THEN 1 ELSE 0 END) AS count_null_createdon,
+SUM(CASE when  Latitude IS NULL THEN 1 ELSE 0 END) AS count_latitude,
+SUM(CASE when  Longitude IS NULL THEN 1 ELSE 0 END) AS count_longitude
+from flowfile)
+""",
+"crc_transform_district_wise_jolt":"""[{
+        "operation": "shift",
+        "spec": {
+            "*": {
+                
+                "district_name": "data.[&1].districtName",
+                "district_id": "data.[&1].districtId",
+              "schools_0": "data.[&1].visit_0",
+              "schools_1_2": "data.[&1].visit_1_2",
+              "schools_3_5": "data.[&1].visit_3_5",
+              "schools_6_10": "data.[&1].visit_6_10",
+              "schools_10": "data.[&1].visit_10_more",
+              "total_crc_visits": "data.[&1].totalVisits",
+              "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
+              "visit_percent_per_school": "data.[&1].visits_per_school",
+              
+              
+                
+                
+               
+                "@total_schools": "data.[&1].totalSchools",
+                "@visited_school_count": "data.[&1].visitedSchoolCount",
+              "@total_crc_visits": "data.[&1].totalVisits",
+                "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
+                "total_schools": "allDistrictsFooter.totalNumberOfSchools[]",
+                "total_crc_visits": "allDistrictsFooter.totalNumberOfVisits[]",
+                "visited_school_count": "allDistrictsFooter.totalSchoolsVisited[]",
+                "not_visited_school_count": "allDistrictsFooter.totalSchoolsNotVisited[]"
+              
+              
+              
+            }
         }
-      }
-    }
- },
-  {
-    "operation": "shift",
-    "spec": {
-      "data": {
-        "*": {
-          "districtId": "data.[&1].districtId",
-          "districtName": "data.[&1].districtName",
-          "blockId": "data.[&1].blockId",
-          "blockName": "data.[&1].blockName",
-          "visit_0": "data.[&1].visit_0",
-          "visit_1_2": "data.[&1].visit_1_2",
-          "visit_3_5": "data.[&1].visit_3_5",
-          "visit_6_10": "data.[&1].visit_6_10",
-          "visit_10_more": "data.[&1].visit_10_more",
-          "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
-          "visits_per_school": "data.[&1].visits_per_school",
-          "@totalSchools": "data.[&1].totalSchools",
-          "@visitedSchoolCount": "data.[&1].visitedSchoolCount",
-          "@totalVisits": "data.[&1].totalVisits",
-          "totalSchools": "allBlocksFooter.totalNumberOfSchools[]",
-          "totalVisits": "allBlocksFooter.totalNumberOfVisits[]",
-          "visitedSchoolCount": "allBlocksFooter.totalSchoolsVisited[]",
-          "totalSchoolsNotVisited": "allBlocksFooter.totalSchoolsNotVisited[]"
-        }
-      },
-      "footer": "&"
-    }
- },
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "*": {
+    }, {
+        "operation": "modify-overwrite-beta",
+        "spec": {
+            "*": {
         "totalNumberOfVisits": "=intSum(@(1,totalNumberOfVisits))",
         "totalSchoolsVisited": "=intSum(@(1,totalSchoolsVisited))",
         "totalNumberOfSchools": "=intSum(@(1,totalNumberOfSchools))",
         "totalSchoolsNotVisited": "=intSum(@(1,totalSchoolsNotVisited))"
-      }
+            }
+        }
     }
- }
 
 ]
-''',
-"crc_inspec_count_qry":'''select count(*) from crc_inspection_trans''',
-"crc_trans_to_crc_visits_frequency_insert_query":'''insert into crc_visits_frequency as a (year,month,school_id,school_name,district_id,district_name,
-block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on)
-select year,month,school_id,school_name,district_id,district_name,
-block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on from crc_trans_to_aggregate
-on conflict (month,year,school_id)
-do update set year= excluded.year,month=excluded.month,school_id=excluded.school_id,school_name=excluded.school_name,
-district_id=excluded.district_id,district_name=excluded.district_name,
-block_id=excluded.block_id,block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
-visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,updated_on=now(),created_on=excluded.created_on
-''',
-"crc_loc_null_table":'''crc_loc_null_col''',
-"crc_inspec_null_table":'''crc_inspec_null_col''',
-"crc_loc_null_log_summary":'''update log_summary
-SET school_id = crc_loc_null_col.count_null_schoolid,
-inspection_id = crc_loc_null_col.count_null_inspectionid,
-in_school_location = crc_loc_null_col.inschoolloc,
-created_on = crc_loc_null_col.count_null_createdon,
-latitude = crc_loc_null_col.count_latitude,
-longitude = crc_loc_null_col.count_longitude
-from crc_loc_null_col
-where crc_loc_null_col.ff_uuid = log_summary.ff_uuid''',
-"crc_inspec_null_log_summary":'''update log_summary
-SET school_id = crc_inspec_null_col.count_null_schoolid,
-inspection_id = crc_inspec_null_col.count_null_inspectionid
-from crc_inspec_null_col
-where crc_inspec_null_col.ff_uuid = log_summary.ff_uuid''',
-"district_filename":'''district_crc_opt_json''',
-"block_filename":'''block_crc_opt_json''',
-"cluster_filename":'''cluster_crc_opt_json''',
-"school_filename":'''school_crc_opt_json''',
-"crc_queries_filename":'''crc_queries.json'''
+""",
+"crc_inspec_check_for_non_blank":"""Select  inspectionid,observerid,observername,schoolid,beginningstandard ,endstandard ,totalclassrooms ,visitstarttime ,visitendtime ,
+actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc ,totalscore,score,isoffline
+from flowfile where has_records = non_empty_records
+""",
+"crc_cluster_agg":"""select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.cluster_id,
+initcap(spd.cluster_name)as cluster_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(spd.visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(spd.visited_school_count,0)) as not_visited_school_count,
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)*100/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
+from (
+(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,count(distinct school_id) as total_schools,
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc
+     from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null
+      group by district_id,district_name,block_id,block_name,cluster_id,cluster_name) s left join 
+(select cluster_id as clt_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,
+coalesce(sum(schools_1_2),0)+coalesce(sum(schools_3_5),0)+coalesce(sum(schools_6_10),0)+coalesce(sum(schools_10),0) as visited_school_count
+from
+(
+select cluster_id,visit_count,count(school_id)*visit_count as school_count,
+case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
+case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
+case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
+case when visit_count >10 then count(school_id) end as schools_10
+from crc_visits_frequency
+where month=(select month from crc_visits_frequency group by year,month order by year desc,month desc limit 1)
+and visit_count>0 and crc_name is not null and cluster_name is not null
+group by cluster_id,visit_count) d group by cluster_id) t on s.cluster_id=t.clt_id) spd
+"""
 }

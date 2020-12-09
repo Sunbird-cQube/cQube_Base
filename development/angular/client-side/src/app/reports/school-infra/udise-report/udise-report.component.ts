@@ -72,6 +72,10 @@ export class UdiseReportComponent implements OnInit {
   public myBlockData: any = [];
   public myClusterData: any = [];
   public mySchoolData: any = [];
+  state: string;
+  // initial center position for the map
+  public lat: any;
+  public lng: any;
 
   constructor(
     public http: HttpClient,
@@ -84,9 +88,14 @@ export class UdiseReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.state = this.commonService.state;
+    this.lat = this.commonService.mapCenterLatlng.lat;
+    this.lng = this.commonService.mapCenterLatlng.lng;
+    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.commonService.initMap('udisemap', [[this.lat, this.lng]]);
+    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.commonService.initMap('udisemap', [[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
   }
 
@@ -141,11 +150,12 @@ export class UdiseReportComponent implements OnInit {
           radius: 6,
           fillOpacity: 1,
           strokeWeight: 0.05,
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: 'district'
         }
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.genericFun(this.myDistData, options, fileName);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.details.District_Name > b.details.District_Name) ? 1 : ((b.details.District_Name > a.details.District_Name) ? -1 : 0));
@@ -168,13 +178,14 @@ export class UdiseReportComponent implements OnInit {
             radius: 6,
             fillOpacity: 1,
             strokeWeight: 0.01,
-            mapZoom: 7,
-            centerLat: 22.3660414123535,
-            centerLng: 71.48396301269531,
+            mapZoom: this.commonService.zoomLevel,
+            centerLat: this.lat,
+            centerLng: this.lng,
             level: 'district'
           }
 
           this.data.sort((a, b) => (`${a[this.indiceData]}` > `${b[this.indiceData]}`) ? 1 : ((`${b[this.indiceData]}` > `${a[this.indiceData]}`) ? -1 : 0));
+          globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
           this.genericFun(this.myDistData, options, fileName);
 
           // sort the districtname alphabetically
@@ -228,9 +239,9 @@ export class UdiseReportComponent implements OnInit {
         this.gettingIndiceFilters(this.data);
 
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: "block"
         }
 
@@ -260,7 +271,7 @@ export class UdiseReportComponent implements OnInit {
               this.getDownloadableData(this.blockMarkers[i], options.level);
             }
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
 
             //schoolCount
@@ -315,9 +326,9 @@ export class UdiseReportComponent implements OnInit {
         this.data = res['data']
         this.gettingIndiceFilters(this.data);
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: "cluster"
         }
 
@@ -349,7 +360,7 @@ export class UdiseReportComponent implements OnInit {
             this.schoolCount = res['footer'];
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.loaderAndErr();
             this.changeDetection.markForCheck();
@@ -399,9 +410,9 @@ export class UdiseReportComponent implements OnInit {
         this.data = res['data']
         this.gettingIndiceFilters(this.data);
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: "school"
         }
         this.schoolMarkers = [];
@@ -429,7 +440,7 @@ export class UdiseReportComponent implements OnInit {
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             //schoolCount
             this.schoolCount = res['footer'];
@@ -496,12 +507,12 @@ export class UdiseReportComponent implements OnInit {
         radius: 4.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
-        mapZoom: 8.3,
+        mapZoom: this.commonService.zoomLevel + 1,
         centerLat: this.data[0].details.latitude,
         centerLng: this.data[0].details.longitude,
         level: 'block'
       }
-
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.genericFun(res, options, fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.details.Block_Name > b.details.Block_Name) ? 1 : ((b.details.Block_Name > a.details.Block_Name) ? -1 : 0));
@@ -569,12 +580,12 @@ export class UdiseReportComponent implements OnInit {
         radius: 4.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
-        mapZoom: 10,
+        mapZoom: this.commonService.zoomLevel + 3,
         centerLat: this.data[0].details.latitude,
         centerLng: this.data[0].details.longitude,
         level: 'cluster'
       }
-
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.genericFun(res, options, fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.details.Cluster_Name > b.details.Cluster_Name) ? 1 : ((b.details.Cluster_Name > a.details.Cluster_Name) ? -1 : 0));
@@ -655,12 +666,12 @@ export class UdiseReportComponent implements OnInit {
           radius: 4.5,
           fillOpacity: 1,
           strokeWeight: 0.01,
-          mapZoom: 12,
+          mapZoom: this.commonService.zoomLevel + 5,
           centerLat: this.data[0].details.latitude,
           centerLng: this.data[0].details.longitude,
           level: 'school'
         }
-
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.genericFun(res, options, fileName);
       }, err => {
         this.data = [];
@@ -706,8 +717,6 @@ export class UdiseReportComponent implements OnInit {
           })
         }
 
-        globalMap.setZoom(options.mapZoom);
-
         // data to show on the tooltip for the desired levels
         if (options.level) {
           // data to show on the tooltip for the desired levels
@@ -728,12 +737,11 @@ export class UdiseReportComponent implements OnInit {
     if (this.level == 'school') {
       globalMap.doubleClickZoom.enable();
       globalMap.scrollWheelZoom.enable();
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
     } else {
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
+      globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
     }
-    globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
   //generate tooltip........

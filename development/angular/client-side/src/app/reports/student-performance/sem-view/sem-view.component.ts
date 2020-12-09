@@ -4,7 +4,6 @@ import { SemesterReportService } from '../../../services/semester-report.service
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
-import { KeycloakSecurityService } from '../../../keycloak-security.service';
 import { AppServiceComponent, globalMap } from '../../../app.service';
 
 @Component({
@@ -92,13 +91,17 @@ export class SemViewComponent implements OnInit, OnDestroy {
   public levelWise = '';
 
   public myData;
+  state: string;
+
+  // initial center position for the map
+  public lat: any;
+  public lng: any;
 
   constructor(
     public http: HttpClient,
     public service: SemesterReportService,
     public commonService: AppServiceComponent,
     public router: Router,
-    public keyCloakSevice: KeycloakSecurityService,
     private changeDetection: ChangeDetectorRef,
   ) {
   }
@@ -106,13 +109,18 @@ export class SemViewComponent implements OnInit, OnDestroy {
   ngOnDestroy() { }
 
   ngOnInit() {
+    this.state = this.commonService.state;
+    this.lat = this.commonService.mapCenterLatlng.lat;
+    this.lng = this.commonService.mapCenterLatlng.lng;
+    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.commonService.initMap('semMap', [[this.lat, this.lng]]);
+    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     var eventType = "pageLoad";
     this.btnId = "";
     var date = new Date();
     this.trackInteract(date, this.btnId, eventType);
-    this.commonService.initMap('semMap', [[22.3660414123535, 71.48396301269531]]);
     this.districtWise();
   }
 
@@ -191,13 +199,15 @@ export class SemViewComponent implements OnInit, OnDestroy {
           radius: 5,
           fillOpacity: 1,
           strokeWeight: 0.01,
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
           level: 'district'
         }
         this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
+        globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+
         this.fileName = "district_wise_sem_report";
         this.genericFun(this.data, options, this.fileName);
 
@@ -231,6 +241,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.levelWise = "block";
       this.fileName = "block_wise_sem_report"
       this.reportData = [];
+      this.districtMarkers = [];
+      this.blockMarkers = [];
       this.schoolCount = '';
       this.studentCount = '';
 
@@ -253,9 +265,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.myData = this.service.all_block_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
         }
         if (this.data['sortedData'].length > 0) {
           let result = this.data['sortedData']
@@ -271,8 +283,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
               this.generateToolTip(markerIcon, this.blockMarkers[i], this.levelWise);
             }
             this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.schoolCount = this.data['totalValues'].totalSchools;
             this.studentCount = this.data['totalValues'].totalStudents;
@@ -304,7 +316,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "cluster";
-      this.fileName = "cluster_wise_sem_report"
+      this.fileName = "cluster_wise_sem_report";
+      this.districtMarkers = [];
+      this.blockMarkers = [];
+      this.clusterMarkers = [];
       this.reportData = [];
       this.schoolCount = '';
       this.studentCount = '';
@@ -330,9 +345,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.myData = this.service.all_cluster_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
         }
         if (this.data['sortedData'].length > 0) {
           let result = this.data['sortedData']
@@ -348,8 +363,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
               this.generateToolTip(markerIcon, this.clusterMarkers[i], this.levelWise);
             }
             this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             this.schoolCount = this.data['totalValues'].totalSchools;
             this.studentCount = this.data['totalValues'].totalStudents;
@@ -382,7 +397,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "school";
-      this.fileName = "school_wise_sem_report"
+      this.fileName = "school_wise_sem_report";
+      this.districtMarkers = [];
+      this.blockMarkers = [];
+      this.clusterMarkers = [];
+      this.schoolMarkers = [];
       this.reportData = [];
       this.schoolCount = '';
       this.studentCount = '';
@@ -403,9 +422,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.myData = this.service.all_school_sem_data({ sem: this.semester }).subscribe(res => {
         this.data = res
         let options = {
-          mapZoom: 7,
-          centerLat: 22.3660414123535,
-          centerLng: 71.48396301269531,
+          mapZoom: this.commonService.zoomLevel,
+          centerLat: this.lat,
+          centerLng: this.lng,
         }
         this.schoolMarkers = [];
         if (this.data['sortedData'].length > 0) {
@@ -423,8 +442,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
             }
 
             this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([[18.4515, 64.9139], [25.8238, 77.3179]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), 7.3);
+            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
 
             this.schoolCount = this.data['totalValues'].totalSchools;
@@ -461,9 +480,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.commonService.errMsg();
     this.blockId = undefined;
     this.blockMarkers = [];
-    // to show and hide the dropdowns
-    this.blockHidden = false;
-    this.clusterHidden = true;
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -473,6 +489,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.data = res;
 
       this.blockMarkers = this.data['sortedData'];
+      // to show and hide the dropdowns
+      this.blockHidden = false;
+      this.clusterHidden = true;
+
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data['sortedData'][0].district_id,
@@ -492,18 +512,22 @@ export class SemViewComponent implements OnInit, OnDestroy {
         radius: 3.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
-        mapZoom: 8.3,
+        mapZoom: this.commonService.zoomLevel + 1,
         centerLat: this.data['sortedData'][0].lat,
         centerLng: this.data['sortedData'][0].lng,
         level: 'block'
       }
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.fileName = "Blocks_per_district_sem_report";
       this.genericFun(this.data, options, this.fileName);
       // sort the blockname alphabetically
-      this.blockMarkers.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
+      this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }, err => {
+      this.blockHidden = true;
+      this.clusterHidden = true;
+      this.districtMarkers = [];
       this.data = [];
       this.commonService.loaderAndErr(this.data);
     });
@@ -539,9 +563,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.commonService.errMsg();
     this.clusterId = undefined;
     this.clusterMarkers = [];
-    // to show and hide the dropdowns
-    this.blockHidden = false;
-    this.clusterHidden = false;
 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
@@ -551,6 +572,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.data = res;
       this.clusterMarkers = this.data['sortedData'];
       var myBlocks = [];
+      // to show and hide the dropdowns
+      this.blockHidden = false;
+      this.clusterHidden = false;
+
       this.blockMarkers.forEach(element => {
         if (element.district_id === this.districtHierarchy.distId) {
           myBlocks.push(element);
@@ -579,18 +604,21 @@ export class SemViewComponent implements OnInit, OnDestroy {
         radius: 3,
         fillOpacity: 1,
         strokeWeight: 0.01,
-        mapZoom: 10,
+        mapZoom: this.commonService.zoomLevel + 3,
         centerLat: this.data['sortedData'][0].lat,
         centerLng: this.data['sortedData'][0].lng,
         level: 'cluster'
       }
       this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
+      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
       this.fileName = "clusters_per_block_sem_report";
       this.genericFun(this.data, options, this.fileName);
       // sort the clusterName alphabetically
-      this.clusterMarkers.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
+      this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }, err => {
+      this.districtMarkers = [];
+      this.blockMarkers = [];
       this.data = [];
       this.commonService.loaderAndErr(this.data);
     });
@@ -624,8 +652,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
     this.schoolMarkers = [];
-    this.blockHidden = false;
-    this.clusterHidden = false;
+
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
@@ -634,6 +661,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.myData = this.service.school_wise_sem_data(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { sem: this.semester }).subscribe(res => {
         this.data = res;
         this.schoolMarkers = this.data['sortedData'];
+
+        this.blockHidden = false;
+        this.clusterHidden = false;
 
         var markers = result['sortedData'];
         var myBlocks = [];
@@ -681,17 +711,23 @@ export class SemViewComponent implements OnInit, OnDestroy {
           radius: 3.5,
           fillOpacity: 1,
           strokeWeight: 0.01,
-          mapZoom: 12,
+          mapZoom: this.commonService.zoomLevel + 5,
           centerLat: this.data['sortedData'][0].lat,
           centerLng: this.data['sortedData'][0].lng,
           level: "school"
         }
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
-        globalMap.setMaxBounds([[options.centerLat, options.centerLng]]);
+        globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
+        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.fileName = "Schools_per_cluster_sem_report";
         this.genericFun(this.data, options, this.fileName);
       }, err => {
+        this.blockHidden = true;
+        this.clusterHidden = true;
+        this.districtMarkers = [];
+        this.blockMarkers = [];
+        this.clusterMarkers = [];
         this.data = [];
         this.commonService.loaderAndErr(this.data);
       });
@@ -719,7 +755,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], options.radius, options.strokeWeight, 1, options.level);
-        globalMap.setZoom(options.mapZoom);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {
@@ -733,7 +768,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
     }
     this.schoolCount = this.data['totalValues'].totalSchools;
     this.studentCount = this.data['totalValues'].totalStudents;
-    globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
   }
 
   popups(markerIcon, markers, level) {

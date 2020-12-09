@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from '../../../services/diksha-report.service';
 import { Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
+import { AppServiceComponent } from 'src/app/app.service';
 declare const $;
 
 @Component({
@@ -28,17 +29,19 @@ export class UsageByTextbookContentComponent implements OnInit {
   fileName;
   reportData: any = [];
   header = '';
+  state: string;
 
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
     public router: Router,
-    private changeDetection: ChangeDetectorRef,
+    private commonService: AppServiceComponent,
   ) {
     this.allCollections = [{ id: "textbook", name: "Textbook" }]
   }
 
   ngOnInit(): void {
+    this.state = this.commonService.state;
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
     this.collectionWise();
@@ -74,7 +77,7 @@ export class UsageByTextbookContentComponent implements OnInit {
     this.all = true
     this.dist = false;
     this.timeDetails = [];
-    this.service.dikshaMetaData().subscribe(async result => {
+    this.service.dikshaTableMetaData().subscribe(async result => {
       this.districtsDetails = result['districtDetails']
       await result['timeRange'].forEach((element) => {
         var obj = { timeRange: element, name: this.changeingStringCases(element.replace(/_/g, ' ')) }
@@ -176,14 +179,14 @@ export class UsageByTextbookContentComponent implements OnInit {
     if (this.districtId == '') {
       this.districtId = undefined
     }
-    this.timePeriod = timePeriod == 'all' ? '' : timePeriod
+    var myTime = timePeriod == 'all' ? undefined : timePeriod;
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
       $('#table').empty();
     }
     this.result = [];
     this.reportData = [];
-    this.service.dikshaTimeRangeTableData({ districtId: this.districtId, timePeriod: this.timePeriod, collectionType: this.collectionType }).subscribe(res => {
+    this.service.dikshaTimeRangeTableData({ districtId: this.districtId, timePeriod: myTime, collectionType: this.collectionType }).subscribe(res => {
       this.result = res;
       this.tableCreation(this.result);
       if (this.hierName) {
@@ -300,8 +303,31 @@ export class UsageByTextbookContentComponent implements OnInit {
         scrollCollapse: true, paging: false, searching: true,
         fixedColumns: {
           leftColumns: 1
-        }
+        },
+        oSearch: { "bSmart": false },
+      });
+      $('input.global_filter').on('keyup click', function () {
+        filterGlobal();
+      });
+
+      $('input.column_filter').on('keyup click', function () {
+        filterColumn($(this).parents('tr').attr('data-column'));
       });
     });
+    function filterGlobal() {
+      $('#example').DataTable().search(
+        $('#global_filter').val(),
+        $('#global_regex').prop('checked'),
+        $('#global_smart').prop('checked')
+      ).draw();
+    }
+
+    function filterColumn(i) {
+      $('#example').DataTable().column(i).search(
+        $('#col' + i + '_filter').val(),
+        $('#col' + i + '_regex').prop('checked'),
+        $('#col' + i + '_smart').prop('checked')
+      ).draw();
+    }
   }
 }

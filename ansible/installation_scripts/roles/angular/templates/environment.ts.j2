@@ -5,5 +5,7 @@ export const environment = {
   adminUrl: "http://{{ local_ipv4_address }}:4201",
   keycloakUrl: "https://{{ api_endpoint }}/auth",
   realm: "{{ realm_name }}",
-  clientId: "{{ angular_app_client_id }}"
+  clientId: "{{ angular_app_client_id }}",
+  stateName: "{{ state_code }}",
+  diksha_columns: {% if diksha_columns == True %}true{% endif %}{% if diksha_columns == False %}false{% endif %}
 };

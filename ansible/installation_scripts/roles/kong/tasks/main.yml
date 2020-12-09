@@ -1,0 +1,4 @@
+---
+- include_tasks: install.yml
+  tags: [ install, update ]
+

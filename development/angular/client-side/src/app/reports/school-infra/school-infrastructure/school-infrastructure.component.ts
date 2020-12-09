@@ -55,12 +55,14 @@ export class SchoolInfrastructureComponent implements OnInit {
   public fileName: any;
   public reportData: any;
   public myData;
+  state: string;
 
   constructor(public http: HttpClient, public service: SchoolInfraService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent,) {
     localStorage.removeItem('resData');
   }
 
   ngOnInit() {
+    this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.districtWise();
@@ -603,7 +605,6 @@ export class SchoolInfrastructureComponent implements OnInit {
               display: true,
               labelString: obj.xAxis,
               fontSize: 12,
-              // fontColor: "dark gray"
             }
           }],
           yAxes: [{
@@ -620,7 +621,6 @@ export class SchoolInfrastructureComponent implements OnInit {
               display: true,
               labelString: obj.yAxis,
               fontSize: 12,
-              // fontColor: "dark gray",
             }
           }]
         }
@@ -655,17 +655,16 @@ export class SchoolInfrastructureComponent implements OnInit {
 
   public downloadType: string;
   downloadReportofState(downloadType) {
-    if (downloadType === 'Dist Wise') {
+    if (downloadType == 'Dist Wise') {
       this.distWise();
-    }
-    if (downloadType === 'Block Wise') {
+    } else if (downloadType == 'Block Wise') {
       this.blockWise();
-    }
-    if (downloadType === 'Cluster Wise') {
+    } else if (downloadType == 'Cluster Wise') {
       this.clusterWise();
-    }
-    if (downloadType === 'School Wise') {
+    } else if (downloadType == 'School Wise') {
       this.schoolWise();
+    } else {
+      alert("Please select download type");
     }
   }
 

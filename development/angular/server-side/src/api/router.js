@@ -89,6 +89,14 @@ const tpdBlockWise = require('./controller/diksha/tpd-heatChart/blockWise');
 const tpdClusterWise = require('./controller/diksha/tpd-heatChart/clusterWise');
 const tpdSchoolWise = require('./controller/diksha/tpd-heatChart/schoolWise');
 
+//diksha TPD enrollment/completion
+const distLevel = require('./controller/diksha/tpd-enroll-completion/distWise');
+const blockLevel = require('./controller/diksha/tpd-enroll-completion/blockWise');
+const clusterLevel = require('./controller/diksha/tpd-enroll-completion/clusterWise');
+const schoolLevel = require('./controller/diksha/tpd-enroll-completion/schoolWise');
+
+
+
 // sem routes
 router.use('/sem', semDistrictWise);
 router.use('/sem', semBlockWise);
@@ -178,5 +186,14 @@ router.use('/diksha/tpd', tpdDistWise);
 router.use('/diksha/tpd', tpdBlockWise);
 router.use('/diksha/tpd', tpdClusterWise);
 router.use('/diksha/tpd', tpdSchoolWise);
+
+const dataSource = require('./controller/dataSource');
+router.use('/dataSource', dataSource);
+
+//diksha TPD enrollment/completion
+router.use('/tpd', distLevel);
+router.use('/tpd', blockLevel);
+router.use('/tpd', clusterLevel);
+router.use('/tpd', schoolLevel);
 
 module.exports = router;

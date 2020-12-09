@@ -1,5 +1,5 @@
 const colorsHelper = require('../../../lib/colors');
-const generalFun = (data, level, viewBy) => {
+const generalFun = (grade, data, level, viewBy) => {
     return new Promise((resolve, reject) => {
         try {
             let totalDistLen = [];
@@ -39,10 +39,11 @@ const generalFun = (data, level, viewBy) => {
 
                 Promise.all(data.map(item => {
                     let date = item.exam_date.split('-')
-                    let label = date[0] + "-" + date[1] + "/"
-                        + "grade" + item.grade + "/"
-                        + item.subject_name + "/"
-                    label += viewBy == "indicator" ? item.indicator : item.question_id
+                    let label = "grade" + item.grade + "/"
+                        + date[0] + "-" + date[1] + "/"
+                        + item.subject_name
+
+                    label += grade != "" ? viewBy == "indicator" ? "/" + item.indicator : "/" + item.question_id : ''
 
                     arr[label] = arr.hasOwnProperty(label) ? [...arr[label], ...[item]] : [item];
 
@@ -53,7 +54,7 @@ const generalFun = (data, level, viewBy) => {
                         + item.total_schools.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") + "/"
                         + item.total_students.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,") + "/"
 
-                    label1 += viewBy == "indicator" ? item.indicator : item.question_id
+                    label1 += grade != "" ? viewBy == "indicator" ? "/" + item.indicator : "/" + item.question_id : ''
 
                     arr1[label1] = arr1.hasOwnProperty(label1) ? [...arr1[label1], ...[item]] : [item];
 
@@ -61,12 +62,48 @@ const generalFun = (data, level, viewBy) => {
                 })
             }
             let finalData = []
-            let colors = colorsHelper.colors;
+
+            let colors = grade != "" ? colorsHelper.colors : colorsHelper.colors1
+            var keys;
+            if (grade == "") {
+                keys = Object.keys(colors);
+            }
+            
+            var tooltipData = [];
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
                     let mark = Array.isArray(entry[1]) ? entry[1].filter(itemValue => itemValue[hierarchySelection] == totalDistLen[y])[0] : 0;
+                    tooltipData.push({
+                        x: y,
+                        y: index,
+                        grade: mark ? mark.grade : '',
+                        subject: mark ? mark.subject_name : '',
+                        exam_date: mark ? mark.exam_date : '',
+                        qusetion_id: mark ? parseInt(mark.question_id) : '',
+                        indicator: mark ? mark.indicator : '',
+                        students_attended: mark ? parseInt(mark.students_attended) : '',
+                        total_schools: mark ? parseInt(mark.total_schools) : '',
+                        total_students: mark ? parseInt(mark.total_students) : '',
+                        name: mark ? mark.district_name && !mark.block_name && !mark.cluster_name && !mark.school_name ? mark.district_name : '' || mark.district_name && mark.block_name && !mark.cluster_name && !mark.school_name ? mark.block_name : '' || mark.block_name && mark.cluster_name && !mark.school_name ? mark.cluster_name : '' || mark.cluster_name && mark.school_name ? mark.school_name : '' : ''
+
+                    })
                     mark = mark ? parseFloat(mark.marks) : null;
-                    finalData.push({ x: y, y: index, value: mark, color: colors[mark] })
+
+                    if (grade == "" && mark != null) {
+                        var color = '';
+                        for (let i = 0; i < keys.length; i++) {
+                            if (mark <= keys[i]) {
+                                color = colors[keys[i]];
+                                break;
+                            } else if (mark > keys[i] && mark <= keys[i + 1]) {
+                                color = colors[keys[i + 1]];
+                                break;
+                            }
+                        }
+                        finalData.push({ x: y, y: index, value: mark, color: color })
+                    } else {
+                        finalData.push({ x: y, y: index, value: mark, color: colors[mark] })
+                    }
                 }
             })).then(() => {
                 let arrNew = Object.keys(arr).map(a => {
@@ -77,7 +114,8 @@ const generalFun = (data, level, viewBy) => {
                     zLabel: Object.keys(arr1),
                     xLabel: totalDistLen,
                     xLabelId: totalDistIds,
-                    data: finalData
+                    data: finalData,
+                    tooltipData: tooltipData
                 }
                 resolve(obj)
             })

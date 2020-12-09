@@ -1,6 +1,7 @@
 ---
 - name: Upgrading cQube
   hosts: localhost
+  gather_facts: true
   remote_user: root
   vars_files:
     - upgradation_config.yml  
@@ -8,9 +9,11 @@
     - memory_config.yml
     - .version
     
-  roles:
+  roles: 
+          - datasource
           - createdb
           - python_flask
+          - { role: kong, tags: update }
           - keycloak
           - angular
           - angular_admin

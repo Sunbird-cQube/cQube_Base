@@ -18,6 +18,48 @@ if ! [[ $2 == "true" || $2 == "false" ]]; then
 fi
 }
 
+check_timeout()
+{
+  if [[ $2 =~ ^[0-9]+[M|D]$  ]] ; then
+        raw_value="$( echo "$2" | sed -e 's/[M|D]$//' )"
+        if [[ ! $raw_value == 0 ]]; then
+                    if [[ $2 =~ M$ ]] ; then
+                        if [[ $raw_value -ge 30 && $raw_value -le 5256000 ]]; then
+                                timeout_value=$(($raw_value*60))
+                        else
+                                echo "Error - Minutes should be between 30 and 5256000"; fail=1
+                        fi
+                    fi
+                    if [[ $2 =~ D$ ]] ; then
+                        if [[ $raw_value -ge 1 && $raw_value -le 3650 ]]; then
+                                timeout_value=$(($raw_value*24*60*60))
+                        else
+                                echo "Error - Days should be between 1 and 3650"; fail=1
+                        fi
+                    fi
+                else
+                        echo "Error - Timeout should not be 0"; fail=1
+            fi
+    else
+        echo "Error - please enter proper value as mentioned in comments"; fail=1
+    fi
+sed -i '/session_timeout_in_seconds:/d' roles/keycloak/vars/main.yml
+echo "session_timeout_in_seconds: $timeout_value" >> roles/keycloak/vars/main.yml
+}
+
+check_state()
+{
+state_found=0
+while read line; do
+  if [[ $line == $2 ]] ; then
+   state_found=1
+  fi
+done < validation_scripts/state_codes
+if [[ $state_found == 0 ]] ; then
+  echo "Error - Invalid State code. Please refer the state_list file and enter the correct value."; fail=1
+fi
+}
+
 check_base_dir(){
 base_dir_status=0
 if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
@@ -242,9 +284,9 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
+declare -a arr=("diksha_columns" "state_code" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
 		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
-		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" )
+		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" "session_timeout")
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -271,7 +313,7 @@ db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=1.6
+version_upgradable_from=1.6.1
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
@@ -285,6 +327,20 @@ do
 key=$i
 value=${vals[$key]}
 case $key in
+   diksha_columns)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_kc_config_otp $key $value
+       fi
+       ;;
+   state_code)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_state $key $value
+       fi
+       ;;
    system_user_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
@@ -392,6 +448,13 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check. Recommended value is ap-south-1"; fail=1
        else
            check_aws_default_region
+       fi
+       ;;
+   session_timeout)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_timeout $key $value
        fi
        ;;
    *)

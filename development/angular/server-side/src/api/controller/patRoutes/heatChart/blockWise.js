@@ -4,13 +4,19 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const helper = require('./helper');
 
-router.post('/blockWise',auth.authController, async (req, res) => {
+router.post('/blockWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT heat map block wise api ---');
-        let { year, grade, subject_name, exam_date, districtId,viewBy } = req.body        
-        let fileName = `pat/heatChart/${year}/districts/${districtId}.json`        
+        let { year, month, grade, subject_name, exam_date, districtId, viewBy } = req.body
+        let fileName = ''
+
+        if (grade == "") {
+            fileName = `pat/heatmap-summary/${year}/${month}/districts/${districtId}.json`;
+        } else {
+            fileName = `pat/heatChart/${year}/${month}/districts/${districtId}.json`;
+        }
+
         var data = await s3File.readS3File(fileName);
-        
         if (districtId) {
             data = data.filter(val => {
                 return val.district_id == districtId
@@ -25,13 +31,13 @@ router.post('/blockWise',auth.authController, async (req, res) => {
                 block_name: e.block_name
             }
         })
-        
+
         blockDetails = blockDetails.reduce((unique, o) => {
             if (!unique.some(obj => obj.block_id === o.block_id)) {
                 unique.push(o);
             }
             return unique;
-        }, []);       
+        }, []);
 
         if (grade) {
             data = data.filter(val => {
@@ -50,7 +56,7 @@ router.post('/blockWise',auth.authController, async (req, res) => {
         }
         // res.send(data)
         data = data.sort((a, b) => (a.block_name) > (b.block_name) ? 1 : -1)
-        let result = await helper.generalFun(data,1, viewBy)
+        let result = await helper.generalFun(grade, data, 1, viewBy)
 
         logger.info('--- PAT heat map block wise response sent ---');
         res.status(200).send({ blockDetails, result, downloadData: data });

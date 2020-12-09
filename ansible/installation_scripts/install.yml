@@ -1,6 +1,7 @@
 ---
 - name: Installing cQube
   hosts: localhost
+  gather_facts: true
   remote_user: root
   vars_files:
     - config.yml
@@ -11,8 +12,10 @@
   roles:
           - { role: java, tags: install }  
           - { role: python, tags: install }
+          - datasource
           - createdb
           - python_flask
+          - { role: kong, tags: install }
           - keycloak
           - angular
           - angular_admin

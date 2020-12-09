@@ -36,6 +36,11 @@ export class DikshaReportService {
     return this.http.get(`${this.baseUrl}/diksha/dikshaMetaData`);
   }
 
+  dikshaTableMetaData() {
+    this.service.logoutOnTokenExpire();
+    return this.http.get(`${this.baseUrl}/dikshaTable/dikshaMetaData`);
+  }  
+
   dikshaAllTableData(data) {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/dikshaTable/dikshaAllTableData`, data);
@@ -54,50 +59,69 @@ export class DikshaReportService {
   //diksha bar chart....
   dikshaBarChart(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaAllData`, data, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaAllData`, data);
   }
 
   listCollectionNames(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaGetCollections`, data, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaGetCollections`, data);
   }
 
   getDataByCollectionNames(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaGetCollectionData`, data, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/dikshaBarChart/dikshaGetCollectionData`, data);
   }
 
   tpdDistWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/diksha/tpd/distWise`, data, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/diksha/tpd/distWise`, data);
   }
 
   tpdBlockWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/diksha/tpd/blockWise`, data, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/diksha/tpd/blockWise`, data);
   }
 
   tpdClusterWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/diksha/tpd/clusterWise`, data, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/diksha/tpd/clusterWise`, data);
   }
 
   tpdSchoolWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/diksha/tpd/schoolWise`, data, {
-      'headers': { 'token': "Bearer " + localStorage.getItem('token') }
-    });
+    return this.http.post(`${this.baseUrl}/diksha/tpd/schoolWise`, data);
   }
+
+  //diksha TPD enrollment/completion
+  tpdDistEnrollCompAll(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/tpd/allDistData`, data);
+  }
+
+  tpdgetCollection(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/tpd/getCollections`, data);
+  }
+
+  getCollectionData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/tpd/getCollectionData`, data);
+  }
+
+  tpdBlockEnrollCompAll(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/tpd/blockData`, data);
+  }
+
+  tpdClusterEnrollCompAll(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/tpd/clusterData`, data);
+  }
+
+  tpdSchoolEnrollCompAll(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/tpd/schoolData`, data);
+  }
+
 }
+

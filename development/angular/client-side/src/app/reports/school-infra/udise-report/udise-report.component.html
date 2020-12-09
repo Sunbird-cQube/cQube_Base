@@ -4,12 +4,12 @@
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     UDISE report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     UDISE report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{districtHierarchy.districtName}}</span> </p>
@@ -17,7 +17,7 @@
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     UDISE report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{blockHierarchy.districtName}}</span><span>/ </span><span
@@ -29,7 +29,7 @@
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     UDISE report for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span><span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
                         {{clusterHierarchy.districtName}}</span><span>/ </span><span
@@ -61,7 +61,7 @@
         <div class="col-sm-12">
             <p style="text-align: justify; font-size: 11px;">
                 <strong> About the dashboard:</strong> The dashboard visualises data on various indices calculated using
-                the metrics captured in the UDISE 2019 for Gujarat. Each of the indices has been derived using multiple
+                the metrics captured in the UDISE 2019 for {{state}}. Each of the indices has been derived using multiple
                 metrics that have been normalised and benchmarked for a fair comparison. The data here can be broken at
                 multiple administrative levels (i.e. District, Block, Cluster and School) and you can view and download
                 the data for any of the available indices.
@@ -128,7 +128,7 @@
         </div>
     </div>
     <div class="row"
-        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px; padding: 5px 0px 5px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;margin-top: 5%;">
+        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px; padding: 2px 0px 2px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;margin-top: 5%;">
         <div class="col-sm-6">
             <span id="schools" style="text-align: center;">Number of schools: {{schoolCount}}</span>
         </div>

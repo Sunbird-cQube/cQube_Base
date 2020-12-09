@@ -746,8 +746,8 @@ block_id bigint,
 cluster_id bigint,
 latitude double precision,
 longitude double precision,
-created_on  TIMESTAMP without time zone NOT NULL,
-updated_on  TIMESTAMP without time zone NOT NULL
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
 );
 
 
@@ -791,8 +791,8 @@ school_highest_class  int,
 school_management_type_id int ,
 school_category_id  int ,
 school_medium_id  int ,
-created_on  TIMESTAMP without time zone NOT NULL,
-updated_on  TIMESTAMP without time zone NOT NULL
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
 );
 
 /*school_management_master*/
@@ -801,8 +801,8 @@ create table if not exists school_management_master
   (
 school_management_type_id int primary key not null,
 school_management_type varchar(100),
-created_on  TIMESTAMP without time zone NOT NULL,
-updated_on  TIMESTAMP without time zone NOT NULL
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
 -- ,foreign key (school_management_type_id) references school_master(school_management_type_id)
 );
 
@@ -812,8 +812,8 @@ create table if not exists school_category_master
   (
 school_category_id int primary key not null,
 school_category varchar(100),
-created_on  TIMESTAMP without time zone NOT NULL,
-updated_on  TIMESTAMP without time zone NOT NULL
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
 -- ,foreign key (school_category_id) references school_master(school_category_id)
 );
 
@@ -823,8 +823,8 @@ create table if not exists school_medium_master
   (
 school_medium_id int primary key not null,
 medium_of_school varchar(100),
-created_on  TIMESTAMP without time zone NOT NULL,
-updated_on  TIMESTAMP without time zone NOT NULL
+created_on  TIMESTAMP without time zone ,
+updated_on  TIMESTAMP without time zone 
 -- ,foreign key (school_medium_id) references school_master(school_medium_id)
 );
 
@@ -2927,6 +2927,13 @@ trained_cwsn  smallint,
 trained_comp  smallint
 );
 
+alter table udise_tch_profile drop constraint if exists udise_tch_profile_pkey;
+alter table udise_tch_profile add primary key(udise_sch_code,tch_code);
+
+alter table udise_tch_profile drop column if exists name;
+alter table udise_tch_profile drop column if exists gender;
+alter table udise_tch_profile drop column if exists dob;  
+
 /*alter table udise_tch_profile drop constraint if exists udise_tch_profile_pkey;
 alter table udise_tch_profile add primary key(udise_sch_code,name,dob);
 alter table udise_tch_profile alter column tch_code drop not null;*/
@@ -3944,52 +3951,71 @@ count_null_nsqf_faculty_id int
 create table if not exists udise_nsqf_plcmnt_c12_dup( udise_sch_code bigint , ac_year text, sector_no smallint , item_id smallint, opt_plcmnt_b smallint, opt_plcmnt_g smallint, placed_b smallint, placed_g smallint, voc_hs_b smallint, voc_hs_g smallint, nonvoc_hs_b smallint, nonvoc_hs_g smallint, self_emp_b smallint, self_emp_g smallint, 
 num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_nsqf_plcmnt_c12_dup drop constraint if exists udise_nsqf_plcmnt_c12_dup_key;
 
 create table if not exists udise_nsqf_plcmnt_c10_dup( udise_sch_code bigint , ac_year text, sector_no smallint , item_id smallint, opt_plcmnt_b smallint, opt_plcmnt_g smallint, placed_b smallint, placed_g smallint, voc_hs_b smallint, voc_hs_g smallint, nonvoc_hs_b smallint, nonvoc_hs_g smallint, self_emp_b smallint, self_emp_g smallint, 
 num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_nsqf_plcmnt_c10_dup drop constraint if exists udise_nsqf_plcmnt_c10_dup_key;
 
 create table if not exists udise_nsqf_class_cond_dup( udise_sch_code bigint , ac_year text, sector_no smallint , class_type_id smallint , c9 smallint, c10 smallint, c11 smallint, c12 smallint, num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_nsqf_class_cond_dup drop constraint if exists udise_nsqf_class_cond_dup_key;
 
 create table if not exists udise_sch_exmres_c12_dup( udise_sch_code bigint , ac_year text, item_id smallint , stream_id smallint , gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_sch_exmres_c12_dup drop constraint if exists udise_sch_exmres_c12_dup_key;
 
 create table if not exists udise_sch_exmres_c10_dup( udise_sch_code bigint , ac_year text, item_id smallint , gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, 
 num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_sch_exmres_c10_dup drop constraint if exists udise_sch_exmres_c10_dup_key;
 
-create table if not exists udise_sch_exmres_c5_dup( udise_sch_code bigint primary key , ac_year text, gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, gen_60p_b smallint, gen_60p_g smallint, obc_60p_b smallint, obc_60p_g smallint, sc_60p_b smallint, sc_60p_g smallint, st_60p_b smallint, st_60p_g smallint ,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
+create table if not exists udise_sch_exmres_c5_dup( udise_sch_code bigint , ac_year text, gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, gen_60p_b smallint, gen_60p_g smallint, obc_60p_b smallint, obc_60p_g smallint, sc_60p_b smallint, sc_60p_g smallint, st_60p_b smallint, st_60p_g smallint ,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_sch_exmres_c5_dup drop constraint if exists udise_sch_exmres_c5_dup_key;
 
 create table if not exists udise_sch_incen_cwsn_dup( udise_sch_code bigint , ac_year text, item_id smallint , tot_pre_pri_b smallint, tot_pre_pri_g smallint, tot_pry_b smallint, tot_pry_g smallint, tot_upr_b smallint, tot_upr_g smallint, tot_sec_b smallint, tot_sec_g smallint, tot_hsec_b smallint, tot_hsec_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_sch_incen_cwsn_dup drop constraint if exists udise_sch_incen_cwsn_dup_key;
 
 create table if not exists udise_sch_incentives_dup( udise_sch_code bigint , ac_year text, grade_pri_upr smallint , incentive_type smallint , gen_b smallint, gen_g smallint, sc_b smallint, sc_g smallint, st_b smallint, st_g smallint, obc_b smallint, obc_g smallint, min_muslim_b smallint, min_muslim_g smallint, min_oth_b smallint, min_oth_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_sch_incentives_dup drop constraint if exists udise_sch_incentives_dup_key;
 
 create table if not exists udise_sch_enr_by_stream_dup( udise_sch_code bigint , ac_year text, stream_id smallint , caste_id smallint , ec11_b smallint, ec11_g smallint, ec12_b smallint, ec12_g smallint, rc11_b smallint, rc11_g smallint, rc12_b smallint, rc12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp) ;
 
+alter table udise_sch_enr_by_stream_dup drop constraint if exists udise_sch_enr_by_stream_dup_key;
 
 create table if not exists udise_sch_enr_cwsn_dup( udise_sch_code bigint , ac_year text, disability_type smallint , cpp_b smallint, cpp_g smallint, c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_sch_enr_cwsn_dup drop constraint if exists udise_sch_enr_cwsn_dup_key;
 
 create table if not exists udise_sch_enr_medinstr_dup( udise_sch_code bigint , ac_year text, medinstr_seq smallint , c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_sch_enr_medinstr_dup drop constraint if exists udise_sch_enr_medinstr_dup_key;
 
 create table if not exists udise_sch_enr_age_dup( udise_sch_code bigint , ac_year text, age_id smallint , c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint, primary key(udise_sch_code,age_id) );
-create table if not exists udise_sch_enr_reptr( udise_sch_code bigint , ac_year text, item_group smallint , item_id smallint , c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_sch_enr_age_dup drop constraint if exists udise_sch_enr_age_dup_key;
+
+create table if not exists udise_sch_enr_reptr_dup( udise_sch_code bigint , ac_year text, item_group smallint , item_id smallint , c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
+
+alter table udise_sch_enr_reptr_dup drop constraint if exists udise_sch_enr_reptr_dup_key;
 
 create table if not exists udise_sch_enr_fresh_dup( udise_sch_code bigint , ac_year text, item_group smallint , item_id smallint , cpp_b smallint, cpp_g smallint, c1_b smallint, c1_g smallint, c2_b smallint, c2_g smallint, c3_b smallint, c3_g smallint, c4_b smallint, c4_g smallint, c5_b smallint, c5_g smallint, c6_b smallint, c6_g smallint, c7_b smallint, c7_g smallint, c8_b smallint, c8_g smallint, c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_sch_enr_fresh_dup drop constraint if exists udise_sch_enr_fresh_dup_key;
 
-create table if not exists udise_sch_enr_newadm_dup( udise_sch_code bigint primary key , ac_year text, age4_b smallint, age4_g smallint, age5_b smallint, age5_g smallint, age6_b smallint, age6_g smallint, age7_b smallint, age7_g smallint, age8_b smallint, age8_g smallint, same_sch_b smallint, same_sch_g smallint, oth_sch_b smallint, oth_sch_g smallint, anganwadi_b smallint, anganwadi_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
+create table if not exists udise_sch_enr_newadm_dup( udise_sch_code bigint , ac_year text, age4_b smallint, age4_g smallint, age5_b smallint, age5_g smallint, age6_b smallint, age6_g smallint, age7_b smallint, age7_g smallint, age8_b smallint, age8_g smallint, same_sch_b smallint, same_sch_g smallint, oth_sch_b smallint, oth_sch_g smallint, anganwadi_b smallint, anganwadi_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_sch_enr_newadm_dup drop constraint if exists udise_sch_enr_newadm_dup_key;
 
-create table if not exists udise_sch_facility_dup( udise_sch_code bigint primary key , ac_year text, bld_status smallint, bld_blk_tot smallint, bld_blk smallint, bld_blk_ppu smallint, bld_blk_kuc smallint, bld_blk_tnt smallint, bld_blk_dptd smallint, bld_blk_undcons smallint, bndrywall_type smallint, clsrms_inst smallint, clsrms_und_cons smallint, clsrms_dptd smallint, clsrms_pre_pri smallint, clsrms_pri smallint, clsrms_upr smallint, clsrms_sec smallint, clsrms_hsec smallint, othrooms smallint, clsrms_gd smallint, clsrms_gd_ppu smallint, clsrms_gd_kuc smallint, clsrms_gd_tnt smallint, clsrms_min smallint, clsrms_min_ppu smallint, clsrms_min_kun smallint, clsrms_min_tnt smallint, clsrms_maj smallint, clsrms_maj_ppu smallint, clsrms_maj_kuc smallint, clsrms_maj_tnt smallint, land_avl_yn smallint, hm_room_yn smallint, toilet_yn smallint, toiletb smallint, toiletb_fun smallint, toiletg smallint, toiletg_fun smallint, toiletb_cwsn smallint, toiletb_cwsn_fun smallint, toiletg_cwsn smallint, toiletg_cwsn_fun smallint, urinalsb smallint, urinalsb_fun smallint, urinalsg smallint, urinalsg_fun smallint, toiletb_fun_water smallint, toiletg_fun_water smallint, handwash_yn smallint, incinerator_yn smallint, drink_water_yn smallint, hand_pump_tot smallint, hand_pump_fun smallint, well_prot_tot smallint, well_prot_fun smallint, well_unprot_tot smallint, well_unprot_fun smallint, tap_tot smallint, tap_fun smallint, pack_water smallint, pack_water_fun smallint, othsrc_tot smallint, othsrc_fun smallint, othsrc_name varchar(100), water_purifier_yn smallint, water_tested_yn smallint, rain_harvest_yn smallint, handwash_meal_yn smallint, handwash_meal_tot smallint, electricity_yn smallint, solarpanel_yn smallint, library_yn smallint, lib_books integer, lib_books_ncert integer, bookbank_yn smallint, bkbnk_books integer, bkbnk_books_ncert integer, readcorner_yn smallint, readcorner_books integer, librarian_yn smallint, newspaper_yn smallint, playground_yn smallint, playground_alt_yn smallint, medchk_yn smallint, medchk_tot smallint, dewormtab_yn smallint, irontab_yn smallint, ramps_yn smallint, handrails_yn smallint, spl_educator_yn smallint, kitchen_garden_yn smallint, dstbn_clsrms_yn smallint, dstbn_toilet_yn smallint, dstbn_kitchen_yn smallint, stus_hv_furnt smallint, ahmvp_room_yn smallint, comroom_g_yn smallint, staff_room_yn smallint, craft_room_yn smallint, staff_qtr_yn smallint, integrated_lab_yn smallint, library_room_yn smallint, comp_room_yn smallint, tinkering_lab_yn smallint, phy_lab_yn smallint, phy_lab_cond smallint, chem_lab_yn smallint, chem_lab_cond smallint, boi_lab_yn smallint, bio_lab_cond smallint, math_lab_yn smallint, math_lab_cond smallint, lang_lab_yn smallint, lang_lab_cond smallint, geo_lab_yn smallint, geo_lab_cond smallint, homesc_lab_yn smallint, home_sc_lab_cond smallint, psycho_lab_yn smallint, psycho_lab_cond smallint, audio_system_yn smallint, sciencekit_yn smallint, mathkit_yn smallint, biometric_dev_yn smallint, comp_lab_type smallint, ict_impl_year smallint, ictlab_fun_yn smallint, ict_model_impl smallint, ict_instr_type smallint, laptop_yn smallint, laptop_tot smallint, laptop_fun smallint, tablets_yn smallint, tablets_tot smallint, tablets_fun smallint, desktop_yn smallint, desktop_tot smallint, desktop_fun smallint, teachdev_yn smallint, teachdev_tot smallint, teachdev_fun smallint, digi_board_yn smallint, digi_board_tot smallint, digi_board_fun smallint, server_yn smallint, server_tot smallint, server_fun smallint, projector_yn smallint, projector_tot smallint, projector_fun smallint, led_yn smallint, led_tot smallint, led_fun smallint, printer_yn smallint, printer_tot smallint, printer_fun smallint, scanner_yn smallint, scanner_tot smallint, scanner_fun smallint, webcam_yn smallint, webcam_tot smallint, webcam_fun smallint, generator_yn smallint, generator_tot smallint, generator_fun smallint, internet_yn smallint, dth_yn smallint, digi_res_yn smallint, tech_soln_yn smallint, ict_tools_yn smallint, ict_teach_hrs smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
+create table if not exists udise_sch_facility_dup( udise_sch_code bigint , ac_year text, bld_status smallint, bld_blk_tot smallint, bld_blk smallint, bld_blk_ppu smallint, bld_blk_kuc smallint, bld_blk_tnt smallint, bld_blk_dptd smallint, bld_blk_undcons smallint, bndrywall_type smallint, clsrms_inst smallint, clsrms_und_cons smallint, clsrms_dptd smallint, clsrms_pre_pri smallint, clsrms_pri smallint, clsrms_upr smallint, clsrms_sec smallint, clsrms_hsec smallint, othrooms smallint, clsrms_gd smallint, clsrms_gd_ppu smallint, clsrms_gd_kuc smallint, clsrms_gd_tnt smallint, clsrms_min smallint, clsrms_min_ppu smallint, clsrms_min_kun smallint, clsrms_min_tnt smallint, clsrms_maj smallint, clsrms_maj_ppu smallint, clsrms_maj_kuc smallint, clsrms_maj_tnt smallint, land_avl_yn smallint, hm_room_yn smallint, toilet_yn smallint, toiletb smallint, toiletb_fun smallint, toiletg smallint, toiletg_fun smallint, toiletb_cwsn smallint, toiletb_cwsn_fun smallint, toiletg_cwsn smallint, toiletg_cwsn_fun smallint, urinalsb smallint, urinalsb_fun smallint, urinalsg smallint, urinalsg_fun smallint, toiletb_fun_water smallint, toiletg_fun_water smallint, handwash_yn smallint, incinerator_yn smallint, drink_water_yn smallint, hand_pump_tot smallint, hand_pump_fun smallint, well_prot_tot smallint, well_prot_fun smallint, well_unprot_tot smallint, well_unprot_fun smallint, tap_tot smallint, tap_fun smallint, pack_water smallint, pack_water_fun smallint, othsrc_tot smallint, othsrc_fun smallint, othsrc_name varchar(100), water_purifier_yn smallint, water_tested_yn smallint, rain_harvest_yn smallint, handwash_meal_yn smallint, handwash_meal_tot smallint, electricity_yn smallint, solarpanel_yn smallint, library_yn smallint, lib_books integer, lib_books_ncert integer, bookbank_yn smallint, bkbnk_books integer, bkbnk_books_ncert integer, readcorner_yn smallint, readcorner_books integer, librarian_yn smallint, newspaper_yn smallint, playground_yn smallint, playground_alt_yn smallint, medchk_yn smallint, medchk_tot smallint, dewormtab_yn smallint, irontab_yn smallint, ramps_yn smallint, handrails_yn smallint, spl_educator_yn smallint, kitchen_garden_yn smallint, dstbn_clsrms_yn smallint, dstbn_toilet_yn smallint, dstbn_kitchen_yn smallint, stus_hv_furnt smallint, ahmvp_room_yn smallint, comroom_g_yn smallint, staff_room_yn smallint, craft_room_yn smallint, staff_qtr_yn smallint, integrated_lab_yn smallint, library_room_yn smallint, comp_room_yn smallint, tinkering_lab_yn smallint, phy_lab_yn smallint, phy_lab_cond smallint, chem_lab_yn smallint, chem_lab_cond smallint, boi_lab_yn smallint, bio_lab_cond smallint, math_lab_yn smallint, math_lab_cond smallint, lang_lab_yn smallint, lang_lab_cond smallint, geo_lab_yn smallint, geo_lab_cond smallint, homesc_lab_yn smallint, home_sc_lab_cond smallint, psycho_lab_yn smallint, psycho_lab_cond smallint, audio_system_yn smallint, sciencekit_yn smallint, mathkit_yn smallint, biometric_dev_yn smallint, comp_lab_type smallint, ict_impl_year smallint, ictlab_fun_yn smallint, ict_model_impl smallint, ict_instr_type smallint, laptop_yn smallint, laptop_tot smallint, laptop_fun smallint, tablets_yn smallint, tablets_tot smallint, tablets_fun smallint, desktop_yn smallint, desktop_tot smallint, desktop_fun smallint, teachdev_yn smallint, teachdev_tot smallint, teachdev_fun smallint, digi_board_yn smallint, digi_board_tot smallint, digi_board_fun smallint, server_yn smallint, server_tot smallint, server_fun smallint, projector_yn smallint, projector_tot smallint, projector_fun smallint, led_yn smallint, led_tot smallint, led_fun smallint, printer_yn smallint, printer_tot smallint, printer_fun smallint, scanner_yn smallint, scanner_tot smallint, scanner_fun smallint, webcam_yn smallint, webcam_tot smallint, webcam_fun smallint, generator_yn smallint, generator_tot smallint, generator_fun smallint, internet_yn smallint, dth_yn smallint, digi_res_yn smallint, tech_soln_yn smallint, ict_tools_yn smallint, ict_teach_hrs smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
-create table if not exists udise_sch_profile_dup( udise_sch_code bigint primary key , 
+alter table udise_sch_facility_dup drop constraint if exists udise_sch_facility_dup_key;
+
+create table if not exists udise_sch_profile_dup( udise_sch_code bigint , 
 ac_year text, c0_sec smallint, c1_sec smallint, c2_sec smallint, c3_sec smallint, c4_sec smallint, 
 c5_sec smallint, c6_sec smallint, c7_sec smallint, c8_sec smallint, c9_sec smallint, c10_sec smallint, 
 c11_sec smallint, c12_sec smallint, estd_year varchar(10), recog_year_pri varchar(10), recog_year_upr varchar(10), 
@@ -4029,6 +4055,8 @@ smdc_subexp_f smallint, smdc_tch_m smallint, smdc_tch_f smallint, smdc_vp_m smal
 smdc_cp_f smallint, smdc_trained_m smallint, smdc_trained_f smallint, smdc_meetings smallint, smdc_sdp_yn smallint, smdc_bnkac_yn smallint, smdc_sbc_yn smallint, 
 smdc_acadcom_yn smallint, smdc_pta_yn smallint, smdc_pta_meeting smallint ,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_sch_profile_dup drop constraint if exists udise_sch_profile_dup_key;
+
 alter table udise_sch_profile_dup drop column if exists smc_bnk_name ;
 alter table udise_sch_profile_dup drop column if exists smc_bnk_br ;
 alter table udise_sch_profile_dup drop column if exists smc_bnkac_no ;
@@ -4040,50 +4068,66 @@ alter table udise_sch_profile_dup drop column if exists smdc_bnkac_no ;
 alter table udise_sch_profile_dup drop column if exists smdc_bnkac_ifsc ;
 alter table udise_sch_profile_dup drop column if exists smdc_bnkac_name ;
 
-create table if not exists udise_sch_staff_posn_dup( udise_sch_code bigint primary key , ac_year text, tch_regular smallint, tch_contract smallint, tch_part_time smallint, nontch_accnt smallint, nontch_lib_asst smallint, nontch_lab_asst smallint, nontch_udc smallint, nontch_ldc smallint, nontch_peon smallint, nontch_watchman smallint, tch_hav_adhr smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
+create table if not exists udise_sch_staff_posn_dup( udise_sch_code bigint , ac_year text, tch_regular smallint, tch_contract smallint, tch_part_time smallint, nontch_accnt smallint, nontch_lib_asst smallint, nontch_lab_asst smallint, nontch_udc smallint, nontch_ldc smallint, nontch_peon smallint, nontch_watchman smallint, tch_hav_adhr smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_sch_staff_posn_dup drop constraint if exists udise_sch_staff_posn_dup_key;
 
-create table if not exists udise_tch_profile_dup( udise_sch_code bigint primary key , tch_code varchar(100), name varchar(100), gender smallint, dob date, social_cat smallint, tch_type smallint, nature_of_appt smallint, doj_service date, qual_acad smallint, qual_prof smallint, class_taught smallint, appt_sub smallint, sub_taught1 smallint, sub_taught2 smallint, trn_brc smallint, trn_crc smallint, trn_diet smallint, trn_other smallint, trng_rcvd smallint, trng_needed smallint, nontch_days smallint, math_upto smallint, science_upto smallint, english_upto smallint, lang_study_upto smallint, soc_study_upto smallint, yoj_pres_sch varchar(100), disability_type smallint, trained_cwsn smallint, trained_comp smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
+create table if not exists udise_tch_profile_dup( udise_sch_code bigint , tch_code varchar(100), name varchar(100), gender smallint, dob date, social_cat smallint, tch_type smallint, nature_of_appt smallint, doj_service date, qual_acad smallint, qual_prof smallint, class_taught smallint, appt_sub smallint, sub_taught1 smallint, sub_taught2 smallint, trn_brc smallint, trn_crc smallint, trn_diet smallint, trn_other smallint, trng_rcvd smallint, trng_needed smallint, nontch_days smallint, math_upto smallint, science_upto smallint, english_upto smallint, lang_study_upto smallint, soc_study_upto smallint, yoj_pres_sch varchar(100), disability_type smallint, trained_cwsn smallint, trained_comp smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_tch_profile_dup drop constraint if exists udise_tch_profile_dup_key;
 
 create table if not exists udise_sch_exmmarks_c10_dup( udise_sch_code bigint , ac_year text, item_id smallint , marks_range_id smallint , gen_b smallint, gen_g smallint, obc_b smallint, obc_g smallint, sc_b smallint, sc_g smallint, st_b smallint, st_g integer,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_sch_exmmarks_c10_dup drop constraint if exists udise_sch_exmmarks_c10_dup_key;
 
 create table if not exists udise_sch_exmmarks_c12_dup( udise_sch_code bigint , ac_year text, item_id smallint , marks_range_id smallint , gen_b smallint, gen_g smallint, obc_b smallint, obc_g smallint, sc_b smallint, sc_g smallint, st_b smallint, st_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_sch_exmmarks_c12_dup drop constraint if exists udise_sch_exmmarks_c12_dup_key;
 
-create table if not exists udise_sch_recp_exp_dup( udise_sch_code bigint primary key , ac_year text, dev_grt_r double precision, dev_grt_e double precision, maint_grt_r double precision, maint_grt_e double precision, tlm_grt_r double precision, tlm_grt_e double precision, cw_grt_r double precision, cw_grt_e double precision, anl_grt_r double precision, anl_grt_e double precision, minrep_grt_r double precision, minrep_grt_e double precision, labrep_grt_r double precision, labrep_grt_e double precision, book_grt_r double precision, book_grt_e double precision, elec_grt_r double precision, elec_grt_e double precision, oth_grt_r double precision, oth_grt_e double precision, compo_grt_r double precision, compo_grt_e double precision, lib_grt_r double precision, lib_grt_e double precision, sport_grt_r double precision, sport_grt_e double precision, media_grt_r double precision, media_grt_e double precision, smc_grt_r double precision, smc_grt_e double precision, presch_grt_r double precision, presch_grt_e double precision, ngo_asst_yn smallint, ngo_asst_name varchar(100), ngo_asst_rcvd double precision, psu_asst_yn smallint, psu_asst_name varchar(100), psu_asst_rcvd double precision, comm_asst_yn smallint, comm_asst_rcvd double precision, comm_asst_name varchar(100), oth_asst_yn smallint, oth_asst_name varchar(100), oth_asst_rcvd double precision, ict_reg_yn smallint, sport_reg_yn smallint, lib_reg_yn smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
+create table if not exists udise_sch_recp_exp_dup( udise_sch_code bigint , ac_year text, dev_grt_r double precision, dev_grt_e double precision, maint_grt_r double precision, maint_grt_e double precision, tlm_grt_r double precision, tlm_grt_e double precision, cw_grt_r double precision, cw_grt_e double precision, anl_grt_r double precision, anl_grt_e double precision, minrep_grt_r double precision, minrep_grt_e double precision, labrep_grt_r double precision, labrep_grt_e double precision, book_grt_r double precision, book_grt_e double precision, elec_grt_r double precision, elec_grt_e double precision, oth_grt_r double precision, oth_grt_e double precision, compo_grt_r double precision, compo_grt_e double precision, lib_grt_r double precision, lib_grt_e double precision, sport_grt_r double precision, sport_grt_e double precision, media_grt_r double precision, media_grt_e double precision, smc_grt_r double precision, smc_grt_e double precision, presch_grt_r double precision, presch_grt_e double precision, ngo_asst_yn smallint, ngo_asst_name varchar(100), ngo_asst_rcvd double precision, psu_asst_yn smallint, psu_asst_name varchar(100), psu_asst_rcvd double precision, comm_asst_yn smallint, comm_asst_rcvd double precision, comm_asst_name varchar(100), oth_asst_yn smallint, oth_asst_name varchar(100), oth_asst_rcvd double precision, ict_reg_yn smallint, sport_reg_yn smallint, lib_reg_yn smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_sch_recp_exp_dup drop constraint if exists udise_sch_recp_exp_dup_key;
 
-create table if not exists udise_nsqf_basic_info_dup( udise_sch_code bigint primary key , ac_year text, nsqf_yn smallint, voc_course_yn smallint, sec1_sub Integer, sec1_year varchar(10), sec2_sub Integer, sec2_year varchar(10),num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
+create table if not exists udise_nsqf_basic_info_dup( udise_sch_code bigint , ac_year text, nsqf_yn smallint, voc_course_yn smallint, sec1_sub Integer, sec1_year varchar(10), sec2_sub Integer, sec2_year varchar(10),num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_nsqf_basic_info_dup drop constraint if exists udise_nsqf_basic_info_dup_key;
 
 create table if not exists udise_nsqf_enr_caste_dup( udise_sch_code bigint , ac_year text, sector_no smallint , item_id smallint , c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_nsqf_enr_caste_dup drop constraint if exists udise_nsqf_enr_caste_dup_key;
 
 create table if not exists udise_nsqf_enr_sub_sec_dup( udise_sch_code bigint , ac_year text, sub_sector_id smallint, sector_no smallint , c9_b smallint, c9_g smallint, c10_b smallint, c10_g smallint, c11_b smallint, c11_g smallint, c12_b smallint, c12_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_nsqf_enr_sub_sec_dup drop constraint if exists udise_nsqf_enr_sub_sec_dup_key;
 
 create table if not exists udise_nsqf_exmres_c10_dup( udise_sch_code bigint , ac_year text, sector_no smallint , marks_range_id smallint , gen_b smallint, gen_g smallint, obc_b smallint, obc_g smallint, sc_b smallint, sc_g smallint, st_b smallint, st_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_nsqf_exmres_c10_dup drop constraint if exists udise_nsqf_exmres_c10_dup_key;
 
 create table if not exists udise_nsqf_exmres_c12_dup( udise_sch_code bigint , ac_year text, sector_no smallint , marks_range_id smallint , gen_b smallint, gen_g smallint, obc_b smallint, obc_g smallint, sc_b smallint, sc_g smallint, st_b smallint, st_g smallint, num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_nsqf_exmres_c12_dup drop constraint if exists udise_nsqf_exmres_c12_dup_key;
 
 create table if not exists udise_nsqf_trng_prov_dup( udise_sch_code bigint , ac_year text, agency_name varchar(200), sector_no smallint , cert_no varchar(200), cert_agency varchar(200),num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_nsqf_trng_prov_dup drop constraint if exists udise_nsqf_trng_prov_dup_key;
 
 create table if not exists udise_nsqf_faculty_dup( udise_sch_code bigint , ac_year text, faculty_code varchar(100) , name varchar(100), gender smallint, dob date, soc_cat smallint, nature_of_appt smallint, qual_acad smallint, qual_prof smallint, industry_exp smallint, training_exp smallint, class_taught smallint, appt_sec smallint, induc_trg_rcvd smallint, inserv_trg_rcvd smallint, num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
+alter table udise_nsqf_faculty_dup drop constraint if exists udise_nsqf_faculty_dup_key;
 
-create table if not exists udise_sch_pgi_details_dup( udise_sch_code bigint primary key , ac_year text, tch_adhr_seed Integer, stu_atndnc_yn smallint, tch_atndnc_yn smallint, sch_eval_yn smallint, improv_plan_yn smallint, sch_pfms_yn smallint, num_of_times int,
+create table if not exists udise_sch_pgi_details_dup( udise_sch_code bigint , ac_year text, tch_adhr_seed Integer, stu_atndnc_yn smallint, tch_atndnc_yn smallint, sch_eval_yn smallint, improv_plan_yn smallint, sch_pfms_yn smallint, num_of_times int,
 ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
-create table if not exists udise_sch_safety_dup( udise_sch_code bigint primary key , ac_year text, sdmp_plan_yn smallint, struct_safaud_yn smallint, nonstr_safaud_yn smallint, cctv_cam_yn smallint, fire_ext_yn smallint, nodal_tch_yn smallint, safty_trng_yn smallint, dismgmt_taug_yn smallint, slfdef_grt_yn smallint, slfdef_trained smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
+alter table udise_sch_pgi_details_dup drop constraint if exists udise_sch_pgi_details_dup_key;
 
+create table if not exists udise_sch_safety_dup( udise_sch_code bigint , ac_year text, sdmp_plan_yn smallint, struct_safaud_yn smallint, nonstr_safaud_yn smallint, cctv_cam_yn smallint, fire_ext_yn smallint, nodal_tch_yn smallint, safty_trng_yn smallint, dismgmt_taug_yn smallint, slfdef_grt_yn smallint, slfdef_trained smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
+
+alter table udise_sch_safety_dup drop constraint if exists udise_sch_safety_dup_key;
 
 create table if not exists udise_sch_exmres_c8_dup( udise_sch_code bigint primary key , academic_year varchar(10), gen_app_b smallint, gen_app_g smallint, obc_app_b smallint, obc_app_g smallint, sc_app_b smallint, sc_app_g smallint, st_app_b smallint, st_app_g smallint, gen_pass_b smallint, gen_pass_g smallint, obc_pass_b smallint, obc_pass_g smallint, sc_pass_b smallint, sc_pass_g smallint, st_pass_b smallint, st_pass_g smallint, gen_60p_b smallint, gen_60p_g smallint, obc_60p_b smallint, obc_60p_g smallint, sc_60p_b smallint, sc_60p_g smallint, st_60p_b smallint, st_60p_g smallint,num_of_times int,ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp );
 
+alter table udise_sch_exmres_c8_dup drop constraint if exists udise_sch_exmres_c8_dup_key;
 
 /*pat null validation table*/
 
@@ -4106,6 +4150,20 @@ count_null_total_marks int,
 count_null_question_title int,
 count_null_question int,
 count_null_question_marks int,
+count_null_id int,
+count_null_student_uid int,
+count_null_school_id int,
+count_null_studying_class int,
+count_null_obtained_marks int
+);
+
+create table if not exists pat_trans_null_col(
+filename varchar(200) ,
+ff_uuid varchar(200),
+count_null_exam_id int,
+count_null_question_id int,
+count_null_exam_code int,
+count_null_exam_date int,
 count_null_id int,
 count_null_student_uid int,
 count_null_school_id int,
@@ -4206,7 +4264,7 @@ alter table log_summary add COLUMN if not exists nsqf_faculty_id int;
 /*PAT data tables*/
 
 create table if not exists periodic_exam_mst(
-exam_id  int primary key not null,
+exam_id  int,
 assessment_year  varchar(20),
 medium  varchar(20),
 standard  int,
@@ -4220,7 +4278,12 @@ exam_date  date,
 total_questions  int,
 total_marks  numeric,
 created_on  timestamp,
-updated_on  timestamp);
+updated_on  timestamp,
+primary key(exam_id,assessment_year)
+);
+
+alter table periodic_exam_mst drop constraint if exists periodic_exam_mst_pkey;
+alter table periodic_exam_mst add primary key(exam_id,assessment_year);
 
 create table if not exists periodic_exam_qst_mst(
 question_id  int primary key not null,
@@ -4487,7 +4550,6 @@ create table IF NOT EXISTS diksha_tpd_agg(
 collection_id	text,
 collection_name	text,
 collection_progress	double precision,
-percentage_teachers double precision,
 enrolled_date date,
 school_id	bigint,
 school_name  varchar(200),
@@ -4501,4 +4563,24 @@ created_on	TIMESTAMP without time zone,
 updated_on	TIMESTAMP without time zone,
 primary key(collection_id,enrolled_date,school_id,collection_name)
   );
+
+alter table diksha_tpd_agg add column IF NOT EXISTS total_enrolled int;
+alter table diksha_tpd_agg add column IF NOT EXISTS total_completed int;
+alter table diksha_tpd_agg drop column IF EXISTS percentage_teachers;
+
+create table  if not exists diksha_api_meta (request_id text,encryption_key text,batch_id text,channel_id text,from_date date,to_date date,request_status text,
+cqube_process_status text,expiry_time timestamp,requested_on timestamp,dataset text,request_channel text, ff_uuid text primary key);
+
+ALTER TABLE school_tmp ALTER COLUMN created_on DROP NOT NULL;
+ALTER TABLE school_tmp ALTER COLUMN updated_on DROP NOT NULL;
+ALTER TABLE school_master ALTER COLUMN created_on DROP NOT NULL;
+ALTER TABLE school_master ALTER COLUMN updated_on DROP NOT NULL;
+ALTER TABLE school_management_master ALTER COLUMN created_on DROP NOT NULL;
+ALTER TABLE school_management_master ALTER COLUMN updated_on DROP NOT NULL;
+ALTER TABLE school_category_master ALTER COLUMN created_on DROP NOT NULL;
+ALTER TABLE school_category_master ALTER COLUMN updated_on DROP NOT NULL;
+ALTER TABLE school_medium_master ALTER COLUMN created_on DROP NOT NULL;
+ALTER TABLE school_medium_master ALTER COLUMN updated_on DROP NOT NULL;
+
+
 

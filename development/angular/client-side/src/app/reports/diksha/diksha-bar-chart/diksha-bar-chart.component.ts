@@ -2,8 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from '../../../services/diksha-report.service';
 import { Router } from '@angular/router';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label, Color } from 'ng2-charts';
 import { AppServiceComponent } from '../../../app.service';
 
 @Component({
@@ -16,18 +14,12 @@ export class DikshaBarChartComponent implements OnInit {
   chart: boolean = false;
   public colors = [];
   header = '';
-  public barChartOptions: ChartOptions = {};
-  public barChartLabels: Label[] = [];
-  public barChartType: ChartType = 'horizontalBar';
-  public barChartLegend = true;
-  public barChartPlugins = [];
+  public category: String[] = [];
+  public chartData: Number[] = [];
+  public xAxisLabel: String = "Total Content Plays";
+  public yAxisLabel: String = "District Names";
 
-  public barChartColors: Color[] = [
-    { backgroundColor: '#0e92b0' }
-  ]
-  public barChartData: ChartDataSets[] = [];
-
-  collection_type = 'course';
+  public collection_type: String = 'course';
 
   public result: any = [];
   public timePeriod = 'all';
@@ -48,6 +40,7 @@ export class DikshaBarChartComponent implements OnInit {
   fileName: any;
   reportData: any = [];
   y_axisValue;
+  state: string;
 
   constructor(
     public http: HttpClient,
@@ -58,16 +51,16 @@ export class DikshaBarChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.getAllData();
   }
 
   emptyChart() {
-    this.barChartData = [
-      { data: [], label: '' }
-    ];
     this.result = [];
+    this.chartData = [];
+    this.category = [];
   }
 
   homeClick() {
@@ -75,10 +68,19 @@ export class DikshaBarChartComponent implements OnInit {
     this.timePeriod = 'all';
     this.getAllData()
   }
-  // linkClick() {
-  //   document.getElementById('home').style.display = "none";
-  //   this.getAllData()
-  // }
+  getBarChartData() {
+    if (this.result.labels.length <= 25) {
+      for (let i = 0; i <= 25; i++) {
+        this.category.push(this.result.labels[i] ? this.result.labels[i] : ' ')
+      }
+    } else {
+      this.category = this.result.labels;
+    }
+    this.result.data.forEach(element => {
+      this.chartData.push(Number(element[`total_content_plays`]));
+    });
+  }
+
   async getAllData() {
     this.emptyChart();
     if (this.timePeriod != 'all') {
@@ -96,21 +98,14 @@ export class DikshaBarChartComponent implements OnInit {
     this.all = true
     this.dist = false;
     this.header = this.changeingStringCases(this.collection_type) + " linked";
-    // if (this.collection_type == 'all') {
-    //   this.header = "Overall";
-    // }
-    // this.header = this.header;
 
     this.listCollectionNames();
     this.service.dikshaBarChart({ collection_type: this.collection_type }).subscribe(async result => {
       this.result = result['chartData'];
       this.reportData = result['downloadData'];
       this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      this.createChart(this.result);
-      if (result['data']) {
-        this.chart = (result['data'][0].length > 0);
-      }
-      document.getElementById('spinner').style.display = 'none';
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
       this.emptyChart();
@@ -120,11 +115,12 @@ export class DikshaBarChartComponent implements OnInit {
   }
 
   listCollectionNames() {
+    this.emptyChart();
     this.commonService.errMsg();
     this.collectionName = '';
     this.footer = '';
     this.reportData = [];
-    this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod }).subscribe(res => {
+    this.service.listCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod }).subscribe(async (res) => {
       this.collectionNames = [];
       this.collectionNames = res['uniqueCollections'];
       this.collectionNames.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0));
@@ -133,10 +129,10 @@ export class DikshaBarChartComponent implements OnInit {
         this.emptyChart();
         this.result = res['chartData'];
         this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.createChart(this.result);
+        this.getBarChartData();
         this.reportData = res['downloadData'];
       }
-      document.getElementById('spinner').style.display = 'none';
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.collectionNames = [];
       this.result = [];
@@ -146,12 +142,13 @@ export class DikshaBarChartComponent implements OnInit {
   }
 
   chooseTimeRange() {
-    document.getElementById('home').style.display = "block";
-    if(this.timePeriod== 'all'){
+    this.emptyChart();
+    if (this.timePeriod == 'all') {
       this.getAllData();
-    }else{
+    } else {
       this.listCollectionNames();
     }
+    document.getElementById('home').style.display = "block";
   }
 
   getDataBasedOnCollections() {
@@ -164,97 +161,16 @@ export class DikshaBarChartComponent implements OnInit {
     this.result = [];
     this.all = true
     this.dist = false
-    this.service.getDataByCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod, collection_name: this.collectionName }).subscribe(res => {
+    this.service.getDataByCollectionNames({ collection_type: this.collection_type, timePeriod: this.timePeriod == 'all' ? '' : this.timePeriod, collection_name: this.collectionName }).subscribe(async res => {
       this.result = res['chartData'];
       this.reportData = res['downloadData'];
       this.footer = res['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      this.createChart(this.result);
-      document.getElementById('spinner').style.display = 'none';
+      this.getBarChartData();
+      this.commonService.loaderAndErr(this.result);
     }, err => {
       this.commonService.loaderAndErr(this.result);
     });
   }
-
-  createChart(data) {
-    var chartData = [];
-    var percentage = [];
-    var contentPlays = [];
-    data.data.forEach(element => {
-      contentPlays.push(element.total_content_plays);
-      percentage.push(element.percentage);
-    });
-    var obj = { data: contentPlays, label: "Total Content Play" }
-    chartData.push(obj);
-    this.barChartOptions = {
-      legend: {
-        display: false
-      },
-      responsive: true,
-      tooltips: {
-        custom: function (tooltip) {
-          if (!tooltip) return;
-          tooltip.displayColors = false;
-        },
-        callbacks: {
-          label: function (tooltipItem, data) {
-            var label = data.labels[tooltipItem.index];
-            var content = data.datasets[0].data;
-            var scores = content[tooltipItem.index];
-            var percent = percentage[tooltipItem.index]
-            // var subject = data.datasets[tooltipItem.index].label
-            var multistringText = [];
-            multistringText.push("Total Content Plays" + ": " + scores.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"));
-            multistringText.push("Percentage" + ": " + percent + " %");
-            // multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
-            return multistringText;
-          }
-        }
-      },
-
-      scales: {
-        xAxes: [{
-          gridLines: {
-            color: "rgba(252, 239, 252)",
-          },
-          ticks: {
-            fontColor: 'black',
-            min: 0,
-            callback: function (value, index, values) {
-              value = value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
-              return value;
-            }
-          },
-          scaleLabel: {
-            fontColor: "black",
-            display: true,
-            labelString: "Total Content Play",
-            fontSize: 12,
-          }
-        }],
-        yAxes: [{
-          gridLines: {
-            color: "rgba(252, 239, 252)",
-          },
-          ticks: {
-            fontColor: 'black',
-            min: 0,
-            max: this.y_axisValue,
-          },
-          scaleLabel: {
-            fontColor: "black",
-            display: true,
-            labelString: "District Names",
-            fontSize: 12,
-          }
-        }]
-      }
-    }
-
-    this.barChartLabels = data.labels;
-    this.barChartData = chartData;
-
-  }
-
 
   onChange() {
     document.getElementById('errMsg').style.display = 'none';

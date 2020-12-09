@@ -1,28 +1,28 @@
 <div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-10">
             <div *ngIf='all'>
                 <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     {{header}} content usage: <span (click)="homeClick()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <!-- <div *ngIf='dist'>
                 <p id="block_level"
                     style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Diksha Report: <span (click)="getAllData()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div> -->
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-2">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-0" style="display: none;">
                     <p id="errMsg"
                         style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <em class="fa fa-download" title="Download Report" id="download"
                         style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
                         (click)="downloadRoport()"></em>
@@ -51,7 +51,7 @@
                 <select id="coll_name"
                     style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                     [(ngModel)]="collectionName" name="collectionName" (change)="getDataBasedOnCollections()">
-                    <option [value]="collectionName" disabled selected="selected">Choose collection name
+                    <option [value]="collectionName" disabled selected="selected">Choose course name
                     </option>
                     <option *ngFor="let collectionName of collectionNames; let i = index"
                         [(ngValue)]="collectionNames[i]" style=" font-size: 11px;">
@@ -71,14 +71,9 @@
 
             </div>
             <div class="col-lg-10" id="r1">
-                <div *ngIf="barChartData[0]['data'].length > 0">
-                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-                        [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType"
-                        [colors]="barChartColors">
-                    </canvas>
-                </div>
-                <div *ngIf="barChartData[0]['data'].length === 0"
-                    style="position: absolute; left: 40%; top: 120px;color: red;">
+                <app-bar-chart *ngIf="chartData.length > 0" [category]="category" [data]="chartData"
+                    [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [reportName]="collection_type"></app-bar-chart>
+                <div *ngIf="chartData.length === 0" style="position: absolute; left: 40%; top: 120px;color: red;">
                     No Data Available
                 </div>
             </div>

@@ -3,13 +3,13 @@
         <div class="col-sm-7">
             <div *ngIf='all'>
                 <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Textbook linked content usage: <span (click)="getAllData()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span></p>
+                    Textbook linked content usage: <span (click)="homeClick()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Textbook linked content usage: <span (click)="getAllData()"
-                        style="cursor: pointer;text-decoration: underline;">Gujarat</span> <span>/ </span><span
+                    Textbook linked content usage: <span (click)="homeClick()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div>
@@ -37,7 +37,7 @@
                     </div>
                     <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
-                        alt="Home" (click)="getAllData()"></em>
+                        alt="Home" (click)="homeClick()"></em>
                 </div>
             </div>
         </div>

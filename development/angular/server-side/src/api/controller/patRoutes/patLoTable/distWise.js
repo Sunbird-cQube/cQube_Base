@@ -7,8 +7,9 @@ router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT LO table distWise api ---');
 
-        let { year, grade, subject_name, exam_date, viewBy } = req.body
-        let fileName = `pat/heatChart/${year}/allData.json`
+        let { year, grade, month, subject_name, exam_date, viewBy } = req.body
+        let fileName = `pat/heatChart/${year}/${month}/allData.json`;
+
         var data = await s3File.readS3File(fileName);
 
         let districtDetails = data.map(e => {
@@ -17,6 +18,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
                 district_name: e.district_name
             }
         })
+
 
         districtDetails = districtDetails.reduce((unique, o) => {
             if (!unique.some(obj => obj.district_id === o.district_id)) {
