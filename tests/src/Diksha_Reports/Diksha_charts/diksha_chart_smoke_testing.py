@@ -36,12 +36,13 @@ class cQube_diskha_chart(unittest.TestCase):
         count = 0
         self.driver.find_element_by_id("dsc").click()
         self.data.page_loading(self.driver)
-        if "diksha-chart" in self.driver.current_url:
-            print("Diksha chart report page is present ")
+        if "usage-by-user-profile" in self.driver.current_url:
+            print("Diksha usage by profile report page is present ")
         else:
-            print("Diksha chart page is not exist")
+            print("Diksha usage by profile page is not exist")
             count = count + 1
-        self.assertEqual(0,count,msg="Diksha chart icon is not working ")
+        self.assertEqual(0, count, msg="Diksha chart icon is not working ")
+        self.data.page_loading(self.driver)
 
     def test_timeperiods(self):
         self.driver.find_element_by_xpath(Data.hyper_link).click()

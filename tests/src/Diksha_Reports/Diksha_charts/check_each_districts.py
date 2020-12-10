@@ -17,7 +17,7 @@ class district_list():
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.data.page_loading(self.driver)
         districts  =Select(self.driver.find_element_by_id('choose_dist'))
-        for x in range(1,len(districts.options)):
+        for x in range(len(districts.options)-3,len(districts.options)):
             time.sleep(1)
             districts.select_by_index(x)
             self.data.page_loading(self.driver)

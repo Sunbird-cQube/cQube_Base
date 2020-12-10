@@ -24,9 +24,9 @@ class district_level_records():
         self.load.page_loading(self.driver)
         dists = Select(self.driver.find_element_by_id(Data.district_dropdown))
         period = Select(self.driver.find_element_by_id(Data.timeperiods))
-        period.select_by_visible_text(' All ')
+        period.select_by_visible_text(' Overall ')
         self.load.page_loading(self.driver)
-        for i in range(1, len(dists.options)):
+        for i in range(len(dists.options)-3, len(dists.options)):
             dists.select_by_index(i)
             time.sleep(2)
             self.load.page_loading(self.driver)

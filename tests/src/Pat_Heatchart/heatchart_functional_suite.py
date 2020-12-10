@@ -86,6 +86,7 @@ class cQube_heatchart_functionalTest(unittest.TestCase):
     def test_Home_functions(self):
         b = Home_functions(self.driver)
         res = b.test_homeicons()
+        print("Checked with homeicon functionality ")
         self.data.page_loading(self.driver)
 
     def test_Homebtn_functions(self):
@@ -93,12 +94,13 @@ class cQube_heatchart_functionalTest(unittest.TestCase):
         res = b.test_homebutton()
         self.assertEqual(res,0,msg='Homebtn is not working')
         self.data.page_loading(self.driver)
-
+    #
     def test_logout_function(self):
         b = logout(self.driver)
         res = b.test_logoutbtn()
         self.assertEqual(0,res,msg="Logout button is not working ")
         self.data.login_cqube(self.driver)
+        self.data.page_loading(self.driver)
         self.data.navigate_to_heatchart_report()
         self.data.page_loading(self.driver)
 
@@ -108,12 +110,12 @@ class cQube_heatchart_functionalTest(unittest.TestCase):
         self.assertEqual(0,res,msg='Year is not selected ')
         self.data.page_loading(self.driver)
 
-    # def test_check_hyperlinks(self):
-    #     hyperlinks = heatchart_hyperlink(self.driver)
-    #     res = hyperlinks.test_hypers()
-    #     print('hyper link is working ')
-    #     self.data.page_loading(self.driver)
-
+    # # def test_check_hyperlinks(self):
+    # #     hyperlinks = heatchart_hyperlink(self.driver)
+    # #     res = hyperlinks.test_hypers()
+    # #     print('hyper link is working ')
+    # #     self.data.page_loading(self.driver)
+    #
     def test_districtwise(self):
         b = districtwise(self.driver)
         res = b.District_select_box()
