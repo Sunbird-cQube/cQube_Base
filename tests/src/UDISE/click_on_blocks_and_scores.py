@@ -15,14 +15,13 @@ class block_btn_scores():
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.p.page_loading(self.driver)
         self.driver.find_element_by_id('block').click()
-        time.sleep(5)
         count = 0
         self.p.page_loading(self.driver)
         scores = Select(self.driver.find_element_by_id("choose_infra"))
         for i in range(1,len(scores.options)-1):
             time.sleep(2)
             scores.select_by_index(i)
-            time.sleep(8)
+            time.sleep(3)
             markers = self.driver.find_elements_by_class_name(Data.dots)
             dots = len(markers)-1
             if dots == 0:

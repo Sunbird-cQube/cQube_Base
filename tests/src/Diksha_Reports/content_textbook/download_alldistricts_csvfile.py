@@ -21,7 +21,7 @@ class course_districtwise_records():
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(3)
-        self.filename = self.p.get_download_dir() + "/" + 'Diksha_All_Data_.csv'
+        self.filename = self.p.get_download_dir() + "/" + 'Diksha_All_Data_all.csv'
         file = os.path.isfile(self.filename)
         self.data.page_loading(self.driver)
         with open(self.filename) as fin:

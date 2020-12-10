@@ -205,5 +205,29 @@ class SchoolInfra_scores():
         print("Toilet percentage is selected and csv file is downloaded")
         return row_count-1
 
+    def infra_score_dropdown(self):
+        self.fname = file_extention()
+        self.cal = GetData()
+        self.driver.find_element_by_css_selector('p >span').click()
+        self.cal.page_loading(self.driver)
+        infraoptions = Select(self.driver.find_element_by_id('choose_infra'))
+        for i in range(1,len(infraoptions.options)):
+            infraoptions.select_by_index(i)
+            self.cal.page_loading(self.driver)
+            self.driver.find_element_by_id('download').click()
+            time.sleep(2)
+            p = pwd()
+            self.filename = p.get_download_dir() + "/" + self.fname.scmap_district()
+            row_count = 0
+            with open(self.filename, 'rt')as f:
+                reader = csv.reader(f)
+                data = list(reader)
+                row = len(data)
+                row_count = row
+            print(infraoptions.options[i].text,"is selected and csv file is downloaded")
+            os.remove(self.filename)
+            return row_count - 1
+
+
     def remove_csv(self):
         os.remove(self.filename)
