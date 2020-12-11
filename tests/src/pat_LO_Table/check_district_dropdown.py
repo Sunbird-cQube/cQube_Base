@@ -26,7 +26,7 @@ class districtwise():
         for j in range(len(view_by.options)):
             view_by.select_by_index(j)
             self.load.page_loading(self.driver)
-            for i in range(1, len(dists.options)):
+            for i in range(len(dists.options)-3, len(dists.options)):
                 dists.select_by_index(i)
                 self.load.page_loading(self.driver)
                 time.sleep(2)

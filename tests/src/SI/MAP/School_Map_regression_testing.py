@@ -3,7 +3,6 @@ import unittest
 from Data.parameters import Data
 from SI.MAP.check_infrascore_with_download_functionality import SchoolInfra_scores
 from SI.MAP.check_sc_map_clusterwise_records import test_school_map_schoollevel_records
-from SI.MAP.check_with_map_on_schoolinfra import check_markers_on_map
 from SI.MAP.click_on_anydistrict_and_download_csv import download_icon
 
 from SI.MAP.click_on_block_cluster_school_and_check_schoolscount import Block_cluster_school_count
@@ -17,7 +16,6 @@ from SI.MAP.click_on_hyperlink import click_on_hyperlink
 from SI.MAP.click_on_infra_score import click_on_infrascores
 from SI.MAP.click_on_schools import click_schoolbutton
 from SI.MAP.click_on_schools_and_scores import schools_btn_scores
-from SI.MAP.mouseover_on_districtwise import mouseover
 
 from reuse_func import GetData
 
@@ -33,14 +31,6 @@ class cQube_SI_Map_Report(unittest.TestCase):
         time.sleep(2)
         self.data.navigate_to_school_infrastructure_map()
         time.sleep(3)
-
-
-    def test_check_markes_on_map(self):
-        b = check_markers_on_map(self.driver)
-        result = b.test_map()
-        self.assertNotEqual(0, result, msg="Data not present on map")
-        self.data.page_loading(self.driver)
-        print("markers on map ")
 
 
     def test_hyperlink(self):
@@ -146,21 +136,19 @@ class cQube_SI_Map_Report(unittest.TestCase):
         self.assertNotEqual(0, res, msg="infra score options not contains in drop down")
         print("checked with infrascores options")
 
-    def test_click_on_block(self):
+    def test_click_on_block_cluster_school(self):
         b = click_on_blocks(self.driver)
         res1,res2 = b.test_blocks_button()
         self.assertNotEqual(0, res1, msg="Records are not present on map ")
         self.assertTrue(res2,msg='Block wise file downloading is not working ')
         print("Block buttons is working...")
 
-    def test_clusterbtn(self):
         b = cluster_button(self.driver)
         res1, res2 = b.test_clusterbtn()
         self.assertNotEqual(0, res1, msg="Records are not present on map ")
         self.assertTrue(res2, msg='Cluster wise file downloading is not working ')
         print("cluster button is working ")
 
-    def test_click_schoolwise(self):
         b = click_schoolbutton(self.driver)
         res1,res2 = b.test_click_on_school_btn()
         self.assertNotEqual(0, res1, msg="Records are not present on map ")
@@ -177,24 +165,17 @@ class cQube_SI_Map_Report(unittest.TestCase):
         print("checked with comapared with footer values ")
 
 
-    def test_schoollevel(self):
-        b= test_school_map_schoollevel_records(self.driver)
-        res = b.check_download_csv1()
-        self.assertEqual(0,res,msg='Some records or downloading is not working ')
-
-    def test_block_scores(self):
+    def test_block_cluster_schools_infrascores(self):
         b = block_btn_scores(self.driver)
         result = b.test_click_blocks()
         self.data.page_loading(self.driver)
         print("block button is worked and infra scores is working ")
 
-    def test_clusters_scores(self):
         b = cluster_btn_scores(self.driver)
         result = b.test_click_clusters()
         self.data.page_loading(self.driver)
         print("cluster button is worked and infra scores is working ")
 
-    def test_schools_scores(self):
         b = schools_btn_scores(self.driver)
         res = b.test_click_schools()
         self.data.page_loading(self.driver)
@@ -215,12 +196,6 @@ class cQube_SI_Map_Report(unittest.TestCase):
         self.data.navigate_to_school_infrastructure_map()
         self.data.page_loading(self.driver)
 
-    def test_mouseover_on_dots(self):
-        b = mouseover(self.driver)
-        res = b.test_mousehover()
-        count = self.data.test_mouse_over()
-        self.assertNotEqual(0, count, msg="markers not present in map ")
-        print("markers present on map ")
 
 
     @classmethod

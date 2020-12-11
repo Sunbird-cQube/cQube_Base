@@ -29,7 +29,6 @@ class Data():
     Download = "download"
     Download_scator ='download1'
     s3bucket_select1 ="//*[@id='table']/thead[2]/tr[2]/td[1]/input"
-    summary_icon="//*[@id='summary']/img"
     summ ="//*[@id='summary']/div/td[2]"
     # Dash board
     Dashboard = "menu"
@@ -51,6 +50,8 @@ class Data():
     #udise
     udise_drop ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[8]/mat-list-item/div/mat-icon"
     udise_report ="udiseReport"
+
+
 
     # hyper     ="//*[@id='dist_level']/span"
     hyper = "//p/span"
@@ -76,7 +77,8 @@ class Data():
     sc_infrascores = "//select[@id='choose_infra']/option"
     sc_no_of_schools = "schools"
 
-    diksha ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[2]/mat-list-item/div/mat-icon"
+    diksha ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[3]/mat-list-item/div/mat-icon"
+    tpds ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[2]/mat-list-item/div/mat-icon"
     diksha_graph ="chrtReport"
     diksha_table = "dtblReport"
     tpd_progress ="tpd-cp"
@@ -126,8 +128,6 @@ class Data():
     Download_icon = "//i[@id='download']"
     # user_creation
 
-    user = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/mat-list/mat-list-item/div/button/span/mat-icon"
-    create_user = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/mat-list/div/a[1]/div/span"
     create_headtext = "//h2"
     fname = "//input[@name='firstname']"
     mname = "//input[@name='middlename']"
@@ -321,3 +321,24 @@ class Data():
     district_sel ="district"
     block_sel ="block"
     cluster_sel ="cluster"
+
+    #Admin_Console
+    create_user ="crtUsr"
+    change_pass ="//a[@id='Chpass']"
+    userlst = "//a[@id='user']"
+    logfiles ="//a[@id='logs']"
+    s3downloads ="//a[@id='downloads']"
+    summarystat ="//a[@id='summary']"
+    nifischedular="//a[@id='nifi']"
+    #icons
+    adduser ="addUser"
+    chpass_icon ="//div[@id='chPass']"
+    userprofiles ="//div[@id='user']"
+    log_icon ="//div[@id='logs']"
+    summary_icon ="//div[@id='summary']"
+    s3files_icon ="s3dwn"
+    nifi_Sch ="//div[@id='nifi']"
+
+    #TPD Enrollement and Completion
+    coursetype="choose_enroll"
+    coll_names ="coll_name"

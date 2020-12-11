@@ -24,7 +24,7 @@ class ClusterPerBlockCsvDownload():
         for x in range(len(select_district.options)-1, len(select_district.options)):
             select_district.select_by_index(x)
             cal.page_loading(self.driver)
-            for y in range( 1, len(select_block.options)):
+            for y in range(1, len(select_block.options)):
                 select_block.select_by_index(y)
                 cal.page_loading(self.driver)
                 time.sleep(2)

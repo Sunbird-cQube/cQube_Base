@@ -20,7 +20,6 @@ class cluster_btn_scores():
         time.sleep(15)
         scores = Select(self.driver.find_element_by_id("choose_infra"))
         for i in range(len(scores.options)):
-            time.sleep(2)
-            scores.select_by_index(i)
             time.sleep(1)
+            scores.select_by_index(i)
         self.p.page_loading(self.driver)

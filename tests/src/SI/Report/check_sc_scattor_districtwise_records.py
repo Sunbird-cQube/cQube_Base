@@ -21,7 +21,7 @@ class test_districtwise():
         self.fname =file_extention()
         select_district = Select(self.driver.find_element_by_name('myDistrict'))
         count = 0
-        for x in range(1, len(select_district.options)):
+        for x in range(len(select_district.options)-4, len(select_district.options)):
             select_district.select_by_index(x)
             self.cal.page_loading(self.driver)
             nodata = self.driver.find_element_by_id("errMsg").text

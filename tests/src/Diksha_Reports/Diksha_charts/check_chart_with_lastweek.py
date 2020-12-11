@@ -18,7 +18,7 @@ class Districtwise_lastweek_chart():
         time.sleep(2)
         districts  =Select(self.driver.find_element_by_id('choose_dist'))
         count = len(districts.options) - 1
-        for x in range(1,len(districts.options)):
+        for x in range(len(districts.options)-1,len(districts.options)):
             time.sleep(2)
             districts.select_by_index(x)
             time.sleep(4)

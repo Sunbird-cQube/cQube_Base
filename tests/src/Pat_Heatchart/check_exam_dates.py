@@ -18,6 +18,9 @@ class exams_series():
         self.fname = file_extention()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.load.page_loading(self.driver)
+        grade = Select(self.driver.find_element_by_id(Data.grade))
+        grade.select_by_index(4)
+        self.load.page_loading(self.driver)
         examdates = Select(self.driver.find_element_by_id(Data.exam_dates))
         for i in range(1, len(examdates.options)):
             examdates.select_by_index(i)

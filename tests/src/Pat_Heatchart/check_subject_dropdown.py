@@ -24,6 +24,9 @@ class subject_levels():
         self.load.page_loading(self.driver)
         self.load.navigate_to_heatchart_report()
         self.load.page_loading(self.driver)
+        grade = Select(self.driver.find_element_by_id(Data.grade))
+        grade.select_by_index(4)
+        self.load.page_loading(self.driver)
         subject = Select(self.driver.find_element_by_id(Data.subjects))
         for i in range(2, len(subject.options)):
             subject.select_by_index(i)
