@@ -32,7 +32,7 @@ class DistrictBlockCluster():
             for y in range(len(select_block.options)-1, len(select_block.options)):
                 select_block.select_by_index(y)
                 cal.page_loading(self.driver)
-                for z in range(len(select_cluster.options)-1, len(select_cluster.options)):
+                for z in range(len(select_cluster.options), len(select_cluster.options)):
                     select_cluster.select_by_index(z)
                     time.sleep(2)
                     cal.page_loading(self.driver)

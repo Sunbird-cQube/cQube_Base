@@ -38,7 +38,7 @@ class TotalStudentsSchools():
         self.driver.find_element_by_id(Data.SAR_Clusters_btn).click()
         cal = GetData()
         cal.page_loading(self.driver)
-        time.sleep(20)
+        time.sleep(4)
         Cstudents = self.driver.find_element_by_id(Data.students).text
         Cstudent = re.sub("\D", "", Cstudents)
         Cschools = self.driver.find_element_by_id(Data.schoolcount).text
@@ -50,7 +50,7 @@ class TotalStudentsSchools():
         self.driver.find_element_by_id(Data.SAR_Schools_btn).click()
         cal = GetData()
         cal.page_loading(self.driver)
-        time.sleep(20)
+        time.sleep(4)
         Sstudents = self.driver.find_element_by_id(Data.students).text
         Sstudent = re.sub("\D", "", Sstudents)
 

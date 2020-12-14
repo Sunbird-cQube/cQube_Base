@@ -29,7 +29,7 @@ from reuse_func import GetData
 
 
 class cQube_Student_Attendance(unittest.TestCase):
-
+    @classmethod
     def setUp(self):
         self.data = GetData()
         self.driver = self.data.get_driver()
@@ -56,14 +56,12 @@ class cQube_Student_Attendance(unittest.TestCase):
         print("Blocks button is working")
         print("Markers are present on the map")
 
-    def test_click_on_clusters(self):
         cluster = Clusters(self.driver)
         result = cluster.check_markers_on_clusters_map()
         self.assertNotEqual(0, len(result) - 1, msg="Dots are not present on map")
         print("Clusters button is working")
         print("Markers are present on the map")
 
-    def test_click_on_schools(self):
         school = Schools(self.driver)
         result = school.check_markers_on_clusters_map()
         self.assertNotEqual(0, int(len(result) - 1), msg="Dots are not present on map")
@@ -183,5 +181,6 @@ class cQube_Student_Attendance(unittest.TestCase):
         self.data.login_cqube(self.driver)
         self.data.navigate_to_student_report()
 
+    @classmethod
     def tearDown(cls):
         cls.driver.close()

@@ -11,7 +11,6 @@ from UDISE.click_on_block_cluster_school_and_check_schoolscount import Block_clu
 
 from UDISE.click_on_blocks_and_scores import block_btn_scores
 from UDISE.click_on_blocksbtn_and_check_download import Blockwise_csv_download
-from UDISE.click_on_cluster_check_download import clusterwise_download
 from UDISE.click_on_clusters_and_scores import cluster_btn_scores
 
 from UDISE.click_on_hyperlink import click_on_hyperlink

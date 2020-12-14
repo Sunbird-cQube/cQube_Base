@@ -34,17 +34,17 @@ class pwd():
 
     def get_regression_report_path(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/Regression_Report/Regression_Test.html')
+        report_path = os.path.join(cwd, 'Reports/Regression_Report/Regression_new.html')
         return report_path
 
     def get_smoke_report_path(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/SmokeReport/Smoke.html')
+        report_path = os.path.join(cwd, 'Reports/SmokeReport/SmokeTest.html')
         return report_path
 
     def get_functional_report_path(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/functionalTesting.html')
+        report_path = os.path.join(cwd, 'Reports/Admin_Console.html')
         return report_path
 
     def get_integration_report_path(self):
@@ -62,9 +62,9 @@ class pwd():
         ini = os.path.join(cwd, 'config.ini')
         return ini
 
-    def get_keycloak_ini_path(self):
+    def get_summary_statistics_path(self):
         cwd = os.path.dirname(__file__)
-        key = os.path.join(cwd, 'keycloak.ini')
+        key = os.path.join(cwd, 'summary_variables.ini')
         return key
 
     def get_driver_path(self):

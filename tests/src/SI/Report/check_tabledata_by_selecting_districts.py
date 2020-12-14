@@ -21,7 +21,7 @@ class districtwise_tabledata():
 
             select_district = Select(self.driver.find_element_by_name('myDistrict'))
             count = 0
-            for k in range(1, len(select_district.options)):
+            for k in range(len(select_district.options)-2, len(select_district.options)):
                 select_district.select_by_index(k)
                 self.p.page_loading(self.driver)
                 table_data = []

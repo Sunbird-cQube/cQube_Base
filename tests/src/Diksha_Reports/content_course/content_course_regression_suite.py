@@ -29,12 +29,12 @@ class cQube_content_course_regression(unittest.TestCase):
             self.data.navigate_to_diksha_content_course()
             self.data.page_loading(self.driver)
 
+
     def test_diksha_page(self):
         b = Diksha_page(self.driver)
         res = b.test_navigation()
-        self.assertEqual(res,0,msg='content course page is present but url is not matching to report')
+        self.assertEqual(res, 0, msg='content course page is present but url is not matching to report')
         self.data.page_loading(self.driver)
-
 
     def test_content_course_hyperlink(self):
         self.data.page_loading(self.driver)
@@ -44,15 +44,15 @@ class cQube_content_course_regression(unittest.TestCase):
         self.data.page_loading(self.driver)
 
     def test_course_districtwise_records(self):
-        b =course_districtwise_records(self.driver)
+        b = course_districtwise_records(self.driver)
         res = b.test_alldata_districts()
-        self.assertEqual(0,res,msg='Records are not present on table ')
+        self.assertEqual(0, res, msg='Records are not present on table ')
         self.data.page_loading(self.driver)
 
     def test_course_districtwise_lastweek_record(self):
         b = course_districtwise_lastweek_record(self.driver)
         res = b.test_each_districts()
-        self.assertEqual(res,0,msg='records count mismatch in downloaded file and table records')
+        self.assertEqual(res, 0, msg='records count mismatch in downloaded file and table records')
         print('checked with last 7days records ')
         self.data.page_loading(self.driver)
 
@@ -73,13 +73,13 @@ class cQube_content_course_regression(unittest.TestCase):
     def test_Districtwise_lastday_records(self):
         b = Districtwise_lastday_records(self.driver)
         res = b.test_districts()
-        self.assertEqual(res,0,msg='Some districts does not have table records')
+        self.assertEqual(res, 0, msg='Some districts does not have table records')
         self.data.page_loading(self.driver)
 
     def test_Districtwise_lastweek_records(self):
         b = Districtwise_lastweek_records(self.driver)
         res = b.test_districts()
-        self.assertEqual(res,0,msg='Some districts does not have table records')
+        self.assertEqual(res, 0, msg='Some districts does not have table records')
         self.data.page_loading(self.driver)
 
     def test_Districtwise_monthwise_records(self):
@@ -89,7 +89,7 @@ class cQube_content_course_regression(unittest.TestCase):
         self.data.page_loading(self.driver)
 
     def test_homeicon(self):
-        b =Diksha_homeicon(self.driver)
+        b = Diksha_homeicon(self.driver)
         res = b.test_homeicon()
         print('Home icon is working ')
         self.data.page_loading(self.driver)
@@ -103,7 +103,7 @@ class cQube_content_course_regression(unittest.TestCase):
     def test_content_course_logout(self):
         b = content_course_logout(self.driver)
         res = b.test_logout()
-        self.assertEqual(res,'Log in to cQube',msg="logout button is not working")
+        self.assertEqual(res, 'Log in to cQube', msg="logout button is not working")
         self.data.login_cqube(self.driver)
         self.data.page_loading(self.driver)
         self.data.navigate_to_diksha_content_course()
