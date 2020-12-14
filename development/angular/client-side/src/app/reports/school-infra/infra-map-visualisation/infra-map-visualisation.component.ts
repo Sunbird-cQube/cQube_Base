@@ -245,7 +245,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               this.colorGredient(this.blockMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, this.setColor, 3.5, 0.01, undefined, options.level);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, this.setColor, 3.5, 0.01, 1, options.level);
 
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.blockMarkers[i], options.level);
@@ -320,7 +320,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               this.colorGredient(this.clusterMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, this.setColor, 0, 0.01, undefined, options.level);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, this.setColor, 2, 0.01, .5, options.level);
 
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.clusterMarkers[i], options.level);
@@ -394,7 +394,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               this.colorGredient(this.schoolMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, this.setColor, 0, 0, undefined, options.level);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, this.setColor, 1, 0.1, 0, options.level);
 
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.schoolMarkers[i], options.level);
@@ -538,7 +538,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3,
+        radius: 3.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 3,

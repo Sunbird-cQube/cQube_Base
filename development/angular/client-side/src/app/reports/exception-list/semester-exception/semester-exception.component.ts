@@ -159,6 +159,7 @@ export class SemesterExceptionComponent implements OnInit {
           radius: 5,
           fillOpacity: 1,
           strokeWeight: 0.01,
+          weight: 1,
           mapZoom: this.commonService.zoomLevel,
           centerLat: this.lat,
           centerLng: this.lng,
@@ -232,7 +233,7 @@ export class SemesterExceptionComponent implements OnInit {
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.colors[i], 3.5, 0.1, undefined, options.level);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.colors[i], 3.5, 0.1, 1, options.level);
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "block_latitude", "block_longitude");
 
               // to download the report
@@ -308,7 +309,7 @@ export class SemesterExceptionComponent implements OnInit {
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.colors[i], 1, 0.01, undefined, options.level);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.colors[i], 2, 0.01, 1, options.level);
 
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "cluster_latitude", "cluster_longitude");
 
@@ -381,7 +382,7 @@ export class SemesterExceptionComponent implements OnInit {
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 1, 1, 1.5, options.level);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 1, 1, 0, options.level);
 
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "school_latitude", "school_longitude");
 
@@ -450,6 +451,7 @@ export class SemesterExceptionComponent implements OnInit {
         radius: 3.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
+        weight: 1,
         mapZoom: this.commonService.zoomLevel + 1,
         centerLat: this.data['data'][0].block_latitude,
         centerLng: this.data['data'][0].block_longitude,
@@ -519,6 +521,7 @@ export class SemesterExceptionComponent implements OnInit {
         radius: 3,
         fillOpacity: 1,
         strokeWeight: 0.01,
+        weight: 1,
         mapZoom: this.commonService.zoomLevel + 3,
         centerLat: this.data['data'][0].cluster_latitude,
         centerLng: this.data['data'][0].cluster_longitude,
@@ -669,11 +672,7 @@ export class SemesterExceptionComponent implements OnInit {
         }
 
         var markerIcon;
-        if (options.weight) {
-          markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
-        } else {
-          markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, undefined, options.level);
-        }
+        markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {

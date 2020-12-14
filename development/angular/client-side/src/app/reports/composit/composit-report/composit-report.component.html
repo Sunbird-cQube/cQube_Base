@@ -1,21 +1,21 @@
 <div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Composite report for: <span (click)="districtWise()"
+                    Composite report across matrics for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Composite report for: <span (click)="districtWise()"
+                    Composite report across matrics for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div>
             <div *ngIf="blok">
                 <p id="cluster_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Composite report for: <span (click)="districtWise()"
+                    Composite report across matrics for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
@@ -25,7 +25,7 @@
 
             <div *ngIf="clust">
                 <p id="school_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Composite report for: <span (click)="districtWise()"
+                    Composite report across matrics for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
@@ -34,7 +34,7 @@
                         {{hierName}}</span></p>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <div class="row">
                 <div class="col-sm-6">
                     <p id="errMsg"
@@ -152,8 +152,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-7">
-            <canvas id="myChart" height="160vh"></canvas>
+        <div class="col-sm-7" style="border: 1px solid gray;padding: 1%;">
+            <canvas id="myChart" height="150vh"></canvas>
         </div>
     </div>
 </div>

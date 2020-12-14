@@ -981,7 +981,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject, ...markers.indices }
+        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     } else if (level == "block") {
@@ -995,7 +995,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject, ...markers.indices }
+        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     }
@@ -1012,7 +1012,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject, ...markers.indices }
+        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     } else if (level == "school") {
@@ -1030,7 +1030,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...detailSchool, ...markers.indices }
+        let myobj = { ...detailSchool,...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     }
