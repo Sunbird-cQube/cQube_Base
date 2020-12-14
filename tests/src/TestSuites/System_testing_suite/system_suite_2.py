@@ -1,10 +1,10 @@
 
 import unittest
-from Diksha_Reports.Location_by_course import usage_by_course_system_testing
-from Diksha_Reports.Location_by_textbook import usage_by_textbook_system_suite
+from Diksha_Reports.usage_by_course import usage_by_course_system_testing
+from Diksha_Reports.usage_by_textbook import usage_by_textbook_system_suite
 from Diksha_Reports.content_course import content_course_system_suite
 from Diksha_Reports.content_textbook import content_textbook_system_suite
-from Diksha_TPD.lpd_heat_chart import lpd_content_system_test
+from Diksha_TPD.TPD_heat_chart import lpd_content_system_test
 from Diksha_TPD.percentage_heat_chart import lpd_percentage_system_test
 from Pat_Heatchart import patheatchart_system_test
 from get_dir import pwd
@@ -33,7 +33,7 @@ class MyTestSuite(unittest.TestCase):
                     )
             ])
             p = pwd()
-            outfile = open(p.get_system_report_path(), "a")
+            outfile = open(p.get_system_report_path(), "w")
 
             runner1 = HTMLTestRunner.HTMLTestRunner(
                 stream=outfile,
@@ -182,6 +182,8 @@ class MyTestSuite(unittest.TestCase):
             )
             runner1.run(system_test)
             outfile.close()
+
+
 
     @classmethod
     def tearDownClass(self):

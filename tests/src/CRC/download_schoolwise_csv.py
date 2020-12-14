@@ -23,7 +23,7 @@ class school_wise_download():
         District_wise.select_by_visible_text(" School Wise Report ")
         self.cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
-        time.sleep(15)
+        time.sleep(5)
         self.cal.page_loading(self.driver)
         self.filename = p.get_download_dir() + '/' + self.fname.crc_school()
         self.cal.page_loading(self.driver)

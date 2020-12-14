@@ -129,6 +129,13 @@ class GetData():
         self.driver.find_element_by_id('compositRep').click()
         time.sleep(8)
 
+    def logs_page(self):
+        self.driver.implicitly_wait(20)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath("//a[@id='logs']").click()
+        time.sleep(3)
+
     def page_loading(self, driver):
         try:
             driver.implicitly_wait(5)
@@ -233,7 +240,7 @@ class GetData():
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath(Data.diksha).click()
+        self.driver.find_element_by_xpath(Data.tpds).click()
         time.sleep(2)
         self.driver.find_element_by_id(Data.diksha_table).click()
         time.sleep(6)
@@ -242,16 +249,34 @@ class GetData():
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath(Data.diksha).click()
+        self.driver.find_element_by_xpath(Data.tpds).click()
         time.sleep(2)
         self.driver.find_element_by_id(Data.tpd_progress).click()
+        time.sleep(6)
+
+    def navigate_to_tpd_enrollment_report(self):
+        self.driver.implicitly_wait(30)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(3)
+        self.driver.find_element_by_xpath(Data.tpds).click()
+        time.sleep(2)
+        self.driver.find_element_by_id('tpd-enroll').click()
+        time.sleep(3)
+
+    def navigate_to_tpd_completion_percentage(self):
+        self.driver.implicitly_wait(30)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(3)
+        self.driver.find_element_by_xpath(Data.tpds).click()
+        time.sleep(2)
+        self.driver.find_element_by_id('tpd-comp').click()
         time.sleep(6)
 
     def navigate_to_tpd_percentage_progress(self):
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(3)
-        self.driver.find_element_by_xpath(Data.diksha).click()
+        self.driver.find_element_by_xpath(Data.tpds).click()
         time.sleep(2)
         self.driver.find_element_by_id(Data.tpd_percentage).click()
         time.sleep(6)
@@ -269,7 +294,7 @@ class GetData():
         self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.Dashboard).click()
         time.sleep(2)
-        self.driver.find_element_by_xpath(Data.diksha).click()
+        self.driver.find_element_by_xpath(Data.tpds).click()
         time.sleep(2)
         self.driver.find_element_by_id(Data.col_course).click()
         time.sleep(6)

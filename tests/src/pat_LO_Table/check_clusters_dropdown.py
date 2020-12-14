@@ -29,7 +29,7 @@ class Clusterswise():
         for i in range(len(dists.options)-1, len(dists.options)):
             dists.select_by_index(i)
             self.load.page_loading(self.driver)
-            for j in range(1, len(Blocks.options)):
+            for j in range(len(Blocks.options)-3, len(Blocks.options)):
                 Blocks.select_by_index(j)
                 self.load.page_loading(self.driver)
                 for k in range(1, len(clust.options)):

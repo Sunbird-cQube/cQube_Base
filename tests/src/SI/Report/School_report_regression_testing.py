@@ -41,13 +41,7 @@ class cQube_SI_Report(unittest.TestCase):
         print("check with dashboard options is working fine ")
         self.data.page_loading(self.driver)
 
-    def test_graph(self):
-        b = check_with_graph(self.driver)
-        res = b.test_graph()
-        print("Graph is present in School report")
-        self.data.page_loading(self.driver)
-
-    def test_donwload_blockwise(self):
+    def test_download_blockwise(self):
         b = donwload_blockwise_csv(self.driver)
         res = b.test_block()
         self.assertTrue(res, msg="File is not downloaded")

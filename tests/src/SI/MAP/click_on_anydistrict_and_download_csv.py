@@ -21,6 +21,10 @@ class download_icon():
         self.fname = file_extention()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.p.page_loading(self.driver)
+        self.driver.find_element_by_id(Data.home).click()
+        time.sleep(2)
+        self.p.navigate_to_school_infrastructure_map()
+        self.p.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(3)
         self.filename = cal.get_download_dir() + '/' + self.fname.scmap_district()
@@ -37,6 +41,7 @@ class download_icon():
                     schools += int(row[0])
                 school = self.driver.find_element_by_id("schools").text
                 sc = re.sub('\D', "", school)
+                print( int(sc) , int(schools))
                 if int(sc) != int(schools):
                     print("school count mismatched")
                     count = count + 1

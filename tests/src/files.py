@@ -85,13 +85,13 @@ class Files():
     location_course ="collectionType_course_data.csv"
     location_textbook="collectionType_textbook_data.csv"
 
-    pchart_districtwise ="District_wise_report_2020.csv"
+    pchart_districtwise ="District_wise_report_.csv"
     pchart_blocks ="Block_wise_report.csv"
     pchart_clusters="Cluster_wise_report.csv"
     pchart_schools="School_wise_report.csv"
     pchart_view ="ViewBy_report.csv"
     subject_wise ="Subject_wise_report.csv"
-    pchart_grades ="Grade_wise_report.csv"
+    pchart_grades ="District_wise_report.csv"
 
 
     lpd_district="District_wise_report.csv"

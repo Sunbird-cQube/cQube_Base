@@ -1,6 +1,4 @@
-
-
-
+import time
 import unittest
 
 from Data.parameters import Data
@@ -9,11 +7,13 @@ from Diksha_TPD.percentage_heat_chart.check_clusters_dropdown import School_wise
 from Diksha_TPD.percentage_heat_chart.check_district_dropdown import district_level_records
 from Diksha_TPD.percentage_heat_chart.check_with_all_periods import Time_periods
 from Diksha_TPD.percentage_heat_chart.check_with_homeicons_and_homebutton import Home_functions
+from Diksha_TPD.percentage_heat_chart.check_with_hyperlink import lpdchart_hyperlink
+from Diksha_TPD.percentage_heat_chart.check_with_logout_btn import logout_button
 
 from reuse_func import GetData
 
 
-class cQube_lpdpercentage_smoke_Test(unittest.TestCase):
+class cQube_tpd_percentage_smoke_Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):

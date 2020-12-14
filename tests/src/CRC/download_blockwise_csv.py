@@ -24,9 +24,8 @@ class donwload_blockwise_csv():
         District_wise.select_by_visible_text(" Block Wise Report ")
         self.cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
-        time.sleep(2)
+        time.sleep(3)
         self.filename = p.get_download_dir() + '/' + self.fname.crc_block()
-        time.sleep(2)
         return os.path.isfile(self.filename)
     def remove_file(self):
         os.remove(self.filename)

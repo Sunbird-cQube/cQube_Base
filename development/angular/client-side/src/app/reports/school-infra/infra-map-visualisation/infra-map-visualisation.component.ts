@@ -162,9 +162,12 @@ export class InfraMapVisualisationComponent implements OnInit {
             centerLng: this.lng,
             level: 'district'
           }
+          // var MylatLng = [];
           // globalMap.on('click', function (e) {
-          //   console.log(`${`[` + e.latlng.lng + ',' + e.latlng.lat + ']'}`);
+          //   // console.log('[' + e.latlng.lng + ',' + e.latlng.lat + ']');
+          //   MylatLng.push('[' + e.latlng.lng + ',' + e.latlng.lat + ']');
           // });
+          // this.latLngArr = MylatLng;
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
           globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
@@ -188,6 +191,11 @@ export class InfraMapVisualisationComponent implements OnInit {
       console.log(e);
     }
   }
+
+  // latLngArr = [];
+  // showArr() {
+  //   console.log(this.latLngArr)
+  // }
 
   // to load all the blocks for state data on the map
   blockWise() {

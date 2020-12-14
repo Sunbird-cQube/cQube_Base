@@ -20,12 +20,12 @@ class Diksha_homeicon():
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.homeicon).click()
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id('homeBtn').click()
-        if "dashboard" in self.driver.current_url:
-            print("Navigated to landing page")
-        else:
-            print('Home button is not working')
-            count = count + 1
-        self.data.navigate_to_diksha_graph()
-        self.data.page_loading(self.driver)
-        return count
+        # self.driver.find_element_by_id('homeBtn').click()
+        # if "dashboard" in self.driver.current_url:
+        #     print("Navigated to landing page")
+        # else:
+        #     print('Home button is not working')
+        #     count = count + 1
+        # self.data.navigate_to_diksha_graph()
+        # self.data.page_loading(self.driver)
+        # return count
