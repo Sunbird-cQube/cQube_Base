@@ -9,7 +9,6 @@ router.post('/distWise', auth.authController, async (req, res) => {
         logger.info('---PAT heat map distwise api ---');
         let { year, month, grade, subject_name, exam_date, viewBy } = req.body
         let fileName;
-        console.log(viewBy)
         if (grade == "") {
             fileName = `pat/heatmap-summary/${year}/${month}/allData.json`
         } else {
