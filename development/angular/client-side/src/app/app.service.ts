@@ -109,13 +109,14 @@ export class AppServiceComponent {
     //Initialise markers.....
     public initMarkers(lat, lng, color, radius, strokeWeight, weight, levelWise) {
         var markerIcon;
-        if (levelWise !== "school") {
+        if (radius >= 2) {
             markerIcon = L.circleMarker([lat, lng], {
-                radius: radius,
-                color: color,
+                radius: radius + 1,
+                color: "gray",
                 fillColor: color,
                 fillOpacity: 1,
                 strokeWeight: strokeWeight,
+                weight: weight
             });
         } else {
             markerIcon = L.circleMarker([lat, lng], {
@@ -124,7 +125,7 @@ export class AppServiceComponent {
                 fillColor: color,
                 fillOpacity: 1,
                 strokeWeight: strokeWeight,
-                weight: weight
+                weight: 1
             });
         }
         return markerIcon;
