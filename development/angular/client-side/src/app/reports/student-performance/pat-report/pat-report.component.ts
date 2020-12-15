@@ -459,7 +459,7 @@ export class PATReportComponent implements OnInit {
             let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.clusterMarkers.length, 'rgb');
             this.colors = colors;
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].Details.latitude, this.clusterMarkers[i].Details.longitude, this.colors[i], 0, 0.01, undefined, options.level);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].Details.latitude, this.clusterMarkers[i].Details.longitude, this.colors[i], 2, 0.01, 0.5, options.level);
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.clusterMarkers[i], options.level);
             }

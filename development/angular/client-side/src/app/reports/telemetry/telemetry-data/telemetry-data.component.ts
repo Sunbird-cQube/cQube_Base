@@ -225,7 +225,7 @@ export class TelemetryDataComponent implements OnInit {
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, "#42a7f5", 3.5, 1, 0.01, options.level);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, "#42a7f5", 3.5, 1, 1, options.level);
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "lat", "lng");
               // to download the report
               this.fileName = "Block_wise_report";
@@ -295,7 +295,7 @@ export class TelemetryDataComponent implements OnInit {
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, "#42a7f5", 2.5, 1, 0.1, options.level);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, "#42a7f5", 2.5, 1, 1, options.level);
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "lat", "lng");
               // to download the report
               this.fileName = "Cluster_wise_report";
@@ -361,7 +361,7 @@ export class TelemetryDataComponent implements OnInit {
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, "#42a7f5", 2, 1.5, 1, options.level);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, "#42a7f5", 2, 1.5, 0, options.level);
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "lat", "lng");
               // to download the report
               this.fileName = "School_wise_report";
@@ -623,7 +623,7 @@ export class TelemetryDataComponent implements OnInit {
           strLng = "school_longitude";
         }
 
-        var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, "#42a7f5", options.radius, options.strokeWeight, undefined, options.level);
+        var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, "#42a7f5", options.radius, options.strokeWeight, 1, options.level);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {

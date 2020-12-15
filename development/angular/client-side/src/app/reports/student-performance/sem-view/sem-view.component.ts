@@ -359,7 +359,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, this.colors[i], 0, 1, 0.01, this.levelWise);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, this.colors[i], 2, 1, 0.5, this.levelWise);
               this.generateToolTip(markerIcon, this.clusterMarkers[i], this.levelWise);
             }
             this.commonService.restrictZoom(globalMap);
