@@ -18,7 +18,7 @@ export class SchoolInfrastructureComponent implements OnInit {
   public scatterChart: Chart;
   public result: any = [];
   public xAxis: any = "infra_score";
-  public yAxis: any = "average";
+  public yAxis: any = "library";
   public xAxisFilter: any = [];
   public yAxisFilter: any = [];
   public downloadLevel = '';

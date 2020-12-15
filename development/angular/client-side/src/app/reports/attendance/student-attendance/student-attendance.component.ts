@@ -273,7 +273,7 @@ export class StudengtAttendanceComponent implements OnInit {
           for (var i = 0; i < this.markers.length; i++) {
             this.districtsIds.push(this.markers[i]['district_id']);
             distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 5, 0.01, 0, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 5, 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
         }
@@ -326,7 +326,7 @@ export class StudengtAttendanceComponent implements OnInit {
             this.blocksIds.push(this.markers[i]['block_id']);
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
 
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 0, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -387,7 +387,7 @@ export class StudengtAttendanceComponent implements OnInit {
               clustNames.push({ id: this.markers[i]['cluster_id'], name: 'NO NAME FOUND', blockId: this.markers[i]['block_id'] });
             }
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 1, 0.01, 0, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 2, 0.01, 0.5, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
@@ -666,7 +666,7 @@ export class StudengtAttendanceComponent implements OnInit {
         for (var i = 0; i < this.markers.length; i++) {
           this.blocksIds.push(this.markers[i]['block_id']);
           blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 0, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -780,7 +780,7 @@ export class StudengtAttendanceComponent implements OnInit {
           } else {
             clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
           }
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 0, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
 

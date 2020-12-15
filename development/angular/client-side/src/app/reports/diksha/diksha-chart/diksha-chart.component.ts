@@ -130,8 +130,8 @@ export class DikshaChartComponent implements OnInit {
       { data: [], label: '', stack: 'a' }
     ];
   }
-
-  homeClick (){
+  public legendColors = [];
+  homeClick() {
     this.timePeriod = 'last_30_days';
     this.getAllData();
   }
@@ -151,8 +151,12 @@ export class DikshaChartComponent implements OnInit {
       var arr = [];
       this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       var maxValue = 0;
-      await result['funRes']['data'].forEach(element => {
+      this.legendColors = [];
+      this.subjects = [];
+      await result['funRes']['data'].forEach(async element => {
         arr.push(element.score.map(Number));
+        this.legendColors.push(await this.getColor(element));
+        this.subjects.push(element.subject);
       });
       var array = arr;
       var result1 = array.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);
@@ -160,6 +164,7 @@ export class DikshaChartComponent implements OnInit {
       this.y_axisValue = maxValue;
 
       this.createChart(result['funRes'], "barChartData");
+
       if (result['funRes']['data']) {
         this.chart1 = (result['funRes']['data'][0].length > 0);
       }
@@ -232,8 +237,12 @@ export class DikshaChartComponent implements OnInit {
       var arr = [];
       var maxValue = 0;
       this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      await result['funRes']['data'].forEach(element => {
+      this.legendColors = [];
+      this.subjects = [];
+      await result['funRes']['data'].forEach(async element => {
         arr.push(element.score.map(Number));
+        this.legendColors.push(await this.getColor(element));
+        this.subjects.push(element.subject);
       });
       var array = arr;
       var result1 = array.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);
@@ -244,7 +253,6 @@ export class DikshaChartComponent implements OnInit {
       if (result['funRes']['data']) {
         this.chart1 = (result['funRes']['data'][0].length > 0);
       }
-
 
       this.service.dikshaDistData(this.districtId, 'Teacher', this.timePeriod).subscribe(result => {
         this.createChart(result['funRes'], "barChartData1");
@@ -287,61 +295,66 @@ export class DikshaChartComponent implements OnInit {
 
   }
 
+  getColor(element) {
+    let a = { backgroundColor: '' };
+    if (element.subject == 'Sanskrit') {
+      a.backgroundColor = '#a6cee3'
+    }
+    if (element.subject == 'Gujarati') {
+      a.backgroundColor = '#1f78b4'
+    }
+    if (element.subject == 'Science') {
+      a.backgroundColor = '#b2df8a'
+    }
+    if (element.subject == 'Gyan Setu') {
+      a.backgroundColor = '#33a02c'
+    }
+    if (element.subject == 'Environmental Studies') {
+      a.backgroundColor = '#fb9a99'
+    }
+    if (element.subject == 'Hindi') {
+      a.backgroundColor = '#e31a1c'
+    }
+    if (element.subject == 'Multi Subject') {
+      a.backgroundColor = '#fdbf6f'
+    }
+    if (element.subject == 'Mathematics') {
+      a.backgroundColor = '#ff7f00'
+    }
+    if (element.subject == 'English') {
+      a.backgroundColor = '#cab2d6'
+    }
+    if (element.subject == 'Social Science') {
+      a.backgroundColor = '#6a3d9a'
+    }
+    if (element.subject == 'Training') {
+      a.backgroundColor = '#e31a1c'
+    }
+    if (element.subject == 'Psychology') {
+      a.backgroundColor = '#b1592a'
+    }
+    if (element.subject == 'Biology') {
+      a.backgroundColor = '#ff7fff'
+    }
+    if (element.subject == 'Physics') {
+      a.backgroundColor = '#ffff99'
+    }
+    return a;
+  }
+
+  public subjects = [];
   createChart(data, barChartData) {
     var chartData = [];
     var colors = [];
     if (data.data != undefined) {
-      data.data.forEach(element => {
+      data.data.forEach(async element => {
         var obj = { data: element.score, label: element.subject, stack: 'a' }
         chartData.push(obj);
-        let a = { backgroundColor: '' };
-        if (element.subject == 'Sanskrit') {
-          a.backgroundColor = '#a6cee3'
-        }
-        if (element.subject == 'Gujarati') {
-          a.backgroundColor = '#1f78b4'
-        }
-        if (element.subject == 'Science') {
-          a.backgroundColor = '#b2df8a'
-        }
-        if (element.subject == 'Gyan Setu') {
-          a.backgroundColor = '#33a02c'
-        }
-        if (element.subject == 'Environmental Studies') {
-          a.backgroundColor = '#fb9a99'
-        }
-        if (element.subject == 'Hindi') {
-          a.backgroundColor = '#e31a1c'
-        }
-        if (element.subject == 'Multi Subject') {
-          a.backgroundColor = '#fdbf6f'
-        }
-        if (element.subject == 'Mathematics') {
-          a.backgroundColor = '#ff7f00'
-        }
-        if (element.subject == 'English') {
-          a.backgroundColor = '#cab2d6'
-        }
-        if (element.subject == 'Social Science') {
-          a.backgroundColor = '#6a3d9a'
-        }
-        if (element.subject == 'Training') {
-          a.backgroundColor = '#e31a1c'
-        }
-        if (element.subject == 'Psychology') {
-          a.backgroundColor = '#b1592a'
-        }
-        if (element.subject == 'Biology') {
-          a.backgroundColor = '#ff7fff'
-        }
-        if (element.subject == 'Physics') {
-          a.backgroundColor = '#ffff99'
-        }
-        colors.push(a);
+        colors.push(await this.getColor(element));
       });
       this.barChartOptions = {
         legend: {
-          display: true
+          display: false
         },
         responsive: true,
         tooltips: {
@@ -349,16 +362,6 @@ export class DikshaChartComponent implements OnInit {
             if (!tooltip) return;
             tooltip.displayColors = false;
           },
-          // callbacks: {
-          //   label: function (tooltipItem, data) {
-          //     var label = data.labels[tooltipItem.index];
-          //     var subject = data.datasets[tooltipItem.index].label
-          //     var multistringText = ["Grade Name" + ": " + label];
-          //     multistringText.push("Subject Name" + ": " + subject);
-          //     // multistringText.push(obj.yAxis + ": " + tooltipItem.yLabel);
-          //     return multistringText;
-          //   }
-          // }
         },
 
         scales: {
