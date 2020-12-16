@@ -14,6 +14,7 @@ import { DikshaTPDTeachersPercentageComponent } from './diksha-tpd-teachers-perc
 import { DikshaTpdEnrollmentComponent } from './diksha-tpd-enrollment-and-completion/diksha-tpd-enrollment.component';
 import { DikshaTpdCompletionComponent } from './diksha-tpd-completion-percentage/diksha-tpd-completion.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { InfoComponent } from 'src/app/common/info/info.component';
 
 const dikshaRoutes: Routes = [
   {
@@ -51,7 +52,6 @@ const dikshaRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    DikshaChartComponent,
     DikshaTableComponent,
     DikshaBarChartComponent,
     DikshaUsageByTextBookComponent,

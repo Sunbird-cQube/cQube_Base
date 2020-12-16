@@ -90,11 +90,8 @@ export class DikshaTableComponent implements OnInit {
     }
     this.result = [];
     this.reportData = [];
-    this.header = this.changeingStringCases(this.collectionType) + " linked";
-    // if (this.collectionType == "all") {
-    //   this.header = "Overall";
-    // }
-    // this.header = this.header;
+    this.header = this.changeingStringCases(this.collectionType) + " Linked";
+   
     this.service.dikshaAllTableData({ collectionType: this.collectionType }).subscribe(res => {
       this.fileName = `Diksha_All_Data_${this.timePeriod}`;
       this.result = res;
