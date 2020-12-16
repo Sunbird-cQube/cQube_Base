@@ -261,8 +261,6 @@ export class StudengtAttendanceComponent implements OnInit {
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.districtData = this.mylatlngData = res['distData'];
         var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
-        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
 
         var distNames = [];
         this.studentCount = res['studentCount'];
@@ -271,9 +269,10 @@ export class StudengtAttendanceComponent implements OnInit {
         this.markers = sorted;
         if (this.markers.length > 0) {
           for (var i = 0; i < this.markers.length; i++) {
+            var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(this.markers[i]['district_id']);
             distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 5, 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 5, 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
         }
@@ -313,8 +312,6 @@ export class StudengtAttendanceComponent implements OnInit {
       this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['blockData'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
-        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
 
         var blockNames = [];
         this.studentCount = res['studentCount'];
@@ -323,10 +320,10 @@ export class StudengtAttendanceComponent implements OnInit {
         this.markers = sorted;
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
+            var color = this.commonService.color(this.markers[i], 'attendance');
             this.blocksIds.push(this.markers[i]['block_id']);
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
-
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 3.5, 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -367,8 +364,6 @@ export class StudengtAttendanceComponent implements OnInit {
         this.reportData = this.mylatlngData = res['clusterData'];
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
-        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
 
         var clustNames = [];
         var blockNames = [];
@@ -379,6 +374,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.markers = sorted;
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
+            var color = this.commonService.color(this.markers[i], 'attendance');
             this.clusterIds.push(this.markers[i]['cluster_id']);
             this.blocksIds.push(this.markers[i]['block_id']);
             if (this.markers[i]['cluster_name'] !== null) {
@@ -387,7 +383,7 @@ export class StudengtAttendanceComponent implements OnInit {
               clustNames.push({ id: this.markers[i]['cluster_id'], name: 'NO NAME FOUND', blockId: this.markers[i]['block_id'] });
             }
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 2, 0.01, 0.5, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 1, 0.01, 0.5, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
@@ -432,8 +428,6 @@ export class StudengtAttendanceComponent implements OnInit {
         this.reportData = this.mylatlngData = res['schoolData'];
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
-        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
 
         this.studentCount = res['studentCount'];
         this.schoolCount = res['schoolCount'];
@@ -441,8 +435,9 @@ export class StudengtAttendanceComponent implements OnInit {
         this.markers = sorted;
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
+            var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(sorted[i]['district_id']);
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 0, 0, 0, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 0.9, 1, 0.4, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
@@ -656,17 +651,16 @@ export class StudengtAttendanceComponent implements OnInit {
         var blokName = [];
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
-        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
-
+       
         this.markers = sorted;
         this.studentCount = res['studentCount'];
         this.schoolCount = res['schoolCount'];
 
         for (var i = 0; i < this.markers.length; i++) {
+          var color = this.commonService.color(this.markers[i], 'attendance');
           this.blocksIds.push(this.markers[i]['block_id']);
           blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 3.5, 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -765,22 +759,21 @@ export class StudengtAttendanceComponent implements OnInit {
         var clustNames = [];
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
-        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
-
+ 
         this.markers = [];
         this.studentCount = res['studentCount'];
         this.schoolCount = res['schoolCount'];
         // sorted.pop();
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
+          var color = this.commonService.color(this.markers[i], 'attendance');
           this.clusterIds.push(sorted[i]['cluster_id']);
           if (sorted[i]['name'] !== null) {
             clustNames.push({ id: sorted[i]['cluster_id'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
           } else {
             clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
           }
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 3.5, 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
 
@@ -906,8 +899,6 @@ export class StudengtAttendanceComponent implements OnInit {
         this.lng = Number(this.mylatlngData[0]['lng']);
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
-        let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
-        this.colors = colors;
 
         this.markers = [];
         this.studentCount = res['studentCount'];
@@ -915,7 +906,8 @@ export class StudengtAttendanceComponent implements OnInit {
 
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], 3.5, 0.1, 1, this.levelWise);
+          var color = this.commonService.color(this.markers[i], 'attendance');
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 3.5, 0.1, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         globalMap.doubleClickZoom.enable();
