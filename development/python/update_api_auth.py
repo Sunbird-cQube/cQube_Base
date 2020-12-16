@@ -8,7 +8,7 @@ service_list=requests.get("{}/{}".format(kong_admin_url,"services")).json()
 if len(service_list.get("data"))<1:
     add_service=requests.post("{}/{}".format(kong_admin_url,"services"),data={"name":"flask-api","url":emission_url})
 
-add_route=requests.post("{}/{}".format(kong_admin_url,"services/flask-api/routes"),data={"hosts":["localhost"],"paths":emission_access_paths,"strip_path": "false","methods":["GET","POST"],"name":"emission_access"})
+add_route=requests.post("{}/{}".format(kong_admin_url,"services/flask-api/routes"),data={"hosts":["172.31.25.50"],"paths":emission_access_paths,"strip_path": "false","methods":["GET","POST"],"name":"emission_access"})
 
 route_list=requests.get("{}/{}".format(kong_admin_url,"routes")).json()
 for rout in route_list.get("data"):

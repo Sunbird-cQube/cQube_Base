@@ -307,3 +307,22 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 [2020-12-07 23:00:02 +0530] [667] [INFO] Booting worker with pid: 667
 [2020-12-07 23:00:04 +0530] [663] [INFO] Worker exiting (pid: 663)
 [2020-12-07 23:00:32 +0530] [6364] [INFO] Shutting down: Master
+[2020-12-10 11:53:18 +0530] [14360] [INFO] Booting worker with pid: 14360
+[2020-12-10 11:53:18 +0530] [14361] [INFO] Booting worker with pid: 14361
+[2020-12-10 11:53:18 +0530] [14362] [INFO] Booting worker with pid: 14362
+[2020-12-10 11:55:38 +0530] [13923] [INFO] Handling signal: term
+[2020-12-10 11:55:38 +0530] [14360] [INFO] Worker exiting (pid: 14360)
+[2020-12-10 11:55:38 +0530] [14362] [INFO] Worker exiting (pid: 14362)
+[2020-12-10 11:55:38 +0530] [14361] [INFO] Worker exiting (pid: 14361)
+[2020-12-10 11:55:38 +0530] [13923] [INFO] Shutting down: Master
+[2020-12-10 11:57:07 +0530] [14571] [INFO] Starting gunicorn 20.0.4
+[2020-12-10 11:57:07 +0530] [14571] [INFO] Listening at: http://0.0.0.0:5000 (14571)
+[2020-12-10 11:57:07 +0530] [14571] [INFO] Using worker: sync
+[2020-12-10 11:57:07 +0530] [14574] [INFO] Booting worker with pid: 14574
+[2020-12-10 11:57:07 +0530] [14575] [INFO] Booting worker with pid: 14575
+[2020-12-10 11:57:07 +0530] [14576] [INFO] Booting worker with pid: 14576
+[2020-12-10 23:00:03 +0530] [14571] [INFO] Handling signal: term
+[2020-12-10 23:00:03 +0530] [14574] [INFO] Worker exiting (pid: 14574)
+[2020-12-10 23:00:03 +0530] [14576] [INFO] Worker exiting (pid: 14576)
+[2020-12-10 23:00:03 +0530] [14575] [INFO] Worker exiting (pid: 14575)
+[2020-12-10 23:00:03 +0530] [14571] [INFO] Shutting down: Master
