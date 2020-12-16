@@ -272,14 +272,12 @@ export class SemViewComponent implements OnInit, OnDestroy {
         if (this.data['sortedData'].length > 0) {
           let result = this.data['sortedData']
           this.blockMarkers = [];
-          // generate color gradient
-          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
           this.blockMarkers = result;
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, this.colors[i], 3.5, 1, 0.01, this.levelWise);
+              var color = this.commonService.color(this.blockMarkers[i], 'semester_performance');
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, color, 3.5, 1, 1, this.levelWise);
               this.generateToolTip(markerIcon, this.blockMarkers[i], this.levelWise);
             }
             this.commonService.restrictZoom(globalMap);
@@ -352,14 +350,13 @@ export class SemViewComponent implements OnInit, OnDestroy {
         if (this.data['sortedData'].length > 0) {
           let result = this.data['sortedData']
           this.clusterMarkers = [];
-          // generate color gradient
-          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
+
           this.clusterMarkers = result;
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, this.colors[i], 2, 1, 0.5, this.levelWise);
+              var color = this.commonService.color(this.clusterMarkers[i], 'semester_performance');
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, color, 1, 0.01, 0.5, this.levelWise);
               this.generateToolTip(markerIcon, this.clusterMarkers[i], this.levelWise);
             }
             this.commonService.restrictZoom(globalMap);
@@ -430,14 +427,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
         if (this.data['sortedData'].length > 0) {
           let result = this.data['sortedData']
 
-          // generate color gradient
-          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
-
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, this.colors[i], 0, 0, 0, this.levelWise);
+              var color = this.commonService.color(this.schoolMarkers[i], 'semester_performance');
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, color, .9, 1, .5, this.levelWise);
               this.generateToolTip(markerIcon, this.schoolMarkers[i], this.levelWise);
             }
 
@@ -601,7 +595,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
       // options to set for markers in the map
       let options = {
-        radius: 3,
+        radius: 3.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 3,
@@ -748,13 +742,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
     if (data['sortedData'].length > 0) {
       this.markers = data['sortedData']
 
-      // generate color gradient
-      let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
-      this.colors = colors;
-
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-        var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.colors[i], options.radius, options.strokeWeight, 1, options.level);
+        var color = this.commonService.color(this.markers[i], 'semester_performance');
+        var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, options.radius, options.strokeWeight, 1, options.level);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {

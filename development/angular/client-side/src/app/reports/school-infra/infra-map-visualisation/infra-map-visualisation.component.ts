@@ -244,8 +244,8 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.schoolCount = 0;
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              this.colorGredient(this.blockMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, this.setColor, 3.5, 0.01, 1, options.level);
+              var color = this.commonService.colorGredient(this.blockMarkers[i], this.infraData);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, color, 3.5, 0.01, 1, options.level);
 
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.blockMarkers[i], options.level);
@@ -319,8 +319,8 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              this.colorGredient(this.clusterMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, this.setColor, 2, 0.01, .5, options.level);
+              var color = this.commonService.colorGredient(this.clusterMarkers[i], this.infraData);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, color, 1, 0.01, .5, options.level);
 
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.clusterMarkers[i], options.level);
@@ -393,8 +393,8 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              this.colorGredient(this.schoolMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, this.setColor, 1, 0.1, 0, options.level);
+              var color = this.commonService.colorGredient(this.schoolMarkers[i], this.infraData);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, color, 0.9, 1, 0.4, options.level);
 
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.schoolMarkers[i], options.level);
@@ -662,9 +662,8 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.markers = myData;
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-        this.colorGredient(this.markers[i], this.infraData);
-
-        var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, this.setColor, options.radius, options.strokeWeight, 1, options.level);
+        var color = this.commonService.colorGredient(this.markers[i], this.infraData);
+        var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, color, options.radius, options.strokeWeight, 1, options.level);
 
         // data to show on the tooltip for the desired levels
         this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
@@ -729,49 +728,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
     if (this.level == 'school') {
       this.onClusterSelect(this.clusterId);
-    }
-  }
-
-  colorGredient(data, infraData) {
-    var dataSet = {};
-    if (infraData == 'infrastructure_score') {
-      dataSet = data.details;
-    } else {
-      dataSet = data.metrics;
-    }
-
-    if (dataSet[infraData] <= 10) {
-      this.setColor = '#a50026';
-    }
-    if (dataSet[infraData] >= 11 && dataSet[infraData] <= 20) {
-      this.setColor = '#d73027';
-    }
-    if (dataSet[infraData] >= 21 && dataSet[infraData] <= 30) {
-      this.setColor = '#f46d43';
-    }
-    if (dataSet[infraData] >= 31 && dataSet[infraData] <= 40) {
-      this.setColor = '#fdae61';
-    }
-    if (dataSet[infraData] >= 41 && dataSet[infraData] <= 50) {
-      this.setColor = '#ffff00';
-    }
-    if (dataSet[infraData] >= 51 && dataSet[infraData] <= 60) {
-      this.setColor = '#bbff33';
-    }
-    if (dataSet[infraData] >= 61 && dataSet[infraData] <= 70) {
-      this.setColor = '#4dff4d';
-    }
-    if (dataSet[infraData] >= 71 && dataSet[infraData] <= 80) {
-      this.setColor = '#66bd63';
-    }
-    if (dataSet[infraData] >= 81 && dataSet[infraData] <= 90) {
-      this.setColor = '#1a9850';
-    }
-    if (dataSet[infraData] >= 91 && dataSet[infraData] <= 99) {
-      this.setColor = '#00b300';
-    }
-    if (dataSet[infraData] == 100) {
-      this.setColor = '#006600';
     }
   }
 
