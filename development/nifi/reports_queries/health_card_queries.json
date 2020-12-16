@@ -1,0 +1,14 @@
+[
+{
+"health_card_index_meta":"select school_id,Initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name from school_hierarchy_details;"
+},
+{
+"health_card_index_district":"select * from health_card_index_district;"
+},
+{
+"health_card_index_block":"select * from health_card_index_block;"
+},
+{
+"health_card_index_cluster":"select * from health_card_index_cluster;"
+}
+]
