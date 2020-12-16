@@ -512,13 +512,12 @@ group by b.udise_sch_code,b.ac_year,b.dev_grt_r,b.dev_grt_e,b.maint_grt_r,b.main
 doj_service,b.qual_acad,b.qual_prof,b.class_taught,b.appt_sub,b.sub_taught1,b.sub_taught2,b.trn_brc,b.
 trn_crc,b.trn_diet,b.trn_other,b.trng_rcvd,b.trng_needed,b.nontch_days,b.math_upto,b.science_upto,b.
 english_upto,b.lang_study_upto,b.soc_study_upto,b.yoj_pres_sch,b.disability_type,b.trained_cwsn,b.trained_comp,count(*) num_of_times
-from (select udise_sch_code from flowfile
-group by udise_sch_code having count(1)>1)  as a, flowfile  b
+from (select udise_sch_code,tch_code from flowfile group by udise_sch_code,tch_code having count(1)>1) as a, flowfile b
 where a.udise_sch_code=b.udise_sch_code
+and a.tch_code=b.tch_code
 group by b.udise_sch_code,b.tch_code,b.name,b.gender,b.dob,b.social_cat,b.tch_type,b.nature_of_appt,b.
 doj_service,b.qual_acad,b.qual_prof,b.class_taught,b.appt_sub,b.sub_taught1,b.sub_taught2,b.trn_brc,b.
-trn_crc,b.trn_diet,b.trn_other,b.trng_rcvd,b.trng_needed,b.nontch_days,b.math_upto,b.science_upto,b.
-english_upto,b.lang_study_upto,b.soc_study_upto,b.yoj_pres_sch,b.disability_type,b.trained_cwsn,b.trained_comp""",
+trn_crc,b.trn_diet,b.trn_other,b.trng_rcvd,b.trng_needed,b.nontch_days,b.math_upto,b.science_upto,b.english_upto,b.lang_study_upto,b.soc_study_upto,b.yoj_pres_sch,b.disability_type,b.trained_cwsn,b.trained_comp""",
 "udise_sch_pgi_details_not_null":"""select * from flowfile where udise_sch_code IS NOT NULL""",
 "udise_sch_incentives_not_null":"""select * from flowfile where udise_sch_code IS NOT NULL and  grade_pri_upr IS NOT NULL and  incentive_type IS NOT NULL""",
 "udise_nsqf_class_cond_check_if_null":"""select * from flowfile

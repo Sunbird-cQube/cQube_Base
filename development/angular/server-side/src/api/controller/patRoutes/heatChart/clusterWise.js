@@ -12,7 +12,10 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         if (grade == "") {
             fileName = `pat/heatmap-summary/${year}/${month}/blocks/${blockId}.json`
         } else {
-            fileName = `pat/heatChart/${year}/${month}/blocks/${blockId}.json`
+            if (viewBy == 'indicator') {
+                fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/blocks/${blockId}.json`;
+            } else if (viewBy == 'question_id')
+                fileName = `pat/heatChart/questionIdLevel/${year}/${month}/blocks/${blockId}.json`;
         }
         var data = await s3File.readS3File(fileName);
 

@@ -320,9 +320,7 @@ export class PATReportComponent implements OnInit {
             if (this.grade && !this.subject) {
               this.blockMarkers.sort((a, b) => (a.Subjects['Grade Performance'] > b.Subjects['Grade Performance']) ? 1 : ((b.Subjects['Grade Performance'] > a.Subjects['Grade Performance']) ? -1 : 0));
             } else if (this.grade && this.subject) {
-              // let filterGrade = this.blockMarkers.filter(obj => {
-              //   return ((Object.keys(obj.Grades)).includes(this.grade));
-              // })
+
               let filterData = this.blockMarkers.filter(obj => {
                 return ((Object.keys(obj.Subjects)).includes(this.subject));
               })
@@ -331,11 +329,15 @@ export class PATReportComponent implements OnInit {
             } else {
               this.blockMarkers.sort((a, b) => (a.Details['Performance'] > b.Details['Performance']) ? 1 : ((b.Details['Performance'] > a.Details['Performance']) ? -1 : 0));
             }
-            // generate color gradient
-            let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.blockMarkers.length, 'rgb');
-            this.colors = colors;
+
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].Details.latitude, this.blockMarkers[i].Details.longitude, this.colors[i], 3.5, 0.01, undefined, options.level);
+              var color = this.commonService.color(this.blockMarkers[i].Details, 'Performance');
+              if (this.grade) {
+                color = this.commonService.color(this.blockMarkers[i].Subjects, 'Grade Performance');
+              } else if (this.grade && this.subject) {
+                color = this.commonService.color(this.blockMarkers[i].Subjects, this.subject);
+              }
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].Details.latitude, this.blockMarkers[i].Details.longitude, color, 3.5, 0.01, undefined, options.level);
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.blockMarkers[i], options.level);
             }
@@ -455,11 +457,14 @@ export class PATReportComponent implements OnInit {
             } else {
               this.clusterMarkers.sort((a, b) => (a.Details['Performance'] > b.Details['Performance']) ? 1 : ((b.Details['Performance'] > a.Details['Performance']) ? -1 : 0));
             }
-            // generate color gradient
-            let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.clusterMarkers.length, 'rgb');
-            this.colors = colors;
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].Details.latitude, this.clusterMarkers[i].Details.longitude, this.colors[i], 0, 0.01, undefined, options.level);
+              var color = this.commonService.color(this.clusterMarkers[i].Details, 'Performance');
+              if (this.grade) {
+                color = this.commonService.color(this.clusterMarkers[i].Subjects, 'Grade Performance');
+              } else if (this.grade && this.subject) {
+                color = this.commonService.color(this.clusterMarkers[i].Subjects, this.subject);
+              }
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].Details.latitude, this.clusterMarkers[i].Details.longitude, color, 2, 0.01, 0.5, options.level);
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.clusterMarkers[i], options.level);
             }
@@ -575,11 +580,15 @@ export class PATReportComponent implements OnInit {
             } else {
               this.schoolMarkers.sort((a, b) => (a.Details['Performance'] > b.Details['Performance']) ? 1 : ((b.Details['Performance'] > a.Details['Performance']) ? -1 : 0));
             }
-            // generate color gradient
-            let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.schoolMarkers.length, 'rgb');
-            this.colors = colors;
+
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].Details.latitude, this.schoolMarkers[i].Details.longitude, this.colors[i], 0, 0, 0, 'school');
+              var color = this.commonService.color(this.schoolMarkers[i].Details, 'Performance');
+              if (this.grade) {
+                color = this.commonService.color(this.schoolMarkers[i].Subjects, 'Grade Performance');
+              } else if (this.grade && this.subject) {
+                color = this.commonService.color(this.schoolMarkers[i].Subjects, this.subject);
+              }
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].Details.latitude, this.schoolMarkers[i].Details.longitude, color, 0, 0, 0, 'school');
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
@@ -924,6 +933,7 @@ export class PATReportComponent implements OnInit {
     this.reportData = [];
     this.schoolCount = 0;
     var myData = data['data'];
+    var color;
     if (myData.length > 0) {
       this.markers = myData;
       if (this.level == 'block' || this.level == 'cluster' || this.level == 'school') {
@@ -947,6 +957,15 @@ export class PATReportComponent implements OnInit {
         } else {
           this.markers.sort((a, b) => (a.Details['Performance'] > b.Details['Performance']) ? 1 : ((b.Details['Performance'] > a.Details['Performance']) ? -1 : 0));
         }
+        for (let i = 0; i < this.markers.length; i++) {
+          if (!this.grade && !this.subject) {
+            color = this.commonService.color(this.markers[i].Details, 'Performance');
+          } else if (this.grade && !this.subject) {
+            color = this.commonService.color(this.markers[i].Grades[`${this.grade}`], 'Grade Performance');
+          } else if (this.grade && this.subject) {
+            color = this.commonService.color(this.markers[i].Grades[`${this.grade}`], this.subject);
+          }
+        }
       } else {
         if (this.grade && !this.subject) {
           this.markers.sort((a, b) => (a.Subjects['Grade Performance'] > b.Subjects['Grade Performance']) ? 1 : ((b.Subjects['Grade Performance'] > a.Subjects['Grade Performance']) ? -1 : 0));
@@ -955,18 +974,20 @@ export class PATReportComponent implements OnInit {
         } else {
           this.markers.sort((a, b) => (a.Details['Performance'] > b.Details['Performance']) ? 1 : ((b.Details['Performance'] > a.Details['Performance']) ? -1 : 0));
         }
+        for (let i = 0; i < this.markers.length; i++) {
+          if (!this.grade && !this.subject) {
+            color = this.commonService.color(this.markers[i].Details, 'Performance');
+          } else if (this.grade && !this.subject) {
+            color = this.commonService.color(this.markers[i].Subjects, 'Grade Performance');
+          } else if (this.grade && this.subject) {
+            color = this.commonService.color(this.markers[i].Subjects, this.subject);
+          }
+        }
       }
-      // generate color gradient
-      let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
-      this.colors = colors;
 
       // attach values to markers
-      for (var i = 0; i < this.markers.length; i++) {
-        var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, this.colors[i], options.radius, options.strokeWeight, 1, options.level);
-        // if (this.markers[i]['grades']) {
-        //   this.allGrades = Object.keys(this.markers[i]['grades']);
-        // }
-
+      for (let i = 0; i < this.markers.length; i++) {
+        var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, color, options.radius, options.strokeWeight, 1, options.level);
         // data to show on the tooltip for the desired levels
         this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
 

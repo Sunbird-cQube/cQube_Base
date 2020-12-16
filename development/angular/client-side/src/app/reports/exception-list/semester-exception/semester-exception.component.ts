@@ -159,6 +159,7 @@ export class SemesterExceptionComponent implements OnInit {
           radius: 5,
           fillOpacity: 1,
           strokeWeight: 0.01,
+          weight: 1,
           mapZoom: this.commonService.zoomLevel,
           centerLat: this.lat,
           centerLng: this.lng,
@@ -226,13 +227,13 @@ export class SemesterExceptionComponent implements OnInit {
           this.blockMarkers = [];
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
-          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
           this.blockMarkers = result;
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.colors[i], 3.5, 0.1, undefined, options.level);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.colors[i], 3.5, 0.1, 1, options.level);
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "block_latitude", "block_longitude");
 
               // to download the report
@@ -302,13 +303,13 @@ export class SemesterExceptionComponent implements OnInit {
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           this.clusterMarkers = [];
           // generate color gradient
-          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
           this.clusterMarkers = result;
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.colors[i], 1, 0.01, undefined, options.level);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.colors[i], 1, 0.01, 0.5, options.level);
 
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "cluster_latitude", "cluster_longitude");
 
@@ -375,13 +376,13 @@ export class SemesterExceptionComponent implements OnInit {
           let result = this.data['data']
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
-          let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = this.color().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
 
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 1, 1, 1.5, options.level);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 0.9, 1, 0.4, options.level);
 
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "school_latitude", "school_longitude");
 
@@ -450,6 +451,7 @@ export class SemesterExceptionComponent implements OnInit {
         radius: 3.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
+        weight: 1,
         mapZoom: this.commonService.zoomLevel + 1,
         centerLat: this.data['data'][0].block_latitude,
         centerLng: this.data['data'][0].block_longitude,
@@ -516,9 +518,10 @@ export class SemesterExceptionComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3,
+        radius: 3.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
+        weight: 1,
         mapZoom: this.commonService.zoomLevel + 3,
         centerLat: this.data['data'][0].cluster_latitude,
         centerLng: this.data['data'][0].cluster_longitude,
@@ -637,7 +640,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.markers = data['data']
       this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
       // generate color gradient
-      let colors = this.commonService.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
+      let colors = this.color().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
       this.colors = colors;
 
       // attach values to markers
@@ -669,11 +672,7 @@ export class SemesterExceptionComponent implements OnInit {
         }
 
         var markerIcon;
-        if (options.weight) {
-          markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
-        } else {
-          markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, undefined, options.level);
-        }
+        markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {
@@ -787,4 +786,70 @@ export class SemesterExceptionComponent implements OnInit {
       yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);
   }
+
+
+  //color gredient generation....
+  public color() {
+    // Converts a #ffffff hex string into an [r,g,b] array
+    function hex2rgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? [
+            parseInt(result[1], 16),
+            parseInt(result[2], 16),
+            parseInt(result[3], 16)
+        ] : null;
+    }
+
+    // Inverse of the above
+    function rgb2hex(rgb) {
+        return '#' + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+    }
+
+    // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
+
+    function _interpolateRgb(color1, color2, factor) {
+        if (arguments.length < 3) { factor = 0.5; }
+
+        let result = color1.slice();
+
+        for (let i = 0; i < 3; i++) {
+            result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+        }
+        return result;
+    }
+
+    function generateGradient(color1, color2, total, interpolation) {
+        const colorStart = typeof color1 === 'string' ? hex2rgb(color1) : color1;
+        const colorEnd = typeof color2 === 'string' ? hex2rgb(color2) : color2;
+
+        // will the gradient be via RGB or HSL
+        switch (interpolation) {
+            case 'rgb':
+                return colorsToGradientRgb(colorStart, colorEnd, total);
+            case 'hsl':
+            //   return colorsToGradientHsl(colorStart, colorEnd, total);
+            default:
+                return false;
+        }
+    }
+
+    function colorsToGradientRgb(startColor, endColor, steps) {
+        // returns array of hex values for color, since rgb would be an array of arrays and not strings, easier to handle hex strings
+        let arrReturnColors = [];
+        let interimColorRGB;
+        let interimColorHex;
+        const totalColors = steps;
+        const factorStep = 1 / (totalColors - 1);
+
+        for (let idx = 0; idx < totalColors; idx++) {
+            interimColorRGB = _interpolateRgb(startColor, endColor, factorStep * idx);
+            interimColorHex = rgb2hex(interimColorRGB);
+            arrReturnColors.push(interimColorHex);
+        }
+        return arrReturnColors;
+    }
+    return {
+        generateGradient
+    };
+}
 }

@@ -109,13 +109,14 @@ export class AppServiceComponent {
     //Initialise markers.....
     public initMarkers(lat, lng, color, radius, strokeWeight, weight, levelWise) {
         var markerIcon;
-        if (levelWise !== "school") {
+        if (radius >= 1) {
             markerIcon = L.circleMarker([lat, lng], {
-                radius: radius,
-                color: color,
+                radius: radius + 1,
+                color: "gray",
                 fillColor: color,
                 fillOpacity: 1,
                 strokeWeight: strokeWeight,
+                weight: weight
             });
         } else {
             markerIcon = L.circleMarker([lat, lng], {
@@ -192,112 +193,45 @@ export class AppServiceComponent {
     }
 
     //color gredient generation....
-    public color() {
-        // Converts a #ffffff hex string into an [r,g,b] array
-        function hex2rgb(hex) {
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? [
-                parseInt(result[1], 16),
-                parseInt(result[2], 16),
-                parseInt(result[3], 16)
-            ] : null;
-        }
-
-        // Inverse of the above
-        function rgb2hex(rgb) {
-            return '#' + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
-        }
-
-        // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
-
-        function _interpolateRgb(color1, color2, factor) {
-            if (arguments.length < 3) { factor = 0.5; }
-
-            let result = color1.slice();
-
-            for (let i = 0; i < 3; i++) {
-                result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
-            }
-            return result;
-        }
-
-        function generateGradient(color1, color2, total, interpolation) {
-            const colorStart = typeof color1 === 'string' ? hex2rgb(color1) : color1;
-            const colorEnd = typeof color2 === 'string' ? hex2rgb(color2) : color2;
-
-            // will the gradient be via RGB or HSL
-            switch (interpolation) {
-                case 'rgb':
-                    return colorsToGradientRgb(colorStart, colorEnd, total);
-                case 'hsl':
-                //   return colorsToGradientHsl(colorStart, colorEnd, total);
-                default:
-                    return false;
+    public color(data, filter) {
+        var keys = Object.keys(this.colors);
+        var dataSet = {};
+        var setColor = '';
+        dataSet = data;
+        for (let i = 0; i < keys.length; i++) {
+            if (dataSet[filter] <= parseInt(keys[i])) {
+                setColor = this.colors[keys[i]];
+                break;
+            } else if (dataSet[filter] > parseInt(keys[i]) && dataSet[filter] <= parseInt(keys[i + 1])) {
+                setColor = this.colors[keys[i + 1]];
+                break;
             }
         }
-
-        function colorsToGradientRgb(startColor, endColor, steps) {
-            // returns array of hex values for color, since rgb would be an array of arrays and not strings, easier to handle hex strings
-            let arrReturnColors = [];
-            let interimColorRGB;
-            let interimColorHex;
-            const totalColors = steps;
-            const factorStep = 1 / (totalColors - 1);
-
-            for (let idx = 0; idx < totalColors; idx++) {
-                interimColorRGB = _interpolateRgb(startColor, endColor, factorStep * idx);
-                interimColorHex = rgb2hex(interimColorRGB);
-                arrReturnColors.push(interimColorHex);
-            }
-            return arrReturnColors;
-        }
-        return {
-            generateGradient
-        };
+        return setColor;
     }
 
     // color gredient based on intervals
     colorGredient(data, infraData) {
+        var keys = Object.keys(this.colors);
         var dataSet = {};
         var setColor = '';
-        if (infraData == 'Infrastructure_Score') {
+        if (infraData == 'Infrastructure_Score' || infraData == 'infrastructure_score') {
             dataSet = data.details;
         } else {
-            dataSet = data.indices;
+            if (data.indices) {
+                dataSet = data.indices;
+            } else {
+                dataSet = data.metrics;
+            }
         }
-
-        if (dataSet[infraData] <= 10) {
-            setColor = '#a50026';
-        }
-        if (dataSet[infraData] >= 11 && dataSet[infraData] <= 20) {
-            setColor = '#d73027';
-        }
-        if (dataSet[infraData] >= 21 && dataSet[infraData] <= 30) {
-            setColor = '#f46d43';
-        }
-        if (dataSet[infraData] >= 31 && dataSet[infraData] <= 40) {
-            setColor = '#fdae61';
-        }
-        if (dataSet[infraData] >= 41 && dataSet[infraData] <= 50) {
-            setColor = '#ffff00';
-        }
-        if (dataSet[infraData] >= 51 && dataSet[infraData] <= 60) {
-            setColor = '#bbff33';
-        }
-        if (dataSet[infraData] >= 61 && dataSet[infraData] <= 70) {
-            setColor = '#4dff4d';
-        }
-        if (dataSet[infraData] >= 71 && dataSet[infraData] <= 80) {
-            setColor = '#66bd63';
-        }
-        if (dataSet[infraData] >= 81 && dataSet[infraData] <= 90) {
-            setColor = '#1a9850';
-        }
-        if (dataSet[infraData] >= 91 && dataSet[infraData] <= 99) {
-            setColor = '#00b300';
-        }
-        if (dataSet[infraData] == 100) {
-            setColor = '#006600';
+        for (let i = 0; i < keys.length; i++) {
+            if (dataSet[infraData] <= parseInt(keys[i])) {
+                setColor = this.colors[keys[i]];
+                break;
+            } else if (dataSet[infraData] > parseInt(keys[i]) && dataSet[infraData] <= parseInt(keys[i + 1])) {
+                setColor = this.colors[keys[i + 1]];
+                break;
+            }
         }
         return setColor;
     }
@@ -346,5 +280,58 @@ export class AppServiceComponent {
         }, err => {
             console.log(err);
         });
+    }
+
+    public colors = {
+        2: 'red',
+        4: '#ff0000',
+        6: '#fc0500',
+        8: '#fa0a00',
+        10: '#f71000',
+        12: '#f51500',
+        14: '#f21a00',
+        16: '#ef1f00',
+        18: '#ed2400',
+        20: '#ea2a00',
+        22: '#e72f00',
+        24: '#e53400',
+        26: '#e23900',
+        28: '#e03e00',
+        30: '#dd4400',
+        32: '#da4900',
+        34: '#d84e00',
+        36: '#d55300',
+        38: '#d35800',
+        40: '#d05e00',
+        42: '#cd6300',
+        44: '#cb6800',
+        46: '#c86d00',
+        48: '#c67200',
+        50: '#c37800',
+        52: '#c07d00',
+        54: '#be8200',
+        56: '#bb8700',
+        58: '#b88d00',
+        60: '#b69200',
+        62: '#b39700',
+        64: '#b19c00',
+        66: '#aea100',
+        68: '#aba700',
+        70: '#a9ac00',
+        72: '#a6b100',
+        74: '#a4b600',
+        76: '#a1bb00',
+        78: '#9ec100',
+        80: '#9cc600',
+        82: '#99cb00',
+        84: '#97d000',
+        86: '#94d500',
+        88: '#91db00',
+        90: '#8fe000',
+        92: '#8ce500',
+        94: '#89ea00',
+        96: '#87ef00',
+        98: '#84f500',
+        100: '#7fff00',
     }
 }

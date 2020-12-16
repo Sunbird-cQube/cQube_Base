@@ -3,12 +3,12 @@
         <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    UDISE report for: <span (click)="districtWise()"
+                    UDISE Report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    UDISE report for: <span (click)="districtWise()"
+                    UDISE Report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -16,7 +16,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    UDISE report for: <span (click)="districtWise()"
+                    UDISE Report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    UDISE report for: <span (click)="districtWise()"
+                    UDISE Report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -61,7 +61,8 @@
         <div class="col-sm-12">
             <p style="text-align: justify; font-size: 11px;">
                 <strong> About the dashboard:</strong> The dashboard visualises data on various indices calculated using
-                the metrics captured in the UDISE 2019 for {{state}}. Each of the indices has been derived using multiple
+                the metrics captured in the UDISE 2019 for {{state}}. Each of the indices has been derived using
+                multiple
                 metrics that have been normalised and benchmarked for a fair comparison. The data here can be broken at
                 multiple administrative levels (i.e. District, Block, Cluster and School) and you can view and download
                 the data for any of the available indices.

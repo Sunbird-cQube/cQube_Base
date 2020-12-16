@@ -8101,7 +8101,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -10420,44 +10420,48 @@ file: ${filename} null values are found.</value>
 <properties>
     <entry>
         <key>Object Key</key>
-        <value>pat/${query_type:startsWith('pat_exam_school_all'):ifElse('all/pat_school.json',
-${query_type:startsWith('pat_exam_cluster_all'):ifElse('all/pat_cluster.json',
-${query_type:startsWith('pat_exam_block_all'):ifElse('all/pat_block.json',
-${query_type:startsWith('pat_exam_district_all'):ifElse('all/pat_district.json',
-${query_type:startsWith('pat_grade_district_all'):ifElse('all/district/${partition_by}.json',
-${query_type:startsWith('pat_grade_block_all'):ifElse('all/block/${partition_by}.json',
-${query_type:startsWith('pat_grade_cluster_all'):ifElse('all/cluster/${partition_by}.json',
-${query_type:startsWith('pat_grade_school_all'):ifElse('all/school/${partition_by}.json',
-${query_type:startsWith('pat_meta_all'):ifElse('all/pat_metadata.json',
-${query_type:startsWith('pat_exam_school_last30'):ifElse('last_30_days/pat_school.json',
-${query_type:startsWith('pat_exam_cluster_last30'):ifElse('last_30_days/pat_cluster.json',
-${query_type:startsWith('pat_exam_block_last30'):ifElse('last_30_days/pat_block.json',
-${query_type:startsWith('pat_exam_district_last30'):ifElse('last_30_days/pat_district.json',
-${query_type:startsWith('pat_grade_district_last30'):ifElse('last_30_days/district/${partition_by}.json',
-${query_type:startsWith('pat_grade_block_last30'):ifElse('last_30_days/block/${partition_by}.json',
-${query_type:startsWith('pat_grade_cluster_last30'):ifElse('last_30_days/cluster/${partition_by}.json',
-${query_type:startsWith('pat_grade_school_last30'):ifElse('last_30_days/school/${partition_by}.json',
-${query_type:startsWith('pat_meta_last30'):ifElse('last_30_days/pat_metadata.json',
-${query_type:startsWith('pat_exam_school_last7'):ifElse('last_7_days/pat_school.json',
-${query_type:startsWith('pat_exam_cluster_last7'):ifElse('last_7_days/pat_cluster.json',
-${query_type:startsWith('pat_exam_block_last7'):ifElse('last_7_days/pat_block.json',
-${query_type:startsWith('pat_exam_district_last7'):ifElse('last_7_days/pat_district.json',
-${query_type:startsWith('pat_grade_district_last7'):ifElse('last_7_days/district/${partition_by}.json',
-${query_type:startsWith('pat_grade_block_last7'):ifElse('last_7_days/block/${partition_by}.json',
-${query_type:startsWith('pat_grade_cluster_last7'):ifElse('last_7_days/cluster/${partition_by}.json',
-${query_type:startsWith('pat_grade_school_last7'):ifElse('last_7_days/school/${partition_by}.json',
-${query_type:startsWith('pat_meta_last7'):ifElse('last_7_days/pat_metadata.json',
-${query_type:startsWith('pat_learning_outcome_p1_meta'):ifElse('heatChart/metaData.json',
-${query_type:startsWith('pat_learning_outcome_p1_all'):ifElse('heatChart/${partition_by}/${partition_by_month}/allData.json',
-${query_type:startsWith('pat_learning_outcome_p1_district'):ifElse('heatChart/${partition_by}/${partition_by_month}/districts/${partition_by_level}.json',
-${query_type:startsWith('pat_learning_outcome_p1_block'):ifElse('heatChart/${partition_by}/${partition_by_month}/blocks/${partition_by_level}.json',
-${query_type:startsWith('pat_learning_outcome_p1_cluster'):ifElse('heatChart/${partition_by}/${partition_by_month}/clusters/${partition_by_level}.json',
-${query_type:startsWith('pat_learning_outcome_p3_meta'):ifElse('heatmap-summary/metaData.json',
-${query_type:startsWith('pat_learning_outcome_p3_all'):ifElse('heatmap-summary/${partition_by}/${partition_by_month}/allData.json',
-${query_type:startsWith('pat_learning_outcome_p3_district'):ifElse('heatmap-summary/${partition_by}/${partition_by_month}/districts/${partition_by_level}.json',
-${query_type:startsWith('pat_learning_outcome_p3_block'):ifElse('heatmap-summary/${partition_by}/${partition_by_month}/blocks/${partition_by_level}.json',
-${query_type:startsWith('pat_learning_outcome_p3_cluster'):ifElse('heatmap-summary/${partition_by}/${partition_by_month}/clusters/${partition_by_level}.json','None')} 
- )} )}	)} )} )} )} )} )} )} )}	 
+        <value>${query_type:startsWith('pat_exam_school_all'):ifElse('pat/all/pat_school.json',
+${query_type:startsWith('pat_exam_cluster_all'):ifElse('pat/all/pat_cluster.json',
+${query_type:startsWith('pat_exam_block_all'):ifElse('pat/all/pat_block.json',
+${query_type:startsWith('pat_exam_district_all'):ifElse('pat/all/pat_district.json',
+${query_type:startsWith('pat_grade_district_all'):ifElse('pat/all/district/${partition_by}.json',
+${query_type:startsWith('pat_grade_block_all'):ifElse('pat/all/block/${partition_by}.json',
+${query_type:startsWith('pat_grade_cluster_all'):ifElse('pat/all/cluster/${partition_by}.json',
+${query_type:startsWith('pat_grade_school_all'):ifElse('pat/all/school/${partition_by}.json',
+${query_type:startsWith('pat_meta_all'):ifElse('pat/all/pat_metadata.json',
+${query_type:startsWith('pat_exam_school_last30'):ifElse('pat/last_30_days/pat_school.json',
+${query_type:startsWith('pat_exam_cluster_last30'):ifElse('pat/last_30_days/pat_cluster.json',
+${query_type:startsWith('pat_exam_block_last30'):ifElse('pat/last_30_days/pat_block.json',
+${query_type:startsWith('pat_exam_district_last30'):ifElse('pat/last_30_days/pat_district.json',
+${query_type:startsWith('pat_grade_district_last30'):ifElse('pat/last_30_days/district/${partition_by}.json',
+${query_type:startsWith('pat_grade_block_last30'):ifElse('pat/last_30_days/block/${partition_by}.json',
+${query_type:startsWith('pat_grade_cluster_last30'):ifElse('pat/last_30_days/cluster/${partition_by}.json',
+${query_type:startsWith('pat_grade_school_last30'):ifElse('pat/last_30_days/school/${partition_by}.json',
+${query_type:startsWith('pat_meta_last30'):ifElse('pat/last_30_days/pat_metadata.json',
+${query_type:startsWith('pat_exam_school_last7'):ifElse('pat/last_7_days/pat_school.json',
+${query_type:startsWith('pat_exam_cluster_last7'):ifElse('pat/last_7_days/pat_cluster.json',
+${query_type:startsWith('pat_exam_block_last7'):ifElse('pat/last_7_days/pat_block.json',
+${query_type:startsWith('pat_exam_district_last7'):ifElse('pat/last_7_days/pat_district.json',
+${query_type:startsWith('pat_grade_district_last7'):ifElse('pat/last_7_days/district/${partition_by}.json',
+${query_type:startsWith('pat_grade_block_last7'):ifElse('pat/last_7_days/block/${partition_by}.json',
+${query_type:startsWith('pat_grade_cluster_last7'):ifElse('pat/last_7_days/cluster/${partition_by}.json',
+${query_type:startsWith('pat_grade_school_last7'):ifElse('pat/last_7_days/school/${partition_by}.json',
+${query_type:startsWith('pat_meta_last7'):ifElse('pat/last_7_days/pat_metadata.json',
+${query_type:startsWith('pat_learning_outcome_p1_question_meta'):ifElse('pat/heatChart/metaData.json',
+${query_type:startsWith('pat_learning_outcome_p1_question_all'):ifElse('pat/heatChart/questionIdLevel/${partition_by}/${partition_by_month}/allData.json',
+${query_type:startsWith('pat_learning_outcome_p1_question_district'):ifElse('pat/heatChart/questionIdLevel/${partition_by}/${partition_by_month}/districts/${partition_by_level}.json',
+${query_type:startsWith('pat_learning_outcome_p1_question_block'):ifElse('pat/heatChart/questionIdLevel/${partition_by}/${partition_by_month}/blocks/${partition_by_level}.json',
+${query_type:startsWith('pat_learning_outcome_p1_question_cluster'):ifElse('pat/heatChart/questionIdLevel/${partition_by}/${partition_by_month}/clusters/${partition_by_level}.json',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_all'):ifElse('pat/heatChart/indicatorIdLevel/${partition_by}/${partition_by_month}/allData.json',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_district'):ifElse('pat/heatChart/indicatorIdLevel/${partition_by}/${partition_by_month}/districts/${partition_by_level}.json',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_block'):ifElse('pat/heatChart/indicatorIdLevel/${partition_by}/${partition_by_month}/blocks/${partition_by_level}.json',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_cluster'):ifElse('pat/heatChart/indicatorIdLevel/${partition_by}/${partition_by_month}/clusters/${partition_by_level}.json',
+${query_type:startsWith('pat_learning_outcome_p3_meta'):ifElse('pat/heatmap-summary/metaData.json',
+${query_type:startsWith('pat_learning_outcome_p3_all'):ifElse('pat/heatmap-summary/${partition_by}/${partition_by_month}/allData.json',
+${query_type:startsWith('pat_learning_outcome_p3_district'):ifElse('pat/heatmap-summary/${partition_by}/${partition_by_month}/districts/${partition_by_level}.json',
+${query_type:startsWith('pat_learning_outcome_p3_block'):ifElse('pat/heatmap-summary/${partition_by}/${partition_by_month}/blocks/${partition_by_level}.json',
+${query_type:startsWith('pat_learning_outcome_p3_cluster'):ifElse('pat/heatmap-summary/${partition_by}/${partition_by_month}/clusters/${partition_by_level}.json','None')} 
+ )} )}	)} )} )} )} )} )} )} )} )} )} )} )}
 )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
     <entry>
@@ -10579,8 +10583,8 @@ ${query_type:startsWith('pat_learning_outcome_p3_cluster'):ifElse('heatmap-summa
         <key>proxy-user-password</key>
     </entry>
 </properties>
-<runDurationMillis>2000</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
+<runDurationMillis>100</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -11712,15 +11716,19 @@ ${filename:startsWith('periodic_exam_qst_mst'):ifElse(#{pat_filter_same_record_p
 ${query_type:startsWith('pat_grade_block'):ifElse('/grade',
 ${query_type:startsWith('pat_grade_cluster'):ifElse('/grade',
 ${query_type:startsWith('pat_grade_school'):ifElse('/grade',
-${query_type:startsWith('pat_learning_outcome_p1_all'):ifElse('/academic_year',
-${query_type:startsWith('pat_learning_outcome_p1_district'):ifElse('/academic_year',
-${query_type:startsWith('pat_learning_outcome_p1_block'):ifElse('/academic_year',
-${query_type:startsWith('pat_learning_outcome_p1_cluster'):ifElse('/academic_year',
+${query_type:startsWith('pat_learning_outcome_p1_question_all'):ifElse('/academic_year',
+${query_type:startsWith('pat_learning_outcome_p1_question_district'):ifElse('/academic_year',
+${query_type:startsWith('pat_learning_outcome_p1_question_block'):ifElse('/academic_year',
+${query_type:startsWith('pat_learning_outcome_p1_question_cluster'):ifElse('/academic_year',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_all'):ifElse('/academic_year',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_district'):ifElse('/academic_year',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_block'):ifElse('/academic_year',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_cluster'):ifElse('/academic_year',
 ${query_type:startsWith('pat_learning_outcome_p3_all'):ifElse('/academic_year',
 ${query_type:startsWith('pat_learning_outcome_p3_district'):ifElse('/academic_year',
 ${query_type:startsWith('pat_learning_outcome_p3_block'):ifElse('/academic_year',
 ${query_type:startsWith('pat_learning_outcome_p3_cluster'):ifElse('/academic_year','None')}	
-)} )} )} )} )} )} )} )} )} )} )}</value>
+)} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
 </properties>
 <runDurationMillis>2000</runDurationMillis>
@@ -11973,7 +11981,7 @@ Mirror data validation of file:${filename} started</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -13627,15 +13635,19 @@ ${query_type:startsWith('pat_grade_school')} )} )} )}</value>
     </entry>
     <entry>
         <key>pat_learning_outcome</key>
-        <value>${query_type:startsWith('pat_learning_outcome_p1_all'):or(
-${query_type:startsWith('pat_learning_outcome_p1_district'):or(
-${query_type:startsWith('pat_learning_outcome_p1_block'):or(
-${query_type:startsWith('pat_learning_outcome_p1_cluster'):or(
+        <value>${query_type:startsWith('pat_learning_outcome_p1_question_all'):or(
+${query_type:startsWith('pat_learning_outcome_p1_question_district'):or(
+${query_type:startsWith('pat_learning_outcome_p1_question_block'):or(
+${query_type:startsWith('pat_learning_outcome_p1_question_cluster'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_all'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_district'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_block'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_cluster'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_all'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_district'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_block'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_cluster')}	
-)} )} )} )} )} )} )}</value>
+)} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -13850,13 +13862,15 @@ Mirror data validation of file:${filename}, Mirror data found </value>
     </entry>
     <entry>
         <key>partition_by_level</key>
-        <value>${query_type:startsWith('pat_learning_outcome_p1_meta'):ifElse('/year',
-${query_type:startsWith('pat_learning_outcome_p1_district'):ifElse('/district_id',
-${query_type:startsWith('pat_learning_outcome_p1_block'):ifElse('/block_id',
-${query_type:startsWith('pat_learning_outcome_p1_cluster'):ifElse('/block_id',
+        <value>${query_type:startsWith('pat_learning_outcome_p1_question_district'):ifElse('/district_id',
+${query_type:startsWith('pat_learning_outcome_p1_question_block'):ifElse('/block_id',
+${query_type:startsWith('pat_learning_outcome_p1_question_cluster'):ifElse('/block_id',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_district'):ifElse('/district_id',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_block'):ifElse('/block_id',
+${query_type:startsWith('pat_learning_outcome_p1_indicator_cluster'):ifElse('/block_id',
 ${query_type:startsWith('pat_learning_outcome_p3_district'):ifElse('/district_id',
 ${query_type:startsWith('pat_learning_outcome_p3_block'):ifElse('/block_id',
-${query_type:startsWith('pat_learning_outcome_p3_cluster'):ifElse('/block_id','None')} )} )} )} )} )} )}</value>
+${query_type:startsWith('pat_learning_outcome_p3_cluster'):ifElse('/block_id','None')} )} )} )} )} )} )} )} )}</value>
     </entry>
 </properties>
 <runDurationMillis>2000</runDurationMillis>
@@ -15895,7 +15909,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -19555,15 +19569,19 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
     </entry>
     <entry>
         <key>pat_learning_outcomes</key>
-        <value>${query_type:startsWith('pat_learning_outcome_p1_all'):or(
-${query_type:startsWith('pat_learning_outcome_p1_district'):or(
-${query_type:startsWith('pat_learning_outcome_p1_block'):or(
-${query_type:startsWith('pat_learning_outcome_p1_cluster'):or(
+        <value>${query_type:startsWith('pat_learning_outcome_p1_question_all'):or(
+${query_type:startsWith('pat_learning_outcome_p1_question_district'):or(
+${query_type:startsWith('pat_learning_outcome_p1_question_block'):or(
+${query_type:startsWith('pat_learning_outcome_p1_question_cluster'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_all'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_district'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_block'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_cluster'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_all'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_district'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_block'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_cluster')}	
-)} )} )} )} )} )} )}</value>
+)} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -20502,22 +20520,26 @@ file:${filename} aggregations started.</value>
     </entry>
     <entry>
         <key>pat_heat_all</key>
-        <value>${query_type:startsWith('pat_learning_outcome_p1_all'):or(	
-${query_type:startsWith('pat_learning_outcome_p3_all')} )}</value>
+        <value>${query_type:startsWith('pat_learning_outcome_p1_question_all'):or(	
+${query_type:startsWith('pat_learning_outcome_p1_indicator_all'):or(	
+${query_type:startsWith('pat_learning_outcome_p3_all')} )} )}</value>
     </entry>
     <entry>
         <key>pat_heat_map_files</key>
-        <value>${query_type:startsWith('pat_learning_outcome_p1_district'):or(
-${query_type:startsWith('pat_learning_outcome_p1_block'):or(
-${query_type:startsWith('pat_learning_outcome_p1_cluster'):or(
+        <value>${query_type:startsWith('pat_learning_outcome_p1_question_district'):or(
+${query_type:startsWith('pat_learning_outcome_p1_question_block'):or(
+${query_type:startsWith('pat_learning_outcome_p1_question_cluster'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_district'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_block'):or(
+${query_type:startsWith('pat_learning_outcome_p1_indicator_cluster'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_district'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_block'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_cluster')}
-)} )} )} )} )}</value>
+)} )} )} )} )} )} )} )}</value>
     </entry>
     <entry>
         <key>pat_heat_map_meta</key>
-        <value>${query_type:startsWith('pat_learning_outcome_p1_meta'):or(													   
+        <value>${query_type:startsWith('pat_learning_outcome_p1_question_meta'):or(
 ${query_type:startsWith('pat_learning_outcome_p3_meta')} )}</value>
     </entry>
     <entry>
@@ -22962,7 +22984,7 @@ ${query_type:startsWith('pat_grade_block'):ifElse(#{pat_grade_block_jolt_spec},
 ${query_type:startsWith('pat_grade_cluster'):ifElse(#{pat_grade_cluster_jolt_spec},
 ${query_type:startsWith('pat_grade_school'):ifElse(#{pat_grade_school_jolt_spec},
 ${query_type:startsWith('pat_meta'):ifElse(#{pat_meta_jolt_spec},
-${query_type:startsWith('pat_learning_outcome_p1_meta'):ifElse(#{pat_learning_outcome_meta_jolt_spec},	
+${query_type:startsWith('pat_learning_outcome_p1_question_meta'):ifElse(#{pat_learning_outcome_meta_jolt_spec},	
 ${query_type:startsWith('pat_learning_outcome_p3_meta'):ifElse(#{pat_learning_outcome_meta_jolt_spec},'None')}
 )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
@@ -33406,5 +33428,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/08/2020 18:33:13 IST</timestamp>
+    <timestamp>12/15/2020 10:31:41 IST</timestamp>
 </template>

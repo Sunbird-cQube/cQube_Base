@@ -36,10 +36,10 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                 lng: item['z_value'],
                 number_of_students: item['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                 number_of_schools: item['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                "% of less than 33%": item.percent_below_33 + " %" + ` (${item.value_below_33} out of ${item.total_schools})`,
-                "% of 33% to 60%": item.percent_between_33_60 + " %" + ` (${item.value_between_33_60} out of ${item.total_schools})`,
-                "% of 60% to 75%": item.percent_between_60_75 + " %" + ` (${item.value_between_60_75} out of ${item.total_schools})`,
-                "% above 75%": item.percent_above_75 + " %" + ` (${item.value_above_75} out of ${item.total_schools})`,
+                "less than 33%": item.percent_below_33 + " %" + ` (${item.value_below_33} out of ${item.total_schools})`,
+                "33% to 60%": item.percent_between_33_60 + " %" + ` (${item.value_between_33_60} out of ${item.total_schools})`,
+                "60% to 75%": item.percent_between_60_75 + " %" + ` (${item.value_between_60_75} out of ${item.total_schools})`,
+                "above 75%": item.percent_above_75 + " %" + ` (${item.value_above_75} out of ${item.total_schools})`,
             }
             return obj
         });
@@ -104,10 +104,10 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                 lng: item['z_value'],
                 number_of_students: item['students_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                 number_of_schools: item['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
-                "% of less than 33%": item.percent_below_33 + " %" + ` (${item.value_below_33} out of ${item.total_schools})`,
-                "% of 33% to 60%": item.percent_between_33_60 + " %" + ` (${item.value_between_33_60} out of ${item.total_schools})`,
-                "% of 60% to 75%": item.percent_between_60_75 + " %" + ` (${item.value_between_60_75} out of ${item.total_schools})`,
-                "% above 75%": item.percent_above_75 + " %" + ` (${item.value_above_75} out of ${item.total_schools})`,
+                "less than 33%": item.percent_below_33 + " %" + ` (${item.value_below_33} out of ${item.total_schools})`,
+                "33% to 60%": item.percent_between_33_60 + " %" + ` (${item.value_between_33_60} out of ${item.total_schools})`,
+                "60% to 75%": item.percent_between_60_75 + " %" + ` (${item.value_between_60_75} out of ${item.total_schools})`,
+                "above 75%": item.percent_above_75 + " %" + ` (${item.value_above_75} out of ${item.total_schools})`,
             }
             return obj
         });
