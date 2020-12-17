@@ -10,5 +10,8 @@
 },
 {
 "health_card_index_cluster":"select * from health_card_index_cluster;"
+},
+{
+"health_card_index_school":"select * from health_card_index_school;"
 }
 ]
