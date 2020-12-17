@@ -145,7 +145,7 @@
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <destination>
                         <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
-                        <id>87131256-2762-3f57-0000-000000000000</id>
+                        <id>52410d56-5c47-3d1a-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
@@ -239,6 +239,85 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
+                    <id>9bc3fc54-5a13-357a-0000-000000000000</id>
+                    <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>1208.0</x>
+                        <y>1016.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
+                        <id>87131256-2762-3f57-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>0</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>success</selectedRelationships>
+                    <source>
+                        <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
+                        <id>f120cb9e-57d1-30d7-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>9d383e8f-7d9b-32b1-0000-000000000000</id>
+                    <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
+                        <id>f120cb9e-57d1-30d7-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>health_card_files</selectedRelationships>
+                    <source>
+                        <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
+                        <id>52410d56-5c47-3d1a-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>a4bba225-0ec9-303f-0000-000000000000</id>
+                    <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
+                        <id>709dd54b-c1fd-3c73-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>failure</selectedRelationships>
+                    <source>
+                        <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
+                        <id>f120cb9e-57d1-30d7-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>aeaa01f0-3986-3068-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -284,6 +363,31 @@
                     <source>
                         <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
                         <id>7e156f32-8a3f-36cf-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>d11dd2cf-10b0-32ef-0000-000000000000</id>
+                    <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
+                        <id>87131256-2762-3f57-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>health_card_meta</selectedRelationships>
+                    <source>
+                        <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
+                        <id>52410d56-5c47-3d1a-0000-000000000000</id>
                         <type>PROCESSOR</type>
                     </source>
                     <zIndex>0</zIndex>
@@ -363,6 +467,119 @@
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
+                <controllerServices>
+                    <id>19770eca-6d33-3379-0000-000000000000</id>
+                    <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
+                    <bundle>
+                        <artifact>nifi-record-serialization-services-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.11.4</version>
+                    </bundle>
+                    <comments></comments>
+                    <descriptors>
+                        <entry>
+                            <key>schema-access-strategy</key>
+                            <value>
+<name>schema-access-strategy</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-registry</key>
+                            <value>
+<identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
+<name>schema-registry</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-name</key>
+                            <value>
+<name>schema-name</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-version</key>
+                            <value>
+<name>schema-version</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-branch</key>
+                            <value>
+<name>schema-branch</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-text</key>
+                            <value>
+<name>schema-text</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-inference-cache</key>
+                            <value>
+<identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
+<name>schema-inference-cache</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Date Format</key>
+                            <value>
+<name>Date Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Time Format</key>
+                            <value>
+<name>Time Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Timestamp Format</key>
+                            <value>
+<name>Timestamp Format</name>
+                            </value>
+                        </entry>
+                    </descriptors>
+                    <name>JsonTreeReader_health_card</name>
+                    <persistsState>false</persistsState>
+                    <properties>
+                        <entry>
+                            <key>schema-access-strategy</key>
+                            <value>infer-schema</value>
+                        </entry>
+                        <entry>
+                            <key>schema-registry</key>
+                        </entry>
+                        <entry>
+                            <key>schema-name</key>
+                            <value>${schema.name}</value>
+                        </entry>
+                        <entry>
+                            <key>schema-version</key>
+                        </entry>
+                        <entry>
+                            <key>schema-branch</key>
+                        </entry>
+                        <entry>
+                            <key>schema-text</key>
+                            <value>${avro.schema}</value>
+                        </entry>
+                        <entry>
+                            <key>schema-inference-cache</key>
+                        </entry>
+                        <entry>
+                            <key>Date Format</key>
+                        </entry>
+                        <entry>
+                            <key>Time Format</key>
+                        </entry>
+                        <entry>
+                            <key>Timestamp Format</key>
+                        </entry>
+                    </properties>
+                    <state>ENABLED</state>
+                    <type>org.apache.nifi.json.JsonTreeReader</type>
+                </controllerServices>
                 <controllerServices>
                     <id>42acd4eb-37fb-338f-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
@@ -451,6 +668,7 @@
                     <properties>
                         <entry>
                             <key>default-credentials</key>
+                            <value>false</value>
                         </entry>
                         <entry>
                             <key>Access Key</key>
@@ -466,6 +684,7 @@
                         </entry>
                         <entry>
                             <key>anonymous-credentials</key>
+                            <value>false</value>
                         </entry>
                         <entry>
                             <key>Assume Role ARN</key>
@@ -475,6 +694,7 @@
                         </entry>
                         <entry>
                             <key>Session Time</key>
+                            <value>3600</value>
                         </entry>
                         <entry>
                             <key>assume-role-external-id</key>
@@ -603,18 +823,21 @@
                     <properties>
                         <entry>
                             <key>Schema Write Strategy</key>
+                            <value>no-schema</value>
                         </entry>
                         <entry>
                             <key>schema-cache</key>
                         </entry>
                         <entry>
                             <key>schema-access-strategy</key>
+                            <value>inherit-record-schema</value>
                         </entry>
                         <entry>
                             <key>schema-registry</key>
                         </entry>
                         <entry>
                             <key>schema-name</key>
+                            <value>${schema.name}</value>
                         </entry>
                         <entry>
                             <key>schema-version</key>
@@ -624,6 +847,7 @@
                         </entry>
                         <entry>
                             <key>schema-text</key>
+                            <value>${avro.schema}</value>
                         </entry>
                         <entry>
                             <key>Date Format</key>
@@ -636,18 +860,23 @@
                         </entry>
                         <entry>
                             <key>Pretty Print JSON</key>
+                            <value>false</value>
                         </entry>
                         <entry>
                             <key>suppress-nulls</key>
+                            <value>never-suppress</value>
                         </entry>
                         <entry>
                             <key>output-grouping</key>
+                            <value>output-array</value>
                         </entry>
                         <entry>
                             <key>compression-format</key>
+                            <value>none</value>
                         </entry>
                         <entry>
                             <key>compression-level</key>
+                            <value>1</value>
                         </entry>
                     </properties>
                     <state>ENABLED</state>
@@ -782,30 +1011,38 @@
                         </entry>
                         <entry>
                             <key>Max Wait Time</key>
+                            <value>500 millis</value>
                         </entry>
                         <entry>
                             <key>Max Total Connections</key>
+                            <value>8</value>
                         </entry>
                         <entry>
                             <key>Validation-query</key>
                         </entry>
                         <entry>
                             <key>dbcp-min-idle-conns</key>
+                            <value>0</value>
                         </entry>
                         <entry>
                             <key>dbcp-max-idle-conns</key>
+                            <value>8</value>
                         </entry>
                         <entry>
                             <key>dbcp-max-conn-lifetime</key>
+                            <value>-1</value>
                         </entry>
                         <entry>
                             <key>dbcp-time-between-eviction-runs</key>
+                            <value>-1</value>
                         </entry>
                         <entry>
                             <key>dbcp-min-evictable-idle-time</key>
+                            <value>30 mins</value>
                         </entry>
                         <entry>
                             <key>dbcp-soft-min-evictable-idle-time</key>
+                            <value>-1</value>
                         </entry>
                     </properties>
                     <state>ENABLED</state>
@@ -881,8 +1118,8 @@
                     <id>21d57245-4e1f-343d-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <position>
-                        <x>120.0</x>
-                        <y>504.0</y>
+                        <x>112.0</x>
+                        <y>528.0</y>
                     </position>
                     <bundle>
                         <artifact>nifi-standard-nar</artifact>
@@ -965,12 +1202,12 @@
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
-                    <name>GenerateFlowFile</name>
+                    <name>health_card_trigger</name>
                     <relationships>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
                 </processors>
@@ -979,7 +1216,7 @@
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <position>
                         <x>712.0</x>
-                        <y>1200.0</y>
+                        <y>1352.0</y>
                     </position>
                     <bundle>
                         <artifact>nifi-standard-nar</artifact>
@@ -1320,7 +1557,7 @@
                             </entry>
                             <entry>
 <key>Evaluation Mode</key>
-<value>Entire text</value>
+<value>Line-by-Line</value>
                             </entry>
                             <entry>
 <key>Line-by-Line Evaluation Mode</key>
@@ -1345,6 +1582,85 @@
                     <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
+                </processors>
+                <processors>
+                    <id>52410d56-5c47-3d1a-0000-000000000000</id>
+                    <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>1352.0</x>
+                        <y>936.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.11.4</version>
+                    </bundle>
+                    <config>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>Routing Strategy</key>
+<value>
+    <name>Routing Strategy</name>
+</value>
+                            </entry>
+                            <entry>
+<key>health_card_files</key>
+<value>
+    <name>health_card_files</name>
+</value>
+                            </entry>
+                            <entry>
+<key>health_card_meta</key>
+<value>
+    <name>health_card_meta</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>Routing Strategy</key>
+<value>Route to Property name</value>
+                            </entry>
+                            <entry>
+<key>health_card_files</key>
+<value>${query_type:startsWith('health_card_index_district'):or(
+${query_type:startsWith('health_card_index_block'):or(
+${query_type:startsWith('health_card_index_cluster'):or(
+${query_type:startsWith('health_card_index_school')} )} )} )}</value>
+                            </entry>
+                            <entry>
+<key>health_card_meta</key>
+<value>${query_type:startsWith('health_card_index_meta')}</value>
+                            </entry>
+                        </properties>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>health_card_route_files</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>health_card_files</name>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>health_card_meta</name>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>true</autoTerminate>
+                        <name>unmatched</name>
+                    </relationships>
+                    <state>RUNNING</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
                 <processors>
                     <id>5fa07112-1b5a-34e6-0000-000000000000</id>
@@ -1433,11 +1749,81 @@
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
                 <processors>
+                    <id>709dd54b-c1fd-3c73-0000-000000000000</id>
+                    <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>1368.0</x>
+                        <y>1312.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.11.4</version>
+                    </bundle>
+                    <config>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>log-level</key>
+<value>
+    <name>log-level</name>
+</value>
+                            </entry>
+                            <entry>
+<key>log-prefix</key>
+<value>
+    <name>log-prefix</name>
+</value>
+                            </entry>
+                            <entry>
+<key>log-message</key>
+<value>
+    <name>log-message</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>log-level</key>
+<value>error</value>
+                            </entry>
+                            <entry>
+<key>log-prefix</key>
+<value>---------PARTITIONING FILES-----------</value>
+                            </entry>
+                            <entry>
+<key>log-message</key>
+<value>
+file:${filename},Error while partitioning "${query_type
+}" query files.</value>
+                            </entry>
+                        </properties>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>LogMessage</name>
+                    <relationships>
+                        <autoTerminate>true</autoTerminate>
+                        <name>success</name>
+                    </relationships>
+                    <state>STOPPED</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.LogMessage</type>
+                </processors>
+                <processors>
                     <id>79cd2aa4-4a25-3c84-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <position>
-                        <x>1336.0</x>
-                        <y>1176.0</y>
+                        <x>704.0</x>
+                        <y>1136.0</y>
                     </position>
                     <bundle>
                         <artifact>nifi-aws-nar</artifact>
@@ -1665,10 +2051,10 @@
                             <entry>
 <key>Object Key</key>
 <value>${query_type:startsWith('health_card_index_meta'):ifElse('healthCard/metaData.json',
-${query_type:startsWith('health_card_index_district'):ifElse('healthCard/district.json',
-${query_type:startsWith('health_card_index_block'):ifElse('healthCard/block.json',
-${query_type:startsWith('health_card_index_cluster'):ifElse('healthCard/cluster.json',
-${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school.json','None')}
+${query_type:startsWith('health_card_index_district'):ifElse('healthCard/district/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_block'):ifElse('healthCard/block/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_cluster'):ifElse('healthCard/cluster/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${partition_by_level}.json','None')}
 )} )} )} )}</value>
                             </entry>
                             <entry>
@@ -1895,7 +2281,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school.js
                             </entry>
                             <entry>
 <key>Evaluation Mode</key>
-<value>Entire text</value>
+<value>Line-by-Line</value>
                             </entry>
                             <entry>
 <key>Line-by-Line Evaluation Mode</key>
@@ -2117,8 +2503,8 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school.js
                     <id>87131256-2762-3f57-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <position>
-                        <x>1336.0000622709276</x>
-                        <y>753.9999958003798</y>
+                        <x>1352.0</x>
+                        <y>752.0</y>
                     </position>
                     <bundle>
                         <artifact>nifi-standard-nar</artifact>
@@ -2199,7 +2585,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school.js
                             </entry>
                             <entry>
 <key>Evaluation Mode</key>
-<value>Entire text</value>
+<value>Line-by-Line</value>
                             </entry>
                             <entry>
 <key>Line-by-Line Evaluation Mode</key>
@@ -2321,6 +2707,12 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school.js
                             </entry>
                             <entry>
 <key>sql-pre-query</key>
+<value>${query_type:startsWith('health_card_index_meta'):ifElse('',
+${query_type:startsWith('health_card_index_district'):ifElse("select infra_district_reports('water','toilet');",
+${query_type:startsWith('health_card_index_block'):ifElse("select infra_block_reports('water','toilet');",
+${query_type:startsWith('health_card_index_cluster'):ifElse("select infra_cluster_reports('water','toilet');",
+${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_reports('water','toilet');",'')}
+)} )} )} )}</value>
                             </entry>
                             <entry>
 <key>SQL select query</key>
@@ -2622,6 +3014,88 @@ file:${filename},Error while extracting "${query_type}" query.</value>
                     <type>org.apache.nifi.processors.standard.FetchFile</type>
                 </processors>
                 <processors>
+                    <id>f120cb9e-57d1-30d7-0000-000000000000</id>
+                    <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>1360.0</x>
+                        <y>1128.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.11.4</version>
+                    </bundle>
+                    <config>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>record-reader</key>
+<value>
+    <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+    <name>record-reader</name>
+</value>
+                            </entry>
+                            <entry>
+<key>record-writer</key>
+<value>
+    <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+    <name>record-writer</name>
+</value>
+                            </entry>
+                            <entry>
+<key>partition_by_level</key>
+<value>
+    <name>partition_by_level</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>record-reader</key>
+<value>19770eca-6d33-3379-0000-000000000000</value>
+                            </entry>
+                            <entry>
+<key>record-writer</key>
+<value>5aa91358-a425-36ac-0000-000000000000</value>
+                            </entry>
+                            <entry>
+<key>partition_by_level</key>
+<value>${query_type:startsWith('health_card_index_district'):ifElse('/district_id',
+${query_type:startsWith('health_card_index_block'):ifElse('/block_id',
+${query_type:startsWith('health_card_index_cluster'):ifElse('/block_id',
+${query_type:startsWith('health_card_index_school'):ifElse('/block_id','None')}
+)} )} )}</value>
+                            </entry>
+                        </properties>
+                        <runDurationMillis>100</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>health_card_partition_by_level</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>failure</name>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>true</autoTerminate>
+                        <name>original</name>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>success</name>
+                    </relationships>
+                    <state>RUNNING</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.PartitionRecord</type>
+                </processors>
+                <processors>
                     <id>f44351dc-0c34-39fa-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <position>
@@ -2686,7 +3160,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -2695,5 +3169,5 @@ file:${filename},Error while executing "${query_type}" query.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/16/2020 19:41:18 IST</timestamp>
+    <timestamp>12/17/2020 09:19:31 IST</timestamp>
 </template>
