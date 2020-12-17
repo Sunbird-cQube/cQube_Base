@@ -475,6 +475,7 @@
                         <group>org.apache.nifi</group>
                         <version>1.11.4</version>
                     </bundle>
+                    <comments></comments>
                     <descriptors>
                         <entry>
                             <key>schema-access-strategy</key>
@@ -544,12 +545,14 @@
                     <properties>
                         <entry>
                             <key>schema-access-strategy</key>
+                            <value>infer-schema</value>
                         </entry>
                         <entry>
                             <key>schema-registry</key>
                         </entry>
                         <entry>
                             <key>schema-name</key>
+                            <value>${schema.name}</value>
                         </entry>
                         <entry>
                             <key>schema-version</key>
@@ -559,6 +562,7 @@
                         </entry>
                         <entry>
                             <key>schema-text</key>
+                            <value>${avro.schema}</value>
                         </entry>
                         <entry>
                             <key>schema-inference-cache</key>
@@ -664,6 +668,7 @@
                     <properties>
                         <entry>
                             <key>default-credentials</key>
+                            <value>false</value>
                         </entry>
                         <entry>
                             <key>Access Key</key>
@@ -679,6 +684,7 @@
                         </entry>
                         <entry>
                             <key>anonymous-credentials</key>
+                            <value>false</value>
                         </entry>
                         <entry>
                             <key>Assume Role ARN</key>
@@ -688,6 +694,7 @@
                         </entry>
                         <entry>
                             <key>Session Time</key>
+                            <value>3600</value>
                         </entry>
                         <entry>
                             <key>assume-role-external-id</key>
@@ -816,18 +823,21 @@
                     <properties>
                         <entry>
                             <key>Schema Write Strategy</key>
+                            <value>no-schema</value>
                         </entry>
                         <entry>
                             <key>schema-cache</key>
                         </entry>
                         <entry>
                             <key>schema-access-strategy</key>
+                            <value>inherit-record-schema</value>
                         </entry>
                         <entry>
                             <key>schema-registry</key>
                         </entry>
                         <entry>
                             <key>schema-name</key>
+                            <value>${schema.name}</value>
                         </entry>
                         <entry>
                             <key>schema-version</key>
@@ -837,6 +847,7 @@
                         </entry>
                         <entry>
                             <key>schema-text</key>
+                            <value>${avro.schema}</value>
                         </entry>
                         <entry>
                             <key>Date Format</key>
@@ -849,18 +860,23 @@
                         </entry>
                         <entry>
                             <key>Pretty Print JSON</key>
+                            <value>false</value>
                         </entry>
                         <entry>
                             <key>suppress-nulls</key>
+                            <value>never-suppress</value>
                         </entry>
                         <entry>
                             <key>output-grouping</key>
+                            <value>output-array</value>
                         </entry>
                         <entry>
                             <key>compression-format</key>
+                            <value>none</value>
                         </entry>
                         <entry>
                             <key>compression-level</key>
+                            <value>1</value>
                         </entry>
                     </properties>
                     <state>ENABLED</state>
@@ -995,30 +1011,38 @@
                         </entry>
                         <entry>
                             <key>Max Wait Time</key>
+                            <value>500 millis</value>
                         </entry>
                         <entry>
                             <key>Max Total Connections</key>
+                            <value>8</value>
                         </entry>
                         <entry>
                             <key>Validation-query</key>
                         </entry>
                         <entry>
                             <key>dbcp-min-idle-conns</key>
+                            <value>0</value>
                         </entry>
                         <entry>
                             <key>dbcp-max-idle-conns</key>
+                            <value>8</value>
                         </entry>
                         <entry>
                             <key>dbcp-max-conn-lifetime</key>
+                            <value>-1</value>
                         </entry>
                         <entry>
                             <key>dbcp-time-between-eviction-runs</key>
+                            <value>-1</value>
                         </entry>
                         <entry>
                             <key>dbcp-min-evictable-idle-time</key>
+                            <value>30 mins</value>
                         </entry>
                         <entry>
                             <key>dbcp-soft-min-evictable-idle-time</key>
+                            <value>-1</value>
                         </entry>
                     </properties>
                     <state>ENABLED</state>
@@ -1094,8 +1118,8 @@
                     <id>21d57245-4e1f-343d-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <position>
-                        <x>120.0</x>
-                        <y>504.0</y>
+                        <x>112.0</x>
+                        <y>528.0</y>
                     </position>
                     <bundle>
                         <artifact>nifi-standard-nar</artifact>
@@ -1178,12 +1202,12 @@
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
-                    <name>GenerateFlowFile</name>
+                    <name>health_card_trigger</name>
                     <relationships>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
                 </processors>
@@ -2683,6 +2707,12 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                             </entry>
                             <entry>
 <key>sql-pre-query</key>
+<value>${query_type:startsWith('health_card_index_meta'):ifElse('',
+${query_type:startsWith('health_card_index_district'):ifElse("select infra_district_reports('water','toilet');",
+${query_type:startsWith('health_card_index_block'):ifElse("select infra_block_reports('water','toilet');",
+${query_type:startsWith('health_card_index_cluster'):ifElse("select infra_cluster_reports('water','toilet');",
+${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_reports('water','toilet');",'')}
+)} )} )} )}</value>
                             </entry>
                             <entry>
 <key>SQL select query</key>
@@ -3139,5 +3169,5 @@ file:${filename},Error while executing "${query_type}" query.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/16/2020 20:37:54 IST</timestamp>
+    <timestamp>12/17/2020 09:19:31 IST</timestamp>
 </template>
