@@ -22035,6 +22035,35 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>051db09a-343e-3d83-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>2384.0</x>
+<y>-600.0</y>
+                            </bends>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>cdb2e27d-9743-34fa-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name>diksha_agg_queries</name>
+                            <selectedRelationships>unmatched</selectedRelationships>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>4152fa6b-fe81-351a-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>05d430f1-99dc-35d6-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -23023,12 +23052,12 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>4936.0</x>
-<y>-520.0</y>
+<x>6056.0</x>
+<y>-564.9999694824219</y>
                             </bends>
                             <bends>
-<x>4944.0</x>
-<y>-56.0</y>
+<x>6064.0</x>
+<y>-100.99996948242188</y>
                             </bends>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
@@ -23192,7 +23221,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>cdb2e27d-9743-34fa-0000-000000000000</id>
+<id>4152fa6b-fe81-351a-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -23295,6 +23324,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>5cb16b88-87ce-3c1e-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>51c4d5ff-b19c-34c3-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>e74b5168-21ed-3e72-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>5ddae9ea-83bf-3dbc-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -23369,6 +23423,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
 <id>d391f5c9-1480-3ab0-0000-000000000000</id>
 <type>FUNNEL</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>634cde24-3299-35b7-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>682bfe60-5997-3d13-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>e74b5168-21ed-3e72-0000-000000000000</id>
+<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -24010,16 +24089,16 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>3038.17431640625</x>
-<y>-128.5408935546875</y>
+<x>4158.17431640625</x>
+<y>-173.54086303710938</y>
                             </bends>
                             <bends>
-<x>2982.17431640625</x>
-<y>-248.5408935546875</y>
+<x>4102.17431640625</x>
+<y>-293.5408630371094</y>
                             </bends>
                             <bends>
-<x>3022.17431640625</x>
-<y>-480.5408935546875</y>
+<x>4142.17431640625</x>
+<y>-525.5408630371094</y>
                             </bends>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
@@ -25160,6 +25239,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
 <id>686e51f4-6e0c-36c5-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>f65d93f6-5ec1-3e7e-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>e74b5168-21ed-3e72-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>diksha_raw</selectedRelationships>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>4152fa6b-fe81-351a-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -26782,6 +26886,233 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <state>ENABLED</state>
                             <type>org.apache.nifi.json.JsonRecordSetWriter</type>
                         </controllerServices>
+                        <controllerServices>
+                            <id>fe25f19b-2124-30c9-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <bundle>
+<artifact>nifi-record-serialization-services-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <comments></comments>
+                            <descriptors>
+<entry>
+    <key>Schema Write Strategy</key>
+    <value>
+        <name>Schema Write Strategy</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-cache</key>
+    <value>
+        <identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
+        <name>schema-cache</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-access-strategy</key>
+    <value>
+        <name>schema-access-strategy</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-registry</key>
+    <value>
+        <identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
+        <name>schema-registry</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-name</key>
+    <value>
+        <name>schema-name</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-version</key>
+    <value>
+        <name>schema-version</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-branch</key>
+    <value>
+        <name>schema-branch</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-text</key>
+    <value>
+        <name>schema-text</name>
+    </value>
+</entry>
+<entry>
+    <key>Date Format</key>
+    <value>
+        <name>Date Format</name>
+    </value>
+</entry>
+<entry>
+    <key>Time Format</key>
+    <value>
+        <name>Time Format</name>
+    </value>
+</entry>
+<entry>
+    <key>Timestamp Format</key>
+    <value>
+        <name>Timestamp Format</name>
+    </value>
+</entry>
+<entry>
+    <key>CSV Format</key>
+    <value>
+        <name>CSV Format</name>
+    </value>
+</entry>
+<entry>
+    <key>Value Separator</key>
+    <value>
+        <name>Value Separator</name>
+    </value>
+</entry>
+<entry>
+    <key>Include Header Line</key>
+    <value>
+        <name>Include Header Line</name>
+    </value>
+</entry>
+<entry>
+    <key>Quote Character</key>
+    <value>
+        <name>Quote Character</name>
+    </value>
+</entry>
+<entry>
+    <key>Escape Character</key>
+    <value>
+        <name>Escape Character</name>
+    </value>
+</entry>
+<entry>
+    <key>Comment Marker</key>
+    <value>
+        <name>Comment Marker</name>
+    </value>
+</entry>
+<entry>
+    <key>Null String</key>
+    <value>
+        <name>Null String</name>
+    </value>
+</entry>
+<entry>
+    <key>Trim Fields</key>
+    <value>
+        <name>Trim Fields</name>
+    </value>
+</entry>
+<entry>
+    <key>Quote Mode</key>
+    <value>
+        <name>Quote Mode</name>
+    </value>
+</entry>
+<entry>
+    <key>Record Separator</key>
+    <value>
+        <name>Record Separator</name>
+    </value>
+</entry>
+<entry>
+    <key>Include Trailing Delimiter</key>
+    <value>
+        <name>Include Trailing Delimiter</name>
+    </value>
+</entry>
+<entry>
+    <key>csvutils-character-set</key>
+    <value>
+        <name>csvutils-character-set</name>
+    </value>
+</entry>
+                            </descriptors>
+                            <name>CSVRecordSetWriter_comma</name>
+                            <persistsState>false</persistsState>
+                            <properties>
+<entry>
+    <key>Schema Write Strategy</key>
+</entry>
+<entry>
+    <key>schema-cache</key>
+</entry>
+<entry>
+    <key>schema-access-strategy</key>
+</entry>
+<entry>
+    <key>schema-registry</key>
+</entry>
+<entry>
+    <key>schema-name</key>
+</entry>
+<entry>
+    <key>schema-version</key>
+</entry>
+<entry>
+    <key>schema-branch</key>
+</entry>
+<entry>
+    <key>schema-text</key>
+</entry>
+<entry>
+    <key>Date Format</key>
+</entry>
+<entry>
+    <key>Time Format</key>
+</entry>
+<entry>
+    <key>Timestamp Format</key>
+</entry>
+<entry>
+    <key>CSV Format</key>
+</entry>
+<entry>
+    <key>Value Separator</key>
+</entry>
+<entry>
+    <key>Include Header Line</key>
+</entry>
+<entry>
+    <key>Quote Character</key>
+</entry>
+<entry>
+    <key>Escape Character</key>
+</entry>
+<entry>
+    <key>Comment Marker</key>
+</entry>
+<entry>
+    <key>Null String</key>
+</entry>
+<entry>
+    <key>Trim Fields</key>
+</entry>
+<entry>
+    <key>Quote Mode</key>
+</entry>
+<entry>
+    <key>Record Separator</key>
+</entry>
+<entry>
+    <key>Include Trailing Delimiter</key>
+</entry>
+<entry>
+    <key>csvutils-character-set</key>
+</entry>
+                            </properties>
+                            <state>ENABLED</state>
+                            <type>org.apache.nifi.csv.CSVRecordSetWriter</type>
+                        </controllerServices>
                         <funnels>
                             <id>16415016-26ae-3ace-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
@@ -27138,8 +27469,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <id>c704ebe3-ab97-3464-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>3472.0</x>
-<y>-720.0</y>
+<x>4592.0</x>
+<y>-760.0</y>
                             </position>
                             <height>40.0</height>
                             <label>update log summary, store into s3 output</label>
@@ -27572,7 +27903,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_count_null_value},'None'
                             <id>0e32cfa3-806c-32c6-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>1248.0</x>
+<x>1224.0</x>
 <y>136.0</y>
                             </position>
                             <bundle>
@@ -27684,8 +28015,8 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_count_null_value},'None'
                             <id>116f5b04-7c53-34aa-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>3144.0</x>
-<y>24.0</y>
+<x>4264.0</x>
+<y>-16.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -27813,8 +28144,8 @@ where ff_uuid= '${zip_identifier}'
                             <id>13648f3f-34df-3219-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>3144.0</x>
-<y>-184.0</y>
+<x>4264.0</x>
+<y>-224.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -28082,8 +28413,8 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
                             <id>1a16bc48-6e1f-3f9a-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>4464.0</x>
-<y>-376.0</y>
+<x>5584.0</x>
+<y>-416.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -28825,7 +29156,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
                             <id>2b6a1f04-c422-3870-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>544.0</x>
+<x>560.0</x>
 <y>-128.0</y>
                             </position>
                             <bundle>
@@ -29778,6 +30109,69 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
                             <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
+                        </processors>
+                        <processors>
+                            <id>4152fa6b-fe81-351a-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <position>
+<x>3088.0</x>
+<y>-768.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>
+            <name>Routing Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>diksha_raw</key>
+        <value>
+            <name>diksha_raw</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>Route to Property name</value>
+    </entry>
+    <entry>
+        <key>diksha_raw</key>
+        <value>${query_type:startsWith('diksha_stack_bar_raw'):or(
+${query_type:startsWith('diksha_table_raw')})}</value>
+    </entry>
+</properties>
+<runDurationMillis>25</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>route_raw_data</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>diksha_raw</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
                         <processors>
                             <id>4309d5dd-b418-3d24-0000-000000000000</id>
@@ -30770,9 +31164,29 @@ ${query_type:startsWith('diksha_tpd_r2_cluster_overall'):ifElse('diksha_tpd/repo
 ${query_type:startsWith('diksha_tpd_r2_school_last_day'):ifElse('diksha_tpd/report2/last_day/school/${type}/${id}.json',
 ${query_type:startsWith('diksha_tpd_r2_school_last_7_days'):ifElse('diksha_tpd/report2/last_7_days/school/${type}/${id}.json',
 ${query_type:startsWith('diksha_tpd_r2_school_last_30_days'):ifElse('diksha_tpd/report2/last_30_days/school/${type}/${id}.json',
-${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('diksha_tpd/report2/overall/school/${type}/${id}.json','None')} 
-)} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} 
-)} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
+${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('diksha_tpd/report2/overall/school/${type}/${id}.json',
+${query_type:startsWith('diksha_stack_bar_raw_all_last_day'):ifElse('diksha_raw_data/stack_bar_reports/last_day/all.json',
+${query_type:startsWith('diksha_stack_bar_raw_all_last_7_days'):ifElse('diksha_raw_data/stack_bar_reports/last_7_days/all.json',
+${query_type:startsWith('diksha_stack_bar_raw_all_last_30_days'):ifElse('diksha_raw_data/stack_bar_reports/last_30_days/all.json',
+${query_type:startsWith('diksha_stack_bar_raw_all_all'):ifElse('diksha_raw_data/stack_bar_reports/all.json',
+${query_type:startsWith('diksha_stack_bar_raw_last_day'):ifElse('diksha_raw_data/stack_bar_reports/last_day/all.json',
+${query_type:startsWith('diksha_stack_bar_raw_last_7_days'):ifElse('diksha_raw_data/stack_bar_reports/last_7_days/all.json',
+${query_type:startsWith('diksha_stack_bar_raw_last_30_days'):ifElse('diksha_raw_data/stack_bar_reports/last_30_days/all.json',
+${query_type:startsWith('diksha_stack_bar_raw_all'):ifElse('diksha_raw_data/stack_bar_reports/all.json',
+${query_type:startsWith('diksha_table_raw_txtb_last_day'):ifElse('diksha_raw_data/table_reports/textbook/last_day/all.json',
+${query_type:startsWith('diksha_table_raw_txtb_last_7_days'):ifElse('diksha_raw_data/table_reports/textbook/last_7_days/all.json',
+${query_type:startsWith('diksha_table_raw_txtb_last_30_days'):ifElse('diksha_raw_data/table_reports/textbook/last_30_days/all.json',
+${query_type:startsWith('diksha_table_raw_txtb_all'):ifElse('diksha_raw_data/table_reports/textbook/all.json',
+${query_type:startsWith('diksha_table_raw_crs_last_day'):ifElse('diksha_raw_data/table_reports/course/last_day/all.json',
+${query_type:startsWith('diksha_table_raw_crs_last_7_days'):ifElse('diksha_raw_data/table_reports/course/last_7_days/all.json',
+${query_type:startsWith('diksha_table_raw_crs_last_30_days'):ifElse('diksha_raw_data/table_reports/course/last_30_days/all.json',
+${query_type:startsWith('diksha_table_raw_crs_all'):ifElse('diksha_raw_data/table_reports/course/all.json',
+${query_type:startsWith('diksha_table_raw_all_last_day'):ifElse('diksha_raw_data/table_reports/all/last_day/all.json',
+${query_type:startsWith('diksha_table_raw_all_last_7_days'):ifElse('diksha_raw_data/table_reports/all/last_7_days/all.json',
+${query_type:startsWith('diksha_table_raw_all_last_30_days'):ifElse('diksha_raw_data/table_reports/all/last_30_days/all.json',
+${query_type:startsWith('diksha_table_raw_all_all'):ifElse('diksha_raw_data/table_reports/all/all.json','None')} 
+)} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} 
+)} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )})} )} )} )} )} )}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -30908,7 +31322,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('diksha_tpd/repor
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -31076,7 +31490,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('diksha_tpd/repor
                             <id>553735d3-7431-3fd2-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>1208.0</x>
+<x>1224.0</x>
 <y>-96.0</y>
                             </position>
                             <bundle>
@@ -32038,7 +32452,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -32741,7 +33155,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -32898,7 +33312,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
                             <id>7642612a-4f40-35ad-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>1192.0</x>
+<x>1224.0</x>
 <y>-408.0</y>
                             </position>
                             <bundle>
@@ -33297,8 +33711,8 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
                             <id>879ef24c-1c3d-3561-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>4464.0</x>
-<y>-560.0</y>
+<x>5584.0</x>
+<y>-600.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -33913,8 +34327,8 @@ WHERE ff_uuid = '${files_uuid}'</value>
                             <id>a04ea80f-913c-35e7-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>3144.0</x>
-<y>-560.0</y>
+<x>4264.0</x>
+<y>-600.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -34404,8 +34818,8 @@ file: ${filename} null values are found.</value>
                             <id>a75764d5-9ff3-3c16-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>3792.0</x>
-<y>-560.0</y>
+<x>4912.0</x>
+<y>-600.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -34643,8 +35057,8 @@ file: ${filename} blank lines validation started.</value>
                             <id>b2bc976e-7c5a-307f-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>3144.0</x>
-<y>-376.0</y>
+<x>4264.0</x>
+<y>-416.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -37002,8 +37416,8 @@ file: ${filename} null values are not found.</value>
                             <id>e31d37c4-2a36-3b26-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>4464.0</x>
-<y>-112.0</y>
+<x>5584.0</x>
+<y>-152.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
@@ -37373,6 +37787,157 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
                         <processors>
+                            <id>e74b5168-21ed-3e72-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <position>
+<x>2456.0</x>
+<y>-568.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Database Connection Pooling Service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.dbcp.DBCPService</identifiesControllerService>
+            <name>Database Connection Pooling Service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>sql-pre-query</key>
+        <value>
+            <name>sql-pre-query</name>
+        </value>
+    </entry>
+    <entry>
+        <key>SQL select query</key>
+        <value>
+            <name>SQL select query</name>
+        </value>
+    </entry>
+    <entry>
+        <key>sql-post-query</key>
+        <value>
+            <name>sql-post-query</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Max Wait Time</key>
+        <value>
+            <name>Max Wait Time</name>
+        </value>
+    </entry>
+    <entry>
+        <key>esqlrecord-record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>esqlrecord-record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>esqlrecord-normalize</key>
+        <value>
+            <name>esqlrecord-normalize</name>
+        </value>
+    </entry>
+    <entry>
+        <key>dbf-user-logical-types</key>
+        <value>
+            <name>dbf-user-logical-types</name>
+        </value>
+    </entry>
+    <entry>
+        <key>esql-max-rows</key>
+        <value>
+            <name>esql-max-rows</name>
+        </value>
+    </entry>
+    <entry>
+        <key>esql-output-batch-size</key>
+        <value>
+            <name>esql-output-batch-size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>esql-fetch-size</key>
+        <value>
+            <name>esql-fetch-size</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Database Connection Pooling Service</key>
+        <value>ea8600ba-3d4a-3f65-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>sql-pre-query</key>
+    </entry>
+    <entry>
+        <key>SQL select query</key>
+    </entry>
+    <entry>
+        <key>sql-post-query</key>
+    </entry>
+    <entry>
+        <key>Max Wait Time</key>
+        <value>0 seconds</value>
+    </entry>
+    <entry>
+        <key>esqlrecord-record-writer</key>
+        <value>fe25f19b-2124-30c9-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>esqlrecord-normalize</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>dbf-user-logical-types</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>esql-max-rows</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>esql-output-batch-size</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>esql-fetch-size</key>
+        <value>0</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>diksha_queries_execution_raw</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
+                        </processors>
+                        <processors>
                             <id>e9d3bd4c-e022-32fb-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
@@ -37454,8 +38019,8 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
                             <id>ecfb85be-9bd3-3dbd-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>3792.0</x>
-<y>-376.0</y>
+<x>4912.0</x>
+<y>-416.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -38133,7 +38698,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
                             <id>fb236315-fe88-3513-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>576.0</x>
+<x>560.0</x>
 <y>120.0</y>
                             </position>
                             <bundle>
@@ -38250,5 +38815,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/08/2020 23:27:40 IST</timestamp>
+    <timestamp>12/18/2020 16:16:39 IST</timestamp>
 </template>
