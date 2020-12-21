@@ -2050,12 +2050,15 @@ file:${filename},Error while partitioning "${query_type
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>${query_type:startsWith('health_card_index_meta'):ifElse('healthCard/metaData.json',
+<value>${query_type:startsWith('health_card_index_meta_district'):ifElse('healthCard/district/metaData.json',
+${query_type:startsWith('health_card_index_meta_block'):ifElse('healthCard/block/metaData.json',
+${query_type:startsWith('health_card_index_meta_cluster'):ifElse('healthCard/cluster/metaData.json',
+${query_type:startsWith('health_card_index_meta_school'):ifElse('healthCard/school/metaData.json',
 ${query_type:startsWith('health_card_index_district'):ifElse('healthCard/district/${partition_by_level}.json',
 ${query_type:startsWith('health_card_index_block'):ifElse('healthCard/block/${partition_by_level}.json',
 ${query_type:startsWith('health_card_index_cluster'):ifElse('healthCard/cluster/${partition_by_level}.json',
 ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${partition_by_level}.json','None')}
-)} )} )} )}</value>
+)} )} )} )} )} )} )}</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
@@ -2191,7 +2194,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                 </processors>
@@ -3169,5 +3172,5 @@ file:${filename},Error while executing "${query_type}" query.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/18/2020 16:01:08 IST</timestamp>
+    <timestamp>12/21/2020 11:41:54 IST</timestamp>
 </template>
