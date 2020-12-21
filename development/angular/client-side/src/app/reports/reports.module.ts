@@ -7,6 +7,8 @@ import { TelemetryDataComponent } from './telemetry/telemetry-data/telemetry-dat
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+// import { HealthCardComponent } from './healthCard/health-card/health-card.component';
+import { SearchPageComponent } from './healthCard/search-page/search-page.component';
 
 const otherRoutes = [
   {
@@ -42,7 +44,8 @@ const otherRoutes = [
     CrcReportComponent,
     ChangePasswordComponent,
     TelemetryDataComponent,
-    CompositReportComponent
+    CompositReportComponent,
+    SearchPageComponent
   ],
   imports: [
     CommonModule,

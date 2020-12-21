@@ -5,6 +5,8 @@ import { AuthGuard } from './auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { ComingSoonComponent } from './common/coming-soon/coming-soon.component';
+import { HealthCardComponent } from './reports/healthCard/health-card/health-card.component';
+import { SearchPageComponent } from './reports/healthCard/search-page/search-page.component';
 
 const routes: Routes = [
   {
@@ -20,6 +22,12 @@ const routes: Routes = [
       },
       {
         path: 'coming-soon', component: ComingSoonComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'healthCard-search', component: SearchPageComponent
+      },
+      {
+        path: 'healthCard', component: HealthCardComponent
       },
       {
         path: 'diksha', loadChildren: () => import('./reports/diksha/diksha.module').then(m => m.DikshaModule)
@@ -41,7 +49,6 @@ const routes: Routes = [
       }
     ]
   }
-
 ];
 
 @NgModule({

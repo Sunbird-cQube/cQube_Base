@@ -20,6 +20,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { InfoComponent } from './common/info/info.component';
 import { DikshaChartComponent } from './reports/diksha/diksha-chart/diksha-chart.component';
+import { HealthCardComponent } from './reports/healthCard/health-card/health-card.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -32,7 +33,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     DashboardComponent,
     HomePageComponent,
     InfoComponent,
-    DikshaChartComponent
+    DikshaChartComponent,
+    HealthCardComponent
   ],
   imports: [
     BrowserModule,
