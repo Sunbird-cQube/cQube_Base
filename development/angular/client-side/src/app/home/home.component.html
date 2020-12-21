@@ -106,7 +106,8 @@
             <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu9}" *ngIf="isExpanded || isShowing">
               expand_more</mat-icon>
           </mat-list-item>
-          <div class="submenu9" [ngClass]="{'expanded' : showSubmenu9}" *ngIf="diksha_column && (isShowing || isExpanded)">
+          <div class="submenu9" [ngClass]="{'expanded' : showSubmenu9}"
+            *ngIf="diksha_column && (isShowing || isExpanded)">
             <a mat-list-item [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-user-profile']"
               (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'dsc')" id="chrtReport"
               (click)="showSubmenu2 = !showSubmenu2"><span style="margin-left: 50px;">Usage by user profile</span></a>
@@ -118,7 +119,8 @@
               (click)="showSubmenu9 = !showSubmenu9"><span style="margin-left: 50px;">Usage by Textbook
                 Content</span></a>
           </div>
-          <div class="submenu4" [ngClass]="{'expanded' : showSubmenu9}" *ngIf="!diksha_column && (isShowing || isExpanded)">            
+          <div class="submenu4" [ngClass]="{'expanded' : showSubmenu9}"
+            *ngIf="!diksha_column && (isShowing || isExpanded)">
             <a mat-list-item [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook']"
               (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'dtr')" id="ut"
               (click)="showSubmenu9 = !showSubmenu9"><span style="margin-left: 50px;">Usage by Textbook</span></a>
@@ -184,6 +186,16 @@
               (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Download Exception List</span></a>
           </div>
         </mat-nav-list>
+
+        <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;"
+          [routerLink]="!nifi_semester ? ['/coming-soon'] :['/healthCard']"
+          (click)="fetchTelemetry($event,'healthCard')" id="healthCard">
+          <td>
+            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+          </td>
+          <td>
+            &nbsp;&nbsp; Health-Card </td>
+        </a>
 
         <mat-nav-list>
           <mat-list-item (click)="showSubmenu3 = !showSubmenu3" class="abc1"

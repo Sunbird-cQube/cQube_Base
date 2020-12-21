@@ -120,7 +120,7 @@ export class AppServiceComponent {
             });
         } else {
             markerIcon = L.circleMarker([lat, lng], {
-                radius: radius,
+                radius: 1,
                 color: color,
                 fillColor: color,
                 fillOpacity: 1,

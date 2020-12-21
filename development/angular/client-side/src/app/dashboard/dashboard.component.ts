@@ -34,6 +34,7 @@ export class DashboardComponent implements OnInit {
   lotableTooltip;
   tpdtpTooltip;
   tpdcpTooltip;
+  healthCardTooltip;
 
   hiddenPass = false;
   edate: Date;
@@ -63,6 +64,7 @@ export class DashboardComponent implements OnInit {
   tpdcpViews;
   tpdenrollViews;
   tpdcompViews;
+  healthCardViews;
 
   //for coming soon page
   nifi_crc;
@@ -77,8 +79,8 @@ export class DashboardComponent implements OnInit {
 
   // diksha columns
   diksha_column = 'diksha_columns' in environment ? environment['diksha_columns'] : true
-  
-  
+
+
   constructor(private router: Router, private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
     service.logoutOnTokenExpire();
     this.changeDataSourceStatus();
@@ -292,6 +294,9 @@ export class DashboardComponent implements OnInit {
       }
       if (element.reportid == 'tpd-comp') {
         this.tpdcompViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'healthCard') {
+        this.healthCardViews = element.number_of_views + " (" + timeStr + ")";
       }
 
     });

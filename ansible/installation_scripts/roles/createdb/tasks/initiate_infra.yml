@@ -33,7 +33,7 @@
   tags: [ install, update ]
 
 - name: Copying table structure from csv file
-  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy infrastructure_staging_init(infrastructure_name,infrastructure_category,status) from '/tmp/postgres/infrastructure_master.csv' delimiter ',' csv header;"
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -c "copy infrastructure_master(infrastructure_name,infrastructure_category,score,status) from '/tmp/postgres/infrastructure_master.csv' delimiter ',' csv header;"
   when: output_infra.stdout_lines[2].strip() == "0"
   tags: [ install, update ]
 

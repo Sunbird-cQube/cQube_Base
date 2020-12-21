@@ -8,3 +8,4 @@ nifi_telemetry: true
 nifi_udise: true
 nifi_pat: true
 nifi_composite: true
+nifi_healthcard: true

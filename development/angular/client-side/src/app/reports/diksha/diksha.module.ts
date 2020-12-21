@@ -51,7 +51,6 @@ const dikshaRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    DikshaChartComponent,
     DikshaTableComponent,
     DikshaBarChartComponent,
     DikshaUsageByTextBookComponent,
