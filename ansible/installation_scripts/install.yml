@@ -64,6 +64,10 @@
             tags: install
             when: nifi_composite
 
+          - role: nifi_healthcard
+            tags: install
+            when: nifi_healthcard
+
           - { role: nifi_scheduler, tags: install }
           - cqube_version
           

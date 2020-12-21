@@ -1,0 +1,172 @@
+---
+- name: Fetch nifi root processor group id
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
+    method: GET
+  register: processor_id
+
+- name: upload template
+  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/healthcard_transformer.xml
+  register: xml_output
+  args:
+    warn: false
+
+- name: Upload parameters
+  action: shell curl -d @{{ item }} -H Content-Type:application/json -X POST http://localhost:{{ nifi_port }}/nifi-api/parameter-contexts
+  with_items:
+     - nifi_json_files/healthcard.json
+  args:
+    warn: false
+
+- name: Get processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_id.json.id }}
+    method: GET
+  register: processor_group
+
+- name: Get template list
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/templates
+    method: GET
+  register: template_list
+
+- name: Instatiate template list
+  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }' http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
+  loop: "{{ template_list.json | json_query('templates[*]') }}"
+  when: item.template.name == 'healthcard_transformer'
+  no_log: True
+  args:
+    warn: false
+
+- name: Fetch nifi processor group id
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
+    method: GET
+  register: processor_id
+
+- name: Get processor group after instantiation of template
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_id.json.id }}
+    method: GET
+  register: processor_group_temp
+
+#--- Fetching the processor group id of composite processor ---
+- name: Get processor group id of the healthcard processor
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
+    method: GET
+  loop: "{{ processor_group_temp.json | json_query('processGroupFlow.flow.processGroups[*]') }}"
+  when: item.component.name == 'healthcard_transformer'
+  register: processor_group_template
+  no_log: True
+
+- set_fact:
+    healthcard_pg_id: "{{  processor_group_template | json_query('results[?item.component.name == `healthcard_transformer`]') }}"
+
+- name: Get Default Parameter Contexts
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/parameter-contexts
+    method: GET
+  register: parameters
+
+#--- Connecting composite processor group to composite parameters ---
+- name: Connection of healthcard processor group to healthcard parameters
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ healthcard_pg_id[0].item.component.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+            "version": "{{ healthcard_pg_id[0].item.revision.version }}",
+            "lastModifier": "Ansible"
+        },"component":
+              {"id": "{{ healthcard_pg_id[0].item.component.id }}","parameterContext":{"id": "{{ item.component.id }}"}}
+     }
+  loop: "{{ parameters.json | json_query('parameterContexts[*]') }}"
+  when: item.component.name == 'health_card_parameters'
+  no_log: true
+
+#--- Run a python code to load required parameter values ---
+- name: Deleting params file if exists
+  file:
+    path: "{{ base_dir }}/cqube/emission_app/python/{{ item }}"
+    state: absent
+  with_items:
+    - update_nifi_params.py
+
+- name: creating python code for parameters
+  template: 
+    src: "{{ item }}.j2"
+    dest: "{{ base_dir }}/cqube/emission_app/python/{{ item }}"
+    mode: "0644"
+  with_items:
+    - update_nifi_params.py
+
+- name: Run python code
+  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/{{ item }}"
+  with_items:
+    - update_nifi_params.py
+
+#--- Get the controller list and update the sensitive parameters ---
+- name: Get controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ healthcard_pg_id[0].item.component.id }}/controller-services
+    method: GET
+  register: controllers_list
+  no_log: True
+
+- name: Add s3 credentials parameters
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+             "version": "{{ item.revision.version }}",
+            "lastModifier": "Ansible"
+        },
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_health_card",
+        "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
+
+     }
+  loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'cQube_s3_health_card'
+  no_log: True
+    
+- name: Add postgre-source-pwd
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+             "version": "{{ item.revision.version }}",
+            "lastModifier": "Ansible"
+        },
+        "component": {"id": "{{ item.id }}", "name": "postgres_health_card",
+        "properties" : { "Password" : "#{db_password}"}}
+
+     }
+  loop: "{{ controllers_list.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'postgres_health_card'
+  no_log: True
+
+- name: Get controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ healthcard_pg_id[0].item.component.id }}/controller-services
+    method: GET
+  register: controllers_list_updated
+  no_log: True
+  
+- name: Start controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+            "version": "{{ item.revision.version }}",
+            "lastModifier": "Ansible"
+        },
+        "component":
+        {"id": "{{ item.id }}","state":"ENABLED"}
+        }
+  loop: "{{ controllers_list_updated.json | json_query('controllerServices[*]') }}"
+  when: item.component.state == 'DISABLED'
+  no_log: true

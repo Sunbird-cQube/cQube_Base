@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from '../../../services/diksha-report.service';
 import { Router } from '@angular/router';
@@ -18,6 +18,10 @@ export class DikshaChartComponent implements OnInit {
   chart2: boolean = false;
   chart3: boolean = false;
   chart4: boolean = false;
+
+  usagebyOthers = `Total Content Usage by Others : `;
+  usageByTeachers = `Total Content Usage by Teachers : `;
+  usageByStudents = `Total Content Usage by Students : `;
 
   public colors = [];
   public barChartOptions: ChartOptions = {};
@@ -155,7 +159,7 @@ export class DikshaChartComponent implements OnInit {
       this.subjects = [];
       await result['funRes']['data'].forEach(async element => {
         arr.push(element.score.map(Number));
-        this.legendColors.push(await this.getColor(element));
+        this.legendColors.push(this.getColor(element));
         this.subjects.push(element.subject);
       });
       var array = arr;
@@ -241,7 +245,7 @@ export class DikshaChartComponent implements OnInit {
       this.subjects = [];
       await result['funRes']['data'].forEach(async element => {
         arr.push(element.score.map(Number));
-        this.legendColors.push(await this.getColor(element));
+        this.legendColors.push(this.getColor(element));
         this.subjects.push(element.subject);
       });
       var array = arr;
@@ -350,7 +354,7 @@ export class DikshaChartComponent implements OnInit {
       data.data.forEach(async element => {
         var obj = { data: element.score, label: element.subject, stack: 'a' }
         chartData.push(obj);
-        colors.push(await this.getColor(element));
+        colors.push(this.getColor(element));
       });
       this.barChartOptions = {
         legend: {
