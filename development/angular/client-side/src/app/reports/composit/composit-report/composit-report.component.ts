@@ -41,7 +41,7 @@ export class CompositReportComponent implements OnInit {
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
-  public skul: boolean = false;
+  public skul: boolean = true;
 
   public title: string = '';
   public titleName: string = '';

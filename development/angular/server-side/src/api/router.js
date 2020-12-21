@@ -150,6 +150,19 @@ router.use('/showBlockTelemetry', showBlockTelemetry);
 router.use('/showClusterTelemetry', showClusterTelemetry);
 router.use('/showSchoolTelemetry', showSchoolTelemetry);
 
+// healthCard
+const healthCardMeta = require('./controller/healthCard/metadata');
+const districtHealthCard = require('./controller/healthCard/districtWise');
+const blockHealthCard = require('./controller/healthCard/blockWise');
+const clusterHealthCard = require('./controller/healthCard/clusterWise');
+const schoolHealthCard = require('./controller/healthCard/schoolWise');
+
+router.use('/healthCard', healthCardMeta);
+router.use('/healthCard', districtHealthCard);
+router.use('/healthCard', blockHealthCard);
+router.use('/healthCard', clusterHealthCard);
+router.use('/healthCard', schoolHealthCard);
+
 //Udise......
 router.use('/udise', UDISE_dist_wise);
 router.use('/udise', UDISE_block_wise);
