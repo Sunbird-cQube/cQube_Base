@@ -431,11 +431,12 @@ export class SemViewComponent implements OnInit, OnDestroy {
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var color = this.commonService.color(this.schoolMarkers[i], 'semester_performance');
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, color, .9, 1, .5, this.levelWise);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, color, 0, 0, 0.3, this.levelWise);
               this.generateToolTip(markerIcon, this.schoolMarkers[i], this.levelWise);
             }
 
-            this.commonService.restrictZoom(globalMap);
+            globalMap.doubleClickZoom.enable();
+            globalMap.scrollWheelZoom.enable();
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 

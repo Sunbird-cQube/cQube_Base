@@ -179,6 +179,8 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+select insert_infra_agg();
+
 /* Visualization */
 /*  District - reports (map and table) */
 
@@ -273,6 +275,8 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+select infra_district_reports('water','toilet');
+
 /* Block - reports (map and table) */
 
 create or replace FUNCTION infra_block_reports(category_1 text,category_2 text)
@@ -365,6 +369,8 @@ END IF;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
+select infra_block_reports('water','toilet');
 
 /*  Cluster - reports (map and table) */
 
@@ -463,6 +469,8 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+select infra_cluster_reports('water','toilet');
+
 /*  school - reports (map and table) */
 
 create or replace FUNCTION infra_school_reports(category_1 text,category_2 text)
@@ -560,6 +568,8 @@ END IF;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
+select infra_school_reports('water','toilet');
 
 /* JOLT spec dynamic */
 -- old and current jolt structure
@@ -920,7 +930,6 @@ return 0;
 END;
 $$
 LANGUAGE plpgsql;
-
 
 /*Create jolt spec for Infra reports*/
 

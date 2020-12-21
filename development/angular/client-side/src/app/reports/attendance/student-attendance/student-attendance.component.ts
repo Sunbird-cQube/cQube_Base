@@ -437,11 +437,12 @@ export class StudengtAttendanceComponent implements OnInit {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(sorted[i]['district_id']);
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 0.9, 1, 0.4, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 0, 0, 0.3, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
-          this.commonService.restrictZoom(globalMap);
+          globalMap.doubleClickZoom.enable();
+          globalMap.scrollWheelZoom.enable();
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
           globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
           this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -651,7 +652,7 @@ export class StudengtAttendanceComponent implements OnInit {
         var blokName = [];
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
-       
+
         this.markers = sorted;
         this.studentCount = res['studentCount'];
         this.schoolCount = res['schoolCount'];
@@ -759,7 +760,7 @@ export class StudengtAttendanceComponent implements OnInit {
         var clustNames = [];
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
- 
+
         this.markers = [];
         this.studentCount = res['studentCount'];
         this.schoolCount = res['schoolCount'];

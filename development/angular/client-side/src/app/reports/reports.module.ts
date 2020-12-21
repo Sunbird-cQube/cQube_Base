@@ -7,6 +7,7 @@ import { TelemetryDataComponent } from './telemetry/telemetry-data/telemetry-dat
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+// import { HealthCardComponent } from './healthCard/health-card/health-card.component';
 
 const otherRoutes = [
   {
