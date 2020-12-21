@@ -1,4 +1,4 @@
 ---
 
-parameter_name: healthcard_parameters
+parameter_name: health_card_parameters
 parameter_path: "{{ base_dir }}/cqube/emission_app/python/health_card_parameters.txt"

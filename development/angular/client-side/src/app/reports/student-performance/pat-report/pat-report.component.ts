@@ -331,13 +331,15 @@ export class PATReportComponent implements OnInit {
             }
 
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var color = this.commonService.color(this.blockMarkers[i].Details, 'Performance');
-              if (this.grade) {
+              var color;
+              if (!this.grade && !this.subject) {
+                color = this.commonService.color(this.blockMarkers[i].Details, 'Performance');
+              } else if (this.grade && !this.subject) {
                 color = this.commonService.color(this.blockMarkers[i].Subjects, 'Grade Performance');
               } else if (this.grade && this.subject) {
                 color = this.commonService.color(this.blockMarkers[i].Subjects, this.subject);
               }
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].Details.latitude, this.blockMarkers[i].Details.longitude, color, 3.5, 0.01, undefined, options.level);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].Details.latitude, this.blockMarkers[i].Details.longitude, color, 3.5, 0.01, 1, options.level);
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.blockMarkers[i], options.level);
             }
@@ -464,7 +466,7 @@ export class PATReportComponent implements OnInit {
               } else if (this.grade && this.subject) {
                 color = this.commonService.color(this.clusterMarkers[i].Subjects, this.subject);
               }
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].Details.latitude, this.clusterMarkers[i].Details.longitude, color, 2, 0.01, 0.5, options.level);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].Details.latitude, this.clusterMarkers[i].Details.longitude, color, 1, 0.01, 0.5, options.level);
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.clusterMarkers[i], options.level);
             }
@@ -588,12 +590,13 @@ export class PATReportComponent implements OnInit {
               } else if (this.grade && this.subject) {
                 color = this.commonService.color(this.schoolMarkers[i].Subjects, this.subject);
               }
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].Details.latitude, this.schoolMarkers[i].Details.longitude, color, 0, 0, 0, 'school');
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].Details.latitude, this.schoolMarkers[i].Details.longitude, color, 0, 0, 0.3, 'school');
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
 
-            this.commonService.restrictZoom(globalMap);
+            globalMap.doubleClickZoom.enable();
+            globalMap.scrollWheelZoom.enable();
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 

@@ -439,7 +439,8 @@ export class UdiseReportComponent implements OnInit {
               //download report
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
-
+            globalMap.doubleClickZoom.enable();
+            globalMap.scrollWheelZoom.enable();
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             //schoolCount
