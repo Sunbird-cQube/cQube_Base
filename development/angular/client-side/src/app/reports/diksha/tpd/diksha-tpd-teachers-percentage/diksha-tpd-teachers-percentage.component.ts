@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts/highstock';
 import HeatmapModule from 'highcharts/modules/heatmap';
 HeatmapModule(Highcharts);
-import { AppServiceComponent } from '../../../app.service';
+import { AppServiceComponent } from '../../../../app.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from 'src/app/services/diksha-report.service';
@@ -53,6 +53,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   public metaData: any;
   myData;
   state: string;
+  courses: Object;
 
   constructor(
     public http: HttpClient,
@@ -65,7 +66,15 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
+    this.service.courseFilter({ timePeriod: 'All' }).subscribe(res => {
+      this.courses = res;
+    });
     this.commonFunc()
+  }
+  selectedCourses = [];
+  shareCheckedList(item: any[]) {
+    this.selectedCourses = item;
+    this.levelWiseFilter();
   }
 
   resetToInitPage() {
@@ -90,7 +99,8 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     this.reportData = [];
     let a = {
       timePeriod: this.timePeriod,
-      reportType: this.reportType
+      reportType: this.reportType,
+      courses: this.selectedCourses
     }
 
     if (this.myData) {
@@ -273,6 +283,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     let a = {
       timePeriod: this.timePeriod,
       reportType: this.reportType,
+      courses: this.selectedCourses,
       districtId: districtId
     }
 
@@ -309,6 +320,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     let a = {
       timePeriod: this.timePeriod,
       reportType: this.reportType,
+      courses: this.selectedCourses,
       districtId: this.district,
       blockId: blockId
     }
@@ -346,6 +358,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     let a = {
       timePeriod: this.timePeriod,
       reportType: this.reportType,
+      courses: this.selectedCourses,
       districtId: this.district,
       blockId: this.block,
       clusterId: clusterId

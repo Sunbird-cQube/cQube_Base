@@ -7,7 +7,7 @@ const helper = require('./helper');
 router.post('/distWise', async (req, res) => {
     try {
         logger.info('--- diksha tpd distwise api ---');
-        let { timePeriod, reportType } = req.body
+        let { timePeriod, reportType, courses } = req.body
         var fileName = `diksha_tpd/district/${timePeriod}.json`;
         var data = await s3File.readS3File(fileName);
 
@@ -24,7 +24,12 @@ router.post('/distWise', async (req, res) => {
             }
             return unique;
         }, []);
-
+        // var courseIds = ['do_3129', 'do_3127'];
+        if (courses.length > 0) {
+            data = data.filter(item => {
+                return courses.includes(item['collection_id']);
+            });
+        }
         data = data.sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1)
         let result = await helper.generalFun(data, 0, reportType);
 
