@@ -39,7 +39,7 @@ export class DikshaReportService {
   dikshaTableMetaData() {
     this.service.logoutOnTokenExpire();
     return this.http.get(`${this.baseUrl}/dikshaTable/dikshaMetaData`);
-  }  
+  }
 
   dikshaAllTableData(data) {
     this.service.logoutOnTokenExpire();
@@ -123,5 +123,9 @@ export class DikshaReportService {
     return this.http.post(`${this.baseUrl}/tpd/schoolData`, data);
   }
 
+  courseFilter(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/diksha/course-filter`, data);
+  }
 }
 

@@ -88,6 +88,7 @@ const tpdDistWise = require('./controller/diksha/tpd-heatChart/distWise');
 const tpdBlockWise = require('./controller/diksha/tpd-heatChart/blockWise');
 const tpdClusterWise = require('./controller/diksha/tpd-heatChart/clusterWise');
 const tpdSchoolWise = require('./controller/diksha/tpd-heatChart/schoolWise');
+const courseFilter = require('./controller/diksha/tpd-heatChart/courseFilter');
 
 //diksha TPD enrollment/completion
 const distLevel = require('./controller/diksha/tpd-enroll-completion/distWise');
@@ -199,6 +200,8 @@ router.use('/diksha/tpd', tpdDistWise);
 router.use('/diksha/tpd', tpdBlockWise);
 router.use('/diksha/tpd', tpdClusterWise);
 router.use('/diksha/tpd', tpdSchoolWise);
+router.use('/diksha/course-filter', courseFilter);
+
 
 const dataSource = require('./controller/dataSource');
 router.use('/dataSource', dataSource);

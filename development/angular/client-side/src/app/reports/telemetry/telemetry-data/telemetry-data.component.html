@@ -79,7 +79,7 @@
         <div class="col-sm-12">
             <span style="font-size: 12px;">Select Time Period ➝ </span>
             <select id="time_period"
-                style="margin-right: 25px; padding: 2.7px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 25px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="timePeriod" name="timePeriod" (change)="getTimePeriod(timePeriod)">
                 <option [value]="timePeriod" disabled selected="selected">Choose Time Period</option>
                 <option *ngFor="let time of timeDetails, let i = index" [(ngValue)]="time.id">
@@ -87,13 +87,13 @@
                 </option>
             </select>
             <button class="btn btn-secondary" id="block"
-                style="margin-right: 10px; font-size: 11px; width: 70px; padding: 2.1px; background-color: rgb(152, 160, 163);"
+                style="margin-right: 10px; font-size: 11px; width: 70px; padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="blockWise()">&nbsp;<strong>Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
-                style="margin-right: 10px; font-size: 11px; width: 70px;padding: 2.1px; background-color: rgb(152, 160, 163);"
+                style="margin-right: 10px; font-size: 11px; width: 70px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="clusterWise()">&nbsp;<strong>Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
-                style="margin-right: 10px; font-size: 11px; width: 70px; padding: 2.1px; background-color: rgb(152, 160, 163);"
+                style="margin-right: 10px; font-size: 11px; width: 70px; padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise()">&nbsp;<strong>Schools</strong> </button>
         </div>
     </div>
