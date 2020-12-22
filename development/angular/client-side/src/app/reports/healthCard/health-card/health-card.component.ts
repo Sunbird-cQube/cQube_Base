@@ -179,7 +179,7 @@ export class HealthCardComponent implements OnInit {
       var school;
       var blok;
       if (this.districtName.match(/^\d/)) {
-        school = this.districtObjArr.find(a => a.name == this.districtName);
+        school = this.districtObjArr.find(a => a.id == this.districtName);
         id = parseInt(this.districtName);
         blok = school.blockId;
       } else {

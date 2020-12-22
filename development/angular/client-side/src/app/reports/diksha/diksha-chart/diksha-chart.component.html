@@ -27,7 +27,7 @@
                             style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
                             (click)="downloadReportByType(downloadType)"></em>
                         <select class="dwnld" id="downloader"
-                            style="padding: 3px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                            style="padding: 5px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                             [(ngModel)]="downloadType" name="downloadType" (change)="onChange()">
                             <option [value]="downloadType" disabled selected="selected"> Download Report</option>
                             <option *ngFor="let type of usageByType, let i = index" [(ngValue)]="type.type">
@@ -46,7 +46,7 @@
     <div class="row" style="margin-top: 5px;">
         <div class="col-sm-9">
             <select id="time_range"
-                style=" margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style=" margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="timePeriod" name="timePeriod" (change)="timeRange(timePeriod)">
                 <option [value]="timePeriod" disabled selected="selected">Choose Time Range
                 </option>
@@ -55,7 +55,7 @@
                 </option>
             </select>
             <select id="choose_dist"
-                style=" padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style=" padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="districtWise(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtsDetails" [(ngValue)]="dist.district_id" style=" font-size: 11px;">

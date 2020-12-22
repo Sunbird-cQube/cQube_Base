@@ -1,0 +1,41 @@
+/***
+    css for multi select drop down
+**/
+.btn-secondary{
+    background-color: rgb(152, 160, 163);
+    padding: 0px 0px 0px 5px;
+    cursor: pointer;
+    width: 300px;
+    text-align: left;
+    border-radius: 4px;
+    color: white;
+    margin-right: 5px;
+}
+.btn-secondary em{
+    float:right;
+}
+.drop-show {
+    border-radius: 4px;
+    padding: 5px;
+    width: 600px auto;
+    background-color: rgb(152, 160, 163);
+    border: 1px solid rgb(152, 160, 163);
+    color: white;
+    position: absolute;
+    z-index: 100;
+    -webkit-box-shadow: 0 6px 10px rgba(0,0,0,.15);
+    -moz-box-shadow: 0 6px 10px rgba(0,0,0,.15);
+    box-shadow: 0 6px 10px rgba(0,0,0,.15);
+    /* margin-left: 2px; */
+}
+.drop-show label{
+    display:block;
+    font-size:11px;
+    cursor: pointer;
+}
+.drop-show label input{
+    vertical-align: top;
+}
+.drop-show label span{
+    display:inline-block;
+}
