@@ -4620,29 +4620,32 @@ initcap(spd.school_name) as school_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
 coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,
+coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,
+coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
 coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
 coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
 from (
-(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
-    from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,
+  count(distinct school_id) as total_schools,
+round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
+    from school_hierarchy_details  where cluster_name is not null and block_name is not null 
+    and school_name is not null and district_name is not null
     group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name) s left join 
 (select school_id as schl_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
 sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10
 from
-(
-select school_id,visit_count,count(school_id)*visit_count as school_count,
-case when visit_count between 1 and 2 then count(school_id) end as schools_1_2,
-case when visit_count between 3 and 5 then count(school_id) end as schools_3_5,
-case when visit_count between 6 and 10 then count(school_id) end as schools_6_10,
-case when visit_count >10 then count(school_id) end as schools_10
+(select school_id,sum(visit_count)as visit_count,count(distinct(school_id))*sum(visit_count) as school_count,
+case when sum(visit_count) between 1 and 2 then count(distinct(school_id)) end as schools_1_2,
+case when sum(visit_count) between 3 and 5 then count(distinct(school_id)) end as schools_3_5,
+case when sum(visit_count) between 6 and 10 then count(distinct(school_id)) end as schools_6_10,
+case when sum(visit_count) >10 then count(distinct(school_id)) end as schools_10
 from crc_visits_frequency
 where visit_count>0 and crc_name is not null and cluster_name is not null
-group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id) spd
+group by school_id) d group by school_id) t on s.school_id=t.schl_id) spd
 left join 
 (select school_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
-	where visit_count>0 and crc_name is not null and cluster_name is not null group by school_id)as scl_v
+  where visit_count>0 and crc_name is not null and cluster_name is not null group by school_id)as scl_v
 on spd.school_id=scl_v.school_id;
 
 /*--------------------------------------------------------------HEALTH CARD INDEX main views------------------------------------*/
@@ -4725,6 +4728,12 @@ group by usc.school_id,attendance
 ON b.school_id = c.school_id)as student_attendance
 on basic.school_id=student_attendance.school_id
 left join 
+(select sem_data.*,
+(case when performance <=33 then 1 else 0 end)as value_below_33,
+(case when performance between 33 and 60 then 1 else 0 end)as value_between_33_60,
+(case when performance between 60 and 75 then 1 else 0 end)as value_between_60_75,
+(case when performance >=75 then 1 else 0 end)as value_above_75
+from
 (select b.*,c.school_level_rank_within_the_state,
 c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster from hc_semester_performance_school as b
 left join(select usc.school_id,Performance,
@@ -4767,7 +4776,7 @@ on scl.district_id=d.district_id)as a)as a
 on usc.school_id=a.school_id
 group by usc.school_id,Performance
 ,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
-ON b.school_id = c.school_id)as semester
+ON b.school_id = c.school_id)as sem_data)as semester
 on basic.school_id=semester.school_id
 left join 
 (select b.*,c.school_level_rank_within_the_state,
@@ -4816,7 +4825,8 @@ ON b.udise_school_id = c.udise_school_id)as udise
 on basic.school_id=udise.udise_school_id
 left join 
 (select b.*,c.school_level_rank_within_the_state,
-c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster from 
+(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
 (Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance
  from periodic_exam_school_all 
 where academic_year=(select max(academic_year) from periodic_exam_school_all))as ped left join
@@ -4825,7 +4835,8 @@ where academic_year=(select max(academic_year) from periodic_exam_school_all))as
  sum(case when school_performance between 33 and 60 then 1 else 0 end)as value_between_33_60,
  sum(case when school_performance between 60 and 75 then 1 else 0 end)as value_between_60_75,
  sum(case when school_performance >=75 then 1 else 0 end)as value_above_75
-   from periodic_exam_school_all where academic_year=(select max(academic_year) from periodic_exam_school_all) group by school_id)as pes
+   from periodic_exam_school_all where academic_year=(select max(academic_year) from periodic_exam_school_all) 
+   group by school_id)as pes
 on ped.school_id= pes.school_id) as b
 left join(select usc.school_id,school_performance,
        ( ( Rank()
@@ -4945,7 +4956,6 @@ group by usc.school_id,infra_score
 ,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
 ON b.school_id = c.school_id)as infra
 on basic.school_id=infra.school_id;
-
 
 /*Health card index cluster*/
 
