@@ -60,7 +60,7 @@
     <div class="row">
         <div class="col-md-12" style="margin-bottom: 10px;">
             <select [hidden]="" id="year"
-                style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="year" (change)="selectedYear()">
                 <option [value]="year" disabled selected="selected">Choose a Year</option>
                 <option *ngFor="let year of years let i =index" [(ngValue)]="years[i]">
@@ -68,7 +68,7 @@
                 </option>
             </select>
             <select [hidden]="" id="month" required
-                style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="month" (change)="selectedMonth()">
                 <option [value]="month" disabled selected="selected">Choose a Month</option>
                 <option *ngFor="let month of months let i =index" [(ngValue)]="months[i]">
@@ -77,7 +77,7 @@
             </select>
 
             <select [hidden]="" id="grade"
-                style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="grade" (change)="selectedGrade()">
                 <option [value]="grade" disabled selected="selected">Choose a Grade</option>
                 <option *ngFor="let grade of grades, let i =index" [(ngValue)]="grade.grade">
@@ -89,7 +89,7 @@
             </select>
 
             <select [hidden]="" id="subject"
-                style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="subject" (change)="selectedSubject()">
                 <option [value]="subject" disabled selected="selected">Choose a Subject</option>
                 <option *ngFor="let subject of subjects, let i =index" [(ngValue)]="subject.subject">
@@ -101,7 +101,7 @@
             </select>
 
             <select [hidden]="" id="examDate"
-                style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="examDate" (change)="selectedExamDate()">
                 <option [value]="examDate" disabled selected="selected">Choose an Examdate</option>
                 <option *ngFor="let examDate of examDates, let i =index" [(ngValue)]="examDate.exam_date">
@@ -113,7 +113,7 @@
             </select>
 
             <select id="viewBy"
-                style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="viewBy" (change)="selectedViewBy()">
                 <option [value]="viewBy" disabled selected="selected">Choose View by</option>
                 <option *ngFor="let viewBy of allViews, let i =index" [(ngValue)]="viewBy.key">
@@ -122,7 +122,7 @@
             </select>
 
             <select id="district"
-                style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="district" (change)="selectedDistrict(district)">
                 <option [value]="district" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let district of districtNames, let i =index" [(ngValue)]="district.district_id">
@@ -132,7 +132,7 @@
 
 
             <select [hidden]="blockHidden" id="block"
-                style="margin-right: 10px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="block" (change)="selectedBlock(block)">
                 <option [value]="block" disabled selected="selected">Choose a Block</option>
                 <option *ngFor="let block of blockNames, let i =index" [(ngValue)]="block.block_id">
@@ -140,7 +140,7 @@
                 </option>
             </select>
             <select [hidden]="clusterHidden" id="cluster"
-                style="margin-right: 0px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 0px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="cluster" (change)="selectedCluster(cluster)">
                 <option [value]="cluster" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of clusterNames, let i =index" [(ngValue)]="cluster.cluster_id">

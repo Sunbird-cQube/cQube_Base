@@ -18,30 +18,6 @@ drop function IF exists semester_no_schools;
 drop function IF exists insert_diksha_trans;
 drop function IF exists insert_diksha_agg;
 
-/* Insert master infrastructure */
-
-CREATE OR REPLACE FUNCTION insert_infra_master()
-RETURNS void AS
-$$
-BEGIN
-insert into infrastructure_master (infrastructure_name,infrastructure_category,status,created_on,updated_on) 
-select infrastructure_name,infrastructure_category,status,now(),now() from 
-(select replace(trim(LOWER(infrastructure_name)),' ','_') as infrastructure_name,infrastructure_category,status from infrastructure_staging_init except 
-	select infrastructure_name,infrastructure_category,status from
-infrastructure_master)as a;
-insert into infrastructure_staging_score (infrastructure_name,infrastructure_category,score,created_on,updated_on) 
-select infrastructure_name,infrastructure_category,score,now(),now() from 
-(select infrastructure_name,infrastructure_category,score from infrastructure_master where status=true)as a;
-update infrastructure_master as b 
-	set score=(select round(100.0/count(status),2)as score from infrastructure_master where status='True'),
-	updated_on=now()
-	where status='True';
-END;	
-$$
-LANGUAGE plpgsql;
-
-select insert_infra_master();
-
 /* Create infra tables */
 
 CREATE OR REPLACE FUNCTION create_infra_table()
@@ -71,21 +47,6 @@ END;
 $$LANGUAGE plpgsql;
 
 select create_infra_table();
-
-/* update score into master */
-
-CREATE OR REPLACE FUNCTION update_infra_score()
-RETURNS void AS
-$$
-BEGIN
-update infrastructure_master as a set score=b.score,updated_on=now()
-	from (
-		select infrastructure_name,infrastructure_category,score 
-		from infrastructure_staging_score except select infrastructure_name,infrastructure_category,score from infrastructure_master where status=true
-		) as b where a.infrastructure_name=b.infrastructure_name;
-END;
-$$
-LANGUAGE plpgsql;
 
 /* Inserting/updating infrastructure transaction details into trans table*/
 

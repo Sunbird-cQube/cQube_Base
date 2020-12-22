@@ -4,10 +4,10 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const helper = require('./helper');
 
-router.post('/clusterWise',auth.authController, async (req, res) => {
+router.post('/clusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---diksha tpd  cluster wise api ---');
-        let { timePeriod, reportType, blockId } = req.body
+        let { timePeriod, reportType, blockId, courses } = req.body
         var fileName = `diksha_tpd/cluster/${timePeriod}.json`;
         var data = await s3File.readS3File(fileName);
 
@@ -36,6 +36,12 @@ router.post('/clusterWise',auth.authController, async (req, res) => {
             }
             return unique;
         }, []);
+
+        if (courses.length > 0) {
+            data = data.filter(item => {
+                return courses.includes(item['collection_id']);
+            });
+        }
 
         data = data.sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1)
         let result = await helper.generalFun(data, 2, reportType)
