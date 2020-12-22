@@ -71,17 +71,17 @@
     <div class="row">
         <div class="col-sm-12">
             <button class="btn btn-secondary" id="block"
-                style="font-size: 11px; width: 70px; margin: 2px 10px 0px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; margin: 2px 10px 0px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="blockWise()">&nbsp;<strong>Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
-                style="font-size: 11px; width: 70px; margin: 2px 10px 0px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; margin: 2px 10px 0px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="clusterWise()">&nbsp;<strong>Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
-                style="font-size: 11px; width: 70px; margin: 2px 15px 0px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; margin: 2px 15px 0px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise()">&nbsp;<strong>Schools</strong> </button>
             <span style="font-size: 12px;">Select Semester ➝</span>
             <select id="choose_semester"
-                style=" padding: 3px;margin:0px 25px 4px 10px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style=" padding: 5px;margin:0px 25px 4px 10px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="semester" (change)="semSelect()">
                 <option [value]="semester" disabled selected="selected">Choose semester</option>
                 <option *ngFor="let sem of semesters" [(ngValue)]="sem.id">
@@ -90,7 +90,7 @@
             </select>
 
             <select id="choose_dist"
-                style="margin: 0px 10px 10px 0px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin: 0px 10px 10px 0px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.district_id" style=" font-size: 11px;">
@@ -99,7 +99,7 @@
             </select>
 
             <select [hidden]="blockHidden" id="choose_block"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="blockId" (change)="onBlockSelect(blockId)">
                 <option [value]="blockId" disabled selected="selected">Choose a Block</option>
                 <option *ngFor="let block of blockMarkers" [(ngValue)]="block.block_id" style="font-size: 11px;">
@@ -108,7 +108,7 @@
             </select>
 
             <select [hidden]="clusterHidden" id="choose_cluster"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="clusterId" (change)="onClusterSelect(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.cluster_id"

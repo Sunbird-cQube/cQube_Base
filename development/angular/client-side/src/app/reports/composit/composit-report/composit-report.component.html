@@ -47,7 +47,7 @@
                             style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
                             (click)="downloadReportofState(downloadType)"></em>
                         <select class="dwnld" id="downloader"
-                            style="padding: 3px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                            style="padding: 5px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                             [(ngModel)]="downloadType" name="downloadType">
                             <option [value]="downloadType" disabled selected="selected"> Download Report</option>
                             <option *ngFor="let md of modes, let i = index" [(ngValue)]="modes[i]">
