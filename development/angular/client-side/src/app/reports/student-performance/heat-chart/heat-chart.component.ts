@@ -66,6 +66,12 @@ export class HeatChartComponent implements OnInit {
   myData;
   state: string;
 
+  //For pagination.....
+  items = [];
+  pageOfItems: Array<any>;
+  pageSize;
+
+
   constructor(
     public http: HttpClient,
     public service: PatReportService,
@@ -121,6 +127,33 @@ export class HeatChartComponent implements OnInit {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
+  }
+
+  onChangePage(pageOfItems) {
+    if (pageOfItems.length > 0) {
+      this.pageOfItems = pageOfItems;
+      let yLableCopy = this.yLabel;
+      let yLabelDup = [];
+      let i;
+      for (i = pageOfItems[pageOfItems.length - pageOfItems.length]['y']; i < pageOfItems[pageOfItems.length - 1]['y'] + 1; i++) {
+        yLabelDup.push(yLableCopy[i]);
+      }
+
+      // let indexs = [];
+      // let j = 0;
+      // for (i = 0; i < yLabelDup.length; i++) {
+      //   console.log(j);
+      //   let index = j;
+      //   for (let j = 0; j < this.xLabel.length; j++) {
+      //     console.log(index);
+      //     indexs.push(j);
+      //     index += 1;
+      //   }
+      // }
+      console.log(pageOfItems);
+
+      this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, yLabelDup, this.zLabel, this.pageOfItems, this.a['viewBy'], this.level, this.xLabel1, this.yLabel1, this.toolTipData, this.grade);
+    }
   }
 
   resetToInitPage() {
@@ -368,22 +401,22 @@ export class HeatChartComponent implements OnInit {
     }
   }
 
-  resetOnAllGrades(){
+  resetOnAllGrades() {
     this.level = 'district';
-        this.skul = true;
-        this.dist = false;
-        this.blok = false;
-        this.clust = false;
-        this.grade = 'all';
-        this.examDate = 'all';
-        this.subject = 'all';
-        this.viewBy = 'indicator';
-        this.gradeSelected = false;
-        this.district = undefined;
-        this.block = undefined;
-        this.cluster = undefined;
-        this.blockHidden = true;
-        this.clusterHidden = true;
+    this.skul = true;
+    this.dist = false;
+    this.blok = false;
+    this.clust = false;
+    this.grade = 'all';
+    this.examDate = 'all';
+    this.subject = 'all';
+    this.viewBy = 'indicator';
+    this.gradeSelected = false;
+    this.district = undefined;
+    this.block = undefined;
+    this.cluster = undefined;
+    this.blockHidden = true;
+    this.clusterHidden = true;
   }
 
   selectedSubject() {
@@ -547,18 +580,19 @@ export class HeatChartComponent implements OnInit {
     })
   }
 
+  xlab = []; ylab = []; a = {}; yLabel = []; xLabel = []; xLabelId = []; zLabel = []; xLabel1 = []; yLabel1 = []; toolTipData: any;
   genericFunction(response) {
     this.reportData = [];
-    var xlab = [];
-    var ylab = [];
-    let a = {
+    this.xlab = [];
+    this.ylab = [];
+    this.a = {
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
     }
-    let yLabel = response['result']['yLabel']
-    let xLabel = response['result']['xLabel']
-    let xLabelId = response['result']['xLabelId']
-    let data = response['result']['data']
-    let zLabel = response['result']['zLabel']
+    this.yLabel = response['result']['yLabel']
+    this.xLabel = response['result']['xLabel']
+    this.xLabelId = response['result']['xLabelId']
+    this.data = response['result']['data']
+    this.zLabel = response['result']['zLabel']
     this.reportData = response['downloadData']
     if (response['districtDetails']) {
       let districts = response['districtDetails'];
@@ -572,20 +606,23 @@ export class HeatChartComponent implements OnInit {
       let clusters = response['clusterDetails'];
       this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }
-    if (xLabel.length <= 30) {
+    if (this.xLabel.length <= 30) {
       for (let i = 0; i <= 30; i++) {
-        xlab.push(xLabel[i] ? xLabel[i] : ' ')
+        this.xlab.push(this.xLabel[i] ? this.xLabel[i] : ' ')
       }
     }
 
-    if (yLabel.length <= 12) {
+    if (this.yLabel.length <= 12) {
       for (let i = 0; i <= 12; i++) {
-        ylab.push(yLabel[i] ? yLabel[i] : ' ')
+        this.ylab.push(this.yLabel[i] ? this.yLabel[i] : ' ')
       }
     }
-    let xLabel1 = xLabel
-    let yLabel1 = yLabel
-    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, a.viewBy, this.level, xLabel1, yLabel1, response['result']['tooltipData'], this.grade);
+    this.xLabel1 = this.xLabel
+    this.yLabel1 = this.yLabel
+
+    this.items = this.data.map((x, i) => x);
+    this.pageSize = this.xLabel.length * 15;
+    this.toolTipData = response['result']['tooltipData']
   }
 
   //level wise filter

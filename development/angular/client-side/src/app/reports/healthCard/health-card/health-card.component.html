@@ -31,15 +31,18 @@
     <div class="row" *ngIf="showAll">
         <div *ngIf="!err" class="col-sm-12">
             <div class="row">
-                <div class="col-lg-4 col-md-12 col-sm-12" style="margin-bottom:10px !important">
+                <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom:10px !important">
                     <H5>Basic Details</H5>
-                    <div [ngStyle]="{'height': height }"
+                    <div [ngStyle]="{'height': height -150}"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngFor="let key of keys; let i=index">
-                            <span>{{updatedKeys[i]}}</span> : <span>{{healthCardData[key]}}</span>
+                            <span style="float: left;"> <span>{{updatedKeys[i]}}</span> :
+                                <span>{{healthCardData[key]}}</span> </span>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-4 col-md-12 col-sm-12" style="margin-bottom:10px !important">
                     <H5>School Infrastructure </H5>
                     <div [ngStyle]="{'background-color': healthCardData['school_infrastructure'] ? infraColor : '','height': height }"
@@ -103,9 +106,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row" style="padding-top:10px !important">
-                <div class="col-lg-3 col-md-6 col-sm-12" id="semPer" style="margin-bottom:10px !important">
+                <div class="col-lg-4 col-md-12 col-sm-12" id="semPer" style="margin-bottom:10px !important">
                     <H5>Semester Performance </H5>
                     <div [ngStyle]="{'background-color':  healthCardData['student_semester'] ? semColor : '','height': height  }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
@@ -136,7 +137,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-12" id="pat" style="margin-bottom:10px !important">
+            </div>
+            <div class="row" style="padding-top:10px !important">
+                
+                <div class="col-lg-4 col-md-12 col-sm-12" id="pat" style="margin-bottom:10px !important">
                     <H5>PAT Performance </H5>
                     <div [ngStyle]="{'background-color': healthCardData['pat_performance'] ? patColor : '','height': height  }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
@@ -167,7 +171,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-12" id="crc" style="margin-bottom:10px !important">
+                <div class="col-lg-4 col-md-12 col-sm-12" id="crc" style="margin-bottom:10px !important">
                     <H5>CRC Visits </H5>
                     <div [ngStyle]="{'height': height }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
@@ -199,7 +203,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6 col-sm-12" id="udise" style="margin-bottom:10px !important">
+                <div class="col-lg-4 col-md-12 col-sm-12" id="udise" style="margin-bottom:10px !important">
                     <H5>UDISE </H5>
                     <div [ngStyle]="{'background-color': healthCardData['udise'] ? udiseColor : '','height': height }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">

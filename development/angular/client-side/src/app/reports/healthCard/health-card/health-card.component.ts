@@ -93,8 +93,8 @@ export class HealthCardComponent implements OnInit {
         this.tooltip = b;
         this.schoolInfra = ['infra_score', 'district_level_rank_within_the_state'];
         this.schoolInfraKey = ['Infrastructure Score', 'Rank (within State)'];
-        this.schoolAttendance = ['attendance', 'district_level_rank_within_the_state', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.schoolAttendanceKeys = ['Attendance', 'Rank (within State)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+        this.schoolAttendance = ['attendance', 'district_level_rank_within_the_state', '', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.schoolAttendanceKeys = ['Attendance', 'Rank (within State)','', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
         this.semPerformance = ['performance', 'district_level_rank_within_the_state', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
         this.semPerformanceKeys = ['Performance', 'Rank (within State)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)']
         this.patPerformance = ['district_performance', 'district_level_rank_within_the_state', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
