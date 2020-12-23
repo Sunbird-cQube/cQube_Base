@@ -3,17 +3,25 @@
         <button class="btn btn-secondary" (click)="showDropDown=!showDropDown">
             <span *ngIf="checkedList.length<=0" style="font-size: 11px;font-weight: bold; margin: 0px;">Select
                 Courses</span>
-            <span *ngIf="checkedList.length>0" style="font-size: 11px;font-weight: bold;">{{checkedList.join(',
-                ')}}</span>
+            <span *ngIf="checkedList.length>0" style="font-size: 11px;font-weight: bold;">{{checkedList.length}}
+                Courses Selected</span>
             <em class="fa fa-angle-down" style="margin-top:4px;padding: 0px 3px 0px 0px;"></em>
         </button>
         <button *ngIf="checkedList.length > 0" class="btn btn-primary"
-            style="padding: 4px;font-size: 11px; font-weight:bold; background-color: #284d8a;" (click)="getSelected()">SUBMIT</button>
+            style="padding: 4px;font-size: 11px; font-weight:bold; background-color: #284d8a;"
+            (click)="getSelected()">SUBMIT</button>
         <div class="drop-show" *ngIf="showDropDown">
-            <label *ngFor="let a of list">
-                <input type="checkbox" [(ngModel)]="a.status" (change)="getSelectedValue(a.course_id,a.status)">
-                <span style="margin-left: 5px;">{{a.course_name}}</span>
-            </label>
+            <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
+                <div id="div2" style="max-height:100%;overflow:auto;">
+                    <div id="div3" style="height:1000px auto;">
+                        <label *ngFor="let a of list">
+                            <input type="checkbox" [(ngModel)]="a.status"
+                                (change)="getSelectedValue(a.course_id,a.status)">
+                            <span style="margin-left: 5px;">{{a.course_name}}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
