@@ -160,7 +160,7 @@
                 <!-- <jw-pagination [items]="yLabel" [pageSize]="pageSize" (changePage)="onChangePage($event)"
                     style="cursor: pointer;">
                 </jw-pagination> -->
-                <ngb-pagination [collectionSize]="yLabel.length" [maxSize]="10" [(page)]="currentPage" (pageChange)="onChangePage()"></ngb-pagination>
+                <ngb-pagination [collectionSize]="yLabel.length" [maxSize]="10" [(page)]="currentPage" [pageSize]="pageSize" (pageChange)="onChangePage()"></ngb-pagination>
             </div>
         </div>
     </div>

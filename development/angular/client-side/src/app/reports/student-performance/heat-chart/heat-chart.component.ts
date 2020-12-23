@@ -648,6 +648,7 @@ export class HeatChartComponent implements OnInit {
 
   //level wise filter
   levelWiseFilter() {
+    this.currentPage = 1;
     document.getElementById('home').style.display = 'block';
     if (this.level == 'district') {
       this.commonFunc()
