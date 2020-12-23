@@ -4648,6 +4648,247 @@ left join
   where visit_count>0 and crc_name is not null and cluster_name is not null group by school_id)as scl_v
 on spd.school_id=scl_v.school_id;
 
+
+CREATE OR REPLACE FUNCTION infra_areas_to_focus()
+RETURNS text AS
+$$
+DECLARE
+school_atf text:='select ''select school_id, array[''||string_agg(''case when ''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<30 then ''''''||
+  replace(trim(initcap(infrastructure_name)),''_'','' '')||'''''' else ''''0'''' end'','','')||
+'']as areas_to_focus from infra_school_table_view'' 
+from infrastructure_master where status = true order by 1';
+school_atf_value text; 
+cluster_atf text:='select ''select cluster_id, array[''||string_agg(''case when ''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<30 then ''''''||
+  replace(trim(initcap(infrastructure_name)),''_'','' '')||'''''' else ''''0'''' end'','','')||
+'']as areas_to_focus from infra_cluster_table_view'' 
+from infrastructure_master where status = true order by 1';
+cluster_atf_value text; 
+block_atf text:='select ''select block_id, array[''||string_agg(''case when ''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<30 then ''''''||
+  replace(trim(initcap(infrastructure_name)),''_'','' '')||'''''' else ''''0'''' end'','','')||
+'']as areas_to_focus from infra_block_table_view'' 
+from infrastructure_master where status = true order by 1';
+block_atf_value text; 
+district_atf text:='select ''select district_id, array[''||string_agg(''case when ''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<30 then ''''''||
+  replace(trim(initcap(infrastructure_name)),''_'','' '')||'''''' else ''''0'''' end'','','')||
+'']as areas_to_focus from infra_district_table_view'' 
+from infrastructure_master where status = true order by 1';
+district_atf_value text; 
+query text;
+BEGIN
+Execute school_atf into school_atf_value;
+Execute cluster_atf into cluster_atf_value;
+Execute block_atf into block_atf_value;
+Execute district_atf into district_atf_value;
+IF school_atf <> '' THEN 
+query='create or replace view infra_school_atf as 
+select school_id,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||school_atf_value||') as a;
+create or replace view infra_cluster_atf as 
+select cluster_id,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||cluster_atf_value||') as a;
+create or replace view infra_block_atf as 
+select block_id,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||block_atf_value||') as a;
+create or replace view infra_district_atf as 
+select district_id,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||district_atf_value||') as a;';
+Execute query; 
+END IF;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+select infra_areas_to_focus();
+
+/*school - infra*/
+
+create or replace view hc_infra_school as
+select b.*,atf.areas_to_focus,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster from (select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
+infra_school_table_view as idt
+left join
+(select school_id,
+ sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
+   from infra_school_table_view group by school_id)as ist
+on idt.school_id= ist.school_id) as b
+left join(select usc.school_id,infra_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id
+               ORDER BY usc.infra_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.infra_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infra_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.infra_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state                         
+ from (select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
+infra_school_table_view as idt
+left join
+(select school_id,
+ sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
+   from infra_school_table_view group by school_id)as ist
+on idt.school_id= ist.school_id) as usc
+left join
+(select a.*,(select count(DISTINCT(school_id)) from infra_school_table_view)as total_schools 
+from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from infra_school_table_view as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT infra_school_table_view.school_id) AS schools_in_cluster FROM   infra_school_table_view group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT infra_school_table_view.school_id) AS schools_in_block FROM   infra_school_table_view group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT infra_school_table_view.school_id) AS schools_in_district FROM   infra_school_table_view group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.school_id=a.school_id
+group by usc.school_id,infra_score
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.school_id = c.school_id
+left join infra_school_atf as atf on b.school_id=atf.school_id;
+
+/*cluster*/
+
+create or replace view hc_infra_cluster as
+select b.*,atf.areas_to_focus,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block from 
+(select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
+infra_cluster_table_view as idt
+left join
+(select cluster_id,
+ sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
+   from infra_school_table_view group by cluster_id)as ist
+on idt.cluster_id= ist.cluster_id) as b
+left join(select usc.cluster_id,infra_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.infra_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infra_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (
+               ORDER BY usc.infra_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state                         
+ from (select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
+infra_cluster_table_view as idt
+left join
+(select cluster_id,
+ sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
+   from infra_school_table_view group by cluster_id)as ist
+on idt.cluster_id= ist.cluster_id) as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from infra_school_table_view)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from infra_school_table_view as scl
+left join
+(SELECT block_id,Count(DISTINCT infra_school_table_view.cluster_id) AS clusters_in_block FROM   infra_school_table_view group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT infra_school_table_view.cluster_id) AS clusters_in_district FROM   infra_school_table_view group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by infra_score
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id
+left join infra_cluster_atf as atf on b.cluster_id=atf.cluster_id;
+
+/*block*/
+
+create or replace view  hc_infra_block as
+select b.*,atf.areas_to_focus,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district from (select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
+infra_block_table_view as idt
+left join
+(select block_id,
+ sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
+   from infra_school_table_view group by block_id)as ist
+on idt.block_id= ist.block_id) as b
+left join(select usc.block_id,infra_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infra_score DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.infra_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state                         
+ from (select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
+infra_block_table_view as idt
+left join
+(select block_id,
+ sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
+   from infra_school_table_view group by block_id)as ist
+on idt.block_id= ist.block_id) as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from infra_school_table_view)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from infra_school_table_view as scl
+left join
+(SELECT district_id,Count(DISTINCT infra_school_table_view.block_id) AS blocks_in_district FROM   infra_school_table_view group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by infra_score
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id
+left join infra_block_atf as atf on b.block_id=atf.block_id;
+
+/*district*/
+
+create or replace view hc_infra_district as 
+select idt.*,atf.areas_to_focus,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
+(select *,((rank () over ( order by infra_score desc))||' out of '||(select count(distinct(district_id)) 
+from infra_district_table_view)) as district_level_rank_within_the_state from infra_district_table_view) as idt
+left join
+(select district_id,
+ sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
+   from infra_school_table_view group by district_id)as ist
+on idt.district_id= ist.district_id
+left join infra_district_atf as atf on idt.district_id=atf.district_id;
+
+
 /*--------------------------------------------------------------HEALTH CARD INDEX main views------------------------------------*/
 
 /*Health card index school*/
@@ -4657,8 +4898,8 @@ select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_js
 row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
  from 
 (select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
-	shd.school_id,initcap(shd.school_name)as school_name,
-	count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+  shd.school_id,initcap(shd.school_name)as school_name,
+  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
 (select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
 on usmt.udise_school_id=shd.school_id where 
 cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
@@ -4894,67 +5135,7 @@ left join
 hc_crc_school as crc
 on basic.school_id=crc.school_id
 left join
-(select b.*,c.school_level_rank_within_the_state,
-c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster from (select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
-infra_school_table_view as idt
-left join
-(select school_id,
- sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
- sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
- sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
-   from infra_school_table_view group by school_id)as ist
-on idt.school_id= ist.school_id) as b
-left join(select usc.school_id,infra_score,
-       ( ( Rank()
-             over (
-               PARTITION BY a.cluster_id
-               ORDER BY usc.infra_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.infra_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.infra_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.infra_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_schools) AS school_level_rank_within_the_state                         
- from (select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
-infra_school_table_view as idt
-left join
-(select school_id,
- sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
- sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
- sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
-   from infra_school_table_view group by school_id)as ist
-on idt.school_id= ist.school_id) as usc
-left join
-(select a.*,(select count(DISTINCT(school_id)) from infra_school_table_view)as total_schools 
-from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from infra_school_table_view as scl
-left join 
-(SELECT cluster_id,Count(DISTINCT infra_school_table_view.school_id) AS schools_in_cluster FROM   infra_school_table_view group by cluster_id) as c
-on scl.cluster_id=c.cluster_id
-left join
-(SELECT block_id,Count(DISTINCT infra_school_table_view.school_id) AS schools_in_block FROM   infra_school_table_view group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT infra_school_table_view.school_id) AS schools_in_district FROM   infra_school_table_view group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.school_id=a.school_id
-group by usc.school_id,infra_score
-,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
-ON b.school_id = c.school_id)as infra
+hc_infra_school as infra
 on basic.school_id=infra.school_id;
 
 /*Health card index cluster*/
@@ -4964,7 +5145,7 @@ select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_js
 row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
  from 
 (select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
-	count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
 (select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
 on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
 group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name)as basic
@@ -5155,59 +5336,7 @@ left join
 hc_crc_cluster as crc
 on basic.cluster_id=crc.cluster_id
 left join
-(select b.*,c.cluster_level_rank_within_the_state,
-c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block from 
-(select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
-infra_cluster_table_view as idt
-left join
-(select cluster_id,
- sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
- sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
- sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
-   from infra_school_table_view group by cluster_id)as ist
-on idt.cluster_id= ist.cluster_id) as b
-left join(select usc.cluster_id,infra_score,
-       ( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.infra_score DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.infra_score DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
-( ( Rank()
-             over (
-               ORDER BY usc.infra_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_clusters) AS cluster_level_rank_within_the_state                         
- from (select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
-infra_cluster_table_view as idt
-left join
-(select cluster_id,
- sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
- sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
- sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
-   from infra_school_table_view group by cluster_id)as ist
-on idt.cluster_id= ist.cluster_id) as usc
-left join
-(select a.*,(select count(DISTINCT(cluster_id)) from infra_school_table_view)as total_clusters
-from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from infra_school_table_view as scl
-left join
-(SELECT block_id,Count(DISTINCT infra_school_table_view.cluster_id) AS clusters_in_block FROM   infra_school_table_view group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT infra_school_table_view.cluster_id) AS clusters_in_district FROM   infra_school_table_view group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.cluster_id=a.cluster_id
-group by infra_score
-,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
-ON b.cluster_id = c.cluster_id)as infra
+hc_infra_cluster as infra
 on basic.cluster_id=infra.cluster_id;
 
 
@@ -5371,49 +5500,7 @@ left join
 hc_crc_block as crc
 on basic.block_id=crc.block_id
 left join
-(select b.*,c.block_level_rank_within_the_state,
-c.block_level_rank_within_the_district from (select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
-infra_block_table_view as idt
-left join
-(select block_id,
- sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
- sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
- sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
-   from infra_school_table_view group by block_id)as ist
-on idt.block_id= ist.block_id) as b
-left join(select usc.block_id,infra_score,
-       ( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.infra_score DESC)
-           || ' out of ' :: text )
-         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.infra_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_blocks) AS block_level_rank_within_the_state                         
- from (select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
-infra_block_table_view as idt
-left join
-(select block_id,
- sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
- sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
- sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
-   from infra_school_table_view group by block_id)as ist
-on idt.block_id= ist.block_id) as usc
-left join
-(select a.*,(select count(DISTINCT(block_id)) from infra_school_table_view)as total_blocks
-from (select distinct(scl.block_id),blocks_in_district,d.district_id from infra_school_table_view as scl
-left join
-(SELECT district_id,Count(DISTINCT infra_school_table_view.block_id) AS blocks_in_district FROM   infra_school_table_view group by district_id)as d
-on scl.district_id=d.district_id)as a)as a
-on usc.block_id=a.block_id
-group by infra_score
-,usc.block_id,a.total_blocks,a.district_id) as c
-ON b.block_id = c.block_id)as infra
+hc_infra_block as infra
 on basic.block_id=infra.block_id;
 
 /*Health card index District*/
@@ -5456,7 +5543,7 @@ on basic.district_id=udise.district_id
 inner join 
 (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
 (Select district_id,district_name,grade_wise_performance,district_performance,
-	((rank () over ( order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
+  ((rank () over ( order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
 from periodic_exam_district_all)) as district_level_rank_within_the_state
  from periodic_exam_district_all 
 where academic_year=(select max(academic_year) from periodic_exam_district_all))as ped left join
@@ -5472,18 +5559,7 @@ left join
 hc_crc_district as crc
 on basic.district_id=crc.district_id
 left join
-(select idt.*,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
-(select *,((rank () over ( order by infra_score desc))||' out of '||(select count(distinct(district_id)) 
-from infra_district_table_view)) as district_level_rank_within_the_state from infra_district_table_view) as idt
-left join
-(select district_id,
- sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when infra_score between 33 and 60 then 1 else 0 end)as value_between_33_60,
- sum(case when infra_score between 60 and 75 then 1 else 0 end)as value_between_60_75,
- sum(case when infra_score >=75 then 1 else 0 end)as value_above_75
-   from infra_school_table_view group by district_id)as ist
-on idt.district_id= ist.district_id)as infra
+hc_infra_district as infra
 on basic.district_id=infra.district_id;
-
 
 
