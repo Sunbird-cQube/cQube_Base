@@ -69,7 +69,7 @@ export class HeatChartComponent implements OnInit {
   //For pagination.....
   items = [];
   pageOfItems: Array<any>;
-  pageSize = 15;
+  pageSize = 45;
   currentPage = 1;
 
 
@@ -131,39 +131,21 @@ export class HeatChartComponent implements OnInit {
   }
 
   onChangePage() {
-      let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
-      let data = this.items.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
-      let tooltipData = this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
+    let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
+    let data = this.items.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
+    let tooltipData = this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
 
-      //console.log(yLabel);
-      //console.log(tooltipData);
-      // for (i = pageOfItems[pageOfItems.length - pageOfItems.length]['y']; i < pageOfItems[pageOfItems.length - 1]['y'] + 1; i++) {
-      //   yLabelDup.push(yLableCopy[i]);
-      // }
+    data = data.map(record => {
+      record.y %= this.pageSize;
+      return record;
+    });
 
-      data = data.map(record => {
-        record.y %= this.pageSize;
-        return record;
-      });
+    tooltipData = tooltipData.map(record => {
+      record.y %= this.pageSize;
+      return record;
+    });
 
-      tooltipData = tooltipData.map(record => {
-        record.y %= this.pageSize;
-        return record;
-      });
-
-      // let indexs = [];
-      // let j = 0;
-      // for (i = 0; i < yLabelDup.length; i++) {
-      //   console.log(j);
-      //   let index = j;
-      //   for (let j = 0; j < this.xLabel.length; j++) {
-      //     console.log(index);
-      //     indexs.push(j);
-      //     index += 1;
-      //   }
-      // }
-
-      this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, yLabel, this.zLabel, data, this.a['viewBy'], this.level, this.xLabel1, this.yLabel1, tooltipData, this.grade);
+    this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, this.ylab.length > 0 ? this.ylab : yLabel, this.zLabel, data, this.a['viewBy'], this.level, this.xLabel1, this.yLabel1, tooltipData, this.grade);
   }
 
   resetToInitPage() {
