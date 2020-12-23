@@ -217,3 +217,7 @@ def get_infra_score():
         )
     except Exception as err:
         abort(400, f'Bad request, validate the payload')
+
+@app.route('/data/test', methods=['GET'])
+def get_diksha():
+    return 'hello'
