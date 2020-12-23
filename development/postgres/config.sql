@@ -4099,7 +4099,7 @@ left join school_teachers_count as cnt on a.school_id=cnt.udise_sch_code;
 
 /*Semester views*/
 
-drop view if exists district_grade;
+drop view if exists district_grade cascade;
 
 create or replace view district_grade as
 SELECT district_id AS x_axis,grade,semester,
@@ -4122,7 +4122,7 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0;
 
-drop view if exists district_school;
+drop view if exists district_school cascade;
 
 create or replace view district_school as
 SELECT district_id AS x_axis,school_id,semester,
@@ -4145,7 +4145,7 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0;
 
-drop view if exists block_school;
+drop view if exists block_school cascade;
 
 create or replace view block_school as
 SELECT block_id AS x_axis,school_id,semester,
@@ -4168,7 +4168,7 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0;
 
-drop view if exists block_grade;
+drop view if exists block_grade cascade;
 
 create or replace view block_grade as
 	SELECT block_id AS x_axis,grade,semester,
@@ -4191,7 +4191,7 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0;
 
-drop view if exists cluster_school;
+drop view if exists cluster_school cascade; 
 
 create or replace view cluster_school as
 SELECT cluster_id AS x_axis,school_id,semester,
@@ -4214,7 +4214,7 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0;
 
-drop view if exists cluster_grade;
+drop view if exists cluster_grade cascade;
 
 create or replace view cluster_grade as
 	SELECT cluster_id AS x_axis,grade,semester,
@@ -4237,7 +4237,7 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0; 
 
-drop view if exists school_semester_no_data;
+drop view if exists school_semester_no_data cascade;
 
 create or replace view school_semester_no_data as
 select school_id,semester from school_student_subject_total_marks 
@@ -4251,7 +4251,7 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) = 0;
 
-drop view if exists school_grade;
+drop view if exists school_grade cascade;
 
 create or replace view school_grade as
 	SELECT school_id AS x_axis,grade,semester,
