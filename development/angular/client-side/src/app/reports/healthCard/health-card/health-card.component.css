@@ -61,6 +61,16 @@
     color: #ffffff; 
   }
 
+  .link{
+   position: absolute;  bottom: 0px; left: 30px;color: white; font-weight: bold;
+   text-decoration: underline;
+  }
+
+  p a{
+    color: white;
+    text-decoration: underline;
+  }
+
 
 
 
