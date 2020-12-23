@@ -4099,6 +4099,8 @@ left join school_teachers_count as cnt on a.school_id=cnt.udise_sch_code;
 
 /*Semester views*/
 
+drop view if exists district_grade;
+
 create or replace view district_grade as
 SELECT district_id AS x_axis,grade,semester,
 Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
@@ -4120,6 +4122,7 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0;
 
+drop view if exists district_school;
 
 create or replace view district_school as
 SELECT district_id AS x_axis,school_id,semester,
@@ -4142,6 +4145,8 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0;
 
+drop view if exists block_school;
+
 create or replace view block_school as
 SELECT block_id AS x_axis,school_id,semester,
 Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
@@ -4162,6 +4167,8 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0;
+
+drop view if exists block_grade;
 
 create or replace view block_grade as
 	SELECT block_id AS x_axis,grade,semester,
@@ -4184,6 +4191,8 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0;
 
+drop view if exists cluster_school;
+
 create or replace view cluster_school as
 SELECT cluster_id AS x_axis,school_id,semester,
 Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
@@ -4204,6 +4213,8 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0;
+
+drop view if exists cluster_grade;
 
 create or replace view cluster_grade as
 	SELECT cluster_id AS x_axis,grade,semester,
@@ -4226,6 +4237,8 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) <> 0; 
 
+drop view if exists school_semester_no_data;
+
 create or replace view school_semester_no_data as
 select school_id,semester from school_student_subject_total_marks 
 WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL AND block_latitude <> 0 and cluster_name is not null
@@ -4237,6 +4250,8 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) = 0;
+
+drop view if exists school_grade;
 
 create or replace view school_grade as
 	SELECT school_id AS x_axis,grade,semester,
