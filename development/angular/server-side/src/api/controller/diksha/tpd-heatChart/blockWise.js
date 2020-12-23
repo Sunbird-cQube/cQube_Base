@@ -7,7 +7,7 @@ const helper = require('./helper');
 router.post('/blockWise', auth.authController, async (req, res) => {
     try {
         logger.info('---diksha tpd  block wise api ---');
-        let { timePeriod, reportType, districtId } = req.body
+        let { timePeriod, reportType, districtId, courses } = req.body
         var fileName = `diksha_tpd/block/${timePeriod}.json`;
         var data = await s3File.readS3File(fileName);
 
@@ -32,7 +32,11 @@ router.post('/blockWise', auth.authController, async (req, res) => {
             }
             return unique;
         }, []);
-
+        if (courses.length > 0) {
+            data = data.filter(item => {
+                return courses.includes(item['collection_id']);
+            });
+        }
         // res.send(data)
         data = data.sort((a, b) => (a.block_name) > (b.block_name) ? 1 : -1)
         let result = await helper.generalFun(data, 1, reportType)

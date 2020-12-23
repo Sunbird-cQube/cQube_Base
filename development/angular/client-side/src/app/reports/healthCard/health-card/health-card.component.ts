@@ -25,18 +25,43 @@ export class HealthCardComponent implements OnInit {
   schoolIds = [];
   districtObjArr = [];
   healthCardData = {};
+
+
   schoolInfra = [];
   schoolInfraKey = [];
+  schoolInfraRank = [];
+  schoolInfraRankKye = [];
+
   schoolAttendance = [];
   schoolAttendanceKeys = [];
+  schoolAttendanceRank = [];
+  schoolAttendanceRankKey = [];
+  schoolAttendanceCategory = [];
+  schoolAttendanceCategoryKey = [];
+
   semPerformance = [];
   semPerformanceKeys = [];
+  semPerfromanceRank = [];
+  semPerformanceRankKey = [];
+  semPerformanceCategory = [];
+  semPerformanceCategoryKey = [];
+
   patPerformance = [];
   patPerformanceKeys = [];
+  patPerformanceRank = [];
+  patPerformanceRankKey = [];
+  patPerformanceCategory = [];
+  patPerformanceCategoryKay = [];
+
   crcVisit = [];
   crcVisitKeys = [];
+
   UDISE = [];
   UDISEKeys = [];
+  UDISERank = [];
+  UDISERankKeys = [];
+  UDISECategory = [];
+  UDISECategoryKey = [];
 
   tooltipInfra = [];
   toolTipInfraKeys = [];
@@ -76,7 +101,7 @@ export class HealthCardComponent implements OnInit {
     this.districtName = document.getElementById('myInput')['value'];
     var id;
     if (this.level == 'district') {
-      this.height = '200px';
+      this.height = '250px';
       var dist;
       if (this.districtName.match(/^\d/)) {
         id = parseInt(this.districtName);
@@ -91,18 +116,33 @@ export class HealthCardComponent implements OnInit {
         var b = document.createElement('DIV');
         b.innerHTML = `<b>${this.healthCardData['district_id']}</b>`;
         this.tooltip = b;
-        this.schoolInfra = ['infra_score', 'district_level_rank_within_the_state'];
-        this.schoolInfraKey = ['Infrastructure Score', 'Rank (within State)'];
-        this.schoolAttendance = ['attendance', 'district_level_rank_within_the_state', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.schoolAttendanceKeys = ['Attendance', 'Rank (within State)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
-        this.semPerformance = ['performance', 'district_level_rank_within_the_state', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.semPerformanceKeys = ['Performance', 'Rank (within State)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)']
-        this.patPerformance = ['district_performance', 'district_level_rank_within_the_state', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.patPerformanceKeys = ['Performance', 'Rank (within State)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+        this.schoolInfra = ['infra_score'];
+        this.schoolInfraKey = ['Infrastructure Score'];
+        this.schoolInfraRank = ['district_level_rank_within_the_state'];
+        this.schoolInfraRankKye = ['Rank (within State)'];
+
+        this.schoolAttendance = ['attendance'];
+        this.schoolAttendanceKeys = ['Attendance'];
+        this.schoolAttendanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.schoolAttendanceCategoryKey = ['Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+
+        this.semPerformance = ['performance'];
+        this.semPerformanceKeys = ['Performance']
+        this.semPerformanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.semPerformanceCategoryKey = ['Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+
+        this.patPerformance = ['district_performance'];
+        this.patPerformanceKeys = ['Performance'];
+        this.patPerformanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.patPerformanceCategoryKay = ['Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+
         this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
         this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
-        this.UDISE = ['school_infrastructure', 'district_level_rank_within_the_state', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.UDISEKeys = ['Infrastructure Score', 'Rank (within State)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+
+        this.UDISE = ['school_infrastructure'];
+        this.UDISEKeys = ['Infrastructure Score'];
+        this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.UDISECategoryKey = ['Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.err = true;
@@ -110,7 +150,7 @@ export class HealthCardComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
       });
     } else if (this.level == 'block') {
-      this.height = '230px';
+      this.height = '270px';
       var block;
       id;
       if (this.districtName.match(/^\d/)) {
@@ -122,18 +162,27 @@ export class HealthCardComponent implements OnInit {
       this.service.blockWiseData({ id: id }).subscribe(res => {
         this.healthCardData = res['blockData'][0];
         this.showData(this.healthCardData);
-        this.schoolInfra = ['infra_score', 'block_level_rank_within_the_state', 'block_level_rank_within_the_district'];
-        this.schoolInfraKey = ['Infrastructure Score', 'Rank (within State)', 'Rank (within District)'];
-        this.schoolAttendance = ['attendance', 'block_level_rank_within_the_state', 'block_level_rank_within_the_district', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.schoolAttendanceKeys = ['Attendance', 'Rank (within State)', 'Rank (within District)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
-        this.semPerformance = ['performance', 'block_level_rank_within_the_state', 'block_level_rank_within_the_district', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.semPerformanceKeys = ['Performance', 'Rank (within State)', 'Rank (within District)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)']
-        this.patPerformance = ['block_performance', 'block_level_rank_within_the_state', 'block_level_rank_within_the_district', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.patPerformanceKeys = ['Performance', 'Rank (within State)', 'Rank (within District)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+        this.schoolInfra = ['infra_score'];
+        this.schoolInfraKey = ['Infrastructure Score'];
+        this.schoolInfraRank = ['block_level_rank_within_the_state', 'block_level_rank_within_the_district'];
+        this.schoolInfraRankKye = ['Rank (within State)', 'Rank (within District)'];
+
+        this.schoolAttendance = ['attendance'];
+        this.schoolAttendanceKeys = ['Attendance'];
+        this.schoolAttendanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.schoolAttendanceCategoryKey = ['Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+
+        this.semPerformance = ['performance'];
+        this.semPerformanceKeys = ['Performance']
+
+        this.patPerformance = ['block_performance'];
+        this.patPerformanceKeys = ['Performance'];
+
         this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
         this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
-        this.UDISE = ['school_infrastructure', 'block_level_rank_within_the_state', 'block_level_rank_within_the_district', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.UDISEKeys = ['Infrastructure Score', 'Rank (within State)', 'Rank (within District)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+
+        this.UDISE = ['school_infrastructure'];
+        this.UDISEKeys = ['Infrastructure Score'];
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.err = true;
@@ -141,7 +190,7 @@ export class HealthCardComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
       });
     } else if (this.level == 'cluster') {
-      this.height = '260px';
+      this.height = '290px';
       var cluster;
       let blkId;
       if (this.districtName.match(/^\d/)) {
@@ -156,18 +205,27 @@ export class HealthCardComponent implements OnInit {
       this.service.clusterWiseData({ id: id, blockId: blkId }).subscribe(res => {
         this.healthCardData = res['clusterData'][0];
         this.showData(this.healthCardData);
-        this.schoolInfra = ['infra_score', 'cluster_level_rank_within_the_state', 'cluster_level_rank_within_the_district', 'cluster_level_rank_within_the_block'];
-        this.schoolInfraKey = ['Infrastructure Score', 'Rank (within State)', 'Rank (within District)', 'Rank (within Block)'];
-        this.schoolAttendance = ['attendance', 'cluster_level_rank_within_the_state', 'cluster_level_rank_within_the_district', 'cluster_level_rank_within_the_block', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.schoolAttendanceKeys = ['Attendance', 'Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
-        this.semPerformance = ['performance', 'cluster_level_rank_within_the_state', 'cluster_level_rank_within_the_district', 'cluster_level_rank_within_the_block', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.semPerformanceKeys = ['Performance', 'Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)']
-        this.patPerformance = ['cluster_performance', 'cluster_level_rank_within_the_state', 'cluster_level_rank_within_the_district', 'cluster_level_rank_within_the_block', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.patPerformanceKeys = ['Performance', 'Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+        this.schoolInfra = ['infra_score'];
+        this.schoolInfraKey = ['Infrastructure Score'];
+        this.schoolInfraRank = ['cluster_level_rank_within_the_state', 'cluster_level_rank_within_the_district', 'cluster_level_rank_within_the_block'];
+        this.schoolInfraRankKye = ['Rank (within State)', 'Rank (within District)', 'Rank (within Block)'];
+
+        this.schoolAttendance = ['attendance'];
+        this.schoolAttendanceKeys = ['Attendance'];
+        this.schoolAttendanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.schoolAttendanceCategoryKey = ['Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+
+        this.semPerformance = ['performance'];
+        this.semPerformanceKeys = ['Performance']
+
+        this.patPerformance = ['cluster_performance'];
+        this.patPerformanceKeys = ['Performance'];
+
         this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
         this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
-        this.UDISE = ['school_infrastructure', 'cluster_level_rank_within_the_state', 'cluster_level_rank_within_the_district', 'cluster_level_rank_within_the_block', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.UDISEKeys = ['Infrastructure Score', 'Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+
+        this.UDISE = ['school_infrastructure'];
+        this.UDISEKeys = ['Infrastructure Score'];
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.err = true;
@@ -175,11 +233,11 @@ export class HealthCardComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
       });
     } else if (this.level == 'school') {
-      this.height = '300px';
+      this.height = '320px';
       var school;
       var blok;
       if (this.districtName.match(/^\d/)) {
-        school = this.districtObjArr.find(a => a.name == this.districtName);
+        school = this.districtObjArr.find(a => a.id == this.districtName);
         id = parseInt(this.districtName);
         blok = school.blockId;
       } else {
@@ -190,18 +248,27 @@ export class HealthCardComponent implements OnInit {
       this.service.schoolWiseData({ id: id, blockId: blok }).subscribe(res => {
         this.healthCardData = res['schoolData'][0];
         this.showData(this.healthCardData);
-        this.schoolInfra = ['infra_score', 'school_level_rank_within_the_state', 'school_level_rank_within_the_district', 'school_level_rank_within_the_block', 'school_level_rank_within_the_cluster'];
-        this.schoolInfraKey = ['Infrastructure Score', 'Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Rank (within School)'];
-        this.schoolAttendance = ['attendance', 'school_level_rank_within_the_state', 'school_level_rank_within_the_district', 'school_level_rank_within_the_block', 'school_level_rank_within_the_cluster', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.schoolAttendanceKeys = ['Attendance', 'Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Rank (within School)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
-        this.semPerformance = ['performance', 'school_level_rank_within_the_state', 'school_level_rank_within_the_district', 'school_level_rank_within_the_block', 'school_level_rank_within_the_cluster', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.semPerformanceKeys = ['Performance', 'Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Rank (within School)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)']
-        this.patPerformance = ['school_performance', 'school_level_rank_within_the_state', 'school_level_rank_within_the_district', 'school_level_rank_within_the_block', 'school_level_rank_within_the_cluster', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.patPerformanceKeys = ['Performance', 'Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Rank (within School)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+        this.schoolInfra = ['infra_score'];
+        this.schoolInfraKey = ['Infrastructure Score'];
+        this.schoolInfraRank = ['school_level_rank_within_the_state', 'school_level_rank_within_the_district', 'school_level_rank_within_the_block', 'school_level_rank_within_the_cluster'];
+        this.schoolInfraRankKye = ['Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Rank (within School)'];
+
+        this.schoolAttendance = ['attendance'];
+        this.schoolAttendanceKeys = ['Attendance'];
+        this.schoolAttendanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.schoolAttendanceCategoryKey = ['Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+
+        this.semPerformance = ['performance'];
+        this.semPerformanceKeys = ['Performance']
+
+        this.patPerformance = ['school_performance'];
+        this.patPerformanceKeys = ['Performance'];
+
         this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
         this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
-        this.UDISE = ['school_infrastructure', 'school_level_rank_within_the_state', 'school_level_rank_within_the_district', 'school_level_rank_within_the_block', 'school_level_rank_within_the_cluster', 'value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.UDISEKeys = ['Infrastructure Score', 'Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Rank (within School)', 'Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+
+        this.UDISE = ['school_infrastructure'];
+        this.UDISEKeys = ['Infrastructure Score'];
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.err = true;
@@ -216,6 +283,7 @@ export class HealthCardComponent implements OnInit {
   stdAttendanceColor;
   semColor;
   patColor;
+  crcColor;
   udiseColor;
   showData(healthCardData) {
     this.updatedKeys = [];
@@ -286,6 +354,7 @@ export class HealthCardComponent implements OnInit {
         var myKey = this.stringConverter(key);
         this.tooltipCrcKeys.push(myKey);
       });
+      this.crcColor = this.service.colorGredient1(healthCardData['crc_visit']['schools_0']);
     }
     if (healthCardData['udise'] && healthCardData['udise'] != null) {
       this.tooltipUDISE = Object.keys(healthCardData['udise']);
