@@ -86,11 +86,6 @@ export class HealthCardComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('spinner').style.display = 'none';
     document.getElementById('myInput')['disabled'] = true;
-    document.getElementById('spinner').style.display = 'block';
-    this.service.metaData().subscribe(res => {
-      this.allData = res;
-      document.getElementById('spinner').style.display = 'none';
-    });
   }
 
   public err = false;
@@ -142,7 +137,7 @@ export class HealthCardComponent implements OnInit {
         this.UDISE = ['school_infrastructure'];
         this.UDISEKeys = ['Infrastructure Score'];
         this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-        this.UDISECategoryKey = ['Schools (Less than 33%)', 'Schools (33% to 60%)', 'Schools (60% to 75%)', 'Schools (Above 75%)'];
+        this.UDISECategoryKey = ['Infrastructure Score (Less than 33%)', 'Infrastructure Score (33% to 60%)', 'Infrastructure Score (60% to 75%)', 'Infrastructure Score (Above 75%)'];
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.err = true;
@@ -183,6 +178,8 @@ export class HealthCardComponent implements OnInit {
 
         this.UDISE = ['school_infrastructure'];
         this.UDISEKeys = ['Infrastructure Score'];
+        this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.UDISECategoryKey = ['Infrastructure Score (Less than 33%)', 'Infrastructure Score (33% to 60%)', 'Infrastructure Score (60% to 75%)', 'Infrastructure Score (Above 75%)'];
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.err = true;
@@ -226,6 +223,8 @@ export class HealthCardComponent implements OnInit {
 
         this.UDISE = ['school_infrastructure'];
         this.UDISEKeys = ['Infrastructure Score'];
+        this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.UDISECategoryKey = ['Infrastructure Score (Less than 33%)', 'Infrastructure Score (33% to 60%)', 'Infrastructure Score (60% to 75%)', 'Infrastructure Score (Above 75%)'];
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.err = true;
@@ -269,6 +268,8 @@ export class HealthCardComponent implements OnInit {
 
         this.UDISE = ['school_infrastructure'];
         this.UDISEKeys = ['Infrastructure Score'];
+        this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
+        this.UDISECategoryKey = ['Infrastructure Score (Less than 33%)', 'Infrastructure Score (33% to 60%)', 'Infrastructure Score (60% to 75%)', 'Infrastructure Score (Above 75%)'];
         document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.err = true;
@@ -391,49 +392,56 @@ export class HealthCardComponent implements OnInit {
 
   levels = [{ key: 'district', name: 'District' }, { key: 'block', name: 'Block' }, { key: 'cluster', name: 'Cluster' }, { key: 'school', name: 'School' }];
   selectedLevel() {
+    this.allData = [];
+    this.ids = [];
+    this.names = [];
     document.getElementById('spinner').style.display = 'block';
     this.showAll = false;
     document.getElementById('myInput')['disabled'] = false;
     document.getElementById('myInput')['value'] = '';
 
     if (this.level == 'district') {
-      this.placeHolder = "search districts with name/id";
-      this.names = this.allData['districtNames'];
-      this.ids = this.allData['districtIds'];
-      this.districtObjArr = this.allData['districts'];
-      setTimeout(() => {
+      this.service.metaData(this.level).subscribe(res => {
+        this.allData = res;
+        this.placeHolder = "search districts with name/id";
+        this.names = this.allData['districtNames'];
+        this.ids = this.allData['districtIds'];
+        this.districtObjArr = this.allData['districts'];
         document.getElementById('spinner').style.display = 'none';
-      }, 1000);
+      });
     }
 
     if (this.level == 'block') {
-      this.placeHolder = "search blocks with name/id";
-      this.names = this.allData['blockNames'];
-      this.ids = this.allData['blockIds'];
-      this.districtObjArr = this.allData['blocks'];
-      setTimeout(() => {
+      this.service.metaData(this.level).subscribe(res => {
+        this.allData = res;
+        this.placeHolder = "search blocks with name/id";
+        this.names = this.allData['blockNames'];
+        this.ids = this.allData['blockIds'];
+        this.districtObjArr = this.allData['blocks'];
         document.getElementById('spinner').style.display = 'none';
-      }, 1000);
+      });
     }
 
     if (this.level == 'cluster') {
-      this.placeHolder = "search clusters with name/id";
-      this.names = this.allData['clusterNames'];
-      this.ids = this.allData['clusterIds'];
-      this.districtObjArr = this.allData['clusters'];
-      setTimeout(() => {
+      this.service.metaData(this.level).subscribe(res => {
+        this.allData = res;
+        this.placeHolder = "search clusters with name/id";
+        this.names = this.allData['clusterNames'];
+        this.ids = this.allData['clusterIds'];
+        this.districtObjArr = this.allData['clusters'];
         document.getElementById('spinner').style.display = 'none';
-      }, 1500);
+      });
     }
 
     if (this.level == 'school') {
-      this.placeHolder = "search schools with name/id";
-      this.names = this.allData['schoolNames'];
-      this.ids = this.allData['schoolIds'];
-      this.districtObjArr = this.allData['schools'];
-      setTimeout(() => {
+      this.service.metaData(this.level).subscribe(res => {
+        this.allData = res;
+        this.placeHolder = "search schools with name/id";
+        this.names = this.allData['schoolNames'];
+        this.ids = this.allData['schoolIds'];
+        this.districtObjArr = this.allData['schools'];
         document.getElementById('spinner').style.display = 'none';
-      }, 2000);
+      });
     }
   }
 
