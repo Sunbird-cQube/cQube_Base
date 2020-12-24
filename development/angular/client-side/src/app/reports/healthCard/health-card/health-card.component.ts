@@ -82,6 +82,7 @@ export class HealthCardComponent implements OnInit {
   showAll = false;
   height;
   selectedLevelData: any;
+  showLink = true;
   
   constructor(public commonService: AppServiceComponent, public service: HealthCardService, private readonly _router: Router) { }
 
@@ -96,6 +97,7 @@ export class HealthCardComponent implements OnInit {
   onSubmit() {
     this.err = false;
     this.showAll = false;
+    this.showLink = true;
     document.getElementById('spinner').style.display = 'block';
     this.districtName = document.getElementById('myInput')['value'];
     var id;
@@ -254,6 +256,7 @@ export class HealthCardComponent implements OnInit {
         this.height = '330px';
         var school;
         var blok;
+        this.showLink = false;
         if (this.districtName.match(/^\d/)) {
           school = this.districtObjArr.find(a => a.id == this.districtName);
           id = parseInt(this.districtName);

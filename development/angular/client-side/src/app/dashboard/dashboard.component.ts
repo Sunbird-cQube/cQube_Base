@@ -67,15 +67,15 @@ export class DashboardComponent implements OnInit {
   healthCardViews;
 
   //for coming soon page
-  nifi_crc = true;
-  nifi_attendance = true;
-  nifi_semester = true;
-  nifi_infra = true;
-  nifi_diksha = true;
-  nifi_telemetry = true;
-  nifi_udise = true;
-  nifi_pat = true;
-  nifi_composite = true;
+  nifi_crc;
+  nifi_attendance;
+  nifi_semester;
+  nifi_infra;
+  nifi_diksha;
+  nifi_telemetry;
+  nifi_udise;
+  nifi_pat;
+  nifi_composite;
 
   // diksha columns
   diksha_column = 'diksha_columns' in environment ? environment['diksha_columns'] : true
@@ -307,6 +307,4 @@ export class DashboardComponent implements OnInit {
     var myStr = mydata.charAt(0).toUpperCase() + mydata.substr(1).toLowerCase();
     return myStr;
   }
-
-
 }
