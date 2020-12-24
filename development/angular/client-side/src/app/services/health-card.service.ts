@@ -14,9 +14,9 @@ export class HealthCardService {
     this.baseUrl = service.baseUrl;
   }
 
-  metaData() {
+  metaData(level) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/healthCard/metaData`, {});
+    return this.http.post(`${this.baseUrl}/healthCard/metaData`, { level });
   }
 
   districtWiseData(data) {
@@ -68,19 +68,59 @@ export class HealthCardService {
     100: '#7fff00',
   }
 
+  public colors1 = {
+    100: 'red',
+    95: '#fc0500',
+    90: '#ed2400',
+    85: '#d84e00',
+    80: '#d35800',
+    75: '#cd6300',
+    70: '#c86d00',
+    65: '#c37800',
+    60: '#be8200',
+    55: '#b88d00',
+    50: '#b39700',
+    45: '#aea100',
+    40: '#a9ac00',
+    35: '#a4b600',
+    30: '#9ec100',
+    25: '#99cb00',
+    20: '#94d500',
+    15: '#8fe000',
+    10: '#89ea00',
+    5: '#84f500',
+    0: '#7fff00',
+  }
+
   colorGredient(data) {
     var keys = Object.keys(this.colors);
     var setColor = '';
-  
+
     for (let i = 0; i < keys.length; i++) {
-        if (data <= parseInt(keys[i])) {
-            setColor = this.colors[keys[i]];
-            break;
-        } else if (data > parseInt(keys[i]) && data <= parseInt(keys[i + 1])) {
-            setColor = this.colors[keys[i + 1]];
-            break;
-        }
+      if (data <= parseInt(keys[i])) {
+        setColor = this.colors[keys[i]];
+        break;
+      } else if (data > parseInt(keys[i]) && data <= parseInt(keys[i + 1])) {
+        setColor = this.colors[keys[i + 1]];
+        break;
+      }
     }
     return setColor;
-}
+  }
+
+  colorGredient1(data) {
+    var keys = Object.keys(this.colors1);
+    var setColor = '';
+
+    for (let i = 0; i < keys.length; i++) {
+      if (parseInt(data) <= parseInt(keys[i])) {
+        setColor = this.colors1[keys[i]];
+        break;
+      } else if (parseInt(data) > parseInt(keys[i]) && parseInt(data) <= parseInt(keys[i + 1])) {
+        setColor = this.colors1[keys[i + 1]];
+        break;
+      }
+    }
+    return setColor;
+  }
 }

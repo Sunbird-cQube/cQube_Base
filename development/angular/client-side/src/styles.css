@@ -21,6 +21,10 @@ table {
   display: none;
 }
 
+.leaflet-popup-content{
+  width: 250px auto;
+}
+
 
 /* Absolute Center Spinner */
 .loading {

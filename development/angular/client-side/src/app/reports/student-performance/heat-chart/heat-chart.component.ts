@@ -69,7 +69,8 @@ export class HeatChartComponent implements OnInit {
   //For pagination.....
   items = [];
   pageOfItems: Array<any>;
-  pageSize;
+  pageSize = 40;
+  currentPage = 1;
 
 
   constructor(
@@ -129,31 +130,22 @@ export class HeatChartComponent implements OnInit {
     document.getElementById('backBtn').style.display = 'none';
   }
 
-  onChangePage(pageOfItems) {
-    if (pageOfItems.length > 0) {
-      this.pageOfItems = pageOfItems;
-      let yLableCopy = this.yLabel;
-      let yLabelDup = [];
-      let i;
-      for (i = pageOfItems[pageOfItems.length - pageOfItems.length]['y']; i < pageOfItems[pageOfItems.length - 1]['y'] + 1; i++) {
-        yLabelDup.push(yLableCopy[i]);
-      }
+  onChangePage() {
+    let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
+    let data = this.items.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
+    let tooltipData = this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
 
-      // let indexs = [];
-      // let j = 0;
-      // for (i = 0; i < yLabelDup.length; i++) {
-      //   console.log(j);
-      //   let index = j;
-      //   for (let j = 0; j < this.xLabel.length; j++) {
-      //     console.log(index);
-      //     indexs.push(j);
-      //     index += 1;
-      //   }
-      // }
-      console.log(pageOfItems);
+    data = data.map(record => {
+      record.y %= this.pageSize;
+      return record;
+    });
 
-      this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, yLabelDup, this.zLabel, this.pageOfItems, this.a['viewBy'], this.level, this.xLabel1, this.yLabel1, this.toolTipData, this.grade);
-    }
+    tooltipData = tooltipData.map(record => {
+      record.y %= this.pageSize;
+      return record;
+    });
+
+    this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, this.ylab.length > 0 ? this.ylab : yLabel, this.zLabel, data, this.a['viewBy'], this.level, this.xLabel1, this.yLabel1, tooltipData, this.grade);
   }
 
   resetToInitPage() {
@@ -161,6 +153,7 @@ export class HeatChartComponent implements OnInit {
     this.resetOnAllGrades();
     this.year = this.years[this.years.length - 1];
     this.commonFunc();
+    this.currentPage = 1;
 
     document.getElementById('home').style.display = 'none';
   }
@@ -240,7 +233,7 @@ export class HeatChartComponent implements OnInit {
         max: 30,
         scrollbar: {
           enabled: scrollBarX
-        },
+        }
       }, {
         lineColor: '#FFFFFF',
         linkedTo: 0,
@@ -266,7 +259,14 @@ export class HeatChartComponent implements OnInit {
             textOverflow: "ellipsis",
             fontFamily: 'Arial'
           },
-          align: "right"
+          align: "right",
+          formatter: function (this) {
+            if (typeof this.value === 'string') {
+              return `<p>${this.value}</p>`;
+            }
+
+            return '';
+          }
         },
         gridLineColor: 'transparent',
         title: null,
@@ -447,6 +447,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedDistrict(districtId) {
+    this.currentPage = 1;
     this.fileName = "Block_wise_report";
     this.level = 'block';
     this.block = undefined;
@@ -490,6 +491,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
+    this.currentPage = 1;
     this.fileName = "Cluster_wise_report";
     this.level = 'cluster';
     this.cluster = undefined;
@@ -536,6 +538,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
+    this.currentPage = 1;
     this.fileName = "School_wise_report";
     this.level = 'school';
     document.getElementById('home').style.display = 'block';
@@ -621,12 +624,13 @@ export class HeatChartComponent implements OnInit {
     this.yLabel1 = this.yLabel
 
     this.items = this.data.map((x, i) => x);
-    this.pageSize = this.xLabel.length * 15;
-    this.toolTipData = response['result']['tooltipData']
+    this.toolTipData = response['result']['tooltipData'];
+    this.onChangePage();
   }
 
   //level wise filter
   levelWiseFilter() {
+    this.currentPage = 1;
     document.getElementById('home').style.display = 'block';
     if (this.level == 'district') {
       this.commonFunc()

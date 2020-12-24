@@ -7,7 +7,7 @@ import { SemViewComponent } from './sem-view/sem-view.component';
 import { FormsModule } from '@angular/forms';
 import { HeatChartComponent } from './heat-chart/heat-chart.component';
 import { PATLOTableComponent } from './pat-lo-table/pat-lo-table.component';
-import { JwPaginationModule } from 'jw-angular-pagination';
+import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
 const performRoute: Routes = [
   {
@@ -38,7 +38,7 @@ const performRoute: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    JwPaginationModule,
+    NgbPaginationModule,
     RouterModule.forChild(performRoute)
   ]
 })

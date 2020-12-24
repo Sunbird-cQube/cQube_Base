@@ -61,6 +61,22 @@
     color: #ffffff; 
   }
 
+  .link{
+   position: absolute;  bottom: 0px; left: 30px;color: white; font-weight: bold;
+   text-decoration: underline;
+   transition: transform .5s;
+  }
+
+  .link:hover {
+    -ms-transform: scale(1.02);
+    -webkit-transform: scale(1.02);
+    transform: scale(1.02); 
+  }
+
+  p a{
+    text-decoration: underline;
+  }
+
 
 
 
@@ -145,4 +161,8 @@
   
   .lte8 .wrapper:hover .tooltip {
     display: block;
+  }
+
+  .headings{
+    font-weight: bold;
   }
