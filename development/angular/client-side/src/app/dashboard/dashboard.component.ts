@@ -67,15 +67,15 @@ export class DashboardComponent implements OnInit {
   healthCardViews;
 
   //for coming soon page
-  nifi_crc;
-  nifi_attendance;
-  nifi_semester;
-  nifi_infra;
-  nifi_diksha;
-  nifi_telemetry;
-  nifi_udise;
-  nifi_pat;
-  nifi_composite;
+  nifi_crc = true;
+  nifi_attendance = true;
+  nifi_semester = true;
+  nifi_infra = true;
+  nifi_diksha = true;
+  nifi_telemetry = true;
+  nifi_udise = true;
+  nifi_pat = true;
+  nifi_composite = true;
 
   // diksha columns
   diksha_column = 'diksha_columns' in environment ? environment['diksha_columns'] : true
