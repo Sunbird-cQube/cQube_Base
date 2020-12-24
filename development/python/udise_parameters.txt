@@ -584,11 +584,6 @@ over (partition by udise_sch_code,item_id) as rn from FLOWFILE) sq Where rn =1""
 "udise_nsqf_class_cond_table_name":"""udise_nsqf_class_cond""",
 "select_columns_nsqf_faculty_qry":"""select nsqf_faculty_id,udise_sch_code,ac_year,faculty_code,name,gender,dob,soc_cat,nature_of_appt,qual_acad,qual_prof,industry_exp,training_exp,class_taught,appt_sec,induc_trg_rcvd,inserv_trg_rcvd from flowfile""",
 "udise_insert_agg_qry":"""select insert_udise_metrics_agg()""",
-"udise_drop_views":"""drop view if exists udise_district_score cascade;
-drop view if exists udise_block_score cascade;
-drop view if exists udise_cluster_score cascade;
-drop view if exists udise_school_score cascade;
-""",
 "select_columns_nsqf_class_cond_qry":"""select udise_sch_code,ac_year,sector_no,class_type_id,c9,c10,c11,c12 from flowfile""",
 "udise_save_to_sch_facility_dup":"""udise_sch_facility_dup""",
 "udise_filter_same_record_sch_enr_medinstr_qry":"""select udise_sch_code,ac_year,medinstr_seq,c1_b,c1_g,c2_b,c2_g,c3_b,

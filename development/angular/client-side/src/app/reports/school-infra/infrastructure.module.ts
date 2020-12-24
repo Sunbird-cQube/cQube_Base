@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { AuthGuard } from 'src/app/auth.guard';
 import { InfraMapVisualisationComponent } from './infra-map-visualisation/infra-map-visualisation.component';
 import { SchoolInfrastructureComponent } from './school-infrastructure/school-infrastructure.component';
@@ -33,6 +35,7 @@ const infraRoutes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
+    NgbDropdownModule,
     RouterModule.forChild(infraRoutes)
   ]
 })
