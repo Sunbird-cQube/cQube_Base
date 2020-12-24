@@ -135,12 +135,14 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.genericFunction(response);
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      if (this.items.length > 0) {
+        this.chart.destroy();
+      }
       this.reportData = [];
       this.commonService.loaderAndErr(this.districtNames);
     })
   }
-
+  chart;
   chartFun = (xLabel, xLabelId, yLabel, zLabel, data, level, xLabel1, yLabel1, tooltipData) => {
     let scrollBarX
     let scrollBarY
@@ -161,7 +163,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       xLabel[i] = xLabel[i].substr(0, 15);
     }
     // var options: Highcharts.Options = 
-    Highcharts.chart('container', {
+    this.chart = Highcharts.chart('container', {
       chart: {
         type: 'heatmap'
       },
@@ -291,6 +293,9 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   selectedTimePeriod() {
+    this.districtNames = [];
+    this.blockNames = [];
+    this.clusterNames = [];
     this.levelWiseFilter();
   }
 
@@ -325,7 +330,9 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      if (this.items.length > 0) {
+        this.chart.destroy();
+      }
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
     })
@@ -367,7 +374,9 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      if (this.items.length > 0) {
+        this.chart.destroy();
+      }
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
     })
@@ -407,7 +416,9 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      if (this.items.length > 0) {
+        this.chart.destroy();
+      }
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
     })

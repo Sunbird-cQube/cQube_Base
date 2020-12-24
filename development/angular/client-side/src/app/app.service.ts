@@ -148,7 +148,15 @@ export class AppServiceComponent {
                             /\w\S*/g,
                             function (txt) {
                                 txt = txt.replace(/_/g, ' ');
-                                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+
+                                if (txt.includes('percent')) {
+                                    txt = txt.replace('percent', '(%)');
+                                }
+                                if (txt.includes('id')) {
+                                    return txt.charAt(0).toUpperCase();
+                                } else {
+                                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                                }
                             })
                         + "</b>" + ": " + object[key] + " %" + `</span>`;
                 } else {
@@ -160,8 +168,17 @@ export class AppServiceComponent {
                             /\w\S*/g,
                             function (txt) {
                                 txt = txt.replace(/_/g, ' ');
-                                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                                if (txt.includes('percent')) {
+                                    txt = txt.replace('percent', '(%)');
+                                }
+                                if (txt.includes('id')) {
+                                    txt = txt.replace('id', 'ID');
+                                    return txt.charAt(0).toUpperCase() + txt.substr(1);
+                                } else {
+                                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                                }
                             })
+
                         + "</b>" + ": " + object[key] + `</span>`;
                 }
             }
