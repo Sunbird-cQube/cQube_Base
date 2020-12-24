@@ -110,7 +110,9 @@ export class HealthCardComponent implements OnInit {
           dist = this.districtObjArr.find(a => a.id === id);
         } else {
           dist = this.districtObjArr.find(a => a.name == this.districtName);
-          id = dist.id;
+          if (dist) {
+            id = dist.id;
+          }
         }
         
         this.selectedLevelData = dist;
@@ -163,7 +165,9 @@ export class HealthCardComponent implements OnInit {
           block = this.districtObjArr.find(a => a.id == id);
         } else {
           block = this.districtObjArr.find(a => a.name == this.districtName);
-          id = block.id;
+          if (block) {
+            id = block.id;
+          }
         }
   
         this.selectedLevelData = block;
@@ -212,8 +216,10 @@ export class HealthCardComponent implements OnInit {
           blkId = cluster.blockId;
         } else {
           cluster = this.districtObjArr.find(a => a.name == this.districtName);
-          id = cluster.id;
-          blkId = cluster.blockId;
+          if (cluster) {
+            id = cluster.id;
+            blkId = cluster.blockId;
+          }
         }
   
         this.selectedLevelData = cluster;
@@ -263,8 +269,10 @@ export class HealthCardComponent implements OnInit {
           blok = school.blockId;
         } else {
           school = this.districtObjArr.find(a => a.name == this.districtName);
-          id = school.id;
-          blok = school.blockId;
+          if (school) {
+            id = school.id;
+            blok = school.blockId;
+          }
         }
         this.service.schoolWiseData({ id: id, blockId: blok }).subscribe(res => {
           this.healthCardData = res['schoolData'][0];
@@ -317,6 +325,7 @@ export class HealthCardComponent implements OnInit {
   udiseColor;
   patPerformTooltip = [];
   patPerformTooltipKeys = [];
+  semPerformancePercent = ['percent_below_33', 'percent_between_33_60', 'percent_between_60_75', 'percent_above_75'];
   showData(healthCardData) {
     this.updatedKeys = [];
     this.keys = Object.keys(healthCardData);
@@ -370,7 +379,7 @@ export class HealthCardComponent implements OnInit {
     if (healthCardData['student_semester'] && healthCardData['student_semester'] != null) {
       this.tooltimSem = Object.keys(healthCardData['student_semester']);
       this.tooltimSem = this.tooltimSem.filter((key) => {
-        return !this.semPerformance.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
+        return !this.semPerformance.includes(key) && !this.semPerformancePercent.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
       });
       this.tooltimSem.filter(key => {
         myKey = this.stringConverter(key);
