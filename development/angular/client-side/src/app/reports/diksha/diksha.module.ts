@@ -15,6 +15,7 @@ import { DikshaTpdEnrollmentComponent } from './diksha-tpd-enrollment-and-comple
 import { DikshaTpdCompletionComponent } from './diksha-tpd-completion-percentage/diksha-tpd-completion.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { MultiSelectComponent } from './tpd/multi-select/multi-select.component';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 const dikshaRoutes: Routes = [
   {
@@ -67,6 +68,7 @@ const dikshaRoutes: Routes = [
     CommonModule,
     FormsModule,
     ChartsModule,
+    NgbPaginationModule,
     RouterModule.forChild(dikshaRoutes)
   ]
 })

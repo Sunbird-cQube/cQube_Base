@@ -14,8 +14,10 @@
         </div>
         <div class="col-sm-5">
             <div class="autocomplete" style="width:300px;;float: left;">
-                <input id="myInput" type="search" class="clearable" autofocus autocomplete="off" name="districtName"
+                <input #searchInput id="myInput" type="search" class="clearable" autofocus autocomplete="off" name="districtName"
                     [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
+                <br>
+                <p id="warning" style="font-size: 9px;"> Please enter atlease 2 characters/digits</p>
             </div>
             <button type="submit" class="btn btn-secondary"
                 style="float: left;padding: 6px 10px 6px 10px; font-size: 12px; font-weight: bold;margin-left: 5px;"
@@ -87,7 +89,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link"><a [routerLink]="['/attendance/student-attendance']">Click
+                            <p *ngIf="showLink" class="link"><a href="javascript:void(0)" (click)="goToReport('/attendance/student-attendance')">Click
                                     to Access
                                     Report</a></p>
                         </div>
@@ -266,7 +268,7 @@
 
 
                             <p *ngIf="showLink" class="link"><a href="javascript: void(0)"
-                                    (click)="gotToStudentInfrastructureReport()">Click to Access
+                                    (click)="goToReport('/infrastructure/school-infra-map')">Click to Access
                                     Report</a></p>
                         </div>
                     </div>
