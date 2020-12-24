@@ -3,7 +3,6 @@
 "diksha_api_progress_exhaust_batch_id_list":''' ''',
 "diksha_api_progress_exhaust_dataset":''' ''',
 "diksha_api_progress_exhaust_encryption_key":''' ''',
-"diksha_api_progress_exhaust_tag":''' ''',
 "diksha_api_progress_exhaust_x_channel_id":''' ''',
 "diksha_api_summary_roll_up_api_token":''' ''',
 "diksha_api_summary_roll_up_x_channel_id":''' ''',
