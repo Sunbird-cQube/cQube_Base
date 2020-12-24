@@ -163,6 +163,13 @@
                                                     <span>{{tooltipPatKeys[i]}}</span> :
                                                     <span>{{healthCardData['pat_performance'][key]}}</span>
                                                 </div>
+                                                <strong
+                                                    style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade
+                                                    Wise Performance </strong>
+                                                <div *ngFor="let key of patPerformTooltip;let i=index">
+                                                    <span>{{patPerformTooltipKeys[i]}}</span> :
+                                                    <span>{{healthCardData['pat_performance']['grade_wise_performance'][key]}}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -337,7 +344,9 @@
                             </em>
                             <table>
                                 <tbody>
-                                    <strong style="text-decoration: underline; font-size: 15px;line-height: 2em;">Schools Visit
+                                    <strong
+                                        style="text-decoration: underline; font-size: 15px;line-height: 2em;">Schools
+                                        Visit
                                         Category</strong>
                                     <tr *ngFor="let crc of crcVisit; let i=index">
                                         <td> <span>{{crcVisitKeys[i]}}</span></td>
