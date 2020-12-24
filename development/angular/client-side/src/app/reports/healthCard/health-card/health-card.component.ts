@@ -121,6 +121,9 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     document.getElementById('spinner').style.display = 'block';
     this.districtName = document.getElementById('myInput')['value'];
     var id;
+    if (this.ids.includes(this.districtName) || this.names.includes(this.districtName)) {
+      document.getElementById('warning').style.display = 'none';
+    }
     if (this.districtName) {
       if (this.level == 'district') {
         this.height = '250px';
