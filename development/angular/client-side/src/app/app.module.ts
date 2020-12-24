@@ -19,6 +19,9 @@ import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { InfoComponent } from './common/info/info.component';
+import { DikshaChartComponent } from './reports/diksha/diksha-chart/diksha-chart.component';
+import { HealthCardComponent } from './reports/healthCard/health-card/health-card.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -31,6 +34,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     DashboardComponent,
     HomePageComponent,
     InfoComponent,
+    DikshaChartComponent,
+    HealthCardComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +51,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     FormsModule,
     ChartsModule,
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   exports: [
     MatTableModule,

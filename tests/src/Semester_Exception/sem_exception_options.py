@@ -21,9 +21,8 @@ class sem_options():
         choose.select_by_index(1)
         if 'no data found' in self.driver.page_source:
             print("Semester 1 has not data")
-        self.driver.find_element_by_id(Data.Download).click()
-        self.filename = p.get_download_dir() + '/' + fname.exception_district()
-        if os.path.isfile(self.filename) == True:
-            print('districtwise csv file download')
-            count = count + 1
+            self.driver.find_element_by_id(Data.home).click()
+            self.data.page_loading(self.driver)
+            self.data.navigate_to_semester_exception()
+            self.data.page_loading(self.driver)
         return count

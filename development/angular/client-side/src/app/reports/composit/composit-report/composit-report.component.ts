@@ -41,7 +41,7 @@ export class CompositReportComponent implements OnInit {
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
-  public skul: boolean = false;
+  public skul: boolean = true;
 
   public title: string = '';
   public titleName: string = '';
@@ -71,8 +71,16 @@ export class CompositReportComponent implements OnInit {
     }
     this.myData = this.service.dist_wise_data().subscribe(res => {
       this.result = res;
-      this.xAxis = Object.keys(this.result[0])[1];
-      this.yAxis = Object.keys(this.result[0])[2];
+      if (Object.keys(this.result[0]).includes("Student Attendance(%)")) {
+        this.xAxis = "Student Attendance(%)";
+      } else {
+        this.xAxis = Object.keys(this.result[0])[1];
+      }
+      if (Object.keys(this.result[0]).includes("Semester Performance(%)")) {
+        this.yAxis = "Semester Performance(%)";
+      } else {
+        this.yAxis = Object.keys(this.result[0])[2];
+      }
       this.districtWise();
     }, err => {
       this.result = [];

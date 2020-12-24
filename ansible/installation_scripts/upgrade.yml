@@ -60,4 +60,8 @@
             tags: update
             when: nifi_composite
 
+          - role: nifi_healthcard
+            tags: update
+            when: nifi_healthcard
+
           - cqube_version

@@ -20,6 +20,9 @@ class Catagory_series():
         self.fname = file_extention()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.load.page_loading(self.driver)
+        grades = Select(self.driver.find_element_by_id(Data.grade))
+        grades.select_by_index(2)
+        self.load.page_loading(self.driver)
         view_by = Select(self.driver.find_element_by_id(Data.view_by))
         for i in range(1,len(view_by.options)):
             view_by.select_by_index(i)
@@ -48,6 +51,9 @@ class Catagory_series():
         self.fname = file_extention()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.load.page_loading(self.driver)
+        grade = Select(self.driver.find_element_by_id(Data.grade))
+        grade.select_by_index(2)
+        self.load.page_loading(self.driver)
         view_by = Select(self.driver.find_element_by_id(Data.view_by))
         view_by.select_by_index(1)
         self.load.page_loading(self.driver)
@@ -75,6 +81,9 @@ class Catagory_series():
         self.fname = file_extention()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.load.page_loading(self.driver)
+        grade = Select(self.driver.find_element_by_id(Data.grade))
+        grade.select_by_index(4)
+        self.load.page_loading(self.driver)
         view_by = Select(self.driver.find_element_by_id(Data.view_by))
         view_by.select_by_visible_text(' Indicator ')
         self.load.page_loading(self.driver)
@@ -86,7 +95,7 @@ class Catagory_series():
         self.load.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(3)
-        self.filename = self.p.get_download_dir() + "/" + self.fname.pchart_views()
+        self.filename = self.p.get_download_dir() + "/Grade_wise_report.csv"
         if os.path.isfile(self.filename) != True:
             print(view_by.options[2].text, 'csv file is not downloaded')
             count = count + 1

@@ -78,12 +78,14 @@ export class InfraMapVisualisationComponent implements OnInit {
   public lat: any;
   public lng: any;
 
+
   constructor(
     public http: HttpClient,
     public service: SchoolInfraService,
     public commonService: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
+    private readonly _router: Router
   ) {
   }
 
@@ -96,8 +98,86 @@ export class InfraMapVisualisationComponent implements OnInit {
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.districtWise();
+    
+    let params = JSON.parse(sessionStorage.getItem('report-level-info'));
+
+    if (params && params.level) {
+      let data = params.data;
+      if (params.level === 'district') {
+        this.districtHierarchy = {
+          distId: data.id
+        };
+
+        this.districtId = data.id;
+        this.getDistricts();
+        this.onDistrictSelect(data.id);
+      } else if (params.level === 'block') {
+        this.districtHierarchy = {
+          distId: data.districtId
+        };
+
+        this.blockHierarchy = {
+          distId: data.districtId,
+          blockId: data.id
+        };
+
+        this.districtId = data.blockHierarchy;
+        this.blockId = data.id;
+        this.getDistricts();
+        this.getBlocks(data.districtId, data.id);
+      } else if (params.level === 'cluster') {
+        this.districtHierarchy = {
+          distId: data.districtId
+        };
+
+        this.blockHierarchy = {
+          distId: data.districtId,
+          blockId: data.blockId
+        };
+
+        this.clusterHierarchy = {
+          distId: data.districtId,
+          blockId: data.blockId,
+          clusterId: data.id
+        };
+
+        this.districtId = data.blockHierarchy;
+        this.blockId = data.blockId;
+        this.clusterId = data.id;
+        this.getDistricts();
+        this.getBlocks(data.districtId);
+        this.getClusters(data.districtId, data.blockId, data.id);
+      }
+    } else {
+      this.districtWise();
+    }
   }
+
+  getDistricts(): void {
+    this.service.infraMapDistWise().subscribe(res => {
+      this.data = res['data'];
+      this.districtMarkers = this.data;
+    });
+  }
+
+  getBlocks(distId, blockId?: any): void {
+    this.service.infraMapBlockWise(distId).subscribe(res => {
+      this.data = res['data'];
+      this.blockMarkers = this.data;
+      if (blockId)
+        this.onBlockSelect(blockId);
+    });
+  }
+
+  getClusters(distId, blockId, clusterId): void {
+    this.service.infraMapClusterWise(distId, blockId).subscribe(res => {
+      this.data = res['data'];
+      this.clusterMarkers = this.data;
+      this.onClusterSelect(clusterId);
+    });
+  }
+
+
   // to load all the districts for state data on the map
   districtWise() {
     try {
@@ -162,9 +242,12 @@ export class InfraMapVisualisationComponent implements OnInit {
             centerLng: this.lng,
             level: 'district'
           }
+          // var MylatLng = [];
           // globalMap.on('click', function (e) {
-          //   console.log(`${`[` + e.latlng.lng + ',' + e.latlng.lat + ']'}`);
+          //   // console.log('[' + e.latlng.lng + ',' + e.latlng.lat + ']');
+          //   MylatLng.push('[' + e.latlng.lng + ',' + e.latlng.lat + ']');
           // });
+          // this.latLngArr = MylatLng;
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
           globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
@@ -188,6 +271,11 @@ export class InfraMapVisualisationComponent implements OnInit {
       console.log(e);
     }
   }
+
+  // latLngArr = [];
+  // showArr() {
+  //   console.log(this.latLngArr)
+  // }
 
   // to load all the blocks for state data on the map
   blockWise() {
@@ -236,8 +324,8 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.schoolCount = 0;
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              this.colorGredient(this.blockMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, this.setColor, 3.5, 0.01, undefined, options.level);
+              var color = this.commonService.colorGredient(this.blockMarkers[i], this.infraData);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, color, 3.5, 0.01, 1, options.level);
 
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.blockMarkers[i], options.level);
@@ -311,8 +399,8 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              this.colorGredient(this.clusterMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, this.setColor, 0, 0.01, undefined, options.level);
+              var color = this.commonService.colorGredient(this.clusterMarkers[i], this.infraData);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, color, 1, 0.01, .5, options.level);
 
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.clusterMarkers[i], options.level);
@@ -385,13 +473,14 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.schoolMarkers = result;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              this.colorGredient(this.schoolMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, this.setColor, 0, 0, undefined, options.level);
+              var color = this.commonService.colorGredient(this.schoolMarkers[i], this.infraData);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, color, 0, 0, 0.3, options.level);
 
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
-            this.commonService.restrictZoom(globalMap);
+            globalMap.doubleClickZoom.enable();
+            globalMap.scrollWheelZoom.enable();
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
@@ -494,6 +583,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
+
     this.myData = this.service.infraMapClusterWise(this.districtHierarchy.distId, blockId).subscribe(res => {
       this.data = res['data'];
       this.gettingInfraFilters(this.data);
@@ -530,7 +620,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3,
+        radius: 3.5,
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 3,
@@ -654,9 +744,8 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.markers = myData;
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-        this.colorGredient(this.markers[i], this.infraData);
-
-        var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, this.setColor, options.radius, options.strokeWeight, 1, options.level);
+        var color = this.commonService.colorGredient(this.markers[i], this.infraData);
+        var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, color, options.radius, options.strokeWeight, 1, options.level);
 
         // data to show on the tooltip for the desired levels
         this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
@@ -721,49 +810,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
     if (this.level == 'school') {
       this.onClusterSelect(this.clusterId);
-    }
-  }
-
-  colorGredient(data, infraData) {
-    var dataSet = {};
-    if (infraData == 'infrastructure_score') {
-      dataSet = data.details;
-    } else {
-      dataSet = data.metrics;
-    }
-
-    if (dataSet[infraData] <= 10) {
-      this.setColor = '#a50026';
-    }
-    if (dataSet[infraData] >= 11 && dataSet[infraData] <= 20) {
-      this.setColor = '#d73027';
-    }
-    if (dataSet[infraData] >= 21 && dataSet[infraData] <= 30) {
-      this.setColor = '#f46d43';
-    }
-    if (dataSet[infraData] >= 31 && dataSet[infraData] <= 40) {
-      this.setColor = '#fdae61';
-    }
-    if (dataSet[infraData] >= 41 && dataSet[infraData] <= 50) {
-      this.setColor = '#ffff00';
-    }
-    if (dataSet[infraData] >= 51 && dataSet[infraData] <= 60) {
-      this.setColor = '#bbff33';
-    }
-    if (dataSet[infraData] >= 61 && dataSet[infraData] <= 70) {
-      this.setColor = '#4dff4d';
-    }
-    if (dataSet[infraData] >= 71 && dataSet[infraData] <= 80) {
-      this.setColor = '#66bd63';
-    }
-    if (dataSet[infraData] >= 81 && dataSet[infraData] <= 90) {
-      this.setColor = '#1a9850';
-    }
-    if (dataSet[infraData] >= 91 && dataSet[infraData] <= 99) {
-      this.setColor = '#00b300';
-    }
-    if (dataSet[infraData] == 100) {
-      this.setColor = '#006600';
     }
   }
 
@@ -960,5 +1006,23 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.reportData.push(myobj);
       }
     }
+  }
+
+  goToHealthCard(): void {
+    let data: any = {};
+
+    if (this.level === 'block') {
+      data.level = 'district';
+      data.value = this.districtHierarchy.distId;
+    } else if (this.level === 'cluster') {
+      data.level = 'block';
+      data.value = this.blockHierarchy.blockId;
+    } else if (this.level === 'school') {
+      data.level = 'cluster';
+      data.value = this.clusterHierarchy.clusterId;
+    }
+
+    sessionStorage.setItem('health-card-info', JSON.stringify(data));
+    this._router.navigate(['/healthCard']);
   }
 }

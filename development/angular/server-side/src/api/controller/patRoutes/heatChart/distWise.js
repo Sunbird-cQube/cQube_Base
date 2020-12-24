@@ -8,11 +8,14 @@ router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT heat map distwise api ---');
         let { year, month, grade, subject_name, exam_date, viewBy } = req.body
-        let fileName
+        let fileName;
         if (grade == "") {
             fileName = `pat/heatmap-summary/${year}/${month}/allData.json`
         } else {
-            fileName = `pat/heatChart/${year}/${month}/allData.json`
+            if (viewBy == 'indicator') {
+                fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/allData.json`;
+            } else if (viewBy == 'question_id')
+                fileName = `pat/heatChart/questionIdLevel/${year}/${month}/allData.json`;
         }
 
         var data = await s3File.readS3File(fileName);

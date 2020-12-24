@@ -3,23 +3,23 @@
         <div class="col-sm-8">
             <div>
                 <p id="dist" *ngIf='skul' style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Telemetry data for: District Level
+                    Telemetry Data for: District Level
             </div>
             <div>
                 <p id="block" *ngIf='dist'
                     style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Telemetry data for: Block Level
+                    Telemetry Data for: Block Level
             </div>
             <div>
                 <p id="cluster" *ngIf='blok'
                     style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Telemetry data for: Cluster Level
+                    Telemetry Data for: Cluster Level
             </div>
 
             <div>
                 <p id="school" *ngIf='clust'
                     style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Telemetry data for: School Level
+                    Telemetry Data for: School Level
             </div>
             <!-- <div *ngIf='dist'>
                 <p id="block"
@@ -79,7 +79,7 @@
         <div class="col-sm-12">
             <span style="font-size: 12px;">Select Time Period ➝ </span>
             <select id="time_period"
-                style="margin-right: 25px; padding: 2.7px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 25px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="timePeriod" name="timePeriod" (change)="getTimePeriod(timePeriod)">
                 <option [value]="timePeriod" disabled selected="selected">Choose Time Period</option>
                 <option *ngFor="let time of timeDetails, let i = index" [(ngValue)]="time.id">
@@ -87,13 +87,13 @@
                 </option>
             </select>
             <button class="btn btn-secondary" id="block"
-                style="margin-right: 10px; font-size: 11px; width: 70px; padding: 2.1px; background-color: rgb(152, 160, 163);"
+                style="margin-right: 10px; font-size: 11px; width: 70px; padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="blockWise()">&nbsp;<strong>Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
-                style="margin-right: 10px; font-size: 11px; width: 70px;padding: 2.1px; background-color: rgb(152, 160, 163);"
+                style="margin-right: 10px; font-size: 11px; width: 70px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="clusterWise()">&nbsp;<strong>Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
-                style="margin-right: 10px; font-size: 11px; width: 70px; padding: 2.1px; background-color: rgb(152, 160, 163);"
+                style="margin-right: 10px; font-size: 11px; width: 70px; padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise()">&nbsp;<strong>Schools</strong> </button>
         </div>
     </div>

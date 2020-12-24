@@ -1173,6 +1173,15 @@ subject_7=excluded.subject_7,subject_8=excluded.subject_8,updated_on=now()''',
 SELECT student_uid,school_id,semester,grade,subject_1,subject_2,subject_3,subject_4,subject_5,subject_6,subject_7,subject_8,ff_uuid 
 FROM student_semester_temp''',
 "get_sem_value":'''select distinct(semester) from flowfile''',
-"stud_sem_queries_filename":'''student_assessment_queries.json'''
+"stud_sem_queries_filename":'''student_assessment_queries.json''',
+"sem_transform_meta":'''[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "json_agg": ""
+      }
+    }
+  }
+]'''
 }
-

@@ -22,7 +22,7 @@ class course_districtwise_lastweek_record():
         self.data.page_loading(self.driver)
         districts  =Select(self.driver.find_element_by_id('choose_dist'))
         i = 0
-        for x in range(len(districts.options)-1, len(districts.options)):
+        for x in range(len(districts.options)-2, len(districts.options)):
             time.sleep(1)
             districts.select_by_index(x)
             name = districts.options[x].text

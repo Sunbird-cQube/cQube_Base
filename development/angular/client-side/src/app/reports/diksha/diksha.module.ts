@@ -9,11 +9,13 @@ import { DikshaChartComponent } from './diksha-chart/diksha-chart.component';
 import { DikshaTableComponent } from './diksha-table/diksha-table.component';
 import { DikshaUsageByTextBookComponent } from './diksha-usage-by-text-book/diksha-usage-by-text-book.component';
 import { UsageByTextbookContentComponent } from './usage-by-textbook-content/usage-by-textbook-content.component';
-import { DikshaTPDContentProgressComponent } from './diksha-tpd-course-progress/diksha-tpd-content-progress.component';
-import { DikshaTPDTeachersPercentageComponent } from './diksha-tpd-teachers-percentage/diksha-tpd-teachers-percentage.component';
+import { DikshaTPDContentProgressComponent } from './tpd/diksha-tpd-course-progress/diksha-tpd-content-progress.component';
+import { DikshaTPDTeachersPercentageComponent } from './tpd/diksha-tpd-teachers-percentage/diksha-tpd-teachers-percentage.component';
 import { DikshaTpdEnrollmentComponent } from './diksha-tpd-enrollment-and-completion/diksha-tpd-enrollment.component';
 import { DikshaTpdCompletionComponent } from './diksha-tpd-completion-percentage/diksha-tpd-completion.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { MultiSelectComponent } from './tpd/multi-select/multi-select.component';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 const dikshaRoutes: Routes = [
   {
@@ -51,7 +53,6 @@ const dikshaRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    DikshaChartComponent,
     DikshaTableComponent,
     DikshaBarChartComponent,
     DikshaUsageByTextBookComponent,
@@ -60,12 +61,14 @@ const dikshaRoutes: Routes = [
     DikshaTPDTeachersPercentageComponent,
     DikshaTpdEnrollmentComponent,
     DikshaTpdCompletionComponent,
-    BarChartComponent
+    BarChartComponent,
+    MultiSelectComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ChartsModule,
+    NgbPaginationModule,
     RouterModule.forChild(dikshaRoutes)
   ]
 })

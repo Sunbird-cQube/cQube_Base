@@ -89,8 +89,10 @@ export class CrcReportComponent implements OnInit {
     { key: 'visit_6_10', value: "Visit-6 to 10 times (%)" },
     { key: 'visit_10_more', value: "Visits more than 10 times (%)" },
     { key: "no_of_schools_per_crc", value: "Number of schools per CRC" },
-    { key: "visits_per_school", value: "Visits per schools (%)" },
-    { key: "totalSchools", value: "Total schools" }
+    { key: "visits_per_school", value: "Visits per schools" },
+    { key: "visitedSchoolCount", value: "Visited schools count" },
+    { key: "totalSchools", value: "Total schools" },
+    { key: "totalVisits", value: "Total visits" }
   ]
 
   public yAxisFilter = [
@@ -100,9 +102,15 @@ export class CrcReportComponent implements OnInit {
     { key: 'visit_6_10', value: "Visit-6 to 10 times (%)" },
     { key: 'visit_10_more', value: "Visits more than 10 times (%)" },
     { key: "no_of_schools_per_crc", value: "Number of schools per CRC" },
-    { key: "visits_per_school", value: "Visits per schools (%)" },
-    { key: "totalSchools", value: "Total schools" }
+    { key: "visits_per_school", value: "Visits per schools" },
+    { key: "visitedSchoolCount", value: "Visited schools count" },
+    { key: "totalSchools", value: "Total schools" },
+    { key: "totalVisits", value: "Total visits" }
   ]
+
+  // { title: "Visited schools count", data: "visitedSchoolCount" },
+  //         { title: "Total schools", data: "totalSchools" },
+  //         { title: "Total visits", data: "totalVisits" }
 
   myData;
   state: string;
@@ -203,7 +211,7 @@ export class CrcReportComponent implements OnInit {
           { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
           { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
           { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-          { title: "Visits per schools (%)", data: "visits_per_school" },
+          { title: "Visits per schools", data: "visits_per_school" },
           { title: "Visited schools count", data: "visitedSchoolCount" },
           { title: "Total schools", data: "totalSchools" },
           { title: "Total visits", data: "totalVisits" }
@@ -272,7 +280,7 @@ export class CrcReportComponent implements OnInit {
               { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
               { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
               { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-              { title: "Visits per schools (%)", data: "visits_per_school" },
+              { title: "Visits per schools", data: "visits_per_school" },
               { title: "Visited schools count", data: "visitedSchoolCount" },
               { title: "Total schools", data: "totalSchools" },
               { title: "Total visits", data: "totalVisits" }
@@ -461,7 +469,7 @@ export class CrcReportComponent implements OnInit {
             { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
             { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
             { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-            { title: "Visits per schools (%)", data: "visits_per_school" },
+            { title: "Visits per schools", data: "visits_per_school" },
             { title: "Visited schools count", data: "visitedSchoolCount" },
             { title: "Total schools", data: "totalSchools" },
             { title: "Total visits", data: "totalVisits" }
@@ -570,7 +578,7 @@ export class CrcReportComponent implements OnInit {
           { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
           { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
           { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-          { title: "Visits per schools (%)", data: "visits_per_school" },
+          { title: "Visits per schools", data: "visits_per_school" },
           { title: "Visited schools count", data: "visitedSchoolCount" },
           { title: "Total schools", data: "totalSchools" },
           { title: "Total visits", data: "totalVisits" }
@@ -680,7 +688,7 @@ export class CrcReportComponent implements OnInit {
           { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
           { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
           { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-          { title: "Visits per schools (%)", data: "visits_per_school" },
+          { title: "Visits per schools", data: "visits_per_school" },
           { title: "Total schools", data: "totalSchools" },
           { title: "Total visits", data: "totalVisits" }
         ]

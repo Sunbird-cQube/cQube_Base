@@ -97,6 +97,7 @@ export class HomeComponent implements OnInit {
 
   logout() {
     localStorage.clear();
+    this.clearSessionStorage();
     let options = {
       redirectUri: environment.appUrl
     }
@@ -117,5 +118,9 @@ export class HomeComponent implements OnInit {
 
   fetchTelemetry(event, report) {
     this.service.getTelemetryData(report, event.type);
+  }
+
+  clearSessionStorage(): void {
+    sessionStorage.clear();
   }
 }

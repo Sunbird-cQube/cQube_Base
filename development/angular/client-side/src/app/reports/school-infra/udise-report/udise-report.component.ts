@@ -439,7 +439,8 @@ export class UdiseReportComponent implements OnInit {
               //download report
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
-
+            globalMap.doubleClickZoom.enable();
+            globalMap.scrollWheelZoom.enable();
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             //schoolCount
@@ -981,7 +982,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject, ...markers.indices }
+        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     } else if (level == "block") {
@@ -995,7 +996,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject, ...markers.indices }
+        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     }
@@ -1012,7 +1013,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject, ...markers.indices }
+        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     } else if (level == "school") {
@@ -1030,7 +1031,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...detailSchool, ...markers.indices }
+        let myobj = { ...detailSchool,...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     }

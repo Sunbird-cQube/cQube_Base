@@ -3,12 +3,12 @@
         <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Periodic Assessment Test report for: <span (click)="linkClick()"
+                    Periodic Assessment Test Report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Periodic Assessment Test report for: <span (click)="linkClick()"
+                    Periodic Assessment Test Report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="ondistLinkClick(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -16,7 +16,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Periodic Assessment Test report for: <span (click)="linkClick()"
+                    Periodic Assessment Test Report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="ondistLinkClick(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Periodic Assessment Test report for: <span (click)="linkClick()"
+                    Periodic Assessment Test Report for: <span (click)="linkClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="ondistLinkClick(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -72,7 +72,7 @@
     <div class="row">
         <div class="col-sm-6">
             <select id="period"
-                style="padding: 3px;float: left;margin-top: 2px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="padding: 5px;float: left;margin-top: 2px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="period" (change)="onPeriodSelect()">
                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
                 <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
@@ -80,17 +80,17 @@
                 </option>
             </select>
             <button class="btn btn-secondary" id="block"
-                style="font-size: 11px; width: 65px; float: left;margin: 2px 7px 10px 15px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 65px; float: left;margin: 2px 7px 10px 15px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="blockClick()">&nbsp;<strong>Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
-                style="font-size: 11px; width: 65px; float: left;margin: 2px 7px 10px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 65px; float: left;margin: 2px 7px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="clusterClick()">&nbsp;<strong>Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
-                style="font-size: 11px; width: 65px; float: left;margin: 2px 0px 10px 0px;padding: 2px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 65px; float: left;margin: 2px 0px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="schoolClick()">&nbsp;<strong>Schools</strong> </button>
 
             <select [hidden]="" id="grades"
-                style="margin-left: 15px; padding: 3px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-left: 15px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="grade" (change)="onGradeSelect(grade)">
                 <option [value]="grade" disabled selected="selected">Choose a Grade</option>
                 <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="grade.grade">
@@ -99,7 +99,7 @@
             </select>
 
             <select [hidden]="subjectHidden" id="subjects"
-                style="margin-left: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-left: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="subject" (change)="onSubjectSelect(subject)">
                 <option [value]="subject" disabled selected="selected">Choose a Subject</option>
                 <option *ngFor="let subject of allSubjects,  let i =index" [(ngValue)]="allSubjects[i]">
@@ -109,7 +109,7 @@
         </div>
         <div class="col-sm-6">
             <select id="choose_dist"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="ondistLinkClick(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.Details.district_id"
@@ -119,7 +119,7 @@
             </select>
 
             <select [hidden]="blockHidden" id="choose_block"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="blockId" (change)="onblockLinkClick(blockId)">
                 <option [value]="blockId" disabled selected="selected">Choose a Block</option>
                 <option *ngFor="let block of blockMarkers" [(ngValue)]="block.Details.block_id"
@@ -129,7 +129,7 @@
             </select>
 
             <select [hidden]="clusterHidden" id="choose_cluster"
-                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="clusterId" (change)="onclusterLinkClick(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.Details.cluster_id"

@@ -16,7 +16,6 @@ from CRC.navigate_to_crc_report import loading_crc
 
 from reuse_func import GetData
 
-
 class cQube_CRC_Report(unittest.TestCase):
 
     @classmethod
@@ -54,7 +53,7 @@ class cQube_CRC_Report(unittest.TestCase):
         print("blockwise csv file is downloaded ")
         self.data.page_loading(self.driver)
 
-    def test_donwoad_clusterwise_csv(self):
+    def test_download_clusterwise_csv(self):
         b = load_clusterwise_csv(self.driver)
         result = b.test_clusterwise()
         self.assertTrue(result, msg="File is not downloaded")

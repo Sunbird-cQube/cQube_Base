@@ -24,7 +24,7 @@ fi
 echo "Validating the Datasource config file..."
 
 # An array of mandatory values
-declare -a arr=("nifi_crc" "nifi_attendance" "nifi_semester" "nifi_infra" "nifi_diksha" "nifi_telemetry" "nifi_udise" "nifi_pat")
+declare -a arr=("nifi_crc" "nifi_attendance" "nifi_semester" "nifi_infra" "nifi_diksha" "nifi_telemetry" "nifi_udise" "nifi_pat" "nifi_composite" "nifi_healthcard")
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -103,7 +103,13 @@ case $key in
           check_datasource_config $key $value
        fi
        ;;
-
+  nifi_healthcard)
+       if [[ $value == "" ]]; then
+          echo "Error - Value for $key cannot be empty. Please fill this value"; fail=1
+       else
+          check_datasource_config $key $value
+       fi
+       ;;
    *)
        if [[ $value == "" ]]; then
           echo -e "\e[0;31m${bold}Error - Value for $key cannot be empty. Please fill this value${normal}"; fail=1

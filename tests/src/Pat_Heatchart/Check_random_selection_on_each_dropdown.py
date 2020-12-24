@@ -17,7 +17,6 @@ class Random_test():
         self.fname = file_extention()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.load.page_loading(self.driver)
-
         grades = Select(self.driver.find_element_by_id(Data.grade))
         grades.select_by_index(4)
         if grades.options[4].text in self.driver.page_source:

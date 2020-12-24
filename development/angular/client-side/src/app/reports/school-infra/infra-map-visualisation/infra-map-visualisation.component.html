@@ -1,14 +1,14 @@
 <div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    School Infrastructure report for: <span (click)="districtWise()"
+                    Infrastructure Access by Location Report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    School Infrastructure report for: <span (click)="districtWise()"
+                    Infrastructure Access by Location Report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -16,7 +16,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    School Infrastructure report for: <span (click)="districtWise()"
+                    Infrastructure Access by Location Report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    School Infrastructure report for: <span (click)="districtWise()"
+                    Infrastructure Access by Location Report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -39,7 +39,7 @@
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div class="row">
                 <div class="col-sm-7">
                     <p id="errMsg"
@@ -69,17 +69,17 @@
     <div class="row" style="margin-bottom: 10px;">
         <div class="col-sm-12">
             <button class="btn btn-secondary" id="block"
-                style="margin-right: 10px; font-size: 11px; width: 65px;padding: 2.2px; background-color: rgb(152, 160, 163);"
+                style="margin-right: 10px; font-size: 11px; width: 65px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="blockWise()">&nbsp;<strong>Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
-                style="margin-right: 10px; font-size: 11px; width: 65px;padding: 2.2px; background-color: rgb(152, 160, 163);"
+                style="margin-right: 10px; font-size: 11px; width: 65px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="clusterWise()">&nbsp;<strong>Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
-                style="margin-right: 25px; font-size: 11px; width: 65px;padding: 2.2px; background-color: rgb(152, 160, 163);"
+                style="margin-right: 25px; font-size: 11px; width: 65px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise()">&nbsp;<strong>Schools</strong> </button>
 
             <select id="choose_infra"
-                style="margin-right: 25px;padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 25px;padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="infraData" (change)="oninfraSelect(infraData)">
                 <option [value]="infraData" disabled selected="selected">Choose a Infrastructure</option>
                 <option *ngFor="let infra of infraFilter" [(ngValue)]="infra.key">
@@ -88,7 +88,7 @@
             </select>
 
             <select id="choose_dist"
-                style="margin-right: 10px;padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px;padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.details.district_id">
@@ -97,7 +97,7 @@
             </select>
 
             <select [hidden]="blockHidden" id="choose_block"
-                style="margin-right: 10px;padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-right: 10px;padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="blockId" (change)="onBlockSelect(blockId)">
                 <option [value]="blockId" disabled selected="selected">Choose a Block</option>
                 <option *ngFor="let block of blockMarkers" [(ngValue)]="block.details.block_id">
@@ -106,7 +106,7 @@
             </select>
 
             <select [hidden]="clusterHidden" id="choose_cluster"
-                style="padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="clusterId" (change)="onClusterSelect(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.details.cluster_id"
@@ -114,8 +114,9 @@
                     {{cluster.details.cluster_name}}
                 </option>
             </select>
-        </div>
 
+            <a class="float-right" href="javascript: void(0)" (click)="goToHealthCard()" style="font-weight: bold; text-decoration: underline;" *ngIf="districtId">Click here to access health card</a>
+        </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
@@ -127,6 +128,9 @@
         <div class="col-sm-6">
             <span id="schools" style="text-align: center;">Number of schools: {{schoolCount}}</span>
         </div>
+        <!-- <div class="col-sm-6">
+            <button (click)="showArr()">get Co-ordinates</button>
+        </div> -->
     </div>
 </div>
 <div id="spinner">

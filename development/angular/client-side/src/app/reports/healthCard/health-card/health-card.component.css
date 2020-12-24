@@ -1,0 +1,168 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font: 16px Arial;  
+  }
+  
+  /*the container must be positioned relative:*/
+  .autocomplete {
+    position: relative;
+    display: inline-block;
+  }
+  
+  input {
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    padding: 4px;
+    font-size: 16px;
+  }
+  
+  input[type=search] {
+    background-color: #f1f1f1;
+    width: 100%;
+  }
+  
+  input[type=submit] {
+    background-color: DodgerBlue;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+  
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff; 
+    border-bottom: 1px solid #d4d4d4; 
+  }
+  
+  /*when hovering an item:*/
+  .autocomplete-items div:hover {
+    background-color: #e9e9e9; 
+  }
+  
+  /*when navigating through the items using the arrow keys:*/
+  .autocomplete-active {
+    background-color: DodgerBlue !important; 
+    color: #ffffff; 
+  }
+
+  .link{
+   position: absolute;  bottom: 0px; left: 30px;color: white; font-weight: bold;
+   text-decoration: underline;
+   transition: transform .5s;
+  }
+
+  .link:hover {
+    -ms-transform: scale(1.02);
+    -webkit-transform: scale(1.02);
+    transform: scale(1.02); 
+  }
+
+  p a{
+    text-decoration: underline;
+  }
+
+
+
+
+
+
+
+  .wrapper {
+    cursor: pointer;
+    position: absolute;
+    top: 40px;
+    right: 25px;
+    margin-bottom: 10px;
+  }
+  
+  .tooltip {
+    background: #f1f8fa;
+    color: rgb(0, 0, 0);
+    display: block;
+    left: -265px;
+    margin-top: 15px;
+    opacity: 0;
+    padding: 20px;
+    pointer-events: none;
+    position: absolute;
+    width: 300px;
+    -webkit-transform: translateY(10px);
+       -moz-transform: translateY(10px);
+        -ms-transform: translateY(10px);
+         -o-transform: translateY(10px);
+            transform: translateY(10px);
+    -webkit-transition: all .25s ease-out;
+       -moz-transition: all .25s ease-out;
+        -ms-transition: all .25s ease-out;
+         -o-transition: all .25s ease-out;
+            transition: all .25s ease-out;
+    -webkit-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+       -moz-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+        -ms-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+         -o-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+  }
+  
+  /* This bridges the gap so you can mouse into the tooltip without it disappearing */
+   .tooltip:before {
+    top: 20px;
+    content: " ";
+    display: block;
+    height: 20px;
+    left: 0;
+    position: absolute;
+    /* width: 100%; */
+  }  
+  
+  /* CSS Triangles - see Trevor's post */
+   .tooltip:after {
+    border-left: solid transparent 10px;
+    border-right: solid transparent 10px;
+    border-bottom: solid #f1f8fa 10px;
+    top: -10px;
+    content: " ";
+    height: 0;
+    left: 92%;
+    margin-left: -13px;
+    position: absolute;
+    width: 0;
+  }
+    
+  .wrapper:hover .tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    -webkit-transform: translateY(0px);
+       -moz-transform: translateY(0px);
+        -ms-transform: translateY(0px);
+         -o-transform: translateY(0px);
+            transform: translateY(0px);
+  }
+  
+  /* IE can just show/hide with no transition */
+  .lte8 .wrapper .tooltip {
+    display: none;
+  }
+  
+  .lte8 .wrapper:hover .tooltip {
+    display: block;
+  }
+
+  .headings{
+    font-weight: bold;
+  }
