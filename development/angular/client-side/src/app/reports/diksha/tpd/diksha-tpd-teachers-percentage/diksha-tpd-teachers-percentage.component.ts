@@ -88,6 +88,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   onChangePage() {
+    this.scousesTOShow = this.courses;
     let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
     let data = this.items.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
     let tooltipData = this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
