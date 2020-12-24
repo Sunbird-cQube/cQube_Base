@@ -704,7 +704,7 @@ export class CrcReportComponent implements OnInit {
     this.tableData = [];
     this.chartData = [];
     this.reportData = [];
-    this.title = (localStorage.getItem('block'));
+    this.title = JSON.parse(localStorage.getItem('block'));
     this.titleName = localStorage.getItem('dist');
     var distId = JSON.parse(localStorage.getItem('distId'));
     var blockId = JSON.parse(localStorage.getItem('blockId'));
