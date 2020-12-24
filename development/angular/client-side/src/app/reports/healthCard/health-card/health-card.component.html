@@ -181,6 +181,13 @@
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
+                                                <div *ngFor="let key of tooltipPat;let i=index">
+                                                    <span>{{tooltipPatKeys[i]}}</span> :
+                                                    <span>{{healthCardData['pat_performance'][key]}}</span>
+                                                </div>
+                                                <strong
+                                                    style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade
+                                                    Wise Performance </strong>
                                                 <div *ngFor="let key of patPerformTooltip;let i=index">
                                                     <span>{{patPerformTooltipKeys[i]}}</span> :
                                                     <span>{{healthCardData['pat_performance']['grade_wise_performance'][key]}}</span>
