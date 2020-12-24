@@ -84,12 +84,11 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
         var mins = 0;
         if (req.body.time.minutes) {
             mins = parseInt(req.body.time.minutes);
-        }
+        }        
 
         let timeToStop = req.body.stopTime
 
         timeToStop = hours + timeToStop
-
         if (timeToStop >= 24) {
             timeToStop = timeToStop % 24;
             timeToStop = timeToStop < 0 ? 24 + timeToStop : +timeToStop;

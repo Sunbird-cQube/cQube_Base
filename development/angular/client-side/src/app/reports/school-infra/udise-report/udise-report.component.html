@@ -72,23 +72,23 @@
     <div class="row">
         <div class="col-sm-12">
             <button class="btn btn-secondary" id="block"
-                style="font-size: 11px; width: 70px; float: left;margin: 1px 10px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; float: left;margin: 0px 10px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="blockWise()">&nbsp;<strong>Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
-                style="font-size: 11px; width: 70px; float: left;margin: 1px 10px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; float: left;margin: 0px 10px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="clusterWise()">&nbsp;<strong>Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
-                style="font-size: 11px; width: 70px; float: left;margin: 1px 0px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 70px; float: left;margin: 0px 20px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise()">&nbsp;<strong>Schools</strong> </button>
             <select id="choose_infra"
-                style="float: right; margin-top: 1px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="float: left;margin:0px 10px 0px 0px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="indiceData" (change)="onIndiceSelect(indiceData)">
                 <option [value]="indiceData" disabled selected="selected">Choose an indice</option>
                 <option *ngFor="let indice of indiceFilter" [(ngValue)]="indice.key" style=" font-size: 11px;">
                     {{indice.value}}
                 </option>
             </select>
-        <!-- </div>
+            <!-- </div>
         <div class="col-sm-8"> -->
             <select id="choose_dist"
                 style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
@@ -120,6 +120,10 @@
                     {{cluster.details.Cluster_Name}}
                 </option>
             </select>
+
+            <a class="float-right mr-2" href="javascript: void(0)" (click)="goToHealthCard()"
+                style="font-weight: bold; text-decoration: underline; font-size: 13px;" *ngIf="districtId">Access Health
+                Card</a>
         </div>
 
     </div>

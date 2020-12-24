@@ -15,6 +15,7 @@ export class MultiSelectComponent implements OnInit {
   checkedList: any[];
   currentSelected: {};
   constructor() {
+    console.log(this.list);
     this.checkedList = [];
   }
 
