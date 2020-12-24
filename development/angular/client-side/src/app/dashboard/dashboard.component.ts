@@ -65,6 +65,7 @@ export class DashboardComponent implements OnInit {
   tpdenrollViews;
   tpdcompViews;
   healthCardViews;
+  
 
   //for coming soon page
   nifi_crc;
@@ -122,6 +123,7 @@ export class DashboardComponent implements OnInit {
     this.lotableTooltip = `This dashboard provides insights on student performance at the learning outcome level.`;
     this.tpdtpTooltip = `This dashboard provides details on district-wise TPD course enrolment progress broken at the individual course level.`;
     this.tpdcpTooltip = `This dashboard provides details on district-wise TPD course progress broken at the individual course level.`;
+    this.healthCardTooltip = `Healthcard Tooltip`;
   }
 
   changeDataSourceStatus() {
