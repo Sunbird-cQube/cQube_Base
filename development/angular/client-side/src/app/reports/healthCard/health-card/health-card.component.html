@@ -142,8 +142,9 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link"><a
-                                    [routerLink]="['/student-performance/semester-report']">Click to Access
+                            <p *ngIf="showLink" class="link">
+                                <a href="javascript:void(0)" (click)="goToReport('/student-performance/semester-report')">Click
+                                    to Access
                                     Report</a>
                             </p>
                         </div>
@@ -203,9 +204,11 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link"><a [routerLink]="['/student-performance/pat-report']">Click
+                            <p *ngIf="showLink" class="link">
+                                <a href="javascript:void(0)" (click)="goToReport('/student-performance/pat-report')">Click
                                     to Access
-                                    Report</a></p>
+                                    Report</a>
+                                </p>
                         </div>
                         <div *ngIf="!healthCardData['pat_performance']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">
@@ -320,9 +323,11 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link"><a [routerLink]="['/infrastructure/udise-report']">Click to
-                                    Access
-                                    Report</a></p>
+                            <p *ngIf="showLink" class="link">
+                                <a href="javascript:void(0)" (click)="goToReport('/infrastructure/udise-report')">Click
+                                    to Access
+                                    Report</a>
+                                </p>
                         </div>
                         <div *ngIf="!healthCardData['udise']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">
@@ -363,8 +368,10 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link"><a [routerLink]="['/crc/crc-report']">Click to Access
-                                    Report</a></p>
+                            <p *ngIf="showLink" class="link">
+                                <a href="javascript:void(0)" (click)="goToReport('/crc/crc-report')">Click
+                                    to Access
+                                    Report</a>
                         </div>
                         <div *ngIf="!healthCardData['crc_visit']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">
