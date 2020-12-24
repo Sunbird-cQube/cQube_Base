@@ -148,12 +148,12 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       this.scousesTOShow = [];
-      if (this.items.length > 0) {
-        this.chart.destroy();
-      }
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.districtNames);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
   }
 
@@ -350,12 +350,12 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       this.scousesTOShow = [];
-      if (this.items.length > 0) {
-        this.chart.destroy();
-      }
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
 
   }
@@ -396,12 +396,12 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       this.scousesTOShow = [];
-      if (this.items.length > 0) {
-        this.chart.destroy();
-      }
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
   }
 
@@ -440,12 +440,12 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       this.scousesTOShow = [];
-      if (this.items.length > 0) {
-        this.chart.destroy();
-      }
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
   }
 

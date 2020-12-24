@@ -147,11 +147,11 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       this.scousesTOShow = [];
-      if (this.items.length > 0) {
-        this.chart.destroy();
-      }
       this.reportData = [];
       this.commonService.loaderAndErr(this.districtNames);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
   }
   chart;
@@ -343,11 +343,11 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       this.scousesTOShow = [];
-      if (this.items.length > 0) {
-        this.chart.destroy();
-      }
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
 
   }
@@ -388,11 +388,11 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       this.scousesTOShow = [];
-      if (this.items.length > 0) {
-        this.chart.destroy();
-      }
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
   }
 
@@ -431,11 +431,11 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
       this.scousesTOShow = [];
-      if (this.items.length > 0) {
-        this.chart.destroy();
-      }
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
   }
 
