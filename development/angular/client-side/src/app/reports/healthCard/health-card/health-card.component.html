@@ -51,8 +51,11 @@
                     <div [ngStyle]="{'background-color': healthCardData['student_attendance'] ? stdAttendanceColor : '' ,'height': height }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['student_attendance']">
-                            <em class="fa fa-info-circle wrapper" style="color: blue;">
-                                <div class="tooltip">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic1" ngbDropdownToggle>
+                                    <em class="fa fa-info-circle" style="color: blue;"></em>
+                                </button>
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
@@ -64,7 +67,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </em>
+                              </div>
                             <table>
                                 <tbody>
                                     <tr *ngFor="let attendance of schoolAttendance; let i=index">
@@ -104,8 +107,11 @@
                     <div [ngStyle]="{'background-color':  healthCardData['student_semester'] ? semColor : '','height': height  }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['student_semester']">
-                            <em class="fa fa-info-circle wrapper" style="color: blue;">
-                                <div class="tooltip">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic2" ngbDropdownToggle>
+                                    <em class="fa fa-info-circle" style="color: blue;"></em>
+                                </button>
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic2">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
@@ -117,7 +123,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </em>
+                              </div>
                             <table>
                                 <tbody>
                                     <tr *ngFor="let sem of semPerformance; let i=index">
@@ -159,18 +165,14 @@
                     <div [ngStyle]="{'background-color': healthCardData['pat_performance'] ? patColor : '','height': height  }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['pat_performance']">
-                            <em class="fa fa-info-circle wrapper" style="color: blue;">
-                                <div class="tooltip">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic3" ngbDropdownToggle>
+                                    <em class="fa fa-info-circle" style="color: blue;"></em>
+                                </button>
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic3">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
-                                                <div *ngFor="let key of tooltipPat;let i=index">
-                                                    <span>{{tooltipPatKeys[i]}}</span> :
-                                                    <span>{{healthCardData['pat_performance'][key]}}</span>
-                                                </div>
-                                                <strong
-                                                    style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade
-                                                    Wise Performance </strong>
                                                 <div *ngFor="let key of patPerformTooltip;let i=index">
                                                     <span>{{patPerformTooltipKeys[i]}}</span> :
                                                     <span>{{healthCardData['pat_performance']['grade_wise_performance'][key]}}</span>
@@ -179,7 +181,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </em>
+                              </div>
                             <table>
                                 <tbody>
                                     <tr *ngFor="let pat of patPerformance; let i=index">
@@ -223,8 +225,11 @@
                     <div [ngStyle]="{'background-color': healthCardData['school_infrastructure'] ? infraColor : '','height': height }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['school_infrastructure']">
-                            <em class="fa fa-info-circle wrapper" style="color: blue;">
-                                <div class="tooltip">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic4" ngbDropdownToggle>
+                                    <em class="fa fa-info-circle" style="color: blue;"></em>
+                                </button>
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic4">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
@@ -236,7 +241,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </em>
+                              </div>
                             <table>
                                 <tbody>
                                     <tr *ngFor="let infra of schoolInfra; let i=index">
@@ -285,8 +290,11 @@
                     <div [ngStyle]="{'background-color': healthCardData['udise'] ? udiseColor : '','height': height }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['udise']">
-                            <em class="fa fa-info-circle wrapper" style="color: blue;">
-                                <div class="tooltip">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic5" ngbDropdownToggle>
+                                    <em class="fa fa-info-circle" style="color: blue;"></em>
+                                </button>
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic5">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
@@ -298,7 +306,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </em>
+                              </div>
                             <table>
                                 <tbody>
                                     <tr *ngFor="let key of UDISE; let i=index">
@@ -340,8 +348,11 @@
                     <div [ngStyle]="{'background-color': healthCardData['crc_visit'] ? crcColor : '','height': height }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['crc_visit']">
-                            <em class="fa fa-info-circle wrapper" style="color: blue;">
-                                <div class="tooltip">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic6" ngbDropdownToggle>
+                                    <em class="fa fa-info-circle" style="color: blue;"></em>
+                                </button>
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic6">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
@@ -353,7 +364,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </em>
+                              </div>
                             <table>
                                 <tbody>
                                     <strong
