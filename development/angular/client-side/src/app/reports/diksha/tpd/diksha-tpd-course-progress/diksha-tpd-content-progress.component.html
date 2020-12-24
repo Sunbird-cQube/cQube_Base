@@ -68,7 +68,7 @@
                 </option>
             </select>
 
-            <app-multi-select style="float: left;width: auto;" [list]="courses"
+            <app-multi-select #multiSelect style="float: left;width: auto;" [list]="courses"
                 (shareCheckedList)="shareCheckedList($event)">
             </app-multi-select>
 
