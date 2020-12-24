@@ -69,7 +69,7 @@ export class HeatChartComponent implements OnInit {
   //For pagination.....
   items = [];
   pageOfItems: Array<any>;
-  pageSize = 45;
+  pageSize = 40;
   currentPage = 1;
 
 

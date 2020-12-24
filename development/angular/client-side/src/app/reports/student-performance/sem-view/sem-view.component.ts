@@ -800,7 +800,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     var yourData = this.commonService.getInfoFrom(orgObject, "semester_performance", levelWise, "std-attd", undefined, undefined).join(" <br>");
     yourData = [yourData.slice(0, yourData.search("Grade")), '<br>', yourData.slice(yourData.search("Grade"))].join('');
     yourData = [yourData.slice(0, yourData.search("Number")), '<br>', yourData.slice(yourData.search("Number"))].join('')
-    yourData = [yourData.slice(0, yourData.search("% ")), '<br>', yourData.slice(yourData.search("% "))].join('');
+    yourData = [yourData.slice(0, yourData.search("% ")), yourData.slice(yourData.search("% "))].join('');
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);
