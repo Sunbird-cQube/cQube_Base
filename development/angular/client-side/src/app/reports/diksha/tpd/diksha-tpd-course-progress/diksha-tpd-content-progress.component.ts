@@ -98,8 +98,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       record.y %= this.pageSize;
       return record;
     });
-
-    this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, this.ylab.length > 0 ? this.ylab : yLabel, this.zLabel, data, this.level, this.xLabel1, this.yLabel1, tooltipData);
+      this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, this.ylab.length > 0 ? this.ylab : yLabel, this.zLabel, data, this.level, this.xLabel1, this.yLabel1, tooltipData);
   }
 
   resetToInitPage() {
@@ -135,12 +134,16 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.genericFunction(response);
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      if (this.items.length > 0) {
+        this.chart.destroy();
+      }
+      this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.districtNames);
     })
   }
 
+  chart;
   chartFun = (xLabel, xLabelId, yLabel, zLabel, data, level, xLabel1, yLabel1, tooltipData) => {
     let scrollBarX
     let scrollBarY
@@ -161,7 +164,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       xLabel[i] = xLabel[i].substr(0, 15);
     }
     // var options: Highcharts.Options = 
-    Highcharts.chart('container', {
+    this.chart = Highcharts.chart('container', {
       chart: {
         type: 'heatmap'
       },
@@ -295,6 +298,9 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   }
 
   selectedTimePeriod() {
+    this.districtNames = [];
+    this.blockNames = [];
+    this.clusterNames = [];
     this.levelWiseFilter();
   }
 
@@ -329,7 +335,10 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      if (this.items.length > 0) {
+        this.chart.destroy();
+      }
+      this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
     })
@@ -371,7 +380,11 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      
+      if (this.items.length > 0) {
+        this.chart.destroy();
+      }
+      this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
     })
@@ -411,7 +424,10 @@ export class DikshaTPDContentProgressComponent implements OnInit {
 
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      if (this.items.length > 0) {
+        this.chart.destroy();
+      }
+      this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
     })

@@ -50,6 +50,7 @@ const semDistrictWise = require('../api/controller/semRoutes/districtWise');
 const semBlockWise = require('../api/controller/semRoutes/blockWise');
 const semClusterWise = require('../api/controller/semRoutes/clusterWise');
 const semSchoolWise = require('../api/controller/semRoutes/schoolWise');
+const semMeta = require('./controller/semRoutes/metaData');
 
 //UDISE report
 
@@ -103,6 +104,7 @@ router.use('/sem', semDistrictWise);
 router.use('/sem', semBlockWise);
 router.use('/sem', semClusterWise);
 router.use('/sem', semSchoolWise);
+router.use('/sem', semMeta);
 
 // crc routes
 router.use('/crc', crcDistrictWise);
@@ -204,6 +206,7 @@ router.use('/diksha/course-filter', courseFilter);
 
 
 const dataSource = require('./controller/dataSource');
+const { route } = require('../api/controller/Infra/report_map/infraDistWise');
 router.use('/dataSource', dataSource);
 
 //diksha TPD enrollment/completion
