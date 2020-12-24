@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { splat } from 'highcharts';
 import { AppServiceComponent } from 'src/app/app.service';
 import { HealthCardService } from 'src/app/services/health-card.service';
 
@@ -301,6 +302,8 @@ export class HealthCardComponent implements OnInit {
   patColor;
   crcColor;
   udiseColor;
+  patPerformTooltip = [];
+  patPerformTooltipKeys = [];
   showData(healthCardData) {
     this.updatedKeys = [];
     this.keys = Object.keys(healthCardData);
@@ -328,41 +331,66 @@ export class HealthCardComponent implements OnInit {
       }
     });
     this.showAll = true;
+    var myKey;
     if (healthCardData['school_infrastructure'] && healthCardData['school_infrastructure'] != null) {
       this.tooltipInfra = Object.keys(healthCardData['school_infrastructure']);
-      var myKey;
-      this.tooltipInfra.filter((key) => {
+      this.tooltipInfra = this.tooltipInfra.filter((key) => {
+        return !this.schoolInfra.includes(key) && !this.schoolInfraRank.includes(key) && key != 'areas_to_focus';
+      });
+      this.tooltipInfra.map(key => {
         myKey = this.stringConverter(key);
         this.toolTipInfraKeys.push(myKey);
-      });
+      })
       this.infraColor = this.service.colorGredient(healthCardData['school_infrastructure']['infra_score']);
     }
     if (healthCardData['student_attendance'] && healthCardData['student_attendance'] != null) {
       this.tooltipStdAttendance = Object.keys(healthCardData['student_attendance']);
+      this.tooltipStdAttendance = this.tooltipStdAttendance.filter((key) => {
+        return !this.schoolAttendance.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
+      });
       this.tooltipStdAttendance.filter(key => {
-        var myKey = this.stringConverter(key);
+        myKey = this.stringConverter(key);
         this.tooltipStdAttendanceKeys.push(myKey);
       });
       this.stdAttendanceColor = this.service.colorGredient(healthCardData['student_attendance']['attendance']);
     }
     if (healthCardData['student_semester'] && healthCardData['student_semester'] != null) {
       this.tooltimSem = Object.keys(healthCardData['student_semester']);
+      this.tooltimSem = this.tooltimSem.filter((key) => {
+        return !this.semPerformance.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
+      });
       this.tooltimSem.filter(key => {
-        var myKey = this.stringConverter(key);
+        myKey = this.stringConverter(key);
         this.tooltipSemKeys.push(myKey);
       });
       this.semColor = this.service.colorGredient(healthCardData['student_semester']['performance']);
     }
     if (healthCardData['pat_performance'] && healthCardData['pat_performance'] != null) {
       this.tooltipPat = Object.keys(healthCardData['pat_performance']);
-      this.tooltipPat.filter(key => {
-        var myKey = this.stringConverter(key);
-        this.tooltipPatKeys.push(myKey);
+      this.patPerformTooltip = Object.keys(healthCardData['pat_performance']['grade_wise_performance']);
+      this.patPerformTooltip.filter(key => {
+        myKey = this.stringConverter(key);
+        this.patPerformTooltipKeys.push(myKey);
       });
+      this.tooltipPat = this.tooltipPat.filter((key) => {
+        return !this.patPerformance.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
+      });
+      this.tooltipPat.filter(key => {
+        if (key != 'grade_wise_performance') {
+          var myKey = this.stringConverter(key);
+          this.tooltipPatKeys.push(myKey);
+        }
+      });
+      var i = this.tooltipPat.indexOf('grade_wise_performance');
+      this.tooltipPat.splice(i, 1);
+
       this.patColor = this.service.colorGredient(healthCardData['pat_performance'][`${this.level}_performance`]);
     }
     if (healthCardData['crc_visit'] && healthCardData['crc_visit'] != null) {
       this.tooltipCrc = Object.keys(healthCardData['crc_visit']);
+      this.tooltipCrc = this.tooltipCrc.filter((key) => {
+        return !this.crcVisit.includes(key);
+      });
       this.tooltipCrc.filter(key => {
         var myKey = this.stringConverter(key);
         this.tooltipCrcKeys.push(myKey);
@@ -371,6 +399,9 @@ export class HealthCardComponent implements OnInit {
     }
     if (healthCardData['udise'] && healthCardData['udise'] != null) {
       this.tooltipUDISE = Object.keys(healthCardData['udise']);
+      this.tooltipUDISE = this.tooltipUDISE.filter((key) => {
+        return !this.UDISE.includes(key) && !this.UDISECategory.includes(key) && !this.schoolInfraRank.includes(key);
+      });
       this.tooltipUDISE.filter(key => {
         var myKey = this.stringConverter(key);
         this.tooltipUDISEKyes.push(myKey);
