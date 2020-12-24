@@ -96,6 +96,7 @@ export class PATReportComponent implements OnInit {
     public commonService: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
+    private readonly _router: Router
   ) {
   }
 
@@ -108,7 +109,98 @@ export class PATReportComponent implements OnInit {
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.districtWise();
+    let params = JSON.parse(sessionStorage.getItem('report-level-info'));
+
+    if (params && params.level) {
+      let data = params.data;
+      if (params.level === 'district') {
+        this.districtHierarchy = {
+          distId: data.id
+        };
+
+        this.districtId = data.id;
+        this.getDistricts(params.level);
+      } else if (params.level === 'block') {
+        this.districtHierarchy = {
+          distId: data.districtId
+        };
+
+        this.blockHierarchy = {
+          distId: data.districtId,
+          blockId: data.id
+        };
+
+        this.districtId = data.districtId;
+        this.blockId = data.id;
+        this.getDistricts(params.level);
+        this.getBlocks(data.districtId, data.id);
+      } else if (params.level === 'cluster') {
+        this.districtHierarchy = {
+          distId: data.districtId
+        };
+
+        this.blockHierarchy = {
+          distId: data.districtId,
+          blockId: data.blockId
+        };
+
+        this.clusterHierarchy = {
+          distId: data.districtId,
+          blockId: data.blockId,
+          clusterId: data.id
+        };
+
+        this.districtId = data.blockHierarchy;
+        this.blockId = data.blockId;
+        this.clusterId = data.id;
+        this.getDistricts(params.level);
+        this.getBlocks(data.districtId);
+        this.getClusters(data.districtId, data.blockId, data.id);
+      }
+    } else {
+      this.districtWise();
+    }
+  }
+
+  getDistricts(level): void {
+    this.service.PATDistWiseData({ grade: this.grade, period: this.period }).subscribe(res => {
+      this.data = res['data'];
+      this.districtMarkers = this.data;
+      if (!this.districtMarkers[0]['Subjects']) {
+        this.distFilter = this.districtMarkers;
+      }
+
+      if (level === 'district') {
+        this.ondistLinkClick(this.districtId);
+      }
+    });
+  }
+
+  getBlocks(distId, blockId?: any): void {
+    this.service.PATBlocksPerDistData(distId, { period: this.period }).subscribe(res => {
+      this.data = res['data'];
+      this.blockMarkers = this.data;
+
+      if (!this.blockMarkers[0]['Subjects']) {
+        this.blockFilter = this.blockMarkers;
+      }
+
+      if (blockId)
+        this.onblockLinkClick(blockId);
+    });
+  }
+
+  getClusters(distId, blockId, clusterId): void {
+    this.service.PATClustersPerBlockData(distId, blockId, { period: this.period }).subscribe(res => {
+      this.data = res['data'];
+      this.clusterMarkers = this.data;
+
+      if (!this.clusterMarkers[0]['Subjects']) {
+        this.clusterFilter = this.clusterMarkers;
+      }
+      
+      this.onclusterLinkClick(clusterId);
+    });
   }
 
   onPeriodSelect() {
@@ -1220,5 +1312,23 @@ export class PATReportComponent implements OnInit {
 
     var myobj = Object.assign(orgObject, ordered);
     this.reportData.push(myobj);
+  }
+
+  goToHealthCard(): void {
+    let data: any = {};
+
+    if (this.dist) {
+      data.level = 'district';
+      data.value = this.districtHierarchy.distId;
+    } else if (this.blok) {
+      data.level = 'block';
+      data.value = this.blockHierarchy.blockId;
+    } else if (this.clust) {
+      data.level = 'cluster';
+      data.value = this.clusterHierarchy.clusterId;
+    }
+
+    sessionStorage.setItem('health-card-info', JSON.stringify(data));
+    this._router.navigate(['/healthCard']);
   }
 }

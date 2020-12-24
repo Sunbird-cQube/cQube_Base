@@ -83,6 +83,7 @@ export class UdiseReportComponent implements OnInit {
     public service: UdiseReportService,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
+    private readonly _router: Router
   ) {
     commonService.logoutOnTokenExpire();
   }
@@ -96,7 +97,84 @@ export class UdiseReportComponent implements OnInit {
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.districtWise();
+    let params = JSON.parse(sessionStorage.getItem('report-level-info'));
+
+    if (params && params.level) {
+      let data = params.data;
+      if (params.level === 'district') {
+        this.districtHierarchy = {
+          distId: data.id
+        };
+
+        this.districtId = data.id;
+        this.getDistricts();
+        this.onDistrictSelect(data.id);
+      } else if (params.level === 'block') {
+        this.districtHierarchy = {
+          distId: data.districtId
+        };
+
+        this.blockHierarchy = {
+          distId: data.districtId,
+          blockId: data.id
+        };
+
+        this.districtId = data.districtId;
+        this.blockId = data.id;
+        this.getDistricts();
+        this.getBlocks(data.districtId, data.id);
+      } else if (params.level === 'cluster') {
+        this.districtHierarchy = {
+          distId: data.districtId
+        };
+
+        this.blockHierarchy = {
+          distId: data.districtId,
+          blockId: data.blockId
+        };
+
+        this.clusterHierarchy = {
+          distId: data.districtId,
+          blockId: data.blockId,
+          clusterId: data.id
+        };
+
+        this.districtId = data.blockHierarchy;
+        this.blockId = data.blockId;
+        this.clusterId = data.id;
+        this.getDistricts();
+        this.getBlocks(data.districtId);
+        this.getClusters(data.districtId, data.blockId, data.id);
+      }
+    } else {
+      this.districtWise();
+    }
+  }
+
+  getDistricts(): void {
+    this.service.udise_dist_wise().subscribe(res => {
+      this.myDistData = res;
+      this.data = res['data'];
+      this.districtMarkers = this.data;
+    });
+  }
+
+  getBlocks(distId, blockId?: any): void {
+    this.service.udise_blocks_per_dist(distId).subscribe(res => {
+      this.data = res['data'];
+      this.blockMarkers = this.data;
+
+      if (blockId)
+        this.onBlockSelect(blockId);
+    });
+  }
+
+  getClusters(distId, blockId, clusterId): void {
+    this.service.udise_cluster_per_block(distId, blockId).subscribe(res => {
+      this.data = res['data'];
+      this.clusterMarkers = this.data;
+      this.onClusterSelect(clusterId);
+    });
   }
 
   // to load and hide the spinner 
@@ -1065,6 +1143,24 @@ export class UdiseReportComponent implements OnInit {
   // to download the csv report
   downloadReport() {
     this.commonService.download(this.fileName, this.reportData);
+  }
+
+  goToHealthCard(): void {
+    let data: any = {};
+
+    if (this.level === 'block') {
+      data.level = 'district';
+      data.value = this.districtHierarchy.distId;
+    } else if (this.level === 'cluster') {
+      data.level = 'block';
+      data.value = this.blockHierarchy.blockId;
+    } else if (this.level === 'school') {
+      data.level = 'cluster';
+      data.value = this.clusterHierarchy.clusterId;
+    }
+
+    sessionStorage.setItem('health-card-info', JSON.stringify(data));
+    this._router.navigate(['/healthCard']);
   }
 
 }
