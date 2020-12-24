@@ -13,7 +13,7 @@ export class SemesterReportService {
 
   constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) {
     this.baseUrl = service.baseUrl;
-   }
+  }
 
   // sem wise services
   all_dist_sem_data(data) {
@@ -50,5 +50,10 @@ export class SemesterReportService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/sem/schoolWise/${distId}/${blockId}/${clusterId}`, data);
   }
-  
+
+  semMetaData() {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sem/metadata`, {});
+  }
+
 }
