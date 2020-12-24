@@ -186,8 +186,8 @@ export class StudengtAttendanceComponent implements OnInit {
 
       for (var i = 0; i < this.markers.length; i++) {
         if (this.myBlock === this.markers[i]['block_id']) {
-          localStorage.setItem('block', this.markers[i].block_id);
-          localStorage.setItem('blockId', this.markers[i].block_name);
+          localStorage.setItem('block', this.markers[i].block_name);
+          localStorage.setItem('blockId', this.markers[i].block_id);
         }
 
         this.blocksIds.push(this.markers[i]['block_id']);
