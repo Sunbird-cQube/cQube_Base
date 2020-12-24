@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { splat } from 'highcharts';
 import { AppServiceComponent } from 'src/app/app.service';
 import { HealthCardService } from 'src/app/services/health-card.service';
@@ -80,7 +81,9 @@ export class HealthCardComponent implements OnInit {
   allData: any;
   showAll = false;
   height;
-  constructor(public commonService: AppServiceComponent, public service: HealthCardService) { }
+  selectedLevelData: any;
+  
+  constructor(public commonService: AppServiceComponent, public service: HealthCardService, private readonly _router: Router) { }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = 'none';
@@ -102,11 +105,13 @@ export class HealthCardComponent implements OnInit {
         var dist;
         if (this.districtName.match(/^\d/)) {
           id = parseInt(this.districtName);
-
+          dist = this.districtObjArr.find(a => a.id === id);
         } else {
           dist = this.districtObjArr.find(a => a.name == this.districtName);
           id = dist.id;
         }
+        
+        this.selectedLevelData = dist;
         this.service.districtWiseData({ id: id }).subscribe(res => {
           this.healthCardData = res['districtData'][0];
           var b = document.createElement('DIV');
@@ -153,10 +158,13 @@ export class HealthCardComponent implements OnInit {
         id;
         if (this.districtName.match(/^\d/)) {
           id = parseInt(this.districtName);
+          block = this.districtObjArr.find(a => a.id == id);
         } else {
           block = this.districtObjArr.find(a => a.name == this.districtName);
           id = block.id;
         }
+  
+        this.selectedLevelData = block;
         this.service.blockWiseData({ id: id }).subscribe(res => {
           this.healthCardData = res['blockData'][0];
           this.schoolInfra = ['infra_score'];
@@ -205,6 +213,8 @@ export class HealthCardComponent implements OnInit {
           id = cluster.id;
           blkId = cluster.blockId;
         }
+  
+        this.selectedLevelData = cluster;
         this.service.clusterWiseData({ id: id, blockId: blkId }).subscribe(res => {
           this.healthCardData = res['clusterData'][0];
           this.schoolInfra = ['infra_score'];
@@ -584,4 +594,10 @@ export class HealthCardComponent implements OnInit {
       closeAllLists(e.target);
     });
   }
+
+  gotToStudentInfrastructureReport(): void {
+    sessionStorage.setItem('report-level-info', JSON.stringify({ level: this.level, data: this.selectedLevelData }));
+    this._router.navigate(['/infrastructure/school-infra-map']);
+  }
+
 }

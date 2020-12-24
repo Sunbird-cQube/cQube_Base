@@ -262,8 +262,8 @@
                             </table>
 
 
-                            <p class="link"><a [routerLink]="['/infrastructure/school-infra-map']">Click to Access
-                                    Report</a></p>
+                            <p class="link"><a href="javascript: void(0)" (click)="gotToStudentInfrastructureReport()">Click to Access
+                                Report</a></p>
                         </div>
                     </div>
                     <div *ngIf="!healthCardData['school_infrastructure']"
