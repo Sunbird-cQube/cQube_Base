@@ -110,7 +110,7 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
         } else {
             timePeriod = "daily";
             schedulerTime = `${mins} ${hours} * * *`;
-            stopTime = `${mins+1} ${hours} * * *`;
+            stopTime = `${mins} ${timeToStop} * * *`;
         }
 
         var url = '';
