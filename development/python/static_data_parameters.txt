@@ -24,8 +24,8 @@ where dist_null_col.ff_uuid = log_summary.ff_uuid""",
 	updated_on=now()
 	from (select district_id,percentile_disc(0.5) within group (order by block_latitude) as district_latitude,
 percentile_disc(0.5) within group (order by block_longitude) as district_longitude 
-from school_geo_master group by district_id) as a
-	where a.district_id=b.district_id""",
+from school_geo_master where school_latitude>0 or school_longitude>0 group by district_id) as a
+	where a.district_id=b.district_id;""",
 "static_select_cols_school_mp":"""select udise_sch_code as schoolid,school_name as school,state_cd as stateid,district_cd as districtid,block_cd_1 as blockid,cluster_cd as clusterid from flowfile""",
 "static_school_duplicate_data":"""SELECT schoolid as "school_id",school as "school_name ",lowclass as "school_lowest_class",highclass as "school_highest_class",schmgt as "school_management_type_id",
 schcat as "school_category_id",schoolmedium as "school_medium_id",districtid as "district_id",blockid as "block_id",clusterid as "cluster_id",latitude as "school_latitude",longitude as "school_longitude",num_of_times from flowfile""",
@@ -233,8 +233,8 @@ over (partition by BlockId) as rn from FLOWFILE) sq Where rn >1) group by  Block
 	updated_on=now()
 	from (select cluster_id,percentile_disc(0.5) within group (order by school_latitude) as cluster_latitude,
 percentile_disc(0.5) within group (order by school_longitude) as cluster_longitude 
-from school_geo_master group by cluster_id) as a
-	where a.cluster_id=b.cluster_id""",
+from school_geo_master where school_latitude>0 or school_longitude>0 group by cluster_id) as a
+	where b.cluster_id=a.cluster_id;""",
 "static_process_rec_school":"""update log_summary as b
 	set processed_records= a.processed_records
 	from (
@@ -320,8 +320,8 @@ from flowfile)""",
 	updated_on=now()
 	from (select block_id,percentile_disc(0.5) within group (order by cluster_latitude) as block_latitude,
 percentile_disc(0.5) within group (order by cluster_longitude) as block_longitude 
-from school_geo_master group by block_id) as a
-	where a.block_id=b.block_id""",
+from school_geo_master where school_latitude>0 or school_longitude>0 group by block_id) as a
+	where a.block_id=b.block_id;""",
 "static_school_duplicate_records":"""SELECT schoolid as "school_id",school as "school_name ",lowclass as "school_lowest_class",highclass as "school_highest_class",schmgt as "school_management_type_id",
 schcat as "school_category_id",schoolmedium as "school_medium_id",districtid as "district_id",blockid as "block_id",clusterid as "cluster_id",latitude as "school_latitude",longitude as "school_longitude",num_of_times from flowfile""",
 "static_insert_to_school_geo_master":"""insert into school_geo_master as a (school_id,district_id ,block_id,cluster_id,school_latitude,school_longitude,created_on)

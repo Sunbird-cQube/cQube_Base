@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { splat } from 'highcharts';
 import { AppServiceComponent } from 'src/app/app.service';
 import { HealthCardService } from 'src/app/services/health-card.service';
 
@@ -7,7 +9,7 @@ import { HealthCardService } from 'src/app/services/health-card.service';
   templateUrl: './health-card.component.html',
   styleUrls: ['./health-card.component.css']
 })
-export class HealthCardComponent implements OnInit {
+export class HealthCardComponent implements OnInit, AfterViewInit {
   tooltip: any = "";
   placeHolder = "First Choose Level From Drop-down";
   level;
@@ -79,19 +81,41 @@ export class HealthCardComponent implements OnInit {
   allData: any;
   showAll = false;
   height;
-  constructor(public commonService: AppServiceComponent, public service: HealthCardService) { }
+  selectedLevelData: any;
+  showLink = true;
+  params: any;
+
+  @ViewChild('searchInput') searchInput: ElementRef;
+  
+  constructor(public commonService: AppServiceComponent, public service: HealthCardService, private readonly _router: Router, private readonly _cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = 'none';
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('spinner').style.display = 'none';
     document.getElementById('myInput')['disabled'] = true;
+
+    this.params = JSON.parse(sessionStorage.getItem('health-card-info'));
+
+    if (this.params && this.params.level) {
+      this.level = this.params.level;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.params && this.params.level) {
+      this.value = this.params.value;
+      this.searchInput.nativeElement.value = this.params.value;
+      this._cd.detectChanges();
+      this.selectedLevel(true);
+    }
   }
 
   public err = false;
   onSubmit() {
     this.err = false;
     this.showAll = false;
+    this.showLink = true;
     document.getElementById('spinner').style.display = 'block';
     this.districtName = document.getElementById('myInput')['value'];
     var id;
@@ -101,12 +125,15 @@ export class HealthCardComponent implements OnInit {
         var dist;
         if (this.districtName.match(/^\d/)) {
           id = parseInt(this.districtName);
+          dist = this.districtObjArr.find(a => a.id === id);
         } else {
           dist = this.districtObjArr.find(a => a.name == this.districtName);
           if (dist) {
             id = dist.id;
           }
         }
+        
+        this.selectedLevelData = dist;
         this.service.districtWiseData({ id: id }).subscribe(res => {
           this.healthCardData = res['districtData'][0];
           var b = document.createElement('DIV');
@@ -153,12 +180,15 @@ export class HealthCardComponent implements OnInit {
         id;
         if (this.districtName.match(/^\d/)) {
           id = parseInt(this.districtName);
+          block = this.districtObjArr.find(a => a.id == id);
         } else {
           block = this.districtObjArr.find(a => a.name == this.districtName);
           if (block) {
             id = block.id;
           }
         }
+  
+        this.selectedLevelData = block;
         this.service.blockWiseData({ id: id }).subscribe(res => {
           this.healthCardData = res['blockData'][0];
           this.schoolInfra = ['infra_score'];
@@ -209,6 +239,8 @@ export class HealthCardComponent implements OnInit {
             blkId = cluster.blockId;
           }
         }
+  
+        this.selectedLevelData = cluster;
         this.service.clusterWiseData({ id: id, blockId: blkId }).subscribe(res => {
           this.healthCardData = res['clusterData'][0];
           this.schoolInfra = ['infra_score'];
@@ -248,6 +280,7 @@ export class HealthCardComponent implements OnInit {
         this.height = '330px';
         var school;
         var blok;
+        this.showLink = false;
         if (this.districtName.match(/^\d/)) {
           school = this.districtObjArr.find(a => a.id == this.districtName);
           id = parseInt(this.districtName);
@@ -447,7 +480,7 @@ export class HealthCardComponent implements OnInit {
   }
 
   levels = [{ key: 'district', name: 'District' }, { key: 'block', name: 'Block' }, { key: 'cluster', name: 'Cluster' }, { key: 'school', name: 'School' }];
-  selectedLevel() {
+  selectedLevel(callSubmit = false) {
     this.allData = [];
     this.ids = [];
     this.names = [];
@@ -455,7 +488,8 @@ export class HealthCardComponent implements OnInit {
     document.getElementById('warning').style.display = 'block';
     this.showAll = false;
     document.getElementById('myInput')['disabled'] = false;
-    document.getElementById('myInput')['value'] = '';
+    if (!callSubmit)
+      this.value = '';
 
     if (this.level == 'district') {
       this.service.metaData(this.level).subscribe(res => {
@@ -465,6 +499,9 @@ export class HealthCardComponent implements OnInit {
         this.ids = this.allData['districtIds'];
         this.districtObjArr = this.allData['districts'];
         document.getElementById('spinner').style.display = 'none';
+        if (callSubmit) {
+          this.onSubmit();
+        }
       });
     }
 
@@ -476,6 +513,9 @@ export class HealthCardComponent implements OnInit {
         this.ids = this.allData['blockIds'];
         this.districtObjArr = this.allData['blocks'];
         document.getElementById('spinner').style.display = 'none';
+        if (callSubmit) {
+          this.onSubmit();
+        }
       });
     }
 
@@ -487,6 +527,9 @@ export class HealthCardComponent implements OnInit {
         this.ids = this.allData['clusterIds'];
         this.districtObjArr = this.allData['clusters'];
         document.getElementById('spinner').style.display = 'none';
+        if (callSubmit) {
+          this.onSubmit();
+        }
       });
     }
 
@@ -498,6 +541,9 @@ export class HealthCardComponent implements OnInit {
         this.ids = this.allData['schoolIds'];
         this.districtObjArr = this.allData['schools'];
         document.getElementById('spinner').style.display = 'none';
+        if (callSubmit) {
+          this.onSubmit();
+        }
       });
     }
   }
@@ -598,4 +644,10 @@ export class HealthCardComponent implements OnInit {
       closeAllLists(e.target);
     });
   }
+
+  goToReport(route: string): void {
+    sessionStorage.setItem('report-level-info', JSON.stringify({ level: this.level, data: this.selectedLevelData }));
+    this._router.navigate([route]);
+  }
+
 }

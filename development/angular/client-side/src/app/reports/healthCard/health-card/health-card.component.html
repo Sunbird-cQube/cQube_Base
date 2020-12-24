@@ -14,7 +14,7 @@
         </div>
         <div class="col-sm-5">
             <div class="autocomplete" style="width:300px;;float: left;">
-                <input id="myInput" type="search" class="clearable" autofocus autocomplete="off" name="districtName"
+                <input #searchInput id="myInput" type="search" class="clearable" autofocus autocomplete="off" name="districtName"
                     [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
                 <br>
                 <p id="warning" style="font-size: 9px;"> Please enter atlease 2 characters/digits</p>
@@ -89,7 +89,8 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p class="link"><a [routerLink]="['/attendance/student-attendance']">Click to Access
+                            <p *ngIf="showLink" class="link"><a href="javascript:void(0)" (click)="goToReport('/attendance/student-attendance')">Click
+                                    to Access
                                     Report</a></p>
                         </div>
                         <div *ngIf="!healthCardData['student_attendance']"
@@ -141,7 +142,8 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p class="link"><a [routerLink]="['/student-performance/semester-report']">Click to Access
+                            <p *ngIf="showLink" class="link"><a
+                                    [routerLink]="['/student-performance/semester-report']">Click to Access
                                     Report</a>
                             </p>
                         </div>
@@ -201,7 +203,8 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p class="link"><a [routerLink]="['/student-performance/pat-report']">Click to Access
+                            <p *ngIf="showLink" class="link"><a [routerLink]="['/student-performance/pat-report']">Click
+                                    to Access
                                     Report</a></p>
                         </div>
                         <div *ngIf="!healthCardData['pat_performance']"
@@ -264,7 +267,8 @@
                             </table>
 
 
-                            <p class="link"><a [routerLink]="['/infrastructure/school-infra-map']">Click to Access
+                            <p *ngIf="showLink" class="link"><a href="javascript: void(0)"
+                                    (click)="goToReport('/infrastructure/school-infra-map')">Click to Access
                                     Report</a></p>
                         </div>
                     </div>
@@ -316,7 +320,8 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p class="link"><a [routerLink]="['/infrastructure/udise-report']">Click to Access
+                            <p *ngIf="showLink" class="link"><a [routerLink]="['/infrastructure/udise-report']">Click to
+                                    Access
                                     Report</a></p>
                         </div>
                         <div *ngIf="!healthCardData['udise']"
@@ -358,7 +363,8 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p class="link"><a [routerLink]="['/crc/crc-report']">Click to Access Report</a></p>
+                            <p *ngIf="showLink" class="link"><a [routerLink]="['/crc/crc-report']">Click to Access
+                                    Report</a></p>
                         </div>
                         <div *ngIf="!healthCardData['crc_visit']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">

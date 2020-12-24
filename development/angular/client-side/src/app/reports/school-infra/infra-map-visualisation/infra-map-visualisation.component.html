@@ -114,8 +114,9 @@
                     {{cluster.details.cluster_name}}
                 </option>
             </select>
-        </div>
 
+            <a class="float-right" href="javascript: void(0)" (click)="goToHealthCard()" style="font-weight: bold; text-decoration: underline;" *ngIf="districtId">Click here to access health card</a>
+        </div>
     </div>
     <div class="row">
         <div class="col-sm-12">

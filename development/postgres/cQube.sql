@@ -4583,6 +4583,9 @@ ALTER TABLE school_medium_master ALTER COLUMN created_on DROP NOT NULL;
 ALTER TABLE school_medium_master ALTER COLUMN updated_on DROP NOT NULL;
 
 ALTER TABLE diksha_api_meta add column IF NOT EXISTS updated_on TIMESTAMP without time zone;
+ALTER TABLE diksha_api_meta add column IF NOT EXISTS tag text;
 
-create table if not exists diksha_api_summary_roll_update (date date,file_url text,expiry_time timestamp,cqube_process_status timestamp,created_on timestamp,updated_on timestamp, primary key(date));
+create table if not exists diksha_api_summary_roll_update (date date,file_url text,expiry_time timestamp,cqube_process_status text,created_on timestamp,updated_on timestamp, primary key(date));
+
+ALTER TABLE diksha_api_meta alter column cqube_process_status type text;
 
