@@ -187,7 +187,7 @@ export class HealthCardComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
       });
     } else if (this.level == 'cluster') {
-      this.height = '290px';
+      this.height = '300px';
       var cluster;
       let blkId;
       if (this.districtName.match(/^\d/)) {
@@ -232,7 +232,7 @@ export class HealthCardComponent implements OnInit {
         document.getElementById('spinner').style.display = 'none';
       });
     } else if (this.level == 'school') {
-      this.height = '320px';
+      this.height = '330px';
       var school;
       var blok;
       if (this.districtName.match(/^\d/)) {
