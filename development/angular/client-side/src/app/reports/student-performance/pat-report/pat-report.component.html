@@ -72,25 +72,25 @@
     <div class="row">
         <div class="col-sm-6">
             <select id="period"
-                style="padding: 5px;float: left;margin-top: 2px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="padding: 5px 2px 5px 2px;float: left;width: 100px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="period" (change)="onPeriodSelect()">
                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
-                <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
+                <option *ngFor="let period of timeRange,  let i =index" style="width: 100px;" [(ngValue)]="period.key">
                     {{period.value}}
                 </option>
             </select>
             <button class="btn btn-secondary" id="block"
-                style="font-size: 11px; width: 65px; float: left;margin: 2px 7px 10px 15px;padding: 4px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 65px; float: left;margin: 0px 7px 10px 15px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="blockClick()">&nbsp;<strong>Blocks</strong> </button>
             <button class="btn btn-secondary" id="cluster"
-                style="font-size: 11px; width: 65px; float: left;margin: 2px 7px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 65px; float: left;margin: 0px 7px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="clusterClick()">&nbsp;<strong>Clusters</strong> </button>
             <button class="btn btn-secondary" id="school"
-                style="font-size: 11px; width: 65px; float: left;margin: 2px 0px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 65px; float: left;margin: 0px 0px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="schoolClick()">&nbsp;<strong>Schools</strong> </button>
 
             <select [hidden]="" id="grades"
-                style="margin-left: 15px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-left: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="grade" (change)="onGradeSelect(grade)">
                 <option [value]="grade" disabled selected="selected">Choose a Grade</option>
                 <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="grade.grade">
