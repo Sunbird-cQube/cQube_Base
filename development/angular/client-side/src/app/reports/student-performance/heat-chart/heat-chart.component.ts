@@ -272,7 +272,7 @@ export class HeatChartComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: 12,
+        max: 11,
         scrollbar: {
           enabled: scrollBarY
         }

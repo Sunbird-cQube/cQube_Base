@@ -99,7 +99,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       return record;
     });
 
-    this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, this.ylab.length > 0 ? this.ylab : this.yLabel, this.zLabel, this.data, this.level, this.xLabel1, this.yLabel1, this.toolTipData);
+    this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, this.ylab.length > 0 ? this.ylab : yLabel, this.zLabel, data, this.level, this.xLabel1, this.yLabel1, tooltipData);
   }
 
   resetToInitPage() {
@@ -219,7 +219,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: 12,
+        max: 9,
         scrollbar: {
           enabled: scrollBarY
         }
@@ -449,6 +449,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     }
     this.xLabel1 = this.xLabel
     this.yLabel1 = this.yLabel
+    this.items = this.data.map((x, i) => x);
     this.onChangePage();
   }
 
