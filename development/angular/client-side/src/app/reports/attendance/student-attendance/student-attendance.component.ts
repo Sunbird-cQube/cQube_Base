@@ -145,8 +145,14 @@ export class StudengtAttendanceComponent implements OnInit {
       var sorted = res['distData'].sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
       var distNames = [];
       this.markers = sorted;
+      
       if (this.markers.length > 0) {
         for (var i = 0; i < this.markers.length; i++) {
+          if (this.myDistrict === this.markers[i]['district_id']) {
+            localStorage.setItem('dist', this.markers[i].district_name);
+            localStorage.setItem('distId', this.markers[i].district_id);
+          }
+
           this.districtsIds.push(this.markers[i]['district_id']);
           distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
         }
@@ -179,6 +185,11 @@ export class StudengtAttendanceComponent implements OnInit {
       this.markers = sorted;
 
       for (var i = 0; i < this.markers.length; i++) {
+        if (this.myBlock === this.markers[i]['block_id']) {
+          localStorage.setItem('block', this.markers[i].block_name);
+          localStorage.setItem('blockId', this.markers[i].block_id);
+        }
+
         this.blocksIds.push(this.markers[i]['block_id']);
         blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] });
       }
@@ -207,6 +218,11 @@ export class StudengtAttendanceComponent implements OnInit {
 
       var sorted = clusterData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
       for (var i = 0; i < sorted.length; i++) {
+        if (this.myCluster === sorted[i]['cluster_id']) {
+          localStorage.setItem('cluster', this.markers[i].cluster_name);
+          localStorage.setItem('clusterId', this.markers[i].cluster_id);
+        }
+
         this.clusterIds.push(sorted[i]['cluster_id']);
         if (sorted[i]['name'] !== null) {
           clustNames.push({ id: sorted[i]['cluster_id'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
