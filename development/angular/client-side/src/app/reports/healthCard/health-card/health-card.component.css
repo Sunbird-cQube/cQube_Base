@@ -159,9 +159,9 @@
     display: none;
   }
   
-  /* .lte8 .wrapper:hover .tooltip {
+  .lte8 .wrapper:hover .tooltip {
     display: block;
-  } */
+  }
 
   .headings{
     font-weight: bold;
