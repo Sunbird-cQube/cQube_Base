@@ -34,12 +34,12 @@ router.post('/metaData', auth.authController, async (req, res) => {
             if (level == 'block') {
                 blockIds.push(String(item.block_id));
                 blockNames.push(item.block_name);
-                blocks.push({ id: item.block_id, name: item.block_name });
+                blocks.push({ id: item.block_id, name: item.block_name, districtId: item.district_id });
             }
             if (level == 'cluster') {
                 clusterIds.push(String(item.cluster_id));
                 clusterNames.push(item.cluster_name);
-                clusters.push({ id: item.cluster_id, name: item.cluster_name, blockId: item.block_id });
+                clusters.push({ id: item.cluster_id, name: item.cluster_name, districtId: item.district_id, blockId: item.block_id });
             }
             if (level == 'school') {
                 schoolIds.push(String(item.school_id));
