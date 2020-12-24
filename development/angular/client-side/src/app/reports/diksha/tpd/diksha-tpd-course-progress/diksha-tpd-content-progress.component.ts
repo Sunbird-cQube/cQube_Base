@@ -312,9 +312,9 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   }
 
   selectedTimePeriod() {
-    this.districtNames = [];
-    this.blockNames = [];
-    this.clusterNames = [];
+    // this.districtNames = [];
+    // this.blockNames = [];
+    // this.clusterNames = [];
     this.levelWiseFilter();
   }
 
