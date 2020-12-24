@@ -2505,7 +2505,7 @@ select d.*,b.total_schools,b.students_count from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
 district_id,initcap(district_name)as district_name,district_latitude,district_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as district_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as district_performance
 from periodic_exam_school_result group by academic_year,
 district_id,district_name,district_latitude,district_longitude) as a
 left join 
@@ -2513,7 +2513,7 @@ left join
 district_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 district_id)as a
 group by district_id,academic_year)as b
@@ -2526,13 +2526,13 @@ json_build_object(grade,json_object_agg(subject_name,percentage  order by subjec
 
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,subject,
 district_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 district_id order by grade desc,subject_name))as b
 
@@ -2560,7 +2560,7 @@ select d.*,b.total_schools,b.students_count from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
 block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,block_latitude,block_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as block_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as block_performance
 from periodic_exam_school_result group by academic_year,
 block_id,block_name,district_id,district_name,block_latitude,block_longitude) as a
 left join 
@@ -2568,7 +2568,7 @@ left join
 block_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 block_id)as a
 group by block_id,academic_year)as b
@@ -2580,13 +2580,13 @@ select academic_year,block_id,jsonb_agg(subject_wise_performance)as subject_wise
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,subject,
 block_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 block_id order by grade desc,subject_name)) as a
 group by academic_year,block_id,grade)as d
@@ -2613,7 +2613,7 @@ select d.*,b.total_schools,b.students_count from
 (select academic_year,
 cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,district_id,
 initcap(district_name)as district_name,cluster_latitude,cluster_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as cluster_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as cluster_performance
 from periodic_exam_school_result group by academic_year,
 cluster_id,cluster_name,block_id,block_name,district_id,district_name,cluster_latitude,cluster_longitude) as a
 left join 
@@ -2621,7 +2621,7 @@ left join
 cluster_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 cluster_id)as a
 group by cluster_id,academic_year)as b
@@ -2633,13 +2633,13 @@ select academic_year,cluster_id,jsonb_agg(subject_wise_performance)as subject_wi
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,subject,
 cluster_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 cluster_id order by grade desc,subject_name)) as a
 group by academic_year,cluster_id,grade)as d
@@ -2666,7 +2666,7 @@ select d.*,b.total_schools,b.students_count from
 (select academic_year,
 school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
 district_id,initcap(district_name)as district_name,school_latitude,school_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as school_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as school_performance
 from periodic_exam_school_result group by academic_year,
 school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,school_latitude,school_longitude) as a
 left join 
@@ -2674,7 +2674,7 @@ left join
 school_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 school_id)as a
 group by school_id,academic_year)as b
@@ -2686,13 +2686,13 @@ select academic_year,school_id,jsonb_agg(subject_wise_performance)as subject_wis
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,subject,
 school_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 school_id order by grade desc,subject_name)) as a
 group by academic_year,school_id,grade)as d
@@ -2724,13 +2724,13 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,subject,
 district_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 district_id order by 3,grade))as a
 group by district_id,grade,academic_year
@@ -2750,13 +2750,13 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,subject,
 block_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 block_id order by 3,grade))as a
 group by block_id,grade,academic_year
@@ -2775,13 +2775,13 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,subject,
 cluster_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 cluster_id order by 3,grade))as a
 group by cluster_id,grade,academic_year
@@ -2800,13 +2800,13 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,subject,
 school_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 school_id order by 3,grade))as a
 group by school_id,grade,academic_year
@@ -2824,7 +2824,7 @@ select d.*,b.total_schools,b.students_count from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
 district_id,initcap(district_name)as district_name,district_latitude,district_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as district_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as district_performance
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,
@@ -2834,7 +2834,7 @@ left join
 district_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -2848,7 +2848,7 @@ select academic_year,district_id,jsonb_agg(subject_wise_performance)as subject_w
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -2856,7 +2856,7 @@ district_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -2886,7 +2886,7 @@ select d.*,b.total_schools,b.students_count from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
 block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,block_latitude,block_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as block_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as block_performance
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,
@@ -2896,7 +2896,7 @@ left join
 block_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -2910,7 +2910,7 @@ select academic_year,block_id,jsonb_agg(subject_wise_performance)as subject_wise
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -2918,7 +2918,7 @@ block_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -2948,7 +2948,7 @@ select d.*,b.total_schools,b.students_count from
 (select academic_year,
 cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,district_id,
 initcap(district_name)as district_name,cluster_latitude,cluster_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as cluster_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as cluster_performance
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,
@@ -2958,7 +2958,7 @@ left join
 cluster_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -2972,7 +2972,7 @@ select academic_year,cluster_id,jsonb_agg(subject_wise_performance)as subject_wi
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -2980,7 +2980,7 @@ cluster_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -3010,7 +3010,7 @@ select d.*,b.total_schools,b.students_count from
 (select academic_year,
 school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
 district_id,initcap(district_name)as district_name,school_latitude,school_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as school_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as school_performance
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,
@@ -3020,7 +3020,7 @@ left join
 school_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -3034,7 +3034,7 @@ select academic_year,school_id,jsonb_agg(subject_wise_performance)as subject_wis
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -3042,7 +3042,7 @@ school_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -3078,7 +3078,7 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -3086,7 +3086,7 @@ district_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -3108,7 +3108,7 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -3116,7 +3116,7 @@ block_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -3138,7 +3138,7 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -3146,7 +3146,7 @@ cluster_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -3167,7 +3167,7 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -3175,7 +3175,7 @@ school_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -3193,7 +3193,7 @@ select d.*,b.total_schools,b.students_count from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
 district_id,initcap(district_name)as district_name,district_latitude,district_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as district_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as district_performance
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,
@@ -3203,7 +3203,7 @@ left join
 district_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3217,7 +3217,7 @@ select academic_year,district_id,jsonb_agg(subject_wise_performance)as subject_w
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -3225,7 +3225,7 @@ district_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3255,7 +3255,7 @@ select d.*,b.total_schools,b.students_count from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
 block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,block_latitude,block_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as block_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as block_performance
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,
@@ -3265,7 +3265,7 @@ left join
 block_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3279,7 +3279,7 @@ select academic_year,block_id,jsonb_agg(subject_wise_performance)as subject_wise
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -3287,7 +3287,7 @@ block_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3317,7 +3317,7 @@ select d.*,b.total_schools,b.students_count from
 (select academic_year,
 cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,district_id,
 initcap(district_name)as district_name,cluster_latitude,cluster_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as cluster_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as cluster_performance
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,
@@ -3327,7 +3327,7 @@ left join
 cluster_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3341,7 +3341,7 @@ select academic_year,cluster_id,jsonb_agg(subject_wise_performance)as subject_wi
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -3349,7 +3349,7 @@ cluster_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3379,7 +3379,7 @@ select d.*,b.total_schools,b.students_count from
 (select academic_year,
 school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
 district_id,initcap(district_name)as district_name,school_latitude,school_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as school_performance
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as school_performance
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,
@@ -3389,7 +3389,7 @@ left join
 school_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3403,7 +3403,7 @@ select academic_year,school_id,jsonb_agg(subject_wise_performance)as subject_wis
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -3411,7 +3411,7 @@ school_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3447,7 +3447,7 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -3455,7 +3455,7 @@ district_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3477,7 +3477,7 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -3485,7 +3485,7 @@ block_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3507,7 +3507,7 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -3515,7 +3515,7 @@ cluster_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -3536,7 +3536,7 @@ json_object_agg(subject_name,percentage order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -3544,7 +3544,7 @@ school_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),2) as percentage
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,
@@ -4319,10 +4319,10 @@ left join (select x_axis,semester,
  sum(case when x_value between 33 and 60 then 1 else 0 end)as value_between_33_60,
  sum(case when x_value between 60 and 75 then 1 else 0 end)as value_between_60_75,
  sum(case when x_value >=75 then 1 else 0 end)as value_above_75,
- round(sum(case when x_value <=33 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_below_33,
- round(sum(case when x_value between 33 and 60 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_33_60,
- round(sum(case when x_value between 60 and 75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_60_75,
- round(sum(case when x_value >=75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_above_75
+ round(sum(case when x_value <=33 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_below_33,
+ round(sum(case when x_value between 33 and 60 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_33_60,
+ round(sum(case when x_value between 60 and 75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_60_75,
+ round(sum(case when x_value >=75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_above_75
    from district_school group by x_axis,semester) as c 
    on b.x_axis=c.x_axis and b.semester=c.semester;
 
@@ -4367,10 +4367,10 @@ left join
  sum(case when x_value between 33 and 60 then 1 else 0 end)as value_between_33_60,
  sum(case when x_value between 60 and 75 then 1 else 0 end)as value_between_60_75,
  sum(case when x_value >=75 then 1 else 0 end)as value_above_75,
- round(sum(case when x_value <=33 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_below_33,
- round(sum(case when x_value between 33 and 60 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_33_60,
- round(sum(case when x_value between 60 and 75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_60_75,
- round(sum(case when x_value >=75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_above_75
+ round(sum(case when x_value <=33 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_below_33,
+ round(sum(case when x_value between 33 and 60 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_33_60,
+ round(sum(case when x_value between 60 and 75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_60_75,
+ round(sum(case when x_value >=75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_above_75
    from block_school group by x_axis,semester) as c
 on b.x_axis=c.x_axis and b.semester=c.semester;
 
@@ -4416,10 +4416,10 @@ sum(case when x_value <=33 then 1 else 0 end)as value_below_33,
  sum(case when x_value between 33 and 60 then 1 else 0 end)as value_between_33_60,
  sum(case when x_value between 60 and 75 then 1 else 0 end)as value_between_60_75,
  sum(case when x_value >=75 then 1 else 0 end)as value_above_75,
- round(sum(case when x_value <=33 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_below_33,
- round(sum(case when x_value between 33 and 60 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_33_60,
- round(sum(case when x_value between 60 and 75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_between_60_75,
- round(sum(case when x_value >=75 then 1 else 0 end)*100.0/count(distinct(school_id)),2) as percent_above_75
+ round(sum(case when x_value <=33 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_below_33,
+ round(sum(case when x_value between 33 and 60 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_33_60,
+ round(sum(case when x_value between 60 and 75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_60_75,
+ round(sum(case when x_value >=75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_above_75
    from cluster_school group by x_axis,semester)as c
 on b.x_axis=c.x_axis and b.semester=c.semester;
 
@@ -4551,13 +4551,13 @@ select
 spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
  from 
 ((select count(distinct school_id) as total_schools,district_id,district_name,
-	round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2)) as no_of_schools_per_crc 
+	round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1)) as no_of_schools_per_crc 
 	from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
 	group by district_id,district_name) s left join 
 (select district_id as dist_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
@@ -4577,13 +4577,13 @@ create or replace view hc_crc_block as
 select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
 from (
 (select district_id,district_name,block_id,block_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc 
     from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
      group by district_id,district_name,block_id,block_name) s left join 
 (select block_id as blk_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
@@ -4605,14 +4605,14 @@ select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,
 initcap(spd.cluster_name)as cluster_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,
-coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
+coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
 from (
 (select district_id,district_name,block_id,block_name,cluster_id,cluster_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc
      from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
       group by district_id,district_name,block_id,block_name,cluster_id,cluster_name) s left join 
 (select cluster_id as clt_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
@@ -4634,16 +4634,16 @@ select spd.district_id,initcap(spd.district_name)as district_name,spd.block_id,i
 initcap(spd.school_name) as school_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,
-coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,
-coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,
+coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
+coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
 coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
 from (
 (select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,
   count(distinct school_id) as total_schools,
-round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
+round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc 
     from school_hierarchy_details  where cluster_name is not null and block_name is not null 
     and school_name is not null and district_name is not null
     group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name) s left join 
