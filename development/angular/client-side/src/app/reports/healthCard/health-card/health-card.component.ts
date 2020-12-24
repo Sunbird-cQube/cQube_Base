@@ -85,6 +85,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   showLink = true;
   params: any;
 
+  placement = 'bottom-right';
+
   @ViewChild('searchInput') searchInput: ElementRef;
 
   constructor(public commonService: AppServiceComponent, public service: HealthCardService, private readonly _router: Router, private readonly _cd: ChangeDetectorRef) { }
