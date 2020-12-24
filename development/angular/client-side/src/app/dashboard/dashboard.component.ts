@@ -82,12 +82,13 @@ export class DashboardComponent implements OnInit {
   diksha_column = 'diksha_columns' in environment ? environment['diksha_columns'] : true
 
 
-  constructor(private router: Router, private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
+  constructor(private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
     service.logoutOnTokenExpire();
     this.changeDataSourceStatus();
   }
 
   ngOnInit() {
+    sessionStorage.clear();
     document.getElementById('spinner').style.display = 'none';
     document.getElementById('homeBtn').style.display = 'none';
     document.getElementById('backBtn').style.display = 'block';
@@ -157,7 +158,7 @@ export class DashboardComponent implements OnInit {
           this.nifi_composite = element.status;
         }
       });
-    })
+    });
   }
 
   callOnInterval() {
