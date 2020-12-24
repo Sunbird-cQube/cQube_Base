@@ -103,6 +103,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
     public commonService: AppServiceComponent,
     public router: Router,
     private changeDetection: ChangeDetectorRef,
+    private readonly _router: Router
   ) {
   }
 
@@ -124,8 +125,90 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.service.semMetaData().subscribe(res => {
       this.semesters = res['data'];
       this.semester = this.semesters[this.semesters.length - 1].id;
-      this.districtWise();
-    })
+      let params = JSON.parse(sessionStorage.getItem('report-level-info'));
+
+      if (params && params.level) {
+        let data = params.data;
+        if (params.level === 'district') {
+          this.districtHierarchy = {
+            distId: data.id
+          };
+
+          this.districtId = data.id;
+          this.getDistricts();
+          this.onDistrictSelect(data.id);
+        } else if (params.level === 'block') {
+          this.districtHierarchy = {
+            distId: data.districtId
+          };
+
+          this.blockHierarchy = {
+            distId: data.districtId,
+            blockId: data.id
+          };
+
+          this.districtId = data.districtId;
+          this.blockId = data.id;
+          this.getDistricts();
+          this.getBlocks(data.districtId, data.id);
+        } else if (params.level === 'cluster') {
+          this.districtHierarchy = {
+            distId: data.districtId
+          };
+
+          this.blockHierarchy = {
+            distId: data.districtId,
+            blockId: data.blockId
+          };
+
+          this.clusterHierarchy = {
+            distId: data.districtId,
+            blockId: data.blockId,
+            clusterId: data.id
+          };
+
+          this.districtId = data.blockHierarchy;
+          this.blockId = data.blockId;
+          this.clusterId = data.id;
+          this.getDistricts();
+          this.getBlocks(data.districtId);
+          this.getClusters(data.districtId, data.blockId, data.id);
+        }
+      } else {
+        this.districtWise();
+      }
+    });
+  }
+
+  getDistricts(): void {
+    this.service.all_dist_sem_data({ sem: this.semester }).subscribe(res => {
+      this.data = res;
+      // to show only in dropdowns
+      this.districtMarkers = this.data['sortedData'];
+
+      // sort the districtname alphabetically
+      this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
+    }, err => {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
+    });
+  }
+
+  getBlocks(distId, blockId?: any): void {
+    this.service.block_wise_sem_data(distId, { sem: this.semester }).subscribe(res => {
+      this.data = res;
+      this.blockMarkers = this.data['sortedData'];
+      if (blockId)
+        this.onBlockSelect(blockId);
+    });
+  }
+
+  getClusters(distId, blockId, clusterId): void {
+    this.service.cluster_wise_sem_data(distId, blockId, { sem: this.semester }).subscribe(res => {
+      this.data = res;
+      this.clusterMarkers = this.data['sortedData'];
+      this.onClusterSelect(clusterId);
+    });
   }
 
   homeClick(event) {
@@ -880,6 +963,24 @@ export class SemViewComponent implements OnInit, OnDestroy {
     //     timestamp: timeStamp
     //   }
     // );
+  }
+
+  goToHealthCard(): void {
+    let data: any = {};
+
+    if (this.dist) {
+      data.level = 'district';
+      data.value = this.districtHierarchy.distId;
+    } else if (this.blok) {
+      data.level = 'block';
+      data.value = this.blockHierarchy.blockId;
+    } else if (this.clust) {
+      data.level = 'cluster';
+      data.value = this.clusterHierarchy.clusterId;
+    }
+
+    sessionStorage.setItem('health-card-info', JSON.stringify(data));
+    this._router.navigate(['/healthCard']);
   }
 
 
