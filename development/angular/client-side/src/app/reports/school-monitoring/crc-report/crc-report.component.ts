@@ -198,7 +198,7 @@ export class CrcReportComponent implements OnInit {
       this.crcClusterNames = result.visits;
       this.reportData = this.crcClusterNames;
 
-      localStorage.setItem('blockId', blockId);
+      localStorage.setItem('clusterId', clusterId);
 
       for (var i = 0; i < this.crcClusterNames.length; i++) {
         this.clusterNames.push({ id: this.crcClusterNames[i].clusterId, name: this.crcClusterNames[i].clusterName });
