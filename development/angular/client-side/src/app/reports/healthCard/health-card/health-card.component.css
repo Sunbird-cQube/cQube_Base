@@ -118,6 +118,38 @@
          -o-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
             box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
   }
+
+  .healthcard-tooltip {
+    position: absolute;
+    right: 30px;
+  }
+
+  .healthcard-tooltip.show .healthcard-tooltip-btn {
+    background: transparent;
+  }
+
+  .healthcard-tooltip-btn {
+    padding: 0;
+    border: none;
+  }
+
+  .healthcard-tooltip-btn:hover, .healthcard-tooltip-btn:active {
+    background-color: transparent !important;
+  }
+
+  .healthcard-tooltip-btn:focus {
+    box-shadow: none !important;
+  }
+
+  .healthcard-tooltip-btn::after {
+    display: none;
+  }
+
+  .healthcard-tooltip-dropdown {
+    width: 300px !important;
+    padding-left: 10px;
+    font-size: 13px;
+  }
   
   /* This bridges the gap so you can mouse into the tooltip without it disappearing */
    .tooltip:before {
