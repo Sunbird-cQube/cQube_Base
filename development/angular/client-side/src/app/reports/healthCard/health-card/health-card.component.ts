@@ -329,7 +329,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         });
       }
     } else {
-      alert("Please search something...");
+      alert("Please enter valid id/name");
       document.getElementById('spinner').style.display = 'none';
     }
 
@@ -466,9 +466,15 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   onChange() {
     this.showAll = false;
     if (this.value.match(/^\d/)) {
+      if (this.value.toString().length > 1) {
+        document.getElementById('warning').style.display = 'none';
+      }
       this.autocomplete(document.getElementById("myInput"), this.ids);
     }
     if (!this.value.match(/^\d/)) {
+      if (this.value.length > 1) {
+        document.getElementById('warning').style.display = 'none';
+      }
       this.autocomplete(document.getElementById("myInput"), this.names);
     }
   }
@@ -479,6 +485,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.ids = [];
     this.names = [];
     document.getElementById('spinner').style.display = 'block';
+    document.getElementById('warning').style.display = 'block';
     this.showAll = false;
     document.getElementById('myInput')['disabled'] = false;
     if (!callSubmit)

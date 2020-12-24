@@ -65,6 +65,7 @@ export class DashboardComponent implements OnInit {
   tpdenrollViews;
   tpdcompViews;
   healthCardViews;
+  
 
   //for coming soon page
   nifi_crc;
@@ -81,12 +82,13 @@ export class DashboardComponent implements OnInit {
   diksha_column = 'diksha_columns' in environment ? environment['diksha_columns'] : true
 
 
-  constructor(private router: Router, private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
+  constructor(private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
     service.logoutOnTokenExpire();
     this.changeDataSourceStatus();
   }
 
   ngOnInit() {
+    sessionStorage.clear();
     document.getElementById('spinner').style.display = 'none';
     document.getElementById('homeBtn').style.display = 'none';
     document.getElementById('backBtn').style.display = 'block';
@@ -122,6 +124,7 @@ export class DashboardComponent implements OnInit {
     this.lotableTooltip = `This dashboard provides insights on student performance at the learning outcome level.`;
     this.tpdtpTooltip = `This dashboard provides details on district-wise TPD course enrolment progress broken at the individual course level.`;
     this.tpdcpTooltip = `This dashboard provides details on district-wise TPD course progress broken at the individual course level.`;
+    this.healthCardTooltip = `Healthcard Tooltip`;
   }
 
   changeDataSourceStatus() {
@@ -155,7 +158,7 @@ export class DashboardComponent implements OnInit {
           this.nifi_composite = element.status;
         }
       });
-    })
+    });
   }
 
   callOnInterval() {
