@@ -8,7 +8,11 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         logger.info('---PAT LO table blockWise api ---');
 
         let { year, grade, month, subject_name, exam_date, viewBy, districtId } = req.body
-        let fileName = `pat/heatChart/${year}/${month}/districts/${districtId}.json`;
+        let fileName ;
+        if (viewBy == 'indicator') {
+            fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/districts/${districtId}.json`;
+        } else if (viewBy == 'question_id')
+            fileName = `pat/heatChart/questionIdLevel/${year}/${month}/districts/${districtId}.json`;
         var data = await s3File.readS3File(fileName);
 
         if (districtId) {
