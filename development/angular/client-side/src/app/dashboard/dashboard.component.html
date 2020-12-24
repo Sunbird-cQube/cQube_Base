@@ -816,41 +816,40 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
-            <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
-                <div class="diksha">HEALTH-CARD</div>
-                <div class="row outer12">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="healthCard"
-                            [routerLink]="!nifi_semester ? ['/coming-soon'] :['/healthCard']"
-                            (click)="fetchTelemetry($event,'healthCard')">
-                            <div class="card-body ">
-                                <div class="row">
-                                    <app-info [tooltipText]="healthCardTooltip"
-                                        style="position: absolute; right:10px; top:0px">
-                                    </app-info>
-                                    <div class="col-3 col-md-2">
-                                        <div class="icon-big text-center icon-warning">
-                                            <div class="iconDiv">
-                                                <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-9 col-md-10">
-                                        <div class="numbers" style="font-size: 13px; text-align: center;">
-                                            <p class="card-category">Health Card </p>
-                                            <p class="card-title"></p>
+        <!-- <div class="col-sm-6"> -->
+        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+            <div class="diksha">HEALTH-CARD</div>
+            <div class="row outer12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="healthCard"
+                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/healthCard']"
+                        (click)="fetchTelemetry($event,'healthCard')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="healthCardTooltip"
+                                    style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv">
+                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="views">
-                                        <p *ngIf="healthCardViews;else other_content" id="views">views:
-                                            {{healthCardViews}}</p>
-                                        <ng-template #other_content>
-                                            <p id="errViews">views: 0 {{timePeriod}}</p>
-                                        </ng-template>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Health Card </p>
+                                        <p class="card-title"></p>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="healthCardViews;else other_content" id="views">views:
+                                        {{healthCardViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
@@ -858,6 +857,7 @@
                 </div>
             </div>
         </div>
+        <!-- </div> -->
     </div>
     <div class="row" style="padding: 20px;">
         <div class="col-sm-6" style="padding:  0% 2% 0% 2%">

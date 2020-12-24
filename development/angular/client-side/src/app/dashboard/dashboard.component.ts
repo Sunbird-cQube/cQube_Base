@@ -307,6 +307,4 @@ export class DashboardComponent implements OnInit {
     var myStr = mydata.charAt(0).toUpperCase() + mydata.substr(1).toLowerCase();
     return myStr;
   }
-
-
 }
