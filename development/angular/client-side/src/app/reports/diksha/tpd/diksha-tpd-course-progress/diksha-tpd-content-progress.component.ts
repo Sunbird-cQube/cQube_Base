@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as Highcharts from 'highcharts/highstock';
 import HeatmapModule from 'highcharts/modules/heatmap';
 HeatmapModule(Highcharts);
@@ -6,6 +6,7 @@ import { AppServiceComponent } from '../../../../app.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from 'src/app/services/diksha-report.service';
+import { MultiSelectComponent } from '../multi-select/multi-select.component';
 
 @Component({
   selector: 'app-diksha-tpd-content-progress',
@@ -62,6 +63,8 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   pageSize = 40;
   currentPage = 1;
 
+  @ViewChild(MultiSelectComponent) multiSelect: MultiSelectComponent;
+
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
@@ -114,6 +117,13 @@ export class DikshaTPDContentProgressComponent implements OnInit {
     this.clusterHidden = true;
     this.timePeriod = 'All';
     document.getElementById('home').style.display = 'none';
+    this.selectedCourses = [];
+    this.courses = this.courses.map(course => {
+      course.status = false;
+      return course;
+    });
+    if (this.multiSelect)
+      this.multiSelect.checkedList = [];
     this.commonFunc();
   }
 

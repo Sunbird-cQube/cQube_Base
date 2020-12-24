@@ -14,8 +14,8 @@
         </div>
         <div class="col-sm-5">
             <div class="autocomplete" style="width:300px;;float: left;">
-                <input #searchInput id="myInput" type="search" class="clearable" autofocus autocomplete="off" name="districtName"
-                    [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
+                <input #searchInput id="myInput" type="search" class="clearable" autofocus autocomplete="off"
+                    name="districtName" [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
                 <br>
                 <p id="warning" style="font-size: 9px;"> Please enter atlease 2 characters/digits</p>
             </div>
@@ -52,10 +52,12 @@
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['student_attendance']">
                             <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic1" ngbDropdownToggle>
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic1"
+                                    ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                    aria-labelledby="dropdownBasic1">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
@@ -67,7 +69,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                            </div>
                             <table>
                                 <tbody>
                                     <tr *ngFor="let attendance of schoolAttendance; let i=index">
@@ -92,7 +94,8 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link"><a href="javascript:void(0)" (click)="goToReport('/attendance/student-attendance')">Click
+                            <p *ngIf="showLink" class="link"><a href="javascript:void(0)"
+                                    (click)="goToReport('/attendance/student-attendance')">Click
                                     to Access
                                     Report</a></p>
                         </div>
@@ -108,10 +111,12 @@
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['student_semester']">
                             <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic2" ngbDropdownToggle>
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic2"
+                                    ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                    aria-labelledby="dropdownBasic2">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
@@ -123,7 +128,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                            </div>
                             <table>
                                 <tbody>
                                     <tr *ngFor="let sem of semPerformance; let i=index">
@@ -149,7 +154,8 @@
                                 </tbody>
                             </table>
                             <p *ngIf="showLink" class="link">
-                                <a href="javascript:void(0)" (click)="goToReport('/student-performance/semester-report')">Click
+                                <a href="javascript:void(0)"
+                                    (click)="goToReport('/student-performance/semester-report')">Click
                                     to Access
                                     Report</a>
                             </p>
@@ -166,13 +172,22 @@
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['pat_performance']">
                             <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic3" ngbDropdownToggle>
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic3"
+                                    ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic3">
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                    aria-labelledby="dropdownBasic3">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
+                                                <div *ngFor="let key of tooltipPat;let i=index">
+                                                    <span>{{tooltipPatKeys[i]}}</span> :
+                                                    <span>{{healthCardData['pat_performance'][key]}}</span>
+                                                </div>
+                                                <strong
+                                                    style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade
+                                                    Wise Performance </strong>
                                                 <div *ngFor="let key of patPerformTooltip;let i=index">
                                                     <span>{{patPerformTooltipKeys[i]}}</span> :
                                                     <span>{{healthCardData['pat_performance']['grade_wise_performance'][key]}}</span>
@@ -181,7 +196,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                            </div>
                             <table>
                                 <tbody>
                                     <tr *ngFor="let pat of patPerformance; let i=index">
@@ -207,10 +222,11 @@
                                 </tbody>
                             </table>
                             <p *ngIf="showLink" class="link">
-                                <a href="javascript:void(0)" (click)="goToReport('/student-performance/pat-report')">Click
+                                <a href="javascript:void(0)"
+                                    (click)="goToReport('/student-performance/pat-report')">Click
                                     to Access
                                     Report</a>
-                                </p>
+                            </p>
                         </div>
                         <div *ngIf="!healthCardData['pat_performance']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">
@@ -226,10 +242,12 @@
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['school_infrastructure']">
                             <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic4" ngbDropdownToggle>
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic4"
+                                    ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic4">
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                    aria-labelledby="dropdownBasic4">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
@@ -241,7 +259,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                            </div>
                             <table>
                                 <tbody>
                                     <tr *ngFor="let infra of schoolInfra; let i=index">
@@ -291,10 +309,12 @@
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['udise']">
                             <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic5" ngbDropdownToggle>
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic5"
+                                    ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic5">
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                    aria-labelledby="dropdownBasic5">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
@@ -306,7 +326,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                            </div>
                             <table>
                                 <tbody>
                                     <tr *ngFor="let key of UDISE; let i=index">
@@ -335,7 +355,7 @@
                                 <a href="javascript:void(0)" (click)="goToReport('/infrastructure/udise-report')">Click
                                     to Access
                                     Report</a>
-                                </p>
+                            </p>
                         </div>
                         <div *ngIf="!healthCardData['udise']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">
@@ -349,10 +369,12 @@
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['crc_visit']">
                             <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic6" ngbDropdownToggle>
+                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic6"
+                                    ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic6">
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                    aria-labelledby="dropdownBasic6">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
                                             <div id="div3" style="height:1000px auto;">
@@ -364,7 +386,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                            </div>
                             <table>
                                 <tbody>
                                     <strong
