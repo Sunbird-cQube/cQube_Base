@@ -64,8 +64,8 @@ export class SemesterExceptionComponent implements OnInit {
   public blockId: any = '';
   public clusterId: any = '';
 
-  public semesters = [{ id: 1, name: "Semester 1" }, { id: 2, name: "Semester 2" }];
-  public semester = 2;
+  public semesters = [];
+  public semester;
   public levelWise = '';
 
   public myData;
@@ -92,8 +92,11 @@ export class SemesterExceptionComponent implements OnInit {
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.districtWise();
-
+    this.service.semExceptionMetaData().subscribe(res => {
+      this.semesters = res['data'];
+      this.semester = this.semesters[this.semesters.length - 1].id;
+      this.districtWise();
+    })
   }
 
   semSelect() {
