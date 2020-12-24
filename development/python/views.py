@@ -243,21 +243,21 @@ def get_diksha():
         ],
         "periodWiseFiles": {
             "2020-11-18": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201223%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201223T141709Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=2fe3a413cb3e0d08a68d075b3a0cd9023fcaa960d65f81b08e953d02495e9b23"
+                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201224%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201224T052805Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=37d073413f3ed5806b5c48c04c1fbea5fcdcec872623cf45d23e0c440d534030"
             ],
             "2020-11-19": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201223%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201223T142326Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=a706f56580f03249920c8065d029a35c17bdeee9a94f48063a42ac8cb27218b2"
+                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201224%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201224T052915Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=d8cab8dbadaf82f2a0e8ec2d3f60c412cd24945f9fdc131a96931a0a40cb12da"
             ],
             "2020-11-20": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201223%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201223T142409Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=822bfc89361eedd2ba0821308bd4e77e94947d012394192657badce69fd0548f"
+                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201224%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201224T052928Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=1b03854a032b9c58f0d4ffdab3df211ce10092b4acba0a0eff1cdff407f4d481"
             ],
             "2020-11-21": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201223%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201223T142429Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=07d116cca8b6d8edc1f2ed30c78ea2fa9a98631974bc68de8719ddeef0e00c85"
+                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201224%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201224T052946Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=98c8dae1e741a5c7f2330d236b70e4df4dcd4775b9e345050902c1950d14757c"
             ],
             "2020-11-22": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201223%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201223T143008Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=4b95501eafab3e109a09598de42266910d88cb447eceb7929e550b23b4a6c91d"
+                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201224%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201224T053002Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=87e5d59dfb2d303599ff92b4c48eca6621832d7cb9b428629d169641e372696d"
             ]
         },
-        "expiresAt": 1606300498990
+        "expiresAt": 1606300998990
     }
 }'''

@@ -404,3 +404,11 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 [2020-12-24 08:47:59 +0530] [6499] [INFO] Booting worker with pid: 6499
 [2020-12-24 08:47:59 +0530] [6500] [INFO] Booting worker with pid: 6500
 [2020-12-24 08:47:59 +0530] [6502] [INFO] Booting worker with pid: 6502
+[2020-12-24 11:05:37 +0530] [6496] [INFO] Handling signal: hup
+[2020-12-24 11:05:37 +0530] [6496] [INFO] Hang up: Master
+[2020-12-24 11:05:37 +0530] [13794] [INFO] Booting worker with pid: 13794
+[2020-12-24 11:05:37 +0530] [13795] [INFO] Booting worker with pid: 13795
+[2020-12-24 11:05:37 +0530] [6500] [INFO] Worker exiting (pid: 6500)
+[2020-12-24 11:05:37 +0530] [6499] [INFO] Worker exiting (pid: 6499)
+[2020-12-24 11:05:37 +0530] [6502] [INFO] Worker exiting (pid: 6502)
+[2020-12-24 11:05:37 +0530] [13796] [INFO] Booting worker with pid: 13796
