@@ -103,6 +103,13 @@
     <div class="row">
         <div class="col-md-12" id="container"></div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div style="position: relative; bottom: 0px; float: right; margin: 0px auto;">
+                <ngb-pagination [collectionSize]="yLabel.length" [maxSize]="10" [(page)]="currentPage" [pageSize]="pageSize" (pageChange)="onChangePage()"></ngb-pagination>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="spinner">
     <div id="loader" class="loading">Loading&#8230;</div>

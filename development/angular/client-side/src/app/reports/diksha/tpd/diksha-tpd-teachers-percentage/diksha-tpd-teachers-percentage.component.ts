@@ -55,6 +55,13 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   state: string;
   courses: Object;
 
+  //For pagination.....
+  items = [];
+  pageOfItems: Array<any>;
+  pageSize = 40;
+  currentPage = 1;
+
+
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
@@ -75,6 +82,24 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   shareCheckedList(item: any[]) {
     this.selectedCourses = item;
     this.levelWiseFilter();
+  }
+
+  onChangePage() {
+    let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
+    let data = this.items.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
+    let tooltipData = this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
+
+    data = data.map(record => {
+      record.y %= this.pageSize;
+      return record;
+    });
+
+    tooltipData = tooltipData.map(record => {
+      record.y %= this.pageSize;
+      return record;
+    });
+
+    this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, this.ylab.length > 0 ? this.ylab : this.yLabel, this.zLabel, this.data, this.level, this.xLabel1, this.yLabel1, this.toolTipData);
   }
 
   resetToInitPage() {
@@ -388,15 +413,17 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     })
   }
 
+  xlab = []; ylab = []; a = {}; yLabel = []; xLabel = []; xLabelId = []; zLabel = []; xLabel1 = []; yLabel1 = []; toolTipData: any;
   genericFunction(response) {
-    var xlab = [];
-    var ylab = [];
-    let yLabel = response['result']['yLabel']
-    let xLabel = response['result']['xLabel']
-    let xLabelId = response['result']['xLabelId']
-    let data = response['result']['data']
-    let zLabel = response['result']['zLabel']
+    this.xlab = [];
+    this.ylab = [];
+    this.yLabel = response['result']['yLabel']
+    this.xLabel = response['result']['xLabel']
+    this.xLabelId = response['result']['xLabelId']
+    this.data = response['result']['data']
+    this.zLabel = response['result']['zLabel']
     this.reportData = response['downloadData']
+    this.toolTipData = response['result']['tooltipData'];
     if (response['districtDetails']) {
       let districts = response['districtDetails'];
       this.districtNames = districts.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
@@ -409,20 +436,20 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       let clusters = response['clusterDetails'];
       this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }
-    if (xLabel.length <= 30) {
+    if (this.xLabel.length <= 30) {
       for (let i = 0; i <= 30; i++) {
-        xlab.push(xLabel[i] ? xLabel[i] : ' ')
+        this.xlab.push(this.xLabel[i] ? this.xLabel[i] : ' ')
       }
     }
 
-    if (yLabel.length <= 12) {
+    if (this.yLabel.length <= 12) {
       for (let i = 0; i <= 12; i++) {
-        ylab.push(yLabel[i] ? yLabel[i] : ' ')
+        this.ylab.push(this.yLabel[i] ? this.yLabel[i] : ' ')
       }
     }
-    let xLabel1 = xLabel
-    let yLabel1 = yLabel
-    this.chartFun(xlab.length > 0 ? xlab : xLabel, xLabelId, ylab.length > 0 ? ylab : yLabel, zLabel, data, this.level, xLabel1, yLabel1, response['result']['tooltipData']);
+    this.xLabel1 = this.xLabel
+    this.yLabel1 = this.yLabel
+    this.onChangePage();
   }
 
   //level wise filter

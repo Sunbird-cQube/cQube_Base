@@ -34,6 +34,7 @@
     "hammerjs": "^2.0.8",
     "highcharts": "^8.2.2",
     "jquery": "^3.5.1",
+    "jw-angular-pagination": "^1.2.0",
     "keycloak-js": "^10.0.2",
     "leaflet": "^1.6.0",
     "leaflet-responsive-popup": "^0.6.4",
