@@ -71,6 +71,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     public router: Router
   ) { }
 
+  scousesTOShow = [];
   ngOnInit(): void {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
@@ -87,6 +88,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   onChangePage() {
+    this.scousesTOShow = [];
     let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
     let data = this.items.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
     let tooltipData = this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
@@ -100,7 +102,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       record.y %= this.pageSize;
       return record;
     });
-
+    this.scousesTOShow = this.courses;
     this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, this.ylab.length > 0 ? this.ylab : yLabel, this.zLabel, data, this.level, this.xLabel1, this.yLabel1, tooltipData);
   }
 
@@ -144,6 +146,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.genericFunction(response);
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
+      this.scousesTOShow = [];
       if (this.items.length > 0) {
         this.chart.destroy();
       }
@@ -339,6 +342,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
+      this.scousesTOShow = [];
       if (this.items.length > 0) {
         this.chart.destroy();
       }
@@ -383,6 +387,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
+      this.scousesTOShow = [];
       if (this.items.length > 0) {
         this.chart.destroy();
       }
@@ -425,6 +430,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
+      this.scousesTOShow = [];
       if (this.items.length > 0) {
         this.chart.destroy();
       }
