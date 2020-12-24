@@ -121,7 +121,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           blockId: data.id
         };
 
-        this.districtId = data.blockHierarchy;
+        this.districtId = data.districtId;
         this.blockId = data.id;
         this.getDistricts();
         this.getBlocks(data.districtId, data.id);
@@ -1011,13 +1011,13 @@ export class InfraMapVisualisationComponent implements OnInit {
   goToHealthCard(): void {
     let data: any = {};
 
-    if (this.level === 'block') {
+    if (this.dist) {
       data.level = 'district';
       data.value = this.districtHierarchy.distId;
-    } else if (this.level === 'cluster') {
+    } else if (this.blok) {
       data.level = 'block';
       data.value = this.blockHierarchy.blockId;
-    } else if (this.level === 'school') {
+    } else if (this.clust) {
       data.level = 'cluster';
       data.value = this.clusterHierarchy.clusterId;
     }
