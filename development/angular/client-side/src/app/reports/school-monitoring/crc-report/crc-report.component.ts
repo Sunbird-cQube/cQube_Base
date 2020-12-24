@@ -601,7 +601,7 @@ export class CrcReportComponent implements OnInit {
 
     localStorage.setItem('blockId', data);
     this.titleName = localStorage.getItem('dist');
-    this.distName = JSON.parse(localStorage.getItem('distId'));
+    this.distName = localStorage.getItem('distId');
     this.blockName = data;
     let obj = this.blocksNames.find(o => o.id == data);
     localStorage.setItem('block', JSON.stringify(obj.name));
@@ -610,7 +610,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcClusterWiseData(JSON.parse(localStorage.getItem('distId')), data).subscribe((result: any) => {
+    this.myData = this.service.crcClusterWiseData(localStorage.getItem('distId'), data).subscribe((result: any) => {
       if (!fromParam) {
         $('#table').DataTable().destroy();
         $('#table').empty();
@@ -704,11 +704,11 @@ export class CrcReportComponent implements OnInit {
     this.tableData = [];
     this.chartData = [];
     this.reportData = [];
-    this.title = JSON.parse(localStorage.getItem('block'));
+    this.title = localStorage.getItem('block');
     this.titleName = localStorage.getItem('dist');
-    var distId = JSON.parse(localStorage.getItem('distId'));
-    var blockId = JSON.parse(localStorage.getItem('blockId'));
-    this.distName = JSON.parse(localStorage.getItem('distId'));
+    var distId = localStorage.getItem('distId');
+    var blockId = localStorage.getItem('blockId');
+    this.distName = localStorage.getItem('distId');
     this.blockName = blockId;
     this.clustName = data;
     let obj = this.clusterNames.find(o => o.id == data);
@@ -916,13 +916,13 @@ export class CrcReportComponent implements OnInit {
       this.districtWise();
     }
     if (this.dist) {
-      this.myDistData(JSON.parse(localStorage.getItem('distId')));
+      this.myDistData(localStorage.getItem('distId'));
     }
     if (this.blok) {
-      this.myBlockData(JSON.parse(localStorage.getItem('blockId')));
+      this.myBlockData(localStorage.getItem('blockId'));
     }
     if (this.clust) {
-      this.myClusterData(JSON.parse(localStorage.getItem('clusterId')));
+      this.myClusterData(localStorage.getItem('clusterId'));
     }
   }
   redirectTo() {
