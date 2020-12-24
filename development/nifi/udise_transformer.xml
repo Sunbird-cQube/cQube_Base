@@ -13422,7 +13422,6 @@ ${filename:startsWith('sch_safety'):ifElse(#{udise_sch_safety_count_null},'None'
     </entry>
     <entry>
         <key>sql-pre-query</key>
-        <value>#{udise_drop_views}</value>
     </entry>
     <entry>
         <key>SQL select query</key>
@@ -23852,5 +23851,5 @@ Mirror data validation of file:${filename} started</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/15/2020 10:17:32 IST</timestamp>
+    <timestamp>12/25/2020 02:11:02 IST</timestamp>
 </template>
