@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as Highcharts from 'highcharts/highstock';
 import HeatmapModule from 'highcharts/modules/heatmap';
 HeatmapModule(Highcharts);
@@ -6,6 +6,7 @@ import { AppServiceComponent } from '../../../../app.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from 'src/app/services/diksha-report.service';
+import { MultiSelectComponent } from '../multi-select/multi-select.component';
 
 @Component({
   selector: 'app-diksha-tpd-teachers-percentage',
@@ -53,7 +54,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   public metaData: any;
   myData;
   state: string;
-  courses: Object;
+  courses: any;
 
   //For pagination.....
   items = [];
@@ -61,6 +62,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   pageSize = 40;
   currentPage = 1;
 
+  @ViewChild(MultiSelectComponent) multiSelect: MultiSelectComponent;
 
   constructor(
     public http: HttpClient,
@@ -69,12 +71,13 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     public router: Router
   ) { }
 
+  scousesTOShow: any = [];
   ngOnInit(): void {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.service.courseFilter({ timePeriod: 'All' }).subscribe(res => {
-      this.courses = res;
+      this.scousesTOShow = this.courses = res;
     });
     this.commonFunc()
   }
@@ -85,6 +88,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   onChangePage() {
+    this.scousesTOShow = this.courses;
     let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
     let data = this.items.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
     let tooltipData = this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
@@ -98,8 +102,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       record.y %= this.pageSize;
       return record;
     });
-
-    this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, this.ylab.length > 0 ? this.ylab : this.yLabel, this.zLabel, this.data, this.level, this.xLabel1, this.yLabel1, this.toolTipData);
+    this.chartFun(this.xlab.length > 0 ? this.xlab : this.xLabel, this.xLabelId, this.ylab.length > 0 ? this.ylab : yLabel, this.zLabel, data, this.level, this.xLabel1, this.yLabel1, tooltipData);
   }
 
   resetToInitPage() {
@@ -115,6 +118,13 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     this.clusterHidden = true;
     this.timePeriod = 'All';
     document.getElementById('home').style.display = 'none';
+    this.selectedCourses = [];
+    this.courses = this.courses.map(course => {
+      course.status = false;
+      return course;
+    });
+    if (this.multiSelect)
+      this.multiSelect.checkedList = [];
     this.commonFunc();
   }
 
@@ -135,12 +145,15 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.genericFunction(response);
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.districtNames);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
   }
-
+  chart;
   chartFun = (xLabel, xLabelId, yLabel, zLabel, data, level, xLabel1, yLabel1, tooltipData) => {
     let scrollBarX
     let scrollBarY
@@ -161,7 +174,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       xLabel[i] = xLabel[i].substr(0, 15);
     }
     // var options: Highcharts.Options = 
-    Highcharts.chart('container', {
+    this.chart = Highcharts.chart('container', {
       chart: {
         type: 'heatmap'
       },
@@ -219,7 +232,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: 12,
+        max: 9,
         scrollbar: {
           enabled: scrollBarY
         }
@@ -290,7 +303,11 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     }
   }
 
+  allDistricts = []; allBlocks = []; allClusters = [];
   selectedTimePeriod() {
+    this.districtNames = [];
+    this.blockNames = [];
+    this.clusterNames = [];
     this.levelWiseFilter();
   }
 
@@ -314,7 +331,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
     this.service.tpdBlockWise(a).subscribe(response => {
       this.genericFunction(response);
-      var dist = this.districtNames.find(a => a.district_id == districtId);
+      var dist = this.allDistricts.find(a => a.district_id == districtId);
       this.districtHierarchy = {
         districtName: dist.district_name,
         distId: dist.district_id
@@ -325,9 +342,12 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
 
   }
@@ -352,7 +372,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
     this.service.tpdClusterWise(a).subscribe(response => {
       this.genericFunction(response);
-      var block = this.blockNames.find(a => a.block_id == blockId);
+      var block = this.allBlocks.find(a => a.block_id == blockId);
 
       this.blockHierarchy = {
         districtName: block.district_name,
@@ -367,9 +387,12 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.clust = false;
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
   }
 
@@ -391,7 +414,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
     this.service.tpdSchoolWise(a).subscribe(response => {
       this.genericFunction(response);
-      var cluster = this.clusterNames.find(a => a.cluster_id == clusterId);
+      var cluster = this.allClusters.find(a => a.cluster_id == clusterId);
       this.clusterHierarchy = {
         districtName: cluster.district_name,
         distId: cluster.district_id,
@@ -407,9 +430,12 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
-      console.log(err);
+      this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
+      if (this.chart.axes) {
+        this.chart.destroy();
+      }
     })
   }
 
@@ -426,15 +452,15 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     this.toolTipData = response['result']['tooltipData'];
     if (response['districtDetails']) {
       let districts = response['districtDetails'];
-      this.districtNames = districts.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
+      this.allDistricts = this.districtNames = districts.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
     }
     if (response['blockDetails']) {
       let blocks = response['blockDetails'];
-      this.blockNames = blocks.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
+      this.allBlocks = this.blockNames = blocks.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }
     if (response['clusterDetails']) {
       let clusters = response['clusterDetails'];
-      this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
+      this.allClusters = this.clusterNames = clusters.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }
     if (this.xLabel.length <= 30) {
       for (let i = 0; i <= 30; i++) {
@@ -449,6 +475,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     }
     this.xLabel1 = this.xLabel
     this.yLabel1 = this.yLabel
+    this.items = this.data.map((x, i) => x);
     this.onChangePage();
   }
 

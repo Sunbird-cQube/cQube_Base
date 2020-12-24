@@ -181,7 +181,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart) {
+      if (this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -272,7 +272,7 @@ export class HeatChartComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: 12,
+        max: 11,
         scrollbar: {
           enabled: scrollBarY
         }
@@ -483,7 +483,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart) {
+      if (this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -531,7 +531,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart) {
+      if (this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -577,7 +577,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart) {
+      if (this.chart.axes) {
         this.chart.destroy();
       }
     })
