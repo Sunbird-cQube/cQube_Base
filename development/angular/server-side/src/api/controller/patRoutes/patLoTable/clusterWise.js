@@ -7,8 +7,12 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT LO table clusterWise api ---');
 
-        let { year,month, grade, subject_name, exam_date, viewBy, blockId } = req.body
-        let fileName = `pat/heatChart/${year}/${month}/blocks/${blockId}.json`;
+        let { year, month, grade, subject_name, exam_date, viewBy, blockId } = req.body
+        let fileName;
+        if (viewBy == 'indicator') {
+            fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/blocks/${blockId}.json`;
+        } else if (viewBy == 'question_id')
+            fileName = `pat/heatChart/questionIdLevel/${year}/${month}/blocks/${blockId}.json`;
         var data = await s3File.readS3File(fileName);
 
         if (blockId) {
