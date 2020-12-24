@@ -86,8 +86,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
   public blockId: any = '';
   public clusterId: any = '';
 
-  public semesters = [{ id: 1, name: "Semester 1" }, { id: 2, name: "Semester 2" }];
-  public semester = 2;
+  public semesters = [];
+  public semester;
   public levelWise = '';
 
   public myData;
@@ -121,7 +121,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.btnId = "";
     var date = new Date();
     this.trackInteract(date, this.btnId, eventType);
-    this.districtWise();
+    this.service.semMetaData().subscribe(res => {
+      this.semesters = res['data'];
+      this.semester = this.semesters[this.semesters.length - 1].id;
+      this.districtWise();
+    })
   }
 
   homeClick(event) {
@@ -163,7 +167,6 @@ export class SemViewComponent implements OnInit, OnDestroy {
   // to load all the districts for state data on the map
   districtWise() {
     try {
-
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
