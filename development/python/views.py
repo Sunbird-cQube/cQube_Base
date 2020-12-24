@@ -218,7 +218,7 @@ def get_infra_score():
     except Exception as err:
         abort(400, f'Bad request, validate the payload')
 
-@app.route('/data/test', methods=['GET'])
+@app.route("/data/api/data/v3/dataset/get/summary-rollup", methods=['GET'])
 def get_diksha():
     return '''{
     "id": "org.ekstep.analytics.telemetry",
@@ -242,12 +242,6 @@ def get_diksha():
             "<URL>"
         ],
         "periodWiseFiles": {
-            "2020-11-23": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201223%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201223T141534Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=19d67e3404de5fce8c4950804b3bb13fab21f5a99b4872a2a46cd7e39014fb91"
-            ],
-            "2020-11-17": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201223%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201223T141559Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6aa14d3b53ee5417587131ecdfc6c0a121e71cd82794f6b88e56c3e2322cd0fe"
-            ],
             "2020-11-18": [
                 "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201223%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201223T141709Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=2fe3a413cb3e0d08a68d075b3a0cd9023fcaa960d65f81b08e953d02495e9b23"
             ],

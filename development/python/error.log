@@ -356,3 +356,51 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 [2020-12-23 20:07:56 +0530] [24851] [INFO] Worker exiting (pid: 24851)
 [2020-12-23 20:07:56 +0530] [24853] [INFO] Worker exiting (pid: 24853)
 [2020-12-23 20:07:56 +0530] [27303] [INFO] Booting worker with pid: 27303
+[2020-12-23 20:55:58 +0530] [23215] [INFO] Handling signal: hup
+[2020-12-23 20:55:58 +0530] [23215] [INFO] Hang up: Master
+[2020-12-23 20:55:58 +0530] [30128] [INFO] Booting worker with pid: 30128
+[2020-12-23 20:55:58 +0530] [30129] [INFO] Booting worker with pid: 30129
+[2020-12-23 20:55:58 +0530] [27301] [INFO] Worker exiting (pid: 27301)
+[2020-12-23 20:55:58 +0530] [30130] [INFO] Booting worker with pid: 30130
+[2020-12-23 20:55:58 +0530] [27302] [INFO] Worker exiting (pid: 27302)
+[2020-12-23 20:55:58 +0530] [27303] [INFO] Worker exiting (pid: 27303)
+[2020-12-23 20:56:40 +0530] [23215] [INFO] Handling signal: hup
+[2020-12-23 20:56:40 +0530] [23215] [INFO] Hang up: Master
+[2020-12-23 20:56:40 +0530] [30173] [INFO] Booting worker with pid: 30173
+[2020-12-23 20:56:40 +0530] [30174] [INFO] Booting worker with pid: 30174
+[2020-12-23 20:56:40 +0530] [30129] [INFO] Worker exiting (pid: 30129)
+[2020-12-23 20:56:40 +0530] [30128] [INFO] Worker exiting (pid: 30128)
+[2020-12-23 20:56:40 +0530] [30175] [INFO] Booting worker with pid: 30175
+[2020-12-23 20:56:40 +0530] [30130] [INFO] Worker exiting (pid: 30130)
+[2020-12-23 20:57:04 +0530] [23215] [INFO] Handling signal: hup
+[2020-12-23 20:57:04 +0530] [23215] [INFO] Hang up: Master
+[2020-12-23 20:57:04 +0530] [30211] [INFO] Booting worker with pid: 30211
+[2020-12-23 20:57:04 +0530] [30212] [INFO] Booting worker with pid: 30212
+[2020-12-23 20:57:04 +0530] [30173] [INFO] Worker exiting (pid: 30173)
+[2020-12-23 20:57:04 +0530] [30174] [INFO] Worker exiting (pid: 30174)
+[2020-12-23 20:57:04 +0530] [30175] [INFO] Worker exiting (pid: 30175)
+[2020-12-23 20:57:04 +0530] [30213] [INFO] Booting worker with pid: 30213
+[2020-12-23 21:58:54 +0530] [23215] [INFO] Handling signal: hup
+[2020-12-23 21:58:54 +0530] [23215] [INFO] Hang up: Master
+[2020-12-23 21:58:54 +0530] [31096] [INFO] Booting worker with pid: 31096
+[2020-12-23 21:58:54 +0530] [31097] [INFO] Booting worker with pid: 31097
+[2020-12-23 21:58:54 +0530] [30211] [INFO] Worker exiting (pid: 30211)
+[2020-12-23 21:58:54 +0530] [30212] [INFO] Worker exiting (pid: 30212)
+[2020-12-23 21:58:54 +0530] [30213] [INFO] Worker exiting (pid: 30213)
+[2020-12-23 21:58:54 +0530] [31098] [INFO] Booting worker with pid: 31098
+[2020-12-23 23:00:03 +0530] [31097] [INFO] Worker exiting (pid: 31097)
+[2020-12-23 23:00:03 +0530] [31096] [INFO] Worker exiting (pid: 31096)
+[2020-12-23 23:00:03 +0530] [23215] [INFO] Handling signal: hup
+[2020-12-23 23:00:03 +0530] [23215] [INFO] Hang up: Master
+[2020-12-23 23:00:03 +0530] [1046] [INFO] Booting worker with pid: 1046
+[2020-12-23 23:00:03 +0530] [1049] [INFO] Booting worker with pid: 1049
+[2020-12-23 23:00:03 +0530] [23215] [INFO] Handling signal: term
+[2020-12-23 23:00:03 +0530] [1054] [INFO] Booting worker with pid: 1054
+[2020-12-23 23:00:04 +0530] [1046] [INFO] Worker exiting (pid: 1046)
+[2020-12-23 23:00:33 +0530] [23215] [INFO] Shutting down: Master
+[2020-12-24 08:47:59 +0530] [6496] [INFO] Starting gunicorn 20.0.4
+[2020-12-24 08:47:59 +0530] [6496] [INFO] Listening at: http://0.0.0.0:5000 (6496)
+[2020-12-24 08:47:59 +0530] [6496] [INFO] Using worker: sync
+[2020-12-24 08:47:59 +0530] [6499] [INFO] Booting worker with pid: 6499
+[2020-12-24 08:47:59 +0530] [6500] [INFO] Booting worker with pid: 6500
+[2020-12-24 08:47:59 +0530] [6502] [INFO] Booting worker with pid: 6502
