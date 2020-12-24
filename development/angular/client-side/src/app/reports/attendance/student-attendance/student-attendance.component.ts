@@ -219,8 +219,8 @@ export class StudengtAttendanceComponent implements OnInit {
       var sorted = clusterData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
       for (var i = 0; i < sorted.length; i++) {
         if (this.myCluster === sorted[i]['cluster_id']) {
-          localStorage.setItem('cluster', this.markers[i].cluster_name);
-          localStorage.setItem('clusterId', this.markers[i].cluster_id);
+          localStorage.setItem('cluster', sorted[i].cluster_name);
+          localStorage.setItem('clusterId', sorted[i].cluster_id);
         }
 
         this.clusterIds.push(sorted[i]['cluster_id']);
