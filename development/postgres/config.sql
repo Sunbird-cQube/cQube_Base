@@ -5555,7 +5555,7 @@ left join
    from udise_school_score group by district_id)as usc
 on uds.district_id= usc.district_id)as udise
 on basic.district_id=udise.district_id
-inner join 
+left join 
 (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
 (Select district_id,district_name,grade_wise_performance,district_performance,
   ((rank () over ( order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
