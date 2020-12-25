@@ -8,7 +8,11 @@ router.post('/schoolWise', auth.authController, async (req, res) => {
         logger.info('---PAT LO table schoolWise api ---');
 
         let { year, month, grade, subject_name, exam_date, viewBy, blockId, clusterId } = req.body
-        let fileName = `pat/heatChart/${year}/${month}/clusters/${blockId}.json`;
+        let fileName;
+        if (viewBy == 'indicator') {
+            fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/clusters/${blockId}.json`;
+        } else if (viewBy == 'question_id')
+            fileName = `pat/heatChart/questionIdLevel/${year}/${month}/clusters/${blockId}.json`;
         var data = await s3File.readS3File(fileName);
 
         if (clusterId) {

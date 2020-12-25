@@ -33,7 +33,7 @@ const performRoute: Routes = [
     SemViewComponent,
     PATReportComponent,
     HeatChartComponent,
-    PATLOTableComponent
+    PATLOTableComponent,
   ],
   imports: [
     CommonModule,

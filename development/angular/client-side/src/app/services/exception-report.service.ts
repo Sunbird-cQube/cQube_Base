@@ -53,4 +53,10 @@ export class ExceptionReportService {
     return this.http.get(`${this.baseUrl}/school_invalid/school_invalid_data`);
   }
 
+
+  semExceptionMetaData() {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sem/metadata`, {});
+  }
+
 }

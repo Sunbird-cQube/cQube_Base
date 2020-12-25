@@ -11,13 +11,30 @@ export class MultiSelectComponent implements OnInit {
   @Output() shareCheckedList = new EventEmitter();
   @Output() shareIndividualCheckedList = new EventEmitter();
 
+  status;
   checkedList: any[];
   currentSelected: {};
   constructor() {
+    console.log(this.list);
     this.checkedList = [];
   }
 
   showDropDown;
+
+  // selectAll(status) {
+  //   if (status) {
+  //     this.checkedList = this.list;
+  //     this.checkedList.map(item => {
+  //       item['status'] = status;
+  //     });
+  //   }
+  //   else {
+  //     this.checkedList.map(item => {
+  //       item['status'] = false;
+  //     });
+  //     this.checkedList = [];
+  //   }
+  // }
 
   getSelectedValue(id, status) {
     if (status) {
@@ -27,7 +44,7 @@ export class MultiSelectComponent implements OnInit {
       this.checkedList.splice(index, 1);
     }
 
-    if(this.checkedList.length == 0){
+    if (this.checkedList.length == 0) {
       this.shareCheckedlist();
     }
   }

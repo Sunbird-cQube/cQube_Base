@@ -121,7 +121,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           blockId: data.id
         };
 
-        this.districtId = data.blockHierarchy;
+        this.districtId = data.districtId;
         this.blockId = data.id;
         this.getDistricts();
         this.getBlocks(data.districtId, data.id);
@@ -1011,17 +1011,18 @@ export class InfraMapVisualisationComponent implements OnInit {
   goToHealthCard(): void {
     let data: any = {};
 
-    if (this.level === 'district') {
+    if (this.dist) {
       data.level = 'district';
-      data.distId = this.districtHierarchy.distId;
-    } else if (this.level === 'block') {
+      data.value = this.districtHierarchy.distId;
+    } else if (this.blok) {
       data.level = 'block';
-      data.distId = this.blockHierarchy.distId;
-      data.blockId = this.blockHierarchy.blockId;
-    } else if (this.level === 'cluster_wise') {
+      data.value = this.blockHierarchy.blockId;
+    } else if (this.clust) {
       data.level = 'cluster';
-      data.distId = this.blockHierarchy.distId;
-      data.blockId = this.blockHierarchy.blockId;
+      data.value = this.clusterHierarchy.clusterId;
     }
+
+    sessionStorage.setItem('health-card-info', JSON.stringify(data));
+    this._router.navigate(['/healthCard']);
   }
 }

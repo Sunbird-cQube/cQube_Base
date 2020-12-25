@@ -73,9 +73,24 @@ export class StudengtAttendanceComponent implements OnInit {
   public months: any = [];
   public month;
   public element;
+  params: any;
 
-  constructor(public http: HttpClient, public service: AttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent) {
-    service.getDateRange().subscribe(res => {
+  constructor(public http: HttpClient, public service: AttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
+
+  }
+
+  ngOnInit() {
+    this.state = this.commonService.state;
+    this.lat = this.commonService.mapCenterLatlng.lat;
+    this.lng = this.commonService.mapCenterLatlng.lng;
+    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.commonService.initMap('mapContainer', [[this.lat, this.lng]]);
+    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
+    document.getElementById('homeBtn').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'none';
+    this.skul = true;
+
+    this.service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
       this.year = this.years[this.years.length - 1];
@@ -97,9 +112,27 @@ export class StudengtAttendanceComponent implements OnInit {
           year: this.year
         };
 
-        this.districtWise();
-      }
+        this.params = JSON.parse(sessionStorage.getItem('report-level-info'));
+        let params = this.params;
 
+        if (params && params.level) {
+          let data = params.data;
+          if (params.level === 'district') {
+            this.myDistrict = data.id;
+          } else if (params.level === 'block') {
+            this.myDistrict = data.districtId
+            this.myBlock = data.id;
+          } else if (params.level === 'cluster') {
+            this.myDistrict = data.districtId
+            this.myBlock = Number(data.blockId);
+            this.myCluster = data.id;
+          }
+
+          this.getDistricts();
+        } else {
+          this.districtWise();
+        }
+      }
     }, err => {
       document.getElementById('home').style.display = 'none';
       this.getMonthYear = {};
@@ -107,16 +140,102 @@ export class StudengtAttendanceComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.state = this.commonService.state;
-    this.lat = this.commonService.mapCenterLatlng.lat;
-    this.lng = this.commonService.mapCenterLatlng.lng;
-    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
-    this.commonService.initMap('mapContainer', [[this.lat, this.lng]]);
-    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-    document.getElementById('homeBtn').style.display = 'block';
-    document.getElementById('backBtn').style.display = 'none';
-    this.skul = true;
+  getDistricts(): void {
+    this.service.dist_wise_data(this.month_year).subscribe(res => {
+      var sorted = res['distData'].sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
+      var distNames = [];
+      this.markers = sorted;
+      
+      if (this.markers.length > 0) {
+        for (var i = 0; i < this.markers.length; i++) {
+          if (this.myDistrict === this.markers[i]['district_id']) {
+            localStorage.setItem('dist', this.markers[i].district_name);
+            localStorage.setItem('distId', this.markers[i].district_id);
+          }
+
+          this.districtsIds.push(this.markers[i]['district_id']);
+          distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
+        }
+      }
+
+      distNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+      this.districtsNames = distNames;
+
+      if (this.params.level === 'district') {
+        this.distSelect({ type: 'click' }, this.myDistrict);
+      } else {
+        this.getBlocks();
+      }
+    });
+  }
+
+  getBlocks(): void {
+    this.month_year['id'] = this.myDistrict;
+    this.service.blockPerDist(this.month_year).subscribe(res => {
+      let blockData = res['blockData'];
+      var uniqueData = blockData.reduce(function (previous, current) {
+        var object = previous.filter(object => object['block_id'] === current['block_id']);
+        if (object.length == 0) previous.push(current);
+        return previous;
+      }, []);
+      blockData = uniqueData;
+      var blokName = [];
+      var sorted = blockData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+
+      this.markers = sorted;
+
+      for (var i = 0; i < this.markers.length; i++) {
+        if (this.myBlock === this.markers[i]['block_id']) {
+          localStorage.setItem('block', this.markers[i].block_name);
+          localStorage.setItem('blockId', this.markers[i].block_id);
+        }
+
+        this.blocksIds.push(this.markers[i]['block_id']);
+        blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] });
+      }
+      blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+      this.blocksNames = blokName;
+
+      if (this.params.level === 'block') {
+        this.blockSelect({ type: 'click' }, this.myBlock);
+      } else {
+        this.getClusters();
+      }
+    });
+  }
+
+  getClusters(): void {
+    this.month_year['id'] = this.myBlock;
+    this.service.clusterPerBlock(this.month_year).subscribe(res => {
+      let clusterData = res['clusterDetails'];
+      var uniqueData = clusterData.reduce(function (previous, current) {
+        var object = previous.filter(object => object['cluster_id'] === current['cluster_id']);
+        if (object.length == 0) previous.push(current);
+        return previous;
+      }, []);
+      clusterData = uniqueData;
+      var clustNames = [];
+
+      var sorted = clusterData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
+      for (var i = 0; i < sorted.length; i++) {
+        if (this.myCluster === sorted[i]['cluster_id']) {
+          localStorage.setItem('cluster', sorted[i].cluster_name);
+          localStorage.setItem('clusterId', sorted[i].cluster_id);
+        }
+
+        this.clusterIds.push(sorted[i]['cluster_id']);
+        if (sorted[i]['name'] !== null) {
+          clustNames.push({ id: sorted[i]['cluster_id'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
+        } else {
+          clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
+        }
+      }
+
+      clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+      this.clusterNames = clustNames;
+
+      this.clusterSelect({ type: 'click' }, this.myCluster);
+    });
   }
 
   public fileName: any;
@@ -880,7 +999,7 @@ export class StudengtAttendanceComponent implements OnInit {
       this.hierName = obj.name;
 
       this.globalId = this.myCluster = data;
-      this.myBlock = blockId;
+      this.myBlock = this.myBlock;
       this.myDistrict = Number(localStorage.getItem('distId'));
 
       if (this.myData) {
@@ -1015,6 +1134,24 @@ export class StudengtAttendanceComponent implements OnInit {
         console.log(err);
       });
     }
+  }
+
+  goToHealthCard(): void {
+    let data: any = {};
+
+    if (this.levelWise === 'Block') {
+      data.level = 'district';
+      data.value = this.myDistrict;
+    } else if (this.levelWise === 'Cluster') {
+      data.level = 'block';
+      data.value = this.myBlock;
+    } else if (this.levelWise === 'school') {
+      data.level = 'cluster';
+      data.value = this.myCluster;
+    }
+
+    sessionStorage.setItem('health-card-info', JSON.stringify(data));
+    this._router.navigate(['/healthCard']);
   }
 
 }
