@@ -31,7 +31,7 @@ class cQube_udise_Report(unittest.TestCase):
             count = count + 1
         self.driver.find_element_by_id('udise').click()
         self.data.page_loading(self.driver)
-        if 'UDISE report' in self.driver.page_source:
+        if 'udise-report' in self.driver.current_url:
             print('UDISE Report home page is displayed ')
         else:
             print("Udise report is not exists ")
