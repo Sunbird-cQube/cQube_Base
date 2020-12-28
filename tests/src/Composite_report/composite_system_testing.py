@@ -26,7 +26,7 @@ class composite_system_report(unittest.TestCase):
         self.data.navigate_to_composite_report()
         self.data.page_loading(self.driver)
 
-
+    #
     def test_composite_icon(self):
         self.data.page_loading(self.driver)
         count = 0

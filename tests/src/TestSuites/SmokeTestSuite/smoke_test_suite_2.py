@@ -8,8 +8,8 @@ from Diksha_Reports.content_textbook import content_textbook_smoke_suite
 from Diksha_TPD.TPD_Completion_percentage import completion_regression_test
 from Diksha_TPD.TPD_Enrollment_completion import enrollment_regression_test
 
-from Diksha_TPD.TPD_heat_chart import lpd_content_smoke_test
-from Diksha_TPD.percentage_heat_chart import lpd_percentage_smoke_test
+from Diksha_TPD.TPD_Course_Progress import lpd_content_smoke_test
+from Diksha_TPD.TPD_Teacher_Percentage import lpd_percentage_smoke_test
 
 from Pat_Heatchart import patheatchart_smoke_test
 from pat_LO_Table import PAT_LO_Table_smoke_suite
