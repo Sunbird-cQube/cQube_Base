@@ -84,7 +84,7 @@ class GetData():
         self.driver.find_element_by_id(Data.passwd).send_keys(self.get_admin_password())
         self.driver.find_element_by_id(Data.login).click()
         self.page_loading(self.driver)
-        self.driver.find_element_by_tag_name('a').click()
+        self.driver.find_element_by_id("admin_console").click()
         self.page_loading(self.driver)
 
     def navigate_to_telemetry(self):
@@ -270,6 +270,13 @@ class GetData():
         self.driver.find_element_by_xpath(Data.tpds).click()
         time.sleep(2)
         self.driver.find_element_by_id('tpd-comp').click()
+        time.sleep(6)
+
+    def navigate_to_health_card_index(self):
+        self.driver.implicitly_wait(30)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(3)
+        self.driver.find_element_by_xpath("//a[@id='healthCard']").click()
         time.sleep(6)
 
     def navigate_to_tpd_percentage_progress(self):

@@ -1,14 +1,16 @@
+
 import unittest
 
 from Data.parameters import Data
-from Diksha_TPD.TPD_heat_chart.check_blocks_dropdown import Cluster_wise_records
-from Diksha_TPD.TPD_heat_chart.check_clusters_dropdown import School_wise_records
-from Diksha_TPD.TPD_heat_chart.check_district_dropdown import district_level_records
-from Diksha_TPD.TPD_heat_chart.check_with_all_periods import Time_periods
+from Diksha_TPD.TPD_Teacher_Percentage.check_blocks_dropdown import Cluster_wise_records
+from Diksha_TPD.TPD_Teacher_Percentage.check_clusters_dropdown import School_wise_records
+from Diksha_TPD.TPD_Teacher_Percentage.check_district_dropdown import district_level_records
+from Diksha_TPD.TPD_Teacher_Percentage.check_with_all_periods import Time_periods
+
 from reuse_func import GetData
 
 
-class cQube_lpdcontent_system_Test(unittest.TestCase):
+class cQube_lpdpercentage_system_Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
@@ -18,7 +20,7 @@ class cQube_lpdcontent_system_Test(unittest.TestCase):
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
         self.data.page_loading(self.driver)
-        self.data.navigate_to_tpd_content_progress()
+        self.data.navigate_to_tpd_percentage_progress()
 
     def test_navigation_from_hamburger(self):
         count = 0
@@ -31,22 +33,21 @@ class cQube_lpdcontent_system_Test(unittest.TestCase):
         else:
             print('Home btn is not worked')
             count = count + 1
-        self.data.navigate_to_tpd_content_progress()
+        self.data.navigate_to_tpd_percentage_progress()
         self.data.page_loading(self.driver)
-        if 'tpd-content-progress' in self.driver.current_url:
-            print('Diksha lpd content progress report is present')
+        if 'tpd-teacher-percentage' in self.driver.current_url:
+            print('Diksha lpd percentage progress report is present')
         else:
-            print('LPD Content progress report is not displayed')
+            print('tpd-teacher-percentage report is not displayed')
             count = count + 1
-        self.assertEqual(0,count,msg='Navigation failed in landing page')
+        self.assertEqual(0 ,count ,msg='Navigation failed in landing page')
         self.data.page_loading(self.driver)
-
 
 
     def test_lastday_csv_download(self):
         b = Time_periods(self.driver)
         res = b.check_last_day_districtwise_download()
-        self.assertEqual(0,res,msg='Csv file is not downloaded')
+        self.assertEqual(0 ,res ,msg='Csv file is not downloaded')
         print('Last Day content progress district wise csv file is downloaded')
         self.data.page_loading(self.driver)
 
@@ -74,22 +75,23 @@ class cQube_lpdcontent_system_Test(unittest.TestCase):
     def test_all_districts(self):
         b = district_level_records(self.driver)
         res = b.test_all_districtwise()
-        self.assertEqual(0,res,msg='All type some district wise csv file not downloaded')
+        self.assertEqual(0 ,res ,msg='All type some district wise csv file not downloaded')
         print('checked with all period all districts')
         self.data.page_loading(self.driver)
-
+    #
     def test_Cluster_wise_records(self):
         b = Cluster_wise_records(self.driver)
         res = b.Blocks_select_box()
-        self.assertEqual(0,res,msg="some cluster csv file not downloaded")
+        self.assertEqual(0 ,res ,msg="some cluster csv file not downloaded")
         print("checked with cluster wise records")
 
     def test_School_wise_records(self):
         b = School_wise_records(self.driver)
         res = b.Clusters_select_box()
-        self.assertEqual(0,res,msg="School wise csv file is not downloaded")
+        self.assertEqual(0 ,res ,msg="School wise csv file is not downloaded")
         print("checked school wise records")
         self.data.page_loading(self.driver)
+
 
 
 

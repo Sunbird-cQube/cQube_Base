@@ -1,6 +1,6 @@
 import unittest
-
 from Data.parameters import Data
+
 from Pat_Heatchart.Check_random_selection_on_each_dropdown import Random_test
 from Pat_Heatchart.check_blocks_dropdown import blocks
 from Pat_Heatchart.check_catogory_levels import Catagory_series
@@ -41,7 +41,7 @@ class cQube_heatchart_functionalTest(unittest.TestCase):
         else:
             print('Heat chart icon is not working')
             count = count + 1
-        self.assertEqual(count,0,msg='hear chart icon is not working')
+        self.assertEqual(count,0,msg='heat chart icon is not working')
         self.data.page_loading(self.driver)
 
     def test_hamburger_chart(self):
@@ -110,12 +110,12 @@ class cQube_heatchart_functionalTest(unittest.TestCase):
         self.assertEqual(0,res,msg='Year is not selected ')
         self.data.page_loading(self.driver)
 
-    # # def test_check_hyperlinks(self):
-    # #     hyperlinks = heatchart_hyperlink(self.driver)
-    # #     res = hyperlinks.test_hypers()
-    # #     print('hyper link is working ')
-    # #     self.data.page_loading(self.driver)
-    #
+    def test_check_hyperlinks(self):
+        hyperlinks = heatchart_hyperlink(self.driver)
+        res = hyperlinks.test_hypers()
+        print('hyper link is working ')
+        self.data.page_loading(self.driver)
+
     def test_districtwise(self):
         b = districtwise(self.driver)
         res = b.District_select_box()
