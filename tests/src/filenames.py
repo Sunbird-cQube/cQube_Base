@@ -429,4 +429,83 @@ class file_extention():
         return lpd_schoolwise
 
 
+    def health_card_d1_name(self):
+        name = Files()
+        d1name= name.d1_name
+        return d1name
+
+    def health_card_d2_name(self):
+        name = Files()
+        d2name= name.d2_name
+        return d2name
+
+    def health_card_b1_name(self):
+        name = Files()
+        b1name= name.b1_name
+        return b1name
+
+    def health_card_b2_name(self):
+        name = Files()
+        b2name= name.b2_name
+        return b2name
+
+    def health_card_c1_name(self):
+        name = Files()
+        c1name= name.c1_name
+        return c1name
+
+    def health_card_c2_name(self):
+        name = Files()
+        c2name= name.c2_name
+        return c2name
+
+    def health_card_S1_name(self):
+        name = Files()
+        s1name= name.s1_name
+        return s1name
+
+    def health_card_S2_name(self):
+        name = Files()
+        s2name= name.s2_name
+        return s2name
+
+    def health_card_d1_id(self):
+        name = Files()
+        d1id = name.d1_id
+        return d1id
+
+    def health_card_d2_id(self):
+        name = Files()
+        d2id = name.d2_id
+        return d2id
+
+    def health_card_b1_id(self):
+        name = Files()
+        b1id = name.b1_id
+        return b1id
+
+    def health_card_b2_id(self):
+        name = Files()
+        b2id = name.b2_id
+        return b2id
+
+    def health_card_c1_id(self):
+        name = Files()
+        c1name = name.c1_id
+        return c1name
+
+    def health_card_c2_id(self):
+        name = Files()
+        c2id = name.c2_id
+        return c2id
+
+    def health_card_S1_id(self):
+        name = Files()
+        s1id = name.s1_id
+        return s1id
+
+    def health_card_s2_id(self):
+        name = Files()
+        s2id = name.s2_id
+        return s2id
 

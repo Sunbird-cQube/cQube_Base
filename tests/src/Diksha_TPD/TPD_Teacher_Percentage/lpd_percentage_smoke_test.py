@@ -1,17 +1,19 @@
-
+import time
 import unittest
 
 from Data.parameters import Data
-from Diksha_TPD.TPD_heat_chart.check_blocks_dropdown import Cluster_wise_records
-from Diksha_TPD.TPD_heat_chart.check_clusters_dropdown import School_wise_records
-from Diksha_TPD.TPD_heat_chart.check_district_dropdown import district_level_records
-from Diksha_TPD.TPD_heat_chart.check_with_all_periods import Time_periods
-from Diksha_TPD.TPD_heat_chart.check_with_homeicons_and_homebutton import Home_functions
-from Diksha_TPD.TPD_heat_chart.check_with_logout_btn import logout_button
+from Diksha_TPD.TPD_Teacher_Percentage.check_blocks_dropdown import Cluster_wise_records
+from Diksha_TPD.TPD_Teacher_Percentage.check_clusters_dropdown import School_wise_records
+from Diksha_TPD.TPD_Teacher_Percentage.check_district_dropdown import district_level_records
+from Diksha_TPD.TPD_Teacher_Percentage.check_with_all_periods import Time_periods
+from Diksha_TPD.TPD_Teacher_Percentage.check_with_homeicons_and_homebutton import Home_functions
+from Diksha_TPD.TPD_Teacher_Percentage.check_with_hyperlink import lpdchart_hyperlink
+from Diksha_TPD.TPD_Teacher_Percentage.check_with_logout_btn import logout_button
+
 from reuse_func import GetData
 
 
-class cQube_lpdcontent_smoke_Test(unittest.TestCase):
+class cQube_tpd_percentage_smoke_Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
@@ -21,7 +23,7 @@ class cQube_lpdcontent_smoke_Test(unittest.TestCase):
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
         self.data.page_loading(self.driver)
-        self.data.navigate_to_tpd_content_progress()
+        self.data.navigate_to_tpd_percentage_progress()
 
     def test_navigation_from_hamburger(self):
         count = 0
@@ -34,12 +36,12 @@ class cQube_lpdcontent_smoke_Test(unittest.TestCase):
         else:
             print('Home btn is not worked')
             count = count + 1
-        self.data.navigate_to_tpd_content_progress()
+        self.data.navigate_to_tpd_percentage_progress()
         self.data.page_loading(self.driver)
-        if 'tpd-collection-progress' in self.driver.current_url:
-            print('Diksha lpd Collection progress report is present')
+        if 'tpd-teacher-percentage' in self.driver.current_url:
+            print('Diksha lpd percentage progress report is present')
         else:
-            print('LPD Content progress report is not displayed')
+            print('tpd-teacher-percentage report is not displayed')
             count = count + 1
         self.assertEqual(0, count, msg='Navigation failed in landing page')
         self.data.page_loading(self.driver)
@@ -64,6 +66,7 @@ class cQube_lpdcontent_smoke_Test(unittest.TestCase):
         self.assertEqual(0, res, msg='Csv file is not downloaded')
         print('Last 30 Days content progress district wise csv file is downloaded')
         self.data.page_loading(self.driver)
+        time.sleep(5)
 
     def test_all_type_csv_download(self):
         b = Time_periods(self.driver)
@@ -72,17 +75,17 @@ class cQube_lpdcontent_smoke_Test(unittest.TestCase):
         print('All time content progress district wise csv file is downloaded')
         self.data.page_loading(self.driver)
 
-    def test_Home_buttons_functions(self):
-        b = Home_functions(self.driver)
-        res = b.test_homeicons()
-        print("checked with home icons is working")
-        self.data.page_loading(self.driver)
-
     def test_Home_button_functions(self):
         b = Home_functions(self.driver)
         res = b.test_homebutton()
         self.assertEqual(0, res, msg='Navigation failed to content progress chart')
         print("checked with homebutton is working")
+        self.data.page_loading(self.driver)
+
+    def test_hyperlink(self):
+        b = lpdchart_hyperlink(self.driver)
+        res = b.test_hypers()
+        print('checked with hyper link ')
         self.data.page_loading(self.driver)
 
     def test_all_districts(self):

@@ -19,7 +19,7 @@ class completion_percentage_icon():
             count = count + 1
         self.data.page_loading(self.driver)
         self.driver.find_element_by_xpath("//div[@id='tpd-comp']").click()
-        if 'completion' in self.driver.current_url:
+        if 'tpd-completion' in self.driver.current_url:
             print('TPD Completion percentage report is displayed ')
         else:
             print('TPD Completion percentage icon is not working ')
