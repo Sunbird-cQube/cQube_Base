@@ -21,7 +21,8 @@ class gradewise_records():
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.load.page_loading(self.driver)
         grades = Select(self.driver.find_element_by_id(Data.grade))
-        for i in range(1, len(grades.options)):
+        self.load.page_loading(self.driver)
+        for i in range(2, len(grades.options)):
             time.sleep(2)
             grades.select_by_index(i)
             self.load.page_loading(self.driver)

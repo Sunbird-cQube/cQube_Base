@@ -13,6 +13,7 @@ from Nifi.static_data_transformer import static
 from Nifi.student_attendance_transformer import student
 from Nifi.telemetry_transformer import telemetry
 from Nifi.udise_transformer import udise
+from Nifi.healthcard_transformer import healthcard
 from cQubeLoginPage import cqube
 from get_dir import pwd
 import unittest
@@ -40,7 +41,8 @@ class MyTestSuite(unittest.TestCase):
             unittest.defaultTestLoader.loadTestsFromTestCase(udise.UdiseTransformer),
             unittest.defaultTestLoader.loadTestsFromTestCase(telemetry.TelemetryTransformer),
             unittest.defaultTestLoader.loadTestsFromTestCase(pat.PatTransformer),
-            unittest.defaultTestLoader.loadTestsFromTestCase(composite.CompositeTransformer)
+            unittest.defaultTestLoader.loadTestsFromTestCase(composite.CompositeTransformer),
+            unittest.defaultTestLoader.loadTestsFromTestCase(healthcard.HealthCardTransformer)
 
         ])
         p = pwd()
