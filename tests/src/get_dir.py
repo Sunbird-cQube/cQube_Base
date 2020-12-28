@@ -54,7 +54,7 @@ class pwd():
 
     def get_system_report_path(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/systemTest.html')
+        report_path = os.path.join(cwd, 'Reports/systemnew.html')
         return report_path
 
     def get_config_ini_path(self):
