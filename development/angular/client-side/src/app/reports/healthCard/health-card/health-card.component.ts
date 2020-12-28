@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { splat } from 'highcharts';
 import { AppServiceComponent } from 'src/app/app.service';
 import { HealthCardService } from 'src/app/services/health-card.service';
 
@@ -282,7 +281,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           document.getElementById('spinner').style.display = 'none';
         });
       } else if (this.level == 'school') {
-        this.height = '330px';
+        this.height = '230px';
         var school;
         var blok;
         this.showLink = false;
