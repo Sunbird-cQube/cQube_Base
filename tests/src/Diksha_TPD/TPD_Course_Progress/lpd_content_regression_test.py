@@ -1,17 +1,17 @@
+
 import unittest
 
 from Data.parameters import Data
-from Diksha_TPD.TPD_heat_chart.check_blocks_dropdown import Cluster_wise_records
-from Diksha_TPD.TPD_heat_chart.check_clusters_dropdown import School_wise_records
-from Diksha_TPD.TPD_heat_chart.check_district_dropdown import district_level_records
-from Diksha_TPD.TPD_heat_chart.check_with_all_periods import Time_periods
-from Diksha_TPD.TPD_heat_chart.check_with_homeicons_and_homebutton import Home_functions
-from Diksha_TPD.TPD_heat_chart.check_with_hyperlink import lpdchart_hyperlink
-from Diksha_TPD.TPD_heat_chart.check_with_logout_btn import logout_button
+from Diksha_TPD.TPD_Course_Progress.check_blocks_dropdown import Cluster_wise_records
+from Diksha_TPD.TPD_Course_Progress.check_clusters_dropdown import School_wise_records
+from Diksha_TPD.TPD_Course_Progress.check_district_dropdown import district_level_records
+from Diksha_TPD.TPD_Course_Progress.check_with_all_periods import Time_periods
+from Diksha_TPD.TPD_Course_Progress.check_with_homeicons_and_homebutton import Home_functions
+from Diksha_TPD.TPD_Course_Progress.check_with_logout_btn import logout_button
 from reuse_func import GetData
 
 
-class cQube_heatchart_functionalTest(unittest.TestCase):
+class cQube_lpdcontent_regression_Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
@@ -37,28 +37,14 @@ class cQube_heatchart_functionalTest(unittest.TestCase):
         self.data.navigate_to_tpd_content_progress()
         self.data.page_loading(self.driver)
         if 'tpd-course-progress' in self.driver.current_url:
-            print('Diksha TPD course progress report is present')
+            print('Diksha lpd Collection progress report is present')
         else:
-            print('LPD course progress report is not displayed')
+            print('LPD Content progress report is not displayed')
             count = count + 1
         self.assertEqual(0,count,msg='Navigation failed in landing page')
         self.data.page_loading(self.driver)
 
-    def test_ltp_content_progress_icon(self):
-        count = 0
-        self.driver.find_element_by_xpath(Data.hyper_link).click()
-        self.data.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.home).click()
-        self.data.page_loading(self.driver)
-        self.driver.find_element_by_xpath("//*[@id='tdp-cp']").click()
-        self.data.page_loading(self.driver)
-        if 'tpd-course-progress' in self.driver.current_url:
-            print('Diksha tpd course progress report is present')
-        else:
-            print('LPD course progress report is not displayed')
-            count = count + 1
-        self.assertEqual(0, count, msg='Navigation failed in landing page')
-        self.data.page_loading(self.driver)
+
 
     def test_lastday_csv_download(self):
         b = Time_periods(self.driver)
@@ -99,18 +85,6 @@ class cQube_heatchart_functionalTest(unittest.TestCase):
         res = b.test_homebutton()
         self.assertEqual(0,res,msg='Navigation failed to content progress chart')
         print("checked with homebutton is working")
-        self.data.page_loading(self.driver)
-
-    def test_hyperlink(self):
-        b = lpdchart_hyperlink(self.driver)
-        res = b.test_hypers()
-        print('checked with hyper link ')
-        self.data.page_loading(self.driver)
-
-    def test_download_icon(self):
-        b = lpdchart_hyperlink(self.driver)
-        res = b.test_download_function()
-        print('checked with download icon is working ')
         self.data.page_loading(self.driver)
 
     def test_all_districts(self):
