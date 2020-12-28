@@ -1,0 +1,8 @@
+INFO:root:Emission start time 28-12-2020 09:24:54 for file /home/ubuntu/nifi/cqube_emission/cqube_emission_1.7_data/block_master/block_mst.zip
+
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): cqube.tibilprojects.com:443
+DEBUG:urllib3.connectionpool:https://cqube.tibilprojects.com:443 "POST /data/upload-url HTTP/1.1" 200 750
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): cqube-gj-raw.s3.amazonaws.com:443
+DEBUG:urllib3.connectionpool:https://cqube-gj-raw.s3.amazonaws.com:443 "POST / HTTP/1.1" 204 0
+INFO:root:Emission end time 28-12-2020 09:24:54 for file /home/ubuntu/nifi/cqube_emission/cqube_emission_1.7_data/block_master/block_mst.zip with status code204
+

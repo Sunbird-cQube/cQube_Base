@@ -412,3 +412,17 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 [2020-12-24 11:05:37 +0530] [6499] [INFO] Worker exiting (pid: 6499)
 [2020-12-24 11:05:37 +0530] [6502] [INFO] Worker exiting (pid: 6502)
 [2020-12-24 11:05:37 +0530] [13796] [INFO] Booting worker with pid: 13796
+[2020-12-28 09:15:41 +0530] [7763] [INFO] Starting gunicorn 20.0.4
+[2020-12-28 09:15:41 +0530] [7763] [INFO] Listening at: http://0.0.0.0:5000 (7763)
+[2020-12-28 09:15:41 +0530] [7763] [INFO] Using worker: sync
+[2020-12-28 09:15:41 +0530] [7766] [INFO] Booting worker with pid: 7766
+[2020-12-28 09:15:41 +0530] [7767] [INFO] Booting worker with pid: 7767
+[2020-12-28 09:15:41 +0530] [7768] [INFO] Booting worker with pid: 7768
+[2020-12-28 09:22:54 +0530] [7763] [INFO] Handling signal: hup
+[2020-12-28 09:22:54 +0530] [7763] [INFO] Hang up: Master
+[2020-12-28 09:22:54 +0530] [8013] [INFO] Booting worker with pid: 8013
+[2020-12-28 09:22:54 +0530] [8014] [INFO] Booting worker with pid: 8014
+[2020-12-28 09:22:54 +0530] [7766] [INFO] Worker exiting (pid: 7766)
+[2020-12-28 09:22:54 +0530] [7767] [INFO] Worker exiting (pid: 7767)
+[2020-12-28 09:22:54 +0530] [7768] [INFO] Worker exiting (pid: 7768)
+[2020-12-28 09:22:54 +0530] [8015] [INFO] Booting worker with pid: 8015

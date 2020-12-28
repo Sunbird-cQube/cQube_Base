@@ -99,3 +99,5 @@
 127.0.0.1 - - [24/Dec/2020:11:51:01 +0530] "GET /data/api/data/v3/dataset/get/summary-rollup?from=2020-12-18&to=2020-12-23 HTTP/1.1" 200 2558 "-" "okhttp/3.8.1"
 127.0.0.1 - - [24/Dec/2020:12:03:24 +0530] "GET /data/api/data/v3/dataset/get/summary-rollup?from=2020-12-18&to=2020-12-23 HTTP/1.1" 200 2558 "-" "okhttp/3.8.1"
 127.0.0.1 - - [24/Dec/2020:12:24:02 +0530] "GET /data/api/data/v3/dataset/get/summary-rollup?from=2020-12-18&to=2020-12-23 HTTP/1.1" 200 2558 "-" "okhttp/3.8.1"
+127.0.0.1 - - [28/Dec/2020:09:24:54 +0530] "POST /data/upload-url HTTP/1.1" 200 750 "-" "python-requests/2.24.0"
+127.0.0.1 - - [28/Dec/2020:12:22:00 +0530] "GET /data/api/data/v3/dataset/get/summary-rollup?from=2020-12-22&to=2020-12-27 HTTP/1.1" 200 2558 "-" "okhttp/3.8.1"
