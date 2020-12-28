@@ -72,7 +72,7 @@ exports.restartNifiProcess = async function () {
                     });
                     setTimeout(() => {
                         logger.info(' --- executing nifi restart shell command ----');
-                        shell.exec(`sudo ${process.env.BASE_DIR}/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
+                        shell.exec(`sudo ${process.env.BASE_DIR}/cqube/nifi/nifi/bin/nifi.sh restart`, function (code, stdout, stderr) {
                             logger.info('Exit code:', code);
                             logger.info('Program output:', stdout);
                             logger.info('Program stderr:', stderr);

@@ -19,7 +19,7 @@
                 <br>
                 <p id="warning" style="font-size: 9px;"> Please enter atlease 2 characters/digits</p>
             </div>
-            <button type="submit" class="btn btn-secondary"
+            <button type="submit" class="btn btn-secondary" id="button"
                 style="float: left;padding: 6px 10px 6px 10px; font-size: 12px; font-weight: bold;margin-left: 5px;"
                 (click)="onSubmit()">Submit</button>
         </div>
@@ -33,7 +33,7 @@
     <div class="row" *ngIf="showAll">
         <div *ngIf="!err" class="col-sm-12" style="font-size: 13px;">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom:10px !important">
+                <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom:10px !important" id="details">
                     <h6 style="float: left; margin-top: 10px;" class="headings">Basic Details: </h6>
                     <div
                         style="border: 2px solid gray;float: left;margin-left: 20px; min-height: 45px;max-height: 100px !important; background-color: gray; color: white; border-radius: 10px; padding: 10px;">
@@ -51,12 +51,13 @@
                     <div [ngStyle]="{'background-color': healthCardData['student_attendance'] ? stdAttendanceColor : '' ,'height': height }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['student_attendance']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                id="attTooltipBtn">
                                 <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic1"
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="attTooltip"
                                     aria-labelledby="dropdownBasic1">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
@@ -88,13 +89,24 @@
                                     <strong style="text-decoration: underline; font-size: 15px;line-height: 2em;">School
                                         Categories</strong>
                                     <tr *ngFor="let attendance of schoolAttendanceCategory; let i=index">
-                                        <td>{{schoolAttendanceCategoryKey[i]}}</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['student_attendance'][attendance]}} schools</td>
+                                        <td
+                                            *ngIf="level == 'school' && healthCardData['student_attendance'][attendance]!= 0">
+                                            {{schoolAttendanceCategoryKey[i]}}</td>
+                                        <td
+                                            *ngIf="level == 'school' && healthCardData['student_attendance'][attendance]!= 0">
+                                            :</td>
+                                        <td
+                                            *ngIf="level == 'school' && healthCardData['student_attendance'][attendance]!= 0">
+                                            {{healthCardData['student_attendance'][attendance]}} schools</td>
+                                        <td *ngIf="level != 'school'">
+                                            {{schoolAttendanceCategoryKey[i]}}</td>
+                                        <td *ngIf="level != 'school'">:</td>
+                                        <td *ngIf="level != 'school'">
+                                            {{healthCardData['student_attendance'][attendance]}} schools</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link"><a href="javascript:void(0)"
+                            <p *ngIf="showLink" class="link" id="attdLink"><a href="javascript:void(0)"
                                     (click)="goToReport('/attendance/student-attendance')">Click
                                     to Access
                                     Report</a></p>
@@ -110,12 +122,13 @@
                     <div [ngStyle]="{'background-color':  healthCardData['student_semester'] ? semColor : '','height': height  }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['student_semester']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                id="semTooltipBtn">
                                 <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic2"
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="semTooltip"
                                     aria-labelledby="dropdownBasic2">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
@@ -147,13 +160,21 @@
                                     <strong style="text-decoration: underline; font-size: 15px;line-height: 2em;">School
                                         Categories</strong>
                                     <tr *ngFor="let sem of semPerformanceCategory; let i=index">
-                                        <td>{{semPerformanceCategoryKey[i]}}</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['student_semester'][sem]}} schools</td>
+                                        <td *ngIf="level == 'school' && healthCardData['student_semester'][sem]!= 0">
+                                            {{semPerformanceCategoryKey[i]}}</td>
+                                        <td *ngIf="level == 'school' && healthCardData['student_semester'][sem]!= 0">
+                                            :</td>
+                                        <td *ngIf="level == 'school' && healthCardData['student_semester'][sem]!= 0">
+                                            {{healthCardData['student_semester'][sem]}} schools</td>
+                                        <td *ngIf="level != 'school'">
+                                            {{semPerformanceCategoryKey[i]}}</td>
+                                        <td *ngIf="level != 'school'">:</td>
+                                        <td *ngIf="level != 'school'">
+                                            {{healthCardData['student_semester'][sem]}} schools</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link">
+                            <p *ngIf="showLink" class="link" id="semLLink">
                                 <a href="javascript:void(0)"
                                     (click)="goToReport('/student-performance/semester-report')">Click
                                     to Access
@@ -171,12 +192,13 @@
                     <div [ngStyle]="{'background-color': healthCardData['pat_performance'] ? patColor : '','height': height  }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['pat_performance']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                id="patTooltipBtn">
                                 <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic3"
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="patTooltip"
                                     aria-labelledby="dropdownBasic3">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
@@ -215,13 +237,21 @@
                                     <strong style="text-decoration: underline; font-size: 15px;line-height: 2em;">School
                                         Categories</strong>
                                     <tr *ngFor="let pat of semPerformanceCategory; let i=index">
-                                        <td>{{semPerformanceCategoryKey[i]}}</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['pat_performance'][pat]}} schools</td>
+                                        <td *ngIf="level == 'school' && healthCardData['pat_performance'][pat]!= 0">
+                                            {{semPerformanceCategoryKey[i]}}</td>
+                                        <td *ngIf="level == 'school' && healthCardData['pat_performance'][pat]!= 0">
+                                            :</td>
+                                        <td *ngIf="level == 'school' && healthCardData['pat_performance'][pat]!= 0">
+                                            {{healthCardData['pat_performance'][pat]}} schools</td>
+                                        <td *ngIf="level != 'school'">
+                                            {{semPerformanceCategoryKey[i]}}</td>
+                                        <td *ngIf="level != 'school'">:</td>
+                                        <td *ngIf="level != 'school'">
+                                            {{healthCardData['pat_performance'][pat]}} schools</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link">
+                            <p *ngIf="showLink" class="link" id="patLink">
                                 <a href="javascript:void(0)"
                                     (click)="goToReport('/student-performance/pat-report')">Click
                                     to Access
@@ -241,12 +271,13 @@
                     <div [ngStyle]="{'background-color': healthCardData['school_infrastructure'] ? infraColor : '','height': height }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['school_infrastructure']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                id="infraTooltipBtn">
                                 <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic4"
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="infraTooltip"
                                     aria-labelledby="dropdownBasic4">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
@@ -293,7 +324,7 @@
                             </table>
 
 
-                            <p *ngIf="showLink" class="link"><a href="javascript: void(0)"
+                            <p *ngIf="showLink" class="link" id="infraLink"><a href="javascript: void(0)"
                                     (click)="goToReport('/infrastructure/school-infra-map')">Click to Access
                                     Report</a></p>
                         </div>
@@ -308,12 +339,13 @@
                     <div [ngStyle]="{'background-color': healthCardData['udise'] ? udiseColor : '','height': height }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['udise']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                id="udiseTooltipBtn">
                                 <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic5"
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="udiseTooltip"
                                     aria-labelledby="dropdownBasic5">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
@@ -344,14 +376,23 @@
                                     </tr>
                                     <strong style="text-decoration: underline; font-size: 15px;line-height: 2em;">School
                                         Categories</strong>
+
                                     <tr *ngFor="let key of UDISECategory; let i=index">
-                                        <td>{{UDISECategoryKey[i]}}</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['udise'][key]}} schools</td>
+                                        <td *ngIf="level == 'school' && healthCardData['udise'][key]!= 0">
+                                            {{UDISECategoryKey[i]}}</td>
+                                        <td *ngIf="level == 'school' && healthCardData['udise'][key]!= 0">
+                                            :</td>
+                                        <td *ngIf="level == 'school' && healthCardData['udise'][key]!= 0">
+                                            {{healthCardData['udise'][key]}} schools</td>
+                                        <td *ngIf="level != 'school'">
+                                            {{UDISECategoryKey[i]}}</td>
+                                        <td *ngIf="level != 'school'">:</td>
+                                        <td *ngIf="level != 'school'">
+                                            {{healthCardData['udise'][key]}} schools</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link">
+                            <p *ngIf="showLink" class="link" id="udiseLink">
                                 <a href="javascript:void(0)" (click)="goToReport('/infrastructure/udise-report')">Click
                                     to Access
                                     Report</a>
@@ -368,12 +409,13 @@
                     <div [ngStyle]="{'background-color': healthCardData['crc_visit'] ? crcColor : '','height': height }"
                         style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;">
                         <div *ngIf="healthCardData['crc_visit']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement">
+                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                id="crcTooltipBtn">
                                 <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic6"
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu
+                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="crcTooltip"
                                     aria-labelledby="dropdownBasic6">
                                     <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
                                         <div id="div2" style="max-height:100%;overflow:auto;">
@@ -401,7 +443,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <p *ngIf="showLink" class="link">
+                            <p *ngIf="showLink" class="link" id="crcLink">
                                 <a href="javascript:void(0)" (click)="goToReport('/crc/crc-report')">Click
                                     to Access
                                     Report</a>
