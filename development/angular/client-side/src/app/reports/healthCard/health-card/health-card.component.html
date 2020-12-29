@@ -65,13 +65,27 @@
                                 </button>
                                 <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="attTooltip"
                                     aria-labelledby="dropdownBasic1">
-                                    <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
-                                        <div id="div2" style="max-height:100%;overflow:auto;">
-                                            <div id="div3" style="height:1000px auto;">
-                                                <div *ngFor="let key of tooltipStdAttendance;let i=index">
-                                                    <span>{{tooltipStdAttendanceKeys[i]}}</span> :
-                                                    <span>{{healthCardData['student_attendance'][key]}}</span>
-                                                </div>
+                                    <div id="div1"
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                    Details</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of tooltipStdAttendance;let i=index">
+                                                            <td>{{tooltipStdAttendanceKeys[i]}}</td>
+                                                            <td>:</td>
+                                                            <td>{{healthCardData['student_attendance'][key]}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -133,13 +147,45 @@
                                 </button>
                                 <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="semTooltip"
                                     aria-labelledby="dropdownBasic2">
-                                    <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
-                                        <div id="div2" style="max-height:100%;overflow:auto;">
-                                            <div id="div3" style="height:1000px auto;">
-                                                <div *ngFor="let key of tooltimSem;let i=index">
-                                                    <span>{{tooltipSemKeys[i]}}</span> :
-                                                    <span>{{healthCardData['student_semester'][key]}}</span>
-                                                </div>
+                                    <div id="div1"
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                    Details</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of tooltimSem;let i=index">
+                                                            <td *ngIf="i<=semLength">{{tooltipSemKeys[i]}}</td>
+                                                            <td *ngIf="i<=semLength">:</td>
+                                                            <td *ngIf="i<=semLength">
+                                                                {{healthCardData['student_semester'][key]}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                    Grade_Wise_Performance
+                                                                </strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of tooltimSem;let i=index">
+                                                            <td *ngIf="i>semLength">{{tooltipSemKeys[i]}}</td>
+                                                            <td *ngIf="i>semLength">:</td>
+                                                            <td *ngIf="i>semLength">
+                                                                {{healthCardData['student_semester'][key]}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -203,20 +249,42 @@
                                 </button>
                                 <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="patTooltip"
                                     aria-labelledby="dropdownBasic3">
-                                    <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
-                                        <div id="div2" style="max-height:100%;overflow:auto;">
-                                            <div id="div3" style="height:1000px auto;">
-                                                <div *ngFor="let key of tooltipPat;let i=index">
-                                                    <span>{{tooltipPatKeys[i]}}</span> :
-                                                    <span>{{healthCardData['pat_performance'][key]}}</span>
-                                                </div>
-                                                <strong
-                                                    style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade
-                                                    Wise Performance </strong>
-                                                <div *ngFor="let key of patPerformTooltip;let i=index">
-                                                    <span>{{patPerformTooltipKeys[i]}}</span> :
-                                                    <span>{{healthCardData['pat_performance']['grade_wise_performance'][key]}}</span>
-                                                </div>
+                                    <div id="div1"
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                    Details</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of tooltipPat;let i=index">
+                                                            <td>{{tooltipPatKeys[i]}}</td>
+                                                            <td>:</td>
+                                                            <td>{{healthCardData['pat_performance'][key]}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade_Wise_Performance
+                                                                </strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of patPerformTooltip;let i=index">
+                                                            <td>{{patPerformTooltipKeys[i]}}</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{healthCardData['pat_performance']['grade_wise_performance'][key]}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -282,13 +350,20 @@
                                 </button>
                                 <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="infraTooltip"
                                     aria-labelledby="dropdownBasic4">
-                                    <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
-                                        <div id="div2" style="max-height:100%;overflow:auto;">
-                                            <div id="div3" style="height:1000px auto;">
-                                                <div *ngFor="let infra of tooltipInfra;let i=index">
-                                                    <span>{{toolTipInfraKeys[i]}}</span> :
-                                                    <span>{{healthCardData['school_infrastructure'][infra]}}</span>
-                                                </div>
+                                    <div id="div1"
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                <table>
+                                                    <tbody>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let infra of tooltipInfra;let i=index">
+                                                            <td> {{toolTipInfraKeys[i]}}</td>
+                                                            <td>:</td>
+                                                            <td>{{healthCardData['school_infrastructure'][infra]}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -355,13 +430,43 @@
                                 </button>
                                 <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="udiseTooltip"
                                     aria-labelledby="dropdownBasic5">
-                                    <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
-                                        <div id="div2" style="max-height:100%;overflow:auto;">
-                                            <div id="div3" style="height:1000px auto;">
-                                                <div *ngFor="let key of tooltipUDISE;let i=index">
-                                                    <span>{{tooltipUDISEKyes[i]}}</span> :
-                                                    <span>{{healthCardData['udise'][key]}}</span>
-                                                </div>
+                                    <div id="div1"
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                    Details</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of tooltipUDISE;let i=index">
+                                                            <td *ngIf="i<=udiseLength">{{tooltipUDISEKyes[i]}}</td>
+                                                            <td *ngIf="i<=udiseLength">:</td>
+                                                            <td *ngIf="i<=udiseLength">{{healthCardData['udise'][key]}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                    All Indices</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of tooltipUDISE;let i=index">
+                                                            <td *ngIf="i>udiseLength">{{tooltipUDISEKyes[i]}}</td>
+                                                            <td *ngIf="i>udiseLength">:</td>
+                                                            <td *ngIf="i>udiseLength">
+                                                                {{healthCardData['udise'][key]}} %
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -425,13 +530,42 @@
                                 </button>
                                 <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="crcTooltip"
                                     aria-labelledby="dropdownBasic6">
-                                    <div id="div1" style="height: 250px;position:relative; border-radius: 10px;">
-                                        <div id="div2" style="max-height:100%;overflow:auto;">
-                                            <div id="div3" style="height:1000px auto;">
-                                                <div *ngFor="let key of tooltipCrc;let i=index">
-                                                    <span>{{tooltipCrcKeys[i]}}</span> :
-                                                    <span>{{healthCardData['crc_visit'][key]}}</span>
-                                                </div>
+                                    <div id="div1"
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                    Details</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of tooltipCrc;let i=index">
+                                                            <td *ngIf="i<=crcLength">{{tooltipCrcKeys[i]}}</td>
+                                                            <td *ngIf="i<=crcLength">:</td>
+                                                            <td *ngIf="i<=crcLength">
+                                                                {{healthCardData['crc_visit'][key]}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                    Schools Visit Details</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of tooltipCrc;let i=index">
+                                                            <td *ngIf="i >crcLength">{{tooltipCrcKeys[i]}}</td>
+                                                            <td *ngIf="i >crcLength">:</td>
+                                                            <td *ngIf="i >crcLength">
+                                                                {{healthCardData['crc_visit'][key]}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -450,7 +584,8 @@
                                         <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">:</td>
                                         <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">
                                             <span>{{healthCardData['crc_visit'][crc]}} %
-                                            </span></td>
+                                            </span>
+                                        </td>
                                         <td *ngIf="level !='school'"> <span>{{crcVisitKeys[i]}}</span></td>
                                         <td *ngIf="level !='school'">:</td>
                                         <td *ngIf="level !='school'"> <span>{{healthCardData['crc_visit'][crc]}} %
