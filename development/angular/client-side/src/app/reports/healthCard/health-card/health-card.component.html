@@ -34,9 +34,9 @@
         <div *ngIf="!err" class="col-sm-12" style="font-size: 13px;">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom:10px !important" id="details">
-                    <h6 style="float: left; margin-top: 10px;" class="headings">Basic Details: </h6>
+                    <h6 style="float: left; margin-top: 10px;margin-right: 20px;" class="headings">Basic Details: </h6>
                     <div
-                        style="border: 2px solid gray;float: left;margin-left: 20px; min-height: 45px;max-height: 100px !important; background-color: gray; color: white; border-radius: 10px; padding: 10px;">
+                        style="border: 2px solid gray;float: left; min-height: 45px;max-height: 140px !important; background-color: gray; color: white; border-radius: 10px; padding: 10px;">
                         <div style="float: left;" *ngFor="let key of keys; let i=index">
                             <span style="margin-right: 30px;font-weight: bold;">
                                 <span>{{updatedKeys[i]}}</span> :
@@ -445,9 +445,11 @@
                                         Category</strong>
                                     <tr *ngFor="let crc of crcVisit; let i=index">
                                         <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">
-                                            <span>{{crcVisitKeys[i]}}</span></td>
+                                            <span>{{crcVisitKeys[i]}}</span>
+                                        </td>
                                         <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">:</td>
-                                        <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0"> <span>{{healthCardData['crc_visit'][crc]}} %
+                                        <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">
+                                            <span>{{healthCardData['crc_visit'][crc]}} %
                                             </span></td>
                                         <td *ngIf="level !='school'"> <span>{{crcVisitKeys[i]}}</span></td>
                                         <td *ngIf="level !='school'">:</td>

@@ -376,6 +376,18 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     });
     this.showAll = true;
     var myKey;
+    this.tooltipInfra = [];
+    this.toolTipInfraKeys = [];
+    this.tooltipStdAttendance = [];
+    this.tooltipStdAttendanceKeys = [];
+    this.tooltimSem = [];
+    this.tooltipSemKeys = [];
+    this.tooltipPat = [];
+    this.tooltipPatKeys = [];
+    this.tooltipUDISE = [];
+    this.tooltipUDISEKyes = [];
+    this.tooltipCrc = [];
+    this.tooltipCrcKeys = [];
     if (healthCardData['school_infrastructure'] && healthCardData['school_infrastructure'] != null) {
       this.tooltipInfra = Object.keys(healthCardData['school_infrastructure']);
       this.tooltipInfra = this.tooltipInfra.filter((key) => {
