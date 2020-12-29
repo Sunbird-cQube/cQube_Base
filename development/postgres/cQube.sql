@@ -1908,6 +1908,8 @@ alter table diksha_content_temp alter COLUMN collection_created_for type text;
   updated_on TIMESTAMP without time zone 
   );
 
+drop view if exists insert_diksha_trans_view;
+
 alter table diksha_content_trans alter COLUMN content_created_for type text;
 alter table diksha_content_trans alter COLUMN collection_created_for type text;
 
