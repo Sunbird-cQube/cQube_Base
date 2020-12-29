@@ -164,7 +164,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.patPerformanceCategoryKay = ['Schools Less than 33%', 'Schools between 33% to 60%', 'Schools between 60% to 75%', 'Schools Above 75%'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
+          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
           this.UDISE = ['school_infrastructure'];
           this.UDISEKeys = ['Infrastructure Score'];
@@ -214,7 +214,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.patPerformanceKeys = ['Performance'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
+          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
           this.UDISE = ['school_infrastructure'];
           this.UDISEKeys = ['Infrastructure Score'];
@@ -266,7 +266,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.patPerformanceKeys = ['Performance'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
+          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
           this.UDISE = ['school_infrastructure'];
           this.UDISEKeys = ['Infrastructure Score'];
@@ -281,7 +281,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           document.getElementById('spinner').style.display = 'none';
         });
       } else if (this.level == 'school') {
-        this.height = '230px';
+        this.height = '220px';
         var school;
         var blok;
         this.showLink = false;
@@ -317,7 +317,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.patPerformanceKeys = ['Performance'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
+          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
           this.UDISE = ['school_infrastructure'];
           this.UDISEKeys = ['Infrastructure Score'];
@@ -376,6 +376,18 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     });
     this.showAll = true;
     var myKey;
+    this.tooltipInfra = [];
+    this.toolTipInfraKeys = [];
+    this.tooltipStdAttendance = [];
+    this.tooltipStdAttendanceKeys = [];
+    this.tooltimSem = [];
+    this.tooltipSemKeys = [];
+    this.tooltipPat = [];
+    this.tooltipPatKeys = [];
+    this.tooltipUDISE = [];
+    this.tooltipUDISEKyes = [];
+    this.tooltipCrc = [];
+    this.tooltipCrcKeys = [];
     if (healthCardData['school_infrastructure'] && healthCardData['school_infrastructure'] != null) {
       this.tooltipInfra = Object.keys(healthCardData['school_infrastructure']);
       this.tooltipInfra = this.tooltipInfra.filter((key) => {
@@ -469,6 +481,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   value: any;
   onChange() {
     this.showAll = false;
+    document.getElementById('warning').style.display = 'block';
     if (this.value.match(/^\d/)) {
       if (this.value.toString().length > 1) {
         document.getElementById('warning').style.display = 'none';
