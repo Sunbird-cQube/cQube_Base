@@ -11,8 +11,6 @@
 #NOTE: Please fill the value with a space between ":" and the value. 
 #Example-   `system_user_name: ubuntu`
 
-state_code:                               # Enter the 2 character state code for which cQube is being deployed. Please refer state_list file.
-
 # Diksha Columns
 # will be applicable,  if diksha datasource is enabled at datasource.yml.
 
@@ -20,6 +18,8 @@ state_code:                               # Enter the 2 character state code for
 #Enter the value as `false`, if content_gradelevel & collection_gradelevel columns are not available.
 
 diksha_columns: false                    # Enter `true` or `false`. 
+
+static_datasource:                       # Enter `udise` or `state`
 
 system_user_name:                          # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
 base_dir:                                  # provide the absolute path where cqube installed
