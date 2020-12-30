@@ -98,7 +98,7 @@
     var: item
   loop: "{{ output | json_query(static_data_id) }}"
   vars:
-    static_data_id: "msg[?Name=='Static-Data_Processor'].ID"
+    static_data_id: "msg[?Name=='static_data_processor'].ID"
   register: static_data_id
 
 - name: Display version of static data processor
@@ -106,7 +106,7 @@
     var: item
   loop: "{{ output | json_query(static_data_version) }}"
   vars:
-    static_data_version: "msg[?Name=='Static-Data_Processor'].Version"
+    static_data_version: "msg[?Name=='static_data_processor'].Version"
   register: static_data_version
 
 - name: Get parameter contexts
@@ -287,9 +287,7 @@
     body_format: json
     body: {"revision": {
             "version": "{{ item.revision.version }}"
-
         },
-
         "state":"ENABLED"
         }
   loop: "{{ controllers_list_static_updated.json | json_query('controllerServices[*]') }}"

@@ -21,6 +21,8 @@ state_code:                               # Enter the 2 character (upper case) s
 
 diksha_columns: false                    # Enter `true` or `false`. 
 
+static_datasource:                       # Enter `udise` or `state`
+
 system_user_name:                         # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal.
 
 base_dir: /opt                            # provide the absolute path where cqube needs to be installed and served. Eg. /opt  ( in this case cqube will be installed under /opt/cqube)

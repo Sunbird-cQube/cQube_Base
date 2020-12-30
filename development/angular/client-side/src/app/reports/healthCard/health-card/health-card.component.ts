@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { splat } from 'highcharts';
 import { AppServiceComponent } from 'src/app/app.service';
 import { HealthCardService } from 'src/app/services/health-card.service';
 
@@ -85,6 +84,10 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   showLink = true;
   params: any;
 
+  public semLength;
+  public udiseLength;
+  public crcLength;
+
   placement = 'bottom-right';
 
   @ViewChild('searchInput') searchInput: ElementRef;
@@ -126,6 +129,9 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     }
     if (this.districtName) {
       if (this.level == 'district') {
+        this.semLength = 2;
+        this.udiseLength = 4;
+        this.crcLength = 1;
         this.height = '250px';
         var dist;
         if (this.districtName.match(/^\d/)) {
@@ -165,7 +171,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.patPerformanceCategoryKay = ['Schools Less than 33%', 'Schools between 33% to 60%', 'Schools between 60% to 75%', 'Schools Above 75%'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
+          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
           this.UDISE = ['school_infrastructure'];
           this.UDISEKeys = ['Infrastructure Score'];
@@ -180,6 +186,9 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           document.getElementById('spinner').style.display = 'none';
         });
       } else if (this.level == 'block') {
+        this.semLength = 4;
+        this.udiseLength = 5;
+        this.crcLength = 3;
         this.height = '270px';
         var block;
         id;
@@ -215,7 +224,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.patPerformanceKeys = ['Performance'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
+          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
           this.UDISE = ['school_infrastructure'];
           this.UDISEKeys = ['Infrastructure Score'];
@@ -230,6 +239,9 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           document.getElementById('spinner').style.display = 'none';
         });
       } else if (this.level == 'cluster') {
+        this.semLength = 6;
+        this.udiseLength = 6;
+        this.crcLength = 5;
         this.height = '300px';
         var cluster;
         let blkId;
@@ -267,7 +279,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.patPerformanceKeys = ['Performance'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
+          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
           this.UDISE = ['school_infrastructure'];
           this.UDISEKeys = ['Infrastructure Score'];
@@ -282,7 +294,10 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           document.getElementById('spinner').style.display = 'none';
         });
       } else if (this.level == 'school') {
-        this.height = '330px';
+        this.semLength = 9;
+        this.udiseLength = 8;
+        this.crcLength = 7;
+        this.height = '220px';
         var school;
         var blok;
         this.showLink = false;
@@ -318,7 +333,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.patPerformanceKeys = ['Performance'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Visit 0 times', 'Visit 1-2 times', 'Visit 3-5 times', 'Visit 6-10 times', 'Visit more than 10 times'];
+          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
           this.UDISE = ['school_infrastructure'];
           this.UDISEKeys = ['Infrastructure Score'];
@@ -377,6 +392,18 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     });
     this.showAll = true;
     var myKey;
+    this.tooltipInfra = [];
+    this.toolTipInfraKeys = [];
+    this.tooltipStdAttendance = [];
+    this.tooltipStdAttendanceKeys = [];
+    this.tooltimSem = [];
+    this.tooltipSemKeys = [];
+    this.tooltipPat = [];
+    this.tooltipPatKeys = [];
+    this.tooltipUDISE = [];
+    this.tooltipUDISEKyes = [];
+    this.tooltipCrc = [];
+    this.tooltipCrcKeys = [];
     if (healthCardData['school_infrastructure'] && healthCardData['school_infrastructure'] != null) {
       this.tooltipInfra = Object.keys(healthCardData['school_infrastructure']);
       this.tooltipInfra = this.tooltipInfra.filter((key) => {
@@ -445,7 +472,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     if (healthCardData['udise'] && healthCardData['udise'] != null) {
       this.tooltipUDISE = Object.keys(healthCardData['udise']);
       this.tooltipUDISE = this.tooltipUDISE.filter((key) => {
-        return !this.UDISE.includes(key) && !this.UDISECategory.includes(key) && !this.schoolInfraRank.includes(key);
+        return !this.UDISE.includes(key) && !this.UDISECategory.includes(key) && !this.schoolInfraRank.includes(key) && key != "district_latitude" && key != "block_latitude" && key != "cluster_latitude" && key != "school_latitude" && key != "district_longitude" && key != "block_longitude" && key != "cluster_longitude" && key != "school_longitude";
       });
       this.tooltipUDISE.filter(key => {
         var myKey = this.stringConverter(key);
@@ -470,6 +497,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   value: any;
   onChange() {
     this.showAll = false;
+    document.getElementById('warning').style.display = 'block';
     if (this.value.match(/^\d/)) {
       if (this.value.toString().length > 1) {
         document.getElementById('warning').style.display = 'none';
