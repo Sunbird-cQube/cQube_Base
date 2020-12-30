@@ -21,15 +21,9 @@
                CQUBE_S3_EMISSION={{ s3_emission_bucket }}
                CQUBE_API_ENDPOINT={{ api_endpoint }}
                CQUBE_STATE_CODE={{ state_code }}
+               CQUBE_STATIC_DATASOURCE={{ static_datasource }}
   tags: install
-
-- name: Updating the state_code to config file
-  lineinfile:
-    path: "{{ base_dir }}/cqube/.cqube_config"
-    insertafter: '^CQUBE_API_ENDPOINT'
-    line: CQUBE_STATE_CODE={{ state_code }}
-  tags: update
-
+  
 - name: Updating the CQUBE_VERSION
   lineinfile: 
     regex: '^CQUBE_VERSION='

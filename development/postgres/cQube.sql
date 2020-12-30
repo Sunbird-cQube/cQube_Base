@@ -1817,7 +1817,7 @@ create table IF NOT EXISTS diksha_content_staging(
   content_medium text,
   content_gradelevel text,
   content_subject text,
-  content_created_for double precision,
+  content_created_for text,
   object_id text,
   object_rollup_l1 text,
   derived_loc_state text,
@@ -1830,12 +1830,15 @@ create table IF NOT EXISTS diksha_content_staging(
   collection_medium text,
   collection_gradelevel text,
   collection_subject text,
-  collection_created_for double precision,
+  collection_created_for text,
   total_count int,
   total_time_spent double precision,
   created_on TIMESTAMP without time zone,
   updated_on TIMESTAMP without time zone 
   );
+
+alter table diksha_content_staging alter COLUMN content_created_for type text;
+alter table diksha_content_staging alter COLUMN collection_created_for type text;
 
 create table IF NOT EXISTS diksha_content_temp(
   ff_uuid text,
@@ -1848,7 +1851,7 @@ create table IF NOT EXISTS diksha_content_temp(
   content_medium text,
   content_gradelevel text,
   content_subject text,
-  content_created_for double precision,
+  content_created_for text,
   object_id text,
   object_rollup_l1 text,
   derived_loc_state text,
@@ -1861,13 +1864,15 @@ create table IF NOT EXISTS diksha_content_temp(
   collection_medium text,
   collection_gradelevel text,
   collection_subject text,
-  collection_created_for double precision,
+  collection_created_for text,
   total_count int,
   total_time_spent double precision,
   created_on TIMESTAMP without time zone,
   updated_on TIMESTAMP without time zone 
   );
 
+alter table diksha_content_temp alter COLUMN content_created_for type text;
+alter table diksha_content_temp alter COLUMN collection_created_for type text;
 
 /* Transanction table */
 /* diksha_content_trans*/
@@ -1883,7 +1888,7 @@ create table IF NOT EXISTS diksha_content_temp(
   content_medium text,
   content_gradelevel text,
   content_subject text,
-  content_created_for double precision,
+  content_created_for text,
   object_id text,
   object_rollup_l1 text,
   derived_loc_state text,
@@ -1896,12 +1901,17 @@ create table IF NOT EXISTS diksha_content_temp(
   collection_medium text,
   collection_gradelevel text,
   collection_subject text,
-  collection_created_for double precision,
+  collection_created_for text,
   total_count int,
   total_time_spent double precision,
   created_on TIMESTAMP without time zone,
   updated_on TIMESTAMP without time zone 
   );
+
+drop view if exists insert_diksha_trans_view;
+
+alter table diksha_content_trans alter COLUMN content_created_for type text;
+alter table diksha_content_trans alter COLUMN collection_created_for type text;
 
 /* Aggregation table*/
 /* diksha_total_content*/
@@ -1921,7 +1931,7 @@ create table IF NOT EXISTS diksha_content_temp(
   content_medium text,
   content_gradelevel text,
   content_subject text,
-  content_created_for double precision,
+  content_created_for text,
   object_id text,
   object_rollup_l1 text,
   derived_loc_state text,
@@ -1934,12 +1944,16 @@ create table IF NOT EXISTS diksha_content_temp(
   collection_medium text,
   collection_gradelevel text,
   collection_subject text,
-  collection_created_for double precision,
+  collection_created_for text,
   total_count int,
   total_time_spent double precision,
   created_on TIMESTAMP without time zone,
   updated_on TIMESTAMP without time zone 
   );
+
+alter table diksha_total_content alter COLUMN content_created_for type text;
+alter table diksha_total_content alter COLUMN collection_created_for type text;
+
 
 /* null check*/
 /* diksha_null_col*/
@@ -1984,7 +1998,7 @@ create table IF NOT EXISTS diksha_content_temp(
   content_medium text,
   content_gradelevel text,
   content_subject text,
-  content_created_for double precision,
+  content_created_for text,
   object_id text,
   object_rollup_l1 text,
   derived_loc_state text,
@@ -1997,13 +2011,17 @@ create table IF NOT EXISTS diksha_content_temp(
   collection_medium text,
   collection_gradelevel text,
   collection_subject text,
-  collection_created_for double precision,
+  collection_created_for text,
   total_count int,
   total_time_spent double precision,
   num_of_times int,
   ff_uuid varchar(255),
   created_on_file_process  TIMESTAMP without time zone default current_timestamp
   ); 
+  
+alter table diksha_dup alter COLUMN content_created_for type text;
+alter table diksha_dup alter COLUMN collection_created_for type text;
+
 
 /*Telemetry*/
 
