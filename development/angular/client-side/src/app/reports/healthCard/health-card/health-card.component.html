@@ -164,9 +164,14 @@
 
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let key of tooltimSem;let i=index">
-                                                            <td *ngIf="i<=semLength">{{tooltipSemKeys[i]}}</td>
-                                                            <td *ngIf="i<=semLength">:</td>
-                                                            <td *ngIf="i<=semLength">
+                                                            <td
+                                                                *ngIf="i<=semLength && healthCardData['student_semester'][key]">
+                                                                {{tooltipSemKeys[i]}}</td>
+                                                            <td
+                                                                *ngIf="i<=semLength && healthCardData['student_semester'][key]">
+                                                                :</td>
+                                                            <td
+                                                                *ngIf="i<=semLength && healthCardData['student_semester'][key]">
                                                                 {{healthCardData['student_semester'][key]}}</td>
                                                         </tr>
                                                         <tr>
@@ -179,9 +184,14 @@
                                                         </tr>
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let key of tooltimSem;let i=index">
-                                                            <td *ngIf="i>semLength">{{tooltipSemKeys[i]}}</td>
-                                                            <td *ngIf="i>semLength">:</td>
-                                                            <td *ngIf="i>semLength">
+                                                            <td
+                                                                *ngIf="i>semLength && healthCardData['student_semester'][key]">
+                                                                {{tooltipSemKeys[i]}}</td>
+                                                            <td
+                                                                *ngIf="i>semLength && healthCardData['student_semester'][key]">
+                                                                :</td>
+                                                            <td
+                                                                *ngIf="i>semLength && healthCardData['student_semester'][key]">
                                                                 {{healthCardData['student_semester'][key]}} %
                                                             </td>
                                                         </tr>
@@ -279,9 +289,14 @@
                                                         </tr>
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let key of patPerformTooltip;let i=index">
-                                                            <td>{{patPerformTooltipKeys[i]}}</td>
-                                                            <td>:</td>
-                                                            <td>
+                                                            <td
+                                                                *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                {{patPerformTooltipKeys[i]}}</td>
+                                                            <td
+                                                                *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                :</td>
+                                                            <td
+                                                                *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
                                                                 {{healthCardData['pat_performance']['grade_wise_performance'][key]}}
                                                                 %
                                                             </td>
@@ -485,9 +500,11 @@
                                                         </tr>
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let key of tooltipUDISE;let i=index">
-                                                            <td *ngIf="i>udiseLength">{{tooltipUDISEKyes[i]}}</td>
-                                                            <td *ngIf="i>udiseLength">:</td>
-                                                            <td *ngIf="i>udiseLength">
+                                                            <td *ngIf="i>udiseLength && healthCardData['udise'][key]">
+                                                                {{tooltipUDISEKyes[i]}}</td>
+                                                            <td *ngIf="i>udiseLength && healthCardData['udise'][key]">:
+                                                            </td>
+                                                            <td *ngIf="i>udiseLength && healthCardData['udise'][key]">
                                                                 {{healthCardData['udise'][key]}} %
                                                             </td>
                                                         </tr>

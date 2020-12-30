@@ -90,6 +90,9 @@ export class PATLOTableComponent implements OnInit {
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
       this.commonFunc();
+    }, err => {
+      this.metaData = [];
+      this.commonService.loaderAndErr(this.metaData);
     })
   }
 
@@ -295,7 +298,7 @@ export class PATLOTableComponent implements OnInit {
       this.reportData = response['tableData'];
       this.blockNames = response['blockDetails'];
       this.blockNames = this.blockNames.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
- 
+
       this.createTable(this.reportData);
       var dist = this.districtNames.find(a => a.district_id == districtId);
       this.districtHierarchy = {
