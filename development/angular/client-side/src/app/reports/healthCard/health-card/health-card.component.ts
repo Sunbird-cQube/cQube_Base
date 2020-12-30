@@ -155,7 +155,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['district_level_rank_within_the_state'];
-          this.schoolInfraRankKye = ['School Level Rank Within State'];
+          this.schoolInfraRankKye = ['At State Level'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
@@ -211,7 +211,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['block_level_rank_within_the_state', 'block_level_rank_within_the_district'];
-          this.schoolInfraRankKye = ['School Level Rank Within State', 'School Level Rank Within District'];
+          this.schoolInfraRankKye = ['At State Level', 'At District Level'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
@@ -267,7 +267,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['cluster_level_rank_within_the_state', 'cluster_level_rank_within_the_district', 'cluster_level_rank_within_the_block'];
-          this.schoolInfraRankKye = ['School Level Rank Within State', 'School Level Rank Within District', 'School Level Rank Within Block'];
+          this.schoolInfraRankKye = ['At State Level', 'At District Level', 'At Block Level'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
@@ -322,7 +322,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['school_level_rank_within_the_state', 'school_level_rank_within_the_district', 'school_level_rank_within_the_block', 'school_level_rank_within_the_cluster'];
-          this.schoolInfraRankKye = ['School Level Rank Within State', 'School Level Rank Within District', 'School Level Rank Within Block', 'School Level Rank Within Cluster'];
+          this.schoolInfraRankKye = ['At State Level', 'At District Level', 'At Block Level', 'At Cluster Level'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
