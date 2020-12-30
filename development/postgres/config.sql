@@ -145,12 +145,14 @@ select insert_infra_agg();
 /* Visualization */
 /*  District - reports (map and table) */
 
+drop view if exists infra_district_table_view cascade;
+
 create or replace FUNCTION infra_district_reports(category_1 text,category_2 text)
 RETURNS text AS
 $$
 DECLARE
 select_infra_score text:= 'select concat(''round(coalesce(''||''SUM('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),
-	'')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
+  '')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
 select_infra_score_cols text;
 select_average_value text:= 'select concat(''sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')
 ||'' =0 then 0 else 1 end)'',''/'',''(select count(infrastructure_name) from infrastructure_master where status=true) as average_value'') 
@@ -197,8 +199,9 @@ Execute select_1 into select_1_cols;
 Execute select_2 into select_2_cols;
 IF select_infra_score_cols <> '' THEN 
 infra_table= 'create or replace view infra_district_table_view as 
-select d.district_id,d.total_schools_data_received,c.infra_score,d.average_value,d.average_percent,'||select_1_cols||',
-initcap(c.district_name)as district_name,c.total_schools from (
+select d.district_id,
+initcap(c.district_name)as district_name,c.total_schools,d.total_schools_data_received,c.infra_score,
+d.average_value,d.average_percent,'||select_1_cols||' from (
 select district_id,count(distinct(school_id)) as total_schools_data_received,'||select_average_value_cols||',
 '||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||'
  from school_infrastructure_score group by district_id)as d
@@ -206,9 +209,9 @@ inner join
 (select a.district_id,a.district_name,b.total_schools,c.infra_score 
 from 
 (select district_id,district_name from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-	group by district_id,district_name)as a 
+  group by district_id,district_name)as a 
 inner join (select district_id,count(distinct(school_id)) as total_schools from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-	group by district_id)as b on a.district_id=b.district_id
+  group by district_id)as b on a.district_id=b.district_id
 inner join (select district_id,'||select_infra_score_cols||'
 from infra_score_view group by district_id) as c on a.district_id=c.district_id) as c
 on d.district_id=c.district_id ';
@@ -221,9 +224,9 @@ inner join
 (select a.district_id,a.district_name,b.district_latitude,b.district_longitude,c.infra_score,c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent
  from 
 (select district_id,district_name from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-	group by district_id,district_name)as a inner join 
+  group by district_id,district_name)as a inner join 
 (select district_id,district_latitude,district_longitude from school_geo_master where cluster_latitude>0 and block_latitude>0 and school_latitude>0 and district_latitude>0
-	group by district_id,district_latitude,district_longitude)as b
+  group by district_id,district_latitude,district_longitude)as b
  on a.district_id=b.district_id
  inner join (select district_id,'||select_infra_score_cols||','||composite_infra_1_cols||',
  '||composite_infra_2_cols||'
@@ -240,12 +243,14 @@ select infra_district_reports('water','toilet');
 
 /* Block - reports (map and table) */
 
+drop view if exists infra_block_table_view cascade;
+
 create or replace FUNCTION infra_block_reports(category_1 text,category_2 text)
 RETURNS text AS
 $$
 DECLARE
 select_infra_score text:= 'select concat(''round(coalesce(''||''SUM('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),
-	'')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
+  '')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
 select_infra_score_cols text;
 select_average_value text:= 'select concat(''sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')
 ||'' =0 then 0 else 1 end)'',''/'',''(select count(infrastructure_name) from infrastructure_master where status=true) as average_value'') 
@@ -292,8 +297,9 @@ Execute select_1 into select_1_cols;
 Execute select_2 into select_2_cols;
 IF select_infra_score_cols <> '' THEN 
 infra_table= 'create or replace view infra_block_table_view as 
-select d.block_id,d.total_schools_data_received,c.infra_score,d.average_value,d.average_percent,'||select_1_cols||',
-initcap(c.block_name)as block_name,c.district_id,initcap(c.district_name)as district_name,c.total_schools
+select d.block_id,
+initcap(c.block_name)as block_name,c.district_id,initcap(c.district_name)as district_name,c.total_schools,
+d.total_schools_data_received,c.infra_score,d.average_value,d.average_percent,'||select_1_cols||'
  from (
 select block_id,count(distinct(school_id)) as total_schools_data_received,'||select_average_value_cols||',
 '||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||'
@@ -301,9 +307,9 @@ from school_infrastructure_score group by block_id ) as d
 inner join 
 (select a.block_id,a.block_name,a.district_id,a.district_name,b.total_schools,c.infra_score from 
 (select block_id,block_name,district_id,district_name from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-	group by block_id,block_name,district_id,district_name)as a inner join 
+  group by block_id,block_name,district_id,district_name)as a inner join 
 (select block_id,count(distinct(school_id)) as total_schools from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-	group by block_id)as b on a.block_id=b.block_id
+  group by block_id)as b on a.block_id=b.block_id
 inner join (select block_id,'||select_infra_score_cols||'
 from infra_score_view group by block_id) as c on a.block_id=c.block_id) as c
 on d.block_id=c.block_id';
@@ -314,11 +320,11 @@ from
 (select block_id,count(distinct(school_id)) as total_schools_data_received,'||select_infra_percent_cols||' from school_infrastructure_score group by block_id)as d
 inner join 
 (select a.block_id,a.block_name,a.district_id,a.district_name,b.block_latitude,b.block_longitude,c.infra_score,
-	c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent from 
+  c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent from 
 (select block_id,block_name,district_id,district_name from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-	group by block_id,block_name,district_id,district_name)as a inner join 
+  group by block_id,block_name,district_id,district_name)as a inner join 
 (select block_id,block_latitude,block_longitude from school_geo_master where cluster_latitude>0 and block_latitude>0 and school_latitude>0 and district_latitude>0
-	group by block_id,block_latitude,block_longitude)as b
+  group by block_id,block_latitude,block_longitude)as b
  on a.block_id=b.block_id
  inner join (select block_id,'||select_infra_score_cols||','||composite_infra_1_cols||',
  '||composite_infra_2_cols||'
@@ -335,12 +341,14 @@ select infra_block_reports('water','toilet');
 
 /*  Cluster - reports (map and table) */
 
+drop view if exists infra_cluster_table_view cascade;
+
 create or replace FUNCTION infra_cluster_reports(category_1 text,category_2 text)
 RETURNS text AS
 $$
 DECLARE
 select_infra_score text:= 'select concat(''round(coalesce(''||''SUM('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),
-	'')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
+  '')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
 select_infra_score_cols text;
 select_average_value text:= 'select concat(''sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')
 ||'' =0 then 0 else 1 end)'',''/'',''(select count(infrastructure_name) from infrastructure_master where status=true) as average_value'') 
@@ -387,8 +395,10 @@ Execute select_1 into select_1_cols;
 Execute select_2 into select_2_cols;
 IF select_infra_score_cols <> '' THEN 
 infra_table= 'create or replace view infra_cluster_table_view as 
-select d.cluster_id,d.total_schools_data_received,c.infra_score,d.average_value,d.average_percent,'||select_1_cols||',
-initcap(c.cluster_name)as cluster_name,c.block_id,initcap(c.block_name)as block_name,c.district_id,initcap(c.district_name)as district_name,c.total_schools from 
+select d.cluster_id,
+initcap(c.cluster_name)as cluster_name,c.block_id,initcap(c.block_name)as block_name,
+c.district_id,initcap(c.district_name)as district_name,c.total_schools,d.total_schools_data_received,
+c.infra_score,d.average_value,d.average_percent,'||select_1_cols||' from 
 (
 select cluster_id,count(distinct(school_id)) as total_schools_data_received,'||select_average_value_cols||',
 '||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||'
@@ -396,11 +406,11 @@ from school_infrastructure_score group by cluster_id ) as d
 inner join 
 (select a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,b.total_schools,c.infra_score from 
 (select cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details 
-	where cluster_name is not null and block_name is not null and school_name is not null
-	group by cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
+  where cluster_name is not null and block_name is not null and school_name is not null
+  group by cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
 (select cluster_id,count(distinct(school_id)) as total_schools from school_hierarchy_details 
-	where cluster_name is not null and block_name is not null and school_name is not null
-	group by cluster_id)as b on a.cluster_id=b.cluster_id
+  where cluster_name is not null and block_name is not null and school_name is not null
+  group by cluster_id)as b on a.cluster_id=b.cluster_id
 inner join (select cluster_id,'||select_infra_score_cols||'
 from infra_score_view group by cluster_id) as c on a.cluster_id=c.cluster_id) as c
 on d.cluster_id=c.cluster_id';
@@ -414,10 +424,10 @@ inner join
 (select a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,b.cluster_latitude,b.cluster_longitude,c.infra_score
 ,c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent from 
 (select cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details 
-	where cluster_name is not null and block_name is not null and school_name is not null
-	group by cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
+  where cluster_name is not null and block_name is not null and school_name is not null
+  group by cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
 (select cluster_id,cluster_latitude,cluster_longitude from school_geo_master where cluster_latitude>0 and block_latitude>0 and school_latitude>0 and district_latitude>0
-	group by cluster_id,cluster_latitude,cluster_longitude)as b
+  group by cluster_id,cluster_latitude,cluster_longitude)as b
  on a.cluster_id=b.cluster_id
  inner join (select cluster_id,'||select_infra_score_cols||','||composite_infra_1_cols||',
  '||composite_infra_2_cols||'
@@ -434,12 +444,14 @@ select infra_cluster_reports('water','toilet');
 
 /*  school - reports (map and table) */
 
+drop view if exists infra_school_table_view cascade;
+
 create or replace FUNCTION infra_school_reports(category_1 text,category_2 text)
 RETURNS text AS
 $$
 DECLARE
 select_infra_score text:= 'select concat(''round(coalesce(''||''SUM('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),
-	'')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
+  '')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
 select_infra_score_cols text;
 select_average_value text:= 'select concat(''sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')
 ||'' =0 then 0 else 1 end)'',''/'',''(select count(infrastructure_name) from infrastructure_master where status=true) as average_value'') 
@@ -486,20 +498,21 @@ Execute select_1 into select_1_cols;
 Execute select_2 into select_2_cols;
 IF select_infra_score_cols <> '' THEN 
 infra_table= 'create or replace view infra_school_table_view as 
-select d.school_id,d.total_schools_data_received,c.infra_score,d.average_value,d.average_percent,'||select_1_cols||',
+select d.school_id,
 initcap(c.school_name)as school_name,c.cluster_id,initcap(c.cluster_name)as cluster_name,c.block_id,
-initcap(c.block_name)as block_name,c.district_id,initcap(c.district_name)as district_name,c.total_schools from 
+initcap(c.block_name)as block_name,c.district_id,initcap(c.district_name)as district_name,c.total_schools
+,d.total_schools_data_received,c.infra_score,d.average_value,d.average_percent,'||select_1_cols||' from 
 (
-	select school_id,count(distinct(school_id)) as total_schools_data_received,'||select_average_value_cols||',
+  select school_id,count(distinct(school_id)) as total_schools_data_received,'||select_average_value_cols||',
 '||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||'
  from school_infrastructure_score group by school_id ) as d
 inner join 
 (select a.school_id,a.school_name,a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,b.total_schools,c.infra_score from 
 (select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details 
-	where cluster_name is not null and block_name is not null and school_name is not null
-	group by school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
+  where cluster_name is not null and block_name is not null and school_name is not null
+  group by school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
 (select school_id,count(distinct(school_id)) as total_schools from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-	group by school_id)as b on a.school_id=b.school_id
+  group by school_id)as b on a.school_id=b.school_id
 inner join (select school_id,'||select_infra_score_cols||'
 from infra_score_view group by school_id)as c on a.school_id=c.school_id) as c
 on d.school_id=c.school_id';
@@ -512,12 +525,12 @@ from
   from school_infrastructure_score group by school_id)as d
 inner join 
 (select a.school_id,a.school_name,a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,b.school_latitude,b.school_longitude,c.infra_score 
-	,c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent from 
+  ,c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent from 
 (select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details 
-	where cluster_name is not null and block_name is not null and school_name is not null
-	group by school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
+  where cluster_name is not null and block_name is not null and school_name is not null
+  group by school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
 (select school_id,school_latitude,school_longitude from school_geo_master where cluster_latitude>0 and block_latitude>0 and school_latitude>0 and district_latitude>0
-	group by school_id,school_latitude,school_longitude)as b
+  group by school_id,school_latitude,school_longitude)as b
  on a.school_id=b.school_id
  inner join (select school_id,'||select_infra_score_cols||','||composite_infra_1_cols||',
  '||composite_infra_2_cols||'

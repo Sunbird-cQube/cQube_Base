@@ -67,7 +67,7 @@
   tags: [ install, update ]
 
 - name: Truncating previous tables
-  shell: psql -h localhost -d {{ db_name }} -U {{ db_user }} -a -q -f /tmp/postgres/truncate_tables.sql
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -a -q -f "/tmp/postgres/truncate_tables.sql"
   when: datasource_status == "unmatched"
   tags: [ install, update ]
 
