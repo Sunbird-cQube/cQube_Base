@@ -63,10 +63,10 @@
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="attTooltip"
+                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu id="attTooltip"
                                     aria-labelledby="dropdownBasic1">
                                     <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
                                         <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
                                             <div id="div3" style="height:1000px auto; width: 500px auto;">
                                                 <table>
@@ -145,10 +145,10 @@
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="semTooltip"
+                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu id="semTooltip"
                                     aria-labelledby="dropdownBasic2">
                                     <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
                                         <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
                                             <div id="div3" style="height:1000px auto; width: 500px auto;">
                                                 <table>
@@ -181,7 +181,7 @@
                                                             <td *ngIf="i>semLength">{{tooltipSemKeys[i]}}</td>
                                                             <td *ngIf="i>semLength">:</td>
                                                             <td *ngIf="i>semLength">
-                                                                {{healthCardData['student_semester'][key]}}
+                                                                {{healthCardData['student_semester'][key]}} %
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -247,10 +247,10 @@
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="patTooltip"
+                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu id="patTooltip"
                                     aria-labelledby="dropdownBasic3">
                                     <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
                                         <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
                                             <div id="div3" style="height:1000px auto; width: 500px auto;">
                                                 <table>
@@ -281,6 +281,7 @@
                                                             <td>:</td>
                                                             <td>
                                                                 {{healthCardData['pat_performance']['grade_wise_performance'][key]}}
+                                                                %
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -348,19 +349,44 @@
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="infraTooltip"
+                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu id="infraTooltip"
                                     aria-labelledby="dropdownBasic4">
                                     <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
                                         <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
                                             <div id="div3" style="height:1000px auto; width: 500px auto;">
                                                 <table>
                                                     <tbody>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                    Details</strong>
+                                                            </td>
+                                                        </tr>
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let infra of tooltipInfra;let i=index">
-                                                            <td> {{toolTipInfraKeys[i]}}</td>
-                                                            <td>:</td>
-                                                            <td>{{healthCardData['school_infrastructure'][infra]}}</td>
+                                                            <td *ngIf="i<= infraLength"> {{toolTipInfraKeys[i]}}</td>
+                                                            <td *ngIf="i<= infraLength">:</td>
+                                                            <td *ngIf="i<= infraLength">
+                                                                {{healthCardData['school_infrastructure'][infra]}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <strong
+                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                    School_Infrastructure_Metrics</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let infra of tooltipInfra;let i=index">
+                                                            <td *ngIf="i> infraLength"> {{toolTipInfraKeys[i]}}</td>
+                                                            <td *ngIf="i> infraLength">:</td>
+                                                            <td *ngIf="i> infraLength && infraTooltipMetrics[i]">
+                                                                {{healthCardData['school_infrastructure'][infra]}} %
+                                                            </td>
+                                                            <td *ngIf="i> infraLength && !infraTooltipMetrics[i]">
+                                                                {{healthCardData['school_infrastructure'][infra]}}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -392,10 +418,9 @@
                                         </td>
                                     </tr>
                                     <br>
-                                    <tr style="font-weight: bold;">
-                                        <td>Areas To Focus</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['school_infrastructure']['areas_to_focus']}}</td>
+                                    <tr colspan="3" style="font-weight: bold;">
+                                        <td>Areas To Focus : &nbsp;&nbsp;
+                                            {{healthCardData['school_infrastructure']['areas_to_focus']}}</td>
                                     </tr>
                                 </tbody>
 
@@ -428,10 +453,10 @@
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="udiseTooltip"
+                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu id="udiseTooltip"
                                     aria-labelledby="dropdownBasic5">
                                     <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
                                         <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
                                             <div id="div3" style="height:1000px auto; width: 500px auto;">
                                                 <table>
@@ -528,10 +553,10 @@
                                     ngbDropdownToggle>
                                     <em class="fa fa-info-circle" style="color: blue;"></em>
                                 </button>
-                                <div class="healthcard-tooltip-dropdown" ngbDropdownMenu id="crcTooltip"
+                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu id="crcTooltip"
                                     aria-labelledby="dropdownBasic6">
                                     <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;">
+                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
                                         <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
                                             <div id="div3" style="height:1000px auto; width: 500px auto;">
                                                 <table>
@@ -561,7 +586,11 @@
                                                             *ngFor="let key of tooltipCrc;let i=index">
                                                             <td *ngIf="i >crcLength">{{tooltipCrcKeys[i]}}</td>
                                                             <td *ngIf="i >crcLength">:</td>
-                                                            <td *ngIf="i >crcLength">
+                                                            <td
+                                                                *ngIf="i >crcLength && tooltipCrcKeys[i].includes('Percent')">
+                                                                {{healthCardData['crc_visit'][key]}} %</td>
+                                                            <td
+                                                                *ngIf="i >crcLength  && !tooltipCrcKeys[i].includes('Percent')">
                                                                 {{healthCardData['crc_visit'][key]}}</td>
                                                         </tr>
                                                     </tbody>
