@@ -87,6 +87,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   public semLength;
   public udiseLength;
   public crcLength;
+  public infraLength;
 
   placement = 'bottom-right';
 
@@ -132,6 +133,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.semLength = 2;
         this.udiseLength = 4;
         this.crcLength = 1;
+        this.infraLength = 3;
         this.height = '250px';
         var dist;
         if (this.districtName.match(/^\d/)) {
@@ -153,7 +155,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['district_level_rank_within_the_state'];
-          this.schoolInfraRankKye = ['Rank (within State)'];
+          this.schoolInfraRankKye = ['At State Level'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
@@ -173,7 +175,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
           this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
-          this.UDISE = ['school_infrastructure'];
+          this.UDISE = ['infrastructure_score'];
           this.UDISEKeys = ['Infrastructure Score'];
           this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
           this.UDISECategoryKey = ['Infrastructure Score Less than 33%', 'Infrastructure Score between 33% to 60%', 'Infrastructure Score between 60% to 75%', 'Infrastructure Score Above 75%'];
@@ -189,6 +191,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.semLength = 4;
         this.udiseLength = 5;
         this.crcLength = 3;
+        this.infraLength = 5;
         this.height = '270px';
         var block;
         id;
@@ -208,7 +211,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['block_level_rank_within_the_state', 'block_level_rank_within_the_district'];
-          this.schoolInfraRankKye = ['Rank (within State)', 'Rank (within District)'];
+          this.schoolInfraRankKye = ['At State Level', 'At District Level'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
@@ -226,7 +229,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
           this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
-          this.UDISE = ['school_infrastructure'];
+          this.UDISE = ['infrastructure_score'];
           this.UDISEKeys = ['Infrastructure Score'];
           this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
           this.UDISECategoryKey = ['Infrastructure Score Less than 33%', 'Infrastructure Score between 33% to 60%', 'Infrastructure Score between 60% to 75%', 'Infrastructure Score Above 75%'];
@@ -242,6 +245,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.semLength = 6;
         this.udiseLength = 6;
         this.crcLength = 5;
+        this.infraLength = 7;
         this.height = '300px';
         var cluster;
         let blkId;
@@ -263,7 +267,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['cluster_level_rank_within_the_state', 'cluster_level_rank_within_the_district', 'cluster_level_rank_within_the_block'];
-          this.schoolInfraRankKye = ['Rank (within State)', 'Rank (within District)', 'Rank (within Block)'];
+          this.schoolInfraRankKye = ['At State Level', 'At District Level', 'At Block Level'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
@@ -281,7 +285,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
           this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
-          this.UDISE = ['school_infrastructure'];
+          this.UDISE = ['infrastructure_score'];
           this.UDISEKeys = ['Infrastructure Score'];
           this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
           this.UDISECategoryKey = ['Infrastructure Score Less than 33%', 'Infrastructure Score between 33% to 60%', 'Infrastructure Score between 60% to 75%', 'Infrastructure Score Above 75%'];
@@ -297,6 +301,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.semLength = 9;
         this.udiseLength = 8;
         this.crcLength = 7;
+        this.infraLength = 9;
         this.height = '220px';
         var school;
         var blok;
@@ -317,7 +322,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['school_level_rank_within_the_state', 'school_level_rank_within_the_district', 'school_level_rank_within_the_block', 'school_level_rank_within_the_cluster'];
-          this.schoolInfraRankKye = ['Rank (within State)', 'Rank (within District)', 'Rank (within Block)', 'Rank (within School)'];
+          this.schoolInfraRankKye = ['At State Level', 'At District Level', 'At Block Level', 'At Cluster Level'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
@@ -335,7 +340,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
           this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
 
-          this.UDISE = ['school_infrastructure'];
+          this.UDISE = ['infrastructure_score'];
           this.UDISEKeys = ['Infrastructure Score'];
           this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
           this.UDISECategoryKey = ['Infrastructure Score Less than 33%', 'Infrastructure Score between 33% to 60%', 'Infrastructure Score between 60% to 75%', 'Infrastructure Score Above 75%'];
@@ -363,6 +368,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   udiseColor;
   patPerformTooltip = [];
   patPerformTooltipKeys = [];
+  infraTooltipMetrics = [];
   semPerformancePercent = ['percent_below_33', 'percent_between_33_60', 'percent_between_60_75', 'percent_above_75'];
   showData(healthCardData) {
     this.updatedKeys = [];
@@ -404,6 +410,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.tooltipUDISEKyes = [];
     this.tooltipCrc = [];
     this.tooltipCrcKeys = [];
+    this.infraTooltipMetrics = [];
     if (healthCardData['school_infrastructure'] && healthCardData['school_infrastructure'] != null) {
       this.tooltipInfra = Object.keys(healthCardData['school_infrastructure']);
       this.tooltipInfra = this.tooltipInfra.filter((key) => {
@@ -413,7 +420,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         myKey = this.stringConverter(key);
         this.toolTipInfraKeys.push(myKey);
       })
+
       this.infraColor = this.service.colorGredient(healthCardData['school_infrastructure']['infra_score']);
+      this.toolTipInfraKeys.map(key => {
+        this.infraTooltipMetrics.push(key.includes('Percent'));
+      });
     }
     if (healthCardData['student_attendance'] && healthCardData['student_attendance'] != null) {
       this.tooltipStdAttendance = Object.keys(healthCardData['student_attendance']);
@@ -514,6 +525,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
 
   levels = [{ key: 'district', name: 'District' }, { key: 'block', name: 'Block' }, { key: 'cluster', name: 'Cluster' }, { key: 'school', name: 'School' }];
   selectedLevel(callSubmit = false) {
+    sessionStorage.removeItem('health-card-info');
     this.allData = [];
     this.ids = [];
     this.names = [];

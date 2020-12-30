@@ -53,6 +53,12 @@ if [[ $state_found == 0 ]] ; then
 fi
 }
 
+check_static_datasource(){
+if ! [[ $2 == "udise" || $2 == "state" ]]; then
+    echo "Error - Please enter either udise or state for $1"; fail=1
+fi
+}
+
 check_base_dir(){
 if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
   echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
@@ -68,7 +74,14 @@ else
         installed_ver=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_VERSION )
         installed_version=$(cut -d "=" -f2 <<< "$installed_ver")
          echo "Currently cQube $installed_version version is installed in this machine. Follow Upgradtion process if you want to upgrade."
-         exit 1
+	 while true; do
+             read -p "Do you wish to reinstall cQube (yes/no)? " yn
+             case $yn in
+                 yes) break;;
+                 no) exit;;
+                 * ) echo "Please answer yes or no.";;
+             esac
+         done
    fi
 fi
 }
@@ -260,8 +273,8 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("diksha_columns" "state_code" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" "s3_secret_key" \
-		"s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
+declare -a arr=("diksha_columns" "state_code" "static_datasource" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" \
+		"s3_secret_key" "s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
 		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" "session_timeout") 
 
 # Create and empty array which will store the key and value pair from config file
@@ -301,6 +314,13 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_state $key $value
+       fi
+       ;;
+   static_datasource)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_static_datasource $key $value
        fi
        ;;
    system_user_name)

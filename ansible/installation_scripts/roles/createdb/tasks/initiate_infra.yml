@@ -17,6 +17,7 @@
     - config.sql
     - infrastructure_master.csv
     - udise_config.csv
+    - truncate_tables.sql
   tags: [ install, update ]
 
 - name: Run queries from SQL script
@@ -65,7 +66,17 @@
     path_to_script: /tmp/postgres/config.sql
   tags: [ install, update ]
 
-- name: Stopping postgresql
+- name: Truncating previous tables
+  shell: psql "host=localhost dbname={{ db_name }} user={{ db_user }} password={{ db_password }}" -a -q -f "/tmp/postgres/truncate_tables.sql"
+  when: datasource_status == "unmatched"
+  tags: [ install, update ]
+
+- name: Clearing s3 output bucket data
+  shell: aws s3 rm s3://{{ s3_output_bucket }}  --recursive
+  when: datasource_status == "unmatched"
+  tags: [ install, update ]
+
+- name: Stopping postgresql 
   service: 
     name: postgresql
     state: stopped
