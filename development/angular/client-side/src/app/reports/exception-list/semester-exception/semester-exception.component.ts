@@ -24,7 +24,7 @@ export class SemesterExceptionComponent implements OnInit {
   public dateRange: any = '';
 
   // to hide and show the hierarchy details
-  public skul: boolean = false;
+  public skul: boolean = true;
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
@@ -96,6 +96,9 @@ export class SemesterExceptionComponent implements OnInit {
       this.semesters = res['data'];
       this.semester = this.semesters[this.semesters.length - 1].id;
       this.districtWise();
+    }, err => {
+      this.semesters = [];
+      this.commonService.loaderAndErr(this.semesters);
     })
   }
 
