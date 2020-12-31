@@ -47,6 +47,15 @@ sed -i '/session_timeout_in_seconds:/d' roles/keycloak/vars/main.yml
 echo "session_timeout_in_seconds: $timeout_value" >> roles/keycloak/vars/main.yml
 }
 
+check_state()
+{
+sc=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STATE_CODE )
+installed_state_code=$(cut -d "=" -f2 <<< "$sc")
+if [[ ! "$2" == "$installed_state_code" ]]; then
+    echo "Error - State code should be same as previous installation. Please refer the state_list file and enter the correct value."; fail=1
+fi
+}
+
 check_static_datasource(){
 if ! [[ $2 == "udise" || $2 == "state" ]]; then
     echo "Error - Please enter either udise or state for $1"; fail=1
@@ -277,7 +286,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("diksha_columns" "static_datasource" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" \
+declare -a arr=("diksha_columns" "state_code" "static_datasource" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" \
 		"s3_secret_key" "s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
 		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" "session_timeout")
 
@@ -325,6 +334,13 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_kc_config_otp $key $value
+       fi
+       ;;
+   state_code)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_state $key $value
        fi
        ;;
    static_datasource)
