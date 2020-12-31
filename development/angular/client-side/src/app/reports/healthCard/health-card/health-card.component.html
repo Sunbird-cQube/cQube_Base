@@ -627,12 +627,7 @@
                                         Category</strong>
                                     <tr *ngFor="let crc of crcVisit; let i=index">
                                         <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">
-                                            <span>{{crcVisitKeys[i]}}</span>
-                                        </td>
-                                        <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">:</td>
-                                        <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">
-                                            <span>{{healthCardData['crc_visit'][crc]}} %
-                                            </span>
+                                            <span>{{crcVisitKeys[i].replace("Schools", "School")}}</span>
                                         </td>
                                         <td *ngIf="level !='school'"> <span>{{crcVisitKeys[i]}}</span></td>
                                         <td *ngIf="level !='school'">:</td>
