@@ -4560,19 +4560,18 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
 /*crc*/
 
 create or replace view hc_crc_district as
-select 
-spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
+select spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
  from 
 ((select count(distinct school_id) as total_schools,district_id,district_name,
-	round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1)) as no_of_schools_per_crc 
-	from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
-	group by district_id,district_name) s left join 
+    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2)) as no_of_schools_per_crc 
+    from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+    group by district_id,district_name) s left join 
 (select district_id as dist_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
 sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10 from
  (select district_id,sum(visit_count)as school_count, count(distinct(school_id)) filter (where visit_count between 1 and 2) as schools_1_2,
@@ -4580,23 +4579,23 @@ sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10
  count(distinct(school_id)) filter (where visit_count between 6 and 10) as schools_6_10,
  count(distinct(school_id)) filter (where visit_count >10) as schools_10
  from crc_visits_frequency 
- where crc_name is not null and cluster_name is not null group by district_id)as d group by district_id)as t  on s.district_id=t.dist_id)as spd
+ where  cluster_name is not null group by district_id)as d group by district_id)as t  on s.district_id=t.dist_id)as spd
 left join 
 (select district_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
-	where visit_count>0 and crc_name is not null and cluster_name is not null group by district_id)as scl_v
+    where visit_count>0 and  cluster_name is not null group by district_id)as scl_v
 on spd.district_id=scl_v.district_id;
 
 create or replace view hc_crc_block as
 select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
 from (
 (select district_id,district_name,block_id,block_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc 
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc 
     from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
      group by district_id,district_name,block_id,block_name) s left join 
 (select block_id as blk_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
@@ -4607,10 +4606,10 @@ from
  count(distinct(school_id)) filter (where visit_count between 6 and 10) as schools_6_10,
  count(distinct(school_id)) filter (where visit_count >10) as schools_10
  from crc_visits_frequency 
- where crc_name is not null and cluster_name is not null group by block_id) d group by block_id) t on s.block_id=t.blk_id) spd
+ where  cluster_name is not null group by block_id) d group by block_id) t on s.block_id=t.blk_id) spd
 left join 
 (select block_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
-	where visit_count>0 and crc_name is not null and cluster_name is not null group by block_id)as scl_v
+    where visit_count>0  and cluster_name is not null group by block_id)as scl_v
 on spd.block_id=scl_v.block_id;	
 
 create or replace view hc_crc_cluster as
@@ -4618,14 +4617,14 @@ select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,
 initcap(spd.cluster_name)as cluster_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
-coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,
+coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
 from (
 (select district_id,district_name,block_id,block_name,cluster_id,cluster_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc
      from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
       group by district_id,district_name,block_id,block_name,cluster_id,cluster_name) s left join 
 (select cluster_id as clt_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
@@ -4636,10 +4635,10 @@ from
  count(distinct(school_id)) filter (where visit_count between 6 and 10) as schools_6_10,
  count(distinct(school_id)) filter (where visit_count >10) as schools_10
  from crc_visits_frequency 
- where crc_name is not null and cluster_name is not null group by cluster_id) d group by cluster_id) t on s.cluster_id=t.clt_id) spd
+ where  cluster_name is not null group by cluster_id) d group by cluster_id) t on s.cluster_id=t.clt_id) spd
 left join 
 (select cluster_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
-	where visit_count>0 and crc_name is not null and cluster_name is not null group by cluster_id)as scl_v
+    where visit_count>0  and cluster_name is not null group by cluster_id)as scl_v
 on spd.cluster_id=scl_v.cluster_id;
 
 create or replace view hc_crc_school as
@@ -4647,19 +4646,19 @@ select spd.district_id,initcap(spd.district_name)as district_name,spd.block_id,i
 initcap(spd.school_name) as school_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,
-coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
-coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,2),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,2),0) as schools_1_2,
+coalesce(round(spd.schools_3_5*100/spd.total_schools,2),0) as schools_3_5,
+coalesce(round(spd.schools_6_10*100/spd.total_schools,2),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,2),0) as schools_10,spd.no_of_schools_per_crc,
 coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),2),0) as visit_percent_per_school
 from (
 (select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,
   count(distinct school_id) as total_schools,
-round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc 
-    from school_hierarchy_details  where cluster_name is not null and block_name is not null 
+round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),2) as no_of_schools_per_crc
+    from school_hierarchy_details  where cluster_name is not null and block_name is not null
     and school_name is not null and district_name is not null
-    group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name) s left join 
+    group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name) s left join
 (select school_id as schl_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
 sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10
 from
@@ -4669,11 +4668,11 @@ case when sum(visit_count) between 3 and 5 then count(distinct(school_id)) end a
 case when sum(visit_count) between 6 and 10 then count(distinct(school_id)) end as schools_6_10,
 case when sum(visit_count) >10 then count(distinct(school_id)) end as schools_10
 from crc_visits_frequency
-where visit_count>0 and crc_name is not null and cluster_name is not null
+where visit_count>0 and cluster_name is not null
 group by school_id) d group by school_id) t on s.school_id=t.schl_id) spd
-left join 
-(select school_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
-  where visit_count>0 and crc_name is not null and cluster_name is not null group by school_id)as scl_v
+left join
+(select school_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency
+  where visit_count>0  and cluster_name is not null group by school_id)as scl_v
 on spd.school_id=scl_v.school_id;
 
 
