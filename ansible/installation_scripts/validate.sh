@@ -116,6 +116,8 @@ if [ $temp == 0 ]; then
     then
         echo "WARNING: Postgres found."
         echo "Removing Postgres..."
+        sudo systemctl stop kong.service > /dev/null 2>&1
+        sleep 5
         sudo systemctl stop keycloak.service > /dev/null 2>&1
         sleep 5
         sudo systemctl stop postgresql
