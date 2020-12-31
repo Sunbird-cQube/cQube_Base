@@ -74,14 +74,14 @@ ll.school_latitude,ll.school_longitude,ll.district_id,hr.district_name,ll.distri
 ll.district_longitude,ll.block_id,hr.block_name,'NA' as brc_name,ll.block_latitude,ll.block_longitude,ll.cluster_id,
 hr.cluster_name,hr.crc_name,ll.cluster_latitude,ll.cluster_longitude,ll.semester,ll.students_count,
 ll.subject_1_marks_scored,ll.subject_1_total_marks,
-    ll.subject_3_marks_scored,ll.subject_3_total_marks,ll.subject_2_marks_scored,ll.subject_2_total_marks,ll.subject_4_marks_scored,ll.subject_4_total_marks
-    ,ll.subject_5_marks_scored,ll.subject_5_total_marks,ll.subject_7_marks_scored,ll.subject_7_total_marks,ll.subject_6_marks_scored,ll.subject_6_total_marks
-    ,ll.subject_8_marks_scored,ll.subject_8_total_marks
+	ll.subject_3_marks_scored,ll.subject_3_total_marks,ll.subject_2_marks_scored,ll.subject_2_total_marks,ll.subject_4_marks_scored,ll.subject_4_total_marks
+	,ll.subject_5_marks_scored,ll.subject_5_total_marks,ll.subject_7_marks_scored,ll.subject_7_total_marks,ll.subject_6_marks_scored,ll.subject_6_total_marks
+	,ll.subject_8_marks_scored,ll.subject_8_total_marks
 
 from (select at.subject_1_marks_scored,at.subject_1_total_marks,
-    at.subject_3_marks_scored,at.subject_3_total_marks,at.subject_2_marks_scored,at.subject_2_total_marks,at.subject_4_marks_scored,at.subject_4_total_marks
-    ,at.subject_5_marks_scored,at.subject_5_total_marks,at.subject_7_marks_scored,at.subject_7_total_marks,at.subject_6_marks_scored,at.subject_6_total_marks
-    ,at.subject_8_marks_scored,at.subject_8_total_marks,at.students_count,at.semester,at.school_id,at.grade,
+	at.subject_3_marks_scored,at.subject_3_total_marks,at.subject_2_marks_scored,at.subject_2_total_marks,at.subject_4_marks_scored,at.subject_4_total_marks
+	,at.subject_5_marks_scored,at.subject_5_total_marks,at.subject_7_marks_scored,at.subject_7_total_marks,at.subject_6_marks_scored,at.subject_6_total_marks
+	,at.subject_8_marks_scored,at.subject_8_total_marks,at.students_count,at.semester,at.school_id,at.grade,
 sg.school_latitude,sg.school_longitude,sg.district_id,sg.district_latitude,sg.district_longitude,sg.block_id,sg.block_latitude,sg.block_longitude,
 sg.cluster_id,sg.cluster_latitude,sg.cluster_longitude
  from (
@@ -94,53 +94,49 @@ sum(subject_7_marks_scored)as subject_7_marks_scored,sum(subject_7_total_marks) 
 sum(subject_6_marks_scored)as subject_6_marks_scored,sum(subject_6_total_marks) as subject_6_total_marks,
 sum(subject_8_marks_scored)as subject_8_marks_scored,sum(subject_8_total_marks) as subject_8_total_marks
 ,count(distinct(student_uid)) as students_count,semester,school_id,grade
-from (
-select
+from (select
 sum(subject_1) as subject_1_marks_scored,
 sum(case when subject_1  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
-    when grade between 6 and 8 then 80 end) as subject_1_total_marks,
+	when grade between 6 and 8 then 80 end) as subject_1_total_marks,
 sum(subject_3) as subject_3_marks_scored,
 sum(case when subject_3  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
-    when grade between 6 and 8 then 80 end) as subject_3_total_marks,
+	when grade between 6 and 8 then 80 end) as subject_3_total_marks,
 sum(subject_2) as subject_2_marks_scored,
 sum(case when subject_2  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
-    when grade between 6 and 8 then 80 end) as subject_2_total_marks,
+	when grade between 6 and 8 then 80 end) as subject_2_total_marks,
 sum(subject_4) as subject_4_marks_scored,
 sum(case when subject_4  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
-    when grade between 6 and 8 then 80 end) as subject_4_total_marks,
+	when grade between 6 and 8 then 80 end) as subject_4_total_marks,
 sum(subject_5) as subject_5_marks_scored,
 sum(case when subject_5  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
-    when grade between 6 and 8 then 80 end) as subject_5_total_marks,
+	when grade between 6 and 8 then 80 end) as subject_5_total_marks,
 sum(subject_6) as subject_6_marks_scored,
 sum(case when subject_6  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
-    when grade between 6 and 8 then 80 end) as subject_6_total_marks,
+	when grade between 6 and 8 then 80 end) as subject_6_total_marks,
 sum(subject_7) as subject_7_marks_scored,
 sum(case when subject_7  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
-    when grade between 6 and 8 then 80 end) as subject_7_total_marks,
+	when grade between 6 and 8 then 80 end) as subject_7_total_marks,
 sum(subject_8) as subject_8_marks_scored,
 sum(case when subject_8  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
-    when grade between 6 and 8 then 80 end) as subject_8_total_marks,
+	when grade between 6 and 8 then 80 end) as subject_8_total_marks,
 student_uid,school_id,semester,grade
 from student_semester_trans
-group by student_uid,school_id,semester,grade
-
-)as t group by school_id,semester,grade
-     ) as at left join school_geo_master as sg on at.school_id=sg.school_id) as ll left join
-school_hierarchy_details as hr on ll.school_id=hr.school_id;
-
+group by student_uid,school_id,semester,grade)as t group by school_id,semester,grade) as at left join school_geo_master as sg on at.school_id=sg.school_id) as ll left join
+school_hierarchy_details as hr on ll.school_id=hr.school_id
+where ll.school_latitude>0 and ll.school_longitude>0 and  hr.cluster_name is not null and hr.district_name is not null
+and hr.block_name is not null and hr.school_name is not null;
 insert into school_student_subject_total_marks as a
 (school_id,grade,school_name,school_latitude,school_longitude,district_id,district_name,district_latitude,district_longitude,
 block_id,block_name,brc_name,block_latitude,block_longitude,cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,semester,
-students_count,subject_1_marks_scored,subject_1_total_marks,
-    subject_2_marks_scored,subject_2_total_marks,subject_3_marks_scored,subject_3_total_marks,subject_4_marks_scored,subject_4_total_marks
-    ,subject_5_marks_scored,subject_5_total_marks,subject_6_marks_scored,subject_6_total_marks,subject_7_marks_scored,subject_7_total_marks
-    ,subject_8_marks_scored,subject_8_total_marks)
+students_count,subject_1_marks_scored,subject_1_total_marks,subject_2_marks_scored,subject_2_total_marks,subject_3_marks_scored,subject_3_total_marks,subject_4_marks_scored,subject_4_total_marks
+,subject_5_marks_scored,subject_5_total_marks,subject_6_marks_scored,subject_6_total_marks,subject_7_marks_scored,subject_7_total_marks
+,subject_8_marks_scored,subject_8_total_marks)
 select school_id,grade,school_name,school_latitude,school_longitude,district_id,district_name,district_latitude,district_longitude,
 block_id,block_name,brc_name,block_latitude,block_longitude,cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,semester,
 students_count,subject_1_marks_scored,subject_1_total_marks,
-    subject_2_marks_scored,subject_2_total_marks,subject_3_marks_scored,subject_3_total_marks,subject_4_marks_scored,subject_4_total_marks
-    ,subject_5_marks_scored,subject_5_total_marks,subject_6_marks_scored,subject_6_total_marks,subject_7_marks_scored,subject_7_total_marks
-    ,subject_8_marks_scored,subject_8_total_marks from assessment_trans_to_aggregate
+subject_2_marks_scored,subject_2_total_marks,subject_3_marks_scored,subject_3_total_marks,subject_4_marks_scored,subject_4_total_marks
+,subject_5_marks_scored,subject_5_total_marks,subject_6_marks_scored,subject_6_total_marks,subject_7_marks_scored,subject_7_total_marks
+,subject_8_marks_scored,subject_8_total_marks from assessment_trans_to_aggregate
 on conflict (semester,school_id,grade)
 do update set grade=a.grade,year= a.year,school_id=a.school_id,school_name=a.school_name,
 school_latitude=a.school_latitude,school_longitude=a.school_longitude,district_id=a.district_id,
@@ -150,14 +146,13 @@ block_longitude=a.block_longitude,cluster_id=a.cluster_id,cluster_name=a.cluster
 cluster_latitude=a.cluster_latitude,cluster_longitude=a.cluster_longitude,semester=a.semester,
 students_count=a.students_count,
 subject_1_marks_scored=a.subject_1_marks_scored,subject_1_total_marks=a.subject_1_total_marks,
-    subject_2_marks_scored=a.subject_2_marks_scored,subject_2_total_marks=a.subject_2_total_marks,
-    subject_3_marks_scored=a.subject_3_marks_scored,subject_3_total_marks=a.subject_3_total_marks,
-    subject_4_marks_scored=a.subject_4_marks_scored,subject_4_total_marks=a.subject_4_total_marks
-    ,subject_5_marks_scored=a.subject_5_marks_scored,subject_5_total_marks=a.subject_5_total_marks,
-    subject_6_marks_scored=a.subject_6_marks_scored,subject_6_total_marks=a.subject_6_total_marks,
-    subject_7_marks_scored=a.subject_7_marks_scored,subject_7_total_marks=a.subject_7_total_marks
-    ,subject_8_marks_scored=a.subject_8_marks_scored,subject_8_total_marks=a.subject_8_total_marks
-''',
+subject_2_marks_scored=a.subject_2_marks_scored,subject_2_total_marks=a.subject_2_total_marks,
+subject_3_marks_scored=a.subject_3_marks_scored,subject_3_total_marks=a.subject_3_total_marks,
+subject_4_marks_scored=a.subject_4_marks_scored,subject_4_total_marks=a.subject_4_total_marks
+,subject_5_marks_scored=a.subject_5_marks_scored,subject_5_total_marks=a.subject_5_total_marks,
+subject_6_marks_scored=a.subject_6_marks_scored,subject_6_total_marks=a.subject_6_total_marks,
+subject_7_marks_scored=a.subject_7_marks_scored,subject_7_total_marks=a.subject_7_total_marks
+,subject_8_marks_scored=a.subject_8_marks_scored,subject_8_total_marks=a.subject_8_total_marks;''',
 "sem_select_student_subject_total_marks":"select * from school_student_subject_total_marks limit 1",
 "sem_school-wise-assesment":'''create or replace view school_semester_no_data as
 select school_id,semester from school_student_subject_total_marks 
@@ -186,7 +181,6 @@ AND block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS N
 AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL 
 and school_id not in (select school_id from school_semester_no_data) and cluster_name is not null
 GROUP BY school_id,grade; 
-
 select a.x_axis,school_name,cluster_id,cluster_name,crc_name,block_id,block_name,x_value,district_id,district_name,y_axis,y_value,z_axis,z_value,
 students_count,total_schools,a.semester, 
 b.grade_3,b.grade_4,b.grade_5,b.grade_6,b.grade_7,b.grade_8
@@ -213,9 +207,7 @@ left join
 'select distinct(grade) from school_grade order by 1') as 
 (x_axis bigint,"grade_3" numeric,"grade_4" numeric,"grade_5" numeric,"grade_6" numeric
 ,"grade_7" numeric,"grade_8" numeric)
-) as b
-on a.x_axis=b.x_axis
-''',
+) as b on a.x_axis=b.x_axis''',
 "sem_district-wise-assesment":'''create or replace view district_grade as
 SELECT district_id AS x_axis,grade,
 Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
