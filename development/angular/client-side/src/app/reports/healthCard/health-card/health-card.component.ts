@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppServiceComponent } from 'src/app/app.service';
 import { HealthCardService } from 'src/app/services/health-card.service';
@@ -110,6 +110,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.params && this.params.level) {
+      document.getElementById('spinner').style.display = 'block';
       this.value = this.params.value;
       this.searchInput.nativeElement.value = this.params.value;
       this._cd.detectChanges();
@@ -547,6 +548,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         if (callSubmit) {
           this.onSubmit();
         }
+      }, err => {
+        document.getElementById('myInput')['disabled'] = true;
+        this.placeHolder = "No districts name/id available";
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('warning').style.display = 'none';
       });
     }
 
@@ -561,6 +567,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         if (callSubmit) {
           this.onSubmit();
         }
+      }, err => {
+        document.getElementById('myInput')['disabled'] = true;
+        this.placeHolder = "No blocks name/id available";
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('warning').style.display = 'none';
       });
     }
 
@@ -575,6 +586,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         if (callSubmit) {
           this.onSubmit();
         }
+      }, err => {
+        document.getElementById('myInput')['disabled'] = true;
+        this.placeHolder = "No clusters name/id available";
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('warning').style.display = 'none';
       });
     }
 
@@ -589,6 +605,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         if (callSubmit) {
           this.onSubmit();
         }
+      }, err => {
+        document.getElementById('myInput')['disabled'] = true;
+        this.placeHolder = "No schools name/id available";
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('warning').style.display = 'none';
       });
     }
   }
