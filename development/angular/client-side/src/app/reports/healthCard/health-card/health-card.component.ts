@@ -161,25 +161,25 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
           this.schoolAttendanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.schoolAttendanceCategoryKey = ['Attendance Less than 33%', 'Attendance between 33% to 60%', 'Attendance between 60% to 75%', 'Attendance Above 75%'];
+          this.schoolAttendanceCategoryKey = ['Attendance Less Than 33%', 'Attendance Between 33% to 60%', 'Attendance Between 60% to 75%', 'Attendance Above 75%'];
 
           this.semPerformance = ['performance'];
           this.semPerformanceKeys = ['Performance']
           this.semPerformanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.semPerformanceCategoryKey = ['Performance Less than 33%', 'Performance between 33% to 60%', 'Performance between 60% to 75%', 'Performance Above 75%'];
+          this.semPerformanceCategoryKey = ['Performance Less Than 33%', 'Performance Between 33% to 60%', 'Performance Between 60% to 75%', 'Performance Above 75%'];
 
           this.patPerformance = ['district_performance'];
           this.patPerformanceKeys = ['Performance'];
           this.patPerformanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.patPerformanceCategoryKay = ['Schools Less than 33%', 'Schools between 33% to 60%', 'Schools between 60% to 75%', 'Schools Above 75%'];
+          this.patPerformanceCategoryKay = ['Schools Less Than 33%', 'Schools Between 33% to 60%', 'Schools Between 60% to 75%', 'Schools Above 75%'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
+          this.crcVisitKeys = ['Schools Visited 0 Times', 'Schools Visited 1-2 Times', 'Schools Visited 3-5 Times', 'Schools Visited 6-10 Times', 'Schools Visited more Than 10 Times'];
 
           this.UDISE = ['infrastructure_score'];
           this.UDISEKeys = ['Infrastructure Score'];
           this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.UDISECategoryKey = ['Infrastructure Score Less than 33%', 'Infrastructure Score between 33% to 60%', 'Infrastructure Score between 60% to 75%', 'Infrastructure Score Above 75%'];
+          this.UDISECategoryKey = ['Infrastructure Score Less Than 33%', 'Infrastructure Score Between 33% to 60%', 'Infrastructure Score Between 60% to 75%', 'Infrastructure Score Above 75%'];
 
           this.showData(this.healthCardData);
           document.getElementById('spinner').style.display = 'none';
@@ -217,23 +217,23 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
           this.schoolAttendanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.schoolAttendanceCategoryKey = ['Attendance Less than 33%', 'Attendance between 33% to 60%', 'Attendance between 60% to 75%', 'Attendance Above 75%'];
+          this.schoolAttendanceCategoryKey = ['Attendance Less Than 33%', 'Attendance Between 33% to 60%', 'Attendance Between 60% to 75%', 'Attendance Above 75%'];
 
           this.semPerformance = ['performance'];
           this.semPerformanceKeys = ['Performance'];
           this.semPerformanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.semPerformanceCategoryKey = ['Performance Less than 33%', 'Performance between 33% to 60%', 'Performance between 60% to 75%', 'Performance Above 75%'];
+          this.semPerformanceCategoryKey = ['Performance Less Than 33%', 'Performance Between 33% to 60%', 'Performance Between 60% to 75%', 'Performance Above 75%'];
 
           this.patPerformance = ['block_performance'];
           this.patPerformanceKeys = ['Performance'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
+          this.crcVisitKeys = ['Schools Visited 0 Times', 'Schools Visited 1-2 Times', 'Schools Visited 3-5 Times', 'Schools Visited 6-10 Times', 'Schools Visited more Than 10 Times'];
 
           this.UDISE = ['infrastructure_score'];
           this.UDISEKeys = ['Infrastructure Score'];
           this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.UDISECategoryKey = ['Infrastructure Score Less than 33%', 'Infrastructure Score between 33% to 60%', 'Infrastructure Score between 60% to 75%', 'Infrastructure Score Above 75%'];
+          this.UDISECategoryKey = ['Infrastructure Score Less Than 33%', 'Infrastructure Score Between 33% to 60%', 'Infrastructure Score Between 60% to 75%', 'Infrastructure Score Above 75%'];
 
           this.showData(this.healthCardData);
           document.getElementById('spinner').style.display = 'none';
@@ -273,23 +273,23 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
           this.schoolAttendanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.schoolAttendanceCategoryKey = ['Attendance Less than 33%', 'Attendance between 33% to 60%', 'Attendance between 60% to 75%', 'Attendance Above 75%'];
+          this.schoolAttendanceCategoryKey = ['Attendance Less Than 33%', 'Attendance Between 33% to 60%', 'Attendance Between 60% to 75%', 'Attendance Above 75%'];
 
           this.semPerformance = ['performance'];
           this.semPerformanceKeys = ['Performance'];
           this.semPerformanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.semPerformanceCategoryKey = ['Performance Less than 33%', 'Performance between 33% to 60%', 'Performance between 60% to 75%', 'Performance Above 75%'];
+          this.semPerformanceCategoryKey = ['Performance Less Than 33%', 'Performance Between 33% to 60%', 'Performance Between 60% to 75%', 'Performance Above 75%'];
 
           this.patPerformance = ['cluster_performance'];
           this.patPerformanceKeys = ['Performance'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
+          this.crcVisitKeys = ['Schools Visited 0 Times', 'Schools Visited 1-2 Times', 'Schools Visited 3-5 Times', 'Schools Visited 6-10 Times', 'Schools Visited more Than 10 Times'];
 
           this.UDISE = ['infrastructure_score'];
           this.UDISEKeys = ['Infrastructure Score'];
           this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.UDISECategoryKey = ['Infrastructure Score Less than 33%', 'Infrastructure Score between 33% to 60%', 'Infrastructure Score between 60% to 75%', 'Infrastructure Score Above 75%'];
+          this.UDISECategoryKey = ['Infrastructure Score Less Than 33%', 'Infrastructure Score Between 33% to 60%', 'Infrastructure Score Between 60% to 75%', 'Infrastructure Score Above 75%'];
 
           this.showData(this.healthCardData);
           document.getElementById('spinner').style.display = 'none';
@@ -328,23 +328,23 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
           this.schoolAttendanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.schoolAttendanceCategoryKey = ['Attendance Less than 33%', 'Attendance between 33% to 60%', 'Attendance between 60% to 75%', 'Attendance Above 75%'];
+          this.schoolAttendanceCategoryKey = ['Attendance Less Than 33%', 'Attendance Between 33% to 60%', 'Attendance Between 60% to 75%', 'Attendance Above 75%'];
 
           this.semPerformance = ['performance'];
           this.semPerformanceKeys = ['Performance'];
           this.semPerformanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.semPerformanceCategoryKey = ['Performance Less than 33%', 'Performance between 33% to 60%', 'Performance between 60% to 75%', 'Performance Above 75%'];
+          this.semPerformanceCategoryKey = ['Performance Less Than 33%', 'Performance Between 33% to 60%', 'Performance Between 60% to 75%', 'Performance Above 75%'];
 
           this.patPerformance = ['school_performance'];
           this.patPerformanceKeys = ['Performance'];
 
           this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-          this.crcVisitKeys = ['Schools visited 0 times', 'Schools visited 1-2 times', 'Schools visited 3-5 times', 'Schools visited 6-10 times', 'Schools visited more than 10 times'];
+          this.crcVisitKeys = ['Schools Visited 0 Times', 'Schools Visited 1-2 Times', 'Schools Visited 3-5 Times', 'Schools Visited 6-10 Times', 'Schools Visited more Than 10 Times'];
 
           this.UDISE = ['infrastructure_score'];
           this.UDISEKeys = ['Infrastructure Score'];
           this.UDISECategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
-          this.UDISECategoryKey = ['Infrastructure Score Less than 33%', 'Infrastructure Score between 33% to 60%', 'Infrastructure Score between 60% to 75%', 'Infrastructure Score Above 75%'];
+          this.UDISECategoryKey = ['Infrastructure Score Less Than 33%', 'Infrastructure Score Between 33% to 60%', 'Infrastructure Score Between 60% to 75%', 'Infrastructure Score Above 75%'];
 
           this.showData(this.healthCardData);
           document.getElementById('spinner').style.display = 'none';
@@ -507,7 +507,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   }
 
   value: any;
+  val;
+  len;
   onChange() {
+    this.val = document.getElementById('myInput')['value'];
+    this.len = this.val.length;
     this.showAll = false;
     document.getElementById('warning').style.display = 'block';
     if (this.value.match(/^\d/)) {
@@ -540,7 +544,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     if (this.level == 'district') {
       this.service.metaData(this.level).subscribe(res => {
         this.allData = res;
-        this.placeHolder = "search districts with name/id";
+        this.placeHolder = "Search Districts With Name/ID";
         this.names = this.allData['districtNames'];
         this.ids = this.allData['districtIds'];
         this.districtObjArr = this.allData['districts'];
@@ -559,7 +563,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     if (this.level == 'block') {
       this.service.metaData(this.level).subscribe(res => {
         this.allData = res;
-        this.placeHolder = "search blocks with name/id";
+        this.placeHolder = "Search Blocks With Name/ID";
         this.names = this.allData['blockNames'];
         this.ids = this.allData['blockIds'];
         this.districtObjArr = this.allData['blocks'];
@@ -578,7 +582,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     if (this.level == 'cluster') {
       this.service.metaData(this.level).subscribe(res => {
         this.allData = res;
-        this.placeHolder = "search clusters with name/id";
+        this.placeHolder = "Search Clusters With Name/ID";
         this.names = this.allData['clusterNames'];
         this.ids = this.allData['clusterIds'];
         this.districtObjArr = this.allData['clusters'];
@@ -597,7 +601,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     if (this.level == 'school') {
       this.service.metaData(this.level).subscribe(res => {
         this.allData = res;
-        this.placeHolder = "search schools with name/id";
+        this.placeHolder = "Search Schools With Name/ID";
         this.names = this.allData['schoolNames'];
         this.ids = this.allData['schoolIds'];
         this.districtObjArr = this.allData['schools'];
