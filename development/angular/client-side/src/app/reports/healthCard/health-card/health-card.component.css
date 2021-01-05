@@ -151,3 +151,17 @@
   .headings{
     font-weight: bold;
   }
+
+  .col-lg-1 button{
+    width: 100% auto;
+  } 
+  .col-md-2 button {
+    width: 100% auto;
+  }
+  .col-sm-12 button{
+    width: 100%;
+  }
+
+  input:focus, textarea:focus, select:focus{
+    outline: none;
+}
