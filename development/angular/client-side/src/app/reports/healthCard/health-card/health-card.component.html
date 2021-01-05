@@ -1,9 +1,9 @@
 <div class="container-fluid">
     <div class="row" style="padding-top: 15px !important;">
-        <div class="col-sm-2"> </div>
-        <div class="col-sm-2">
+        <div class="col-lg-2 col-md-0"> </div>
+        <div class="col-lg-2 col-md-3 col-sm-12">
             <select id="level"
-                style="margin-right: 10px; padding: 6px;margin-left: 2%; color: white; border-radius: 4px; font-size: 12px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                style="padding: 6.3px;width: 100%; margin-bottom: 10px; color: white; border-radius: 4px; font-size: 12px; font-weight: bold; background-color: rgb(152, 160, 163);"
                 [(ngModel)]="level" name="level" (change)="selectedLevel()">
                 <option [value]="level" disabled selected="selected">Choose Level
                 </option>
@@ -12,15 +12,19 @@
                 </option>
             </select>
         </div>
-        <div class="col-sm-5">
-            <div class="autocomplete" style="width:300px;;float: left;">
-                <input #searchInput id="myInput" type="search" class="clearable" autofocus autocomplete="off"
-                    name="districtName" [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="autocomplete" style="width:100%;float: left; ">
+                <input #searchInput id="myInput" style="border: 1px solid gray;padding: 2.7px;" type="search"
+                    class="clearable" autofocus autocomplete="off" name="districtName" [(ngModel)]="value"
+                    (input)="onChange()" [placeholder]="placeHolder">
                 <br>
                 <p id="warning" style="font-size: 9px;"> Please enter atlease 2 characters/digits</p>
+                <br *ngIf="len >= 2" />
             </div>
+        </div>
+        <div class="col-lg-1 col-md-2 col-sm-12">
             <button type="submit" class="btn btn-secondary" id="button"
-                style="float: left;padding: 6px 10px 6px 10px; font-size: 12px; font-weight: bold;margin-left: 5px;"
+                style="float: left;padding: 5.7px 15px 5.7px 15px; font-size: 12px; font-weight: bold;"
                 (click)="onSubmit()">Submit</button>
         </div>
     </div>
@@ -36,7 +40,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom:10px !important" id="details">
                     <h6 style="float: left; margin-top: 10px;margin-right: 20px;" class="headings">Basic Details: </h6>
                     <div
-                        style="border: 2px solid gray;float: left; min-height: 45px;max-height: 140px !important; background-color: gray; color: white; border-radius: 10px; padding: 10px;">
+                        style="border: 2px solid gray;float: left; min-height: 30px;max-height: 140px !important; background-color: gray; color: white; border-radius: 10px; padding: 10px;">
                         <div style="float: left;" *ngFor="let key of keys; let i=index">
                             <span style="margin-right: 30px;font-weight: bold;">
                                 <span>{{updatedKeys[i]}}</span> :

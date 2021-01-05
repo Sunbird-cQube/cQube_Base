@@ -14,7 +14,8 @@ district_id=excluded.district_id,district_name=excluded.district_name,created_on
 FROM flowfile
 GROUP BY BlockId,Block,DistrictId,stateid
 HAVING  COUNT(*) > 1""",
-"chng_cols_names_no_school_lat_long":"""select schoolid as school_id,school as school_name,districtid as district_id,blockid as block_id,clusterid as cluster_id,latitude as school_latitude,longitude as school_longitude from flowfile where latitude is null or longitude is null or latitude =0 or longitude =0""",
+"chng_cols_names_no_school_lat_long":"""select schoolid as school_id,school as school_name,districtid as district_id,blockid as block_id,clusterid as cluster_id,latitude as school_latitude,longitude as school_longitude from flowfile 
+where latitude is null  or longitude is null or latitude like '%0' or longitude like '%0'""",
 "static_same_record_filter_block_state":"""select BlockId,Block,DistrictId from (SELECT BlockId,Block,DistrictId,row_number() over (partition by  BlockId,Block,DistrictId) as rn from flowfile)sq where rn=1""",
 "static_cluster_null_log":"""update log_summary
 SET cluster_id = cluster_null_col.count_null_clusterId,

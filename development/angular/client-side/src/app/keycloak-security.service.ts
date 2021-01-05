@@ -17,9 +17,11 @@ export class KeycloakSecurityService {
       realm: environment.realm,
       clientId: environment.clientId,
       // credentials: environment.credentials
+      enableBearerInterceptor: true,
     });
     await this.kc.init({
-      onLoad: 'login-required'
+      onLoad: 'login-required',
+      checkLoginIframe: false,
     });
 
     localStorage.setItem('user_id', this.kc.tokenParsed.sub);

@@ -4,7 +4,7 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const helper = require('./helper');
 
-router.post('/distWise', async (req, res) => {
+router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- diksha tpd distwise api ---');
         let { timePeriod, reportType, courses } = req.body
