@@ -4605,4 +4605,30 @@ ALTER TABLE diksha_api_meta add column IF NOT EXISTS tag text;
 
 create table if not exists diksha_api_summary_roll_up (date date,file_url text,expiry_time timestamp,cqube_process_status text,created_on timestamp,updated_on timestamp, primary key(date));
 
+create table if not exists diksha_tpd_mapping_temp
+  (
+    ff_uuid text,
+    uuid text,
+    state text,
+    district_name text,
+    school_name text,
+    school_id bigint,
+    status text,
+    created_on TIMESTAMP without time zone,
+    updated_on TIMESTAMP without time zone
+    );
 
+
+
+create table if not exists diksha_tpd_mapping
+  (
+    uuid text,
+    state text,
+    district_name text,
+    school_name text,
+    school_id bigint,
+    status text,
+    created_on TIMESTAMP without time zone,
+    updated_on TIMESTAMP without time zone,
+    primary key(uuid,school_id)
+    );

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  constructor(public keyclockService: KeycloakSecurityService, public router: Router) { };
+  constructor(public keyclockService: KeycloakSecurityService, public router: Router) { }
 
   ngOnInit() {
 
