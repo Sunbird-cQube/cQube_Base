@@ -33,6 +33,13 @@
     line: "shared_buffers = {{ shared_buffers }}"
   tags: [ install, update ]
 
+- name: Assigning the port
+  lineinfile:
+    path: /etc/postgresql/10/main/postgresql.conf
+    regexp: '^port ='
+    line: "port = 5432"
+  tags: [ install, update ]
+
 - name: Increase work memory postgre file
   lineinfile:
     path: /etc/postgresql/10/main/postgresql.conf
@@ -48,7 +55,7 @@
   tags: update
 
 - name: Ensure the PostgreSQL service is running
-  service: name=postgresql state=started enabled=yes
+  service: name=postgresql state=restarted enabled=yes
   tags: install
 
 - name: Ensure database is created
