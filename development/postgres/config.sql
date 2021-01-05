@@ -944,12 +944,19 @@ BEGIN
 transaction_insert='insert into diksha_content_trans(content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,created_on,updated_on) 
-select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent
-,now(),now() from diksha_content_temp where not exists (select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent from diksha_content_trans)';
+select data.*,now(),now() from
+((select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,
+content_medium,content_gradelevel,content_subject,
+content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
+total_time_spent from diksha_content_temp) except (select content_view_date,dimensions_pdata_id,
+	dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,
+	content_subject,
+content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
+total_time_spent from diksha_content_trans))as data';
 Execute transaction_insert; 
 return 0;
 END;
@@ -994,16 +1001,18 @@ agg_insert='insert into diksha_total_content(district_id,district_latitude,distr
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,created_on,updated_on
-) select district_id,district_latitude,district_longitude,district_name,
+) select data.*,now(),now() from
+((select district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,now(),now()
-from insert_diksha_trans_view  
-where not exists (select district_id,district_latitude,district_longitude,district_name,
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
+total_time_spent
+from insert_diksha_trans_view where content_subject is not null and content_subject <> '''') 
+except (select district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent from diksha_total_content)
-and content_subject is not null and content_subject <> ''''';
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent 
+from diksha_total_content))as data';
 Execute agg_insert; 
 return 0;
 END;
@@ -4057,14 +4066,17 @@ BEGIN
 transaction_insert=
 'insert into diksha_tpd_trans(collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,enrolment_date,
 completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,created_on,updated_on) 
-select collection_id,collection_name,batch_id,batch_name,tpd_temp.uuid,tpd_temp.state,
+select data.*,now(),now() from
+((select collection_id,collection_name,batch_id,batch_name,tpd_temp.uuid,tpd_temp.state,
 org_name,cr_mapping.school_id,enrolment_date,
-completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,now(),now() 
+completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
 from diksha_tpd_content_temp as tpd_temp left join diksha_tpd_mapping as cr_mapping on tpd_temp.uuid=cr_mapping.uuid
-where not exists (select collection_id,collection_name,batch_id,batch_name,uuid,state,
-  org_name,school_id,enrolment_date,
-completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score from diksha_tpd_trans)
-and cr_mapping.school_id>0';
+where cr_mapping.school_id>0)
+except
+(select collection_id,collection_name,batch_id,batch_name,uuid,state,
+org_name,school_id,enrolment_date,
+completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
+ from diksha_tpd_trans))as data';
 Execute transaction_insert; 
 return 0;
 END;
