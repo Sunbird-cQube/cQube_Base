@@ -123,6 +123,9 @@ cqube_emission
 │   └── periodic_exam_qst_mst.zip
 │       └── periodic_exam_qst_mst.csv
 ├── diksha
+│   └── diksha_tpd_mapping.zip
+│       └── diksha_tpd_mapping.csv
+├── diksha
 │   └── diksha_api_progress_exhaust_batch_ids.zip
 │       └── diksha_api_progress_exhaust_batch_ids.csv
 ```
