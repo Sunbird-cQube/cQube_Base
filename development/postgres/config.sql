@@ -944,12 +944,19 @@ BEGIN
 transaction_insert='insert into diksha_content_trans(content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,created_on,updated_on) 
-select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent
-,now(),now() from diksha_content_temp where not exists (select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent from diksha_content_trans)';
+select data.*,now(),now() from
+((select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,
+content_medium,content_gradelevel,content_subject,
+content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
+total_time_spent from diksha_content_temp) except (select content_view_date,dimensions_pdata_id,
+	dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,
+	content_subject,
+content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+collection_name,collection_board,
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
+total_time_spent from diksha_content_trans))as data';
 Execute transaction_insert; 
 return 0;
 END;
@@ -994,16 +1001,18 @@ agg_insert='insert into diksha_total_content(district_id,district_latitude,distr
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,created_on,updated_on
-) select district_id,district_latitude,district_longitude,district_name,
+) select data.*,now(),now() from
+((select district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,now(),now()
-from insert_diksha_trans_view  
-where not exists (select district_id,district_latitude,district_longitude,district_name,
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
+total_time_spent
+from insert_diksha_trans_view where content_subject is not null and content_subject <> '''') 
+except (select district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent from diksha_total_content)
-and content_subject is not null and content_subject <> ''''';
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent 
+from diksha_total_content))as data';
 Execute agg_insert; 
 return 0;
 END;
@@ -4057,23 +4066,31 @@ BEGIN
 transaction_insert=
 'insert into diksha_tpd_trans(collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,enrolment_date,
 completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,created_on,updated_on) 
-select collection_id,collection_name,batch_id,batch_name,tpd_temp.uuid,tpd_temp.state,
+select data.*,now(),now() from
+((select collection_id,collection_name,batch_id,batch_name,tpd_temp.uuid,tpd_temp.state,
 org_name,cr_mapping.school_id,enrolment_date,
-completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,now(),now() 
+completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
 from diksha_tpd_content_temp as tpd_temp left join diksha_tpd_mapping as cr_mapping on tpd_temp.uuid=cr_mapping.uuid
-where not exists (select collection_id,collection_name,batch_id,batch_name,uuid,state,
-  org_name,school_id,enrolment_date,
-completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score from diksha_tpd_trans)
-and cr_mapping.school_id>0';
+where cr_mapping.school_id>0)
+except
+(select collection_id,collection_name,batch_id,batch_name,uuid,state,
+org_name,school_id,enrolment_date,
+completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
+ from diksha_tpd_trans))as data';
 Execute transaction_insert; 
 return 0;
 END;
 $$LANGUAGE plpgsql;
 
+drop view if exists school_teachers_count cascade;
+
 create or replace view school_teachers_count as 
-select udise_sch_code,count(distinct(tch_code)) as total_teachers,clust_id,blk_id,dist_id from udise_tch_profile as tch_cnt inner join 
-(select school_id ,cluster_id as clust_id,block_id as blk_id,district_id as dist_id from school_hierarchy_details where school_name is not null and cluster_name is not null
-and block_name is not null and district_name is not null) as scl on tch_cnt.udise_sch_code=scl.school_id group by udise_sch_code,clust_id,blk_id,dist_id;
+select tch_cnt.school_id,count(distinct(uuid)) as total_teachers,clust_id,blk_id,dist_id from diksha_tpd_mapping as tch_cnt 
+inner join 
+(select school_id ,cluster_id as clust_id,block_id as blk_id,district_id as dist_id from school_hierarchy_details 
+  where school_name is not null and cluster_name is not null
+and block_name is not null and district_name is not null) as scl on tch_cnt.school_id=scl.school_id 
+group by tch_cnt.school_id,clust_id,blk_id,dist_id;
 
 create or replace view school_diksha_enrolled as 
 select a.*,cnt.total_teachers from
@@ -4083,7 +4100,6 @@ tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
 where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date = (select now()::DATE)
-and tpd.school_id in (select udise_sch_code from udise_tch_profile)
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
 union
 select collection_id,collection_name,
@@ -4093,7 +4109,6 @@ select school_id,school_name,cluster_id,cluster_name,block_id,block_name,distric
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
 where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '7 DAY')::Date) and 
 (select (now()::Date))
-and tpd.school_id in (select udise_sch_code from udise_tch_profile)
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
 union
 select collection_id,collection_name,
@@ -4103,7 +4118,6 @@ select school_id,school_name,cluster_id,cluster_name,block_id,block_name,distric
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
 where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '30 DAY')::Date) and 
 (select (now()::Date))
-and tpd.school_id in (select udise_sch_code from udise_tch_profile)
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
 union
 select collection_id,collection_name,
@@ -4111,9 +4125,9 @@ count(distinct(uuid)) as total_enrolled,'All' as time_range,
 tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
-where org_name='DIKSHA Custodian Org' and collection_name is not null and tpd.school_id in (select udise_sch_code from udise_tch_profile) 
+where org_name='DIKSHA Custodian Org' and collection_name is not null 
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id) as a
-left join school_teachers_count as cnt on a.school_id=cnt.udise_sch_code;
+left join school_teachers_count as cnt on a.school_id=cnt.school_id;
 
 /*Semester views*/
 
