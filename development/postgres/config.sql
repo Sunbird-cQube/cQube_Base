@@ -4063,7 +4063,8 @@ completion_date,progress,certificate_status,total_score,nested_collection_progre
 from diksha_tpd_content_temp as tpd_temp left join diksha_tpd_mapping as cr_mapping on tpd_temp.uuid=cr_mapping.uuid
 where not exists (select collection_id,collection_name,batch_id,batch_name,uuid,state,
   org_name,school_id,enrolment_date,
-completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score from diksha_tpd_trans)';
+completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score from diksha_tpd_trans)
+and cr_mapping.school_id>0';
 Execute transaction_insert; 
 return 0;
 END;
