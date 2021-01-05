@@ -111,6 +111,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.params && this.params.level) {
       document.getElementById('spinner').style.display = 'block';
+      this.len = 2;
       this.value = this.params.value;
       this.searchInput.nativeElement.value = this.params.value;
       this._cd.detectChanges();
@@ -503,6 +504,10 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           .replace(/\s/g, ' ')
           .replace(/^(.)/, function ($1) { return $1.toUpperCase(); });
       });
+    key = key.replace("Id", "ID");
+    key = key.replace("Nsqf", "NSQF");
+    key = key.replace("Ict", "ICT");
+    key = key.replace("Crc", "CRC");
     return key;
   }
 
