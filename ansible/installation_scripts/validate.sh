@@ -74,8 +74,9 @@ else
         installed_ver=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_VERSION )
         installed_version=$(cut -d "=" -f2 <<< "$installed_ver")
          echo "Currently cQube $installed_version version is installed in this machine. Follow Upgradtion process if you want to upgrade."
+         echo "If you re-run the installation, all data will be lost"
 	 while true; do
-             read -p "Do you wish to reinstall cQube (yes/no)? " yn
+             read -p "Do you still want to re-run the installation (yes/no)? " yn
              case $yn in
                  yes) break;;
                  no) exit;;
