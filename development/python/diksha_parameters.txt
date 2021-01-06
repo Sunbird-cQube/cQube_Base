@@ -276,7 +276,8 @@ SUM(CASE when "collection_type" IS NULL THEN 1 ELSE 0 END) AS count_null_collect
 SUM(CASE when "collection_created_for" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_created_for,
 SUM(CASE when "total_count" IS NULL THEN 1 ELSE 0 END) AS count_null_total_count,
 SUM(CASE when "total_time_spent" IS NULL THEN 1 ELSE 0 END) AS count_null_total_time_spent from diksha_content_staging)""",
-"diksha_data_summary_less_null_delete":"""where content_view_date IS NULL
+"diksha_data_summary_less_null_delete":"""delete  from diksha_content_staging 
+where content_view_date IS NULL
  OR dimensions_pdata_id IS NULL
  OR dimensions_pdata_pid IS NULL
  OR content_name IS NULL
