@@ -26,14 +26,21 @@ router.post('/listBuckets', auth.authController, async function (req, res) {
 router.post('/listFiles/:bucketName', auth.authController, async function (req, res) {
     try {
         logger.info("listfiles of s3 api");
-        let parms = {
+        const param = {
             Bucket: req.params.bucketName
+        };
+        async function getAllKeys(params, allKeys = []) {
+            const response = await const_data['s3'].listObjectsV2(params).promise();
+            response.Contents.forEach(obj => allKeys.push(obj.Key));
+
+            if (response.NextContinuationToken) {
+                params.ContinuationToken = response.NextContinuationToken;
+                await getAllKeys(params, allKeys); // RECURSIVE CALL
+            }
+            return allKeys;
         }
-        const_data['s3'].listObjects(parms, function (err, data) {
-            if (err) throw err;
-            logger.info("listfiles of s3 api reponse sent");
-            res.status(200).send(data.Contents);
-        })
+        const list = await getAllKeys(param);
+        res.status(200).send(list);
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
