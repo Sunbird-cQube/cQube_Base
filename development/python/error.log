@@ -426,3 +426,121 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 [2020-12-28 09:22:54 +0530] [7767] [INFO] Worker exiting (pid: 7767)
 [2020-12-28 09:22:54 +0530] [7768] [INFO] Worker exiting (pid: 7768)
 [2020-12-28 09:22:54 +0530] [8015] [INFO] Booting worker with pid: 8015
+[2021-01-04 13:59:34 +0530] [20610] [INFO] Starting gunicorn 20.0.4
+[2021-01-04 13:59:34 +0530] [20610] [INFO] Listening at: http://0.0.0.0:5000 (20610)
+[2021-01-04 13:59:34 +0530] [20610] [INFO] Using worker: sync
+[2021-01-04 13:59:34 +0530] [20614] [INFO] Booting worker with pid: 20614
+[2021-01-04 13:59:34 +0530] [20615] [INFO] Booting worker with pid: 20615
+[2021-01-04 13:59:34 +0530] [20616] [INFO] Booting worker with pid: 20616
+[2021-01-04 13:59:52 +0530] [20610] [INFO] Handling signal: int
+[2021-01-04 13:59:52 +0530] [20615] [INFO] Worker exiting (pid: 20615)
+[2021-01-04 13:59:52 +0530] [20614] [INFO] Worker exiting (pid: 20614)
+[2021-01-04 13:59:52 +0530] [20616] [INFO] Worker exiting (pid: 20616)
+[2021-01-04 13:59:52 +0530] [20610] [INFO] Shutting down: Master
+[2021-01-04 14:00:04 +0530] [20655] [INFO] Starting gunicorn 20.0.4
+[2021-01-04 14:00:04 +0530] [20655] [INFO] Listening at: http://0.0.0.0:5000 (20655)
+[2021-01-04 14:00:04 +0530] [20655] [INFO] Using worker: sync
+[2021-01-04 14:00:04 +0530] [20658] [INFO] Booting worker with pid: 20658
+[2021-01-04 14:00:04 +0530] [20659] [INFO] Booting worker with pid: 20659
+[2021-01-04 14:00:04 +0530] [20660] [INFO] Booting worker with pid: 20660
+[2021-01-04 14:00:28 +0530] [20698] [INFO] Starting gunicorn 20.0.4
+[2021-01-04 14:00:28 +0530] [20698] [ERROR] Connection in use: ('0.0.0.0', 5000)
+[2021-01-04 14:00:28 +0530] [20698] [ERROR] Retrying in 1 second.
+[2021-01-04 14:00:29 +0530] [20698] [ERROR] Connection in use: ('0.0.0.0', 5000)
+[2021-01-04 14:00:29 +0530] [20698] [ERROR] Retrying in 1 second.
+[2021-01-04 14:00:30 +0530] [20698] [ERROR] Connection in use: ('0.0.0.0', 5000)
+[2021-01-04 14:00:30 +0530] [20698] [ERROR] Retrying in 1 second.
+[2021-01-04 14:00:31 +0530] [20698] [ERROR] Connection in use: ('0.0.0.0', 5000)
+[2021-01-04 14:00:31 +0530] [20698] [ERROR] Retrying in 1 second.
+[2021-01-04 14:00:32 +0530] [20698] [ERROR] Connection in use: ('0.0.0.0', 5000)
+[2021-01-04 14:00:32 +0530] [20698] [ERROR] Retrying in 1 second.
+[2021-01-04 14:00:33 +0530] [20698] [ERROR] Can't connect to ('0.0.0.0', 5000)
+[2021-01-04 14:03:44 +0530] [21055] [INFO] Starting gunicorn 20.0.4
+[2021-01-04 14:03:44 +0530] [21055] [ERROR] Connection in use: ('0.0.0.0', 5000)
+[2021-01-04 14:03:44 +0530] [21055] [ERROR] Retrying in 1 second.
+[2021-01-04 14:03:45 +0530] [21055] [ERROR] Connection in use: ('0.0.0.0', 5000)
+[2021-01-04 14:03:45 +0530] [21055] [ERROR] Retrying in 1 second.
+[2021-01-04 14:03:46 +0530] [21055] [ERROR] Connection in use: ('0.0.0.0', 5000)
+[2021-01-04 14:03:46 +0530] [21055] [ERROR] Retrying in 1 second.
+[2021-01-04 14:03:47 +0530] [21055] [ERROR] Connection in use: ('0.0.0.0', 5000)
+[2021-01-04 14:03:47 +0530] [21055] [ERROR] Retrying in 1 second.
+[2021-01-04 14:03:48 +0530] [21055] [ERROR] Connection in use: ('0.0.0.0', 5000)
+[2021-01-04 14:03:48 +0530] [21055] [ERROR] Retrying in 1 second.
+[2021-01-04 14:03:49 +0530] [21055] [ERROR] Can't connect to ('0.0.0.0', 5000)
+[2021-01-04 14:32:17 +0530] [20655] [INFO] Handling signal: hup
+[2021-01-04 14:32:17 +0530] [20655] [INFO] Hang up: Master
+[2021-01-04 14:32:17 +0530] [21691] [INFO] Booting worker with pid: 21691
+[2021-01-04 14:32:17 +0530] [21692] [INFO] Booting worker with pid: 21692
+[2021-01-04 14:32:17 +0530] [20658] [INFO] Worker exiting (pid: 20658)
+[2021-01-04 14:32:17 +0530] [20660] [INFO] Worker exiting (pid: 20660)
+[2021-01-04 14:32:17 +0530] [20659] [INFO] Worker exiting (pid: 20659)
+[2021-01-04 14:32:17 +0530] [21693] [INFO] Booting worker with pid: 21693
+[2021-01-04 23:00:03 +0530] [20655] [INFO] Handling signal: term
+[2021-01-04 23:00:03 +0530] [20655] [INFO] Shutting down: Master
+[2021-01-05 07:36:08 +0530] [6004] [INFO] Starting gunicorn 20.0.4
+[2021-01-05 07:36:08 +0530] [6004] [INFO] Listening at: http://0.0.0.0:5000 (6004)
+[2021-01-05 07:36:08 +0530] [6004] [INFO] Using worker: sync
+[2021-01-05 07:36:08 +0530] [6009] [INFO] Booting worker with pid: 6009
+[2021-01-05 07:36:08 +0530] [6010] [INFO] Booting worker with pid: 6010
+[2021-01-05 07:36:08 +0530] [6011] [INFO] Booting worker with pid: 6011
+[2021-01-05 07:36:10 +0530] [6004] [INFO] Handling signal: int
+[2021-01-05 07:36:10 +0530] [6011] [INFO] Worker exiting (pid: 6011)
+[2021-01-05 07:36:10 +0530] [6009] [INFO] Worker exiting (pid: 6009)
+[2021-01-05 07:36:10 +0530] [6010] [INFO] Worker exiting (pid: 6010)
+[2021-01-05 07:36:10 +0530] [6004] [INFO] Shutting down: Master
+[2021-01-05 07:36:13 +0530] [6039] [INFO] Starting gunicorn 20.0.4
+[2021-01-05 07:36:13 +0530] [6039] [INFO] Listening at: http://0.0.0.0:5000 (6039)
+[2021-01-05 07:36:13 +0530] [6039] [INFO] Using worker: sync
+[2021-01-05 07:36:13 +0530] [6042] [INFO] Booting worker with pid: 6042
+[2021-01-05 07:36:13 +0530] [6043] [INFO] Booting worker with pid: 6043
+[2021-01-05 07:36:13 +0530] [6046] [INFO] Booting worker with pid: 6046
+[2021-01-05 17:35:58 +0530] [6039] [INFO] Handling signal: hup
+[2021-01-05 17:35:58 +0530] [6039] [INFO] Hang up: Master
+[2021-01-05 17:35:58 +0530] [6043] [INFO] Worker exiting (pid: 6043)
+[2021-01-05 17:35:58 +0530] [6042] [INFO] Worker exiting (pid: 6042)
+[2021-01-05 17:35:58 +0530] [6046] [INFO] Worker exiting (pid: 6046)
+[2021-01-05 17:35:58 +0530] [12383] [INFO] Booting worker with pid: 12383
+[2021-01-05 17:35:58 +0530] [12382] [INFO] Booting worker with pid: 12382
+[2021-01-05 17:35:58 +0530] [12381] [INFO] Booting worker with pid: 12381
+[2021-01-05 17:37:58 +0530] [6039] [INFO] Handling signal: hup
+[2021-01-05 17:37:58 +0530] [6039] [INFO] Hang up: Master
+[2021-01-05 17:37:58 +0530] [12635] [INFO] Booting worker with pid: 12635
+[2021-01-05 17:37:58 +0530] [12636] [INFO] Booting worker with pid: 12636
+[2021-01-05 17:37:58 +0530] [12382] [INFO] Worker exiting (pid: 12382)
+[2021-01-05 17:37:58 +0530] [12381] [INFO] Worker exiting (pid: 12381)
+[2021-01-05 17:37:58 +0530] [12383] [INFO] Worker exiting (pid: 12383)
+[2021-01-05 17:37:58 +0530] [12637] [INFO] Booting worker with pid: 12637
+[2021-01-05 17:39:17 +0530] [6039] [INFO] Handling signal: hup
+[2021-01-05 17:39:17 +0530] [6039] [INFO] Hang up: Master
+[2021-01-05 17:39:17 +0530] [12738] [INFO] Booting worker with pid: 12738
+[2021-01-05 17:39:17 +0530] [12739] [INFO] Booting worker with pid: 12739
+[2021-01-05 17:39:17 +0530] [12636] [INFO] Worker exiting (pid: 12636)
+[2021-01-05 17:39:17 +0530] [12637] [INFO] Worker exiting (pid: 12637)
+[2021-01-05 17:39:17 +0530] [12635] [INFO] Worker exiting (pid: 12635)
+[2021-01-05 17:39:17 +0530] [12740] [INFO] Booting worker with pid: 12740
+[2021-01-05 17:40:59 +0530] [6039] [INFO] Handling signal: hup
+[2021-01-05 17:40:59 +0530] [6039] [INFO] Hang up: Master
+[2021-01-05 17:40:59 +0530] [12816] [INFO] Booting worker with pid: 12816
+[2021-01-05 17:40:59 +0530] [12817] [INFO] Booting worker with pid: 12817
+[2021-01-05 17:40:59 +0530] [12740] [INFO] Worker exiting (pid: 12740)
+[2021-01-05 17:40:59 +0530] [12739] [INFO] Worker exiting (pid: 12739)
+[2021-01-05 17:40:59 +0530] [12738] [INFO] Worker exiting (pid: 12738)
+[2021-01-05 17:40:59 +0530] [12818] [INFO] Booting worker with pid: 12818
+[2021-01-05 17:42:50 +0530] [6039] [INFO] Handling signal: hup
+[2021-01-05 17:42:50 +0530] [6039] [INFO] Hang up: Master
+[2021-01-05 17:42:50 +0530] [12875] [INFO] Booting worker with pid: 12875
+[2021-01-05 17:42:50 +0530] [12876] [INFO] Booting worker with pid: 12876
+[2021-01-05 17:42:50 +0530] [12817] [INFO] Worker exiting (pid: 12817)
+[2021-01-05 17:42:50 +0530] [12816] [INFO] Worker exiting (pid: 12816)
+[2021-01-05 17:42:50 +0530] [12877] [INFO] Booting worker with pid: 12877
+[2021-01-05 17:42:50 +0530] [12818] [INFO] Worker exiting (pid: 12818)
+[2021-01-05 23:00:02 +0530] [6039] [INFO] Handling signal: hup
+[2021-01-05 23:00:02 +0530] [6039] [INFO] Hang up: Master
+[2021-01-05 23:00:02 +0530] [22556] [INFO] Booting worker with pid: 22556
+[2021-01-05 23:00:02 +0530] [22555] [INFO] Booting worker with pid: 22555
+[2021-01-05 23:00:02 +0530] [22558] [INFO] Booting worker with pid: 22558
+[2021-01-05 23:00:02 +0530] [6039] [INFO] Handling signal: term
+[2021-01-05 23:00:04 +0530] [22556] [INFO] Worker exiting (pid: 22556)
+[2021-01-05 23:00:04 +0530] [22558] [INFO] Worker exiting (pid: 22558)
+[2021-01-05 23:00:04 +0530] [22555] [INFO] Worker exiting (pid: 22555)
+[2021-01-05 23:00:04 +0530] [6039] [INFO] Shutting down: Master

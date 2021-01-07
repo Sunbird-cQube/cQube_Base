@@ -79,7 +79,7 @@ def aws_file_download():
     try:
         response = s3_client.generate_presigned_url('get_object',
                                                      Params={'Bucket':bucket_name,'Key':file_name},
-                                                     ExpiresIn=86400)
+                                                     ExpiresIn=432000)
     except ClientError as e:
         logging.error(e)
         return None
@@ -218,7 +218,7 @@ def get_infra_score():
     except Exception as err:
         abort(400, f'Bad request, validate the payload')
 
-@app.route("/data/api/data/v3/dataset/get/summary-rollup", methods=['GET'])
+@app.route('/data/api/data/v3/dataset/get/summary-rollup', methods=['GET'])
 def get_diksha():
     return '''{
     "id": "org.ekstep.analytics.telemetry",
@@ -235,27 +235,17 @@ def get_diksha():
             "<URL>",
             "<URL>",
             "<URL>",
-            "<URL>",
-            "<URL>",
-            "<URL>",
-            "<URL>",
             "<URL>"
         ],
         "periodWiseFiles": {
-            "2020-11-18": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201224%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201224T052805Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=37d073413f3ed5806b5c48c04c1fbea5fcdcec872623cf45d23e0c440d534030"
+            "2020-12-27": [
+                "https://cqube-gj-input.s3.amazonaws.com/diksha/2020-12-27.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20210105%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20210105T121218Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=aae3af2adf184fc7b9ad90da513e0b363a039eda55d977199c489d141989efb5"
             ],
-            "2020-11-19": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201224%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201224T052915Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=d8cab8dbadaf82f2a0e8ec2d3f60c412cd24945f9fdc131a96931a0a40cb12da"
+            "2020-12-28": [
+                "https://cqube-gj-input.s3.amazonaws.com/diksha/2020-12-28.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20210105%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20210105T121204Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=8e0cb5edc25579e8641831c3e413c6fbada6ac8b374d86e0064d2d92c4bcd479"
             ],
-            "2020-11-20": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201224%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201224T052928Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=1b03854a032b9c58f0d4ffdab3df211ce10092b4acba0a0eff1cdff407f4d481"
-            ],
-            "2020-11-21": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201224%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201224T052946Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=98c8dae1e741a5c7f2330d236b70e4df4dcd4775b9e345050902c1950d14757c"
-            ],
-            "2020-11-22": [
-                "https://cqube-emission.s3.amazonaws.com/diksha_data_summary_less_api.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20201224%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20201224T053002Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=87e5d59dfb2d303599ff92b4c48eca6621832d7cb9b428629d169641e372696d"
+            "2020-11-29": [
+                "https://cqube-gj-input.s3.amazonaws.com/diksha/2020-12-29.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20210105%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20210105T121107Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=4f7ac1edeb60e34cb60db1f3443f2be7e7e773c2b549d06ffcb0cae583c0e0f7"
             ]
         },
         "expiresAt": 1606300998990
