@@ -155,12 +155,14 @@ router.use('/showSchoolTelemetry', showSchoolTelemetry);
 
 // healthCard
 const healthCardMeta = require('./controller/healthCard/metadata');
+const stateData = require('./controller/healthCard/stateData');
 const districtHealthCard = require('./controller/healthCard/districtWise');
 const blockHealthCard = require('./controller/healthCard/blockWise');
 const clusterHealthCard = require('./controller/healthCard/clusterWise');
 const schoolHealthCard = require('./controller/healthCard/schoolWise');
 
 router.use('/healthCard', healthCardMeta);
+router.use('/healthCard', stateData);
 router.use('/healthCard', districtHealthCard);
 router.use('/healthCard', blockHealthCard);
 router.use('/healthCard', clusterHealthCard);
