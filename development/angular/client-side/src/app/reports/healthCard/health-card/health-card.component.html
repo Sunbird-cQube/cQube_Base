@@ -27,6 +27,11 @@
                 style="float: left;padding: 5.7px 15px 5.7px 15px; font-size: 12px; font-weight: bold;"
                 (click)="onSubmit()">Submit</button>
         </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <em class="fa fa-home" id="home" title="Home"
+                style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233);"
+                alt="Home" (click)="stateData()"></em>
+        </div>
     </div>
     <div class="row" *ngIf="showAll">
         <div class="col-sm-12">
@@ -43,8 +48,19 @@
                         style="border: 2px solid gray;float: left; min-height: 30px;max-height: 140px !important; background-color: gray; color: white; border-radius: 10px; padding: 10px;">
                         <div style="float: left;" *ngFor="let key of keys; let i=index">
                             <span style="margin-right: 30px;font-weight: bold;">
-                                <span>{{updatedKeys[i]}}</span> :
-                                <span>{{healthCardData[key]}}</span> </span>
+                                <span *ngIf="i==0 && level =='state'">
+                                    <span>State</span> :
+                                    <span>{{state}}</span>
+                                </span>
+                                <span *ngIf="i!=0 && level =='state'">
+                                    <span>{{updatedKeys[i]}}</span> :
+                                    <span>{{healthCardData[key]}}</span>
+                                </span>
+                                <span *ngIf="level !='state'">
+                                    <span>{{updatedKeys[i]}}</span> :
+                                    <span>{{healthCardData[key]}}</span>
+                                </span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -658,6 +674,6 @@
         </div>
     </div>
 </div>
-<div id="spinner" style="display: none;">
+<div id="spinner" style="display: block;">
     <div id="loader" class="loading">Loading&#8230;</div>
 </div>
