@@ -11308,8 +11308,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-14000.0</x>
-<y>2552.0</y>
+<x>-13984.0</x>
+<y>2536.0</y>
                             </bends>
                             <destination>
 <groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
@@ -21838,7 +21838,7 @@ file: ${filename} columns did not match.</value>
 <properties>
     <entry>
         <key>record-reader</key>
-        <value>7a85a408-1b65-3c0c-0000-000000000000</value>
+        <value>dad7c012-e301-3aab-0000-000000000000</value>
     </entry>
     <entry>
         <key>record-writer</key>
@@ -24471,11 +24471,10 @@ where ff_uuid= '${files_uuid}'</value>
     </entry>
     <entry>
         <key>SQL select query</key>
-        <value>select a.school_id,a.school_name,a.block_id,a.district_id,a.cluster_id,a.school_latitude,a.school_longitude,a.ff_uuid,
-case when a.exception_type=b.exception_type then a.exception_type 
-	 when a.exception_type&lt;&gt;b.exception_type then concat(a.exception_type,' and ',b.exception_type) end as  exception_type
-from school_invalid_data as a inner join school_invalid_data as b on a.school_id=b.school_id where a.ff_uuid='${files_uuid}'
-</value>
+        <value>select * from (select a.ff_uuid,a.school_id,a.block_id,a.cluster_id,a.district_id,
+string_agg(a.exception_type,' and ') as  exception_type
+from school_invalid_data as a 
+group by a.ff_uuid,a.school_id,a.block_id,a.cluster_id,a.district_id) as data where data.ff_uuid='${files_uuid}'</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -27694,5 +27693,5 @@ ${filename:startsWith('district_m'):ifElse(#{static_district_count_null_vals},'N
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/29/2020 20:02:17 IST</timestamp>
+    <timestamp>01/06/2021 00:14:10 IST</timestamp>
 </template>
