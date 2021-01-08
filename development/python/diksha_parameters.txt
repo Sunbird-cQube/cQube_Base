@@ -214,9 +214,6 @@ object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_ty
 collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
 collection_created_for,total_count,total_time_spent,ff_uuid) as rn from diksha_content_staging) sq Where rn =1""",
 "diksha_tpd_temp_tb":"""diksha_tpd_content_temp""",
-"diksha_tpd_stg_to_temp_qry":"""select ff_uuid,collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,
-enrolment_date,completion_date,progress,certificate_status,total_score  
-from  diksha_content_staging""",
 "diksha_tpd_null_to_log_db":"""update log_summary
 SET collection_id = diksha_null_col.count_null_collection_id,
 uuid = diksha_null_col.count_null_uuid
@@ -323,11 +320,6 @@ where content_view_date IS NULL
 enrolment_date,completion_date,progress,certificate_status,total_score from diksha_content_staging
 where collection_id IS NULL
 OR uuid IS NULL""",
-"diksha_data_summary_less_stg_to_tmp":"""select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging""",
 "diksha_data_summary_less_check_same_record":"""SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
 content_mimetype,content_medium,content_subject,content_created_for,
 object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
@@ -362,11 +354,6 @@ SUM(CASE when "collection_type" IS NULL THEN 1 ELSE 0 END) AS count_null_collect
 SUM(CASE when "collection_created_for" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_created_for,
 SUM(CASE when "total_count" IS NULL THEN 1 ELSE 0 END) AS count_null_total_count,
 SUM(CASE when "total_time_spent" IS NULL THEN 1 ELSE 0 END) AS count_null_total_time_spent from diksha_content_staging)""",
-"diksha_data_summary_all_stg_to_tmp":"""select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging""",
 "diksha_jolt_for_log_summary":"""[{
 		"operation": "shift",
 		"spec": {
