@@ -1,5 +1,8 @@
 [
 {
+"health_card_index_state":"select * from crosstab('select ''state''as data,data_source,values from health_card_index_state order by 1,2','select distinct(data_source) from health_card_index_state order by 1')as (data text,basic_details jsonb,student_attendance jsonb,student_semester jsonb,pat_performance jsonb,udise jsonb,school_infrastructure jsonb);"
+},
+{
 "health_card_index_meta_district":"select distinct(district_id)as district_id,Initcap(district_name)as district_name from school_hierarchy_details  where school_name is not null and cluster_name is not null and block_name is not null and district_name is not null"
 },
 {
