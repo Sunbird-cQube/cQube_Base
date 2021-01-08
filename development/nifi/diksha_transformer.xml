@@ -7752,7 +7752,8 @@ diksha_api_summary_roll_up table </label>
     </entry>
     <entry>
         <key>putsql-sql-statement</key>
-        <value>update diksha_api_meta set request_status='${request_list_status}'
+        <value>update diksha_api_meta set request_status='${request_list_status}',
+updated_on='${now():format("yyyy-MM-dd HH:mm:ss.SSS")}'
 where request_id='${request_list_id}';</value>
     </entry>
     <entry>
@@ -9718,9 +9719,9 @@ WHERE date='${diksha_api_summary_rollup_date:format('yyyy-MM-dd HH:mm:ss','IST')
     </entry>
     <entry>
         <key>SQL select query</key>
-        <value>select ff_uuid,request_channel,request_id,request_status,cqube_process_status,tag from diksha_api_meta
+        <value> select ff_uuid,request_channel,request_id,request_status,cqube_process_status,tag from diksha_api_meta
 where request_status='SUCCESS' and cqube_process_status='SUBMITTED'
-order by requested_on</value>
+order by requested_on desc limit 1</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -14924,7 +14925,7 @@ VALUES
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -17563,7 +17564,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -17759,7 +17760,7 @@ ${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_select_less_column
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -28167,8 +28168,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-3216.0</x>
-<y>-568.0</y>
+<x>-3200.0</x>
+<y>-560.0</y>
                             </bends>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
@@ -28581,7 +28582,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-2416.0</x>
+<x>-2432.0</x>
 <y>-480.0</y>
                             </bends>
                             <destination>
@@ -46294,5 +46295,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/08/2021 09:47:07 IST</timestamp>
+    <timestamp>01/08/2021 16:09:23 IST</timestamp>
 </template>
