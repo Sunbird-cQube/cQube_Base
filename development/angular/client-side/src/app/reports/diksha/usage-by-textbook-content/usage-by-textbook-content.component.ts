@@ -91,7 +91,7 @@ export class UsageByTextbookContentComponent implements OnInit {
     }
     this.result = [];
     this.reportData = [];
-    this.header = this.changeingStringCases(this.collectionType) + " linked";
+    this.header = this.changeingStringCases(this.collectionType) + " Linked";
     // if (this.collectionType == "all") {
     //   this.header = "Overall";
     // }
