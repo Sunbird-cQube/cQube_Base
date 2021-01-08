@@ -93,6 +93,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   placement = 'bottom-right';
 
   @ViewChild('searchInput') searchInput: ElementRef;
+  semPerformTooltip: any[];
+  semPerformTooltipKeys: any[];
 
   constructor(public commonService: AppServiceComponent, public service: HealthCardService, private readonly _router: Router, private readonly _cd: ChangeDetectorRef) { }
 
@@ -133,16 +135,16 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   stateData() {
     document.getElementById('spinner').style.display = 'block';
     this.semLength = 2;
-    this.udiseLength = 4;
+    this.udiseLength = -1;
     this.crcLength = 1;
-    this.infraLength = 3;
+    this.infraLength = -1;
     this.height = '250px';
     this.level = "state";
     document.getElementById('myInput')['disabled'] = true;
     document.getElementById('myInput')['value'] = '';
     this.placeHolder = "First Choose Level From Drop-down";
     this.service.stateData().subscribe(res => {
-      this.healthCardData = res['districtData'][0];
+      this.healthCardData = res['data'];
       this.schoolInfra = ['infra_score'];
       this.schoolInfraKey = ['Infrastructure Score'];
       this.schoolInfraRank = ['district_level_rank_within_the_state'];
@@ -158,13 +160,17 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.semPerformanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
       this.semPerformanceCategoryKey = ['Performance Less Than 33%', 'Performance Between 33% to 60%', 'Performance Between 60% to 75%', 'Performance Above 75%'];
 
-      this.patPerformance = ['district_performance'];
+      this.patPerformance = ['school_performance'];
       this.patPerformanceKeys = ['Performance'];
       this.patPerformanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
       this.patPerformanceCategoryKay = ['Schools Less Than 33%', 'Schools Between 33% to 60%', 'Schools Between 60% to 75%', 'Schools Above 75%'];
 
-      this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
-      this.crcVisitKeys = ['Schools Visited 0 Times', 'Schools Visited 1-2 Times', 'Schools Visited 3-5 Times', 'Schools Visited 6-10 Times', 'Schools Visited more Than 10 Times'];
+      this.crcVisit = Object.keys(this.healthCardData['crc_visit']);
+      this.crcVisitKeys = [];
+      this.crcVisit.filter(key => {
+        var myKey = this.stringConverter(key);
+        this.crcVisitKeys.push(myKey);
+      });
 
       this.UDISE = ['infrastructure_score'];
       this.UDISEKeys = ['Infrastructure Score'];
@@ -432,31 +438,41 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   infraTooltipMetrics = [];
   semPerformancePercent = ['percent_below_33', 'percent_between_33_60', 'percent_between_60_75', 'percent_above_75'];
   showData(healthCardData) {
-    this.updatedKeys = [];
-    this.keys = Object.keys(healthCardData);
-    let index = this.keys.indexOf('district_id');
-    if (index > -1) {
-      this.keys.splice(index, 1);
-    }
-    index = this.keys.indexOf('block_id');
-    if (index > -1) {
-      this.keys.splice(index, 1);
-    }
-    index = this.keys.indexOf('cluster_id');
-    if (index > -1) {
-      this.keys.splice(index, 1);
-    }
-    index = this.keys.indexOf('school_id');
-    if (index > -1) {
-      this.keys.splice(index, 1);
-    }
-    this.keys = this.keys.filter(key => {
-      if (typeof healthCardData[`${key}`] != 'object') {
+    if (this.level != 'state') {
+      this.updatedKeys = [];
+      this.keys = Object.keys(healthCardData);
+      let index = this.keys.indexOf('district_id');
+      if (index > -1) {
+        this.keys.splice(index, 1);
+      }
+      index = this.keys.indexOf('block_id');
+      if (index > -1) {
+        this.keys.splice(index, 1);
+      }
+      index = this.keys.indexOf('cluster_id');
+      if (index > -1) {
+        this.keys.splice(index, 1);
+      }
+      index = this.keys.indexOf('school_id');
+      if (index > -1) {
+        this.keys.splice(index, 1);
+      }
+      this.keys = this.keys.filter(key => {
+        if (typeof healthCardData[`${key}`] != 'object') {
+          let myKey = this.stringConverter(key);
+          this.updatedKeys.push(myKey);
+          return key;
+        }
+      });
+    } else {
+      this.updatedKeys = [];
+      this.keys = Object.keys(healthCardData['basic_details']);
+      this.keys = this.keys.filter(key => {
         let myKey = this.stringConverter(key);
         this.updatedKeys.push(myKey);
         return key;
-      }
-    });
+      });
+    }
     this.showAll = true;
     var myKey;
     this.tooltipInfra = [];
@@ -472,6 +488,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.tooltipCrc = [];
     this.tooltipCrcKeys = [];
     this.infraTooltipMetrics = [];
+    this.semPerformTooltip = [];
+    this.semPerformTooltipKeys = [];
     if (healthCardData['school_infrastructure'] && healthCardData['school_infrastructure'] != null) {
       this.tooltipInfra = Object.keys(healthCardData['school_infrastructure']);
       this.tooltipInfra = this.tooltipInfra.filter((key) => {
@@ -480,7 +498,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.tooltipInfra.map(key => {
         myKey = this.stringConverter(key);
         this.toolTipInfraKeys.push(myKey);
-      })
+      });
 
       this.infraColor = this.service.colorGredient(healthCardData['school_infrastructure']['infra_score']);
       this.toolTipInfraKeys.map(key => {
@@ -507,6 +525,21 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         myKey = this.stringConverter(key);
         this.tooltipSemKeys.push(myKey);
       });
+      if (this.level == 'state') {
+        this.semPerformTooltip = Object.keys(healthCardData['student_semester']['grade_wise_performance']);
+        this.semPerformTooltip.filter(key => {
+          myKey = this.stringConverter(key);
+          this.semPerformTooltipKeys.push(myKey);
+        });
+        this.tooltimSem.filter(key => {
+          if (key != 'grade_wise_performance') {
+            myKey = this.stringConverter(key);
+            this.tooltipSemKeys.push(myKey);
+          }
+        });
+        let i = this.tooltimSem.indexOf('grade_wise_performance');
+        this.tooltimSem.splice(i, 1);
+      }
       this.semColor = this.service.colorGredient(healthCardData['student_semester']['performance']);
     }
     if (healthCardData['pat_performance'] && healthCardData['pat_performance'] != null) {
@@ -525,20 +558,27 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.tooltipPatKeys.push(myKey);
         }
       });
-      var i = this.tooltipPat.indexOf('grade_wise_performance');
+      let i = this.tooltipPat.indexOf('grade_wise_performance');
       this.tooltipPat.splice(i, 1);
+      if (this.level == 'state') {
+        this.patColor = this.service.colorGredient(healthCardData['pat_performance'][`school_performance`]);
+      } else {
+        this.patColor = this.service.colorGredient(healthCardData['pat_performance'][`${this.level}_performance`]);
 
-      this.patColor = this.service.colorGredient(healthCardData['pat_performance'][`${this.level}_performance`]);
+      }
     }
     if (healthCardData['crc_visit'] && healthCardData['crc_visit'] != null) {
       this.tooltipCrc = Object.keys(healthCardData['crc_visit']);
-      this.tooltipCrc = this.tooltipCrc.filter((key) => {
-        return !this.crcVisit.includes(key);
-      });
+      if (this.level != 'state') {
+        this.tooltipCrc = this.tooltipCrc.filter((key) => {
+          return !this.crcVisit.includes(key);
+        });
+      }
       this.tooltipCrc.filter(key => {
         var myKey = this.stringConverter(key);
         this.tooltipCrcKeys.push(myKey);
       });
+
       this.crcColor = this.service.colorGredient1(healthCardData['crc_visit']['schools_0']);
     }
     if (healthCardData['udise'] && healthCardData['udise'] != null) {

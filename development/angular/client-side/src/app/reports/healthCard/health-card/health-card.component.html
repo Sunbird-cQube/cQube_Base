@@ -29,8 +29,8 @@
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
             <em class="fa fa-home" id="home" title="Home"
-                style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233);"
-                alt="Home" (click)="stateData()"></em>
+                style="cursor: pointer;font-size: 30px; float: right; color: rgb(39, 194, 233);" alt="Home"
+                (click)="stateData()"></em>
         </div>
     </div>
     <div class="row" *ngIf="showAll">
@@ -48,17 +48,17 @@
                         style="border: 2px solid gray;float: left; min-height: 30px;max-height: 140px !important; background-color: gray; color: white; border-radius: 10px; padding: 10px;">
                         <div style="float: left;" *ngFor="let key of keys; let i=index">
                             <span style="margin-right: 30px;font-weight: bold;">
-                                <span *ngIf="i==0 && level =='state'">
+                                <span *ngIf="i==0 && level =='state'" style="margin-right: 30px;">
                                     <span>State</span> :
                                     <span>{{state}}</span>
-                                </span>
-                                <span *ngIf="i!=0 && level =='state'">
-                                    <span>{{updatedKeys[i]}}</span> :
-                                    <span>{{healthCardData[key]}}</span>
                                 </span>
                                 <span *ngIf="level !='state'">
                                     <span>{{updatedKeys[i]}}</span> :
                                     <span>{{healthCardData[key]}}</span>
+                                </span>
+                                <span *ngIf="level =='state'">
+                                    <span>{{updatedKeys[i]}}</span> :
+                                    <span>{{healthCardData['basic_details'][key]}}</span>
                                 </span>
                             </span>
                         </div>
@@ -118,15 +118,17 @@
                                         <td>:</td>
                                         <td>{{healthCardData['student_attendance'][attendance]}} %</td>
                                     </tr>
-                                    <strong
+                                    <strong *ngIf="level != 'state'"
                                         style="text-decoration: underline;  font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Level Rank</strong>
                                     <tr *ngFor="let attendance of schoolInfraRank; let i=index">
-                                        <td>{{schoolInfraRankKye[i]}}</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['student_attendance'][attendance]}}
+                                        <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                        <td *ngIf="level != 'state'">:</td>
+                                        <td *ngIf="level != 'state'">
+                                            {{healthCardData['student_attendance'][attendance]}}
                                         </td>
                                     </tr>
+
                                     <strong *ngIf="level != 'school'"
                                         style="text-decoration: underline; font-size: 15px;line-height: 2em;">School
                                         Categories</strong>
@@ -205,14 +207,28 @@
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let key of tooltimSem;let i=index">
                                                             <td
-                                                                *ngIf="i>semLength && healthCardData['student_semester'][key]">
+                                                                *ngIf="i>semLength && healthCardData['student_semester'][key] && level !='state'">
                                                                 {{tooltipSemKeys[i]}}</td>
                                                             <td
-                                                                *ngIf="i>semLength && healthCardData['student_semester'][key]">
+                                                                *ngIf="i>semLength && healthCardData['student_semester'][key] && level !='state'">
                                                                 :</td>
                                                             <td
-                                                                *ngIf="i>semLength && healthCardData['student_semester'][key]">
+                                                                *ngIf="i>semLength && healthCardData['student_semester'][key] && level !='state'">
                                                                 {{healthCardData['student_semester'][key]}} %
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of semPerformTooltip;let i=index">
+                                                            <td
+                                                                *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
+                                                                {{semPerformTooltipKeys[i]}}</td>
+                                                            <td
+                                                                *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
+                                                                :</td>
+                                                            <td
+                                                                *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
+                                                                {{healthCardData['student_semester']['grade_wise_performance'][key]}}
+                                                                %
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -229,13 +245,13 @@
                                         <td>:</td>
                                         <td><span>{{healthCardData['student_semester'][sem]}} %</span></td>
                                     </tr>
-                                    <strong
+                                    <strong *ngIf="level != 'state'"
                                         style="text-decoration: underline;  font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Level Rank</strong>
                                     <tr *ngFor="let sem of schoolInfraRank; let i=index">
-                                        <td>{{schoolInfraRankKye[i]}}</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['student_semester'][sem]}}
+                                        <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                        <td *ngIf="level != 'state'">:</td>
+                                        <td *ngIf="level != 'state'">{{healthCardData['student_semester'][sem]}}
                                         </td>
                                     </tr>
                                     <strong *ngIf="level != 'school'"
@@ -335,13 +351,13 @@
                                         <td>:</td>
                                         <td><span>{{healthCardData['pat_performance'][pat]}} %</span></td>
                                     </tr>
-                                    <strong
+                                    <strong *ngIf="level != 'state'"
                                         style="text-decoration: underline;  font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Level Rank</strong>
                                     <tr *ngFor="let pat of schoolInfraRank; let i=index">
-                                        <td>{{schoolInfraRankKye[i]}}</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['pat_performance'][pat]}}
+                                        <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                        <td *ngIf="level != 'state'">:</td>
+                                        <td *ngIf="level != 'state'">{{healthCardData['pat_performance'][pat]}}
                                         </td>
                                     </tr>
                                     <strong *ngIf="level != 'school'"
@@ -404,9 +420,19 @@
                                                         </tr>
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let infra of tooltipInfra;let i=index">
-                                                            <td *ngIf="i<= infraLength"> {{toolTipInfraKeys[i]}}</td>
-                                                            <td *ngIf="i<= infraLength">:</td>
-                                                            <td *ngIf="i<= infraLength">
+                                                            <td *ngIf="i== tooltipInfra.length-1  && level =='state'">
+                                                                {{toolTipInfraKeys[i]}}</td>
+                                                            <td *ngIf="i== tooltipInfra.length-1 && level =='state'">:
+                                                            </td>
+                                                            <td *ngIf="i== tooltipInfra.length-1 && level =='state'">
+                                                                {{healthCardData['school_infrastructure'][infra]}}</td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let infra of tooltipInfra;let i=index">
+                                                            <td *ngIf="i <= infraLength && level !='state'">
+                                                                {{toolTipInfraKeys[i]}}</td>
+                                                            <td *ngIf="i <= infraLength  && level !='state'">:</td>
+                                                            <td *ngIf="i <= infraLength  && level !='state'">
                                                                 {{healthCardData['school_infrastructure'][infra]}}</td>
                                                         </tr>
                                                         <tr>
@@ -418,12 +444,18 @@
                                                         </tr>
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let infra of tooltipInfra;let i=index">
-                                                            <td *ngIf="i> infraLength"> {{toolTipInfraKeys[i]}}</td>
-                                                            <td *ngIf="i> infraLength">:</td>
-                                                            <td *ngIf="i> infraLength && infraTooltipMetrics[i]">
+                                                            <td
+                                                                *ngIf="i> infraLength && infra != 'total_schools_data_received'">
+                                                                {{toolTipInfraKeys[i]}}</td>
+                                                            <td
+                                                                *ngIf="i> infraLength && infra != 'total_schools_data_received'">
+                                                                :</td>
+                                                            <td
+                                                                *ngIf="i> infraLength && infraTooltipMetrics[i] && infra != 'total_schools_data_received'">
                                                                 {{healthCardData['school_infrastructure'][infra]}} %
                                                             </td>
-                                                            <td *ngIf="i> infraLength && !infraTooltipMetrics[i]">
+                                                            <td
+                                                                *ngIf="i> infraLength && !infraTooltipMetrics[i] && infra != 'total_schools_data_received'">
                                                                 {{healthCardData['school_infrastructure'][infra]}}</td>
                                                         </tr>
                                                     </tbody>
@@ -444,22 +476,22 @@
                                             <span>{{healthCardData['school_infrastructure'][infra]}} %</span>
                                         </td>
                                     </tr>
-                                    <strong
+                                    <strong *ngIf="level != 'state'"
                                         style="text-decoration: underline;  font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Level Rank</strong>
                                     <tr *ngFor="let infra of schoolInfraRank; let i=index">
-                                        <td>
+                                        <td *ngIf="level != 'state'">
                                             <span>{{schoolInfraRankKye[i]}}</span>
                                         </td>
-                                        <td>:</td>
-                                        <td>
+                                        <td *ngIf="level != 'state'">:</td>
+                                        <td *ngIf="level != 'state'">
                                             <span>{{healthCardData['school_infrastructure'][infra]}} </span>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                             <br>
-                            <strong>Areas To Focus : &nbsp;
+                            <strong *ngIf="level != 'state'">Areas To Focus : &nbsp;
                                 {{healthCardData['school_infrastructure']['areas_to_focus']}}</strong>
 
 
@@ -506,9 +538,20 @@
                                                         </tr>
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let key of tooltipUDISE;let i=index">
-                                                            <td *ngIf="i<=udiseLength">{{tooltipUDISEKyes[i]}}</td>
-                                                            <td *ngIf="i<=udiseLength">:</td>
-                                                            <td *ngIf="i<=udiseLength">{{healthCardData['udise'][key]}}
+                                                            <td *ngIf="i<=udiseLength && level !='state'">
+                                                                {{tooltipUDISEKyes[i]}}</td>
+                                                            <td *ngIf="i<=udiseLength && level !='state'">:</td>
+                                                            <td *ngIf="i<=udiseLength && level !='state'">
+                                                                {{healthCardData['udise'][key]}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;"
+                                                            *ngFor="let key of tooltipUDISE;let i=index">
+                                                            <td *ngIf="key == 'total_schools' && level =='state'">
+                                                                {{tooltipUDISEKyes[i]}}</td>
+                                                            <td *ngIf="key == 'total_schools' && level =='state'">:</td>
+                                                            <td *ngIf="key == 'total_schools' && level =='state'">
+                                                                {{healthCardData['udise'][key]}}
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -520,11 +563,15 @@
                                                         </tr>
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let key of tooltipUDISE;let i=index">
-                                                            <td *ngIf="i>udiseLength && healthCardData['udise'][key]">
+                                                            <td
+                                                                *ngIf="i>udiseLength && healthCardData['udise'][key] && key != 'total_schools'">
                                                                 {{tooltipUDISEKyes[i]}}</td>
-                                                            <td *ngIf="i>udiseLength && healthCardData['udise'][key]">:
+                                                            <td
+                                                                *ngIf="i>udiseLength && healthCardData['udise'][key] && key != 'total_schools'">
+                                                                :
                                                             </td>
-                                                            <td *ngIf="i>udiseLength && healthCardData['udise'][key]">
+                                                            <td
+                                                                *ngIf="i>udiseLength && healthCardData['udise'][key] && key != 'total_schools'">
                                                                 {{healthCardData['udise'][key]}} %
                                                             </td>
                                                         </tr>
@@ -542,13 +589,13 @@
                                         <td>:</td>
                                         <td>{{healthCardData['udise'][key]}} %</td>
                                     </tr>
-                                    <strong
+                                    <strong *ngIf="level != 'state'"
                                         style="text-decoration: underline;  font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Level Rank</strong>
                                     <tr *ngFor="let key of schoolInfraRank; let i=index">
-                                        <td>{{schoolInfraRankKye[i]}}</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['udise'][key]}}
+                                        <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                        <td *ngIf="level != 'state'">:</td>
+                                        <td *ngIf="level != 'state'">{{healthCardData['udise'][key]}}
                                         </td>
                                     </tr>
                                     <strong *ngIf="level != 'school'"
@@ -641,17 +688,21 @@
                             </div>
                             <table>
                                 <tbody>
-                                    <strong
+                                    <strong *ngIf="level != 'state'"
                                         style="text-decoration: underline; font-size: 15px;line-height: 2em;">Schools
                                         Visit
                                         Category</strong>
+                                    <strong *ngIf="level == 'state'"
+                                        style="text-decoration: underline; font-size: 15px;line-height: 2em;">CRC
+                                        Details</strong>
                                     <tr *ngFor="let crc of crcVisit; let i=index">
                                         <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">
                                             <span>{{crcVisitKeys[i].replace("Schools", "School")}}</span>
                                         </td>
                                         <td *ngIf="level !='school'"> <span>{{crcVisitKeys[i]}}</span></td>
                                         <td *ngIf="level !='school'">:</td>
-                                        <td *ngIf="level !='school'"> <span>{{healthCardData['crc_visit'][crc]}} %
+                                        <td *ngIf="level !='school'"> <span>{{healthCardData['crc_visit'][crc]}} <span
+                                                    *ngIf="level != 'state'">%</span>
                                             </span></td>
                                     </tr>
                                 </tbody>
