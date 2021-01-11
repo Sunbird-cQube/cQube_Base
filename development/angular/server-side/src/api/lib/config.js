@@ -37,7 +37,7 @@ var appendConfig = new S3Config({
     "bucket": bucketName1
 });
 
-var s3 = new aws.S3({ 'accessKeyId': accessKeyId, 'secretAccessKey': secretAccessKey });
+var s3 = new aws.S3({ 'accessKeyId': accessKeyId, 'secretAccessKey': secretAccessKey, signatureVersion: 'v4', region: process.env.AWS_REGION });
 
 var getParams = {
     Bucket: bucketName, //replace example bucket with your s3 bucket name

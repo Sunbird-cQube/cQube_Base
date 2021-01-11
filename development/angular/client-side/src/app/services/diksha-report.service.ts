@@ -127,5 +127,12 @@ export class DikshaReportService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/diksha/course-filter`, data);
   }
+
+  downloadFile(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/getDownloadUrl`, data);
+  }
+
+
 }
 
