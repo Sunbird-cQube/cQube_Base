@@ -1,0 +1,4 @@
+---
+
+parameter_name: teacher_attendance_parameters
+parameter_path: "{{ base_dir }}/cqube/emission_app/python/teacher_attendance_parameters.txt"
