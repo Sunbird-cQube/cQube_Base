@@ -68,6 +68,10 @@
             tags: install
             when: nifi_healthcard
 
+          - role: nifi_teacher_attendance
+            tags: install
+            when: nifi_teacher_attendance
+
           - { role: nifi_scheduler, tags: install }
           - cqube_version
           
