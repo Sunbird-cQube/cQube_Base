@@ -8,7 +8,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         logger.info('---Attendance block wise api ---');
         var month = req.body.month;
         var year = req.body.year;
-        let fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`
+        let fileName = `teacher_attendance/block_${year}_${month}.json`;
         var jsonData = await s3File.readS3File(fileName);
 
         var blocksAttendanceData = jsonData.data
@@ -22,13 +22,13 @@ router.post('/blockWise', auth.authController, async (req, res) => {
                 attendance: blocksAttendanceData[i]['x_value'],
                 lat: blocksAttendanceData[i]['y_value'],
                 lng: blocksAttendanceData[i]['z_value'],
-                number_of_teachers: Math.round(blocksAttendanceData[i]['students_count']/70).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_teachers: blocksAttendanceData[i]['teachers_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                 number_of_schools: (blocksAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
             }
             blockData.push(obj);
         }
         logger.info('--- Attendance block wise api response sent ---');
-        res.status(200).send({ blockData: blockData, teacherCount: Math.round(jsonData.allBlocksFooter.students/70), schoolCount: jsonData.allBlocksFooter.schools });
+        res.status(200).send({ blockData: blockData, teacherCount: jsonData.allBlocksFooter.teachers, schoolCount: jsonData.allBlocksFooter.schools });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -41,7 +41,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
         var distId = req.body.data.id;
         var month = req.body.data.month;
         var year = req.body.data.year;
-        let fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`
+        let fileName = `teacher_attendance/block_${year}_${month}.json`;
         var jsonData = await s3File.readS3File(fileName);
         var blockData = [];
         var filterData = jsonData.data.filter(data => {
@@ -57,13 +57,13 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
                 attendance: blocksAttendanceData[i]['x_value'],
                 lat: blocksAttendanceData[i]['y_value'],
                 lng: blocksAttendanceData[i]['z_value'],
-                number_of_teachers: Math.round(blocksAttendanceData[i]['students_count']/70).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_teachers: blocksAttendanceData[i]['teachers_count'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                 number_of_schools: (blocksAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
             }
             blockData.push(obj);
         }
         logger.info('--- Attendance blockPerDist api response sent ---');
-        res.status(200).send({ blockData: blockData, teacherCount: Math.round(jsonData.footer[distId].students/70), schoolCount: jsonData.footer[distId].schools });
+        res.status(200).send({ blockData: blockData, teacherCount: jsonData.footer[distId].teachers, schoolCount: jsonData.footer[distId].schools });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

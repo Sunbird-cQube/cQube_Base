@@ -223,10 +223,10 @@ export class DikshaChartComponent implements OnInit {
     this.timeRange(this.timePeriod);
   }
 
-  fileToDownload = `diksha_raw_data/table_reports/course/${this.timePeriod}/all.csv`;
+  fileToDownload = `diksha_raw_data/stack_bar_reports/${this.timePeriod}/${this.timePeriod}.csv`;
   timeRange(timePeriod) {
     this.emptyChart();
-    this.fileToDownload = `diksha_raw_data/table_reports/course/${this.timePeriod}/all.csv`;
+    this.fileToDownload = `diksha_raw_data/stack_bar_reports/${this.timePeriod}/${this.timePeriod}.csv`;
     document.getElementById('home').style.display = "block";
     this.allDataNotFound = undefined;
     this.errMsg();
