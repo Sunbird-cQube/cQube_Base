@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { logger } = require('../../lib/logger');
-const auth = require('../../middleware/check-auth');
-const s3File = require('../../lib/reads3File');
+const { logger } = require('../../../lib/logger');
+const auth = require('../../../middleware/check-auth');
+const s3File = require('../../../lib/reads3File');
 
 router.post('/schoolWise', auth.authController, async function (req, res) {
     try {

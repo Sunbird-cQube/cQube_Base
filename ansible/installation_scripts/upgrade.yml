@@ -64,4 +64,8 @@
             tags: update
             when: nifi_healthcard
 
+          - role: nifi_teacher_attendance
+            tags: update
+            when: nifi_teacher_attendance
+
           - cqube_version

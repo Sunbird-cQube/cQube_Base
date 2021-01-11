@@ -1,0 +1,2 @@
+- include_tasks: nifi_teacher_attendance.yml
+  tags: [ install, update ]
