@@ -5688,11 +5688,23 @@ string_agg(''cast(sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')|
   ''_value)*100/sum(total_schools_data_received)as int) as ''
   ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','',''))
     from infrastructure_master where status = true';
+infra_atf_query text:=
+'select ''(select json_agg(areas_to_focus)as areas_to_focus  from 
+ 	(select array_remove(array[''||string_agg(''case when cast(sum(''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)*100/sum(total_schools_data_received)as int)<30 then ''''''||
+ case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
+else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
+''],''''0'''')as areas_to_focus from hc_infra_school)as infra)'' 
+from infrastructure_master where status = true order by 1';   
 infra_cols text;
+infra_atf_cols text;
+infra_atf text;
 create_state_view text;
 BEGIN
 Execute udise_query into udise_cols;
 Execute infra_query into infra_cols;
+Execute infra_atf_query into infra_atf_cols;
+Execute infra_atf_cols into infra_atf;
 create_state_view=
 'create or replace view health_card_index_state as select ''basic_details'' as data_source,row_to_json(basic_details)::jsonb as values  from 
 (select distinct(substring(cast(avg(district_id) as text),1,2))as state_id,sum(total_schools)as total_schools,sum(total_students)as total_students from 
@@ -5782,7 +5794,7 @@ union
  (select ''school_infrastructure''as data,row_to_json(infra)::jsonb 
  from (select sum(total_schools_data_received) as total_schools_data_received, 
    cast(avg(infra_score)as int)as infra_score,
-'||infra_cols||',
+'||infra_cols||','''||infra_atf||''' as areas_to_focus,
  sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
  sum(case when infra_score > 33 and infra_score<= 60 then 1 else 0 end)as value_between_33_60,
  sum(case when infra_score > 60 and infra_score<= 75 then 1 else 0 end)as value_between_60_75,

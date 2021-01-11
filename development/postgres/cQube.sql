@@ -1518,16 +1518,19 @@ cluster_name varchar(100),
 crc_name varchar(100),
 cluster_latitude  double precision,
 cluster_longitude  double precision,
-total_present  int,
-total_training int,
-total_halfday int,
+total_present  double precision,
 total_working_days  int,
 teachers_count bigint,
 created_on  TIMESTAMP without time zone ,   
-updated_on  TIMESTAMP without time zone
+updated_on  TIMESTAMP without time zone,
+primary key(school_id,month,year)
 );
 
 create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
+
+alter table school_teacher_total_attendance drop COLUMN if exists total_training;
+alter table school_teacher_total_attendance drop COLUMN if exists total_halfday;
+alter table school_teacher_total_attendance alter COLUMN total_present type double precision;
 
 /* crc_visits_frequency */
 
