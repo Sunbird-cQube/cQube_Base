@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { logger } = require('../../lib/logger');
-const auth = require('../../middleware/check-auth');
-const s3File = require('../../lib/reads3File');
+const { logger } = require('../../../lib/logger');
+const auth = require('../../../middleware/check-auth');
+const s3File = require('../../../lib/reads3File');
 
 router.post('/distWise', auth.authController, async function (req, res) {
     try {
@@ -19,13 +19,13 @@ router.post('/distWise', auth.authController, async function (req, res) {
                 attendance: districtAttendanceData[i]['x_value'],
                 lat: districtAttendanceData[i]['y_value'],
                 lng: districtAttendanceData[i]['z_value'],
-                number_of_students: (districtAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_teachers: Math.round(districtAttendanceData[i]['students_count'] / 70).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                 number_of_schools: (districtAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
             }
             distData.push(obj);
         }
         logger.info('--- Attendance dist wise api response sent ---');
-        res.status(200).send({ distData: distData, studentCount: jsonData.allDistrictsFooter.students, schoolCount: jsonData.allDistrictsFooter.schools });
+        res.status(200).send({ distData: distData, teacherCount: Math.round(jsonData.allDistrictsFooter.students / 70), schoolCount: jsonData.allDistrictsFooter.schools });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
