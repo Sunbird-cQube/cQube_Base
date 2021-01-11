@@ -385,6 +385,7 @@
                     <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                     <name></name>
                     <selectedRelationships>health_card_meta</selectedRelationships>
+                    <selectedRelationships>health_card_state</selectedRelationships>
                     <source>
                         <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
                         <id>52410d56-5c47-3d1a-0000-000000000000</id>
@@ -1110,7 +1111,7 @@
                         <autoTerminate>false</autoTerminate>
                         <name>split</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.SplitJson</type>
                 </processors>
@@ -1207,7 +1208,7 @@
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
                 </processors>
@@ -1467,7 +1468,7 @@
                         <autoTerminate>true</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExtractText</type>
                 </processors>
@@ -1579,7 +1580,7 @@
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -1618,6 +1619,12 @@
     <name>health_card_meta</name>
 </value>
                             </entry>
+                            <entry>
+<key>health_card_state</key>
+<value>
+    <name>health_card_state</name>
+</value>
+                            </entry>
                         </descriptors>
                         <executionNode>ALL</executionNode>
                         <lossTolerant>false</lossTolerant>
@@ -1638,6 +1645,10 @@ ${query_type:startsWith('health_card_index_school')} )} )} )}</value>
 <key>health_card_meta</key>
 <value>${query_type:startsWith('health_card_index_meta')}</value>
                             </entry>
+                            <entry>
+<key>health_card_state</key>
+<value>${query_type:startsWith('health_card_index_state')}</value>
+                            </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
@@ -1655,10 +1666,14 @@ ${query_type:startsWith('health_card_index_school')} )} )} )}</value>
                         <name>health_card_meta</name>
                     </relationships>
                     <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>health_card_state</name>
+                    </relationships>
+                    <relationships>
                         <autoTerminate>true</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -1744,7 +1759,7 @@ ${query_type:startsWith('health_card_index_school')} )} )} )}</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -1814,7 +1829,7 @@ file:${filename},Error while partitioning "${query_type
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -2050,7 +2065,8 @@ file:${filename},Error while partitioning "${query_type
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>${query_type:startsWith('health_card_index_meta_district'):ifElse('healthCard/district/metaData.json',
+<value>${query_type:startsWith('health_card_index_state'):ifElse('healthCard/stateData.json',
+${query_type:startsWith('health_card_index_meta_district'):ifElse('healthCard/district/metaData.json',
 ${query_type:startsWith('health_card_index_meta_block'):ifElse('healthCard/block/metaData.json',
 ${query_type:startsWith('health_card_index_meta_cluster'):ifElse('healthCard/cluster/metaData.json',
 ${query_type:startsWith('health_card_index_meta_school'):ifElse('healthCard/school/metaData.json',
@@ -2058,7 +2074,7 @@ ${query_type:startsWith('health_card_index_district'):ifElse('healthCard/distric
 ${query_type:startsWith('health_card_index_block'):ifElse('healthCard/block/${partition_by_level}.json',
 ${query_type:startsWith('health_card_index_cluster'):ifElse('healthCard/cluster/${partition_by_level}.json',
 ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${partition_by_level}.json','None')}
-)} )} )} )} )} )} )}</value>
+)} )} )} )} )} )} )} )}</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
@@ -2194,7 +2210,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                 </processors>
@@ -2306,7 +2322,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -2498,7 +2514,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExtractText</type>
                 </processors>
@@ -2610,7 +2626,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -2834,7 +2850,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                         <autoTerminate>false</autoTerminate>
                         <name>split</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.SplitJson</type>
                 </processors>
@@ -2903,7 +2919,7 @@ file:${filename},Error while extracting "${query_type}" query.</value>
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -3012,7 +3028,7 @@ file:${filename},Error while extracting "${query_type}" query.</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.FetchFile</type>
                 </processors>
@@ -3094,7 +3110,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('/block_id','None')}
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                 </processors>
@@ -3163,7 +3179,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -3172,5 +3188,5 @@ file:${filename},Error while executing "${query_type}" query.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/31/2020 11:41:46 IST</timestamp>
+    <timestamp>01/08/2021 09:49:03 IST</timestamp>
 </template>

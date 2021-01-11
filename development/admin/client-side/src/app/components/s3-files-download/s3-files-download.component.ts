@@ -51,7 +51,7 @@ export class S3FilesDownloadComponent implements OnInit {
 
       var files = []
       res.forEach(element => {
-        files.push({ fileName: element['Key'] });
+        files.push({ fileName: element });
       });
 
       this.fileNames = files;

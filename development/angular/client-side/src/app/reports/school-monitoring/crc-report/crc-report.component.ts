@@ -941,6 +941,9 @@ export class CrcReportComponent implements OnInit {
     } else if (this.clust) {
       data.level = 'cluster';
       data.value = this.myCluster;
+    } else {
+      data.level = 'state';
+      data.value = null
     }
 
     sessionStorage.setItem('health-card-info', JSON.stringify(data));
