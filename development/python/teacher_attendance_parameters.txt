@@ -71,5 +71,5 @@ SUM(CASE when school_id IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
 SUM(CASE when year IS NULL THEN 1 ELSE 0 END) AS count_null_AcademicYear,
 SUM(CASE when month IS NULL THEN 1 ELSE 0 END) AS count_null_Month
 from teacher_attendance_staging_1)""",
-"teacher_attendance_null_table_name":"""tch_att_null_col""",
+"teacher_attendance_null_table_name":"""tch_att_null_col"""
 }
