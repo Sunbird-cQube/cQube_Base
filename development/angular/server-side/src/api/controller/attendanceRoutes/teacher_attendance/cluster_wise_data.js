@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { logger } = require('../../lib/logger');
-const auth = require('../../middleware/check-auth');
-const s3File = require('../../lib/reads3File');
+const { logger } = require('../../../lib/logger');
+const auth = require('../../../middleware/check-auth');
+const s3File = require('../../../lib/reads3File');
 
 router.post('/clusterWise', auth.authController, async (req, res) => {
     try {
@@ -23,13 +23,13 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
                 attendance: clustersAttendanceData[i]['x_value'],
                 lat: clustersAttendanceData[i]['y_value'],
                 lng: clustersAttendanceData[i]['z_value'],
-                number_of_students: (clustersAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_teachers: Math.round(clustersAttendanceData[i]['students_count']/70).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                 number_of_schools: (clustersAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             }
             clusterData.push(obj);
         }
         logger.info('--- Attendance cluster wise api response sent ---');
-        res.status(200).send({ clusterData: clusterData, studentCount: jsonData.allClustersFooter.students, schoolCount: jsonData.allClustersFooter.schools });
+        res.status(200).send({ clusterData: clusterData, teacherCount: Math.round(jsonData.allClustersFooter.students/70), schoolCount: jsonData.allClustersFooter.schools });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -60,13 +60,13 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
                 attendance: clustersAttendanceData[i]['x_value'],
                 lat: clustersAttendanceData[i]['y_value'],
                 lng: clustersAttendanceData[i]['z_value'],
-                number_of_students: (clustersAttendanceData[i]['students_count']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
+                number_of_teachers: Math.round(clustersAttendanceData[i]['students_count']/70).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
                 number_of_schools: (clustersAttendanceData[i]['total_schools']).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,"),
             }
             clusterData.push(obj);
         }
         logger.info('--- Attendance clusterPerDist api response sent ---');
-        res.status(200).send({ clusterDetails: clusterData, studentCount: jsonData.footer[blockId].students, schoolCount: jsonData.footer[blockId].schools });
+        res.status(200).send({ clusterDetails: clusterData, teacherCount: Math.round(jsonData.footer[blockId].students/70), schoolCount: jsonData.footer[blockId].schools });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
