@@ -98,6 +98,8 @@ export class UsageByTextbookContentComponent implements OnInit {
     // this.header = this.header;
     this.service.dikshaAllTableData({ collectionType: this.collectionType }).subscribe(res => {
       this.fileName = `Diksha_All_Data_${this.timePeriod}`;
+      this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+      this.fileToDownload = `diksha_raw_data/table_reports/textbook/${this.time}/${this.time}.csv`;
       this.result = res;
       this.tableCreation(this.result);
 
@@ -173,8 +175,12 @@ export class UsageByTextbookContentComponent implements OnInit {
 
   }
 
+  time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+  fileToDownload = `diksha_raw_data/table_reports/textbook/${this.time}/${this.time}.csv`;
   timeRange(timePeriod) {
     this.errMsg();
+    this.time = timePeriod == 'all' ? 'overall' : timePeriod;
+    this.fileToDownload = `diksha_raw_data/table_reports/textbook/${this.time}/${this.time}.csv`;
     document.getElementById('home').style.display = "Block";
     if (this.districtId == '') {
       this.districtId = undefined
@@ -216,6 +222,13 @@ export class UsageByTextbookContentComponent implements OnInit {
       this.loaderAndErr();
     })
   }
+
+  downloadRawFile() {
+    this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
+      window.open(`${res['downloadUrl']}`, "_blank");
+    })
+  }
+
 
   downloadRoport() {
     if (this.reportData.length <= 0) {
