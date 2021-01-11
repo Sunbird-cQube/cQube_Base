@@ -911,6 +911,44 @@ select Infra_jolt_spec('water','toilet');
 
 /*config semester with no school information*/
 
+create or replace view semester_invalid_data as
+select a.x_axis as school_id,school_name,cluster_id,cluster_name,crc_name,block_id,block_name,x_value,district_id,district_name,y_axis,y_value,z_axis,z_value,
+students_count,total_schools,a.semester, 
+b.grade_3,b.grade_4,b.grade_5,b.grade_6,b.grade_7,b.grade_8
+from
+(SELECT school_id AS x_axis,Initcap(school_name) AS school_name,district_id,Initcap(district_name) AS district_name,block_id,Initcap(block_name)AS block_name,cluster_id,
+Initcap(cluster_name) AS cluster_name,Initcap(crc_name)AS crc_name,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,semester,
+'latitude' AS y_axis,school_latitude AS y_value,'longitude' AS z_axis,school_longitude AS z_value,
+Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
+	case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+	+case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+	case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+	+case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+	),0)*100.0/
+NULLIF(Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
+	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),0),1) AS x_value
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 and cluster_name is not null
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL 
+GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,semester 
+having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
+ case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+ +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+ case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+ +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+ ) <> 0)as a
+left join 
+(select cast(split_part(string,'_',1) as bigint)as x_axis,cast(split_part(string,'_',2) as bigint) as semester,* from crosstab
+(
+'select concat(x_axis,''_'',semester)as string,grade,x_value from school_grade order by 1,2'
+) as ct 
+(string text,"grade_3" numeric(5,2),"grade_4" numeric(5,2),"grade_5" numeric(5,2),"grade_6" numeric(5,2)
+,"grade_7" numeric(5,2),"grade_8" numeric(5,2))) b
+on a.x_axis=b.x_axis and a.semester=b.semester;
+
+drop view if exists semester_exception_completion_data;
+
 create or replace FUNCTION semester_no_schools(semester int)
 RETURNS text AS
 $$
@@ -924,14 +962,14 @@ initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as dist
  b.district_latitude,b.district_longitude from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 where a.school_id not in 
-(select distinct school_id from student_semester_trans where semester='||semester||')
+(select distinct school_id from semester_invalid_data 
+
+	where semester='||semester||')
 and cluster_name is not null';
 Execute semester_no_schools; 
 return 0;
 END;
 $$LANGUAGE plpgsql;
-
-drop view if exists semester_exception_completion_data;
 
 /*Diksha config script*/
 
