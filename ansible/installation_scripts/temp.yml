@@ -1,0 +1,13 @@
+---
+- name: Installing cQube
+  hosts: localhost
+  gather_facts: true
+  remote_user: root
+  vars_files:
+    - config.yml
+    - datasource_config.yml
+    - memory_config.yml
+    - .version
+
+  roles:
+          - kong

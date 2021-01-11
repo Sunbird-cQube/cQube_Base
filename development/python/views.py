@@ -79,7 +79,7 @@ def aws_file_download():
     try:
         response = s3_client.generate_presigned_url('get_object',
                                                      Params={'Bucket':bucket_name,'Key':file_name},
-                                                     ExpiresIn=86400)
+                                                     ExpiresIn=432000)
     except ClientError as e:
         logging.error(e)
         return None
@@ -217,3 +217,37 @@ def get_infra_score():
         )
     except Exception as err:
         abort(400, f'Bad request, validate the payload')
+
+@app.route('/data/api/data/v3/dataset/get/summary-rollup', methods=['GET'])
+def get_diksha():
+    return '''{
+    "id": "org.ekstep.analytics.telemetry",
+    "ver": "1.0",
+    "ts": "2020-11-25T10:04:08.108+00:00",
+    "params": {
+        "resmsgid": "<resmsgid>",
+        "status": "successful",
+        "client_key": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "files": [
+            "<URL>",
+            "<URL>",
+            "<URL>",
+            "<URL>"
+        ],
+        "periodWiseFiles": {
+            "2020-12-27": [
+                "https://cqube-gj-input.s3.amazonaws.com/diksha/2020-12-27.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20210105%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20210105T121218Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=aae3af2adf184fc7b9ad90da513e0b363a039eda55d977199c489d141989efb5"
+            ],
+            "2020-12-28": [
+                "https://cqube-gj-input.s3.amazonaws.com/diksha/2020-12-28.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20210105%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20210105T121204Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=8e0cb5edc25579e8641831c3e413c6fbada6ac8b374d86e0064d2d92c4bcd479"
+            ],
+            "2020-11-29": [
+                "https://cqube-gj-input.s3.amazonaws.com/diksha/2020-12-29.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2YWRVRZFDHGEDYVM%2F20210105%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20210105T121107Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=4f7ac1edeb60e34cb60db1f3443f2be7e7e773c2b549d06ffcb0cae583c0e0f7"
+            ]
+        },
+        "expiresAt": 1606300998990
+    }
+}'''

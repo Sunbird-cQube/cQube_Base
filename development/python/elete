@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Date: Fri, 04 Dec 2020 09:21:22 GMT
+Content-Type: application/json; charset=utf-8
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+Content-Length: 379
+X-Kong-Admin-Latency: 221
+Server: kong/2.2.1
+
