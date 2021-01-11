@@ -169,8 +169,10 @@ export class DikshaTableComponent implements OnInit {
 
   }
 
+  fileToDownload = `diksha_raw_data/stack_bar_reports/${this.timePeriod}}.csv`;
   timeRange(timePeriod) {
     this.errMsg();
+    this.fileToDownload = `diksha_raw_data/stack_bar_reports/${timePeriod}.csv`;
     document.getElementById('home').style.display = "Block";
     if (this.districtId == '') {
       this.districtId = undefined
@@ -210,6 +212,12 @@ export class DikshaTableComponent implements OnInit {
       document.getElementById('spinner').style.display = 'none';
     }, err => {
       this.loaderAndErr();
+    })
+  }
+
+  downloadRawFile() {
+    this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
+      window.open(`${res['downloadUrl']}`, "_blank");
     })
   }
 

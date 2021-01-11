@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AttendanceReportService } from '../../../services/attendance-report.service';
+import { AttendanceReportService } from '../../../services/student.attendance-report.service';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
