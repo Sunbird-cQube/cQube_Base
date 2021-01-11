@@ -381,7 +381,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
 
         var distNames = [];
-        this.studentCount = res['studentCount'];
+        this.studentCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
@@ -432,7 +432,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
 
         var blockNames = [];
-        this.studentCount = res['studentCount'];
+        this.studentCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
@@ -485,7 +485,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
         var clustNames = [];
         var blockNames = [];
-        this.studentCount = res['studentCount'];
+        this.studentCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
 
@@ -547,7 +547,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
-        this.studentCount = res['studentCount'];
+        this.studentCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
@@ -772,7 +772,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.markers = sorted;
-        this.studentCount = res['studentCount'];
+        this.studentCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         for (var i = 0; i < this.markers.length; i++) {
@@ -880,7 +880,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.markers = [];
-        this.studentCount = res['studentCount'];
+        this.studentCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
         // sorted.pop();
         this.markers = sorted;
@@ -1020,7 +1020,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.markers = [];
-        this.studentCount = res['studentCount'];
+        this.studentCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;

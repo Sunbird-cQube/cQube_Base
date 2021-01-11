@@ -15,43 +15,43 @@ export class TeacherAttendanceReportService {
   //Attendance report
   dist_wise_data(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/attendance/distWise`, data);
+    return this.http.post(`${this.baseUrl}/teacher_attendance/distWise`, data);
   }
 
   block_wise_data(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/attendance/blockWise`, data);
+    return this.http.post(`${this.baseUrl}/teacher_attendance/blockWise`, data);
   }
 
   cluster_wise_data(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/attendance/clusterWise`, data);
+    return this.http.post(`${this.baseUrl}/teacher_attendance/clusterWise`, data);
   }
 
   school_wise_data(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/attendance/schoolWise`, data);
+    return this.http.post(`${this.baseUrl}/teacher_attendance/schoolWise`, data);
   }
 
 
   blockPerDist(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/attendance/blockPerDist`, { data: data, baseUrl: this.baseUrl });
+    return this.http.post(`${this.baseUrl}/teacher_attendance/blockPerDist`, { data: data, baseUrl: this.baseUrl });
   }
 
   clusterPerBlock(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/attendance/clusterPerBlock`, { data: data, baseUrl: this.baseUrl });
+    return this.http.post(`${this.baseUrl}/teacher_attendance/clusterPerBlock`, { data: data, baseUrl: this.baseUrl });
   }
 
   schoolsPerCluster(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/attendance/schoolPerCluster`, { data: data, baseUrl: this.baseUrl });
+    return this.http.post(`${this.baseUrl}/teacher_attendance/schoolPerCluster`, { data: data, baseUrl: this.baseUrl });
   }
 
   getDateRange() {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/attendance/getDateRange`);
+    return this.http.get(`${this.baseUrl}/teacher_attendance/getDateRange`);
   }
   //capturing telemetry.....
   telemetrySar(date) {
