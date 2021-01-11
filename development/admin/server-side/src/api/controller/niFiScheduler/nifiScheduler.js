@@ -203,7 +203,7 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
                 schedularData = JSON.parse(fs.readFileSync(filePath));
             }
             let foundIndex = schedularData.findIndex(x => x.groupName == obj.groupName);
-            if (foundIndex != undefined) {
+            if (foundIndex != -1) {
                 schedularData[foundIndex] = obj;
             } else {
                 schedularData.push(obj);
@@ -442,7 +442,7 @@ router.post('/scheduleNiFiProcessor/:id/:name', async (req, res) => {
                 schedularData = JSON.parse(fs.readFileSync(filePath));
             }
             let foundIndex = schedularData.findIndex(x => x.groupName == obj.groupName);
-            if (foundIndex != undefined) {
+            if (foundIndex != -1) {
                 schedularData[foundIndex] = obj;
             } else {
                 schedularData.push(obj);
