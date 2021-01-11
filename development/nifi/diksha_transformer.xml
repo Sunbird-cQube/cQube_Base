@@ -14925,7 +14925,7 @@ VALUES
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -36389,26 +36389,26 @@ ${query_type:startsWith('diksha_tpd_r2_school_last_day'):ifElse('diksha_tpd/repo
 ${query_type:startsWith('diksha_tpd_r2_school_last_7_days'):ifElse('diksha_tpd/report2/last_7_days/school/${type}/${id}.json',
 ${query_type:startsWith('diksha_tpd_r2_school_last_30_days'):ifElse('diksha_tpd/report2/last_30_days/school/${type}/${id}.json',
 ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('diksha_tpd/report2/overall/school/${type}/${id}.json',
-${query_type:startsWith('diksha_stack_bar_raw_all_last_day'):ifElse('diksha_raw_data/stack_bar_reports/last_day/all.json',
-${query_type:startsWith('diksha_stack_bar_raw_all_last_7_days'):ifElse('diksha_raw_data/stack_bar_reports/last_7_days/all.json',
-${query_type:startsWith('diksha_stack_bar_raw_all_last_30_days'):ifElse('diksha_raw_data/stack_bar_reports/last_30_days/all.json',
-${query_type:startsWith('diksha_stack_bar_raw_all_all'):ifElse('diksha_raw_data/stack_bar_reports/all.json',
-${query_type:startsWith('diksha_stack_bar_raw_last_day'):ifElse('diksha_raw_data/stack_bar_reports/last_day/all.json',
-${query_type:startsWith('diksha_stack_bar_raw_last_7_days'):ifElse('diksha_raw_data/stack_bar_reports/last_7_days/all.json',
-${query_type:startsWith('diksha_stack_bar_raw_last_30_days'):ifElse('diksha_raw_data/stack_bar_reports/last_30_days/all.json',
-${query_type:startsWith('diksha_stack_bar_raw_all'):ifElse('diksha_raw_data/stack_bar_reports/all.json',
-${query_type:startsWith('diksha_table_raw_txtb_last_day'):ifElse('diksha_raw_data/table_reports/textbook/last_day/all.json',
-${query_type:startsWith('diksha_table_raw_txtb_last_7_days'):ifElse('diksha_raw_data/table_reports/textbook/last_7_days/all.json',
-${query_type:startsWith('diksha_table_raw_txtb_last_30_days'):ifElse('diksha_raw_data/table_reports/textbook/last_30_days/all.json',
-${query_type:startsWith('diksha_table_raw_txtb_all'):ifElse('diksha_raw_data/table_reports/textbook/all.json',
-${query_type:startsWith('diksha_table_raw_crs_last_day'):ifElse('diksha_raw_data/table_reports/course/last_day/all.json',
-${query_type:startsWith('diksha_table_raw_crs_last_7_days'):ifElse('diksha_raw_data/table_reports/course/last_7_days/all.json',
-${query_type:startsWith('diksha_table_raw_crs_last_30_days'):ifElse('diksha_raw_data/table_reports/course/last_30_days/all.json',
-${query_type:startsWith('diksha_table_raw_crs_all'):ifElse('diksha_raw_data/table_reports/course/all.json',
-${query_type:startsWith('diksha_table_raw_all_last_day'):ifElse('diksha_raw_data/table_reports/all/last_day/all.json',
-${query_type:startsWith('diksha_table_raw_all_last_7_days'):ifElse('diksha_raw_data/table_reports/all/last_7_days/all.json',
-${query_type:startsWith('diksha_table_raw_all_last_30_days'):ifElse('diksha_raw_data/table_reports/all/last_30_days/all.json',
-${query_type:startsWith('diksha_table_raw_all_all'):ifElse('diksha_raw_data/table_reports/all/all.json','None')} 
+${query_type:startsWith('diksha_stack_bar_raw_all_last_day'):ifElse('diksha_raw_data/stack_bar_reports/last_day/all.csv',
+${query_type:startsWith('diksha_stack_bar_raw_all_last_7_days'):ifElse('diksha_raw_data/stack_bar_reports/last_7_days/all.csv',
+${query_type:startsWith('diksha_stack_bar_raw_all_last_30_days'):ifElse('diksha_raw_data/stack_bar_reports/last_30_days/all.csv',
+${query_type:startsWith('diksha_stack_bar_raw_all_all'):ifElse('diksha_raw_data/stack_bar_reports/all.csv',
+${query_type:startsWith('diksha_stack_bar_raw_last_day'):ifElse('diksha_raw_data/stack_bar_reports/last_day/all.csv',
+${query_type:startsWith('diksha_stack_bar_raw_last_7_days'):ifElse('diksha_raw_data/stack_bar_reports/last_7_days/all.csv',
+${query_type:startsWith('diksha_stack_bar_raw_last_30_days'):ifElse('diksha_raw_data/stack_bar_reports/last_30_days/all.csv',
+${query_type:startsWith('diksha_stack_bar_raw_all'):ifElse('diksha_raw_data/stack_bar_reports/all.csv',
+${query_type:startsWith('diksha_table_raw_txtb_last_day'):ifElse('diksha_raw_data/table_reports/textbook/last_day/all.csv',
+${query_type:startsWith('diksha_table_raw_txtb_last_7_days'):ifElse('diksha_raw_data/table_reports/textbook/last_7_days/all.csv',
+${query_type:startsWith('diksha_table_raw_txtb_last_30_days'):ifElse('diksha_raw_data/table_reports/textbook/last_30_days/all.csv',
+${query_type:startsWith('diksha_table_raw_txtb_all'):ifElse('diksha_raw_data/table_reports/textbook/all.csv',
+${query_type:startsWith('diksha_table_raw_crs_last_day'):ifElse('diksha_raw_data/table_reports/course/last_day/all.csv',
+${query_type:startsWith('diksha_table_raw_crs_last_7_days'):ifElse('diksha_raw_data/table_reports/course/last_7_days/all.csv',
+${query_type:startsWith('diksha_table_raw_crs_last_30_days'):ifElse('diksha_raw_data/table_reports/course/last_30_days/all.csv',
+${query_type:startsWith('diksha_table_raw_crs_all'):ifElse('diksha_raw_data/table_reports/course/all.csv',
+${query_type:startsWith('diksha_table_raw_all_last_day'):ifElse('diksha_raw_data/table_reports/all/last_day/all.csv',
+${query_type:startsWith('diksha_table_raw_all_last_7_days'):ifElse('diksha_raw_data/table_reports/all/last_7_days/all.csv',
+${query_type:startsWith('diksha_table_raw_all_last_30_days'):ifElse('diksha_raw_data/table_reports/all/last_30_days/all.csv',
+${query_type:startsWith('diksha_table_raw_all_all'):ifElse('diksha_raw_data/table_reports/all/all.csv','None')} 
 )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} 
 )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )})} )} )} )} )} )}</value>
     </entry>
@@ -37755,7 +37755,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_check_same_records},'Non
 content_mimetype,content_medium,content_subject,content_created_for,
 object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
 collection_name,collection_board,collection_type,collection_medium,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging where ff_uuid='$zip_identifier'</value>
+collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging where ff_uuid='${zip_identifier}'</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -38953,7 +38953,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -39443,7 +39443,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -39587,7 +39587,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>false</autoTerminate>
 <name>splits</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitRecord</type>
                         </processors>
@@ -40859,7 +40859,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
         <key>SQL select query</key>
         <value>select ff_uuid,collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,
 enrolment_date,completion_date,progress,certificate_status,total_score  
-from  diksha_content_staging  where ff_uuid='$zip_identifier'</value>
+from  diksha_content_staging  where ff_uuid='${zip_identifier}'</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -40908,7 +40908,7 @@ from  diksha_content_staging  where ff_uuid='$zip_identifier'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -43258,7 +43258,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -43764,7 +43764,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -44181,11 +44181,11 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_temp_to_trans_fn},'None'
     </entry>
     <entry>
         <key>diksha_data_summary_all</key>
-        <value>${filename:startsWith('diksha_data_summary'):and(${diksha_columns:equals('false')})}</value>
+        <value>${filename:startsWith('diksha_data_summary'):and(${diksha_columns:equals('true')})}</value>
     </entry>
     <entry>
         <key>diksha_data_summary_less</key>
-        <value>${filename:startsWith('diksha_data_summary'):and(${diksha_columns:equals('true')})}</value>
+        <value>${filename:startsWith('diksha_data_summary'):and(${diksha_columns:equals('false')})}</value>
     </entry>
     <entry>
         <key>diksha_tpd</key>
@@ -45251,7 +45251,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -45692,7 +45692,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
 object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
 collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging where ff_uuid='$zip_identifier'</value>
+collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content_staging where ff_uuid='${zip_identifier}'</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -46295,5 +46295,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/08/2021 16:09:23 IST</timestamp>
+    <timestamp>01/08/2021 18:52:54 IST</timestamp>
 </template>
