@@ -217,4 +217,8 @@ router.use('/tpd', blockLevel);
 router.use('/tpd', clusterLevel);
 router.use('/tpd', schoolLevel);
 
+//download raw data
+const fileDownload = require('./controller/rawDataDownload');
+router.use('/getDownloadUrl', fileDownload);
+
 module.exports = router;
