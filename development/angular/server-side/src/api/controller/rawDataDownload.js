@@ -11,14 +11,9 @@ router.post('/', auth.authController, async function (req, res) {
             Key: req.body.fileName,
             Expires: 60 * 5
         };
-        console.log(params);
-
-
         var url = await const_data['s3'].getSignedUrl('getObject', params)
-        console.log(url);
-        // logger.info(" ---- file download url sent.. ----");
+        logger.info(" ---- file download url sent.. ----");
         res.status(200).send({ downloadUrl: url })
-        // });
     } catch (e) {
         logger.error(`Error :: ${e}`);
         res.status(500).json({ errMsg: "Internal error. Please try again!!" });
