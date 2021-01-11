@@ -1,9 +1,9 @@
 const router = require('express').Router();
-var const_data = require('../../lib/config');
-const { logger } = require('../../lib/logger');
-const auth = require('../../middleware/check-auth');
+var const_data = require('../../../lib/config');
+const { logger } = require('../../../lib/logger');
+const auth = require('../../../middleware/check-auth');
 const groupArray = require('group-array');
-const s3File = require('../../lib/reads3File');
+const s3File = require('../../../lib/reads3File');
 
 router.get('/getDateRange', auth.authController, function (req, res) {
     try {

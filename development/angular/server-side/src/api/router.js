@@ -1,9 +1,15 @@
 const router = require('express').Router();
-const dist_wise_data = require('./controller/attendanceRoutes/dist_wise_data');
-const block_wise_data = require('./controller/attendanceRoutes/block_wise_data');
-const cluster_wise_data = require('./controller/attendanceRoutes/cluster_wise_data');
-const school_wise_data = require('./controller/attendanceRoutes/school_wise_data');
-const getDateRange = require('./controller/attendanceRoutes/getDateRange');
+const dist_wise_data = require('./controller/attendanceRoutes/student_attendance/dist_wise_data');
+const block_wise_data = require('./controller/attendanceRoutes/student_attendance/block_wise_data');
+const cluster_wise_data = require('./controller/attendanceRoutes/student_attendance/cluster_wise_data');
+const school_wise_data = require('./controller/attendanceRoutes/student_attendance/school_wise_data');
+const getDateRange = require('./controller/attendanceRoutes/student_attendance/getDateRange');
+
+const tAttd_distWise = require('./controller/attendanceRoutes/teacher_attendance/dist_wise_data');
+const tAttd_blockWise = require('./controller/attendanceRoutes/teacher_attendance/block_wise_data');
+const tAttd_clusterWise = require('./controller/attendanceRoutes/teacher_attendance/cluster_wise_data');
+const tAttd_schoolWise = require('./controller/attendanceRoutes/teacher_attendance/school_wise_data');
+const tAttd_dateRange = require('./controller/attendanceRoutes/teacher_attendance/getDateRange');
 
 const changePasswd = require('./controller/users/changePassword');
 
@@ -119,6 +125,13 @@ router.use('/attendance', cluster_wise_data);
 router.use('/attendance', school_wise_data);
 router.use('/attendance', getDateRange)
 
+//teacher attendance routes
+router.use('/teacher_attendance', tAttd_distWise);
+router.use('/teacher_attendance', tAttd_blockWise);
+router.use('/teacher_attendance', tAttd_clusterWise);
+router.use('/teacher_attendance', tAttd_schoolWise);
+router.use('/teacher_attendance', tAttd_dateRange);
+
 // user details routes
 router.use('/changePassword', changePasswd);
 
@@ -216,5 +229,9 @@ router.use('/tpd', distLevel);
 router.use('/tpd', blockLevel);
 router.use('/tpd', clusterLevel);
 router.use('/tpd', schoolLevel);
+
+//download raw data
+const fileDownload = require('./controller/rawDataDownload');
+router.use('/getDownloadUrl', fileDownload);
 
 module.exports = router;
