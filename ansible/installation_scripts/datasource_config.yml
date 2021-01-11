@@ -9,3 +9,4 @@ nifi_udise: true
 nifi_pat: true
 nifi_composite: true
 nifi_healthcard: true
+nifi_teacher_attendance: true
