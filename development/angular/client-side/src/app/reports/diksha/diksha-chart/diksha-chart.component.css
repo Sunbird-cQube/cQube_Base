@@ -8,3 +8,14 @@
     -webkit-transform: scale(1.04);
     transform: scale(1.04); 
   }
+
+#rawDownload{
+    transition: transform .3s;
+    cursor: pointer;
+  }
+  
+#rawDownload:hover {
+    -ms-transform: scale(1.04);
+    -webkit-transform: scale(1.04);
+    transform: scale(1.04); 
+  }
