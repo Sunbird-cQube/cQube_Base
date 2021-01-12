@@ -222,6 +222,8 @@ export class DikshaTableComponent implements OnInit {
   downloadRawFile() {
     this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
       window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      alert("No Data Available");
     })
   }
 
