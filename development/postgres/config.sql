@@ -4094,7 +4094,6 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
 select * from composite_create_views();
 select composite_jolt_spec();
 
-
 CREATE OR REPLACE FUNCTION insert_diksha_tpd_trans()
 RETURNS text AS
 $$
@@ -4104,17 +4103,17 @@ BEGIN
 transaction_insert=
 'insert into diksha_tpd_trans(collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,enrolment_date,
 completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,created_on,updated_on) 
-select data.*,now(),now() from
-((select collection_id,collection_name,batch_id,batch_name,tpd_temp.uuid,tpd_temp.state,
+(select collection_id,collection_name,batch_id,batch_name,tpd_temp.uuid,tpd_temp.state,
 org_name,cr_mapping.school_id,enrolment_date,
-completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
+completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,now(),now()
 from diksha_tpd_content_temp as tpd_temp left join diksha_tpd_mapping as cr_mapping on tpd_temp.uuid=cr_mapping.uuid
 where cr_mapping.school_id>0)
-except
-(select collection_id,collection_name,batch_id,batch_name,uuid,state,
-org_name,school_id,enrolment_date,
-completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
- from diksha_tpd_trans))as data';
+on conflict(collection_id,uuid,school_id,enrolment_date) do update
+set collection_id=excluded.collection_id,collection_name=excluded.collection_name,batch_id=excluded.batch_id,
+batch_name=excluded.batch_name,uuid=excluded.uuid,state=excluded.state,org_name=excluded.org_name,school_id=excluded.school_id,
+enrolment_date=excluded.enrolment_date,completion_date=excluded.completion_date,progress=excluded.progress,
+certificate_status=excluded.certificate_status,total_score=excluded.total_score,
+nested_collection_progress=excluded.nested_collection_progress,assessment_score=excluded.assessment_score,updated_on=now()';
 Execute transaction_insert; 
 return 0;
 END;
