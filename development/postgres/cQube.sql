@@ -1161,7 +1161,7 @@ primary key(school_id,month,teacher_id,year)
 );
 
 alter table teacher_attendance_trans drop column if exists attendance_id;
-alter table teacher_attendance_trans drop constraint teacher_attendance_trans_pkey;
+alter table teacher_attendance_trans drop constraint if exists teacher_attendance_trans_pkey;
 alter table teacher_attendance_trans add primary key(school_id,month,teacher_id,year);
 
 create table if not exists teacher_attendance_temp
