@@ -283,7 +283,6 @@ and a.month=b.month
 and a.ff_uuid=b.ff_uuid
 group by b.teacher_id,b.school_id,b.year,
 b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid""",
-"s3_output_bucket":"""cqube-gj-output""",
 "teacher_attendance_count_null":"""(select 
 SUM(CASE when teacher_id IS NULL THEN 1 ELSE 0 END) AS count_null_teacherid,
 SUM(CASE when school_id IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
@@ -483,5 +482,5 @@ district_name=a.district_name,district_latitude=a.district_latitude,district_lon
 block_id=a.block_id,block_name=a.block_name,brc_name=a.brc_name,block_latitude=a.block_latitude,
 block_longitude=a.block_longitude,cluster_id=a.cluster_id,cluster_name=a.cluster_name,crc_name=a.crc_name,
 cluster_latitude=a.cluster_latitude,cluster_longitude=a.cluster_longitude,total_present=a.total_present,total_working_days=a.total_working_days,
-teachers_count=a.teachers_count;""",
+teachers_count=a.teachers_count;"""
 }
