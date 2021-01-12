@@ -91,9 +91,11 @@ export class DikshaTableComponent implements OnInit {
     this.result = [];
     this.reportData = [];
     this.header = this.changeingStringCases(this.collectionType) + " Linked";
-   
+
     this.service.dikshaAllTableData({ collectionType: this.collectionType }).subscribe(res => {
       this.fileName = `Diksha_All_Data_${this.timePeriod}`;
+      this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+      this.fileToDownload = `diksha_raw_data/table_reports/course/${this.time}/${this.time}.csv`;
       this.result = res;
       this.tableCreation(this.result);
 
@@ -169,8 +171,12 @@ export class DikshaTableComponent implements OnInit {
 
   }
 
+  time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+  fileToDownload = `diksha_raw_data/table_reports/course/${this.time}/${this.time}.csv`;
   timeRange(timePeriod) {
     this.errMsg();
+    this.time = timePeriod == 'all' ? 'overall' : timePeriod;
+    this.fileToDownload = `diksha_raw_data/table_reports/course/${this.time}/${this.time}.csv`;
     document.getElementById('home').style.display = "Block";
     if (this.districtId == '') {
       this.districtId = undefined
@@ -210,6 +216,12 @@ export class DikshaTableComponent implements OnInit {
       document.getElementById('spinner').style.display = 'none';
     }, err => {
       this.loaderAndErr();
+    })
+  }
+
+  downloadRawFile() {
+    this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
+      window.open(`${res['downloadUrl']}`, "_blank");
     })
   }
 
