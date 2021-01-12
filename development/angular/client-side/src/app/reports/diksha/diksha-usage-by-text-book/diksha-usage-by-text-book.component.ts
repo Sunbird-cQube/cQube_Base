@@ -105,6 +105,8 @@ export class DikshaUsageByTextBookComponent implements OnInit {
       this.reportData = result['downloadData'];
       this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.getBarChartData();
+      this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+      this.fileToDownload = `diksha_raw_data/table_reports/textbook/${this.time}/${this.time}.csv`;
       this.commonService.loaderAndErr(this.result);
     }, err => {
       this.result = [];
@@ -140,8 +142,19 @@ export class DikshaUsageByTextBookComponent implements OnInit {
     })
   }
 
+  downloadRawFile() {
+    this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
+      window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      alert("No Data Available");
+    })
+  }
+  time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+  fileToDownload = `diksha_raw_data/table_reports/textbook/${this.time}/${this.time}.csv`;
   async chooseTimeRange() {
     this.emptyChart();
+    this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+    this.fileToDownload = `diksha_raw_data/table_reports/textbook/${this.time}/${this.time}.csv`;
     document.getElementById('home').style.display = "block";
     if (this.timePeriod == 'all') {
       await this.getAllData();
