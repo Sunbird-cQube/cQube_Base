@@ -66,11 +66,18 @@ const generalFun = (data, level, reportType) => {
                     }
                     var color = '';
                     for (let i = 0; i < keys.length; i++) {
+                        if (percentVal == null || percentVal == undefined) {
+                            percentVal = NaN;
+                        }
                         if (percentVal <= keys[i]) {
                             color = colors[keys[i]];
                             break;
                         } else if (percentVal > keys[i] && percentVal <= keys[i + 1]) {
                             color = colors[keys[i + 1]];
+                            break;
+                        }
+                        else if (percentVal == null || percentVal == undefined || isNaN(percentVal)) {
+                            color = "white";
                             break;
                         }
                     }

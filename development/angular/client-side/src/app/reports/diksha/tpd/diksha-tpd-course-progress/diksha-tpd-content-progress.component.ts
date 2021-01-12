@@ -282,25 +282,25 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       var obj = '';
       if (level == 'district') {
         obj = `<b>District Name: ${name}</b> 
-        <br> <b>Indicator: ${indicator}  <b>             
+        <br> <b>Course: ${indicator}  <b>             
         <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
       if (level == 'block') {
         obj = `<b>Block Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>  
-        <br> <b>Indicator: ${indicator}  <b>    
+        <br> <b>Course: ${indicator}  <b>    
         <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
       if (level == 'cluster') {
         obj = `<b>Cluster Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b> 
-        <br> <b>Indicator: ${indicator}  <b>     
+        <br> <b>Course: ${indicator}  <b>     
         <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
       if (level == 'school') {
         obj = `<b>School Name: ${point.series.chart.xAxis[1].categories[point['x']]}</b>  
-        <br> <b>Indicator: ${indicator}  <b>    
+        <br> <b>Course: ${indicator}  <b>    
         <br> ${point.value !== null ? `<b>Collection Progress:${point.value} %` : ''}</b>`
       }
 
