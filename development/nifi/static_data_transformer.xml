@@ -13063,247 +13063,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <type>org.apache.nifi.json.JsonTreeReader</type>
                         </controllerServices>
                         <controllerServices>
-                            <id>6626d4e0-1ab3-3433-0000-000000000000</id>
-                            <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
-                            <bundle>
-<artifact>nifi-record-serialization-services-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <comments></comments>
-                            <descriptors>
-<entry>
-    <key>Schema Write Strategy</key>
-    <value>
-        <name>Schema Write Strategy</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-cache</key>
-    <value>
-        <identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
-        <name>schema-cache</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-access-strategy</key>
-    <value>
-        <name>schema-access-strategy</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-registry</key>
-    <value>
-        <identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
-        <name>schema-registry</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-name</key>
-    <value>
-        <name>schema-name</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-version</key>
-    <value>
-        <name>schema-version</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-branch</key>
-    <value>
-        <name>schema-branch</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-text</key>
-    <value>
-        <name>schema-text</name>
-    </value>
-</entry>
-<entry>
-    <key>Date Format</key>
-    <value>
-        <name>Date Format</name>
-    </value>
-</entry>
-<entry>
-    <key>Time Format</key>
-    <value>
-        <name>Time Format</name>
-    </value>
-</entry>
-<entry>
-    <key>Timestamp Format</key>
-    <value>
-        <name>Timestamp Format</name>
-    </value>
-</entry>
-<entry>
-    <key>CSV Format</key>
-    <value>
-        <name>CSV Format</name>
-    </value>
-</entry>
-<entry>
-    <key>Value Separator</key>
-    <value>
-        <name>Value Separator</name>
-    </value>
-</entry>
-<entry>
-    <key>Include Header Line</key>
-    <value>
-        <name>Include Header Line</name>
-    </value>
-</entry>
-<entry>
-    <key>Quote Character</key>
-    <value>
-        <name>Quote Character</name>
-    </value>
-</entry>
-<entry>
-    <key>Escape Character</key>
-    <value>
-        <name>Escape Character</name>
-    </value>
-</entry>
-<entry>
-    <key>Comment Marker</key>
-    <value>
-        <name>Comment Marker</name>
-    </value>
-</entry>
-<entry>
-    <key>Null String</key>
-    <value>
-        <name>Null String</name>
-    </value>
-</entry>
-<entry>
-    <key>Trim Fields</key>
-    <value>
-        <name>Trim Fields</name>
-    </value>
-</entry>
-<entry>
-    <key>Quote Mode</key>
-    <value>
-        <name>Quote Mode</name>
-    </value>
-</entry>
-<entry>
-    <key>Record Separator</key>
-    <value>
-        <name>Record Separator</name>
-    </value>
-</entry>
-<entry>
-    <key>Include Trailing Delimiter</key>
-    <value>
-        <name>Include Trailing Delimiter</name>
-    </value>
-</entry>
-<entry>
-    <key>csvutils-character-set</key>
-    <value>
-        <name>csvutils-character-set</name>
-    </value>
-</entry>
-                            </descriptors>
-                            <name>CSVRecordSetWriter-schoolmaster</name>
-                            <persistsState>false</persistsState>
-                            <properties>
-<entry>
-    <key>Schema Write Strategy</key>
-    <value>no-schema</value>
-</entry>
-<entry>
-    <key>schema-cache</key>
-</entry>
-<entry>
-    <key>schema-access-strategy</key>
-    <value>inherit-record-schema</value>
-</entry>
-<entry>
-    <key>schema-registry</key>
-</entry>
-<entry>
-    <key>schema-name</key>
-    <value>${schema.name}</value>
-</entry>
-<entry>
-    <key>schema-version</key>
-</entry>
-<entry>
-    <key>schema-branch</key>
-</entry>
-<entry>
-    <key>schema-text</key>
-    <value>${avro.schema}</value>
-</entry>
-<entry>
-    <key>Date Format</key>
-</entry>
-<entry>
-    <key>Time Format</key>
-</entry>
-<entry>
-    <key>Timestamp Format</key>
-</entry>
-<entry>
-    <key>CSV Format</key>
-    <value>custom</value>
-</entry>
-<entry>
-    <key>Value Separator</key>
-    <value>|</value>
-</entry>
-<entry>
-    <key>Include Header Line</key>
-    <value>true</value>
-</entry>
-<entry>
-    <key>Quote Character</key>
-    <value>"</value>
-</entry>
-<entry>
-    <key>Escape Character</key>
-    <value>\</value>
-</entry>
-<entry>
-    <key>Comment Marker</key>
-</entry>
-<entry>
-    <key>Null String</key>
-</entry>
-<entry>
-    <key>Trim Fields</key>
-    <value>true</value>
-</entry>
-<entry>
-    <key>Quote Mode</key>
-    <value>MINIMAL</value>
-</entry>
-<entry>
-    <key>Record Separator</key>
-    <value>\n</value>
-</entry>
-<entry>
-    <key>Include Trailing Delimiter</key>
-    <value>false</value>
-</entry>
-<entry>
-    <key>csvutils-character-set</key>
-    <value>UTF-8</value>
-</entry>
-                            </properties>
-                            <state>ENABLED</state>
-                            <type>org.apache.nifi.csv.CSVRecordSetWriter</type>
-                        </controllerServices>
-                        <controllerServices>
                             <id>69c7430c-6c03-3b55-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <bundle>
@@ -13543,235 +13302,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             </properties>
                             <state>ENABLED</state>
                             <type>org.apache.nifi.csv.CSVRecordSetWriter</type>
-                        </controllerServices>
-                        <controllerServices>
-                            <id>7a85a408-1b65-3c0c-0000-000000000000</id>
-                            <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
-                            <bundle>
-<artifact>nifi-record-serialization-services-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <comments></comments>
-                            <descriptors>
-<entry>
-    <key>schema-access-strategy</key>
-    <value>
-        <name>schema-access-strategy</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-registry</key>
-    <value>
-        <identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
-        <name>schema-registry</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-name</key>
-    <value>
-        <name>schema-name</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-version</key>
-    <value>
-        <name>schema-version</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-branch</key>
-    <value>
-        <name>schema-branch</name>
-    </value>
-</entry>
-<entry>
-    <key>schema-text</key>
-    <value>
-        <name>schema-text</name>
-    </value>
-</entry>
-<entry>
-    <key>csv-reader-csv-parser</key>
-    <value>
-        <name>csv-reader-csv-parser</name>
-    </value>
-</entry>
-<entry>
-    <key>Date Format</key>
-    <value>
-        <name>Date Format</name>
-    </value>
-</entry>
-<entry>
-    <key>Time Format</key>
-    <value>
-        <name>Time Format</name>
-    </value>
-</entry>
-<entry>
-    <key>Timestamp Format</key>
-    <value>
-        <name>Timestamp Format</name>
-    </value>
-</entry>
-<entry>
-    <key>CSV Format</key>
-    <value>
-        <name>CSV Format</name>
-    </value>
-</entry>
-<entry>
-    <key>Value Separator</key>
-    <value>
-        <name>Value Separator</name>
-    </value>
-</entry>
-<entry>
-    <key>Skip Header Line</key>
-    <value>
-        <name>Skip Header Line</name>
-    </value>
-</entry>
-<entry>
-    <key>ignore-csv-header</key>
-    <value>
-        <name>ignore-csv-header</name>
-    </value>
-</entry>
-<entry>
-    <key>Quote Character</key>
-    <value>
-        <name>Quote Character</name>
-    </value>
-</entry>
-<entry>
-    <key>Escape Character</key>
-    <value>
-        <name>Escape Character</name>
-    </value>
-</entry>
-<entry>
-    <key>Comment Marker</key>
-    <value>
-        <name>Comment Marker</name>
-    </value>
-</entry>
-<entry>
-    <key>Null String</key>
-    <value>
-        <name>Null String</name>
-    </value>
-</entry>
-<entry>
-    <key>Trim Fields</key>
-    <value>
-        <name>Trim Fields</name>
-    </value>
-</entry>
-<entry>
-    <key>csvutils-character-set</key>
-    <value>
-        <name>csvutils-character-set</name>
-    </value>
-</entry>
-                            </descriptors>
-                            <name>csv_reader_school_mst_schema</name>
-                            <persistsState>false</persistsState>
-                            <properties>
-<entry>
-    <key>schema-access-strategy</key>
-    <value>schema-text-property</value>
-</entry>
-<entry>
-    <key>schema-registry</key>
-</entry>
-<entry>
-    <key>schema-name</key>
-    <value>${schema.name}</value>
-</entry>
-<entry>
-    <key>schema-version</key>
-</entry>
-<entry>
-    <key>schema-branch</key>
-</entry>
-<entry>
-    <key>schema-text</key>
-    <value>{
-  "namespace": "nifi-school",
-  "name": "school_master",
-  "type": "record",
-  "fields": [
-{ "name": "schoolid", "type": ["null","long"]},
-{ "name": "school", "type":["null", "string"] },
-{ "name": "stateid", "type": ["null","string"] },
-{ "name": "districtid", "type": ["null","long"] },
-{ "name": "blockid", "type": ["null","long"] },
-{ "name": "clusterid", "type": ["null","long"] },
-{ "name": "latitude", "type": ["null","double"] },
-{ "name": "longitude", "type": ["null","double"] },
-{ "name": "lowclass", "type": ["null", "int"] },
-{ "name": "highclass", "type": ["null","int"] },
-{ "name": "schmgt", "type": ["null","string"] },
-{ "name": "schcat", "type": ["null","string"] },
-{ "name": "schoolmedium", "type": ["null","string"] }
-] }</value>
-</entry>
-<entry>
-    <key>csv-reader-csv-parser</key>
-    <value>commons-csv</value>
-</entry>
-<entry>
-    <key>Date Format</key>
-</entry>
-<entry>
-    <key>Time Format</key>
-</entry>
-<entry>
-    <key>Timestamp Format</key>
-</entry>
-<entry>
-    <key>CSV Format</key>
-    <value>custom</value>
-</entry>
-<entry>
-    <key>Value Separator</key>
-    <value>|</value>
-</entry>
-<entry>
-    <key>Skip Header Line</key>
-    <value>true</value>
-</entry>
-<entry>
-    <key>ignore-csv-header</key>
-    <value>true</value>
-</entry>
-<entry>
-    <key>Quote Character</key>
-    <value>"</value>
-</entry>
-<entry>
-    <key>Escape Character</key>
-    <value>\</value>
-</entry>
-<entry>
-    <key>Comment Marker</key>
-</entry>
-<entry>
-    <key>Null String</key>
-</entry>
-<entry>
-    <key>Trim Fields</key>
-    <value>true</value>
-</entry>
-<entry>
-    <key>csvutils-character-set</key>
-    <value>UTF-8</value>
-</entry>
-                            </properties>
-                            <state>ENABLED</state>
-                            <type>org.apache.nifi.csv.CSVReader</type>
                         </controllerServices>
                         <controllerServices>
                             <id>82efc934-b833-360d-0000-000000000000</id>
@@ -16060,7 +15590,7 @@ ${filename:startsWith('school_m'):ifElse('log_summary/static/log_summary_school.
 <autoTerminate>true</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -20991,7 +20521,7 @@ file: ${filename} columns did not match.</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -21004,7 +20534,7 @@ file: ${filename} columns did not match.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -21348,7 +20878,7 @@ file: ${filename} columns did not match.</value>
                             <id>75a6cd6e-7649-3c74-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <position>
-<x>-14272.0</x>
+<x>-14280.0</x>
 <y>3768.0</y>
                             </position>
                             <bundle>
@@ -21787,7 +21317,7 @@ file: ${filename} columns did not match.</value>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <position>
 <x>-14176.0</x>
-<y>2896.0</y>
+<y>2888.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -21859,7 +21389,7 @@ file: ${filename} columns did not match.</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -21876,7 +21406,7 @@ file: ${filename} columns did not match.</value>
 <autoTerminate>true</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -22219,12 +21749,6 @@ file: ${filename} contain null  in district_name or block_name or cluster_name.S
             <name>check_if_null</name>
         </value>
     </entry>
-    <entry>
-        <key>not_null</key>
-        <value>
-            <name>not_null</name>
-        </value>
-    </entry>
 </descriptors>
 <executionNode>ALL</executionNode>
 <lossTolerant>false</lossTolerant>
@@ -22232,15 +21756,15 @@ file: ${filename} contain null  in district_name or block_name or cluster_name.S
 <properties>
     <entry>
         <key>record-reader</key>
-        <value>7a85a408-1b65-3c0c-0000-000000000000</value>
+        <value>dad7c012-e301-3aab-0000-000000000000</value>
     </entry>
     <entry>
         <key>record-writer</key>
-        <value>6626d4e0-1ab3-3433-0000-000000000000</value>
+        <value>a069fd56-e03b-3414-0000-000000000000</value>
     </entry>
     <entry>
         <key>include-zero-record-flowfiles</key>
-        <value>true</value>
+        <value>false</value>
     </entry>
     <entry>
         <key>cache-schema</key>
@@ -22249,10 +21773,6 @@ file: ${filename} contain null  in district_name or block_name or cluster_name.S
     <entry>
         <key>check_if_null</key>
         <value>#{static_school_check_if_null_lat_long}</value>
-    </entry>
-    <entry>
-        <key>not_null</key>
-        <value>#{static_school_not_null_lat_long}</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -22269,10 +21789,6 @@ file: ${filename} contain null  in district_name or block_name or cluster_name.S
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>not_null</name>
                             </relationships>
                             <relationships>
 <autoTerminate>true</autoTerminate>
@@ -27693,5 +27209,5 @@ ${filename:startsWith('district_m'):ifElse(#{static_district_count_null_vals},'N
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/06/2021 00:14:10 IST</timestamp>
+    <timestamp>01/12/2021 11:48:52 IST</timestamp>
 </template>
