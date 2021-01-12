@@ -8,7 +8,7 @@ const s3File = require('../../../lib/reads3File');
 router.get('/getDateRange', auth.authController, function (req, res) {
     try {
         logger.info('---getDateRange api ---');
-        const_data['getParams']['Key'] = `attendance/student_attendance_meta.json`;
+        const_data['getParams']['Key'] = `teacher_attendance/teacher_attendance_meta.json`;
         const_data['s3'].getObject(const_data['getParams'], function (err, data) {
             if (err) {
                 logger.error(err);
