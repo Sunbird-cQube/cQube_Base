@@ -4775,11 +4775,11 @@ nested_collection_progress	jsonb,
 assessment_score	jsonb,
 created_on	TIMESTAMP without time zone,
 updated_on	TIMESTAMP without time zone,
-primary key(collection_id,uuid,school_id,enrolment_date)
+primary key(collection_id,uuid,school_id,enrolment_date,batch_id)
   );
 
 alter table diksha_tpd_trans drop constraint if exists diksha_tpd_trans_pkey;
-alter table diksha_tpd_trans add primary key(collection_id,uuid,school_id,enrolment_date);
+alter table diksha_tpd_trans add primary key(collection_id,uuid,school_id,enrolment_date,batch_id);
 
 alter table log_summary add column IF NOT EXISTS collection_id int;
 alter table log_summary add column IF NOT EXISTS uuid int;
