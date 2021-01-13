@@ -146,7 +146,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
     this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
       window.open(`${res['downloadUrl']}`, "_blank");
     }, err => {
-      alert("No Data Available");
+      alert("No Raw Data File Available in Bucket");
     })
   }
   time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
