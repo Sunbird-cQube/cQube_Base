@@ -23,10 +23,10 @@
                     </p>
                 </div>
                 <div class="col-sm-6">
-                    <span id="rawDownload"
+                    <span id="rawDownload" *ngIf="reportData.length > 0"
                         style="color: #284d8a;cursor: pointer; text-decoration: underline; font-size: 13px;"
-                        (click)="downloadRawFile()">Download Raw
-                        File</span>
+                        (click)="downloadRawFile()"><strong>Download Raw
+                            File</strong></span>
                 </div>
                 <div class="col-sm-6">
                     <em class="fa fa-download" title="Download Report" id="download"
