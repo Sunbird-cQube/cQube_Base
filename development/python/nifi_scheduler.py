@@ -20,12 +20,11 @@ def schedule_processor_groups(pg_list):
 'pat_transformer':{"state":"RUNNING","time": {"hours": "11", "minutes": "10"}, "stopTime": 2},
 'infra_transformer_validations':{"state":"RUNNING","time": {"hours": "13", "minutes": "20"}, "stopTime": 1},
 'crc_transformer':{"state":"RUNNING","time": {"hours": "14", "minutes": "30"}, "stopTime": 2},
-'infra_transformer':{"state":"RUNNING","time": {"hours": "16", "minutes": "40"}, "stopTime": 1},
+'teacher_attendance_transformer':{"state":"RUNNING","time": {"hours": "16", "minutes": "40"}, "stopTime": 1},
 'udise_transformer':{"state":"RUNNING","time": {"hours": "17", "minutes": "50"}, "stopTime": 2},
-'student_attendance_transformer':{"state":"RUNNING","time": {"hours": "20", "minutes": "00"}, "stopTime": 1},
-'semester_transformer':{"state":"RUNNING","time": {"hours": "21", "minutes": "10"}, "stopTime": 1},
+'student_attendance_transformer':{"state":"RUNNING","time": {"hours": "20", "minutes": "00"}, "stopTime": 2},
+'semester_transformer':{"state":"RUNNING","time": {"hours": "22", "minutes": "10"}, "stopTime": 2},
 'diksha_transformer':{"state":"RUNNING","time": {"hours": "00", "minutes": "20"}, "stopTime": 4},
-'teacher_attendance_transformer':{"state":"RUNNING","time": {"hours": "04", "minutes": "30"}, "stopTime": 1},
 'composite_transformer':{"state":"RUNNING","time": {"hours": "05", "minutes": "40"}, "stopTime": 1},
 'healthcard_transformer':{"state":"RUNNING","time": {"hours": "06", "minutes": "50"}, "stopTime": 1}
 }
