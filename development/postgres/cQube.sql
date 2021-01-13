@@ -1160,6 +1160,10 @@ updated_on  TIMESTAMP without time zone,
 primary key(school_id,month,teacher_id,year)
 );
 
+alter table teacher_attendance_trans drop column if exists attendance_id;
+alter table teacher_attendance_trans drop constraint if exists teacher_attendance_trans_pkey;
+alter table teacher_attendance_trans add primary key(school_id,month,teacher_id,year);
+
 create table if not exists teacher_attendance_temp
 (
 ff_uuid text,
@@ -1528,6 +1532,8 @@ primary key(school_id,month,year)
 
 create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
 
+alter table school_teacher_total_attendance drop constraint if exists school_teacher_total_attendance_pkey;
+alter table school_teacher_total_attendance add primary key(school_id,month,year);
 alter table school_teacher_total_attendance drop COLUMN if exists total_training;
 alter table school_teacher_total_attendance drop COLUMN if exists total_halfday;
 alter table school_teacher_total_attendance alter COLUMN total_present type double precision;
@@ -4769,9 +4775,11 @@ nested_collection_progress	jsonb,
 assessment_score	jsonb,
 created_on	TIMESTAMP without time zone,
 updated_on	TIMESTAMP without time zone,
-primary key(collection_id,uuid,school_id)
+primary key(collection_id,uuid,school_id,enrolment_date)
   );
 
+alter table diksha_tpd_trans drop constraint if exists diksha_tpd_trans_pkey;
+alter table diksha_tpd_trans add primary key(collection_id,uuid,school_id,enrolment_date);
 
 alter table log_summary add column IF NOT EXISTS collection_id int;
 alter table log_summary add column IF NOT EXISTS uuid int;

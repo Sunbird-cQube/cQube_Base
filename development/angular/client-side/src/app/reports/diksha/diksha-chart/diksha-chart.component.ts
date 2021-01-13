@@ -137,6 +137,7 @@ export class DikshaChartComponent implements OnInit {
   public legendColors = [];
   homeClick() {
     this.timePeriod = 'last_30_days';
+    this.fileToDownload = `diksha_raw_data/stack_bar_reports/${this.timePeriod}/${this.timePeriod}.csv`;
     this.getAllData();
   }
   async getAllData() {
@@ -303,6 +304,9 @@ export class DikshaChartComponent implements OnInit {
   downloadRawFile() {
     this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
       window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      window.open(err, "");
+      alert("No Data Available");
     })
   }
 

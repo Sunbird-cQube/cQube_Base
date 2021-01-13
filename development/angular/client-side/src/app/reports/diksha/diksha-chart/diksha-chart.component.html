@@ -92,7 +92,7 @@
                 </div>
                 <div class="col-lg-6" id="r2">
                     <h3>Usage by Others <sup class="tip">
-                            <app-info [tooltipText]="usagebyOthers"></app-info>
+                            <app-info style="font-size: 16px;" [tooltipText]="usagebyOthers"></app-info>
                         </sup></h3>
                     <div *ngIf="barChartData3[0]['data'].length > 0">
                         <canvas height="160vh" baseChart [datasets]="barChartData3" [labels]="barChartLabels3"
@@ -109,7 +109,7 @@
             <div class="row">
                 <div class="col-lg-6" id="r4">
                     <h3>Usage by Teachers <sup class="tip">
-                            <app-info [tooltipText]="usageByTeachers"></app-info>
+                            <app-info style="font-size: 16px;" [tooltipText]="usageByTeachers"></app-info>
                         </sup></h3>
                     <div *ngIf="barChartData1[0]['data'].length > 0">
                         <canvas height="160vh" baseChart [datasets]="barChartData1" [labels]="barChartLabels1"
@@ -124,7 +124,7 @@
                 </div>
                 <div class="col-lg-6" id="r3">
                     <h3>Usage by Students <sup class="tip">
-                            <app-info [tooltipText]="usageByStudents"></app-info>
+                            <app-info style="font-size: 16px;" [tooltipText]="usageByStudents"></app-info>
                         </sup></h3>
                     <div *ngIf="barChartData2[0]['data'].length > 0">
                         <canvas height="160vh" baseChart [datasets]="barChartData2" [labels]="barChartLabels2"
