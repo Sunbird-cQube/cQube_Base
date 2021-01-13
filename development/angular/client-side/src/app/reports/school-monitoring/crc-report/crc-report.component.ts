@@ -248,7 +248,7 @@ export class CrcReportComponent implements OnInit {
       let a = this.result.schoolsVisitedCount
       this.result = this.result.visits;
 
-      this.modes = ['Dist Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
+      this.modes = ['District Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
 
       this.reportData = this.crcDistrictsNames = this.result;
       for (var i = 0; i < this.result.length; i++) {
@@ -317,7 +317,7 @@ export class CrcReportComponent implements OnInit {
         let a = this.result.schoolsVisitedCount
         this.result = this.result.visits;
 
-        this.modes = ['Dist Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
+        this.modes = ['District Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
         this.reportData = [];
         if (this.result.length > 0) {
           var labels = [];
@@ -877,7 +877,7 @@ export class CrcReportComponent implements OnInit {
 
   public downloadType: string;
   downloadReportofState(downloadType) {
-    if (downloadType == 'Dist Wise') {
+    if (downloadType == 'District Wise') {
       this.distWise();
     } else if (downloadType == 'Block Wise') {
       this.blockWise();
@@ -941,6 +941,9 @@ export class CrcReportComponent implements OnInit {
     } else if (this.clust) {
       data.level = 'cluster';
       data.value = this.myCluster;
+    } else {
+      data.level = 'state';
+      data.value = null
     }
 
     sessionStorage.setItem('health-card-info', JSON.stringify(data));

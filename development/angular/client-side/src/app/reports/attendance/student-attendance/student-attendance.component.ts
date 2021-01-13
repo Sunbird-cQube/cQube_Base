@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AttendanceReportService } from '../../../services/attendance-report.service';
+import { AttendanceReportService } from '../../../services/student.attendance-report.service';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
@@ -145,7 +145,7 @@ export class StudengtAttendanceComponent implements OnInit {
       var sorted = res['distData'].sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
       var distNames = [];
       this.markers = sorted;
-      
+
       if (this.markers.length > 0) {
         for (var i = 0; i < this.markers.length; i++) {
           if (this.myDistrict === this.markers[i]['district_id']) {
@@ -999,7 +999,7 @@ export class StudengtAttendanceComponent implements OnInit {
       this.hierName = obj.name;
 
       this.globalId = this.myCluster = data;
-      this.myBlock = this.myBlock;
+      // this.myBlock = this.myBlock;
       this.myDistrict = Number(localStorage.getItem('distId'));
 
       if (this.myData) {
@@ -1148,6 +1148,9 @@ export class StudengtAttendanceComponent implements OnInit {
     } else if (this.levelWise === 'school') {
       data.level = 'cluster';
       data.value = this.myCluster;
+    } else {
+      data.level = 'state';
+      data.value = null
     }
 
     sessionStorage.setItem('health-card-info', JSON.stringify(data));

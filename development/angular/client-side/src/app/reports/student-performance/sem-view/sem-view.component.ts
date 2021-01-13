@@ -980,6 +980,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
     } else if (this.clust) {
       data.level = 'cluster';
       data.value = this.clusterHierarchy.clusterId;
+    } else {
+      data.level = 'state';
+      data.value = null
     }
 
     sessionStorage.setItem('health-card-info', JSON.stringify(data));

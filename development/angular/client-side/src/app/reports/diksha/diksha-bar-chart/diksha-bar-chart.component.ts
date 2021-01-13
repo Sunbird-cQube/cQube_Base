@@ -104,6 +104,8 @@ export class DikshaBarChartComponent implements OnInit {
       this.result = result['chartData'];
       this.reportData = result['downloadData'];
       this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+      this.fileToDownload = `diksha_raw_data/table_reports/course/${this.time}/${this.time}.csv`;
       this.getBarChartData();
       this.commonService.loaderAndErr(this.result);
     }, err => {
@@ -141,8 +143,20 @@ export class DikshaBarChartComponent implements OnInit {
     })
   }
 
+  downloadRawFile() {
+    this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
+      window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      alert("No Raw Data File Available in Bucket");
+    })
+  }
+
+  time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+  fileToDownload = `diksha_raw_data/table_reports/course/${this.time}/${this.time}.csv`;
   chooseTimeRange() {
     this.emptyChart();
+    this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+    this.fileToDownload = `diksha_raw_data/table_reports/course/${this.time}/${this.time}.csv`;
     if (this.timePeriod == 'all') {
       this.getAllData();
     } else {

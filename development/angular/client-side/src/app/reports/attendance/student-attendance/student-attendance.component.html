@@ -3,12 +3,12 @@
         <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Attendance Report for: <span id="state" (click)="districtWise()"
+                    Student Attendance Report for: <span id="state" (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Attendance Report for: <span id="state" (click)="districtWise()"
+                    Student Attendance Report for: <span id="state" (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span>
                     <span id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -17,7 +17,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Attendance Report for: <span id="state" (click)="districtWise()"
+                    Student Attendance Report for: <span id="state" (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Attendance Report for: <span id="state" (click)="districtWise()"
+                    Student Attendance Report for: <span id="state" (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span>
                     <span id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -134,7 +134,7 @@
             </select>
 
             <a class="float-right" href="javascript: void(0)" id="stdHealthCard" (click)="goToHealthCard()"
-                style="font-weight: bold; text-decoration: underline; font-size: 13px;" *ngIf="myDistrict">Access Health
+                style="font-weight: bold; text-decoration: underline; font-size: 13px;">Access Health
                 Card</a>
         </div>
     </div>

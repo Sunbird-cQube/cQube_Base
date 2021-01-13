@@ -137,6 +137,7 @@ export class DikshaChartComponent implements OnInit {
   public legendColors = [];
   homeClick() {
     this.timePeriod = 'last_30_days';
+    this.fileToDownload = `diksha_raw_data/stack_bar_reports/${this.timePeriod}/${this.timePeriod}.csv`;
     this.getAllData();
   }
   async getAllData() {
@@ -223,9 +224,10 @@ export class DikshaChartComponent implements OnInit {
     this.timeRange(this.timePeriod);
   }
 
+  fileToDownload = `diksha_raw_data/stack_bar_reports/${this.timePeriod}/${this.timePeriod}.csv`;
   timeRange(timePeriod) {
     this.emptyChart();
-
+    this.fileToDownload = `diksha_raw_data/stack_bar_reports/${this.timePeriod}/${this.timePeriod}.csv`;
     document.getElementById('home').style.display = "block";
     this.allDataNotFound = undefined;
     this.errMsg();
@@ -297,6 +299,14 @@ export class DikshaChartComponent implements OnInit {
       this.allDataNotFound = err.error.errMsg;
     })
 
+  }
+
+  downloadRawFile() {
+    this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
+      window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      alert("No Raw Data File Available in Bucket");
+    })
   }
 
   getColor(element) {

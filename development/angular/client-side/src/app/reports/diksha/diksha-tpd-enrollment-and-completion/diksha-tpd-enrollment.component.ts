@@ -99,7 +99,9 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     this.districtId = undefined;
     this.blockHidden = true;
     this.clusterHidden = true;
-    this.yAxisLabel = "District Names"
+    this.yAxisLabel = "District Names";
+    this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+    this.fileToDownload = `diksha_raw_data/tpd_report2/${this.time}/${this.time}.csv`;
     this.emptyChart();
     this.getAllData()
   }
@@ -159,8 +161,12 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     })
   }
 
+  time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+  fileToDownload = `diksha_raw_data/tpd_report2/${this.time}/${this.time}.csv`;
   chooseTimeRange() {
     document.getElementById('home').style.display = "block";
+    this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+    this.fileToDownload = `diksha_raw_data/tpd_report2/${this.time}/${this.time}.csv`;
     if (this.level == 'district') {
       this.getAllData();
     }
@@ -173,6 +179,14 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     if (this.level == 'school') {
       this.onClusterSelect(this.clusterId);
     }
+  }
+
+  downloadRawFile() {
+    this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
+      window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      alert("No Raw Data File Available in Bucket");
+    })
   }
 
   onTypeSelect(type) {

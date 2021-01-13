@@ -911,6 +911,44 @@ select Infra_jolt_spec('water','toilet');
 
 /*config semester with no school information*/
 
+create or replace view semester_invalid_data as
+select a.x_axis as school_id,school_name,cluster_id,cluster_name,crc_name,block_id,block_name,x_value,district_id,district_name,y_axis,y_value,z_axis,z_value,
+students_count,total_schools,a.semester, 
+b.grade_3,b.grade_4,b.grade_5,b.grade_6,b.grade_7,b.grade_8
+from
+(SELECT school_id AS x_axis,Initcap(school_name) AS school_name,district_id,Initcap(district_name) AS district_name,block_id,Initcap(block_name)AS block_name,cluster_id,
+Initcap(cluster_name) AS cluster_name,Initcap(crc_name)AS crc_name,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,semester,
+'latitude' AS y_axis,school_latitude AS y_value,'longitude' AS z_axis,school_longitude AS z_value,
+Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
+	case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+	+case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+	case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+	+case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+	),0)*100.0/
+NULLIF(Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
+	subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),0),1) AS x_value
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 and cluster_name is not null
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL 
+GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,semester 
+having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end + 
+ case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+ +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+ case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+ +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+ ) <> 0)as a
+left join 
+(select cast(split_part(string,'_',1) as bigint)as x_axis,cast(split_part(string,'_',2) as bigint) as semester,* from crosstab
+(
+'select concat(x_axis,''_'',semester)as string,grade,x_value from school_grade order by 1,2'
+) as ct 
+(string text,"grade_3" numeric(5,2),"grade_4" numeric(5,2),"grade_5" numeric(5,2),"grade_6" numeric(5,2)
+,"grade_7" numeric(5,2),"grade_8" numeric(5,2))) b
+on a.x_axis=b.x_axis and a.semester=b.semester;
+
+drop view if exists semester_exception_completion_data;
+
 create or replace FUNCTION semester_no_schools(semester int)
 RETURNS text AS
 $$
@@ -924,14 +962,14 @@ initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as dist
  b.district_latitude,b.district_longitude from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 where a.school_id not in 
-(select distinct school_id from student_semester_trans where semester='||semester||')
+(select distinct school_id from semester_invalid_data 
+
+	where semester='||semester||')
 and cluster_name is not null';
 Execute semester_no_schools; 
 return 0;
 END;
 $$LANGUAGE plpgsql;
-
-drop view if exists semester_exception_completion_data;
 
 /*Diksha config script*/
 
@@ -4056,7 +4094,6 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
 select * from composite_create_views();
 select composite_jolt_spec();
 
-
 CREATE OR REPLACE FUNCTION insert_diksha_tpd_trans()
 RETURNS text AS
 $$
@@ -4066,17 +4103,17 @@ BEGIN
 transaction_insert=
 'insert into diksha_tpd_trans(collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,enrolment_date,
 completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,created_on,updated_on) 
-select data.*,now(),now() from
-((select collection_id,collection_name,batch_id,batch_name,tpd_temp.uuid,tpd_temp.state,
+(select collection_id,collection_name,batch_id,batch_name,tpd_temp.uuid,tpd_temp.state,
 org_name,cr_mapping.school_id,enrolment_date,
-completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
+completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,now(),now()
 from diksha_tpd_content_temp as tpd_temp left join diksha_tpd_mapping as cr_mapping on tpd_temp.uuid=cr_mapping.uuid
 where cr_mapping.school_id>0)
-except
-(select collection_id,collection_name,batch_id,batch_name,uuid,state,
-org_name,school_id,enrolment_date,
-completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score
- from diksha_tpd_trans))as data';
+on conflict(collection_id,uuid,school_id,enrolment_date,batch_id) do update
+set collection_id=excluded.collection_id,collection_name=excluded.collection_name,batch_id=excluded.batch_id,
+batch_name=excluded.batch_name,uuid=excluded.uuid,state=excluded.state,org_name=excluded.org_name,school_id=excluded.school_id,
+enrolment_date=excluded.enrolment_date,completion_date=excluded.completion_date,progress=excluded.progress,
+certificate_status=excluded.certificate_status,total_score=excluded.total_score,
+nested_collection_progress=excluded.nested_collection_progress,assessment_score=excluded.assessment_score,updated_on=now()';
 Execute transaction_insert; 
 return 0;
 END;
@@ -4578,92 +4615,6 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
 
 /*crc*/
 
-create or replace view hc_crc_district as
-select 
-spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
-coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
-(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
- from 
-((select count(distinct school_id) as total_schools,district_id,district_name,
-    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1)) as no_of_schools_per_crc 
-    from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
-    group by district_id,district_name) s left join 
-(select district_id as dist_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
-sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10 from
- (select district_id,sum(visit_count)as school_count, 
-  count(distinct(school_id)) filter (where visit_count >= 1 and visit_count<= 2) as schools_1_2,
- count(distinct(school_id)) filter (where visit_count >=3 and visit_count<=5) as schools_3_5,
- count(distinct(school_id)) filter (where visit_count >=6 and visit_count<=10) as schools_6_10,
- count(distinct(school_id)) filter (where visit_count >10) as schools_10
- from crc_visits_frequency 
- where  cluster_name is not null group by district_id)as d group by district_id)as t  on s.district_id=t.dist_id)as spd
-left join 
-(select district_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
-    where visit_count>0 and  cluster_name is not null group by district_id)as scl_v
-on spd.district_id=scl_v.district_id;
-
-create or replace view hc_crc_block as
-select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.total_schools,
-coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
-(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
-from (
-(select district_id,district_name,block_id,block_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc 
-    from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
-     group by district_id,district_name,block_id,block_name) s left join 
-(select block_id as blk_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
-sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10
-from
-(select block_id,sum(visit_count)as school_count, 
-  count(distinct(school_id)) filter (where visit_count >= 1 and visit_count<= 2) as schools_1_2,
- count(distinct(school_id)) filter (where visit_count >=3 and visit_count<=5) as schools_3_5,
- count(distinct(school_id)) filter (where visit_count >=6 and visit_count<=10) as schools_6_10,
- count(distinct(school_id)) filter (where visit_count >10) as schools_10
- from crc_visits_frequency 
- where  cluster_name is not null group by block_id) d group by block_id) t on s.block_id=t.blk_id) spd
-left join 
-(select block_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
-    where visit_count>0  and cluster_name is not null group by block_id)as scl_v
-on spd.block_id=scl_v.block_id; 
-
-create or replace view hc_crc_cluster as
-select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.cluster_id,
-initcap(spd.cluster_name)as cluster_name,spd.total_schools,
-coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
-(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
-coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
-coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
-coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
-coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
-coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
-from (
-(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,count(distinct school_id) as total_schools,
-    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc
-     from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
-      group by district_id,district_name,block_id,block_name,cluster_id,cluster_name) s left join 
-(select cluster_id as clt_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
-sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10
-from
-(select cluster_id,sum(visit_count)as school_count, 
-  count(distinct(school_id)) filter (where visit_count >= 1 and visit_count<=2) as schools_1_2,
- count(distinct(school_id)) filter (where visit_count >=3 and visit_count<=5) as schools_3_5,
- count(distinct(school_id)) filter (where visit_count >=6 and visit_count<=10) as schools_6_10,
- count(distinct(school_id)) filter (where visit_count >10) as schools_10
- from crc_visits_frequency 
- where  cluster_name is not null group by cluster_id) d group by cluster_id) t on s.cluster_id=t.clt_id) spd
-left join 
-(select cluster_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
-    where visit_count>0  and cluster_name is not null group by cluster_id)as scl_v
-on spd.cluster_id=scl_v.cluster_id;
-
 create or replace view hc_crc_school as
 select spd.district_id,initcap(spd.district_name)as district_name,spd.block_id,initcap(spd.block_name) as block_name,spd.cluster_id,initcap(spd.cluster_name)as cluster_name,spd.school_id,
 initcap(spd.school_name) as school_name,spd.total_schools,
@@ -4686,9 +4637,9 @@ round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct c
 sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10
 from
 (select school_id,sum(visit_count)as visit_count,count(distinct(school_id))*sum(visit_count) as school_count,
-case when sum(visit_count) >= 1 and sum(visit_count)<=2 then count(distinct(school_id)) end as schools_1_2,
-case when sum(visit_count) >= 3 and sum(visit_count)<=5 then count(distinct(school_id)) end as schools_3_5,
-case when sum(visit_count) >= 6 and sum(visit_count)<=10 then count(distinct(school_id)) end as schools_6_10,
+case when sum(visit_count) between 1 and 2 then count(distinct(school_id)) end as schools_1_2,
+case when sum(visit_count) between 3 and 5 then count(distinct(school_id)) end as schools_3_5,
+case when sum(visit_count) between 6 and 10 then count(distinct(school_id)) end as schools_6_10,
 case when sum(visit_count) >10 then count(distinct(school_id)) end as schools_10
 from crc_visits_frequency
 where visit_count>0 and cluster_name is not null
@@ -4697,6 +4648,96 @@ left join
 (select school_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency
   where visit_count>0  and cluster_name is not null group by school_id)as scl_v
 on spd.school_id=scl_v.school_id;
+
+create or replace view hc_crc_cluster as
+select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.cluster_id,
+initcap(spd.cluster_name)as cluster_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
+coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
+from (
+(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,count(distinct school_id) as total_schools,
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc
+     from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+      group by district_id,district_name,block_id,block_name,cluster_id,cluster_name) s left join 
+(select cluster_id as clt_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10
+from
+(select cluster_id,sum(total_crc_visits)as school_count, 
+sum(case when schools_0>0 then 1 else 0 end) as schools_0,
+  sum(case when schools_1_2>0 then 1 else 0 end) as schools_1_2,
+ sum(case when schools_3_5>0 then 1 else 0 end) as schools_3_5,
+ sum(case when schools_6_10>0 then 1 else 0 end) as schools_6_10,
+ sum(case when schools_10>0 then 1 else 0 end) as schools_10
+ from hc_crc_school where  cluster_name is not null
+group by cluster_id) d group by cluster_id) t on s.cluster_id=t.clt_id) spd
+left join 
+(select cluster_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
+    where visit_count>0  and cluster_name is not null group by cluster_id)as scl_v
+on spd.cluster_id=scl_v.cluster_id;
+
+create or replace view hc_crc_block as
+select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
+from (
+(select district_id,district_name,block_id,block_name,count(distinct school_id) as total_schools,
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc 
+    from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+     group by district_id,district_name,block_id,block_name) s left join 
+(select block_id as blk_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10
+from
+(select block_id,sum(total_crc_visits)as school_count, 
+sum(case when schools_0>0 then 1 else 0 end) as schools_0,
+  sum(case when schools_1_2>0 then 1 else 0 end) as schools_1_2,
+ sum(case when schools_3_5>0 then 1 else 0 end) as schools_3_5,
+ sum(case when schools_6_10>0 then 1 else 0 end) as schools_6_10,
+ sum(case when schools_10>0 then 1 else 0 end) as schools_10
+ from hc_crc_school where  cluster_name is not null
+group by block_id) d group by block_id) t on s.block_id=t.blk_id) spd
+left join 
+(select block_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
+    where visit_count>0  and cluster_name is not null group by block_id)as scl_v
+on spd.block_id=scl_v.block_id;
+
+create or replace view hc_crc_district as
+select 
+spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school
+ from 
+((select count(distinct school_id) as total_schools,district_id,district_name,
+    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1)) as no_of_schools_per_crc 
+    from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+    group by district_id,district_name) s left join 
+(select district_id as dist_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10 from
+ (select district_id,sum(total_crc_visits)as school_count, 
+sum(case when schools_0>0 then 1 else 0 end) as schools_0,
+  sum(case when schools_1_2>0 then 1 else 0 end) as schools_1_2,
+ sum(case when schools_3_5>0 then 1 else 0 end) as schools_3_5,
+ sum(case when schools_6_10>0 then 1 else 0 end) as schools_6_10,
+ sum(case when schools_10>0 then 1 else 0 end) as schools_10
+ from hc_crc_school where  cluster_name is not null
+group by district_id)as d group by district_id)as t  on s.district_id=t.dist_id)as spd
+left join 
+(select district_id,count(distinct(school_id))as visited_school_count from crc_visits_frequency 
+    where visit_count>0 and  cluster_name is not null group by district_id)as scl_v
+on spd.district_id=scl_v.district_id;
+
 
 CREATE OR REPLACE FUNCTION infra_areas_to_focus()
 RETURNS text AS
@@ -5614,3 +5655,240 @@ left join
 hc_infra_district as infra
 on basic.district_id=infra.district_id;
 
+
+/*Health card state*/
+
+ create or replace view hc_student_attendance_state as
+SELECT Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS Attendance,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+year,month
+FROM school_student_total_attendance WHERE block_latitude IS NOT NULL AND block_latitude <> 0 and year = (select max(year) from school_student_total_attendance)
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL
+AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0 group by month,year;
+
+create or replace view hc_semester_performance_state as
+  SELECT grade,semester,
+Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
+  case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+  +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+  case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+  ),0)*100.0/
+Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
+  subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL
+AND block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL
+AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+ and cluster_name is not null
+GROUP BY grade,semester
+having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
+ case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+ +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+ case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+ +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+ ) <> 0;
+
+ create or replace view hc_pat_state as
+select d.*,b.total_schools,b.students_count from
+(select a.*,b.grade_wise_performance from
+(select academic_year,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as school_performance
+from periodic_exam_school_result group by academic_year) as a
+left join
+(select academic_year,json_object_agg(grade,percentage) as grade_wise_performance from
+(select academic_year,cast('Grade '||grade as text)as grade,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
+from periodic_exam_school_result group by academic_year,grade)as a
+group by academic_year)as b
+on a.academic_year=b.academic_year)as d
+left join
+ (select academic_year,sum(students_count)as students_count,sum(total_schools)as total_schools
+  from periodic_exam_school_all group by academic_year
+  )as b
+ on d.academic_year=b.academic_year;
+
+
+create or replace function health_card_index_state()
+RETURNS text AS
+$$
+DECLARE
+udise_query text:= 'select string_agg(''cast(avg(''||lower(column_name)||'')as int)as ''||lower(column_name),'','')
+   from udise_config where status = ''1'' and type=''indice''';
+udise_cols text ;
+infra_query text:= 
+ 'select concat(''cast(sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
+  '')/10 as int) as average_value,'',''cast((sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
+'')/10)*100/sum(total_schools_data_received)as int) as average_percent,
+  '',string_agg(''sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)as ''
+  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'','',''),'','',
+string_agg(''cast(sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||
+  ''_value)*100/sum(total_schools_data_received)as int) as ''
+  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','',''))
+    from infrastructure_master where status = true';
+infra_atf_query text:=
+'select ''(select json_agg(areas_to_focus)as areas_to_focus  from 
+ 	(select array_remove(array[''||string_agg(''case when cast(sum(''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)*100/sum(total_schools_data_received)as int)<30 then ''''''||
+ case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
+else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
+''],''''0'''')as areas_to_focus from hc_infra_school)as infra)'' 
+from infrastructure_master where status = true order by 1';   
+infra_cols text;
+infra_atf_cols text;
+infra_atf text;
+create_state_view text;
+BEGIN
+Execute udise_query into udise_cols;
+Execute infra_query into infra_cols;
+Execute infra_atf_query into infra_atf_cols;
+Execute infra_atf_cols into infra_atf;
+create_state_view=
+'create or replace view health_card_index_state as select ''basic_details'' as data_source,row_to_json(basic_details)::jsonb as values  from 
+(select distinct(substring(cast(avg(district_id) as text),1,2))as state_id,sum(total_schools)as total_schools,sum(total_students)as total_students from 
+(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
+  shd.school_id,initcap(shd.school_name)as school_name,
+  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where 
+cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name)as data
+)as basic_details
+union
+(select ''student_attendance''as data,row_to_json(state_attendance)::jsonb from
+  (select sum(data.students_count)as students_count,sum(data.total_schools)as total_schools,data.year,data.month,
+  hc_student_attendance_state.Attendance,
+ sum(case when data.attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when data.attendance > 33 and data.attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when data.attendance > 60 and data.attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when data.attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school as data left join hc_student_attendance_state on data.month=hc_student_attendance_state.month
+   and data.year=hc_student_attendance_state.year
+   where data.month=(select max(month) from hc_student_attendance_state)
+group by data.year,data.month,hc_student_attendance_state.Attendance)as state_attendance)
+union
+(select ''student_semester''as data,row_to_json(semster)::jsonb from(select x_value as Performance,a.semester,c.total_schools,
+c.value_below_33,c.value_between_33_60,c.value_between_60_75,c.value_above_75,
+c.percent_below_33,c.percent_between_33_60,c.percent_between_60_75,c.percent_above_75,grade_wise_performance
+from
+(SELECT  
+Round(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
+  case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+  +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+  case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+  )*100.0/
+Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
+  subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value,
+Sum(students_count) AS students_count,semester
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL
+AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 and cluster_name is not null
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+and semester=(select max(semester) from school_student_subject_total_marks)
+GROUP BY semester
+having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
+ case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+ +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+ case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+ +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+ ) <> 0)as a
+left join (select semester,count(distinct(school_id))as total_schools,
+ sum(case when x_value <=33 then 1 else 0 end)as value_below_33,
+ sum(case when x_value > 33 and x_value<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when x_value > 60 and x_value<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when x_value >75 then 1 else 0 end)as value_above_75,
+ round(sum(case when x_value <=33 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_below_33,
+ round(sum(case when x_value > 33 and x_value<=60 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_33_60,
+ round(sum(case when x_value > 60 and x_value<=75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_60_75,
+ round(sum(case when x_value >75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_above_75
+   from district_school group by semester) as c
+   on a.semester=c.semester
+   left join
+(select semester,json_object_agg(concat(''grade_'',grade),x_value)as grade_wise_performance
+ from hc_semester_performance_state group by semester order by 1)as grade
+   on a.semester=grade.semester)as semster)
+union
+(select ''pat_performance''as data,
+  row_to_json(pat)::jsonb from (select hc_pat_state.*,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+from
+(select academic_year,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from periodic_exam_school_all where academic_year=(select max(academic_year) from periodic_exam_school_all)
+   group by academic_year)as data
+left join hc_pat_state on data.academic_year=hc_pat_state.academic_year)as pat)
+union
+(select ''udise''as data,row_to_json(udise)::jsonb from (select sum(total_schools) as total_schools
+  ,'||udise_cols||',
+    cast(avg(infrastructure_score)as int)as infrastructure_score,
+ sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when Infrastructure_score > 33 and infrastructure_score<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when Infrastructure_score > 60 and infrastructure_score<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
+   from udise_school_score)as udise)
+  union
+ (select ''school_infrastructure''as data,row_to_json(infra)::jsonb 
+ from (select sum(total_schools_data_received) as total_schools_data_received, 
+   cast(avg(infra_score)as int)as infra_score,
+'||infra_cols||','''||infra_atf||''' as areas_to_focus,
+ sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when infra_score > 33 and infra_score<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when infra_score > 60 and infra_score<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when infra_score >75 then 1 else 0 end)as value_above_75
+ from hc_infra_school)as infra)
+ union
+(select ''crc_visit''as data,row_to_json(crc)::jsonb from 
+(select sum(total_schools)as total_schools,sum(total_crc_visits)as total_crc_visits,sum(visited_school_count)as visited_school_count,
+sum(not_visited_school_count)as not_visited_school_count from hc_crc_school)as crc)';
+Execute create_state_view; 
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+select health_card_index_state();
+
+
+
+
+
+create or replace view assessment_students_scored as
+ (select  student_uid,school_id,semester,grade from (
+select
+sum(subject_1) as subject_1_marks_scored,
+sum(case when subject_1  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_1_total_marks,
+sum(subject_3) as subject_3_marks_scored,
+sum(case when subject_3  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_3_total_marks,
+sum(subject_2) as subject_2_marks_scored,
+sum(case when subject_2  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_2_total_marks,
+sum(subject_4) as subject_4_marks_scored,
+sum(case when subject_4  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_4_total_marks,
+sum(subject_5) as subject_5_marks_scored,
+sum(case when subject_5  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_5_total_marks,
+sum(subject_6) as subject_6_marks_scored,
+sum(case when subject_6  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_6_total_marks,
+sum(subject_7) as subject_7_marks_scored,
+sum(case when subject_7  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_7_total_marks,
+sum(subject_8) as subject_8_marks_scored,
+sum(case when subject_8  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_8_total_marks,
+student_uid,school_id,semester,grade
+from student_semester_trans
+group by student_uid,school_id,semester,grade
+)as data 
+group by student_uid,school_id,semester,grade
+ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
+ case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+ +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+ case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+ +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+ ) <> 0);
+
+ drop view if exists teacher_attendance_trans_to_aggregate;

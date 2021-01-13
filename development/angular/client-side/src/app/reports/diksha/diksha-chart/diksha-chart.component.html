@@ -1,6 +1,6 @@
 <div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-8">
             <div *ngIf='all'>
                 <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Textbook Linked Content Usage: <span (click)="homeClick()"
@@ -14,12 +14,18 @@
                         {{hierName}}</span> </p>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-2">
                     <p id="errMsg"
                         style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
+                </div>
+                <div class="col-sm-4">
+                    <span id="rawDownload" *ngIf="reportData.length > 0"
+                        style="color: #284d8a;cursor: pointer; text-decoration: underline; font-size: 13px;"
+                        (click)="downloadRawFile()"><strong>Download Raw
+                            File</strong></span>
                 </div>
                 <div class="col-sm-6">
                     <div style="float: right; " id="select">
@@ -87,7 +93,7 @@
                 </div>
                 <div class="col-lg-6" id="r2">
                     <h3>Usage by Others <sup class="tip">
-                            <app-info [tooltipText]="usagebyOthers"></app-info>
+                            <app-info style="font-size: 16px;" [tooltipText]="usagebyOthers"></app-info>
                         </sup></h3>
                     <div *ngIf="barChartData3[0]['data'].length > 0">
                         <canvas height="160vh" baseChart [datasets]="barChartData3" [labels]="barChartLabels3"
@@ -104,7 +110,7 @@
             <div class="row">
                 <div class="col-lg-6" id="r4">
                     <h3>Usage by Teachers <sup class="tip">
-                            <app-info [tooltipText]="usageByTeachers"></app-info>
+                            <app-info style="font-size: 16px;" [tooltipText]="usageByTeachers"></app-info>
                         </sup></h3>
                     <div *ngIf="barChartData1[0]['data'].length > 0">
                         <canvas height="160vh" baseChart [datasets]="barChartData1" [labels]="barChartLabels1"
@@ -119,7 +125,7 @@
                 </div>
                 <div class="col-lg-6" id="r3">
                     <h3>Usage by Students <sup class="tip">
-                            <app-info [tooltipText]="usageByStudents"></app-info>
+                            <app-info style="font-size: 16px;" [tooltipText]="usageByStudents"></app-info>
                         </sup></h3>
                     <div *ngIf="barChartData2[0]['data'].length > 0">
                         <canvas height="160vh" baseChart [datasets]="barChartData2" [labels]="barChartLabels2"

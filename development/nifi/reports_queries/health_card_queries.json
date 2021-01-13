@@ -1,5 +1,8 @@
 [
 {
+"health_card_index_state":"select * from health_card_index_state"
+},
+{
 "health_card_index_meta_district":"select distinct(district_id)as district_id,Initcap(district_name)as district_name from school_hierarchy_details  where school_name is not null and cluster_name is not null and block_name is not null and district_name is not null"
 },
 {

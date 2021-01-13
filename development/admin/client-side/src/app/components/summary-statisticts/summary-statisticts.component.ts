@@ -23,6 +23,7 @@ export class SummaryStatistictsComponent implements OnInit {
   tableData10: any = [];
   tableData11: any = [];
   tableData12: any = [];
+  tableData13: any = [];
   constructor(private router: Router, private service: SummaryService) { }
 
   ngOnInit(): void {
@@ -114,6 +115,14 @@ export class SummaryStatistictsComponent implements OnInit {
       this.tableData12 = res;
       if (this.tableData12.length > 0) {
         this.tableWithSubHeaders(this.tableData12, "table13");
+        document.getElementById('spinner').style.display = 'none';
+      }
+    });
+
+    this.service.getTeacherAttendanceSummary().subscribe((res: any) => {
+      this.tableData13 = res;
+      if (this.tableData13.length > 0) {
+        this.tableWithSubHeaders(this.tableData13, "table14");
         document.getElementById('spinner').style.display = 'none';
       }
     });

@@ -84,7 +84,7 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
         var mins = 0;
         if (req.body.time.minutes) {
             mins = parseInt(req.body.time.minutes);
-        }        
+        }
 
         let timeToStop = req.body.stopTime
 
@@ -132,20 +132,8 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
             }
             await changePermission();
             schedularData = JSON.parse(fs.readFileSync(filePath));
-            schedularData.forEach(myJob => {
-                if (myJob.groupName == obj.groupName) {
-                    myJob.groupId = obj.groupId;
-                    myJob.groupName = obj.groupName;
-                    myJob.state = obj.state;
-                    myJob.day = obj.day;
-                    myJob.date = obj.date;
-                    myJob.month = obj.month;
-                    myJob.mins = obj.mins;
-                    myJob.hours = obj.hours;
-                    myJob.timeToStop = obj.timeToStop;
-                    myJob.scheduleUpdatedAt = `${obj.scheduleUpdatedAt}`;
-                }
-            });
+            let foundIndex = schedularData.findIndex(x => x.groupName == obj.groupName);
+            schedularData[foundIndex] = obj;
             fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                 if (err) throw err;
                 logger.info('Re-Scheduled RUNNING Job - Updated to file');
@@ -214,8 +202,12 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
                 await changePermission();
                 schedularData = JSON.parse(fs.readFileSync(filePath));
             }
-
-            schedularData.push(obj);
+            let foundIndex = schedularData.findIndex(x => x.groupName == obj.groupName);
+            if (foundIndex != -1) {
+                schedularData[foundIndex] = obj;
+            } else {
+                schedularData.push(obj);
+            }
             fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                 if (err) throw err;
                 logger.info('Scheduled RUNNING Job - Updated to file');
@@ -336,7 +328,6 @@ router.post('/scheduleNiFiProcessor/:id/:name', async (req, res) => {
         let timeToStop = req.body.stopTime
 
         timeToStop = hours + timeToStop
-
         if (timeToStop >= 24) {
             timeToStop = timeToStop % 24;
             timeToStop = timeToStop < 0 ? 24 + timeToStop : +timeToStop;
@@ -380,20 +371,8 @@ router.post('/scheduleNiFiProcessor/:id/:name', async (req, res) => {
             }
             await changePermission();
             schedularData = JSON.parse(fs.readFileSync(filePath));
-            schedularData.forEach(myJob => {
-                if (myJob.groupName == obj.groupName) {
-                    myJob.groupId = obj.groupId;
-                    myJob.groupName = obj.groupName;
-                    myJob.state = obj.state;
-                    myJob.day = obj.day;
-                    myJob.date = obj.date;
-                    myJob.month = obj.month;
-                    myJob.mins = obj.mins;
-                    myJob.hours = obj.hours;
-                    myJob.timeToStop = obj.timeToStop;
-                    myJob.scheduleUpdatedAt = `${obj.scheduleUpdatedAt}`;
-                }
-            });
+            let foundIndex = schedularData.findIndex(x => x.groupName == obj.groupName);
+            schedularData[foundIndex] = obj;
             fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                 if (err) throw err;
                 logger.info('Re-Scheduled RUNNING Job - Updated to file');
@@ -462,8 +441,12 @@ router.post('/scheduleNiFiProcessor/:id/:name', async (req, res) => {
                 await changePermission();
                 schedularData = JSON.parse(fs.readFileSync(filePath));
             }
-
-            schedularData.push(obj);
+            let foundIndex = schedularData.findIndex(x => x.groupName == obj.groupName);
+            if (foundIndex != -1) {
+                schedularData[foundIndex] = obj;
+            } else {
+                schedularData.push(obj);
+            }
             fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                 if (err) throw err;
                 logger.info('Scheduled RUNNING Job - Updated to file');

@@ -342,17 +342,7 @@ count(distinct(school_id))as total_schools, cast(sum(students_count)/count(disti
         "schools": "=intSum(@(1,schools))"
       }
     }
-    },
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "foot": {
-      "*": {
-       
-      }
     }
-    }
-  }
 ]
 ''',
 "stud_att_transform_cluster_wise":'''[{
@@ -516,7 +506,7 @@ count(distinct(school_id))as total_schools, cast(sum(students_count)/count(disti
 		from log_summary group by ff_uuid) as a
 	where a.ff_uuid=b.ff_uuid
 ''',
-"select_att_files_from__log_db":"select * from log_summary where filename like '%attendance%'",
+"select_att_files_from__log_db":"select * from log_summary where filename like 'student_attendance%'",
 "stud_att_jolt_for_log_summary":'''[{
 		"operation": "shift",
 		"spec": {
