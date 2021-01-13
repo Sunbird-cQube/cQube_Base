@@ -554,6 +554,6 @@ object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_ty
 collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
 collection_created_for,total_count,total_time_spent,ff_uuid
 HAVING  COUNT(*) > 1""",
-"diksha_data_summary_staging_table_name":"""diksha_content_staging"""",
+"diksha_data_summary_staging_table_name":"""diksha_content_staging""",
 "diksha_tpd_staging_table_name":"""diksha_tpd_staging"""
 }
