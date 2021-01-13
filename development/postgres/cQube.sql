@@ -2056,7 +2056,7 @@ create table IF NOT EXISTS diksha_content_staging(
   );
 
 Alter table diksha_content_staging
-add column if not exists collection_id text,
+drop column if exists collection_id,
 Add column if not exists collection_name text,
 drop column if exists batch_id,
 drop column if exists batch_name,
