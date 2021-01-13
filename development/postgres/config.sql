@@ -4108,7 +4108,7 @@ org_name,cr_mapping.school_id,enrolment_date,
 completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,now(),now()
 from diksha_tpd_content_temp as tpd_temp left join diksha_tpd_mapping as cr_mapping on tpd_temp.uuid=cr_mapping.uuid
 where cr_mapping.school_id>0)
-on conflict(collection_id,uuid,school_id,enrolment_date) do update
+on conflict(collection_id,uuid,school_id,enrolment_date,batch_id) do update
 set collection_id=excluded.collection_id,collection_name=excluded.collection_name,batch_id=excluded.batch_id,
 batch_name=excluded.batch_name,uuid=excluded.uuid,state=excluded.state,org_name=excluded.org_name,school_id=excluded.school_id,
 enrolment_date=excluded.enrolment_date,completion_date=excluded.completion_date,progress=excluded.progress,
@@ -5847,3 +5847,48 @@ END;
 $$LANGUAGE plpgsql;
 
 select health_card_index_state();
+
+
+
+
+
+create or replace view assessment_students_scored as
+ (select  student_uid,school_id,semester,grade from (
+select
+sum(subject_1) as subject_1_marks_scored,
+sum(case when subject_1  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_1_total_marks,
+sum(subject_3) as subject_3_marks_scored,
+sum(case when subject_3  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_3_total_marks,
+sum(subject_2) as subject_2_marks_scored,
+sum(case when subject_2  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_2_total_marks,
+sum(subject_4) as subject_4_marks_scored,
+sum(case when subject_4  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_4_total_marks,
+sum(subject_5) as subject_5_marks_scored,
+sum(case when subject_5  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_5_total_marks,
+sum(subject_6) as subject_6_marks_scored,
+sum(case when subject_6  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_6_total_marks,
+sum(subject_7) as subject_7_marks_scored,
+sum(case when subject_7  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_7_total_marks,
+sum(subject_8) as subject_8_marks_scored,
+sum(case when subject_8  is null then 0 else 1 end)*(case when grade between 3 and 5 then 40
+  when grade between 6 and 8 then 80 end) as subject_8_total_marks,
+student_uid,school_id,semester,grade
+from student_semester_trans
+group by student_uid,school_id,semester,grade
+)as data 
+group by student_uid,school_id,semester,grade
+ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
+ case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+ +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+ case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+ +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+ ) <> 0);
+
+ drop view if exists teacher_attendance_trans_to_aggregate;
