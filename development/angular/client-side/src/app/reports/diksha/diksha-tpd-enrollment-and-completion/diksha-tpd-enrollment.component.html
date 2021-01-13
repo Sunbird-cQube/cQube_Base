@@ -1,6 +1,6 @@
 <div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Diksha TPD Report for Total Enrollments / Completions: <span (click)="homeClick()"
@@ -41,14 +41,20 @@
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-4">
             <div class="row">
                 <div class="col-sm-0" style="display: none;">
                     <p id="errMsg"
                         style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-6">
+                    <span id="rawDownload"
+                        style="color: #284d8a;cursor: pointer; text-decoration: underline; font-size: 13px;"
+                        (click)="downloadRawFile()">Download Raw
+                        File</span>
+                </div>
+                <div class="col-sm-6">
                     <em class="fa fa-download" title="Download Report" id="download"
                         style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
                         (click)="downloadRoport()"></em>

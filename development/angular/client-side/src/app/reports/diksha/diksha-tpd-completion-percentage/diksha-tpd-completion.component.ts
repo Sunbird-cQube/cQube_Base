@@ -151,9 +151,21 @@ export class DikshaTpdCompletionComponent implements OnInit {
     })
   }
 
+  time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+  fileToDownload = `diksha_raw_data/tpd_report2/${this.time}/${this.time}.csv`;
   chooseTimeRange() {
     document.getElementById('home').style.display = "block";
+    this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
+    this.fileToDownload = `diksha_raw_data/tpd_report2/${this.time}/${this.time}.csv`;
     this.getAllData();
+  }
+
+  downloadRawFile() {
+    this.service.downloadFile({ fileName: this.fileToDownload }).subscribe(res => {
+      window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      alert("No Data Available");
+    })
   }
 
   getBarChartData() {
