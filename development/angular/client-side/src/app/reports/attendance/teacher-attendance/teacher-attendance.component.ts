@@ -39,7 +39,7 @@ export class TeacherAttendanceComponent implements OnInit {
   public myBlock: any;
   public myCluster: any;
   public colors: any;
-  public studentCount: any;
+  public teacherCount: any;
   public schoolCount: any;
   public dateRange: any = '';
   public dist: boolean = false;
@@ -381,7 +381,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
 
         var distNames = [];
-        this.studentCount = res['teacherCount'];
+        this.teacherCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
@@ -402,7 +402,7 @@ export class TeacherAttendanceComponent implements OnInit {
         globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
@@ -432,7 +432,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
 
         var blockNames = [];
-        this.studentCount = res['teacherCount'];
+        this.teacherCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
@@ -451,7 +451,7 @@ export class TeacherAttendanceComponent implements OnInit {
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
           globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
           this.changeDetection.markForCheck();
         }
@@ -485,7 +485,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
         var clustNames = [];
         var blockNames = [];
-        this.studentCount = res['teacherCount'];
+        this.teacherCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
 
@@ -514,7 +514,7 @@ export class TeacherAttendanceComponent implements OnInit {
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
           globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
           this.changeDetection.markForCheck();
         }
@@ -547,7 +547,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
-        this.studentCount = res['teacherCount'];
+        this.teacherCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
@@ -564,7 +564,7 @@ export class TeacherAttendanceComponent implements OnInit {
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
           globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
           this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
           this.changeDetection.markForCheck();
         }
@@ -587,7 +587,7 @@ export class TeacherAttendanceComponent implements OnInit {
     this.commonService.errMsg();
     this.reportData = [];
     this.markers = [];
-    this.studentCount = 0;
+    this.teacherCount = 0;
     this.schoolCount = 0;
     this.blockHidden = true;
     this.clusterHidden = true;
@@ -728,7 +728,7 @@ export class TeacherAttendanceComponent implements OnInit {
     this.markers = [];
     this.reportData = [];
     this.commonService.errMsg();
-    this.studentCount = 0;
+    this.teacherCount = 0;
     this.schoolCount = 0;
     this.markerData = null;
 
@@ -772,7 +772,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.markers = sorted;
-        this.studentCount = res['teacherCount'];
+        this.teacherCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         for (var i = 0; i < this.markers.length; i++) {
@@ -789,7 +789,7 @@ export class TeacherAttendanceComponent implements OnInit {
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 1)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
@@ -880,7 +880,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.markers = [];
-        this.studentCount = res['teacherCount'];
+        this.teacherCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
         // sorted.pop();
         this.markers = sorted;
@@ -903,7 +903,7 @@ export class TeacherAttendanceComponent implements OnInit {
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 3)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
@@ -941,7 +941,7 @@ export class TeacherAttendanceComponent implements OnInit {
     this.markers = [];
     this.reportData = [];
     this.commonService.errMsg();
-    this.studentCount = 0;
+    this.teacherCount = 0;
     this.schoolCount = 0;
     this.markerData = null;
 
@@ -1020,7 +1020,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.markers = [];
-        this.studentCount = res['teacherCount'];
+        this.teacherCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
@@ -1034,7 +1034,7 @@ export class TeacherAttendanceComponent implements OnInit {
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
         globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 5)
         this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
