@@ -342,17 +342,7 @@ count(distinct(school_id))as total_schools, cast(sum(students_count)/count(disti
         "schools": "=intSum(@(1,schools))"
       }
     }
-    },
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "foot": {
-      "*": {
-       
-      }
     }
-    }
-  }
 ]
 ''',
 "stud_att_transform_cluster_wise":'''[{
