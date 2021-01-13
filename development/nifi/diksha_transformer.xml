@@ -36334,7 +36334,7 @@ ${query_type:startsWith('diksha_tpd_r2_raw')})})}</value>
         <key>putsql-sql-statement</key>
         <value>${filename:startsWith('diksha_data_summary'):ifElse("delete from  diksha_content_temp where ff_uuid ='${zip_identifier}';",
 ${filename:startsWith('diksha_tpd'):and(${filename:startsWith('diksha_tpd_mapping'):not()}):ifElse("delete from  diksha_tpd_content_temp where ff_uuid ='${zip_identifier}';",
-${filename:startsWith('diksha_tpd_mapping'):ifElse('delete from diksha_tpd_mapping_temp where ff_uuid="${zip_identifier}"','None')})}
+${filename:startsWith('diksha_tpd_mapping'):ifElse("delete from diksha_tpd_mapping_temp where ff_uuid='${zip_identifier}'",'None')})}
 )}</value>
     </entry>
     <entry>
@@ -37490,7 +37490,7 @@ ${query_type:startsWith('diksha_tpd_r2_raw_overall'):ifElse('diksha_raw_data/tpd
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -41380,8 +41380,8 @@ ${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_less_datatype_vali
                             <id>96b98450-fc0c-3e89-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>-8472.0</x>
-<y>-2032.0</y>
+<x>-8464.0</x>
+<y>-2024.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -47498,5 +47498,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/13/2021 14:17:31 IST</timestamp>
+    <timestamp>01/13/2021 21:43:20 IST</timestamp>
 </template>
