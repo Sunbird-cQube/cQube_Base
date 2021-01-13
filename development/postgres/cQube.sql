@@ -2055,6 +2055,27 @@ create table IF NOT EXISTS diksha_content_staging(
   updated_on TIMESTAMP without time zone 
   );
 
+Alter table diksha_content_staging
+drop column if exists collection_id,
+Add column if not exists collection_name text,
+drop column if exists batch_id,
+drop column if exists batch_name,
+drop column if exists uuid ,
+drop column if exists district,
+drop column if exists state,
+drop column if exists org_name,
+drop column if exists school_id,
+drop column if exists declared_board,
+drop column if exists school_name,
+drop column if exists block_name,
+drop column if exists enrolment_date,
+drop column if exists completion_date,
+drop column if exists progress,
+drop column if exists certificate_status,
+drop column if exists total_score,
+Add column if not exists created_on timestamp without time zone,
+Add column if not exists updated_on timestamp without time zone;
+
 alter table diksha_content_staging alter COLUMN content_created_for type text;
 alter table diksha_content_staging alter COLUMN collection_created_for type text;
 
@@ -4690,26 +4711,7 @@ CREATE TABLE IF NOT EXISTS composite_config (
   created_on TIMESTAMP without time zone default current_timestamp
   );
 
-Alter table diksha_content_staging
-add column if not exists collection_id text,
-Add column if not exists collection_name text,
-add column if not exists batch_id text,
-add column if not exists batch_name text,
-add column if not exists uuid text,
-Add column if not exists district text,
-add column if not exists state text,
-add column if not exists org_name text,
-add column if not exists school_id bigint,
-Add column if not exists declared_board text,
-Add column if not exists school_name text,
-Add column if not exists block_name text,
-add column if not exists enrolment_date date,
-add column if not exists completion_date date,
-add column if not exists progress double precision,
-add column if not exists certificate_status text,
-add column if not exists total_score double precision,
-Add column if not exists created_on timestamp without time zone,
-Add column if not exists updated_on timestamp without time zone;
+
 
 Alter table diksha_null_col
 Add column if not exists count_null_collection_id int,
@@ -5461,3 +5463,22 @@ us_query := 'UPDATE teacher_attendance_meta sam
 return 0;
 END;
 $$  LANGUAGE plpgsql;
+
+
+create table IF NOT EXISTS diksha_tpd_staging(
+  ff_uuid text,
+  collection_id text,
+  collection_name text,
+  state text,
+  enrolment_date date,
+  batch_id text,
+  batch_name text,
+  completion_date date,
+  certificate_status text,
+  org_name text,
+  progress double precision,
+  total_score double precision,
+  uuid text,
+  created_on TIMESTAMP without time zone,
+  updated_on TIMESTAMP without time zone 
+  );
