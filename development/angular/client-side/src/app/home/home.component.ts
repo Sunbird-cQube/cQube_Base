@@ -51,6 +51,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.changeDataSourceStatus();
     this.email = localStorage.getItem('userName');
+    this.email = this.email.charAt(0).toUpperCase() + this.email.substr(1).toLowerCase();
     this.role = localStorage.getItem('roleName');
     if (this.role == "admin") {
       this.showsideMenu = false;
