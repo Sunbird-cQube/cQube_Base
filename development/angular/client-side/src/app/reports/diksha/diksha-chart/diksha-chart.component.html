@@ -1,6 +1,6 @@
 <div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-8">
             <div *ngIf='all'>
                 <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Textbook Linked Content Usage: <span (click)="homeClick()"
@@ -14,7 +14,7 @@
                         {{hierName}}</span> </p>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <div class="row">
                 <div class="col-sm-2">
                     <p id="errMsg"
@@ -22,9 +22,10 @@
                     </p>
                 </div>
                 <div class="col-sm-4">
-                    <span id="rawDownload" style="color: #284d8a;cursor: pointer; text-decoration: underline; font-size: 13px;"
-                        (click)="downloadRawFile()">Download Raw
-                        File</span>
+                    <span id="rawDownload" *ngIf="reportData.length > 0"
+                        style="color: #284d8a;cursor: pointer; text-decoration: underline; font-size: 13px;"
+                        (click)="downloadRawFile()"><strong>Download Raw
+                            File</strong></span>
                 </div>
                 <div class="col-sm-6">
                     <div style="float: right; " id="select">
