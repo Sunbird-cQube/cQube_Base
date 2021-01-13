@@ -166,8 +166,8 @@
                     <id>b62d71e5-34f9-31df-0000-000000000000</id>
                     <parentGroupId>bdf85650-485e-3af0-0000-000000000000</parentGroupId>
                     <position>
-                        <x>552.0</x>
-                        <y>120.0</y>
+                        <x>544.0</x>
+                        <y>144.0</y>
                     </position>
                     <comments>Raw Data fetcher and logger</comments>
                     <contents>
@@ -177,15 +177,11 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-5528.0</x>
-<y>-2384.0</y>
+<x>-5584.0</x>
+<y>-2496.0</y>
                             </bends>
                             <bends>
-<x>-5496.0</x>
-<y>-2464.0</y>
-                            </bends>
-                            <bends>
-<x>-7032.0</x>
+<x>-7048.0</x>
 <y>-2488.0</y>
                             </bends>
                             <destination>
@@ -194,7 +190,7 @@
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>0</labelIndex>
+                            <labelIndex>1</labelIndex>
                             <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                             <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -291,13 +287,17 @@
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>-2696.0</x>
+<y>-392.0</y>
+                            </bends>
                             <destination>
 <groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
 <id>b558c8c7-4866-383a-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
+                            <labelIndex>0</labelIndex>
                             <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                             <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -371,8 +371,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-896.0</x>
-<y>-1984.0</y>
+<x>-808.0</x>
+<y>-2008.0</y>
                             </bends>
                             <bends>
 <x>-673.8486938476562</x>
@@ -420,6 +420,31 @@
                             <source>
 <groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
 <id>60d427a6-76a2-3206-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>140a88dd-f044-3fba-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>7a22cea3-59f4-3c50-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>0a018d64-fe8e-3c20-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -500,31 +525,6 @@
                             <source>
 <groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
 <id>367d7942-cde0-3ef9-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>16dfb8ff-bb3b-34d2-0000-000000000000</id>
-                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
-<id>22757916-475d-3e46-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
-<id>0a018d64-fe8e-3c20-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -840,6 +840,31 @@
                             <source>
 <groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
 <id>bd94aa86-2511-374f-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>26cc229e-329b-3d2d-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>2e336bed-3f39-3330-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>original</selectedRelationships>
+                            <source>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>d04fa49f-ce63-3c43-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -2097,8 +2122,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>244.0</x>
-<y>-727.0</y>
+<x>-40.0</x>
+<y>-696.0</y>
                             </bends>
                             <destination>
 <groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
@@ -2622,7 +2647,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
 <x>-856.0</x>
-<y>-1888.0</y>
+<y>-1856.0</y>
                             </bends>
                             <bends>
 <x>-675.0115356445312</x>
@@ -2697,6 +2722,39 @@
                             <source>
 <groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
 <id>5ebdc4e0-6ab8-315b-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>88337918-d305-3d23-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>-2175.0419921875</x>
+<y>-1898.9859619140625</y>
+                            </bends>
+                            <bends>
+<x>-2191.0419921875</x>
+<y>-1826.9859619140625</y>
+                            </bends>
+                            <destination>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>2e336bed-3f39-3330-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>wait</selectedRelationships>
+                            <source>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>2e336bed-3f39-3330-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -4787,6 +4845,43 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>fb6ba5a0-ba02-3695-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>-1760.0</x>
+<y>-1912.0</y>
+                            </bends>
+                            <bends>
+<x>-944.0</x>
+<y>-1928.0</y>
+                            </bends>
+                            <bends>
+<x>-888.0</x>
+<y>-2944.0</y>
+                            </bends>
+                            <destination>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>22757916-475d-3e46-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>2e336bed-3f39-3330-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>fba12594-ad51-355f-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -6345,6 +6440,57 @@
                             <width>64.0</width>
                         </labels>
                         <labels>
+                            <id>0a630201-fb60-3a50-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-4552.0</x>
+<y>-816.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>12</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
+                            <id>0ba1a3e4-9225-3772-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2618.5369350221563</x>
+<y>-859.5794733693609</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>8</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
+                            <id>1768247a-a3c6-30be-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2430.532992882544</x>
+<y>-1026.5821014624364</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>8</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>18d0d28f-d482-3250-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
@@ -6496,8 +6642,8 @@ GET - summary rollup</label>
                             <id>3e2d6570-7721-35cd-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>-4424.0</x>
-<y>-2776.0</y>
+<x>-4320.0</x>
+<y>-2848.0</y>
                             </position>
                             <height>48.0</height>
                             <label>convert comma delimiter to pipe delimiter csv</label>
@@ -6573,6 +6719,23 @@ GET - summary rollup</label>
                             <width>672.0</width>
                         </labels>
                         <labels>
+                            <id>4524ed73-f1ea-3732-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-96.0</x>
+<y>-1448.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>8</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>457f8fe3-a9db-3343-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
@@ -6592,6 +6755,40 @@ GET - summary rollup</label>
 </entry>
                             </style>
                             <width>400.0</width>
+                        </labels>
+                        <labels>
+                            <id>45db58c6-9b5e-3920-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-3281.9097670624997</x>
+<y>-1235.8772976328123</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>1</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
+                            <id>49194938-2db2-380f-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2016.0</x>
+<y>-1328.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>2</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
                         </labels>
                         <labels>
                             <id>51832499-c655-3574-0000-000000000000</id>
@@ -6658,6 +6855,40 @@ select required column</label>
                             <width>432.0</width>
                         </labels>
                         <labels>
+                            <id>5a151567-93bf-3e86-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2784.0</x>
+<y>-1112.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>10</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
+                            <id>5a65ea82-dc4f-3503-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-1376.0</x>
+<y>-848.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>17</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>5adcfe91-8679-3396-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
@@ -6678,6 +6909,40 @@ diksha_api_summary_roll_up table </label>
 </entry>
                             </style>
                             <width>480.0</width>
+                        </labels>
+                        <labels>
+                            <id>5bdbb5c6-1c69-3ab7-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-1472.0</x>
+<y>-3264.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>6</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
+                            <id>641c5202-1592-3bba-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2643.5369350221563</x>
+<y>-884.5794733693609</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>8</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
                         </labels>
                         <labels>
                             <id>653944f1-d8f0-3d93-0000-000000000000</id>
@@ -6739,6 +7004,23 @@ diksha_api_summary_roll_up table </label>
                             <width>624.0</width>
                         </labels>
                         <labels>
+                            <id>778ce23b-cb4c-3c94-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-3264.0</x>
+<y>-440.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>14</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>7e4747ef-351e-3090-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
@@ -6796,6 +7078,40 @@ diksha_api_summary_roll_up table </label>
 </entry>
                             </style>
                             <width>352.0</width>
+                        </labels>
+                        <labels>
+                            <id>8996f33d-04f2-3d4a-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-824.0</x>
+<y>-3064.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>7</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
+                            <id>8cb68e52-fdba-314a-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-3992.0</x>
+<y>-560.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>13</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
                         </labels>
                         <labels>
                             <id>9f4e46c9-5447-3309-0000-000000000000</id>
@@ -6878,6 +7194,40 @@ diksha_api_summary_roll_up table </label>
                             <width>608.0</width>
                         </labels>
                         <labels>
+                            <id>ac7f3578-18c9-32cb-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2651.621478807424</x>
+<y>-495.3648389667078</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>8</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
+                            <id>b107dbe5-b876-34cb-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-1928.0</x>
+<y>-632.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>16</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>b385ea4a-210a-3435-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
@@ -6923,7 +7273,7 @@ diksha_api_summary_roll_up table </label>
                             <id>b991af1d-3737-3eb4-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>2328.0</x>
+<x>2312.0</x>
 <y>-1384.0</y>
                             </position>
                             <versionedComponentId>301afc5a-8f13-3365-b080-a737ed0ac632</versionedComponentId>
@@ -6984,6 +7334,40 @@ diksha_api_summary_roll_up table </label>
                             <width>680.0</width>
                         </labels>
                         <labels>
+                            <id>be754c5c-2c2c-3cdd-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2676.621478807424</x>
+<y>-520.3648389667078</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>8</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
+                            <id>bff62f5e-7fe6-3316-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-1504.0</x>
+<y>-2480.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>5</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>c0a7901b-11ba-3229-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
@@ -6992,6 +7376,23 @@ diksha_api_summary_roll_up table </label>
                             </position>
                             <height>48.0</height>
                             <label>6</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
+                            <id>c25aadbf-06fc-3eaf-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-744.0</x>
+<y>-1744.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>3</label>
                             <style>
 <entry>
     <key>font-size</key>
@@ -7045,6 +7446,23 @@ diksha_api_summary_roll_up table </label>
                             <width>904.0</width>
                         </labels>
                         <labels>
+                            <id>c8642639-121a-3a24-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-3832.0</x>
+<y>-856.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>11</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>c9a9bf7b-87a9-3847-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
@@ -7085,6 +7503,23 @@ diksha_api_summary_roll_up table </label>
 </entry>
                             </style>
                             <width>384.0</width>
+                        </labels>
+                        <labels>
+                            <id>d10af186-246c-34f6-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-1416.0</x>
+<y>-1704.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>4</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
                         </labels>
                         <labels>
                             <id>d202efa8-b43d-3b9c-0000-000000000000</id>
@@ -7146,6 +7581,40 @@ diksha_api_summary_roll_up table </label>
                             <width>272.0</width>
                         </labels>
                         <labels>
+                            <id>e52006a2-6a72-3e9c-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2616.0</x>
+<y>-632.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>15</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
+                            <id>eb2cc8c6-47ef-3895-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-160.0</x>
+<y>-664.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>18</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>ecf150dc-35a4-3ba4-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
@@ -7186,6 +7655,23 @@ diksha_api_summary_roll_up table </label>
 </entry>
                             </style>
                             <width>200.0</width>
+                        </labels>
+                        <labels>
+                            <id>fc9d104d-b794-38b7-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-3392.0</x>
+<y>-1256.0</y>
+                            </position>
+                            <height>48.0</height>
+                            <label>1</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
                         </labels>
                         <labels>
                             <id>fe43691d-705d-3074-0000-000000000000</id>
@@ -8966,8 +9452,8 @@ WHERE ff_uuid = '${files_uuid}';</value>
                             <id>1ca8b5ce-891f-302f-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>-6720.0</x>
-<y>-1904.0</y>
+<x>-6704.0</x>
+<y>-1896.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
@@ -9778,7 +10264,7 @@ order by requested_on desc limit 1</value>
                             <id>24346bfe-8126-3da4-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>-2056.0</x>
+<x>-2016.0</x>
 <y>-2832.0</y>
                             </position>
                             <bundle>
@@ -10399,6 +10885,155 @@ order by requested_on desc limit 1</value>
                             <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.MergeContent</type>
+                        </processors>
+                        <processors>
+                            <id>2e336bed-3f39-3330-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2016.0</x>
+<y>-1880.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>release-signal-id</key>
+        <value>
+            <name>release-signal-id</name>
+        </value>
+    </entry>
+    <entry>
+        <key>target-signal-count</key>
+        <value>
+            <name>target-signal-count</name>
+        </value>
+    </entry>
+    <entry>
+        <key>signal-counter-name</key>
+        <value>
+            <name>signal-counter-name</name>
+        </value>
+    </entry>
+    <entry>
+        <key>wait-buffer-count</key>
+        <value>
+            <name>wait-buffer-count</name>
+        </value>
+    </entry>
+    <entry>
+        <key>releasable-flowfile-count</key>
+        <value>
+            <name>releasable-flowfile-count</name>
+        </value>
+    </entry>
+    <entry>
+        <key>expiration-duration</key>
+        <value>
+            <name>expiration-duration</name>
+        </value>
+    </entry>
+    <entry>
+        <key>distributed-cache-service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.distributed.cache.client.AtomicDistributedMapCacheClient</identifiesControllerService>
+            <name>distributed-cache-service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>attribute-copy-mode</key>
+        <value>
+            <name>attribute-copy-mode</name>
+        </value>
+    </entry>
+    <entry>
+        <key>wait-mode</key>
+        <value>
+            <name>wait-mode</name>
+        </value>
+    </entry>
+    <entry>
+        <key>wait-penalty-duration</key>
+        <value>
+            <name>wait-penalty-duration</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>release-signal-id</key>
+        <value>${fragment.identifier}</value>
+    </entry>
+    <entry>
+        <key>target-signal-count</key>
+        <value>${fragment.count}</value>
+    </entry>
+    <entry>
+        <key>signal-counter-name</key>
+    </entry>
+    <entry>
+        <key>wait-buffer-count</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>releasable-flowfile-count</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>expiration-duration</key>
+        <value>10 min</value>
+    </entry>
+    <entry>
+        <key>distributed-cache-service</key>
+        <value>708f64ea-2bca-35d3-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>attribute-copy-mode</key>
+        <value>keeporiginal</value>
+    </entry>
+    <entry>
+        <key>wait-mode</key>
+        <value>wait</value>
+    </entry>
+    <entry>
+        <key>wait-penalty-duration</key>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>2 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>Wait</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>expired</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>wait</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
                         <processors>
                             <id>31fa0d52-9067-3908-0000-000000000000</id>
@@ -12469,7 +13104,7 @@ ${execution.error}</value>
                             <id>4c3bd31a-c6c7-3303-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>-2040.0</x>
+<x>-2016.0</x>
 <y>-2456.0</y>
                             </position>
                             <bundle>
@@ -12583,7 +13218,7 @@ ${execution.error}</value>
                             <id>4c5a2871-eb0f-399e-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>-1336.0</x>
+<x>-1368.0</x>
 <y>-1280.0</y>
                             </position>
                             <bundle>
@@ -13905,7 +14540,7 @@ where cqube_process_status ='SUBMITTED'</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1day</schedulingPeriod>
+<schedulingPeriod>10000 mins</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -13915,7 +14550,7 @@ where cqube_process_status ='SUBMITTED'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
                         </processors>
@@ -14616,7 +15251,7 @@ VALUES
                             <id>69237931-a774-32b2-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>-1400.0</x>
+<x>-1392.0</x>
 <y>-552.0</y>
                             </position>
                             <bundle>
@@ -15559,7 +16194,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
                             <id>74c5e999-3137-3636-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>-2024.0</x>
+<x>-2016.0</x>
 <y>-3024.0</y>
                             </position>
                             <bundle>
@@ -16132,6 +16767,108 @@ where ff_uuid='${ff_uuid:trim()}';</value>
                             <type>org.apache.nifi.processors.standard.ExecuteStreamCommand</type>
                         </processors>
                         <processors>
+                            <id>7a22cea3-59f4-3c50-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>-2016.0</x>
+<y>-3216.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>release-signal-id</key>
+        <value>
+            <name>release-signal-id</name>
+        </value>
+    </entry>
+    <entry>
+        <key>signal-counter-name</key>
+        <value>
+            <name>signal-counter-name</name>
+        </value>
+    </entry>
+    <entry>
+        <key>signal-counter-delta</key>
+        <value>
+            <name>signal-counter-delta</name>
+        </value>
+    </entry>
+    <entry>
+        <key>signal-buffer-count</key>
+        <value>
+            <name>signal-buffer-count</name>
+        </value>
+    </entry>
+    <entry>
+        <key>distributed-cache-service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.distributed.cache.client.AtomicDistributedMapCacheClient</identifiesControllerService>
+            <name>distributed-cache-service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>attribute-cache-regex</key>
+        <value>
+            <name>attribute-cache-regex</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>release-signal-id</key>
+        <value>${fragment.identifier}</value>
+    </entry>
+    <entry>
+        <key>signal-counter-name</key>
+        <value>default</value>
+    </entry>
+    <entry>
+        <key>signal-counter-delta</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>signal-buffer-count</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>distributed-cache-service</key>
+        <value>708f64ea-2bca-35d3-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>attribute-cache-regex</key>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>Notify</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.Notify</type>
+                        </processors>
+                        <processors>
                             <id>7efb1377-be38-3041-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
@@ -16239,7 +16976,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
                             <id>82852a14-7912-36a1-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>2336.0</x>
+<x>2320.0</x>
 <y>-1352.0</y>
                             </position>
                             <bundle>
@@ -16498,7 +17235,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
                             <id>8327f415-6240-358e-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>-6720.0</x>
+<x>-6704.0</x>
 <y>-2144.0</y>
                             </position>
                             <bundle>
@@ -18189,7 +18926,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1day</schedulingPeriod>
+<schedulingPeriod>1 day</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -18199,7 +18936,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
                         </processors>
@@ -18307,7 +19044,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <id>a2186530-34d6-3682-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
-<x>2304.0</x>
+<x>2320.0</x>
 <y>-1120.0</y>
                             </position>
                             <bundle>
@@ -21069,7 +21806,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <name>failure</name>
                             </relationships>
                             <relationships>
-<autoTerminate>true</autoTerminate>
+<autoTerminate>false</autoTerminate>
 <name>original</name>
                             </relationships>
                             <relationships>
@@ -25726,8 +26463,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <y>501.0</y>
                             </bends>
                             <bends>
-<x>-6642.0</x>
-<y>549.0</y>
+<x>-6656.0</x>
+<y>544.0</y>
                             </bends>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
@@ -26347,8 +27084,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-1480.0</x>
-<y>-104.0</y>
+<x>-1648.0</x>
+<y>-176.0</y>
                             </bends>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
@@ -26608,6 +27345,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
 <id>03114ca7-9512-3711-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>6801926f-c9f2-3fd3-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>09b80007-6a28-367f-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>89e7ed1b-e7b8-374f-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -27769,6 +28531,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>ad442e62-9ac8-3de0-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>be246e56-bf8e-313d-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>22e2f8d6-2f02-32e1-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>ae2e1845-26f2-3008-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -28075,6 +28862,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
 <id>cdb2e27d-9743-34fa-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>c140f19b-3dc2-32d3-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>eb0ee2ff-651c-3629-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>5e4c829a-9c50-3755-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -31716,8 +32528,8 @@ school_id is null</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -32020,6 +32832,133 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_count_null_value},'None'
                             <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
+                        </processors>
+                        <processors>
+                            <id>09b80007-6a28-367f-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <position>
+<x>-6088.0</x>
+<y>664.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>JDBC Connection Pool</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.dbcp.DBCPService</identifiesControllerService>
+            <name>JDBC Connection Pool</name>
+        </value>
+    </entry>
+    <entry>
+        <key>putsql-sql-statement</key>
+        <value>
+            <name>putsql-sql-statement</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Support Fragmented Transactions</key>
+        <value>
+            <name>Support Fragmented Transactions</name>
+        </value>
+    </entry>
+    <entry>
+        <key>database-session-autocommit</key>
+        <value>
+            <name>database-session-autocommit</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Transaction Timeout</key>
+        <value>
+            <name>Transaction Timeout</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Batch Size</key>
+        <value>
+            <name>Batch Size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Obtain Generated Keys</key>
+        <value>
+            <name>Obtain Generated Keys</name>
+        </value>
+    </entry>
+    <entry>
+        <key>rollback-on-failure</key>
+        <value>
+            <name>rollback-on-failure</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>JDBC Connection Pool</key>
+        <value>ea8600ba-3d4a-3f65-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>putsql-sql-statement</key>
+        <value>${filename:startsWith('diksha_data_summary'):ifElse("delete from  diksha_content_staging where ff_uuid ='${zip_identifier}';",
+${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging where ff_uuid ='${zip_identifier}';",'None')})}</value>
+    </entry>
+    <entry>
+        <key>Support Fragmented Transactions</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>database-session-autocommit</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Transaction Timeout</key>
+    </entry>
+    <entry>
+        <key>Batch Size</key>
+        <value>100</value>
+    </entry>
+    <entry>
+        <key>Obtain Generated Keys</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>rollback-on-failure</key>
+        <value>false</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>delete_diksha_content_stagging</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>retry</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
                         <processors>
                             <id>0e32cfa3-806c-32c6-0000-000000000000</id>
@@ -34013,7 +34952,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>6</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>put-db-record-record-reader</key>
@@ -34201,8 +35140,8 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_temp_tb},'None')} )}</va
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -35178,7 +36117,8 @@ file: ${filename} null values are not found.</value>
     <entry>
         <key>diksha_raw</key>
         <value>${query_type:startsWith('diksha_stack_bar_raw'):or(
-${query_type:startsWith('diksha_table_raw')})}</value>
+${query_type:startsWith('diksha_table_raw'):or(
+${query_type:startsWith('diksha_tpd_r2_raw')})})}</value>
     </entry>
 </properties>
 <runDurationMillis>25</runDurationMillis>
@@ -35867,7 +36807,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{save_to_diksha_tpd_dup},'None')} )}
                             <id>4c2cc1a7-93d6-3552-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>-7864.0</x>
+<x>-7960.0</x>
 <y>880.0</y>
                             </position>
                             <bundle>
@@ -36389,28 +37329,32 @@ ${query_type:startsWith('diksha_tpd_r2_school_last_day'):ifElse('diksha_tpd/repo
 ${query_type:startsWith('diksha_tpd_r2_school_last_7_days'):ifElse('diksha_tpd/report2/last_7_days/school/${type}/${id}.json',
 ${query_type:startsWith('diksha_tpd_r2_school_last_30_days'):ifElse('diksha_tpd/report2/last_30_days/school/${type}/${id}.json',
 ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('diksha_tpd/report2/overall/school/${type}/${id}.json',
-${query_type:startsWith('diksha_stack_bar_raw_all_last_day'):ifElse('diksha_raw_data/stack_bar_reports/last_day/all.csv',
-${query_type:startsWith('diksha_stack_bar_raw_all_last_7_days'):ifElse('diksha_raw_data/stack_bar_reports/last_7_days/all.csv',
-${query_type:startsWith('diksha_stack_bar_raw_all_last_30_days'):ifElse('diksha_raw_data/stack_bar_reports/last_30_days/all.csv',
-${query_type:startsWith('diksha_stack_bar_raw_all_all'):ifElse('diksha_raw_data/stack_bar_reports/all.csv',
-${query_type:startsWith('diksha_stack_bar_raw_last_day'):ifElse('diksha_raw_data/stack_bar_reports/last_day/all.csv',
-${query_type:startsWith('diksha_stack_bar_raw_last_7_days'):ifElse('diksha_raw_data/stack_bar_reports/last_7_days/all.csv',
-${query_type:startsWith('diksha_stack_bar_raw_last_30_days'):ifElse('diksha_raw_data/stack_bar_reports/last_30_days/all.csv',
-${query_type:startsWith('diksha_stack_bar_raw_all'):ifElse('diksha_raw_data/stack_bar_reports/all.csv',
-${query_type:startsWith('diksha_table_raw_txtb_last_day'):ifElse('diksha_raw_data/table_reports/textbook/last_day/all.csv',
-${query_type:startsWith('diksha_table_raw_txtb_last_7_days'):ifElse('diksha_raw_data/table_reports/textbook/last_7_days/all.csv',
-${query_type:startsWith('diksha_table_raw_txtb_last_30_days'):ifElse('diksha_raw_data/table_reports/textbook/last_30_days/all.csv',
-${query_type:startsWith('diksha_table_raw_txtb_all'):ifElse('diksha_raw_data/table_reports/textbook/all.csv',
-${query_type:startsWith('diksha_table_raw_crs_last_day'):ifElse('diksha_raw_data/table_reports/course/last_day/all.csv',
-${query_type:startsWith('diksha_table_raw_crs_last_7_days'):ifElse('diksha_raw_data/table_reports/course/last_7_days/all.csv',
-${query_type:startsWith('diksha_table_raw_crs_last_30_days'):ifElse('diksha_raw_data/table_reports/course/last_30_days/all.csv',
-${query_type:startsWith('diksha_table_raw_crs_all'):ifElse('diksha_raw_data/table_reports/course/all.csv',
-${query_type:startsWith('diksha_table_raw_all_last_day'):ifElse('diksha_raw_data/table_reports/all/last_day/all.csv',
-${query_type:startsWith('diksha_table_raw_all_last_7_days'):ifElse('diksha_raw_data/table_reports/all/last_7_days/all.csv',
-${query_type:startsWith('diksha_table_raw_all_last_30_days'):ifElse('diksha_raw_data/table_reports/all/last_30_days/all.csv',
-${query_type:startsWith('diksha_table_raw_all_all'):ifElse('diksha_raw_data/table_reports/all/all.csv','None')} 
+${query_type:startsWith('diksha_stack_bar_raw_all_last_day'):ifElse('diksha_raw_data/stack_bar_reports/last_day/last_day.csv',
+${query_type:startsWith('diksha_stack_bar_raw_all_last_7_days'):ifElse('diksha_raw_data/stack_bar_reports/last_7_days/last_7_days.csv',
+${query_type:startsWith('diksha_stack_bar_raw_all_last_30_days'):ifElse('diksha_raw_data/stack_bar_reports/last_30_days/last_30_days.csv',
+${query_type:startsWith('diksha_stack_bar_raw_all_all'):ifElse('diksha_raw_data/stack_bar_reports/overall/overall.csv',
+${query_type:startsWith('diksha_stack_bar_raw_last_day'):ifElse('diksha_raw_data/stack_bar_reports/last_day/last_day.csv',
+${query_type:startsWith('diksha_stack_bar_raw_last_7_days'):ifElse('diksha_raw_data/stack_bar_reports/last_7_days/last_7_days.csv',
+${query_type:startsWith('diksha_stack_bar_raw_last_30_days'):ifElse('diksha_raw_data/stack_bar_reports/last_30_days/last_30_days.csv',
+${query_type:startsWith('diksha_stack_bar_raw_all'):ifElse('diksha_raw_data/stack_bar_reports/overall/overall.csv',
+${query_type:startsWith('diksha_table_raw_txtb_last_day'):ifElse('diksha_raw_data/table_reports/textbook/last_day/last_day.csv',
+${query_type:startsWith('diksha_table_raw_txtb_last_7_days'):ifElse('diksha_raw_data/table_reports/textbook/last_7_days/last_7_days.csv',
+${query_type:startsWith('diksha_table_raw_txtb_last_30_days'):ifElse('diksha_raw_data/table_reports/textbook/last_30_days/last_30_days.csv',
+${query_type:startsWith('diksha_table_raw_txtb_all'):ifElse('diksha_raw_data/table_reports/textbook/overall/overall.csv',
+${query_type:startsWith('diksha_table_raw_crs_last_day'):ifElse('diksha_raw_data/table_reports/course/last_day/last_day.csv',
+${query_type:startsWith('diksha_table_raw_crs_last_7_days'):ifElse('diksha_raw_data/table_reports/course/last_7_days/last_7_days.csv',
+${query_type:startsWith('diksha_table_raw_crs_last_30_days'):ifElse('diksha_raw_data/table_reports/course/last_30_days/last_30_days.csv',
+${query_type:startsWith('diksha_table_raw_crs_all'):ifElse('diksha_raw_data/table_reports/course/overall/overall.csv',
+${query_type:startsWith('diksha_table_raw_all_last_day'):ifElse('diksha_raw_data/table_reports/overall/last_day/last_day.csv',
+${query_type:startsWith('diksha_table_raw_all_last_7_days'):ifElse('diksha_raw_data/table_reports/overall/last_7_days/last_7_days.csv',
+${query_type:startsWith('diksha_table_raw_all_last_30_days'):ifElse('diksha_raw_data/table_reports/overall/last_30_days/last_30_days.csv',
+${query_type:startsWith('diksha_table_raw_all_all'):ifElse('diksha_raw_data/table_reports/overall/overall.csv',
+${query_type:startsWith('diksha_tpd_r2_raw_last_day'):ifElse('diksha_raw_data/tpd_report2/last_day/last_day.csv',
+${query_type:startsWith('diksha_tpd_r2_raw_last_7_days'):ifElse('diksha_raw_data/tpd_report2/last_7_days/last_7_days.csv',
+${query_type:startsWith('diksha_tpd_r2_raw_last_30_days'):ifElse('diksha_raw_data/tpd_report2/last_30_days/last_30_days.csv',
+${query_type:startsWith('diksha_tpd_r2_raw_overall'):ifElse('diksha_raw_data/tpd_report2/overall/overall.csv','None')} 
 )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} 
-)} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )})} )} )} )} )} )}</value>
+)} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )})} )} )} )} )} )} )}  )}  )}  )}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -36546,7 +37490,7 @@ ${query_type:startsWith('diksha_table_raw_all_all'):ifElse('diksha_raw_data/tabl
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -37325,7 +38269,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_check_same_records},'Non
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>check_same_records</name>
                             <relationships>
-<autoTerminate>true</autoTerminate>
+<autoTerminate>false</autoTerminate>
 <name>failure</name>
                             </relationships>
                             <relationships>
@@ -38595,7 +39539,11 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_null_to_log_db},'None')}
     </entry>
     <entry>
         <key>put-db-record-table-name</key>
-        <value>#{diksha_staging_tb_name}</value>
+        <value>${filename:startsWith('diksha_data_summary'):ifElse(${diksha_columns:equals('true'):ifElse(#{diksha_data_summary_staging_table_name},
+${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_staging_table_name},'None')}
+)},
+${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_staging_table_name},'None')}
+)}</value>
     </entry>
     <entry>
         <key>put-db-record-translate-field-names</key>
@@ -39443,7 +40391,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -40072,7 +41020,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_unique_records_same_reco
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>select_unique_record(same_record)</name>
                             <relationships>
-<autoTerminate>true</autoTerminate>
+<autoTerminate>false</autoTerminate>
 <name>failure</name>
                             </relationships>
                             <relationships>
@@ -40859,7 +41807,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
         <key>SQL select query</key>
         <value>select ff_uuid,collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,
 enrolment_date,completion_date,progress,certificate_status,total_score  
-from  diksha_content_staging  where ff_uuid='${zip_identifier}'</value>
+from  diksha_tpd_staging  where ff_uuid='${zip_identifier}'</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -40908,7 +41856,7 @@ from  diksha_content_staging  where ff_uuid='${zip_identifier}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -41285,7 +42233,8 @@ from  diksha_content_staging  where ff_uuid='${zip_identifier}'</value>
     </entry>
     <entry>
         <key>putsql-sql-statement</key>
-        <value>delete from  diksha_content_staging where ff_uuid ='${files_uuid}'</value>
+        <value>${filename:startsWith('diksha_data_summary'):ifElse("delete from  diksha_content_staging where ff_uuid ='${zip_identifier}';",
+${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging where ff_uuid ='${zip_identifier}';",'None')})}</value>
     </entry>
     <entry>
         <key>Support Fragmented Transactions</key>
@@ -41330,7 +42279,7 @@ from  diksha_content_staging  where ff_uuid='${zip_identifier}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -42163,6 +43112,133 @@ where ff_uuid= '${files_uuid}'</value>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
                         <processors>
+                            <id>be246e56-bf8e-313d-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <position>
+<x>-7992.0</x>
+<y>672.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>JDBC Connection Pool</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.dbcp.DBCPService</identifiesControllerService>
+            <name>JDBC Connection Pool</name>
+        </value>
+    </entry>
+    <entry>
+        <key>putsql-sql-statement</key>
+        <value>
+            <name>putsql-sql-statement</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Support Fragmented Transactions</key>
+        <value>
+            <name>Support Fragmented Transactions</name>
+        </value>
+    </entry>
+    <entry>
+        <key>database-session-autocommit</key>
+        <value>
+            <name>database-session-autocommit</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Transaction Timeout</key>
+        <value>
+            <name>Transaction Timeout</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Batch Size</key>
+        <value>
+            <name>Batch Size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Obtain Generated Keys</key>
+        <value>
+            <name>Obtain Generated Keys</name>
+        </value>
+    </entry>
+    <entry>
+        <key>rollback-on-failure</key>
+        <value>
+            <name>rollback-on-failure</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>JDBC Connection Pool</key>
+        <value>ea8600ba-3d4a-3f65-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>putsql-sql-statement</key>
+        <value>${filename:startsWith('diksha_data_summary'):ifElse("delete from  diksha_content_staging where ff_uuid ='${zip_identifier}';",
+${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging where ff_uuid ='${zip_identifier}';",'None')})}</value>
+    </entry>
+    <entry>
+        <key>Support Fragmented Transactions</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>database-session-autocommit</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Transaction Timeout</key>
+    </entry>
+    <entry>
+        <key>Batch Size</key>
+        <value>100</value>
+    </entry>
+    <entry>
+        <key>Obtain Generated Keys</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>rollback-on-failure</key>
+        <value>false</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>delete_diksha_content_stagging</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>retry</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.PutSQL</type>
+                        </processors>
+                        <processors>
                             <id>be3b54aa-e4d7-3a9b-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
@@ -42822,7 +43898,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>JDBC Connection Pool</key>
@@ -42911,7 +43987,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingPeriod>1 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -43258,7 +44334,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -43764,7 +44840,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -44111,8 +45187,8 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_temp_to_trans_fn},'None'
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingPeriod>5 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -45410,6 +46486,133 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
                             <type>org.apache.nifi.processors.standard.SplitRecord</type>
                         </processors>
                         <processors>
+                            <id>eb0ee2ff-651c-3629-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <position>
+<x>-6272.0</x>
+<y>104.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>JDBC Connection Pool</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.dbcp.DBCPService</identifiesControllerService>
+            <name>JDBC Connection Pool</name>
+        </value>
+    </entry>
+    <entry>
+        <key>putsql-sql-statement</key>
+        <value>
+            <name>putsql-sql-statement</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Support Fragmented Transactions</key>
+        <value>
+            <name>Support Fragmented Transactions</name>
+        </value>
+    </entry>
+    <entry>
+        <key>database-session-autocommit</key>
+        <value>
+            <name>database-session-autocommit</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Transaction Timeout</key>
+        <value>
+            <name>Transaction Timeout</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Batch Size</key>
+        <value>
+            <name>Batch Size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Obtain Generated Keys</key>
+        <value>
+            <name>Obtain Generated Keys</name>
+        </value>
+    </entry>
+    <entry>
+        <key>rollback-on-failure</key>
+        <value>
+            <name>rollback-on-failure</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>JDBC Connection Pool</key>
+        <value>ea8600ba-3d4a-3f65-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>putsql-sql-statement</key>
+        <value>${filename:startsWith('diksha_data_summary'):ifElse("delete from  diksha_content_staging where ff_uuid ='${zip_identifier}';",
+${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging where ff_uuid ='${zip_identifier}';",'None')})}</value>
+    </entry>
+    <entry>
+        <key>Support Fragmented Transactions</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>database-session-autocommit</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Transaction Timeout</key>
+    </entry>
+    <entry>
+        <key>Batch Size</key>
+        <value>100</value>
+    </entry>
+    <entry>
+        <key>Obtain Generated Keys</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>rollback-on-failure</key>
+        <value>false</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>delete_diksha_content_stagging</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>retry</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.PutSQL</type>
+                        </processors>
+                        <processors>
                             <id>ecfb85be-9bd3-3dbd-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
@@ -46295,5 +47498,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/08/2021 18:52:54 IST</timestamp>
+    <timestamp>01/13/2021 14:17:31 IST</timestamp>
 </template>

@@ -1501,7 +1501,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
 <x>3536.0</x>
-<y>1392.0</y>
+<y>1384.0</y>
                             </bends>
                             <destination>
 <groupId>571635a9-400b-3fc2-0000-000000000000</groupId>
@@ -5006,7 +5006,7 @@
                             <id>4d0e8425-ccf3-32a6-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <position>
-<x>2664.0</x>
+<x>2536.0</x>
 <y>864.0</y>
                             </position>
                         </funnels>
@@ -6058,7 +6058,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -6440,7 +6440,7 @@ file: ${filename} columns validation started.</value>
                             <id>180d1ea4-f330-3d1e-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <position>
-<x>2464.0</x>
+<x>2384.0</x>
 <y>1016.0</y>
                             </position>
                             <bundle>
@@ -8316,12 +8316,12 @@ file: ${filename} blank line validation started.</value>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>stud_att_add_qry_filename</name>
+                            <name>stud_sem_add_qry_filename</name>
                             <relationships>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -8433,7 +8433,7 @@ file: ${filename} blank line validation started.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -11358,7 +11358,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
                             <id>706698be-55c6-36ce-0000-000000000000</id>
                             <parentGroupId>571635a9-400b-3fc2-0000-000000000000</parentGroupId>
                             <position>
-<x>2296.0</x>
+<x>2384.0</x>
 <y>672.0</y>
                             </position>
                             <bundle>
@@ -11806,7 +11806,7 @@ ${query_type:startsWith('stud_sem_cluster_wise')} )} )} )}</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -12173,7 +12173,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -14580,7 +14580,7 @@ ${query_type:startsWith('stud_sem_comp_school_wise'):ifElse('exception_list/seme
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -26716,5 +26716,5 @@ WHERE ff_uuid = '${source.uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/18/2020 16:10:55 IST</timestamp>
+    <timestamp>01/13/2021 14:18:42 IST</timestamp>
 </template>
