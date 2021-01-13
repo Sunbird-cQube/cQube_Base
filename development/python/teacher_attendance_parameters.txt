@@ -394,10 +394,7 @@ from  teacher_attendance_staging_2""",
 	select ll.year,ll.month,ll.school_id,hr.school_name,
 ll.school_latitude,ll.school_longitude,ll.district_id,hr.district_name,ll.district_latitude,
 ll.district_longitude,ll.block_id,hr.block_name,'NA' as brc_name,ll.block_latitude,ll.block_longitude,ll.cluster_id,
-hr.cluster_name,hr.crc_name,ll.cluster_latitude,ll.cluster_longitude,
-cast(ll.present_sum as int) as total_present,cast(ll.working_days as int) as total_working_days,ll.teachers_count
-from (select at.present_sum,at.working_days,at.month,at.year,at.teachers_count,at.school_id,
-sg.school_latitude,sg.school_longitude,sg.district_id,sg.district_latitude,sg.district_longitude,sg.block_id,
+hr.cluster_name,hr.crc_name,ll.cluster_latitude,ll.cluster_longitude,cast(ll.present_sum as double precision) as total_present,cast(ll.working_days as int) as total_working_days,ll.teachers_count from (select at.present_sum,at.working_days,at.month,at.year,at.teachers_count,at.school_id,sg.school_latitude,sg.school_longitude,sg.district_id,sg.district_latitude,sg.district_longitude,sg.block_id,
 sg.block_latitude,sg.block_longitude,
 sg.cluster_id,sg.cluster_latitude,sg.cluster_longitude
  from (select
@@ -468,19 +465,18 @@ case when day_31=2 or day_31=1 or day_31=3 or day_31=4 or day_31=6 or day_31=7 t
 from teacher_attendance_trans group by school_id,year,month) as at left join school_geo_master as sg 
  on at.school_id=sg.school_id) as ll left join
 school_hierarchy_details as hr on ll.school_id=hr.school_id;
-
-insert into school_teacher_total_attendance as a (year,month,school_id,school_name,school_latitude,school_longitude,district_id,district_name,district_latitude,district_longitude,
+insert into school_teacher_total_attendance (year,month,school_id,school_name,school_latitude,school_longitude,district_id,district_name,district_latitude,district_longitude,
 block_id,block_name,brc_name,block_latitude,block_longitude,cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,total_present,total_working_days,
 teachers_count)
 select year,month,school_id,school_name,school_latitude,school_longitude,district_id,district_name,district_latitude,district_longitude,
 block_id,block_name,brc_name,block_latitude,block_longitude,cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,total_present,total_working_days,
 teachers_count from teacher_attendance_trans_to_aggregate
 on conflict (month,year,school_id)
-do update set year= a.year,month=a.month,school_id=a.school_id,school_name=a.school_name,
-school_latitude=a.school_latitude,school_longitude=a.school_longitude,district_id=a.district_id,
-district_name=a.district_name,district_latitude=a.district_latitude,district_longitude=a.district_longitude,
-block_id=a.block_id,block_name=a.block_name,brc_name=a.brc_name,block_latitude=a.block_latitude,
-block_longitude=a.block_longitude,cluster_id=a.cluster_id,cluster_name=a.cluster_name,crc_name=a.crc_name,
-cluster_latitude=a.cluster_latitude,cluster_longitude=a.cluster_longitude,total_present=a.total_present,total_working_days=a.total_working_days,
-teachers_count=a.teachers_count;"""
+do update set year= excluded.year,month=excluded.month,school_id=excluded.school_id,school_name=excluded.school_name,
+school_latitude=excluded.school_latitude,school_longitude=excluded.school_longitude,district_id=excluded.district_id,
+district_name=excluded.district_name,district_latitude=excluded.district_latitude,district_longitude=excluded.district_longitude,
+block_id=excluded.block_id,block_name=excluded.block_name,brc_name=excluded.brc_name,block_latitude=excluded.block_latitude,
+block_longitude=excluded.block_longitude,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
+cluster_latitude=excluded.cluster_latitude,cluster_longitude=excluded.cluster_longitude,total_present=excluded.total_present,total_working_days=excluded.total_working_days,
+teachers_count=excluded.teachers_count;"""
 }
