@@ -33,7 +33,7 @@ Note: For <b>Installation:</b> follow the below steps directly, for upgradation 
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.8.1
+git checkout release-1.9
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
@@ -140,6 +140,9 @@ cqube_emission
 ├── student_attendance
 │   └── student_attendance.zip
 │       └── student_attendance.csv
+├── teacher_attendance
+│   └── teacher_attendance.zip
+│       └── teacher_attendance.csv
 ├── user_location_master
 │   └── user_location_master.zip
 │       └── user_location_master.csv
@@ -178,7 +181,7 @@ python3 client.py
 - Navigate to the directory where cQube has been downloaded or cloned
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.8.1
+git checkout release-1.9
 ```
 - Copy the upgradation_config.yml.template to upgradation_config.yml 
 `cp upgradation_config.yml.template upgradation_config.yml`
