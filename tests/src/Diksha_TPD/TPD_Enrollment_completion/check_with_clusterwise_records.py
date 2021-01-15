@@ -28,7 +28,7 @@ class Check_Cluster_wise():
         for i in range(1, len(course_type.options)):
             course_type.select_by_index(i)
             self.data.page_loading(self.driver)
-            for j in range(len(Districts.options)-1,len(Districts.options)):
+            for j in range(len(Districts.options)-32,len(Districts.options)):
                 Districts.select_by_index(j)
                 self.data.page_loading(self.driver)
                 for k in range(len(Blocks.options)-1,len(Blocks.options)):
