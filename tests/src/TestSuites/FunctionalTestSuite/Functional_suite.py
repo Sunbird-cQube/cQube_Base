@@ -2,7 +2,7 @@ import unittest
 
 from HTMLTestRunner import HTMLTestRunner
 
-from Pat_Heatchart import heatchart_functional_suite
+from Health_Card_Index import health_card_regression_test, Health_card_functional_Test
 from get_dir import pwd
 
 
@@ -11,14 +11,14 @@ class MyTestSuite(unittest.TestCase):
     def test_issue01(self):
         regression_test = unittest.TestSuite()
         regression_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(heatchart_functional_suite.cQube_heatchart_functionalTest),
+            unittest.defaultTestLoader.loadTestsFromTestCase(Health_card_functional_Test.Health_card_functionalTest),
             ])
         p = pwd()
         outfile = open(p.get_functional_report_path(), "w")
 
         runner1 = HTMLTestRunner.HTMLTestRunner(
             stream=outfile,
-            title='PAT Heat chart functional Test Report',
+            title='Health card functional Test Test Report',
             verbosity=1,
 
         )

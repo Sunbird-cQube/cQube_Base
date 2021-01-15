@@ -4,5 +4,4 @@ selenium
 configparser
 pathlib
 psycopg2-binary
-boto
 requests

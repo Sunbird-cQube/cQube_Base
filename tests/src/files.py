@@ -85,7 +85,7 @@ class Files():
     location_course ="collectionType_course_data.csv"
     location_textbook="collectionType_textbook_data.csv"
 
-    pchart_districtwise ="District_wise_report_.csv"
+    pchart_districtwise ="District_wise_report_2020.csv"
     pchart_blocks ="Block_wise_report.csv"
     pchart_clusters="Cluster_wise_report.csv"
     pchart_schools="School_wise_report.csv"
@@ -105,11 +105,11 @@ class Files():
     b1_name="City"
     b2_name="Amc"
 
-    c1_name="2422040004"
-    c2_name="Bhoj"
+    c1_name="Dungari"
+    c2_name="Amalsad"
 
     s1_name="School No-53 Mahadevnagar"
-    s2_name="Rameshara"
+    s2_name="Ameshwarpura Pri. Sch."
 
     d1_id = "2407"
     d2_id = "2425"
@@ -122,3 +122,7 @@ class Files():
 
     s1_id = "24070500301"
     s2_id = "24250603602"
+
+    nda =" No Data Available "
+    ndf ="No data found"
+

@@ -8,6 +8,7 @@ class cQube_login():
     def test_login_to_cQube(self):
         self.data = GetData()
         count = 0
+
         self.data.login_cqube(self.driver)
         self.data.page_loading(self.driver)
         if 'dashboard' in self.driver.current_url:
