@@ -24,7 +24,7 @@ class Check_with_all_blocks():
         blocks = Select(self.driver.find_element_by_id(Data.sar_block))
         collections =Select(self.driver.find_element_by_id(Data.coll_names))
         coll_count = len(collections.options) - 1
-        for i in range(len(districts.options)-2,len(districts.options)):
+        for i in range(len(districts.options)-1,len(districts.options)):
             districts.select_by_index(i)
             self.data.page_loading(self.driver)
             for j in range(1,len(blocks.options)):
