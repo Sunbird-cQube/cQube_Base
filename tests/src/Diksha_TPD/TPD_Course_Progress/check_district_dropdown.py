@@ -26,7 +26,7 @@ class district_level_records():
         period = Select(self.driver.find_element_by_id(Data.timeperiods))
         period.select_by_visible_text(' Overall ')
         self.load.page_loading(self.driver)
-        for i in range(1, len(dists.options)):
+        for i in range(len(dists.options)-5, len(dists.options)):
             dists.select_by_index(i)
             time.sleep(2)
             self.load.page_loading(self.driver)
@@ -64,7 +64,7 @@ class district_level_records():
         period = Select(self.driver.find_element_by_id(Data.timeperiods))
         period.select_by_visible_text(' Last Day ')
         self.load.page_loading(self.driver)
-        for i in range(1, len(dists.options)):
+        for i in range(len(dists.options)-5, len(dists.options)):
             dists.select_by_index(i)
             time.sleep(2)
             self.load.page_loading(self.driver)
@@ -100,7 +100,7 @@ class district_level_records():
         period = Select(self.driver.find_element_by_id(Data.timeperiods))
         period.select_by_visible_text(' Last 7 Days ')
         self.load.page_loading(self.driver)
-        for i in range(1, len(dists.options)):
+        for i in range(len(dists.options)-5, len(dists.options)):
             dists.select_by_index(i)
             time.sleep(2)
             self.load.page_loading(self.driver)
@@ -136,7 +136,7 @@ class district_level_records():
         period = Select(self.driver.find_element_by_id(Data.timeperiods))
         period.select_by_visible_text(' Last 30 Days ')
         self.load.page_loading(self.driver)
-        for i in range(1, len(dists.options)):
+        for i in range(len(dists.options)-5, len(dists.options)):
             dists.select_by_index(i)
             time.sleep(2)
             self.load.page_loading(self.driver)

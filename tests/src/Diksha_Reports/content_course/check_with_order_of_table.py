@@ -1,3 +1,5 @@
+import time
+
 from Data.parameters import Data
 from reuse_func import GetData
 
@@ -8,6 +10,7 @@ class Table_orderwise():
 
     def test_tablevalue(self):
         self.p = GetData()
+        time.sleep(4)
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.p.page_loading(self.driver)
         self.driver.find_element_by_xpath("//*[@id='table_wrapper']/div[2]/div[1]/div/table/thead/tr/th[2]").click()

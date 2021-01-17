@@ -509,3 +509,12 @@ class file_extention():
         s2id = name.s2_id
         return s2id
 
+    def no_data_available(self):
+        name = Files()
+        nda = name.nda
+        return nda
+
+    def no_data_found(self):
+        name = Files()
+        ndf =name.ndf
+        return ndf

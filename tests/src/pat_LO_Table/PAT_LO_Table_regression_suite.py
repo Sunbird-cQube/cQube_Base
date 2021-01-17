@@ -66,7 +66,7 @@ class cQube_pat_lotable_regression_test(unittest.TestCase):
         res = b.test_logoutbtn()
         self.assertEqual(0,res,msg="Logout button is not working ")
         self.data.login_cqube(self.driver)
-        self.data.navigate_to_heatchart_report()
+        self.data.navigate_to_lo_table_report()
         self.data.page_loading(self.driver)
 
     def test_year_selection(self):

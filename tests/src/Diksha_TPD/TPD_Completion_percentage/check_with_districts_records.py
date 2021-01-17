@@ -22,7 +22,7 @@ class Check_with_all_districts():
         districts = Select(self.driver.find_element_by_id(Data.sar_district))
         collections =Select(self.driver.find_element_by_id(Data.coll_names))
         coll_count = len(collections.options)-1
-        for i in range(1,len(districts.options)):
+        for i in range(len(districts.options)-5,len(districts.options)):
             districts.select_by_index(i)
             name = (districts.options[i].text)
             dname =name.strip()
