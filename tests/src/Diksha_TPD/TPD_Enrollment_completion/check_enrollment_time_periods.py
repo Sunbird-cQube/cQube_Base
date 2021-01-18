@@ -4,6 +4,7 @@ import time
 from selenium.webdriver.support.select import Select
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -15,6 +16,7 @@ class Enrollment_time_periods():
     def test_Enrollment_overall(self):
         self.data = GetData()
         self.p = pwd()
+        self.msg = file_extention()
         count = 0
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.data.page_loading(self.driver)
@@ -24,7 +26,7 @@ class Enrollment_time_periods():
         timeseries = Select(self.driver.find_element_by_name(Data.timeperiods))
         timeseries.select_by_visible_text(' Overall ')
         self.data.page_loading(self.driver)
-        if ' No Data Available ' in self.driver.page_source:
+        if self.msg.no_data_available() in self.driver.page_source:
             print('No Data Available for overall')
         else:
             self.driver.find_element_by_id(Data.Download).click()
@@ -47,6 +49,7 @@ class Enrollment_time_periods():
         self.data = GetData()
         self.p = pwd()
         count = 0
+        self.msg = file_extention()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.data.page_loading(self.driver)
         course_type = Select(self.driver.find_element_by_id(Data.coursetype))
@@ -55,7 +58,7 @@ class Enrollment_time_periods():
         timeseries = Select(self.driver.find_element_by_name(Data.timeperiods))
         timeseries.select_by_visible_text(' Last Day ')
         self.data.page_loading(self.driver)
-        if ' No Data Available ' in self.driver.page_source:
+        if self.msg.no_data_available() in self.driver.page_source:
             print('No Data Available for last day')
         else:
             self.driver.find_element_by_id(Data.Download).click()
@@ -78,6 +81,7 @@ class Enrollment_time_periods():
         self.data = GetData()
         self.p = pwd()
         count = 0
+        self.msg = file_extention()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.data.page_loading(self.driver)
         course_type = Select(self.driver.find_element_by_id(Data.coursetype))
@@ -86,7 +90,7 @@ class Enrollment_time_periods():
         timeseries = Select(self.driver.find_element_by_name(Data.timeperiods))
         timeseries.select_by_visible_text(' Last 7 Days ')
         self.data.page_loading(self.driver)
-        if ' No Data Available ' in self.driver.page_source:
+        if self.msg.no_data_available() in self.driver.page_source:
             print('No Data Available for last 7 days')
         else:
             self.driver.find_element_by_id(Data.Download).click()
@@ -108,6 +112,7 @@ class Enrollment_time_periods():
     def test_Enrollment_last30_days(self):
         self.data = GetData()
         self.p = pwd()
+        self.msg = file_extention()
         count = 0
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.data.page_loading(self.driver)
@@ -117,7 +122,7 @@ class Enrollment_time_periods():
         timeseries = Select(self.driver.find_element_by_name(Data.timeperiods))
         timeseries.select_by_visible_text(' Last 30 Days ')
         self.data.page_loading(self.driver)
-        if ' No Data Available ' in self.driver.page_source:
+        if self.msg.no_data_available() in self.driver.page_source:
             print('No Data Available for last 30 days')
         else:
             self.driver.find_element_by_id(Data.Download).click()

@@ -18,11 +18,12 @@ class periodic_grades():
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.data.page_loading(self.driver)
         grade =Select(self.driver.find_element_by_id(Data.Grade))
+        counter = len(grade.options)
         for i in range(1,len(grade.options)):
             grade.select_by_index(i)
             print(grade.options[i].text)
-        counter = len(grade.options)
-        self.data.page_loading(self.driver)
+            self.data.page_loading(self.driver)
+        return counter
 
     def click_each_grades(self):
         self.data = GetData()

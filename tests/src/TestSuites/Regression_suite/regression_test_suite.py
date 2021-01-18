@@ -1,22 +1,23 @@
 
 from CRC import  crc_report_regression_testing
 from Composite_report import composite_regression_testing
-from Diksha_Reports.Diksha_charts import  diksha_chart_Regression_testing
+from Diksha_Reports.Diksha_user_profile import  diksha_chart_Regression_testing
 from Diksha_Reports.usage_by_course import usage_by_course_regression_suite
 from Diksha_Reports.usage_by_textbook import usage_by_textbook_regression_suite
 from Diksha_Reports.content_course import content_course_regression_suite
 from Diksha_Reports.content_textbook import content_textbook_regression_suite
 from Diksha_TPD.TPD_Course_Progress import lpd_content_regression_test
 from Diksha_TPD.TPD_Teacher_Percentage import lpd_percentage_regression_test
+from Health_Card_Index import health_card_regression_test
 from Landing_Page import cQube_landing_page
 from Login import login_page
 from Pat_Heatchart import patheatchart_regression_test
 from Periodic_report import periodic_regression_testing
-from SAR import  student_attendance_regression_testing
+from Student_Attendance import  student_attendance_regression_testing
 from SI.MAP import  School_Map_regression_testing
 
 from SI.Report import  School_report_regression_testing
-from SR import  semester_report_regression_testing
+from Semester import  semester_report_regression_testing
 from Semester_Exception import  exception_regression_testing
 from Telemetry import telemetry_regression_testing
 from UDISE import udise_regression_testing
@@ -294,156 +295,175 @@ class MyTestSuite(unittest.TestCase):
             runner1.run(regression_test)
             outfile.close()
 
-    def test_issue16(self):
-        regression_test = unittest.TestSuite()
-        regression_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(
-                patheatchart_regression_test.cQube_heatchart_regression_test
-            )
-        ])
-        p = pwd()
-        outfile = open(p.get_regression_report_path(), "a")
+    # def test_issue16(self):
+    #     regression_test = unittest.TestSuite()
+    #     regression_test.addTests([
+    #         unittest.defaultTestLoader.loadTestsFromTestCase(
+    #             patheatchart_regression_test.cQube_heatchart_regression_test
+    #         )
+    #     ])
+    #     p = pwd()
+    #     outfile = open(p.get_regression_report_path(), "a")
+    #
+    #     runner1 = HTMLTestRunner.HTMLTestRunner(
+    #         stream=outfile,
+    #         title=' PAT Heat chart Report Regression Test Report',
+    #         verbosity=1,
+    #
+    #     )
+    #     runner1.run(regression_test)
+    #     outfile.close()
+    #
+    # def test_issue17(self):
+    #     regression_test = unittest.TestSuite()
+    #     regression_test.addTests([
+    #         unittest.defaultTestLoader.loadTestsFromTestCase(
+    #             PAT_LO_Table_regression_suite.cQube_pat_lotable_regression_test
+    #         )
+    #     ])
+    #     p = pwd()
+    #     outfile = open(p.get_regression_report_path(), "a")
+    #
+    #     runner1 = HTMLTestRunner.HTMLTestRunner(
+    #         stream=outfile,
+    #         title=' PAT LO Table Report Regression Test Report',
+    #         verbosity=1,
+    #
+    #     )
+    #     runner1.run(regression_test)
+    #     outfile.close()
+    #
+    # def test_issue18(self):
+    #     regression_test = unittest.TestSuite()
+    #     regression_test.addTests([
+    #         unittest.defaultTestLoader.loadTestsFromTestCase(
+    #             content_course_regression_suite.cQube_content_course_regression)
+    #     ])
+    #     p = pwd()
+    #     outfile = open(p.get_regression_report_path(), "a")
+    #
+    #     runner1 = HTMLTestRunner.HTMLTestRunner(
+    #         stream=outfile,
+    #         title='Content BY Course Regression Test Report',
+    #         verbosity=1,
+    #
+    #     )
+    #     runner1.run(regression_test)
+    #     outfile.close()
+    #
+    # def test_issue19(self):
+    #     regression_test = unittest.TestSuite()
+    #     regression_test.addTests([
+    #         unittest.defaultTestLoader.loadTestsFromTestCase(
+    #             content_textbook_regression_suite.cQube_content_textbook_regression
+    #         )
+    #     ])
+    #     p = pwd()
+    #     outfile = open(p.get_regression_report_path(), "a")
+    #
+    #     runner1 = HTMLTestRunner.HTMLTestRunner(
+    #         stream=outfile,
+    #         title='Content By Textbook report Regression Test Report',
+    #         verbosity=1,
+    #
+    #     )
+    #     runner1.run(regression_test)
+    #     outfile.close()
+    #
+    # def test_issue20(self):
+    #     regression_test = unittest.TestSuite()
+    #     regression_test.addTests([
+    #         unittest.defaultTestLoader.loadTestsFromTestCase(
+    #             usage_by_course_regression_suite.cQube_diskha_course_regression_report
+    #         )
+    #     ])
+    #     p = pwd()
+    #     outfile = open(p.get_regression_report_path(), "a")
+    #
+    #     runner1 = HTMLTestRunner.HTMLTestRunner(
+    #         stream=outfile,
+    #         title=' Usage By Course Report Regression Test Report',
+    #         verbosity=1,
+    #
+    #     )
+    #     runner1.run(regression_test)
+    #     outfile.close()
+    #
+    # def test_issue21(self):
+    #     regression_test = unittest.TestSuite()
+    #     regression_test.addTests([
+    #         unittest.defaultTestLoader.loadTestsFromTestCase(
+    #             usage_by_textbook_regression_suite.cQube_usage_textbook_regression_report
+    #         )
+    #     ])
+    #     p = pwd()
+    #     outfile = open(p.get_regression_report_path(), "a")
+    #
+    #     runner1 = HTMLTestRunner.HTMLTestRunner(
+    #         stream=outfile,
+    #         title=' Usage By Textbook Report Regression Test Report',
+    #         verbosity=1,
+    #
+    #     )
+    #     runner1.run(regression_test)
+    #     outfile.close()
+    #
+    # def test_issue22(self):
+    #     regression_test = unittest.TestSuite()
+    #     regression_test.addTests([
+    #         unittest.defaultTestLoader.loadTestsFromTestCase(
+    #             lpd_content_regression_test.cQube_lpdcontent_regression_Test
+    #         )
+    #     ])
+    #     p = pwd()
+    #     outfile = open(p.get_regression_report_path(), "a")
+    #
+    #     runner1 = HTMLTestRunner.HTMLTestRunner(
+    #         stream=outfile,
+    #         title='TPD Collection Progress Regression Test Report',
+    #         verbosity=1,
+    #
+    #     )
+    #     runner1.run(regression_test)
+    #     outfile.close()
+    #
+    # def test_issue23(self):
+    #     regression_test = unittest.TestSuite()
+    #     regression_test.addTests([
+    #         unittest.defaultTestLoader.loadTestsFromTestCase(
+    #             lpd_percentage_regression_test.cQube_lpdpercentage_regression_Test
+    #         )
+    #     ])
+    #     p = pwd()
+    #     outfile = open(p.get_regression_report_path(), "a")
+    #
+    #     runner1 = HTMLTestRunner.HTMLTestRunner(
+    #         stream=outfile,
+    #         title='TPD Percentage Progress Regression Test Report',
+    #         verbosity=1,
+    #
+    #     )
+    #     runner1.run(regression_test)
+    #     outfile.close()
+    #
+    # def test_issue24(self):
+    #     regression_test = unittest.TestSuite()
+    #     regression_test.addTests([
+    #         unittest.defaultTestLoader.loadTestsFromTestCase(
+    #             health_card_regression_test.Health_card_regression_test
+    #         )
+    #     ])
+    #     p = pwd()
+    #     outfile = open(p.get_regression_report_path(), "a")
+    #
+    #     runner1 = HTMLTestRunner.HTMLTestRunner(
+    #         stream=outfile,
+    #         title='Health card Regression Test Report',
+    #         verbosity=1,
+    #     )
+    #     runner1.run(regression_test)
+    #     outfile.close()
 
-        runner1 = HTMLTestRunner.HTMLTestRunner(
-            stream=outfile,
-            title=' PAT Heat chart Report Regression Test Report',
-            verbosity=1,
-
-        )
-        runner1.run(regression_test)
-        outfile.close()
-
-    def test_issue17(self):
-        regression_test = unittest.TestSuite()
-        regression_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(
-                PAT_LO_Table_regression_suite.cQube_pat_lotable_regression_test
-            )
-        ])
-        p = pwd()
-        outfile = open(p.get_regression_report_path(), "a")
-
-        runner1 = HTMLTestRunner.HTMLTestRunner(
-            stream=outfile,
-            title=' PAT LO Table Report Regression Test Report',
-            verbosity=1,
-
-        )
-        runner1.run(regression_test)
-        outfile.close()
-
-    def test_issue18(self):
-        regression_test = unittest.TestSuite()
-        regression_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(
-                content_course_regression_suite.cQube_content_course_regression)
-        ])
-        p = pwd()
-        outfile = open(p.get_regression_report_path(), "a")
-
-        runner1 = HTMLTestRunner.HTMLTestRunner(
-            stream=outfile,
-            title='Content BY Course Regression Test Report',
-            verbosity=1,
-
-        )
-        runner1.run(regression_test)
-        outfile.close()
-
-    def test_issue19(self):
-        regression_test = unittest.TestSuite()
-        regression_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(
-                content_textbook_regression_suite.cQube_content_textbook_regression
-            )
-        ])
-        p = pwd()
-        outfile = open(p.get_regression_report_path(), "a")
-
-        runner1 = HTMLTestRunner.HTMLTestRunner(
-            stream=outfile,
-            title='Content By Textbook report Regression Test Report',
-            verbosity=1,
-
-        )
-        runner1.run(regression_test)
-        outfile.close()
-
-    def test_issue20(self):
-        regression_test = unittest.TestSuite()
-        regression_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(
-                usage_by_course_regression_suite.cQube_diskha_course_regression_report
-            )
-        ])
-        p = pwd()
-        outfile = open(p.get_regression_report_path(), "a")
-
-        runner1 = HTMLTestRunner.HTMLTestRunner(
-            stream=outfile,
-            title=' Usage By Course Report Regression Test Report',
-            verbosity=1,
-
-        )
-        runner1.run(regression_test)
-        outfile.close()
-
-    def test_issue21(self):
-        regression_test = unittest.TestSuite()
-        regression_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(
-                usage_by_textbook_regression_suite.cQube_usage_textbook_regression_report
-            )
-        ])
-        p = pwd()
-        outfile = open(p.get_regression_report_path(), "a")
-
-        runner1 = HTMLTestRunner.HTMLTestRunner(
-            stream=outfile,
-            title=' Usage By Textbook Report Regression Test Report',
-            verbosity=1,
-
-        )
-        runner1.run(regression_test)
-        outfile.close()
-
-    def test_issue22(self):
-        regression_test = unittest.TestSuite()
-        regression_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(
-                lpd_content_regression_test.cQube_lpdcontent_regression_Test
-            )
-        ])
-        p = pwd()
-        outfile = open(p.get_regression_report_path(), "a")
-
-        runner1 = HTMLTestRunner.HTMLTestRunner(
-            stream=outfile,
-            title='TPD Collection Progress Regression Test Report',
-            verbosity=1,
-
-        )
-        runner1.run(regression_test)
-        outfile.close()
-
-    def test_issue23(self):
-        regression_test = unittest.TestSuite()
-        regression_test.addTests([
-            unittest.defaultTestLoader.loadTestsFromTestCase(
-                lpd_percentage_regression_test.cQube_lpdpercentage_regression_Test
-            )
-        ])
-        p = pwd()
-        outfile = open(p.get_regression_report_path(), "a")
-
-        runner1 = HTMLTestRunner.HTMLTestRunner(
-            stream=outfile,
-            title='TPD Percentage Progress Regression Test Report',
-            verbosity=1,
-
-        )
-        runner1.run(regression_test)
-        outfile.close()
     @classmethod
     def tearDownClass(self):
         self.driver.close()
