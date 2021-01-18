@@ -52,9 +52,14 @@
                                     <span>State</span> :
                                     <span>{{state}}</span>
                                 </span>
-                                <span *ngIf="level !='state'">
+                                <span *ngIf="level !='state' && level !='school'">
                                     <span>{{updatedKeys[i]}}</span> :
                                     <span>{{healthCardData[key]}}</span>
+                                </span>
+                                <span *ngIf="level =='school'">
+                                    <span *ngIf="updatedKeys[i] != 'Total Schools'">{{updatedKeys[i]}} </span>
+                                    <span *ngIf="updatedKeys[i] != 'Total Schools'"> : </span>
+                                    <span *ngIf="updatedKeys[i] != 'Total Schools'"> {{healthCardData[key]}}</span>
                                 </span>
                                 <span *ngIf="level =='state'">
                                     <span>{{updatedKeys[i]}}</span> :
@@ -491,7 +496,7 @@
                                 </tbody>
                             </table>
                             <br>
-                            <strong >Areas To Focus : &nbsp;
+                            <strong>Areas To Focus : &nbsp;
                                 {{healthCardData['school_infrastructure']['areas_to_focus']}}</strong>
 
 
