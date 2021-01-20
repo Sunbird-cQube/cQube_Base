@@ -425,11 +425,11 @@
                                                         </tr>
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let infra of tooltipInfra;let i=index">
-                                                            <td *ngIf="i== tooltipInfra.length-1  && level =='state'">
+                                                            <td *ngIf="i== 0  && level =='state'">
                                                                 {{toolTipInfraKeys[i]}}</td>
-                                                            <td *ngIf="i== tooltipInfra.length-1 && level =='state'">:
+                                                            <td *ngIf="i== 0 && level =='state'">:
                                                             </td>
-                                                            <td *ngIf="i== tooltipInfra.length-1 && level =='state'">
+                                                            <td *ngIf="i== 0 && level =='state'">
                                                                 {{healthCardData['school_infrastructure'][infra]}}</td>
                                                         </tr>
                                                         <tr style="font-size: 12px;"
