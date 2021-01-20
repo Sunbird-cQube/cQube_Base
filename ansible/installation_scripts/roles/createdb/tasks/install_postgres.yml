@@ -26,6 +26,13 @@
     insertafter: "host    all             postgres             127.0.0.1/32            trust"
   tags: install
 
+- name: Adding configuration in pg_hba.conf file
+  lineinfile:
+    path: /etc/postgresql/10/main/pg_hba.conf
+    line: "host    all             {{ read_only_db_user }}            {{ vpn_local_ipv4_address }}/32            md5"
+    insertafter: "host    all             postgres             127.0.0.1/32            trust"
+  tags: [ install, update ]
+
 - name: Increase buffer memory postgre file
   lineinfile:
     path: /etc/postgresql/10/main/postgresql.conf

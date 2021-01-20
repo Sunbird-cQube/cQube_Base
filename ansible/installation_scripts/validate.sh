@@ -192,6 +192,29 @@ check_ip()
     fi
 }
 
+check_vpn_ip()
+{
+    local ip=$2
+    ip_stat=1
+    ip_pass=0
+
+    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        OIFS=$IFS
+        IFS='.'
+        ip=($ip)
+        IFS=$OIFS
+        [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 \
+            && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
+        ip_stat=$?
+        if [[ ! $ip_stat == 0 ]]; then
+            echo "Error - Invalid value for $key"; fail=1
+            ip_pass=0
+        fi
+    else
+        echo "Error - Invalid value for $key"; fail=1
+    fi
+}
+
 check_aws_key(){
     aws_key_status=0
     export AWS_ACCESS_KEY_ID=$1
@@ -276,9 +299,10 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("diksha_columns" "state_code" "static_datasource" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "s3_access_key" \
-		"s3_secret_key" "s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
-		"aws_default_region" "local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" "keycloak_config_otp" "session_timeout") 
+declare -a arr=("diksha_columns" "state_code" "static_datasource" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "read_only_db_user" \
+                " read_only_db_password" "s3_access_key" "s3_secret_key" "s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
+		"aws_default_region" "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
+		"keycloak_config_otp" "session_timeout") 
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -380,6 +404,13 @@ case $key in
           check_ip $key $value
        fi
        ;;
+   vpn_local_ipv4_address)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_vpn_ip $key $value
+       fi
+       ;;
    db_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
@@ -389,6 +420,13 @@ case $key in
        fi
        ;;
    db_name)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_db_naming $key $value
+       fi
+       ;;
+   read_only_db_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
@@ -417,6 +455,13 @@ case $key in
        fi
        ;;
    db_password)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_db_password $key $value
+       fi
+       ;;
+   read_only_db_password)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
