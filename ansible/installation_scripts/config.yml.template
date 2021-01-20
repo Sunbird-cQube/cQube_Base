@@ -33,7 +33,8 @@ base_dir: /opt                            # provide the absolute path where cqub
 db_user: cqube_db_user                     # Create your own username for the cQube database
 db_name: cqube_db                          # Enter your own database name for the cQube database
 db_password:                               # Create your own password to for the cQube database, password should contain atleast 1 lower,upper,number,special character and minimum 8 characters
-
+read_only_db_user:                         # Create your own username for the read only access of cQube database
+read_only_db_password:                     # Create your own password for the read only user, password should contain atleast 1 lower,upper,number,special character and minimum 8 characters
 
 # S3 Parameters
 # Naming convention to follow while choosing the bucket name
@@ -56,6 +57,7 @@ aws_default_region: 'ap-south-1'            # aws default region for creation of
 
 api_endpoint:                               # enter domain.com ( Example: cqubeprojects.com )
 local_ipv4_address:                         # enter the private ip of this server. To find the ip address. Use `ip addr` or `ifconfig`
+vpn_local_ipv4_address:                     # enter the private ip of vpn server. To find the ip address. Use `ip addr` or `ifconfig`
 keycloak_adm_user:                          # enter the keycloak admin user to be created 
 keycloak_adm_passwd:                        # enter the keycloak admin password. password should contain atleast 1 lower,upper,number,special character and minimum 8 characters
 keycloak_config_otp:                        # enter true or false to enable OTP authentication for all users 
