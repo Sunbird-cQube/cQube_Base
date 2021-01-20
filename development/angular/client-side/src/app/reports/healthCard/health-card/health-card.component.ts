@@ -607,6 +607,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     key = key.replace("Nsqf", "NSQF");
     key = key.replace("Ict", "ICT");
     key = key.replace("Crc", "CRC");
+    key = key.replace("Cctv", "CCTV");
+    key = key.replace("Cwsn", "CWSN");
     return key;
   }
 

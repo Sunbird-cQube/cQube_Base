@@ -198,7 +198,7 @@ export class PATReportComponent implements OnInit {
       if (!this.clusterMarkers[0]['Subjects']) {
         this.clusterFilter = this.clusterMarkers;
       }
-      
+
       this.onclusterLinkClick(clusterId);
     });
   }
@@ -1029,9 +1029,11 @@ export class PATReportComponent implements OnInit {
     this.schoolCount = 0;
     var myData = data['data'];
     var color;
+    var colors = [];
     if (myData.length > 0) {
       this.markers = myData;
       if (this.level == 'block' || this.level == 'cluster' || this.level == 'school') {
+        colors = [];
         if (this.grade && !this.subject) {
           let filterData = this.markers.filter(obj => {
             return ((Object.keys(obj.Grades)).includes(this.grade));
@@ -1060,8 +1062,10 @@ export class PATReportComponent implements OnInit {
           } else if (this.grade && this.subject) {
             color = this.commonService.color(this.markers[i].Grades[`${this.grade}`], this.subject);
           }
+          colors.push(color);
         }
       } else {
+        colors = [];
         if (this.grade && !this.subject) {
           this.markers.sort((a, b) => (a.Subjects['Grade Performance'] > b.Subjects['Grade Performance']) ? 1 : ((b.Subjects['Grade Performance'] > a.Subjects['Grade Performance']) ? -1 : 0));
         } else if (this.grade && this.subject) {
@@ -1077,12 +1081,13 @@ export class PATReportComponent implements OnInit {
           } else if (this.grade && this.subject) {
             color = this.commonService.color(this.markers[i].Subjects, this.subject);
           }
+          colors.push(color);
         }
       }
 
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
-        var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, color, options.radius, options.strokeWeight, 1, options.level);
+        var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, colors[i], options.radius, options.strokeWeight, 1, options.level);
         // data to show on the tooltip for the desired levels
         this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
 
