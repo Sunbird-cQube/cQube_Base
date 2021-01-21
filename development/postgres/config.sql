@@ -5894,4 +5894,4 @@ group by student_uid,school_id,semester,grade
 
  drop view if exists teacher_attendance_trans_to_aggregate;
 
-insert into school_hierarchy_details values(9999,,'others',,,9999,'others',,9999,'others',9999,'others',,now(),now()) on conflict  ON CONSTRAINT school_hierarchy_details_pkey do nothing;
+insert into school_hierarchy_details values(9999,NULL,'others',NULL,NULL,9999,'others',NULL,9999,'others',9999,'others',NULL,now(),now()) on conflict  ON CONSTRAINT school_hierarchy_details_pkey do nothing;
