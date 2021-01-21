@@ -61,6 +61,14 @@
     line: "work_mem = {{ work_mem }}"    
   tags: update
 
+- name: Updating listen_addresses in postgres.conf file
+  lineinfile:
+    path: /etc/postgresql/10/main/postgresql.conf
+    regexp: '^listen_addresses'
+    insertafter: '^#listen_addresses'
+    line: listen_addresses = 'localhost, {{ local_ipv4_address }}'
+  tags: [ install, upadte ]
+
 - name: Ensure the PostgreSQL service is running
   service: name=postgresql state=restarted enabled=yes
   tags: install
