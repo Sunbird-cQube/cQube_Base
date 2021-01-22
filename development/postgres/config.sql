@@ -1018,7 +1018,7 @@ select b.district_id,b.district_latitude,b.district_longitude,Initcap(b.district
 	   a.collection_type,a.collection_medium,a.collection_gradelevel,a.collection_subject,a.collection_created_for,a.total_count,a.total_time_spent
         from (select case when replace(upper(derived_loc_district),'' '','''') in (''CHHOTAUDEPUR'',''CHHOTAUDAIPUR'') then ''CHHOTAUDEPUR'' 
        when replace(upper(derived_loc_district),'' '','''') in (''DOHAD'',''DAHOD'') then ''DOHAD''																									
-       when replace(upper(derived_loc_district),'' '','''') in (''PANCHMAHALS'',''PANCHMAHAL'') then ''PANCH MAHALS'' 
+       when replace(upper(derived_loc_district),'' '','''') in (''PANCHMAHALS'',''PANCHMAHAL'') then ''PANCHMAHALS'' 
        when replace(upper(derived_loc_district),'' '','''') in (''MAHESANA'',''MEHSANA'') then ''MAHESANA''
        when replace(upper(derived_loc_district),'' '','''') in (''THEDANGS'',''DANG'',''DANGS'') then ''THEDANGS'' 
        else replace(upper(derived_loc_district),'' '','''') end as district_name,
@@ -4104,11 +4104,12 @@ transaction_insert=
 'insert into diksha_tpd_trans(collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,school_id,enrolment_date,
 completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,created_on,updated_on) 
 (select collection_id,collection_name,batch_id,batch_name,tpd_temp.uuid,tpd_temp.state,
-org_name,cr_mapping.school_id,enrolment_date,
+org_name,CASE WHEN cr_mapping.school_id is NULL THEN 9999 ELSE cr_mapping.school_id END,enrolment_date,
 completion_date,progress,certificate_status,total_score,nested_collection_progress,assessment_score,now(),now()
-from diksha_tpd_content_temp as tpd_temp left join diksha_tpd_mapping as cr_mapping on tpd_temp.uuid=cr_mapping.uuid
-where cr_mapping.school_id>0)
-on conflict(collection_id,uuid,school_id,enrolment_date,batch_id) do update
+from diksha_tpd_content_temp as tpd_temp left join (select dtm.uuid,CASE WHEN dtm.school_id not in (select shd.school_id from school_hierarchy_details shd) 
+THEN 9999 ELSE dtm.school_id END from diksha_tpd_mapping dtm) as cr_mapping 
+on tpd_temp.uuid=cr_mapping.uuid)
+on conflict(collection_id,uuid,enrolment_date,batch_id) do update
 set collection_id=excluded.collection_id,collection_name=excluded.collection_name,batch_id=excluded.batch_id,
 batch_name=excluded.batch_name,uuid=excluded.uuid,state=excluded.state,org_name=excluded.org_name,school_id=excluded.school_id,
 enrolment_date=excluded.enrolment_date,completion_date=excluded.completion_date,progress=excluded.progress,
@@ -5708,6 +5709,8 @@ left join
  on d.academic_year=b.academic_year;
 
 
+drop view if exists health_card_index_state;
+
 create or replace function health_card_index_state()
 RETURNS text AS
 $$
@@ -5716,12 +5719,11 @@ udise_query text:= 'select string_agg(''cast(avg(''||lower(column_name)||'')as i
    from udise_config where status = ''1'' and type=''indice''';
 udise_cols text ;
 infra_query text:= 
- 'select concat(''cast(sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
+'select concat(''cast(sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
   '')/10 as int) as average_value,'',''cast((sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
 '')/10)*100/sum(total_schools_data_received)as int) as average_percent,
   '',string_agg(''sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)as ''
-  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'','',''),'','',
-string_agg(''cast(sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||
+  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value ,''||''cast(sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||
   ''_value)*100/sum(total_schools_data_received)as int) as ''
   ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','',''))
     from infrastructure_master where status = true';
@@ -5743,7 +5745,7 @@ Execute infra_query into infra_cols;
 Execute infra_atf_query into infra_atf_cols;
 Execute infra_atf_cols into infra_atf;
 create_state_view=
-'create or replace view health_card_index_state as select ''basic_details'' as data_source,row_to_json(basic_details)::jsonb as values  from 
+'create or replace view health_card_index_state as select ''basic_details'' as data_source,row_to_json(basic_details)::text as values  from 
 (select distinct(substring(cast(avg(district_id) as text),1,2))as state_id,sum(total_schools)as total_schools,sum(total_students)as total_students from 
 (select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
   shd.school_id,initcap(shd.school_name)as school_name,
@@ -5754,7 +5756,7 @@ cluster_name is not null and school_name is not null and block_name is not null 
 group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name)as data
 )as basic_details
 union
-(select ''student_attendance''as data,row_to_json(state_attendance)::jsonb from
+(select ''student_attendance''as data,row_to_json(state_attendance)::text from
   (select sum(data.students_count)as students_count,sum(data.total_schools)as total_schools,data.year,data.month,
   hc_student_attendance_state.Attendance,
  sum(case when data.attendance <=33 then 1 else 0 end)as value_below_33,
@@ -5766,7 +5768,7 @@ union
    where data.month=(select max(month) from hc_student_attendance_state)
 group by data.year,data.month,hc_student_attendance_state.Attendance)as state_attendance)
 union
-(select ''student_semester''as data,row_to_json(semster)::jsonb from(select x_value as Performance,a.semester,c.total_schools,
+(select ''student_semester''as data,row_to_json(semster)::text from(select x_value as Performance,a.semester,c.total_schools,
 c.value_below_33,c.value_between_33_60,c.value_between_60_75,c.value_above_75,
 c.percent_below_33,c.percent_between_33_60,c.percent_between_60_75,c.percent_above_75,grade_wise_performance
 from
@@ -5808,7 +5810,7 @@ left join (select semester,count(distinct(school_id))as total_schools,
    on a.semester=grade.semester)as semster)
 union
 (select ''pat_performance''as data,
-  row_to_json(pat)::jsonb from (select hc_pat_state.*,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+  row_to_json(pat)::text from (select hc_pat_state.*,value_below_33,value_between_33_60,value_between_60_75,value_above_75
 from
 (select academic_year,
  sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
@@ -5819,7 +5821,7 @@ from
    group by academic_year)as data
 left join hc_pat_state on data.academic_year=hc_pat_state.academic_year)as pat)
 union
-(select ''udise''as data,row_to_json(udise)::jsonb from (select sum(total_schools) as total_schools
+(select ''udise''as data,row_to_json(udise)::text from (select sum(total_schools) as total_schools
   ,'||udise_cols||',
     cast(avg(infrastructure_score)as int)as infrastructure_score,
  sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
@@ -5828,7 +5830,7 @@ union
  sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
    from udise_school_score)as udise)
   union
- (select ''school_infrastructure''as data,row_to_json(infra)::jsonb 
+ (select ''school_infrastructure''as data,row_to_json(infra)::text 
  from (select sum(total_schools_data_received) as total_schools_data_received, 
    cast(avg(infra_score)as int)as infra_score,
 '||infra_cols||','''||infra_atf||''' as areas_to_focus,
@@ -5838,7 +5840,7 @@ union
  sum(case when infra_score >75 then 1 else 0 end)as value_above_75
  from hc_infra_school)as infra)
  union
-(select ''crc_visit''as data,row_to_json(crc)::jsonb from 
+(select ''crc_visit''as data,row_to_json(crc)::text from 
 (select sum(total_schools)as total_schools,sum(total_crc_visits)as total_crc_visits,sum(visited_school_count)as visited_school_count,
 sum(not_visited_school_count)as not_visited_school_count from hc_crc_school)as crc)';
 Execute create_state_view; 
@@ -5847,7 +5849,6 @@ END;
 $$LANGUAGE plpgsql;
 
 select health_card_index_state();
-
 
 
 
@@ -5892,3 +5893,5 @@ group by student_uid,school_id,semester,grade
  ) <> 0);
 
  drop view if exists teacher_attendance_trans_to_aggregate;
+
+insert into school_hierarchy_details values(9999,NULL,'others',NULL,NULL,9999,'others',NULL,9999,'others',9999,'others',NULL,now(),now()) on conflict  ON CONSTRAINT school_hierarchy_details_pkey do nothing;

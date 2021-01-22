@@ -76,6 +76,27 @@
   when: datasource_status == "unmatched"
   tags: [ install, update ]
 
+- name: Create database user
+  become: true
+  become_user: postgres
+  postgresql_user:
+    db: "{{ db_name }}"
+    name: "{{ read_only_db_user }}"
+    password: "{{ read_only_db_password }}"
+    encrypted: yes
+    state: present
+  tags: [ install, update ]
+
+- name: Grant the SELECT privilege to the read_only_db_user
+  become: true
+  become_user: postgres
+  postgresql_privs:
+    db: "{{ db_name }}"
+    privs: SELECT
+    objs: ALL_IN_SCHEMA
+    role: "{{ read_only_db_user }}"
+  tags: [ install, update ]
+
 - name: Stopping postgresql 
   service: 
     name: postgresql

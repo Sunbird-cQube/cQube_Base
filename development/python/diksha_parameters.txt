@@ -112,17 +112,19 @@ Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(ParseBigDecimal())""
 school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,created_on,updated_on)
 select collection_id,collection_name,avg(progress) as collection_progress,
 count(distinct(uuid)) as total_enrolled,count(distinct(uuid)) filter (where progress=100) as total_completed,
-enrolment_date as enrolled_date,tpd.school_id,initcap(school_name)as school_name,cluster_id,
-initcap(cluster_name) as cluster_name,
-block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,now(),now() 
-from diksha_tpd_trans as tpd inner join (
-select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name 
-from school_hierarchy_details
-where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry 
-on tpd.school_id=scl_hry.school_id
+enrolment_date as enrolled_date, tpd.school_id,
+CASE WHEN  school_name is null THEN 'Others' ELSE initcap(school_name) END as school_name,
+CASE WHEN cluster_id is null THEN 9999 ELSE cluster_id END as cluster_id,
+CASE WHEN  cluster_name is null THEN 'Others' ELSE initcap(cluster_name) END as cluster_name,
+CASE WHEN block_id is null THEN 9999 ELSE block_id END as block_id,
+CASE WHEN  block_name is null THEN 'Others' ELSE initcap(block_name) END as block_name,
+CASE WHEN district_id is null THEN 9999 ELSE district_id END as district_id,
+CASE WHEN  district_name is null THEN 'Others' ELSE initcap(district_name) END as district_name,
+now(),now() from diksha_tpd_trans as tpd left join (
+select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
+where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
 where org_name='DIKSHA Custodian Org' and collection_name is not null 
-group by collection_id,collection_name,tpd.school_id,enrolment_date,school_name,cluster_id,
-cluster_name,block_id,block_name,district_id,district_name 
+group by collection_id,collection_name,tpd.school_id,enrolment_date,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name 
 on conflict(collection_id, enrolled_date, school_id,collection_name)
 do update set 
 school_id=excluded.school_id,school_name=excluded.school_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,
