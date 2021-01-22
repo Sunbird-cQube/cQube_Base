@@ -1,155 +1,286 @@
-<div class="container-fluid">
-    <div class="row" style="padding-top: 15px !important;">
-        <div class="col-lg-2 col-md-0"> </div>
-        <div class="col-lg-2 col-md-3 col-sm-12">
-            <select id="level"
-                style="padding: 6.3px;width: 100%; margin-bottom: 10px; color: white; border-radius: 4px; font-size: 12px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                [(ngModel)]="level" name="level" (change)="selectedLevel()">
-                <option [value]="level" disabled selected="selected">Choose Level
-                </option>
-                <option *ngFor="let level of levels" [(ngValue)]="level.key" style=" font-size: 11px;">
-                    {{level.name}}
-                </option>
-            </select>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="autocomplete" style="width:100%;float: left; ">
-                <input #searchInput id="myInput" style="border: 1px solid gray;padding: 2.7px;" type="search"
-                    class="clearable" autofocus autocomplete="off" name="districtName" [(ngModel)]="value"
-                    (input)="onChange()" [placeholder]="placeHolder">
-                <br>
-                <p id="warning" style="font-size: 9px;"> Please enter at least 2 characters/digits</p>
-                <br *ngIf="len >= 2" />
+<div class="container-fluid" style="background-color: rgb(230, 230, 230);">
+    <div class="row" style="padding-bottom: 10px !important; ">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <div style="height: 120px auto;margin-top: 5px; border-radius: 20px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div style="float: right;">
+                            <em class="fa fa-download" id="download" title="Home"
+                                style="cursor: pointer;font-size: 30px; float: right; color: rgb(39, 194, 233);"
+                                alt="download"></em>
+                        </div>
+                        <div style="float: right;">
+                            <em class="fa fa-home" id="home" title="Home"
+                                style="cursor: pointer;font-size: 30px; float: right; margin-right: 10px; color: rgb(39, 194, 233);"
+                                alt="Home" (click)="stateData()"></em>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 15px !important;">
+                    <div class="col-lg-4 col-md-4 col-sm-12">
+                        <label for="">Choose Level</label>
+                        <select id="level"
+                            style="padding: 6.3px;width: 100%; margin-bottom: 10px; color: white; border-radius: 4px; font-size: 12px; font-weight: bold; background-color: rgb(152, 160, 163);"
+                            [(ngModel)]="level" name="level" (change)="selectedLevel()">
+                            <option [value]="level" disabled selected="selected">Choose Level
+                            </option>
+                            <option *ngFor="let level of levels" [(ngValue)]="level.key" style=" font-size: 11px;">
+                                {{level.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="autocomplete" style="width:100%;">
+                            <p id="warning" style="font-size: 10px; float: left;"> Please enter at least 2
+                                characters/digits</p>
+                            <p style="line-height: 1em; float: left;">&nbsp;</p>
+                            <input #searchInput id="myInput"
+                                style="border: 1px solid gray;padding: 2.7px; width: 100%; border-radius: 5px;"
+                                type="search" class="clearable" autofocus autocomplete="off" name="districtName"
+                                [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
+                            <br *ngIf="len < 2">
+                            <br *ngIf="len >= 2" />
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12">
+                        <p style="line-height: 0.9em;">&nbsp;</p>
+                        <button type="submit" class="btn btn-secondary" id="button"
+                            style="float: right;padding: 5.7px 15px 5.7px 15px; font-size: 12px; width: 100%; font-weight: bold;"
+                            (click)="onSubmit()">Submit</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-lg-1 col-md-2 col-sm-12">
-            <button type="submit" class="btn btn-secondary" id="button"
-                style="float: left;padding: 5.7px 15px 5.7px 15px; font-size: 12px; font-weight: bold;"
-                (click)="onSubmit()">Submit</button>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <em class="fa fa-home" id="home" title="Home"
-                style="cursor: pointer;font-size: 30px; float: right; color: rgb(39, 194, 233);" alt="Home"
-                (click)="stateData()"></em>
-        </div>
-    </div>
-    <div class="row" *ngIf="showAll">
-        <div class="col-sm-12">
-            <hr>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <div *ngIf="showAll"
+                style="min-height: 50px; max-height:fit-content; background-color: blue; margin-top: 10px; border-radius: 20px; color: white;">
+                <div class="row" style="font-size: 13px; line-height: 1.85em;">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div style="padding: 10px 0px 10px 40px;">
+                                    <table>
+                                        <tbody>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf=" i%2==0 && i==0 && level =='state'"><small>State</small>
+                                                </td>
+                                                <td *ngIf=" i%2==0 && i==0 && level =='state'">:</td>
+                                                <td *ngIf=" i%2==0 && i==0 && level =='state'">
+                                                    <strong>{{state}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf=" i%2==0 && level !='state' && level !='school'">
+                                                    <small>{{updatedKeys[i]}}</small>
+                                                </td>
+                                                <td *ngIf=" i%2==0 && level !='state' && level !='school'">:</td>
+                                                <td *ngIf=" i%2==0 && level !='state' && level !='school'">
+                                                    <strong>{{healthCardData[key]}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf="i%2==0 && level =='school'"><small
+                                                        *ngIf="updatedKeys[i] != 'Total Schools'">{{updatedKeys[i]}}
+                                                    </small></td>
+                                                <td *ngIf="i%2==0 && level =='school'"><span
+                                                        *ngIf="updatedKeys[i] != 'Total Schools'"> : </span></td>
+                                                <td *ngIf="i%2==0 && level =='school'"><strong
+                                                        *ngIf="updatedKeys[i] != 'Total Schools'">
+                                                        {{healthCardData[key]}}</strong></td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf="i%2==0 && i!=0 && level =='state'">
+                                                    <small>{{updatedKeys[i]}}</small>
+                                                </td>
+                                                <td *ngIf="i%2==0 && i!=0 && level =='state'">:</td>
+                                                <td *ngIf="i%2==0 && i!=0 && level =='state'">
+                                                    <strong>{{healthCardData['basic_details'][key]}}</strong>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div style="padding: 10px 0px 10px 40px;">
+                                    <table>
+                                        <tbody>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf=" i%2==1 && i==1 && level =='state'">
+                                                    <small>State ID</small>
+                                                </td>
+                                                <td *ngIf=" i%2==1 && i==1 && level =='state'">:</td>
+                                                <td *ngIf=" i%2==1 && i==1 && level =='state'">
+                                                    <strong>{{healthCardData['basic_details']['state_id']}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf=" i%2==1 && level !='state' && level !='school'">
+                                                    <small>{{updatedKeys[i]}}</small>
+                                                </td>
+                                                <td *ngIf=" i%2==1 && level !='state' && level !='school'">:</td>
+                                                <td *ngIf=" i%2==1 && level !='state' && level !='school'">
+                                                    <strong>{{healthCardData[key]}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf="i%2==1 && level =='school'"><small
+                                                        *ngIf="updatedKeys[i] != 'Total Schools'">{{updatedKeys[i]}}
+                                                    </small></td>
+                                                <td *ngIf="i%2==1 && level =='school'"><span
+                                                        *ngIf="updatedKeys[i] != 'Total Schools'"> : </span></td>
+                                                <td *ngIf="i%2==1 && level =='school'"><strong
+                                                        *ngIf="updatedKeys[i] != 'Total Schools'">
+                                                        {{healthCardData[key]}}</strong></td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf="i%2==1 && level =='state'"><small>{{updatedKeys[i]}}</small>
+                                                </td>
+                                                <td *ngIf="i%2==1 && level =='state'">:</td>
+                                                <td *ngIf="i%2==1 && level =='state'">
+                                                    <strong>{{healthCardData['basic_details'][key]}}</strong>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="row" *ngIf="showAll">
         <div *ngIf="!err" class="col-sm-12" style="font-size: 13px;">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom:10px !important" id="details">
-                    <h6 style="float: left; margin-top: 10px;margin-right: 20px;" class="headings">Basic Details: </h6>
-                    <div
-                        style="border: 2px solid gray;float: left; min-height: 30px;max-height: 140px !important; background-color: gray; color: white; border-radius: 10px; padding: 10px;">
-                        <div style="float: left;" *ngFor="let key of keys; let i=index">
-                            <span style="margin-right: 30px;font-weight: bold;">
-                                <span *ngIf="i==0 && level =='state'" style="margin-right: 30px;">
-                                    <span>State</span> :
-                                    <span>{{state}}</span>
-                                </span>
-                                <span *ngIf="level !='state' && level !='school'">
-                                    <span>{{updatedKeys[i]}}</span> :
-                                    <span>{{healthCardData[key]}}</span>
-                                </span>
-                                <span *ngIf="level =='school'">
-                                    <span *ngIf="updatedKeys[i] != 'Total Schools'">{{updatedKeys[i]}} </span>
-                                    <span *ngIf="updatedKeys[i] != 'Total Schools'"> : </span>
-                                    <span *ngIf="updatedKeys[i] != 'Total Schools'"> {{healthCardData[key]}}</span>
-                                </span>
-                                <span *ngIf="level =='state'">
-                                    <span>{{updatedKeys[i]}}</span> :
-                                    <span>{{healthCardData['basic_details'][key]}}</span>
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-lg-4 col-md-12 col-sm-12" id="stdAttendance" style="margin-bottom:10px !important">
-                    <div style="margin-bottom: 10px;">
-                        <h6 class="headings" style="float: left; margin-right: 10px;"> Student Attendance </h6>
-                        <div [ngStyle]="{'background-color': healthCardData['student_attendance'] ? stdAttendanceColor : '' }"
-                            style="height: 20px;float: left; width: 20px; border-radius: 10px;"></div>
-                    </div>
-                    <br>
-
-                    <div [ngStyle]="{'height': height }"
-                        style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;background-color: #e6e6e6; background-color: #e6e6e6;">
-                        <div *ngIf="healthCardData['student_attendance']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
-                                id="attTooltipBtn">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic1"
-                                    ngbDropdownToggle>
-                                    <em class="fa fa-info-circle" style="color: blue;"></em>
-                                </button>
-                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu
-                                    id="attTooltip" aria-labelledby="dropdownBasic1">
-                                    <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
-                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
-                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
-                                                                    Details</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of tooltipStdAttendance;let i=index">
-                                                            <td>{{tooltipStdAttendanceKeys[i]}}</td>
-                                                            <td>:</td>
-                                                            <td>{{healthCardData['student_attendance'][key]}}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                    <div [ngStyle]="{'min-height': height }" class="card">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div *ngIf="healthCardData['student_attendance']" ngbDropdown
+                                    class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                    id="attTooltipBtn">
+                                    <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic1"
+                                        ngbDropdownToggle>
+                                        <em class="fa fa-info-circle" style="color: blue;"></em>
+                                    </button>
+                                    <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown"
+                                        ngbDropdownMenu id="attTooltip" aria-labelledby="dropdownBasic1">
+                                        <div id="div1"
+                                            style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
+                                            <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                                <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                        Details</strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of tooltipStdAttendance;let i=index">
+                                                                <td>{{tooltipStdAttendanceKeys[i]}}</td>
+                                                                <td>:</td>
+                                                                <td>{{healthCardData['student_attendance'][key]}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <table>
-                                <tbody>
-                                    <tr *ngFor="let attendance of schoolAttendance; let i=index">
-                                        <td>{{schoolAttendanceKeys[i]}}</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['student_attendance'][attendance]}} %</td>
-                                    </tr>
-                                    <strong *ngIf="level != 'state'"
-                                        style="text-decoration: underline;  font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
-                                        + level.substr(1)}} Rank</strong>
-                                    <tr *ngFor="let attendance of schoolInfraRank; let i=index">
-                                        <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
-                                        <td *ngIf="level != 'state'">:</td>
-                                        <td *ngIf="level != 'state'">
-                                            {{healthCardData['student_attendance'][attendance]}}
-                                        </td>
-                                    </tr>
+                                <h6 class="headings"> Student Attendance
+                                </h6>
+                                <div>
+                                    <!-- <div [ngStyle]="{'background-color': healthCardData['student_attendance'] && 0.9/0.2 >= 4  ? stdAttdRankMatrixColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color': healthCardData['student_attendance']  && 0.9/0.4 >= 2  ? stdAttdRankMatrixColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color': healthCardData['student_attendance'] && 0.9/0.6 >= 1  ? stdAttdRankMatrixColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color': healthCardData['student_attendance'] && 0.9/0.8 >= 1  ? stdAttdRankMatrixColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color': healthCardData['student_attendance']  && 0.9 > 0.8  ? stdAttdRankMatrixColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div> -->
 
-                                    <strong *ngIf="level != 'school'"
-                                        style="text-decoration: underline; font-size: 15px;line-height: 2em;">School
-                                        Categories</strong>
-                                    <tr *ngFor="let attendance of schoolAttendanceCategory; let i=index">
-                                        <td *ngIf="level != 'school'">
-                                            {{schoolAttendanceCategoryKey[i]}}</td>
-                                        <td *ngIf="level != 'school'">:</td>
-                                        <td *ngIf="level != 'school'">
-                                            {{healthCardData['student_attendance'][attendance]}} schools</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <p *ngIf="showLink" class="link" id="attdLink"><a href="javascript:void(0)"
-                                    (click)="goToReport('/attendance/student-attendance')">Click
-                                    to Access
-                                    Report</a></p>
+                                    <app-bubbles [cardData]="healthCardData['student_attendance']"></app-bubbles>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="healthCardData['student_attendance']">
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div style="margin-left: 15px;">
+                                    <strong style="font-size: 15px;line-height: 2em; font-weight: bold;">Attendance
+                                    </strong>
+                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                        <circle-progress [percent]="healthCardData['student_attendance']['attendance']"
+                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
+                                            [space]="-6" [outerStrokeColor]="stdAttendanceColor"
+                                            [innerStrokeColor]="'gray'" [titleFontSize]="40" [unitsFontSize]="40"
+                                            [showSubtitle]="false" [animation]="true" [animationDuration]="800"
+                                            [startFromZero]="false" [responsive]="true" [renderOnClick]="false"
+                                            [unitsFontWeight]="20">
+                                        </circle-progress>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                <div>
+                                    <strong *ngIf="level != 'state'"
+                                        style="font-size: 15px;line-height: 2em; margin-left: 20px;">{{level.charAt(0).toUpperCase()
+                                        + level.substr(1)}} Rank</strong>
+                                    <table style="margin-left: 20px;">
+                                        <thead>
+                                            <tr *ngFor="let attendance of schoolInfraRank; let i=index">
+                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                                <td *ngIf="level != 'state'">:</td>
+                                                <td *ngIf="level != 'state'">
+                                                    {{healthCardData['student_attendance'][attendance]}}
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div style="margin-left: 15px;">
+                                    <table>
+                                        <tbody>
+                                            <strong *ngIf="level != 'school'"
+                                                style="font-size: 15px;line-height: 2em;">School
+                                                Categories</strong>
+                                            <tr *ngFor="let attendance of schoolAttendanceCategory; let i=index">
+                                                <td *ngIf="level != 'school'">
+                                                    {{schoolAttendanceCategoryKey[i]}}</td>
+                                                <td *ngIf="level != 'school'">:</td>
+                                                <td *ngIf="level != 'school'">
+                                                    {{healthCardData['student_attendance'][attendance]}} schools</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p *ngIf="showLink" class="link" id="attdLink"><a href="javascript:void(0)"
+                                        (click)="goToReport('/attendance/student-attendance')">Click
+                                        to Access
+                                        Report</a></p>
+                            </div>
                         </div>
                         <div *ngIf="!healthCardData['student_attendance']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">
@@ -158,125 +289,170 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="semPer" style="margin-bottom:10px !important">
-                    <div style="margin-bottom: 10px;">
-                        <h6 class="headings" style="float: left; margin-right: 10px;"> Semester Performance </h6>
-                        <div [ngStyle]="{'background-color':  healthCardData['student_semester'] ? semColor : ''}"
-                            style="height: 20px;float: left; width: 20px; border-radius: 10px;"></div>
-                    </div>
-                    <br>
-                    <div [ngStyle]="{'height': height  }"
-                        style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;background-color: #e6e6e6;">
-                        <div *ngIf="healthCardData['student_semester']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
-                                id="semTooltipBtn">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic2"
-                                    ngbDropdownToggle>
-                                    <em class="fa fa-info-circle" style="color: blue;"></em>
-                                </button>
-                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu
-                                    id="semTooltip" aria-labelledby="dropdownBasic2">
-                                    <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
-                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
-                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
-                                                                    Details</strong>
-                                                            </td>
-                                                        </tr>
+                    <div [ngStyle]="{'min-height': height }" class="card">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div *ngIf="healthCardData['student_semester']" ngbDropdown
+                                    class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                    id="semTooltipBtn">
+                                    <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic2"
+                                        ngbDropdownToggle>
+                                        <em class="fa fa-info-circle" style="color: blue;"></em>
+                                    </button>
+                                    <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown"
+                                        ngbDropdownMenu id="semTooltip" aria-labelledby="dropdownBasic2">
+                                        <div id="div1"
+                                            style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
+                                            <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                                <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                        Details</strong>
+                                                                </td>
+                                                            </tr>
 
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of tooltimSem;let i=index">
-                                                            <td
-                                                                *ngIf="i<=semLength && healthCardData['student_semester'][key]">
-                                                                {{tooltipSemKeys[i]}}</td>
-                                                            <td
-                                                                *ngIf="i<=semLength && healthCardData['student_semester'][key]">
-                                                                :</td>
-                                                            <td
-                                                                *ngIf="i<=semLength && healthCardData['student_semester'][key]">
-                                                                {{healthCardData['student_semester'][key]}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
-                                                                    Grade_Wise_Performance
-                                                                </strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of tooltimSem;let i=index">
-                                                            <td
-                                                                *ngIf="i>semLength && healthCardData['student_semester'][key] && level !='state'">
-                                                                {{tooltipSemKeys[i]}}</td>
-                                                            <td
-                                                                *ngIf="i>semLength && healthCardData['student_semester'][key] && level !='state'">
-                                                                :</td>
-                                                            <td
-                                                                *ngIf="i>semLength && healthCardData['student_semester'][key] && level !='state'">
-                                                                {{healthCardData['student_semester'][key]}} %
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of semPerformTooltip;let i=index">
-                                                            <td
-                                                                *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
-                                                                {{semPerformTooltipKeys[i]}}</td>
-                                                            <td
-                                                                *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
-                                                                :</td>
-                                                            <td
-                                                                *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
-                                                                {{healthCardData['student_semester']['grade_wise_performance'][key]}}
-                                                                %
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of tooltimSem;let i=index">
+                                                                <td
+                                                                    *ngIf="i<=semLength && healthCardData['student_semester'][key]">
+                                                                    {{tooltipSemKeys[i]}}</td>
+                                                                <td
+                                                                    *ngIf="i<=semLength && healthCardData['student_semester'][key]">
+                                                                    :</td>
+                                                                <td
+                                                                    *ngIf="i<=semLength && healthCardData['student_semester'][key]">
+                                                                    {{healthCardData['student_semester'][key]}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                        Grade_Wise_Performance
+                                                                    </strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of tooltimSem;let i=index">
+                                                                <td
+                                                                    *ngIf="i>semLength && healthCardData['student_semester'][key] && level !='state'">
+                                                                    {{tooltipSemKeys[i]}}</td>
+                                                                <td
+                                                                    *ngIf="i>semLength && healthCardData['student_semester'][key] && level !='state'">
+                                                                    :</td>
+                                                                <td
+                                                                    *ngIf="i>semLength && healthCardData['student_semester'][key] && level !='state'">
+                                                                    {{healthCardData['student_semester'][key]}} %
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of semPerformTooltip;let i=index">
+                                                                <td
+                                                                    *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
+                                                                    {{semPerformTooltipKeys[i]}}</td>
+                                                                <td
+                                                                    *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
+                                                                    :</td>
+                                                                <td
+                                                                    *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
+                                                                    {{healthCardData['student_semester']['grade_wise_performance'][key]}}
+                                                                    %
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <h6 class="headings"> Semester Performance
+                                </h6>
+                                <div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['student_semester'] && healthCardData['student_semester']['performance'] > 80  ? semColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['student_semester'] && healthCardData['student_semester']['performance']/65 >= 0  ? semColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['student_semester'] && healthCardData['student_semester']['performance']/55 >= 1  ? semColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['student_semester'] && healthCardData['student_semester']['performance']/40 >= 2  ? semColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['student_semester'] && healthCardData['student_semester']['performance']/40 >= 2  ? semColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                </div>
                             </div>
-                            <table>
-                                <tbody>
-                                    <tr *ngFor="let sem of semPerformance; let i=index">
-                                        <td> <span>{{semPerformanceKeys[i]}}</span></td>
-                                        <td>:</td>
-                                        <td><span>{{healthCardData['student_semester'][sem]}} %</span></td>
-                                    </tr>
+                        </div>
+                        <div class="row" *ngIf="healthCardData['student_semester']">
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div style="margin-left: 15px;">
+                                    <strong style="font-size: 15px;line-height: 2em; font-weight: bold;"> Performance
+                                    </strong>
+                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                        <circle-progress [percent]="healthCardData['student_semester']['performance']"
+                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
+                                            [space]="-6" [outerStrokeColor]="semColor" [innerStrokeColor]="'gray'"
+                                            [titleFontSize]="40" [unitsFontSize]="40" [showSubtitle]="false"
+                                            [animation]="true" [animationDuration]="800" [startFromZero]="false"
+                                            [responsive]="true" [renderOnClick]="false" [unitsFontWeight]="20">
+                                        </circle-progress>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                <div>
                                     <strong *ngIf="level != 'state'"
-                                        style="text-decoration: underline;  font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
+                                        style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Rank</strong>
-                                    <tr *ngFor="let sem of schoolInfraRank; let i=index">
-                                        <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
-                                        <td *ngIf="level != 'state'">:</td>
-                                        <td *ngIf="level != 'state'">{{healthCardData['student_semester'][sem]}}
-                                        </td>
-                                    </tr>
-                                    <strong *ngIf="level != 'school'"
-                                        style="text-decoration: underline; font-size: 15px;line-height: 2em;">School
-                                        Categories</strong>
-                                    <tr *ngFor="let sem of semPerformanceCategory; let i=index">
-                                        <td *ngIf="level != 'school'">
-                                            {{semPerformanceCategoryKey[i]}}</td>
-                                        <td *ngIf="level != 'school'">:</td>
-                                        <td *ngIf="level != 'school'">
-                                            {{healthCardData['student_semester'][sem]}} schools</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <p *ngIf="showLink" class="link" id="semLLink">
-                                <a href="javascript:void(0)"
-                                    (click)="goToReport('/student-performance/semester-report')">Click
-                                    to Access
-                                    Report</a>
-                            </p>
+                                    <table style="margin-left: 20px;">
+                                        <thead>
+                                            <tr *ngFor="let sem of schoolInfraRank; let i=index">
+                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                                <td *ngIf="level != 'state'">:</td>
+                                                <td *ngIf="level != 'state'">{{healthCardData['student_semester'][sem]}}
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div style="margin-left: 15px;">
+                                    <table>
+                                        <tbody>
+                                            <strong *ngIf="level != 'school'"
+                                                style="font-size: 15px;line-height: 2em;">School
+                                                Categories</strong>
+                                            <tr *ngFor="let sem of semPerformanceCategory; let i=index">
+                                                <td *ngIf="level != 'school'">
+                                                    {{semPerformanceCategoryKey[i]}}</td>
+                                                <td *ngIf="level != 'school'">:</td>
+                                                <td *ngIf="level != 'school'">
+                                                    {{healthCardData['student_semester'][sem]}} schools</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p *ngIf="showLink" class="link" id="semLink">
+                                    <a href="javascript:void(0)"
+                                        (click)="goToReport('/student-performance/semester-report')">Click
+                                        to Access
+                                        Report</a>
+                                </p>
+                            </div>
                         </div>
                         <div *ngIf="!healthCardData['student_semester']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">
@@ -285,104 +461,150 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="pat" style="margin-bottom:10px !important">
-                    <div style="margin-bottom: 10px;">
-                        <h6 class="headings" style="float: left; margin-right: 10px;"> PAT Performance </h6>
-                        <div [ngStyle]="{'background-color': healthCardData['pat_performance'] ? patColor : ''}"
-                            style="height: 20px;float: left; width: 20px; border-radius: 10px;"></div>
-                    </div>
-                    <br>
-                    <div [ngStyle]="{'height': height  }"
-                        style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;background-color: #e6e6e6;">
-                        <div *ngIf="healthCardData['pat_performance']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
-                                id="patTooltipBtn">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic3"
-                                    ngbDropdownToggle>
-                                    <em class="fa fa-info-circle" style="color: blue;"></em>
-                                </button>
-                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu
-                                    id="patTooltip" aria-labelledby="dropdownBasic3">
-                                    <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
-                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
-                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
-                                                                    Details</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of tooltipPat;let i=index">
-                                                            <td>{{tooltipPatKeys[i]}}</td>
-                                                            <td>:</td>
-                                                            <td>{{healthCardData['pat_performance'][key]}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade_Wise_Performance
-                                                                </strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of patPerformTooltip;let i=index">
-                                                            <td
-                                                                *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
-                                                                {{patPerformTooltipKeys[i]}}</td>
-                                                            <td
-                                                                *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
-                                                                :</td>
-                                                            <td
-                                                                *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
-                                                                {{healthCardData['pat_performance']['grade_wise_performance'][key]}}
-                                                                %
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                    <div [ngStyle]="{'min-height': height }" class="card">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div *ngIf="healthCardData['pat_performance']" ngbDropdown
+                                    class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                    id="patTooltipBtn">
+                                    <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic3"
+                                        ngbDropdownToggle>
+                                        <em class="fa fa-info-circle" style="color: blue;"></em>
+                                    </button>
+                                    <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown"
+                                        ngbDropdownMenu id="patTooltip" aria-labelledby="dropdownBasic3">
+                                        <div id="div1"
+                                            style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
+                                            <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                                <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                        Details</strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of tooltipPat;let i=index">
+                                                                <td>{{tooltipPatKeys[i]}}</td>
+                                                                <td>:</td>
+                                                                <td>{{healthCardData['pat_performance'][key]}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade_Wise_Performance
+                                                                    </strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of patPerformTooltip;let i=index">
+                                                                <td
+                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                    {{patPerformTooltipKeys[i]}}</td>
+                                                                <td
+                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                    :</td>
+                                                                <td
+                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                    {{healthCardData['pat_performance']['grade_wise_performance'][key]}}
+                                                                    %
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <h6 class="headings"> PAT Performance
+                                </h6>
+                                <div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['pat_performance'] && healthCardData['pat_performance']['school_performance'] > 80  ? patColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['pat_performance'] && healthCardData['pat_performance']['school_performance']/65 >= 1  ? patColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['pat_performance'] && healthCardData['pat_performance']['school_performance']/55 >=1  ? patColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['pat_performance'] && healthCardData['pat_performance']['school_performance']/40 >= 1  ? patColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['pat_performance'] && healthCardData['pat_performance']['school_performance'] < 40    ? patColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                </div>
                             </div>
-                            <table>
-                                <tbody>
-                                    <tr *ngFor="let pat of patPerformance; let i=index">
-                                        <td> <span>{{patPerformanceKeys[i]}}</span></td>
-                                        <td>:</td>
-                                        <td><span>{{healthCardData['pat_performance'][pat]}} %</span></td>
-                                    </tr>
+                        </div>
+                        <div class="row" *ngIf="healthCardData['pat_performance']">
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div style="margin-left: 15px;">
+                                    <strong style="font-size: 15px;line-height: 2em; font-weight: bold;">Performance
+                                    </strong>
+                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                        <circle-progress
+                                            [percent]="healthCardData['pat_performance']['school_performance']"
+                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
+                                            [space]="-6" [outerStrokeColor]="patColor" [innerStrokeColor]="'gray'"
+                                            [titleFontSize]="40" [unitsFontSize]="40" [showSubtitle]="false"
+                                            [animation]="true" [animationDuration]="800" [startFromZero]="false"
+                                            [responsive]="true" [renderOnClick]="false" [unitsFontWeight]="20">
+                                        </circle-progress>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                <div>
                                     <strong *ngIf="level != 'state'"
-                                        style="text-decoration: underline;  font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
+                                        style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Rank</strong>
-                                    <tr *ngFor="let pat of schoolInfraRank; let i=index">
-                                        <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
-                                        <td *ngIf="level != 'state'">:</td>
-                                        <td *ngIf="level != 'state'">{{healthCardData['pat_performance'][pat]}}
-                                        </td>
-                                    </tr>
-                                    <strong *ngIf="level != 'school'"
-                                        style="text-decoration: underline; font-size: 15px;line-height: 2em;">School
-                                        Categories</strong>
-                                    <tr *ngFor="let pat of semPerformanceCategory; let i=index">
-                                        <td *ngIf="level != 'school'">
-                                            {{semPerformanceCategoryKey[i]}}</td>
-                                        <td *ngIf="level != 'school'">:</td>
-                                        <td *ngIf="level != 'school'">
-                                            {{healthCardData['pat_performance'][pat]}} schools</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <p *ngIf="showLink" class="link" id="patLink">
-                                <a href="javascript:void(0)"
-                                    (click)="goToReport('/student-performance/pat-report')">Click
-                                    to Access
-                                    Report</a>
-                            </p>
+                                    <table style="margin-left: 20px;">
+                                        <thead>
+                                            <tr *ngFor="let pat of schoolInfraRank; let i=index">
+                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                                <td *ngIf="level != 'state'">:</td>
+                                                <td *ngIf="level != 'state'">{{healthCardData['pat_performance'][pat]}}
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div style="margin-left: 15px;">
+                                    <table>
+                                        <tbody>
+                                            <strong *ngIf="level != 'school'"
+                                                style="font-size: 15px;line-height: 2em;">School
+                                                Categories</strong>
+                                            <tr *ngFor="let pat of semPerformanceCategory; let i=index">
+                                                <td *ngIf="level != 'school'">
+                                                    {{semPerformanceCategoryKey[i]}}</td>
+                                                <td *ngIf="level != 'school'">:</td>
+                                                <td *ngIf="level != 'school'">
+                                                    {{healthCardData['pat_performance'][pat]}} schools</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p *ngIf="showLink" class="link" id="patLink">
+                                    <a href="javascript:void(0)"
+                                        (click)="goToReport('/student-performance/pat-report')">Click
+                                        to Access
+                                        Report</a>
+                                </p>
+                            </div>
                         </div>
                         <div *ngIf="!healthCardData['pat_performance']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">
@@ -392,235 +614,318 @@
                 </div>
             </div>
             <div class="row" style="padding-top:10px !important">
-                <div class="col-lg-4 col-md-12 col-sm-12" style="margin-bottom:10px !important">
-                    <div style="margin-bottom: 10px;">
-                        <h6 class="headings" style="float: left; margin-right: 10px;"> School Infrastructure </h6>
-                        <div [ngStyle]="{'background-color': healthCardData['school_infrastructure'] ? infraColor : ''}"
-                            style="height: 20px;float: left; width: 20px; border-radius: 10px;"></div>
-                    </div>
-                    <br>
-                    <div [ngStyle]="{'height': height }"
-                        style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;background-color: #e6e6e6;">
-                        <div *ngIf="healthCardData['school_infrastructure']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
-                                id="infraTooltipBtn">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic4"
-                                    ngbDropdownToggle>
-                                    <em class="fa fa-info-circle" style="color: blue;"></em>
-                                </button>
-                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu
-                                    id="infraTooltip" aria-labelledby="dropdownBasic4">
-                                    <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
-                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
-                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
-                                                                    Details</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let infra of tooltipInfra;let i=index">
-                                                            <td *ngIf="i== 0  && level =='state'">
-                                                                {{toolTipInfraKeys[i]}}</td>
-                                                            <td *ngIf="i== 0 && level =='state'">:
-                                                            </td>
-                                                            <td *ngIf="i== 0 && level =='state'">
-                                                                {{healthCardData['school_infrastructure'][infra]}}</td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let infra of tooltipInfra;let i=index">
-                                                            <td *ngIf="i <= infraLength && level !='state'">
-                                                                {{toolTipInfraKeys[i]}}</td>
-                                                            <td *ngIf="i <= infraLength  && level !='state'">:</td>
-                                                            <td *ngIf="i <= infraLength  && level !='state'">
-                                                                {{healthCardData['school_infrastructure'][infra]}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
-                                                                    School_Infrastructure_Metrics</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let infra of tooltipInfra;let i=index">
-                                                            <td
-                                                                *ngIf="i> infraLength && infra != 'total_schools_data_received'">
-                                                                {{toolTipInfraKeys[i]}}</td>
-                                                            <td
-                                                                *ngIf="i> infraLength && infra != 'total_schools_data_received'">
-                                                                :</td>
-                                                            <td
-                                                                *ngIf="i> infraLength && infraTooltipMetrics[i] && infra != 'total_schools_data_received'">
-                                                                {{healthCardData['school_infrastructure'][infra]}} %
-                                                            </td>
-                                                            <td
-                                                                *ngIf="i> infraLength && !infraTooltipMetrics[i] && infra != 'total_schools_data_received'">
-                                                                {{healthCardData['school_infrastructure'][infra]}}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                <div class="col-lg-4 col-md-12 col-sm-12" id="infra" style="margin-bottom:10px !important">
+                    <div [ngStyle]="{'min-height': height }" class="card">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div *ngIf="healthCardData['school_infrastructure']" ngbDropdown
+                                    class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                    id="infraTooltipBtn">
+                                    <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic4"
+                                        ngbDropdownToggle>
+                                        <em class="fa fa-info-circle" style="color: blue;"></em>
+                                    </button>
+                                    <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown"
+                                        ngbDropdownMenu id="infraTooltip" aria-labelledby="dropdownBasic4">
+                                        <div id="div1"
+                                            style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
+                                            <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                                <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                        Details</strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let infra of tooltipInfra;let i=index">
+                                                                <td *ngIf="i== 0  && level =='state'">
+                                                                    {{toolTipInfraKeys[i]}}</td>
+                                                                <td *ngIf="i== 0 && level =='state'">:
+                                                                </td>
+                                                                <td *ngIf="i== 0 && level =='state'">
+                                                                    {{healthCardData['school_infrastructure'][infra]}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let infra of tooltipInfra;let i=index">
+                                                                <td *ngIf="i <= infraLength && level !='state'">
+                                                                    {{toolTipInfraKeys[i]}}</td>
+                                                                <td *ngIf="i <= infraLength  && level !='state'">:</td>
+                                                                <td *ngIf="i <= infraLength  && level !='state'">
+                                                                    {{healthCardData['school_infrastructure'][infra]}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                        School_Infrastructure_Metrics</strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let infra of tooltipInfra;let i=index">
+                                                                <td
+                                                                    *ngIf="i> infraLength && infra != 'total_schools_data_received'">
+                                                                    {{toolTipInfraKeys[i]}}</td>
+                                                                <td
+                                                                    *ngIf="i> infraLength && infra != 'total_schools_data_received'">
+                                                                    :</td>
+                                                                <td
+                                                                    *ngIf="i> infraLength && infraTooltipMetrics[i] && infra != 'total_schools_data_received'">
+                                                                    {{healthCardData['school_infrastructure'][infra]}} %
+                                                                </td>
+                                                                <td
+                                                                    *ngIf="i> infraLength && !infraTooltipMetrics[i] && infra != 'total_schools_data_received'">
+                                                                    {{healthCardData['school_infrastructure'][infra]}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <h6 class="headings"> School Infrastructure
+                                </h6>
+                                <div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['school_infrastructure'] && healthCardData['school_infrastructure']['infra_score'] > 80  ? infraColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['school_infrastructure'] && healthCardData['school_infrastructure']['infra_score']/65 >= 1  ? infraColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['school_infrastructure'] && healthCardData['school_infrastructure']['infra_score']/55 >=1  ? infraColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['school_infrastructure'] && healthCardData['school_infrastructure']['infra_score']/40 >= 1  ? infraColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['school_infrastructure'] && healthCardData['school_infrastructure']['infra_score'] < 40    ? infraColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                </div>
                             </div>
-                            <table>
-                                <tbody>
-                                    <tr *ngFor="let infra of schoolInfra; let i=index">
-                                        <td>
-                                            <span>{{schoolInfraKey[i]}}</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span>{{healthCardData['school_infrastructure'][infra]}} %</span>
-                                        </td>
-                                    </tr>
-                                    <strong *ngIf="level != 'state'"
-                                        style="text-decoration: underline;  font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
-                                        + level.substr(1)}} Rank</strong>
-                                    <tr *ngFor="let infra of schoolInfraRank; let i=index">
-                                        <td *ngIf="level != 'state'">
-                                            <span>{{schoolInfraRankKye[i]}}</span>
-                                        </td>
-                                        <td *ngIf="level != 'state'">:</td>
-                                        <td *ngIf="level != 'state'">
-                                            <span>{{healthCardData['school_infrastructure'][infra]}} </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <br>
-                            <strong>Areas To Focus : &nbsp;
-                                {{healthCardData['school_infrastructure']['areas_to_focus']}}</strong>
-
-
-                            <p *ngIf="showLink" class="link" id="infraLink"><a href="javascript: void(0)"
-                                    (click)="goToReport('/infrastructure/school-infra-map')">Click to Access
-                                    Report</a></p>
                         </div>
-                    </div>
-                    <div *ngIf="!healthCardData['school_infrastructure']"
-                        style="position: absolute; left: 32%; top: 45%;color: red;">
-                        No Data Available
+                        <div class="row" *ngIf="healthCardData['school_infrastructure']">
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div style="margin-left: 15px;">
+                                    <strong style="font-size: 15px;line-height: 2em; font-weight: bold;">Infrastructure
+                                        Score
+                                    </strong>
+                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                        <circle-progress
+                                            [percent]="healthCardData['school_infrastructure']['infra_score']"
+                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
+                                            [space]="-6" [outerStrokeColor]="infraColor" [innerStrokeColor]="'gray'"
+                                            [titleFontSize]="40" [unitsFontSize]="40" [showSubtitle]="false"
+                                            [animation]="true" [animationDuration]="800" [startFromZero]="false"
+                                            [responsive]="true" [renderOnClick]="false" [unitsFontWeight]="20">
+                                        </circle-progress>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                <div>
+                                    <strong *ngIf="level != 'state'"
+                                        style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
+                                        + level.substr(1)}} Rank</strong>
+                                    <table style="margin-left: 20px;">
+                                        <thead>
+                                            <tr *ngFor="let infra of schoolInfraRank; let i=index">
+                                                <td *ngIf="level != 'state'">
+                                                    <span>{{schoolInfraRankKye[i]}}</span>
+                                                </td>
+                                                <td *ngIf="level != 'state'">:</td>
+                                                <td *ngIf="level != 'state'">
+                                                    <span>{{healthCardData['school_infrastructure'][infra]}} </span>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <strong style="margin-left: 20px;">Areas To Focus : &nbsp;
+                                    {{healthCardData['school_infrastructure']['areas_to_focus']}}</strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p *ngIf="showLink" class="link" id="infraLink"><a href="javascript: void(0)"
+                                        (click)="goToReport('/infrastructure/school-infra-map')">Click to Access
+                                        Report</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div *ngIf="!healthCardData['school_infrastructure']"
+                            style="position: absolute; left: 32%; top: 45%;color: red;">
+                            No Data Available
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="udise" style="margin-bottom:10px !important">
-                    <div style="margin-bottom: 10px;">
-                        <h6 class="headings" style="float: left; margin-right: 10px;"> UDISE </h6>
-                        <div [ngStyle]="{'background-color': healthCardData['udise'] ? udiseColor : ''}"
-                            style="height: 20px;float: left; width: 20px; border-radius: 10px;"></div>
-                    </div>
-                    <br>
-                    <div [ngStyle]="{'height': height }"
-                        style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;background-color: #e6e6e6;">
-                        <div *ngIf="healthCardData['udise']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
-                                id="udiseTooltipBtn">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic5"
-                                    ngbDropdownToggle>
-                                    <em class="fa fa-info-circle" style="color: blue;"></em>
-                                </button>
-                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu
-                                    id="udiseTooltip" aria-labelledby="dropdownBasic5">
-                                    <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
-                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
-                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
-                                                                    Details</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of tooltipUDISE;let i=index">
-                                                            <td *ngIf="i<=udiseLength && level !='state'">
-                                                                {{tooltipUDISEKyes[i]}}</td>
-                                                            <td *ngIf="i<=udiseLength && level !='state'">:</td>
-                                                            <td *ngIf="i<=udiseLength && level !='state'">
-                                                                {{healthCardData['udise'][key]}}
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of tooltipUDISE;let i=index">
-                                                            <td *ngIf="key == 'total_schools' && level =='state'">
-                                                                {{tooltipUDISEKyes[i]}}</td>
-                                                            <td *ngIf="key == 'total_schools' && level =='state'">:</td>
-                                                            <td *ngIf="key == 'total_schools' && level =='state'">
-                                                                {{healthCardData['udise'][key]}}
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
-                                                                    All Indices</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of tooltipUDISE;let i=index">
-                                                            <td
-                                                                *ngIf="i>udiseLength && healthCardData['udise'][key] && key != 'total_schools'">
-                                                                {{tooltipUDISEKyes[i]}}</td>
-                                                            <td
-                                                                *ngIf="i>udiseLength && healthCardData['udise'][key] && key != 'total_schools'">
-                                                                :
-                                                            </td>
-                                                            <td
-                                                                *ngIf="i>udiseLength && healthCardData['udise'][key] && key != 'total_schools'">
-                                                                {{healthCardData['udise'][key]}} %
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                    <div [ngStyle]="{'min-height': height }" class="card">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div *ngIf="healthCardData['udise']" ngbDropdown
+                                    class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                    id="udiseTooltipBtn">
+                                    <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic5"
+                                        ngbDropdownToggle>
+                                        <em class="fa fa-info-circle" style="color: blue;"></em>
+                                    </button>
+                                    <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown"
+                                        ngbDropdownMenu id="udiseTooltip" aria-labelledby="dropdownBasic5">
+                                        <div id="div1"
+                                            style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
+                                            <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                                <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                        Details</strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of tooltipUDISE;let i=index">
+                                                                <td *ngIf="i<=udiseLength && level !='state'">
+                                                                    {{tooltipUDISEKyes[i]}}</td>
+                                                                <td *ngIf="i<=udiseLength && level !='state'">:</td>
+                                                                <td *ngIf="i<=udiseLength && level !='state'">
+                                                                    {{healthCardData['udise'][key]}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of tooltipUDISE;let i=index">
+                                                                <td *ngIf="key == 'total_schools' && level =='state'">
+                                                                    {{tooltipUDISEKyes[i]}}</td>
+                                                                <td *ngIf="key == 'total_schools' && level =='state'">:
+                                                                </td>
+                                                                <td *ngIf="key == 'total_schools' && level =='state'">
+                                                                    {{healthCardData['udise'][key]}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                        All Indices</strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of tooltipUDISE;let i=index">
+                                                                <td
+                                                                    *ngIf="i>udiseLength && healthCardData['udise'][key] && key != 'total_schools'">
+                                                                    {{tooltipUDISEKyes[i]}}</td>
+                                                                <td
+                                                                    *ngIf="i>udiseLength && healthCardData['udise'][key] && key != 'total_schools'">
+                                                                    :
+                                                                </td>
+                                                                <td
+                                                                    *ngIf="i>udiseLength && healthCardData['udise'][key] && key != 'total_schools'">
+                                                                    {{healthCardData['udise'][key]}} %
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <h6 class="headings"> UDISE
+                                </h6>
+                                <div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['udise'] && healthCardData['udise']['infrastructure_score'] > 80  ? udiseColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['udise'] && healthCardData['udise']['infrastructure_score']/65 >= 1  ? udiseColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['udise'] && healthCardData['udise']['infrastructure_score']/55 >=1  ? udiseColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['udise'] && healthCardData['udise']['infrastructure_score']/40 >= 1  ? udiseColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['udise'] && healthCardData['udise']['infrastructure_score'] < 40    ? udiseColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                </div>
                             </div>
-                            <table>
-                                <tbody>
-                                    <tr *ngFor="let key of UDISE; let i=index">
-                                        <td>{{UDISEKeys[i]}}</td>
-                                        <td>:</td>
-                                        <td>{{healthCardData['udise'][key]}} %</td>
-                                    </tr>
+                        </div>
+                        <div class="row" *ngIf="healthCardData['udise']">
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div style="margin-left: 15px;">
+                                    <strong style="font-size: 15px;line-height: 2em; font-weight: bold;">Infrastructure
+                                        Score
+                                    </strong>
+                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                        <circle-progress [percent]="healthCardData['udise']['infrastructure_score']"
+                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
+                                            [space]="-6" [outerStrokeColor]="udiseColor" [innerStrokeColor]="'gray'"
+                                            [titleFontSize]="40" [unitsFontSize]="40" [showSubtitle]="false"
+                                            [animation]="true" [animationDuration]="800" [startFromZero]="false"
+                                            [responsive]="true" [renderOnClick]="false" [unitsFontWeight]="20">
+                                        </circle-progress>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                <div>
                                     <strong *ngIf="level != 'state'"
-                                        style="text-decoration: underline;  font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
+                                        style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Rank</strong>
-                                    <tr *ngFor="let key of schoolInfraRank; let i=index">
-                                        <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
-                                        <td *ngIf="level != 'state'">:</td>
-                                        <td *ngIf="level != 'state'">{{healthCardData['udise'][key]}}
-                                        </td>
-                                    </tr>
-                                    <strong *ngIf="level != 'school'"
-                                        style="text-decoration: underline; font-size: 15px;line-height: 2em;">School
-                                        Categories</strong>
-
-                                    <tr *ngFor="let key of UDISECategory; let i=index">
-                                        <td *ngIf="level != 'school'">
-                                            {{UDISECategoryKey[i]}}</td>
-                                        <td *ngIf="level != 'school'">:</td>
-                                        <td *ngIf="level != 'school'">
-                                            {{healthCardData['udise'][key]}} schools</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <p *ngIf="showLink" class="link" id="udiseLink">
-                                <a href="javascript:void(0)" (click)="goToReport('/infrastructure/udise-report')">Click
-                                    to Access
-                                    Report</a>
-                            </p>
+                                    <table style="margin-left: 20px;">
+                                        <thead>
+                                            <tr *ngFor="let key of schoolInfraRank; let i=index">
+                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                                <td *ngIf="level != 'state'">:</td>
+                                                <td *ngIf="level != 'state'">{{healthCardData['udise'][key]}}
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div style="margin-left: 15px;">
+                                    <table>
+                                        <tbody>
+                                            <strong *ngIf="level != 'school'"
+                                                style="font-size: 15px;line-height: 2em;">School
+                                                Categories</strong>
+                                            <tr *ngFor="let key of UDISECategory; let i=index">
+                                                <td *ngIf="level != 'school'">
+                                                    {{UDISECategoryKey[i]}}</td>
+                                                <td *ngIf="level != 'school'">:</td>
+                                                <td *ngIf="level != 'school'">
+                                                    {{healthCardData['udise'][key]}} schools</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p *ngIf="showLink" class="link" id="udiseLink"><a href="javascript: void(0)"
+                                        (click)="goToReport('/infrastructure/udise-report')">Click to Access
+                                        Report</a>
+                                </p>
+                            </div>
                         </div>
                         <div *ngIf="!healthCardData['udise']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">
@@ -629,93 +934,133 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="crc" style="margin-bottom:10px !important">
-                    <div style="margin-bottom: 10px;">
-                        <h6 class="headings" style="float: left; margin-right: 10px;"> CRC Visits </h6>
-                        <div [ngStyle]="{'background-color': healthCardData['crc_visit'] ? crcColor : ''}"
-                            style="height: 20px;float: left; width: 20px; border-radius: 10px;"></div>
-                    </div>
-                    <br>
-                    <div [ngStyle]="{'height': height }"
-                        style="border: 2px solid gray; border-radius: 10px; height: 300px; padding: 10px;background-color: #e6e6e6;">
-                        <div *ngIf="healthCardData['crc_visit']">
-                            <div ngbDropdown class="d-inline-block healthcard-tooltip" [placement]="placement"
-                                id="crcTooltipBtn">
-                                <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic6"
-                                    ngbDropdownToggle>
-                                    <em class="fa fa-info-circle" style="color: blue;"></em>
-                                </button>
-                                <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown" ngbDropdownMenu
-                                    id="crcTooltip" aria-labelledby="dropdownBasic6">
-                                    <div id="div1"
-                                        style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
-                                        <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
-                                            <div id="div3" style="height:1000px auto; width: 500px auto;">
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
-                                                                    Details</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of tooltipCrc;let i=index">
-                                                            <td *ngIf="i<=crcLength">{{tooltipCrcKeys[i]}}</td>
-                                                            <td *ngIf="i<=crcLength">:</td>
-                                                            <td *ngIf="i<=crcLength">
-                                                                {{healthCardData['crc_visit'][key]}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <strong
-                                                                    style="text-decoration: underline; font-size: 13px;line-height: 2em;">
-                                                                    Schools Visit Details</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-size: 12px;"
-                                                            *ngFor="let key of tooltipCrc;let i=index">
-                                                            <td *ngIf="i >crcLength">{{tooltipCrcKeys[i]}}</td>
-                                                            <td *ngIf="i >crcLength">:</td>
-                                                            <td
-                                                                *ngIf="i >crcLength && tooltipCrcKeys[i].includes('Percent')">
-                                                                {{healthCardData['crc_visit'][key]}} %</td>
-                                                            <td
-                                                                *ngIf="i >crcLength  && !tooltipCrcKeys[i].includes('Percent')">
-                                                                {{healthCardData['crc_visit'][key]}}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                    <div [ngStyle]="{'min-height': height }" class="card">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div *ngIf="healthCardData['crc_visit']" ngbDropdown
+                                    class="d-inline-block healthcard-tooltip" [placement]="placement"
+                                    id="crcTooltipBtn">
+                                    <button class="btn btn-outline-primary healthcard-tooltip-btn" id="dropdownBasic6"
+                                        ngbDropdownToggle>
+                                        <em class="fa fa-info-circle" style="color: blue;"></em>
+                                    </button>
+                                    <div style="border-radius: 10px;" class="healthcard-tooltip-dropdown"
+                                        ngbDropdownMenu id="crcTooltip" aria-labelledby="dropdownBasic6">
+                                        <div id="div1"
+                                            style="height: 250px;width: 320px; position:relative; border-radius: 10px;border: 1px solid gray; padding: 5px 5px 5px 5px; margin-right: 8px;">
+                                            <div id="div2" style="max-height:100%;min-width: 100%; overflow:auto;">
+                                                <div id="div3" style="height:1000px auto; width: 500px auto;">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                        Details</strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of tooltipCrc;let i=index">
+                                                                <td *ngIf="i<=crcLength">{{tooltipCrcKeys[i]}}</td>
+                                                                <td *ngIf="i<=crcLength">:</td>
+                                                                <td *ngIf="i<=crcLength">
+                                                                    {{healthCardData['crc_visit'][key]}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <strong
+                                                                        style="text-decoration: underline; font-size: 13px;line-height: 2em;">
+                                                                        Schools Visit Details</strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="font-size: 12px;"
+                                                                *ngFor="let key of tooltipCrc;let i=index">
+                                                                <td *ngIf="i >crcLength">{{tooltipCrcKeys[i]}}</td>
+                                                                <td *ngIf="i >crcLength">:</td>
+                                                                <td
+                                                                    *ngIf="i >crcLength && tooltipCrcKeys[i].includes('Percent')">
+                                                                    {{healthCardData['crc_visit'][key]}} %</td>
+                                                                <td
+                                                                    *ngIf="i >crcLength  && !tooltipCrcKeys[i].includes('Percent')">
+                                                                    {{healthCardData['crc_visit'][key]}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <h6 class="headings"> CRC Visits
+                                </h6>
+                                <div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['crc_visit'] && healthCardData['crc_visit']['schools_0'] > 80  ? crcColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['crc_visit'] && healthCardData['crc_visit']['schools_0']/65 >= 1  ? crcColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['crc_visit'] && healthCardData['crc_visit']['schools_0']/55 >=1  ? crcColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['crc_visit'] && healthCardData['crc_visit']['schools_0']/40 >= 1  ? crcColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                    <div [ngStyle]="{'background-color':  healthCardData['crc_visit'] && healthCardData['crc_visit']['schools_0'] < 40    ? crcColor : '#cccfcd' }"
+                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+                                    </div>
+                                </div>
                             </div>
-                            <table>
-                                <tbody>
-                                    <strong *ngIf="level != 'state'"
-                                        style="text-decoration: underline; font-size: 15px;line-height: 2em;">Schools
-                                        Visit
-                                        Category</strong>
-                                    <strong *ngIf="level == 'state'"
-                                        style="text-decoration: underline; font-size: 15px;line-height: 2em;">CRC
-                                        Details</strong>
-                                    <tr *ngFor="let crc of crcVisit; let i=index">
-                                        <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">
-                                            <span>{{crcVisitKeys[i].replace("Schools", "School")}}</span>
-                                        </td>
-                                        <td *ngIf="level !='school'"> <span>{{crcVisitKeys[i]}}</span></td>
-                                        <td *ngIf="level !='school'">:</td>
-                                        <td *ngIf="level !='school'"> <span>{{healthCardData['crc_visit'][crc]}} <span
-                                                    *ngIf="level != 'state'">%</span>
-                                            </span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <p *ngIf="showLink" class="link" id="crcLink">
-                                <a href="javascript:void(0)" (click)="goToReport('/crc/crc-report')">Click
-                                    to Access
-                                    Report</a>
+                        </div>
+                        <div class="row" *ngIf="healthCardData['crc_visit']">
+                            <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="level != 'state'">
+                                <div style="margin-left: 15px;">
+                                    <strong style="font-size: 15px;line-height: 2em; font-weight: bold;">Visit Score
+                                    </strong>
+                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                        <circle-progress [percent]="healthCardData['crc_visit']['schools_0']"
+                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
+                                            [space]="-6" [outerStrokeColor]="crcColor" [innerStrokeColor]="'gray'"
+                                            [titleFontSize]="40" [unitsFontSize]="40" [showSubtitle]="false"
+                                            [animation]="true" [animationDuration]="800" [startFromZero]="false"
+                                            [responsive]="true" [renderOnClick]="false" [unitsFontWeight]="20">
+                                        </circle-progress>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <strong *ngIf="level != 'state'"
+                                    style="margin-left: 15px; font-size: 15px;line-height: 2em;">Schools
+                                    Visit
+                                    Category</strong>
+                                <strong *ngIf="level == 'state'"
+                                    style="margin-left: 15px; font-size: 15px;line-height: 2em;">CRC
+                                    Details</strong>
+                                <table style="margin-left: 15px;">
+                                    <thead>
+                                        <tr *ngFor="let crc of crcVisit; let i=index">
+                                            <td *ngIf="level =='school' && healthCardData['crc_visit'][crc] > 0">
+                                                <span>{{crcVisitKeys[i].replace("Schools", "School")}}</span>
+                                            </td>
+                                            <td *ngIf="level !='school'"> <span>{{crcVisitKeys[i]}}</span></td>
+                                            <td *ngIf="level !='school'">:</td>
+                                            <td *ngIf="level !='school'"> <span>{{healthCardData['crc_visit'][crc]}}
+                                                    <span *ngIf="level != 'state'">%</span>
+                                                </span></td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p *ngIf="showLink" class="link" id="crcLink"><a href="javascript: void(0)"
+                                        (click)="goToReport('/crc/crc-report')">Click to Access
+                                        Report</a>
+                                </p>
+                            </div>
                         </div>
                         <div *ngIf="!healthCardData['crc_visit']"
                             style="position: absolute; left: 32%; top: 45%;color: red;">
