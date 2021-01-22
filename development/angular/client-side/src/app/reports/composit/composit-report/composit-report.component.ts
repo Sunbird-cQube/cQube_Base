@@ -35,8 +35,8 @@ export class CompositReportComponent implements OnInit {
   public myBlock: any;
   public myCluster: any;
 
-  public blockHidden;
-  public clusterHidden;
+  public blockHidden = true;
+  public clusterHidden = true;
 
   public dist: boolean = false;
   public blok: boolean = false;
