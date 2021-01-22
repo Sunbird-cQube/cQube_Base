@@ -245,6 +245,17 @@ fi
 }
 
 # Only for release 1.9
+check_length(){
+    len_status=1
+    str_length=${#1}
+    if [[ $str_length -ge 3 && $str_length -le 63 ]]; then 
+        len_status=0
+        return $len_status;
+    else 
+        return $len_status;
+    fi
+}
+
 check_readonly_db_naming(){
 check_length $2
 if [[ $? == 0 ]]; then
@@ -479,7 +490,7 @@ case $key in
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_readonly_db_naming $key $value CQUBE_DB_NAME
+          check_readonly_db_naming $key $value
        fi
        ;;
    keycloak_adm_user)
@@ -512,7 +523,7 @@ case $key in
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_readonly_db_password $db_name $db_user $db_password
+          check_readonly_db_password $key $value
        fi
        ;;
    api_endpoint)
