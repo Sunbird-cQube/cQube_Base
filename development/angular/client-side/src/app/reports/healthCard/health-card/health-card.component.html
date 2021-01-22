@@ -52,9 +52,14 @@
                                     <span>State</span> :
                                     <span>{{state}}</span>
                                 </span>
-                                <span *ngIf="level !='state'">
+                                <span *ngIf="level !='state' && level !='school'">
                                     <span>{{updatedKeys[i]}}</span> :
                                     <span>{{healthCardData[key]}}</span>
+                                </span>
+                                <span *ngIf="level =='school'">
+                                    <span *ngIf="updatedKeys[i] != 'Total Schools'">{{updatedKeys[i]}} </span>
+                                    <span *ngIf="updatedKeys[i] != 'Total Schools'"> : </span>
+                                    <span *ngIf="updatedKeys[i] != 'Total Schools'"> {{healthCardData[key]}}</span>
                                 </span>
                                 <span *ngIf="level =='state'">
                                     <span>{{updatedKeys[i]}}</span> :
@@ -420,11 +425,11 @@
                                                         </tr>
                                                         <tr style="font-size: 12px;"
                                                             *ngFor="let infra of tooltipInfra;let i=index">
-                                                            <td *ngIf="i== tooltipInfra.length-1  && level =='state'">
+                                                            <td *ngIf="i== 0  && level =='state'">
                                                                 {{toolTipInfraKeys[i]}}</td>
-                                                            <td *ngIf="i== tooltipInfra.length-1 && level =='state'">:
+                                                            <td *ngIf="i== 0 && level =='state'">:
                                                             </td>
-                                                            <td *ngIf="i== tooltipInfra.length-1 && level =='state'">
+                                                            <td *ngIf="i== 0 && level =='state'">
                                                                 {{healthCardData['school_infrastructure'][infra]}}</td>
                                                         </tr>
                                                         <tr style="font-size: 12px;"
@@ -491,7 +496,7 @@
                                 </tbody>
                             </table>
                             <br>
-                            <strong >Areas To Focus : &nbsp;
+                            <strong>Areas To Focus : &nbsp;
                                 {{healthCardData['school_infrastructure']['areas_to_focus']}}</strong>
 
 
