@@ -7,12 +7,10 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class BubblesComponent implements OnInit {
   @Input() cardData: any;
-  @Input() Value: number;
+  @Input() Value: any;
   @Input() color: any;
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.Value);
   }
-
 }

@@ -98,11 +98,11 @@ export class HealthCardService {
   }
 
   public colors2 = {
-    1.0: '#006600',
-    0.8: '#99ff33',
-    0.6: '#ffff00',
-    0.4: '#cc6600',
-    0.2: '#ff0000',
+    10: '#006600',
+    8: '#99ff33',
+    6: '#cccc00',
+    4: '#cc6600',
+    2: '#ff0000',
   }
 
   colorGredient(data) {

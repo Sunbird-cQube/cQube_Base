@@ -198,23 +198,8 @@
                                 <h6 class="headings"> Student Attendance
                                 </h6>
                                 <div>
-                                    <!-- <div [ngStyle]="{'background-color': healthCardData['student_attendance'] && 0.9/0.2 >= 4  ? stdAttdRankMatrixColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color': healthCardData['student_attendance']  && 0.9/0.4 >= 2  ? stdAttdRankMatrixColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color': healthCardData['student_attendance'] && 0.9/0.6 >= 1  ? stdAttdRankMatrixColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color': healthCardData['student_attendance'] && 0.9/0.8 >= 1  ? stdAttdRankMatrixColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color': healthCardData['student_attendance']  && 0.9 > 0.8  ? stdAttdRankMatrixColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div> -->
-
-                                    <app-bubbles [cardData]="healthCardData['student_attendance']"></app-bubbles>
+                                    <app-bubbles [cardData]="healthCardData['student_attendance']"
+                                        [color]="stdAttdRankMatrixColor" [Value]="stdAttdRankMatrixValue"></app-bubbles>
                                 </div>
                             </div>
                         </div>
@@ -372,21 +357,8 @@
                                 <h6 class="headings"> Semester Performance
                                 </h6>
                                 <div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['student_semester'] && healthCardData['student_semester']['performance'] > 80  ? semColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['student_semester'] && healthCardData['student_semester']['performance']/65 >= 0  ? semColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['student_semester'] && healthCardData['student_semester']['performance']/55 >= 1  ? semColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['student_semester'] && healthCardData['student_semester']['performance']/40 >= 2  ? semColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['student_semester'] && healthCardData['student_semester']['performance']/40 >= 2  ? semColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
+                                    <app-bubbles [cardData]="healthCardData['student_semester']"
+                                        [color]="semRankMatrixColor" [Value]="semRankMatrixValue"></app-bubbles>
                                 </div>
                             </div>
                         </div>
@@ -520,24 +492,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h6 class="headings"> PAT Performance
-                                </h6>
+                                <h6 class="headings"> PAT Performance </h6>
                                 <div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['pat_performance'] && healthCardData['pat_performance']['school_performance'] > 80  ? patColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['pat_performance'] && healthCardData['pat_performance']['school_performance']/65 >= 1  ? patColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['pat_performance'] && healthCardData['pat_performance']['school_performance']/55 >=1  ? patColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['pat_performance'] && healthCardData['pat_performance']['school_performance']/40 >= 1  ? patColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['pat_performance'] && healthCardData['pat_performance']['school_performance'] < 40    ? patColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
+                                    <app-bubbles [cardData]="healthCardData['pat_performance']"
+                                        [color]="patRankMatrixColor" [Value]="patRankMatrixValue"></app-bubbles>
                                 </div>
                             </div>
                         </div>
@@ -693,21 +651,8 @@
                                 <h6 class="headings"> School Infrastructure
                                 </h6>
                                 <div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['school_infrastructure'] && healthCardData['school_infrastructure']['infra_score'] > 80  ? infraColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['school_infrastructure'] && healthCardData['school_infrastructure']['infra_score']/65 >= 1  ? infraColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['school_infrastructure'] && healthCardData['school_infrastructure']['infra_score']/55 >=1  ? infraColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['school_infrastructure'] && healthCardData['school_infrastructure']['infra_score']/40 >= 1  ? infraColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['school_infrastructure'] && healthCardData['school_infrastructure']['infra_score'] < 40    ? infraColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
+                                    <app-bubbles [cardData]="healthCardData['school_infrastructure']"
+                                        [color]="infraRankMatrixColor" [Value]="infraRankMatrixValue"></app-bubbles>
                                 </div>
                             </div>
                         </div>
@@ -846,21 +791,8 @@
                                 <h6 class="headings"> UDISE
                                 </h6>
                                 <div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['udise'] && healthCardData['udise']['infrastructure_score'] > 80  ? udiseColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['udise'] && healthCardData['udise']['infrastructure_score']/65 >= 1  ? udiseColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['udise'] && healthCardData['udise']['infrastructure_score']/55 >=1  ? udiseColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['udise'] && healthCardData['udise']['infrastructure_score']/40 >= 1  ? udiseColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['udise'] && healthCardData['udise']['infrastructure_score'] < 40    ? udiseColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
+                                    <app-bubbles [cardData]="healthCardData['udise']" [color]="udiseRankMatrixColor"
+                                        [Value]="udiseRankMatrixValue"></app-bubbles>
                                 </div>
                             </div>
                         </div>
@@ -994,21 +926,8 @@
                                 <h6 class="headings"> CRC Visits
                                 </h6>
                                 <div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['crc_visit'] && healthCardData['crc_visit']['schools_0'] > 80  ? crcColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['crc_visit'] && healthCardData['crc_visit']['schools_0']/65 >= 1  ? crcColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['crc_visit'] && healthCardData['crc_visit']['schools_0']/55 >=1  ? crcColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['crc_visit'] && healthCardData['crc_visit']['schools_0']/40 >= 1  ? crcColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
-                                    <div [ngStyle]="{'background-color':  healthCardData['crc_visit'] && healthCardData['crc_visit']['schools_0'] < 40    ? crcColor : '#cccfcd' }"
-                                        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-                                    </div>
+                                    <app-bubbles [cardData]="healthCardData['crc_visit']" [color]="crcRankMatrixColor"
+                                        [Value]="crcRankMatrixValue"></app-bubbles>
                                 </div>
                             </div>
                         </div>

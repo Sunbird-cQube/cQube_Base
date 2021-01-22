@@ -1,15 +1,5 @@
-<div [ngStyle]="{'background-color': cardData && Value/0.2 >= 4  ? color : '#cccfcd' }"
-    style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-</div>
-<div [ngStyle]="{'background-color': cardData  && Value/0.4 >= 2  ? color : '#cccfcd' }"
-    style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-</div>
-<div [ngStyle]="{'background-color': cardData && Value/0.6 >= 1  ? color : '#cccfcd' }"
-    style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-</div>
-<div [ngStyle]="{'background-color': cardData && Value/0.8 >= 1  ? color : '#cccfcd' }"
-    style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
-</div>
-<div [ngStyle]="{'background-color': cardData  && Value > 0.8  ? color : '#cccfcd' }"
-    style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+<div *ngFor="let x of [0,1,2,3,4].slice().reverse(),let i=index">
+    <div [ngStyle]="{'background-color': cardData && Value/x+2 > 4  ? color : '#cccfcd' }"
+        style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
+    </div>
 </div>
