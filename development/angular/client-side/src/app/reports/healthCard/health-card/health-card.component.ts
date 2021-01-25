@@ -142,6 +142,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
 
   stateData() {
     document.getElementById('spinner').style.display = 'block';
+    document.getElementById('home').style.display = "none";
     this.semLength = 2;
     this.udiseLength = -1;
     this.crcLength = 1;
@@ -187,7 +188,6 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
 
       this.showData(this.healthCardData);
       document.getElementById('spinner').style.display = 'none';
-      document.getElementById('home').style.display = "none";
     }, err => {
       this.err = true;
       this.showAll = true;
@@ -452,6 +452,13 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   udiseRankMatrixColor;
   crcRankMatrixColor;
 
+  stdAttdRankMatrixValue;
+  semRankMatrixValue;
+  patRankMatrixValue;
+  infraRankMatrixValue;
+  udiseRankMatrixValue;
+  crcRankMatrixValue;
+
   showData(healthCardData) {
     if (this.level != 'state') {
       this.updatedKeys = [];
@@ -520,7 +527,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.toolTipInfraKeys.map(key => {
         this.infraTooltipMetrics.push(key.includes('Percent'));
       });
-      this.infraRankMatrixColor = this.service.colorRankMatrics(0.4);
+      this.infraRankMatrixValue = healthCardData['school_infrastructure']['state_level_score'] * 10;
+      this.infraRankMatrixColor = this.service.colorRankMatrics(this.infraRankMatrixValue);
     }
     if (healthCardData['student_attendance'] && healthCardData['student_attendance'] != null) {
       this.tooltipStdAttendance = Object.keys(healthCardData['student_attendance']);
@@ -532,7 +540,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.tooltipStdAttendanceKeys.push(myKey);
       });
       this.stdAttendanceColor = this.service.colorGredient(healthCardData['student_attendance']['attendance']);
-      this.stdAttdRankMatrixColor = this.service.colorRankMatrics(0.9);
+      this.stdAttdRankMatrixValue = healthCardData['student_attendance']['state_level_score'] * 10;
+      this.stdAttdRankMatrixColor = this.service.colorRankMatrics(this.stdAttdRankMatrixValue);
     }
     if (healthCardData['student_semester'] && healthCardData['student_semester'] != null) {
       this.tooltimSem = Object.keys(healthCardData['student_semester']);
@@ -559,7 +568,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.tooltimSem.splice(i, 1);
       }
       this.semColor = this.service.colorGredient(healthCardData['student_semester']['performance']);
-      this.semRankMatrixColor = this.service.colorRankMatrics(0.7);
+      this.semRankMatrixValue = healthCardData['student_semester']['state_level_score'] * 10;
+      this.semRankMatrixColor = this.service.colorRankMatrics(this.semRankMatrixValue);
     }
     if (healthCardData['pat_performance'] && healthCardData['pat_performance'] != null) {
       this.tooltipPat = Object.keys(healthCardData['pat_performance']);
@@ -584,7 +594,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       } else {
         this.patColor = this.service.colorGredient(healthCardData['pat_performance'][`${this.level}_performance`]);
       }
-      this.patRankMatrixColor = this.service.colorRankMatrics(0.4);
+      this.patRankMatrixValue = healthCardData['pat_performance']['state_level_score'] * 10;
+      this.patRankMatrixColor = this.service.colorRankMatrics(this.patRankMatrixValue);
     }
     if (healthCardData['crc_visit'] && healthCardData['crc_visit'] != null) {
       this.tooltipCrc = Object.keys(healthCardData['crc_visit']);
@@ -599,7 +610,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       });
 
       this.crcColor = this.service.colorGredient1(healthCardData['crc_visit']['schools_0']);
-      this.crcRankMatrixColor = this.service.colorRankMatrics(0.5);
+      this.crcRankMatrixValue = healthCardData['crc_visit']['state_level_score'] * 10;
+      this.crcRankMatrixColor = this.service.colorRankMatrics(this.crcRankMatrixValue);
     }
     if (healthCardData['udise'] && healthCardData['udise'] != null) {
       this.tooltipUDISE = Object.keys(healthCardData['udise']);
@@ -611,7 +623,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.tooltipUDISEKyes.push(myKey);
       });
       this.udiseColor = this.service.colorGredient(healthCardData['udise']['school_infrastructure']);
-      this.udiseRankMatrixColor = this.service.colorRankMatrics(0.4);
+      this.udiseRankMatrixValue = healthCardData['udise']['state_level_score'] * 10;
+      this.udiseRankMatrixColor = this.service.colorRankMatrics(this.udiseRankMatrixValue);
     }
   }
 

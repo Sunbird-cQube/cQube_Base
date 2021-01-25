@@ -98,11 +98,11 @@ export class HealthCardService {
   }
 
   public colors2 = {
-    1.0: '#006600',
-    0.8: '#99ff33',
-    0.6: '#ffff00',
-    0.4: '#cc6600',
-    0.2: '#ff0000',
+    10: '#006600',
+    8: '#99ff33',
+    6: '#cccc00',
+    4: '#cc6600',
+    2: '#ff0000',
   }
 
   colorGredient(data) {
@@ -142,10 +142,10 @@ export class HealthCardService {
     var setColor = '';
 
     for (let i = 0; i < keys.length; i++) {
-      if (parseInt(data) <= parseInt(keys[i])) {
+      if (data <= parseInt(keys[i])) {
         setColor = this.colors2[keys[i]];
         break;
-      } else if (parseInt(data) > parseInt(keys[i]) && parseInt(data) <= parseInt(keys[i + 1])) {
+      } else if (data > parseInt(keys[i]) && data <= parseInt(keys[i + 1])) {
         setColor = this.colors2[keys[i + 1]];
         break;
       }
