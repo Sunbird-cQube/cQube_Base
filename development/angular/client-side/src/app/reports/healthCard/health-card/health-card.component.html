@@ -1,6 +1,117 @@
-<div class="container-fluid" style="background-color: #f5f6fb;">
-    <div class="row" style="padding-bottom: 10px !important; ">
-        <div class="col-lg-7 col-md-6 col-sm-12">
+<div class="container-fluid" style="background-color: #f5f6fb; letter-spacing: 0;">
+    <div class="row row flex-column-reverse flex-lg-row" style="padding-bottom: 10px !important; min-height: 100px;">
+        <div class="col-lg-7 col-md-12 col-sm-12">
+            <div *ngIf="showAll"
+                style="min-height: 100px; max-height:fit-content; background-color: #3100cc; margin-top: 10px; border-radius: 20px; color: white;">
+                <div class="row" style="font-size: 13px; line-height: 1.85em;">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div style="padding: 10px 0px 10px 40px;">
+                                    <table>
+                                        <tbody>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf=" i%2==0 && i==0 && level =='state'"><small>State</small>
+                                                </td>
+                                                <td *ngIf=" i%2==0 && i==0 && level =='state'"
+                                                    style="text-align: center;">:</td>
+                                                <td *ngIf=" i%2==0 && i==0 && level =='state'">
+                                                    <strong>{{state}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf=" i%2==0 && level !='state' && level !='school'">
+                                                    <small>{{updatedKeys[i]}}</small>
+                                                </td>
+                                                <td *ngIf=" i%2==0 && level !='state' && level !='school'"
+                                                    style="text-align: center;">:</td>
+                                                <td *ngIf=" i%2==0 && level !='state' && level !='school'">
+                                                    <strong>{{healthCardData[key]}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf="i%2==0 && level =='school'"><small>{{updatedKeys[i]}}
+                                                    </small></td>
+                                                <td *ngIf="i%2==0 && level =='school'"><span
+                                                        style="text-align: center;"> : </span></td>
+                                                <td *ngIf="i%2==0 && level =='school'"><strong>
+                                                        {{healthCardData[key]}}</strong></td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td
+                                                    *ngIf="i%2==0 && i!=0 && level =='state' && healthCardData['basic_details']">
+                                                    <small>{{updatedKeys[i]}}</small>
+                                                </td>
+                                                <td *ngIf="i%2==0 && i!=0 && level =='state' && healthCardData['basic_details']"
+                                                    style="text-align: center;">
+                                                    :</td>
+                                                <td
+                                                    *ngIf="i%2==0 && i!=0 && level =='state' && healthCardData['basic_details']">
+                                                    <strong>{{healthCardData['basic_details'][key]}}</strong>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div style="padding: 10px 0px 10px 40px;">
+                                    <table>
+                                        <tbody>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td
+                                                    *ngIf=" i%2==1 && i==1 && level =='state' && healthCardData['basic_details']">
+                                                    <small>State ID</small>
+                                                </td>
+                                                <td *ngIf=" i%2==1 && i==1 && level =='state' && healthCardData['basic_details']"
+                                                    style="text-align: center;">
+                                                    :</td>
+                                                <td
+                                                    *ngIf=" i%2==1 && i==1 && level =='state' && healthCardData['basic_details']">
+                                                    <strong>{{healthCardData['basic_details']['state_id']}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf=" i%2==1 && level !='state' && level !='school'">
+                                                    <small>{{updatedKeys[i]}}</small>
+                                                </td>
+                                                <td *ngIf=" i%2==1 && level !='state' && level !='school'"
+                                                    style="text-align: center;">:</td>
+                                                <td *ngIf=" i%2==1 && level !='state' && level !='school'">
+                                                    <strong>{{healthCardData[key]}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td *ngIf="i%2==1 && level =='school'"><small>{{updatedKeys[i]}}
+                                                    </small></td>
+                                                <td *ngIf="i%2==1 && level =='school'"><span
+                                                        style="text-align: center;"> : </span></td>
+                                                <td *ngIf="i%2==1 && level =='school'"><strong>
+                                                        {{healthCardData[key]}}</strong></td>
+                                            </tr>
+                                            <tr *ngFor="let key of keys; let i=index">
+                                                <td
+                                                    *ngIf="i%2==1 && level =='state' && healthCardData['basic_details']">
+                                                    <small>{{updatedKeys[i]}}</small>
+                                                </td>
+                                                <td *ngIf="i%2==1 && level =='state' && healthCardData['basic_details']"
+                                                    style="text-align: center;">
+                                                    :</td>
+                                                <td
+                                                    *ngIf="i%2==1 && level =='state' && healthCardData['basic_details']">
+                                                    <strong>{{healthCardData['basic_details'][key]}}</strong>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-12 col-sm-12">
             <div style="height: 120px auto;margin-top: 5px; border-radius: 20px;">
                 <div class="row">
                     <div class="col-lg-12">
@@ -29,7 +140,7 @@
                     </div> -->
                 </div>
                 <div class="row" style="padding-top: 15px !important;">
-                    <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="col-lg-4 col-md-3 col-sm-12">
                         <label for="" style="font-size: 13px; font-weight: bold;">Choose Level</label>
                         <select id="level"
                             style="padding: 6.3px;width: 100%; margin-bottom: 10px;background-color: #f5f6fb; border-radius: 4px; font-size: 12px; font-weight: bold;"
@@ -41,136 +152,24 @@
                             </option>
                         </select>
                     </div>
-                    <div class="col-lg-6 col-md-4 col-sm-12">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="autocomplete" style="width:100%;">
                             <span id="warning" style="font-size: 10px; float: left;"> Please enter at least 2
                                 characters/digits</span>
                             <p style="line-height: 1em; float: left;">&nbsp;</p>
                             <input #searchInput id="myInput"
-                                style="border: 1px solid gray;background-color: #f5f6fb; padding: 2.7px; width: 100%; border-radius: 5px;margin-top: -2px;"
+                                style="border: 1px solid gray;background-color: #f5f6fb; padding: 6px; font-size: 12px; width: 100%; border-radius: 5px;margin-top: -5px;"
                                 type="search" class="clearable" autofocus autocomplete="off" name="districtName"
                                 [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
                             <br *ngIf="len < 2">
                             <br *ngIf="len >= 2" />
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4 col-sm-12">
+                    <div class="col-lg-2 col-md-3 col-sm-12">
                         <p style="line-height: 0.9em;">&nbsp;</p>
                         <button type="submit" class="btn btn-secondary" id="button"
-                            style="float: right;padding: 5.7px 15px 5.7px 15px; font-size: 12px; width: 100%; font-weight: bold;"
+                            style="float: right;padding: 5.7px 0px 5.7px 0px; font-size: 12px; width: 100%; text-align: center; font-weight: bold;"
                             (click)="onSubmit()">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-5 col-md-6 col-sm-12">
-            <div *ngIf="showAll"
-                style="min-height: 50px; max-height:fit-content; background-color: #3100cc; margin-top: 10px; border-radius: 20px; color: white;">
-                <div class="row" style="font-size: 13px; line-height: 1.85em;">
-                    <div class="col-lg-12 col-md-12">
-                        <div class="row">
-                            <div class="col-lg-5 col-md-5 col-sm-12">
-                                <div style="padding: 10px 0px 10px 40px;">
-                                    <table>
-                                        <tbody>
-                                            <tr *ngFor="let key of keys; let i=index">
-                                                <td *ngIf=" i%2==0 && i==0 && level =='state'"><small>State</small>
-                                                </td>
-                                                <td *ngIf=" i%2==0 && i==0 && level =='state'">:</td>
-                                                <td *ngIf=" i%2==0 && i==0 && level =='state'">
-                                                    <strong>{{state}}</strong>
-                                                </td>
-                                            </tr>
-                                            <tr *ngFor="let key of keys; let i=index">
-                                                <td *ngIf=" i%2==0 && level !='state' && level !='school'">
-                                                    <small>{{updatedKeys[i]}}</small>
-                                                </td>
-                                                <td *ngIf=" i%2==0 && level !='state' && level !='school'">:</td>
-                                                <td *ngIf=" i%2==0 && level !='state' && level !='school'">
-                                                    <strong>{{healthCardData[key]}}</strong>
-                                                </td>
-                                            </tr>
-                                            <tr *ngFor="let key of keys; let i=index">
-                                                <td *ngIf="i%2==0 && level =='school'"><small
-                                                        *ngIf="updatedKeys[i] != 'Total Schools'">{{updatedKeys[i]}}
-                                                    </small></td>
-                                                <td *ngIf="i%2==0 && level =='school'"><span
-                                                        *ngIf="updatedKeys[i] != 'Total Schools'"> : </span></td>
-                                                <td *ngIf="i%2==0 && level =='school'"><strong
-                                                        *ngIf="updatedKeys[i] != 'Total Schools'">
-                                                        {{healthCardData[key]}}</strong></td>
-                                            </tr>
-                                            <tr *ngFor="let key of keys; let i=index">
-                                                <td
-                                                    *ngIf="i%2==0 && i!=0 && level =='state' && healthCardData['basic_details']">
-                                                    <small>{{updatedKeys[i]}}</small>
-                                                </td>
-                                                <td
-                                                    *ngIf="i%2==0 && i!=0 && level =='state' && healthCardData['basic_details']">
-                                                    :</td>
-                                                <td
-                                                    *ngIf="i%2==0 && i!=0 && level =='state' && healthCardData['basic_details']">
-                                                    <strong>{{healthCardData['basic_details'][key]}}</strong>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-lg-7 col-md-7 col-sm-12">
-                                <div style="padding: 10px 0px 10px 40px;">
-                                    <table>
-                                        <tbody>
-                                            <tr *ngFor="let key of keys; let i=index">
-                                                <td
-                                                    *ngIf=" i%2==1 && i==1 && level =='state' && healthCardData['basic_details']">
-                                                    <small>State ID</small>
-                                                </td>
-                                                <td
-                                                    *ngIf=" i%2==1 && i==1 && level =='state' && healthCardData['basic_details']">
-                                                    :</td>
-                                                <td
-                                                    *ngIf=" i%2==1 && i==1 && level =='state' && healthCardData['basic_details']">
-                                                    <strong>{{healthCardData['basic_details']['state_id']}}</strong>
-                                                </td>
-                                            </tr>
-                                            <tr *ngFor="let key of keys; let i=index">
-                                                <td *ngIf=" i%2==1 && level !='state' && level !='school'">
-                                                    <small>{{updatedKeys[i]}}</small>
-                                                </td>
-                                                <td *ngIf=" i%2==1 && level !='state' && level !='school'">:</td>
-                                                <td *ngIf=" i%2==1 && level !='state' && level !='school'">
-                                                    <strong>{{healthCardData[key]}}</strong>
-                                                </td>
-                                            </tr>
-                                            <tr *ngFor="let key of keys; let i=index">
-                                                <td *ngIf="i%2==1 && level =='school'"><small
-                                                        *ngIf="updatedKeys[i] != 'Total Schools'">{{updatedKeys[i]}}
-                                                    </small></td>
-                                                <td *ngIf="i%2==1 && level =='school'"><span
-                                                        *ngIf="updatedKeys[i] != 'Total Schools'"> : </span></td>
-                                                <td *ngIf="i%2==1 && level =='school'"><strong
-                                                        *ngIf="updatedKeys[i] != 'Total Schools'">
-                                                        {{healthCardData[key]}}</strong></td>
-                                            </tr>
-                                            <tr *ngFor="let key of keys; let i=index">
-                                                <td
-                                                    *ngIf="i%2==1 && level =='state' && healthCardData['basic_details']">
-                                                    <small>{{updatedKeys[i]}}</small>
-                                                </td>
-                                                <td
-                                                    *ngIf="i%2==1 && level =='state' && healthCardData['basic_details']">
-                                                    :</td>
-                                                <td
-                                                    *ngIf="i%2==1 && level =='state' && healthCardData['basic_details']">
-                                                    <strong>{{healthCardData['basic_details'][key]}}</strong>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -230,23 +229,18 @@
                             </div>
                         </div>
                         <div class="row" *ngIf="healthCardData['student_attendance']">
-                            <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div style="margin-left: 15px;">
                                     <strong style="font-size: 15px;line-height: 2em; font-weight: bold;">Attendance
                                     </strong>
                                     <div style="height: 80px; width: 80px ;font-weight: bold; ">
-                                        <circle-progress [percent]="healthCardData['student_attendance']['attendance']"
-                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
-                                            [space]="-6" [outerStrokeColor]="stdAttendanceColor"
-                                            [innerStrokeColor]="'gray'" [titleFontSize]="40" [unitsFontSize]="40"
-                                            [showSubtitle]="false" [animation]="true" [animationDuration]="800"
-                                            [startFromZero]="false" [responsive]="true" [renderOnClick]="false"
-                                            [unitsFontWeight]="20">
-                                        </circle-progress>
+                                        <app-progress-circle
+                                            [value]="healthCardData['student_attendance']['attendance']"
+                                            [color]="stdAttendanceColor"></app-progress-circle>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div class="col-lg-7 col-md-7 col-sm-7">
                                 <div>
                                     <strong *ngIf="level != 'state'"
                                         style="font-size: 15px;line-height: 2em; margin-left: 20px;">{{level.charAt(0).toUpperCase()
@@ -273,8 +267,9 @@
                                             <strong *ngIf="level != 'school'"
                                                 style="font-size: 15px;line-height: 2em;">School
                                                 Categories</strong>
-                                            <tr style="font-weight: bold; color: gray;font-size: 14px;">
-                                                <td>Ateendance</td>
+                                            <tr *ngIf="level != 'school'"
+                                                style="font-weight: bold; color: gray;font-size: 14px;">
+                                                <td>Attendance</td>
                                                 <td></td>
                                                 <td>Schools</td>
                                             </tr>
@@ -393,22 +388,17 @@
                             </div>
                         </div>
                         <div class="row" *ngIf="healthCardData['student_semester']">
-                            <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div style="margin-left: 15px;">
                                     <strong style="font-size: 15px;line-height: 2em; font-weight: bold;"> Performance
                                     </strong>
                                     <div style="height: 80px; width: 80px ;font-weight: bold; ">
-                                        <circle-progress [percent]="healthCardData['student_semester']['performance']"
-                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
-                                            [space]="-6" [outerStrokeColor]="semColor" [innerStrokeColor]="'gray'"
-                                            [titleFontSize]="40" [unitsFontSize]="40" [showSubtitle]="false"
-                                            [animation]="true" [animationDuration]="800" [startFromZero]="false"
-                                            [responsive]="true" [renderOnClick]="false" [unitsFontWeight]="20">
-                                        </circle-progress>
+                                        <app-progress-circle [value]="healthCardData['student_semester']['performance']"
+                                            [color]="semColor"></app-progress-circle>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div class="col-lg-7 col-md-7 col-sm-7">
                                 <div>
                                     <strong *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
@@ -434,7 +424,8 @@
                                             <strong *ngIf="level != 'school'"
                                                 style="font-size: 15px;line-height: 2em;">School
                                                 Categories</strong>
-                                            <tr style="font-weight: bold; color: gray;font-size: 14px;">
+                                            <tr *ngIf="level != 'school'"
+                                                style="font-weight: bold; color: gray;font-size: 14px;">
                                                 <td>Performance</td>
                                                 <td></td>
                                                 <td>Schools</td>
@@ -534,23 +525,18 @@
                             </div>
                         </div>
                         <div class="row" *ngIf="healthCardData['pat_performance']">
-                            <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div style="margin-left: 15px;">
                                     <strong style="font-size: 15px;line-height: 2em; font-weight: bold;">Performance
                                     </strong>
                                     <div style="height: 80px; width: 80px ;font-weight: bold; ">
-                                        <circle-progress
-                                            [percent]="healthCardData['pat_performance']['school_performance']"
-                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
-                                            [space]="-6" [outerStrokeColor]="patColor" [innerStrokeColor]="'gray'"
-                                            [titleFontSize]="40" [unitsFontSize]="40" [showSubtitle]="false"
-                                            [animation]="true" [animationDuration]="800" [startFromZero]="false"
-                                            [responsive]="true" [renderOnClick]="false" [unitsFontWeight]="20">
-                                        </circle-progress>
+                                        <app-progress-circle
+                                            [value]="healthCardData['pat_performance']['school_performance']"
+                                            [color]="patColor"></app-progress-circle>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div class="col-lg-7 col-md-7 col-sm-7">
                                 <div>
                                     <strong *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
@@ -576,7 +562,8 @@
                                             <strong *ngIf="level != 'school'"
                                                 style="font-size: 15px;line-height: 2em;">School
                                                 Categories</strong>
-                                            <tr style="font-weight: bold; color: gray;font-size: 14px;">
+                                            <tr *ngIf="level != 'school'"
+                                                style="font-weight: bold; color: gray;font-size: 14px;">
                                                 <td>Performance</td>
                                                 <td></td>
                                                 <td>Schools</td>
@@ -695,24 +682,19 @@
                             </div>
                         </div>
                         <div class="row" *ngIf="healthCardData['school_infrastructure']">
-                            <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div style="margin-left: 15px;">
                                     <strong style="font-size: 15px;line-height: 2em; font-weight: bold;">Infrastructure
                                         Score
                                     </strong>
                                     <div style="height: 80px; width: 80px ;font-weight: bold; ">
-                                        <circle-progress
-                                            [percent]="healthCardData['school_infrastructure']['infra_score']"
-                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
-                                            [space]="-6" [outerStrokeColor]="infraColor" [innerStrokeColor]="'gray'"
-                                            [titleFontSize]="40" [unitsFontSize]="40" [showSubtitle]="false"
-                                            [animation]="true" [animationDuration]="800" [startFromZero]="false"
-                                            [responsive]="true" [renderOnClick]="false" [unitsFontWeight]="20">
-                                        </circle-progress>
+                                        <app-progress-circle
+                                            [value]="healthCardData['school_infrastructure']['infra_score']"
+                                            [color]="infraColor"></app-progress-circle>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div class="col-lg-7 col-md-7 col-sm-7">
                                 <div>
                                     <strong *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
@@ -735,8 +717,13 @@
                         </div>
                         <div class="row" *ngIf="healthCardData['school_infrastructure']">
                             <div class="col-sm-12">
-                                <strong style="margin-left: 20px;">Areas To Focus : &nbsp;
-                                    {{healthCardData['school_infrastructure']['areas_to_focus']}}</strong>
+                                <strong style="margin-left: 20px;">Areas To Focus </strong>
+                                <ul style="font-weight: normal; list-style-type:none;margin-left: 0px;">
+                                    <li
+                                        *ngFor="let list of healthCardData['school_infrastructure']['areas_to_focus'], let i=index">
+                                        {{healthCardData['school_infrastructure']['areas_to_focus'][i]}}</li>
+                                </ul>
+
                             </div>
                         </div>
                         <div class="row" *ngIf="healthCardData['school_infrastructure']">
@@ -834,23 +821,18 @@
                             </div>
                         </div>
                         <div class="row" *ngIf="healthCardData['udise']">
-                            <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div style="margin-left: 15px;">
                                     <strong style="font-size: 15px;line-height: 2em; font-weight: bold;">Infrastructure
                                         Score
                                     </strong>
                                     <div style="height: 80px; width: 80px ;font-weight: bold; ">
-                                        <circle-progress [percent]="healthCardData['udise']['infrastructure_score']"
-                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
-                                            [space]="-6" [outerStrokeColor]="udiseColor" [innerStrokeColor]="'gray'"
-                                            [titleFontSize]="40" [unitsFontSize]="40" [showSubtitle]="false"
-                                            [animation]="true" [animationDuration]="800" [startFromZero]="false"
-                                            [responsive]="true" [renderOnClick]="false" [unitsFontWeight]="20">
-                                        </circle-progress>
+                                        <app-progress-circle [value]="healthCardData['udise']['infrastructure_score']"
+                                            [color]="udiseColor"></app-progress-circle>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div class="col-lg-7 col-md-7 col-sm-7">
                                 <div>
                                     <strong *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
@@ -876,7 +858,8 @@
                                             <strong *ngIf="level != 'school'"
                                                 style="font-size: 15px;line-height: 2em;">School
                                                 Categories</strong>
-                                            <tr style="font-weight: bold; color: gray;font-size: 14px;">
+                                            <tr *ngIf="level != 'school'"
+                                                style="font-weight: bold; color: gray;font-size: 14px;">
                                                 <td>Infrastructure Score</td>
                                                 <td></td>
                                                 <td>Schools</td>
@@ -978,13 +961,8 @@
                                     <strong style="font-size: 15px;line-height: 2em; font-weight: bold;">No Visit Score
                                     </strong>
                                     <div style="height: 80px; width: 80px ;font-weight: bold; ">
-                                        <circle-progress [percent]="healthCardData['crc_visit']['schools_0']"
-                                            [radius]="100" [toFixed]="1" [outerStrokeWidth]="8" [innerStrokeWidth]="2"
-                                            [space]="-6" [outerStrokeColor]="crcColor" [innerStrokeColor]="'gray'"
-                                            [titleFontSize]="40" [unitsFontSize]="40" [showSubtitle]="false"
-                                            [animation]="true" [animationDuration]="800" [startFromZero]="false"
-                                            [responsive]="true" [renderOnClick]="false" [unitsFontWeight]="20">
-                                        </circle-progress>
+                                        <app-progress-circle [value]="healthCardData['crc_visit']['schools_0']"
+                                            [color]="crcColor"></app-progress-circle>
                                     </div>
                                 </div>
                             </div>
@@ -1000,7 +978,7 @@
                                     Details</strong>
                                 <table style="margin-left: 15px;">
                                     <thead>
-                                        <tr *ngIf="level != 'state'"
+                                        <tr *ngIf="level != 'state' && level !='school'"
                                             style="font-weight: bold; color: gray;font-size: 14px;">
                                             <td>Schools Visited</td>
                                             <td></td>
