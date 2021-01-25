@@ -62,7 +62,7 @@
   }
 
   .link{
-   position: absolute;  bottom: 0px; left: 30px;color: white; font-weight: bold;
+   position: relative;  top: 20px; left: 10px;color: white; font-weight: bold;
    text-decoration: underline;
    transition: transform .5s;
   }
@@ -77,14 +77,18 @@
     text-decoration: underline;
   }
 
+  .col-sm-8{
+    margin-left: -4px;
+  }
+
 
 
 
   
   .healthcard-tooltip {
     position: absolute;
-    right: 30px;
-    top: 35px;
+    left: 10px;
+    top: -3px;
   }
 
   .healthcard-tooltip.show .healthcard-tooltip-btn {
@@ -112,7 +116,7 @@
     /* width: 300px !important; */
     padding-left: 10px;
     font-size: 13px;
-    margin-left: 15px;
+    margin-left: -10px;
   }
   
   /* This bridges the gap so you can mouse into the tooltip without it disappearing */
@@ -134,8 +138,8 @@
     top: -10px;
     content: " ";
     height: 0;
-    left: 93.5%;
-    margin-left: -13px;
+    left: 9.5%;
+    margin-left: -23px;
     position: absolute;
     width: 0;
   }
@@ -150,6 +154,8 @@
 
   .headings{
     font-weight: bold;
+    float: left; 
+    margin-left: 15px;
   }
 
   .col-lg-1 button{
@@ -164,4 +170,24 @@
 
   input:focus, textarea:focus, select:focus{
     outline: none;
+}
+
+.card{
+  box-shadow: 12px 10px 6px 0 rgba(232, 236, 252, 0.05),5px 4px 8px 0 rgba(140, 168, 243, 0.2);
+  border-radius: 10px;
+  min-height: 300px; 
+  padding: 10px;
+  background-color: #fff;
+}
+/* 
+.card:hover{
+  box-shadow: 0 6px 20px 0 rgba(66, 209, 238, 0.2),0 4px 8px 0 rgba(241, 248, 250, 0.2);
+} */
+
+.notFound{
+  margin-top: 90px;
+  color: red; 
+  font-weight: bold; 
+  font-size: 15px; 
+  text-align: center;
 }

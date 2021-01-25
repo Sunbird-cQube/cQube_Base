@@ -97,6 +97,14 @@ export class HealthCardService {
     0: '#7fff00',
   }
 
+  public colors2 = {
+    10: '#006600',
+    8: '#99ff33',
+    6: '#cccc00',
+    4: '#cc6600',
+    2: '#ff0000',
+  }
+
   colorGredient(data) {
     var keys = Object.keys(this.colors);
     var setColor = '';
@@ -123,6 +131,22 @@ export class HealthCardService {
         break;
       } else if (parseInt(data) > parseInt(keys[i]) && parseInt(data) <= parseInt(keys[i + 1])) {
         setColor = this.colors1[keys[i + 1]];
+        break;
+      }
+    }
+    return setColor;
+  }
+
+  colorRankMatrics(data) {
+    var keys = Object.keys(this.colors2);
+    var setColor = '';
+
+    for (let i = 0; i < keys.length; i++) {
+      if (data <= parseInt(keys[i])) {
+        setColor = this.colors2[keys[i]];
+        break;
+      } else if (data > parseInt(keys[i]) && data <= parseInt(keys[i + 1])) {
+        setColor = this.colors2[keys[i + 1]];
         break;
       }
     }
