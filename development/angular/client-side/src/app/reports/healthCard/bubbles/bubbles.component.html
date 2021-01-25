@@ -1,4 +1,5 @@
 <div *ngFor="let x of [0,1,2,3,4].slice().reverse(),let i=index">
+    <!-- <p *ngIf="i==0" style="float: left; margin-left: 50px;">{{Value/10}}</p> -->
     <div [ngStyle]="{'background-color': cardData && Value/x+2 > 4  ? color : '#cccfcd' }"
         style="height: 15px; width: 15px; border-radius: 10px; float: right; margin-left: 3px;">
     </div>
