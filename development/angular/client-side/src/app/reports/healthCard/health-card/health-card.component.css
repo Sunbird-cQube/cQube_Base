@@ -173,7 +173,7 @@
 }
 
 .card{
-  box-shadow: 12px 10px 6px 0 rgba(9, 179, 209, 0.05),5px 4px 8px 0 rgba(140, 168, 243, 0.2);
+  box-shadow: 12px 10px 6px 0 rgba(232, 236, 252, 0.05),5px 4px 8px 0 rgba(140, 168, 243, 0.2);
   border-radius: 10px;
   min-height: 300px; 
   padding: 10px;
@@ -183,3 +183,11 @@
 .card:hover{
   box-shadow: 0 6px 20px 0 rgba(66, 209, 238, 0.2),0 4px 8px 0 rgba(241, 248, 250, 0.2);
 } */
+
+.notFound{
+  margin-top: 90px;
+  color: red; 
+  font-weight: bold; 
+  font-size: 15px; 
+  text-align: center;
+}

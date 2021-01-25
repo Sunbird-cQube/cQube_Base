@@ -57,6 +57,8 @@ export class CompositReportComponent implements OnInit {
   public downloadType: string;
   state: string;
 
+  selected = '';
+
 
   constructor(public http: HttpClient, public service: CompositReportService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent,) {
     localStorage.removeItem('resData');
@@ -108,7 +110,7 @@ export class CompositReportComponent implements OnInit {
     this.downloadLevel = 'dist';
     this.tableHead = "District Name";
     this.fileName = "Dist_level_report";
-
+    this.selected = '';
     this.myDistrict = '';
     this.downloadType = '';
     this.modes = ['Dist Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
@@ -154,7 +156,7 @@ export class CompositReportComponent implements OnInit {
     this.downloadLevel = 'block';
     this.tableHead = "Block Name";
     this.fileName = "blockPerDistrict_report";
-
+    this.selected = 'district';
     this.dist = true;
     this.blok = false;
     this.clust = false;
@@ -208,6 +210,7 @@ export class CompositReportComponent implements OnInit {
     this.downloadLevel = 'cluster';
     this.tableHead = "Cluster Name";
     this.fileName = "clusterPerBlock_report";
+    this.selected = 'block';
     this.commonService.errMsg();
     this.dist = false;
     this.blok = true;
@@ -264,6 +267,7 @@ export class CompositReportComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'school';
     this.tableHead = "School Name";
+    this.selected = 'cluster';
     this.fileName = "schoolPerCluster_report";
 
     this.dist = false;
@@ -313,6 +317,7 @@ export class CompositReportComponent implements OnInit {
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
     this.fileName = "Dist_level_Report";
+    this.selected = '';
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -339,7 +344,7 @@ export class CompositReportComponent implements OnInit {
     this.downloadLevel = 'block';
     this.tableHead = "Block Name";
     this.fileName = "Block_level_report";
-
+    this.selected = '';
     this.myDistrict = '';
 
     this.dist = false;
@@ -561,8 +566,10 @@ export class CompositReportComponent implements OnInit {
         labels: labels,
         datasets: [{
           data: chartData,
-          pointBackgroundColor: "#4890b5",
-          pointRadius: 4
+          pointBackgroundColor: "#0850b8",
+          pointBorderColor: '#7cd6cc',
+          pointBorderWidth: 0.5,
+          pointRadius: 5
         }]
       },
       options: {

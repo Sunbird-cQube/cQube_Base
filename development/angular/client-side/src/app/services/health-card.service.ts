@@ -142,10 +142,10 @@ export class HealthCardService {
     var setColor = '';
 
     for (let i = 0; i < keys.length; i++) {
-      if (parseInt(data) <= parseInt(keys[i])) {
+      if (data <= parseInt(keys[i])) {
         setColor = this.colors2[keys[i]];
         break;
-      } else if (parseInt(data) > parseInt(keys[i]) && parseInt(data) <= parseInt(keys[i + 1])) {
+      } else if (data > parseInt(keys[i]) && data <= parseInt(keys[i + 1])) {
         setColor = this.colors2[keys[i + 1]];
         break;
       }
