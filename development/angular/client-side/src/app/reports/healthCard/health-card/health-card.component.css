@@ -191,3 +191,8 @@
   font-size: 15px; 
   text-align: center;
 }
+
+.container-fluid {
+  font-family: "Inv Maison Neue","Maison Neue",-apple-system,BlinkMacSystemFont,"Open Sans",open-sans,sans-serif;
+}
+

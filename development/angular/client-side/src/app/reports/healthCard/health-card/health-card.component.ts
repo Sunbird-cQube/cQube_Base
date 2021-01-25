@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewI
 import { Router } from '@angular/router';
 import { AppServiceComponent } from 'src/app/app.service';
 import { HealthCardService } from 'src/app/services/health-card.service';
+import * as _ from "lodash"
 
 @Component({
   selector: 'app-health-card',
@@ -157,7 +158,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.schoolInfra = ['infra_score'];
       this.schoolInfraKey = ['Infrastructure Score'];
       this.schoolInfraRank = ['district_level_rank_within_the_state'];
-      this.schoolInfraRankKye = ['At State Level'];
+      this.schoolInfraRankKye = ['State'];
 
       this.schoolAttendance = ['attendance'];
       this.schoolAttendanceKeys = ['Attendance'];
@@ -230,7 +231,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['district_level_rank_within_the_state'];
-          this.schoolInfraRankKye = ['At State Level'];
+          this.schoolInfraRankKye = ['State'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
@@ -286,7 +287,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['block_level_rank_within_the_state', 'block_level_rank_within_the_district'];
-          this.schoolInfraRankKye = ['At State Level', 'At District Level'];
+          this.schoolInfraRankKye = ['State', 'District'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
@@ -342,7 +343,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['cluster_level_rank_within_the_state', 'cluster_level_rank_within_the_district', 'cluster_level_rank_within_the_block'];
-          this.schoolInfraRankKye = ['At State Level', 'At District Level', 'At Block Level'];
+          this.schoolInfraRankKye = ['State', 'District', 'Block'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
@@ -397,7 +398,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
           this.schoolInfraRank = ['school_level_rank_within_the_state', 'school_level_rank_within_the_district', 'school_level_rank_within_the_block', 'school_level_rank_within_the_cluster'];
-          this.schoolInfraRankKye = ['At State Level', 'At District Level', 'At Block Level', 'At Cluster Level'];
+          this.schoolInfraRankKye = ['State', 'District', 'Block', 'Cluster'];
 
           this.schoolAttendance = ['attendance'];
           this.schoolAttendanceKeys = ['Attendance'];
