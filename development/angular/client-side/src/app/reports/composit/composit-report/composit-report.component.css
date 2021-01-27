@@ -12,3 +12,19 @@
     padding: 6px; 
     background-color: #f5f6fb;
 }
+
+@media only screen and (max-width: 768px) {
+	#first {
+		order: 2;
+	}
+	#second {
+		order: 4;
+	}
+	#third {
+		order: 1;
+	}
+	#fourth {
+		order: 3;
+	}
+}
+
