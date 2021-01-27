@@ -139,27 +139,28 @@ export class AppServiceComponent {
         var selected = '';
         for (var key in object) {
             if (object.hasOwnProperty(key)) {
-                if (key == value) {
-                    if (reportType == "infra-map" || reportType == "patReport") {
-                        selected = `<span ${infraName == key.trim() ? colorText : ''}>`
-                    }
-                    stringLine = selected + "<b>" +
-                        key.replace(
-                            /\w\S*/g,
-                            function (txt) {
-                                txt = txt.replace(/_/g, ' ');
+                console.log(value);
+                // if (key == value) {
+                //     if (reportType == "infra-map" || reportType == "patReport") {
+                //         selected = `<span ${infraName == key.trim() ? colorText : ''}>`
+                //     }
+                //     stringLine = selected + "<b>" +
+                //         key.replace(
+                //             /\w\S*/g,
+                //             function (txt) {
+                //                 txt = txt.replace(/_/g, ' ');
 
-                                if (txt.includes('percent')) {
-                                    txt = txt.replace('percent', '(%)');
-                                }
-                                if (txt.includes('id')) {
-                                    return txt.charAt(0).toUpperCase();
-                                } else {
-                                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-                                }
-                            })
-                        + "</b>" + ": " + object[key] + " %" + `</span>`;
-                } else {
+                //                 if (txt.includes('percent')) {
+                //                     txt = txt.replace('percent', '(%)');
+                //                 }
+                //                 if (txt.includes('id')) {
+                //                     return txt.charAt(0).toUpperCase();
+                //                 } else {
+                //                     return toTitleCase(txt);
+                //                 }
+                //             })
+                //         + "</b>" + ": " + object[key] + " %" + `</span>`;
+                // } else {
                     if (reportType == "infra-map" || reportType == "patReport") {
                         selected = `<span ${infraName == key.trim() ? colorText : ''}>`
                     }
@@ -175,23 +176,48 @@ export class AppServiceComponent {
                                     txt = txt.replace('id', 'ID');
                                     return txt.charAt(0).toUpperCase() + txt.substr(1);
                                 } else {
-                                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                                    return toTitleCase(txt);
                                 }
                             })
 
                         + "</b>" + ": " + object[key] + `</span>`;
-                }
+                // }
             }
             popupFood.push(stringLine);
         }
+        function toTitleCase(phrase) {
+            return phrase
+                .toLowerCase()
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
         return popupFood;
     }
+
 
     //Download reports....
     download(fileName, reportData) {
         if (reportData.length <= 0) {
             alert("No data found to download");
         } else {
+            var keys = Object.keys(reportData[0]);
+            var updatedKeys = [];
+            keys.map(key => {
+                key = key.replace(/_/g, ' ').toLowerCase()
+                    .split(' ')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+
+                key = key.replace("Id", "ID");
+                key = key.replace("Nsqf", "NSQF");
+                key = key.replace("Ict", "ICT");
+                key = key.replace("Crc", "CRC");
+                key = key.replace("Cctv", "CCTV");
+                key = key.replace("Cwsn", "CWSN");
+                updatedKeys.push(key);
+            });
+            console.log(updatedKeys);
             const options = {
                 fieldSeparator: ',',
                 quoteStrings: '"',
@@ -201,7 +227,8 @@ export class AppServiceComponent {
                 title: 'My Awesome CSV',
                 useTextFile: false,
                 useBom: true,
-                useKeysAsHeaders: true,
+                // useKeysAsHeaders: true,
+                headers: updatedKeys,
                 filename: fileName
             };
             const csvExporter = new ExportToCsv(options);
