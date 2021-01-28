@@ -784,10 +784,10 @@
         </div>
     </div>
     <div class="row" style="padding: 20px;">
-        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-lg-9 col-md-6 col-sm-12" style="padding:  0% 2% 0% 2%">
             <div class="headings">Exception List</div>
             <div class="row outer12">
-                <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);"
                         id="SemExp" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/sem-exception']"
                         (click)="fetchTelemetry($event,'SemExp')">
@@ -822,7 +822,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);;"
                         id="isdata"
                         [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/download-missing-data']"
@@ -849,6 +849,42 @@
                                 <div class="views">
                                     <p *ngIf="isdataViews;else other_content" id="views">views:
                                         {{isdataViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);;"
+                        id="patExcpt"
+                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/pat-exception']"
+                        (click)="fetchTelemetry($event,'patExcpt')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="patExcptTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #0093d0;">
+                                            <img class="ic-equalizer1" src="../../assets/ic_cloud_download.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">PAT <br> Exception </p>
+                                        <p class="card-title"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="patExcptViews;else other_content" id="views">views:
+                                        {{patExcptViews}}</p>
                                     <ng-template #other_content>
                                         <p id="errViews">views: 0 {{timePeriod}}</p>
                                     </ng-template>

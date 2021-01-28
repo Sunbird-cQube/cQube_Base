@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
   tpdtpTooltip;
   tpdcpTooltip;
   healthCardTooltip;
+  patExcptTooltip
 
   hiddenPass = false;
   edate: Date;
@@ -65,6 +66,7 @@ export class DashboardComponent implements OnInit {
   tpdenrollViews;
   tpdcompViews;
   healthCardViews;
+  patExcptViews
   
 
   //for coming soon page
@@ -125,6 +127,7 @@ export class DashboardComponent implements OnInit {
     this.tpdtpTooltip = `This dashboard provides details on district-wise TPD course enrolment progress broken at the individual course level.`;
     this.tpdcpTooltip = `This dashboard provides details on district-wise TPD course progress broken at the individual course level.`;
     this.healthCardTooltip = `Healthcard Tooltip`;
+    this.patExcptViews = `PAT Exception tooltip`;
   }
 
   changeDataSourceStatus() {
@@ -300,6 +303,9 @@ export class DashboardComponent implements OnInit {
       }
       if (element.reportid == 'healthCard') {
         this.healthCardViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'patExcpt') {
+        this.patExcptViews = element.number_of_views + " (" + timeStr + ")";
       }
 
     });

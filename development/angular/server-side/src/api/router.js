@@ -32,6 +32,13 @@ const sem_completionSchool = require('./controller/completionReports/semester/sc
 
 const school_invalid = require('./controller/completionReports/school_invalid');
 
+//PAT Exception Report
+
+const patExceptDistWise = require('./controller/completionReports/patException/districtWise');
+const patExceptBlockWise = require('./controller/completionReports/patException/blockWise');
+const patExceptClusterWise = require('./controller/completionReports/patException/clusterWise');
+const patExceptSchoolWise = require('./controller/completionReports/patException/schoolWise');
+
 const telemetryData = require('../api/controller/telemetry/telemetryData');
 
 // const crcData = require('./controller/users/crcData');
@@ -104,7 +111,6 @@ const clusterLevel = require('./controller/diksha/tpd-enroll-completion/clusterW
 const schoolLevel = require('./controller/diksha/tpd-enroll-completion/schoolWise');
 
 
-
 // sem routes
 router.use('/sem', semDistrictWise);
 router.use('/sem', semBlockWise);
@@ -159,6 +165,12 @@ router.use('/semCompCluster', sem_completionCluster);
 router.use('/semCompSchool', sem_completionSchool);
 
 router.use('/school_invalid', school_invalid);
+
+///////
+router.use('/patExcetpion', patExceptDistWise);
+router.use('/patExcetpion', patExceptBlockWise);
+router.use('/patExcetpion', patExceptClusterWise);
+router.use('/patExcetpion', patExceptSchoolWise);
 
 //show telemetry
 router.use('/showDistTelemetry', showDistTelemetry);
