@@ -386,7 +386,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.udiseLength = 8;
         this.crcLength = 7;
         this.infraLength = 9;
-        this.height = '220px';
+        this.height = '280px';
         var school;
         var blok;
         this.showLink = false;
