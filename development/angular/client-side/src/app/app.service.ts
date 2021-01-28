@@ -74,9 +74,7 @@ export class AppServiceComponent {
 
     //Initialisation of Map  
     initMap(map, maxBounds) {
-        const lat = 22.3660414123535;
-        const lng = 71.48396301269531;
-        globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([lat, lng], this.mapCenterLatlng.zoomLevel);
+        globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([maxBounds[0][0], maxBounds[0][1]], this.mapCenterLatlng.zoomLevel);
         applyCountryBorder(globalMap);
         function applyCountryBorder(map) {
             L.geoJSON(data.default[`${environment.stateName}`]['features'], {
@@ -148,14 +146,13 @@ export class AppServiceComponent {
                             /\w\S*/g,
                             function (txt) {
                                 txt = txt.replace(/_/g, ' ');
-
-                                if (txt.includes('percent')) {
+                                if (txt.includes('percent') && txt != 'percentage schools with missing data') {
                                     txt = txt.replace('percent', '(%)');
                                 }
                                 if (txt.includes('id')) {
                                     return txt.charAt(0).toUpperCase();
                                 } else {
-                                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                                    return toTitleCase(txt);
                                 }
                             })
                         + "</b>" + ": " + object[key] + " %" + `</span>`;
@@ -168,14 +165,14 @@ export class AppServiceComponent {
                             /\w\S*/g,
                             function (txt) {
                                 txt = txt.replace(/_/g, ' ');
-                                if (txt.includes('percent')) {
+                                if (txt.includes('percent') && txt != 'percentage schools with missing data') {
                                     txt = txt.replace('percent', '(%)');
                                 }
                                 if (txt.includes('id')) {
                                     txt = txt.replace('id', 'ID');
                                     return txt.charAt(0).toUpperCase() + txt.substr(1);
                                 } else {
-                                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                                    return toTitleCase(txt);
                                 }
                             })
 
@@ -184,14 +181,39 @@ export class AppServiceComponent {
             }
             popupFood.push(stringLine);
         }
+        function toTitleCase(phrase) {
+            return phrase
+                .toLowerCase()
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
         return popupFood;
     }
+
 
     //Download reports....
     download(fileName, reportData) {
         if (reportData.length <= 0) {
             alert("No data found to download");
         } else {
+            var keys = Object.keys(reportData[0]);
+            var updatedKeys = [];
+            keys.map(key => {
+                key = key.replace(/_/g, ' ').toLowerCase()
+                    .split(' ')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+
+                key = key.replace("Id", "ID");
+                key = key.replace("Nsqf", "NSQF");
+                key = key.replace("Ict", "ICT");
+                key = key.replace("Crc", "CRC");
+                key = key.replace("Cctv", "CCTV");
+                key = key.replace("Cwsn", "CWSN");
+                updatedKeys.push(key);
+            });
+            console.log(updatedKeys);
             const options = {
                 fieldSeparator: ',',
                 quoteStrings: '"',
@@ -201,7 +223,8 @@ export class AppServiceComponent {
                 title: 'My Awesome CSV',
                 useTextFile: false,
                 useBom: true,
-                useKeysAsHeaders: true,
+                // useKeysAsHeaders: true,
+                headers: updatedKeys,
                 filename: fileName
             };
             const csvExporter = new ExportToCsv(options);

@@ -38,7 +38,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <p id="errMsg"
-                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
+                        style="display: none; text-align: center;line-height: 1.2em; font-size: 13px; margin-top: 3%; ">
                     </p>
                 </div>
                 <div class="col-sm-6">
@@ -56,7 +56,7 @@
         <div class="col-lg-9 col-md-12 col-sm-12">
             <div class="row" id="third">
                 <div class="col-lg-9 col-md-12 col-sm-12">
-                    <div style="font-size: 12px;">
+                    <div style="font-size: 13px;">
                         <strong> About the dashboard:</strong>
                         <p style="text-align: justify;">The dashboard here brings together metrics from other
                             dashboards
@@ -86,7 +86,7 @@
             </div>
             <div class="row" id="fourth" style="margin-bottom: 10px !important;">
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    X-Axis: <br> <select id="x_axis"
+                    <span style="font-size: 13px; font-weight: bold;">X-Axis:</span> <br> <select id="x_axis"
                         style="padding: 7px; width: 100%;  border-radius: 4px; font-size: 13px; font-weight: bold; background-color: #f5f6fb;"
                         [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
@@ -98,7 +98,7 @@
                     </select>
                 </div>
                 <div class=" col-lg-4 col-md-6 col-sm-12">
-                    Y-Axis: <br><select id="y_axis"
+                    <span style="font-size: 13px; font-weight: bold;"> Y-Axis:</span> <br><select id="y_axis"
                         style=" padding: 7px; width: 100%; border-radius: 4px; font-size: 13px; font-weight: bold; background-color: #f5f6fb;"
                         [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
                         <option [value]="yAxis" disabled selected="selected">choose
@@ -122,7 +122,7 @@
             <div class="row">
                 <div class="col col-sm-12">
                     <div
-                        style="border-radius: 5px; background-color: #f5f6fb; height: 34px; width: 100%; border: 1px solid gray;font-size: 14px;">
+                        style="border-radius: 5px; background-color: #f5f6fb; height: 34px; width: 100%; border: 1px solid gray;font-size: 13px;">
                         <div id="districtSelect"
                             [ngStyle]="{'background-color' : selected == 'district' ? '#3100cc' : '#f5f6fb'}"
                             style="border-radius: 5px; height: 32px; width: 33.33%;  float: left;">
@@ -149,7 +149,7 @@
             </div><br>
             <div class="row">
                 <div class="col-sm-12">
-                    <span style="line-height: 1.2em;">Choose District</span>
+                    <span style="line-height: 1.2em; font-size: 13px;font-weight: bold;">Choose District</span>
                     <select id="choose_dist"
                         style=" padding: 7px;width: 100%; border-radius: 4px; font-size: 13px; font-weight: bold; background-color: #f5f6fb;"
                         [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
@@ -165,7 +165,8 @@
             <br>
             <div class="row">
                 <div class="col-sm-12">
-                    <span [hidden]="blockHidden" style="line-height: 1.2em;">Choose Block</span>
+                    <span [hidden]="blockHidden" style="line-height: 1.2em; font-size: 13px;font-weight: bold;">Choose
+                        Block</span>
                     <select [hidden]="blockHidden" id="choose_block"
                         style=" padding: 7px; width: 100%; border-radius: 4px; font-size: 13px; font-weight: bold; background-color: #f5f6fb;"
                         [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
@@ -180,7 +181,8 @@
             <br>
             <div class="row">
                 <div class="col-sm-12">
-                    <span [hidden]="clusterHidden" style="line-height: 1.2em;">Choose Cluster</span>
+                    <span [hidden]="clusterHidden"
+                        style="line-height: 1.2em; font-size: 13px; font-weight: bold;">Choose Cluster</span>
                     <select [hidden]="clusterHidden" id="choose_cluster"
                         style=" padding: 7px;  width: 100%; border-radius: 4px; font-size: 13px; font-weight: bold; background-color: #f5f6fb;"
                         [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">

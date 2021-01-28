@@ -1,10 +1,11 @@
 <div class="container-fluid" style="background-color: rgb(245, 245, 245);padding-top: 30px; padding-bottom: 10px">
     <div class="row" style="padding: 20px;">
         <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="col-sm-12 diksha">SCHOOL INFRASTRUCTURE</div>
+            <div class="headings">School Infrastructure</div>
             <div class="row outer1">
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card card-stats" id="imr"
+                    <div class="card card-stats"
+                        style="background: linear-gradient(135.85deg, #B56FD0 0%, #AF90DF 100%);" id="imr"
                         [routerLink]="!nifi_infra ? ['/coming-soon'] :['/infrastructure/school-infra-map']"
                         (click)="fetchTelemetry($event,'imr')">
                         <div class="card-body ">
@@ -13,7 +14,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #ab29b4;">
                                             <img class="ic-equalizer1" src="../../assets/ic_location_on.svg" alt="">
                                         </div>
                                     </div>
@@ -37,7 +38,8 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card card-stats" id="cr"
+                    <div class="card card-stats"
+                        style="background: linear-gradient(135.85deg, #B56FD0 0%, #AF90DF 100%)" id="cr"
                         [routerLink]="!nifi_infra ? ['/coming-soon'] :['/infrastructure/school-infrastructure']"
                         (click)="fetchTelemetry($event,'cr')">
                         <div class="card-body ">
@@ -46,7 +48,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #ab29b4;">
                                             <img class="ic-equalizer1" src="../../assets/ic_assessment.svg" alt="">
                                         </div>
                                     </div>
@@ -70,7 +72,8 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card card-stats" id="udise"
+                    <div class="card card-stats"
+                        style="background: linear-gradient(135.85deg, #B56FD0 0%, #AF90DF 100%);" id="udise"
                         [routerLink]="!nifi_udise ? ['/coming-soon'] :['/infrastructure/udise-report']"
                         (click)="fetchTelemetry($event,'udise')">
                         <div class="card-body ">
@@ -79,7 +82,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #ab29b4;">
                                             <img class="ic-equalizer1" src="../../assets/Group 13.svg" alt="">
                                         </div>
                                     </div>
@@ -105,10 +108,11 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="diksha">COMPOSITE</div>
+            <div class="headings">Composite</div>
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(243, 228, 203);" id="composite"
+                    <div class="card card-stats"
+                        style="background: linear-gradient(135.85deg, #f38d52 0%, #fca97a 100%);" id="composite"
                         [routerLink]="!nifi_composite ? ['/coming-soon'] :['/composite/composite-report']"
                         (click)="fetchTelemetry($event,'composite')">
                         <div class="card-body ">
@@ -117,7 +121,7 @@
                                     style="position: absolute; right:10px; top:0px"></app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: rgb(194, 134, 84);">
                                             <img class="ic-equalizer1" src="../../assets/ic_trending_up.svg" alt="">
                                         </div>
                                     </div>
@@ -125,7 +129,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Composite <br> Report </p>
-                                        <p class="card-title">across metrics</p>
+                                        <p class="card-title">Across Metrics</p>
                                     </div>
                                 </div>
                             </div>
@@ -146,11 +150,11 @@
     </div>
     <div class="row" style="padding: 20px;">
         <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="col-sm-12 diksha">TEACHER PROFESSIONAL DEVELOPMENT</div>
+            <div class="headings">Teacher Professional Development</div>
             <div class="row outer1">
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="dcc"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-course']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%);"
+                        id="dcc" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-course']"
                         (click)="fetchTelemetry($event,'dcc')">
                         <div class="card-body ">
                             <div class="row">
@@ -158,7 +162,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #5700f3;">
                                             <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
                                         </div>
                                     </div>
@@ -183,8 +187,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color:  rgb(255, 207, 169);" id="dtr"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-course-content']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%);"
+                        id="dtr" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-course-content']"
                         (click)="fetchTelemetry($event,'dtr')">
                         <div class="card-body ">
                             <div class="row">
@@ -192,7 +196,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #5700f3;">
                                             <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
                                         </div>
                                     </div>
@@ -220,11 +224,11 @@
             <br>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="diksha">SCHOOL MONITORING</div>
+            <div class="headings">School Monitoring</div>
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(238, 164, 164);" id="crcr"
-                        [routerLink]="!nifi_crc ? ['/coming-soon'] :['/crc/crc-report']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #FF5F55 0%, #FF9E95 100%);"
+                        id="crcr" [routerLink]="!nifi_crc ? ['/coming-soon'] :['/crc/crc-report']"
                         (click)="fetchTelemetry($event,'crcr')">
                         <div class="card-body ">
                             <div class="row">
@@ -232,7 +236,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #f23740;">
                                             <img class="ic-equalizer1" src="../../assets/Group 11.svg" alt="">
                                         </div>
                                     </div>
@@ -240,7 +244,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">CRC </p>
-                                        <p class="card-title">Report</p>
+                                        <p class="card-title"></p>
                                     </div>
                                 </div>
                             </div>
@@ -259,11 +263,11 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="diksha">HEALTH-CARD</div>
+            <div class="headings">Health Card</div>
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="healthCard"
-                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/healthCard']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #55ff9c 0%, #95ffb5 100%);"
+                        id="healthCard" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/healthCard']"
                         (click)="fetchTelemetry($event,'healthCard')">
                         <div class="card-body ">
                             <div class="row">
@@ -272,7 +276,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #34c72f;">
                                             <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
                                         </div>
                                     </div>
@@ -303,8 +307,8 @@
         <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tdp-cp"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-course-progress']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%)"
+                        id="tdp-cp" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-course-progress']"
                         (click)="fetchTelemetry($event,'tpd-cp')">
                         <div class="card-body ">
                             <div class="row">
@@ -312,7 +316,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #5700f3;">
                                             <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
                                         </div>
                                     </div>
@@ -337,8 +341,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tpd-tp"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-teacher-percentage']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%)"
+                        id="tpd-tp" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-teacher-percentage']"
                         (click)="fetchTelemetry($event,'tdp-tp')">
                         <div class="card-body ">
                             <div class="row">
@@ -346,7 +350,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #5700f3;">
                                             <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
                                         </div>
                                     </div>
@@ -375,8 +379,8 @@
         <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tpd-enroll"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-enrollment']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%)"
+                        id="tpd-enroll" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-enrollment']"
                         (click)="fetchTelemetry($event,'tpd-enroll')">
                         <div class="card-body ">
                             <div class="row">
@@ -384,7 +388,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #5700f3;">
                                             <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
                                         </div>
                                     </div>
@@ -409,8 +413,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(255, 207, 169)" id="tpd-comp"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-completion']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%)"
+                        id="tpd-comp" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-completion']"
                         (click)="fetchTelemetry($event,'tpd-comp')">
                         <div class="card-body ">
                             <div class="row">
@@ -418,7 +422,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #5700f3;">
                                             <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
                                         </div>
                                     </div>
@@ -449,11 +453,11 @@
     <!-- ENERGISED TEXTBOOK USAGE rows -- added two blocks for enabling and disabling -->
     <div *ngIf="diksha_column" class="row" style="padding: 20px">
         <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="diksha">ENERGISED TEXTBOOK USAGE</div>
+            <div class="headings">Energised Textbook Usage</div>
             <div class="row outer12">
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(218, 193, 172);" id="dsc"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-user-profile']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #e79c7a 0%, #eeb79d 100%);"
+                        id="dsc" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-user-profile']"
                         (click)="fetchTelemetry($event,'dsc')">
                         <div class="card-body ">
                             <div class="row">
@@ -461,7 +465,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #ecbc9c;">
                                             <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
                                         </div>
                                     </div>
@@ -486,8 +490,8 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(218, 193, 172);" id="ut"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #e79c7a 0%, #eeb79d 100%);"
+                        id="ut" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook']"
                         (click)="fetchTelemetry($event,'ut')">
                         <div class="card-body ">
                             <div class="row">
@@ -495,7 +499,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #ecbc9c;">
                                             <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
                                         </div>
                                     </div>
@@ -520,8 +524,8 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color:  rgb(218, 193, 172);" id="utc"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook-content']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #e79c7a 0%, #eeb79d 100%);"
+                        id="utc" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook-content']"
                         (click)="fetchTelemetry($event,'utc')">
                         <div class="card-body ">
                             <div class="row">
@@ -529,7 +533,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #ecbc9c;">
                                             <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
                                         </div>
                                     </div>
@@ -559,11 +563,11 @@
 
     <div *ngIf="!diksha_column" class="row" style="padding: 20px;">
         <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="diksha">ENERGISED TEXTBOOK USAGE</div>
+            <div class="headings">Energised Textbook Usage</div>
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(218, 193, 172);" id="ut"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #e79c7a 0%, #eeb79d 100%);"
+                        id="ut" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook']"
                         (click)="fetchTelemetry($event,'ut')">
                         <div class="card-body ">
                             <div class="row">
@@ -571,7 +575,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #ecbc9c;">
                                             <img class="ic-equalizer1" src="../../assets/ic_equalizer.svg" alt="">
                                         </div>
                                     </div>
@@ -597,8 +601,8 @@
                 </div>
 
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color:  rgb(218, 193, 172);" id="utc"
-                        [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook-content']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #e79c7a 0%, #eeb79d 100%);"
+                        id="utc" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook-content']"
                         (click)="fetchTelemetry($event,'utc')">
                         <div class="card-body ">
                             <div class="row">
@@ -606,7 +610,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #ecbc9c;">
                                             <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
                                         </div>
                                     </div>
@@ -637,10 +641,11 @@
 
     <div class="row" style="padding: 20px;">
         <div class="col-lg-12 col-md-12 col-sm-12" style="padding:  0% 2% 0% 2%">
-            <div class="diksha">STUDENT PERFORMANCE</div>
+            <div class="headings">Student Performance</div>
             <div class="row outer12">
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats" style="background-color:  rgb(203, 210, 233);" id="sr"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);"
+                        id="sr"
                         [routerLink]="!nifi_semester ? ['/coming-soon'] :['/student-performance/semester-report']"
                         (click)="fetchTelemetry($event,'sr')">
                         <div class="card-body ">
@@ -649,7 +654,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #008b77;">
                                             <img class="ic-equalizer1" src="../../assets/Combined Shape.svg" alt="">
                                         </div>
                                     </div>
@@ -657,7 +662,7 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Semester </p>
-                                        <p class="card-title">Report</p>
+                                        <p class="card-title">Performance</p>
                                     </div>
                                 </div>
                             </div>
@@ -674,8 +679,8 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats" style="background-color:  rgb(203, 210, 233);" id="pat"
-                        [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/pat-report']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);;"
+                        id="pat" [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/pat-report']"
                         (click)="fetchTelemetry($event,'pat')">
                         <div class="card-body ">
                             <div class="row">
@@ -683,7 +688,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #008b77;">
                                             <img class="ic-equalizer1" src="../../assets/ic_location_on.svg" alt="">
                                         </div>
                                     </div>
@@ -708,8 +713,8 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats" style="background-color: rgb(203, 210, 233);" id="heatChart"
-                        [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/heat-chart']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);;"
+                        id="heatChart" [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/heat-chart']"
                         (click)="fetchTelemetry($event,'heatChart')">
                         <div class="card-body ">
                             <div class="row">
@@ -717,7 +722,7 @@
                                     style="position: absolute; right:10px; top:0px"></app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #008b77;">
                                             <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
                                         </div>
                                     </div>
@@ -742,8 +747,8 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats" style="background-color: rgb(203, 210, 233);" id="lotable"
-                        [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/PAT-LO-table']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);"
+                        id="lotable" [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/PAT-LO-table']"
                         (click)="fetchTelemetry($event,'lotable')">
                         <div class="card-body ">
                             <div class="row">
@@ -751,7 +756,7 @@
                                     style="position: absolute; right:10px; top:0px"></app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #008b77;">
                                             <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
                                         </div>
                                     </div>
@@ -779,12 +784,12 @@
         </div>
     </div>
     <div class="row" style="padding: 20px;">
-        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="diksha">EXCEPTION-LIST</div>
+        <div class="col-lg-9 col-md-6 col-sm-12" style="padding:  0% 2% 0% 2%">
+            <div class="headings">Exception List</div>
             <div class="row outer12">
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="SemExp"
-                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/sem-exception']"
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);"
+                        id="SemExp" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/sem-exception']"
                         (click)="fetchTelemetry($event,'SemExp')">
                         <div class="card-body ">
                             <div class="row">
@@ -792,7 +797,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #0093d0;">
                                             <img class="ic-equalizer1" src="../../assets/ic_assignment_24px.svg" alt="">
                                         </div>
                                     </div>
@@ -817,8 +822,9 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color:  rgb(255, 193, 228);" id="isdata"
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);;"
+                        id="isdata"
                         [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/download-missing-data']"
                         (click)="fetchTelemetry($event,'isdata')">
                         <div class="card-body ">
@@ -827,7 +833,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #0093d0;">
                                             <img class="ic-equalizer1" src="../../assets/ic_cloud_download.svg" alt="">
                                         </div>
                                     </div>
@@ -851,6 +857,42 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);;"
+                        id="patExcpt"
+                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/pat-exception']"
+                        (click)="fetchTelemetry($event,'patExcpt')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="patExcptTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #0093d0;">
+                                            <img class="ic-equalizer1" src="../../assets/ic_cloud_download.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">PAT <br> Exception </p>
+                                        <p class="card-title"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="patExcptViews;else other_content" id="views">views:
+                                        {{patExcptViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- <div class="col-sm-6"> -->
@@ -859,11 +901,11 @@
     </div>
     <div class="row" style="padding: 20px;">
         <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="diksha">ATTENDANCE</div>
+            <div class="headings">Attendance</div>
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color:  rgb(221, 253, 199);" id="sar"
-                        [routerLink]="!nifi_attendance ? ['/coming-soon'] :['/attendance/student-attendance']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);"
+                        id="sar" [routerLink]="!nifi_attendance ? ['/coming-soon'] :['/attendance/student-attendance']"
                         (click)="fetchTelemetry($event,'sar')">
                         <div class="card-body ">
                             <div class="row">
@@ -871,7 +913,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #eb7637;">
                                             <img class="ic-equalizer1" src="../../assets/student-4.svg" alt="">
                                         </div>
                                     </div>
@@ -896,15 +938,16 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color:  rgb(221, 253, 199);" id="tar"
-                        [routerLink]="['/attendance/teacher-attendance']" (click)="fetchTelemetry($event,'tar')">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);"
+                        id="tar" [routerLink]="['/attendance/teacher-attendance']"
+                        (click)="fetchTelemetry($event,'tar')">
                         <div class="card-body ">
                             <div class="row">
                                 <app-info [tooltipText]="tarTooltip" style="position: absolute; right:10px; top:0px">
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #eb7637;">
                                             <img class="ic-equalizer1" src="../../assets/teacher.png" alt="">
                                         </div>
                                     </div>
@@ -931,10 +974,10 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="diksha">TELEMETRY DATA</div>
+            <div class="headings">Telemetry Data</div>
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background-color: rgb(236, 235, 126);" id="telemData"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #6B76DB 0%, #9E9EF4 100%);" id="telemData"
                         [routerLink]="!nifi_telemetry ? ['/coming-soon'] :['/telemetry']"
                         (click)="fetchTelemetry($event,'telemData')">
                         <div class="card-body ">
@@ -943,7 +986,7 @@
                                     style="position: absolute; right:10px; top:0px"></app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv">
+                                        <div class="iconDiv" style="background-color: #6341af;">
                                             <img class="ic-equalizer1" src="../../assets/Group 10.svg" alt="">
                                         </div>
                                     </div>
@@ -951,7 +994,6 @@
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
                                         <p class="card-category">Telemetry </p>
-                                        <p class="card-title">Report</p>
                                     </div>
                                 </div>
                             </div>

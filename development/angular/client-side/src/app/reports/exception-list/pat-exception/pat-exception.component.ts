@@ -5,15 +5,14 @@ import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { AppServiceComponent, globalMap } from '../../../app.service';
-
 @Component({
-  selector: 'app-semester-exception',
-  templateUrl: './semester-exception.component.html',
-  styleUrls: ['./semester-exception.component.css'],
+  selector: 'app-pat-exception',
+  templateUrl: './pat-exception.component.html',
+  styleUrls: ['./pat-exception.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class SemesterExceptionComponent implements OnInit {
+export class PATExceptionComponent implements OnInit {
   public title: string = '';
   public titleName: string = '';
   public colors: any;
@@ -64,8 +63,6 @@ export class SemesterExceptionComponent implements OnInit {
   public blockId: any = '';
   public clusterId: any = '';
 
-  public semesters = [];
-  public semester;
   public levelWise = '';
 
   public myData;
@@ -73,6 +70,9 @@ export class SemesterExceptionComponent implements OnInit {
   // initial center position for the map
   public lat: any;
   public lng: any;
+
+  timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: 'last_30_days', value: "Last 30 Days" }];
+  period = 'overall';
 
   constructor(
     public http: HttpClient,
@@ -88,21 +88,19 @@ export class SemesterExceptionComponent implements OnInit {
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
     this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
-    this.commonService.initMap('semExMap', [[this.lat, this.lng]]);
+    this.commonService.initMap('patExceMap', [[this.lat, this.lng]]);
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.service.semExceptionMetaData().subscribe(res => {
-      this.semesters = res['data'];
-      this.semester = this.semesters[this.semesters.length - 1].id;
-      this.districtWise();
-    }, err => {
-      this.semesters = [];
-      this.commonService.loaderAndErr(this.semesters);
-    })
+    document.getElementById('spinner').style.display = 'none';
+    this.districtWise();
   }
 
-  semSelect() {
+  onPeriodSelect() {
+    this.levelWiseFilter();
+  }
+
+  levelWiseFilter() {
     if (this.skul) {
       if (this.levelWise === "district") {
         this.districtWise();
@@ -155,7 +153,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionDist({ sem: this.semester }).subscribe(res => {
+      this.myData = this.service.patExceptionDistWise({ timePeriod: this.period }).subscribe(res => {
         this.data = res;
         // to show only in dropdowns
         this.districtMarkers = this.data['data'];
@@ -220,7 +218,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionBlock({ sem: this.semester }).subscribe(res => {
+      this.myData = this.service.patExceptionBlock({ timePeriod: this.period }).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: this.commonService.zoomLevel,
@@ -236,6 +234,11 @@ export class SemesterExceptionComponent implements OnInit {
           let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
           this.blockMarkers = result;
+          // var obj = this.blockMarkers.filter(a => { if (a[`block_latitude`] == null) return a });
+          // var index = this.blockMarkers.indexOf(obj[0]);
+          // if (index != -1) {
+          //   this.blockMarkers.splice(index, 1);
+          // }
 
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
@@ -296,7 +299,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionCluster({ sem: this.semester }).subscribe(res => {
+      this.myData = this.service.patExceptionCluster({ timePeriod: this.period }).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: this.commonService.zoomLevel,
@@ -312,6 +315,11 @@ export class SemesterExceptionComponent implements OnInit {
           let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
           this.clusterMarkers = result;
+          // var obj = this.clusterMarkers.filter(a => { if (a[`cluster_latitude`] == null) return a });
+          // var index = this.clusterMarkers.indexOf(obj[0]);
+          // if (index != -1) {
+          //   this.clusterMarkers.splice(index, 1);
+          // }
 
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
@@ -369,7 +377,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionSchool({ sem: this.semester }).subscribe(res => {
+      this.myData = this.service.patExceptionSchool({ timePeriod: this.period }).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: this.commonService.zoomLevel,
@@ -384,8 +392,13 @@ export class SemesterExceptionComponent implements OnInit {
           // generate color gradient
           let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
-
           this.schoolMarkers = result;
+          // var obj = this.schoolMarkers.filter(a => { if (a[`school_latitude`] == null) return a });
+          // var index = this.schoolMarkers.indexOf(obj[0]);
+          // if (index != -1) {
+          //   this.schoolMarkers.splice(index, 1);
+          // }
+
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 0, 0, 0.3, options.level);
@@ -435,7 +448,7 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.semCompletionBlockPerDist(districtId, { sem: this.semester }).subscribe(res => {
+    this.myData = this.service.patExceptionBlockPerDist(districtId, { timePeriod: this.period }).subscribe(res => {
       this.data = res;
 
       this.blockMarkers = this.data['data'];
@@ -496,7 +509,7 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.semCompletionClusterPerBlock(this.districtHierarchy.distId, blockId, { sem: this.semester }).subscribe(res => {
+    this.myData = this.service.patExceptionClusterPerBlock(this.districtHierarchy.distId, blockId, { timePeriod: this.period }).subscribe(res => {
       this.data = res;
       this.clusterMarkers = this.data['data'];
       var myBlocks = [];
@@ -563,8 +576,8 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.semCompletionBlock({ sem: this.semester }).subscribe(result => {
-      this.myData = this.service.semCompletionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { sem: this.semester }).subscribe(res => {
+    this.myData = this.service.patExceptionBlock({ timePeriod: this.period }).subscribe(result => {
+      this.myData = this.service.patExceptionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { timePeriod: this.period }).subscribe(res => {
         this.data = res;
         this.schoolMarkers = this.data['data'];
 
@@ -649,6 +662,11 @@ export class SemesterExceptionComponent implements OnInit {
       // generate color gradient
       let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
       this.colors = colors;
+      // var obj = this.markers.filter(a => { if (a[`district_latitude`] == null) return a });
+      // var index = this.markers.indexOf(obj[0]);
+      // if (index != -1) {
+      //   this.markers.splice(index, 1);
+      // }
 
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {

@@ -609,6 +609,267 @@ month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
 day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
 from  student_attendance_staging_1
 ''',
-"stud_att_queries_filename":'''student_attendance_queries.json'''
+"stud_att_queries_filename":'''student_attendance_queries.json''',
+"stud_att_district_timeseries_jolt_spec":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "district_name": "data.[&1].district_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "@students_count": "data.[&1].students_count",
+        "@total_schools": "data.[&1].total_schools",
+        "students_count": "allDistrictsFooter.students[]",
+        "total_schools": "allDistrictsFooter.schools[]"
+      }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "students": "=intSum(@(1,students))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+  }
+]""",
+"stud_att_block_timeseries_jolt_spec":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "district_name": "data.[&1].district_name",
+        "district_id": "data.[&1].district_id",
+        "block_name": "data.[&1].block_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "@students_count": "data.[&1].students_count",
+        "@total_schools": "data.[&1].total_schools",
+        "students_count": "footer.@(1,district_id).students[]",
+        "total_schools": "footer.@(1,district_id).schools[]"
+      }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "students": "=intSum(@(1,students))",
+          "schools": "=intSum(@(1,schools))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "x_axis": "data.[&1].x_axis",
+          "district_name": "data.[&1].district_name",
+          "district_id": "data.[&1].district_id",
+          "block_name": "data.[&1].block_name",
+          "x_value": "data.[&1].x_value",
+          "y_axis": "data.[&1].y_axis",
+          "y_value": "data.[&1].y_value",
+          "z_axis": "data.[&1].z_axis",
+          "z_value": "data.[&1].z_value",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
+          "@students_count": "data.[&1].students_count",
+          "@total_schools": "data.[&1].total_schools",
+          "students_count": "allBlocksFooter.students[]",
+          "total_schools": "allBlocksFooter.schools[]"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "students": "=intSum(@(1,students))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+  }
+]""",
+"stud_att_cluster_timeseries_jolt_spec":"""[{
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "cluster_name": "data.[&1].cluster_name",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "@students_count": "data.[&1].students_count",
+        "@total_schools": "data.[&1].total_schools",
+        "students_count": "footer.@(1,block_id).students[]",
+        "total_schools": "footer.@(1,block_id).schools[]"
+      }
+    }
+},
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "students": "=intSum(@(1,students))",
+          "schools": "=intSum(@(1,schools))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "x_axis": "data.[&1].x_axis",
+          "cluster_name": "data.[&1].cluster_name",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "x_value": "data.[&1].x_value",
+          "y_axis": "data.[&1].y_axis",
+          "y_value": "data.[&1].y_value",
+          "z_axis": "data.[&1].z_axis",
+          "z_value": "data.[&1].z_value",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
+          "@students_count": "data.[&1].students_count",
+          "@total_schools": "data.[&1].total_schools",
+          "students_count": "allClustersFooter.students[]",
+          "total_schools": "allClustersFooter.schools[]"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "students": "=intSum(@(1,students))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+  }
+
+]""",
+"stud_att_school_timeseries_jolt_spec":"""[
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "cluster_id": ["=toString", null]
+      }
+    }
+	},
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "school_name": "data.[&1].school_name",
+        "cluster_id": "data.[&1].cluster_id",
+        "cluster_name": "data.[&1].cluster_name",
+        "crc_name": "data.[&1].crc_name",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "@students_count": "data.[&1].students_count",
+        "@total_schools": "data.[&1].total_schools",
+        "students_count": "footer.@(1,cluster_id).students[]",
+        "total_schools": "footer.@(1,cluster_id).schools[]"
+      }
+    }
+	},
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "students": "=intSum(@(1,students))",
+          "schools": "=intSum(@(1,schools))"
+        }
+      }
+    }
+	}
+ , {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "x_axis": "data.[&1].x_axis",
+          "school_name": "data.[&1].school_name",
+          "cluster_id": "data.[&1].cluster_id",
+          "cluster_name": "data.[&1].cluster_name",
+          "crc_name": "data.[&1].crc_name",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "x_value": "data.[&1].x_value",
+          "y_axis": "data.[&1].y_axis",
+          "y_value": "data.[&1].y_value",
+          "z_axis": "data.[&1].z_axis",
+          "z_value": "data.[&1].z_value",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
+          "@students_count": "data.[&1].students_count",
+          "@total_schools": "data.[&1].total_schools",
+          "students_count": "allSchoolsFooter.students[]",
+          "total_schools": "allSchoolsFooter.schools[]"
+        }
+      },
+      "footer": "&"
+    }
+	}, {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "students": "=intSum(@(1,students))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+	}
+]"""
 }
 

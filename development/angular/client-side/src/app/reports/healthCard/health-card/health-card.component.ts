@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppServiceComponent } from 'src/app/app.service';
 import { HealthCardService } from 'src/app/services/health-card.service';
@@ -10,6 +10,11 @@ import * as _ from "lodash"
   styleUrls: ['./health-card.component.css']
 })
 export class HealthCardComponent implements OnInit, AfterViewInit {
+  innerWidth = 772;
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
+  }
   tooltip: any = "";
   state = '';
   placeHolder = "First Choose Level From Drop-down";
@@ -148,7 +153,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.udiseLength = -1;
     this.crcLength = 1;
     this.infraLength = -1;
-    this.height = '320px';
+    this.height = '380px';
     this.level = "state";
     document.getElementById('myInput')['disabled'] = true;
     document.getElementById('myInput')['value'] = '';
@@ -201,7 +206,10 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.err = false;
     this.showAll = false;
     this.showLink = true;
+    document.getElementById('home').style.display = 'block';
+    document.getElementById('download').style.display = 'block';
     document.getElementById('spinner').style.display = 'block';
+    this.exist = false;
     this.districtName = document.getElementById('myInput')['value'];
     var id;
     if (this.ids.includes(this.districtName) || this.names.includes(this.districtName)) {
@@ -213,7 +221,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.udiseLength = 4;
         this.crcLength = 1;
         this.infraLength = 3;
-        this.height = '340px';
+        this.height = '380px';
         var dist;
         if (this.districtName.match(/^\d/)) {
           id = parseInt(this.districtName);
@@ -268,7 +276,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.udiseLength = 5;
         this.crcLength = 3;
         this.infraLength = 5;
-        this.height = '270px';
+        this.height = '380px';
         var block;
         id;
         if (this.districtName.match(/^\d/)) {
@@ -322,7 +330,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.udiseLength = 6;
         this.crcLength = 5;
         this.infraLength = 7;
-        this.height = '300px';
+        this.height = '380px';
         var cluster;
         let blkId;
         if (this.districtName.match(/^\d/)) {
@@ -378,7 +386,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.udiseLength = 8;
         this.crcLength = 7;
         this.infraLength = 9;
-        this.height = '220px';
+        this.height = '280px';
         var school;
         var blok;
         this.showLink = false;
@@ -650,7 +658,13 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   value: any;
   val;
   len;
+  exist = false;
   onChange() {
+    document.getElementById('home').style.display = 'none';
+    document.getElementById('download').style.display = 'none';
+
+    this.exist = true;
+
     this.val = document.getElementById('myInput')['value'];
     this.len = this.val.length;
     this.showAll = false;
@@ -671,12 +685,14 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
 
   levels = [{ key: 'district', name: 'District' }, { key: 'block', name: 'Block' }, { key: 'cluster', name: 'Cluster' }, { key: 'school', name: 'School' }];
   selectedLevel(callSubmit = false) {
+    document.getElementById('home').style.display = 'none';
+    document.getElementById('download').style.display = 'none';
+    this.exist = true;
     document.getElementById('spinner').style.display = 'block';
     sessionStorage.removeItem('health-card-info');
     this.allData = [];
     this.ids = [];
     this.names = [];
-    document.getElementById('home').style.display = "block";
     document.getElementById('warning').style.display = 'block';
     this.showAll = false;
     document.getElementById('myInput')['disabled'] = false;
