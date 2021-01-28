@@ -127,7 +127,7 @@ export class DashboardComponent implements OnInit {
     this.tpdtpTooltip = `This dashboard provides details on district-wise TPD course enrolment progress broken at the individual course level.`;
     this.tpdcpTooltip = `This dashboard provides details on district-wise TPD course progress broken at the individual course level.`;
     this.healthCardTooltip = `Healthcard Tooltip`;
-    this.patExcptViews = `PAT Exception tooltip`;
+    this.patExcptTooltip = `PAT Exception tooltip`;
   }
 
   changeDataSourceStatus() {
