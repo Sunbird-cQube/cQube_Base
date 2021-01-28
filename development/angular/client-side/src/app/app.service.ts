@@ -74,9 +74,7 @@ export class AppServiceComponent {
 
     //Initialisation of Map  
     initMap(map, maxBounds) {
-        const lat = 22.3660414123535;
-        const lng = 71.48396301269531;
-        globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([lat, lng], this.mapCenterLatlng.zoomLevel);
+        globalMap = L.map(map, { zoomControl: false, maxBounds: maxBounds }).setView([maxBounds[0][0], maxBounds[0][1]], this.mapCenterLatlng.zoomLevel);
         applyCountryBorder(globalMap);
         function applyCountryBorder(map) {
             L.geoJSON(data.default[`${environment.stateName}`]['features'], {
@@ -139,28 +137,7 @@ export class AppServiceComponent {
         var selected = '';
         for (var key in object) {
             if (object.hasOwnProperty(key)) {
-                console.log(value);
-                // if (key == value) {
-                //     if (reportType == "infra-map" || reportType == "patReport") {
-                //         selected = `<span ${infraName == key.trim() ? colorText : ''}>`
-                //     }
-                //     stringLine = selected + "<b>" +
-                //         key.replace(
-                //             /\w\S*/g,
-                //             function (txt) {
-                //                 txt = txt.replace(/_/g, ' ');
-
-                //                 if (txt.includes('percent')) {
-                //                     txt = txt.replace('percent', '(%)');
-                //                 }
-                //                 if (txt.includes('id')) {
-                //                     return txt.charAt(0).toUpperCase();
-                //                 } else {
-                //                     return toTitleCase(txt);
-                //                 }
-                //             })
-                //         + "</b>" + ": " + object[key] + " %" + `</span>`;
-                // } else {
+                if (key == value) {
                     if (reportType == "infra-map" || reportType == "patReport") {
                         selected = `<span ${infraName == key.trim() ? colorText : ''}>`
                     }
@@ -169,7 +146,26 @@ export class AppServiceComponent {
                             /\w\S*/g,
                             function (txt) {
                                 txt = txt.replace(/_/g, ' ');
-                                if (txt.includes('percent')) {
+                                if (txt.includes('percent') && txt != 'percentage schools with missing data') {
+                                    txt = txt.replace('percent', '(%)');
+                                }
+                                if (txt.includes('id')) {
+                                    return txt.charAt(0).toUpperCase();
+                                } else {
+                                    return toTitleCase(txt);
+                                }
+                            })
+                        + "</b>" + ": " + object[key] + " %" + `</span>`;
+                } else {
+                    if (reportType == "infra-map" || reportType == "patReport") {
+                        selected = `<span ${infraName == key.trim() ? colorText : ''}>`
+                    }
+                    stringLine = selected + "<b>" +
+                        key.replace(
+                            /\w\S*/g,
+                            function (txt) {
+                                txt = txt.replace(/_/g, ' ');
+                                if (txt.includes('percent') && txt != 'percentage schools with missing data') {
                                     txt = txt.replace('percent', '(%)');
                                 }
                                 if (txt.includes('id')) {
@@ -181,7 +177,7 @@ export class AppServiceComponent {
                             })
 
                         + "</b>" + ": " + object[key] + `</span>`;
-                // }
+                }
             }
             popupFood.push(stringLine);
         }
