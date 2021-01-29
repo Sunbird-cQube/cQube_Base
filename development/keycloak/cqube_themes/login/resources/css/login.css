@@ -1,14 +1,9 @@
 .login-pf body {
-    background:  url("../img/back1.png"), url("../img/Group.svg") , linear-gradient(135.84deg, #5421FF 0%, #3D92FF 53.32%, #00DCF8 100%);
-    width: 100%;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: right;
+    background: url("../img/Group.svg");
+    object-fit: cover;
 }
 
-.login-pf {
-    background: transparent
-}
+
 
 .alert-error {
     background-color: #ffffff;
@@ -81,14 +76,17 @@ a#kc-current-locale-link::after {
 
 #kc-logo {
     width: 100%;
+    position: fixed;
 }
 
 #kc-logo-wrapper {
-    background-image: url(../img/logo.png);
+    position: relative;
+    background-image: url(../img/GroupLogo.svg);
     background-repeat: no-repeat;
     height: 53px;
     width: 300px;
     margin: 62px auto 0;
+    position: fixed;
 }
 
 div.kc-logo-text {
@@ -109,18 +107,21 @@ div.kc-logo-text span {
 }
 
 #kc-header-wrapper {
-    background-image: url(../img/logo.png);
-    content: "cQube";
-    margin: 0px auto;
+    background-image: url(../img/GroupLogo.svg);
     background-repeat: no-repeat;
-    font-size: 0px;
-    text-transform: uppercase;
     position: relative;
     letter-spacing: 0px;
     margin: 15px 0px 0px 20px;
-    /* line-height: 1.2em; */
     padding: 62px 10px 20px;
     white-space: normal;
+}
+
+.logoText{
+    position :absolute; 
+    left:100px; 
+    top:30px;
+    font-family: Liberation Sans Narrow;
+    font-size: 90px;
 }
 
 #kc-content {
@@ -287,10 +288,16 @@ a.zocial  {
     }
 }
 
+
 @media (max-width: 767px) {
 
     .login-pf body {
-      background: white;
+        background:  url("../img/Group.svg");
+        height:100%;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: right;
     }
 
     #kc-header {
@@ -301,11 +308,9 @@ a.zocial  {
     }
 
     #kc-header-wrapper {
-      font-size: 16px;
-      font-weight: bold;
-      padding: 20px 60px 0 0;
-      color: #72767b;
-      letter-spacing: 0;
+      /* margin-top: 60px; */
+      position: relative;
+      background-image: url(../img/GroupLogo.svg);
     }
 
     div.kc-logo-text {
@@ -315,8 +320,9 @@ a.zocial  {
         background-size: 100%;
     }
 
-    #kc-form {
-        float: none;
+
+    .card-pf {
+        margin: 0px auto;
     }
 
     #kc-info-wrapper {
@@ -333,7 +339,7 @@ a.zocial  {
     }
 
     .login-pf .container {
-        padding-top: 15px;
+        /* padding-top: 15px; */
         padding-bottom: 15px;
     }
 
@@ -365,8 +371,12 @@ a.zocial  {
 #username, #password {
     height: 40px;
     border-radius: 20px !important;
-    background-color: rgb(255, 251, 251);
+    background-color: transparent;
+    border: 1px solid gainsboro;
+    color: white;
 }
+
+
 
 @media (min-height: 646px) {
     #kc-container-wrapper {
@@ -390,23 +400,21 @@ a.zocial  {
     display: none;
 }
 
-#kc-form-buttons {
-  margin-top: 40px;
-}
 
-.login-pf-page .login-pf-brand {
-  margin-top: 20px;
-  max-width: 360px;
-  width: 40%;
+.login-pf-page {
+    background: url("../img/back1.png");
+    background-size: 790px;
+    background-repeat: no-repeat;
+    background-position: right;
 }
 
 .card-pf {
     margin-left:50px;
-    height: 360px auto;
-    width: 300px;
-    border-radius: 16px;
-    background-color: rgb(57, 125, 226);;
+    margin-top: 100px;
+    width: 316px;
+    background: linear-gradient(125deg, #4e22ee 10%, #6b6df1 90%);
     opacity: 0.9;
+    border-radius: 16px;
     color: #fff;
   }
     
@@ -420,24 +428,88 @@ label{
 #kc-totp-settings li p{
     color: antiquewhite;
 }
+
+label[for="username"]{
+    visibility: hidden;
+    position: relative;
+}
+
+label[for="username"]:after{
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content:'User ID';
+}
+
     /*tablet*/
 @media (max-width: 840px) {
-        .login-pf-page .card-pf{
-          max-width: none;
-          margin-left: 20px;
-          margin-right: 20px;
+        .card-pf{
+          margin: 0px auto;
+          position :relative; 
           padding: 20px 20px 30px 20px;
+        }
+        .logoText{
+            /* position :absolute; 
+            left:0px;
+            right: 0px; 
+            top:30px;
+            bottom: 40px;
+            font-size: 40px; */
+            display: none;
+        }
+        .login-pf-page {
+            background: url("");
+            background-repeat: no-repeat;
+            background-position: right;
+        }
+        .infoText p{
+            color: #FFFFFF;
+            font-size: 16px;
+            text-align: justify;
+            line-height: 1.5em;
+        }
+        .infoText{
+            left: 0px !important;
+            right: 0px !important;
+            /* width: 100%; */
+            position: absolute !important;
         }
     }
     @media (max-width: 767px) {
-        .login-pf-page .card-pf{
-          max-width: none;
-          margin-left: 0;
-          margin-right: 0;
-          padding-top: 0;
-        }
+        .card-pf{
+            margin: 0px auto;
+            position :relative; 
+            padding: 20px 20px 30px 20px;
+          }
+          /* .logoText{
+            position :absolute; 
+            left:0px;
+            right: 0px; 
+            top:30px;
+            font-size: 90px;
+        } */
+    
         .card-pf.login-pf-accounts{
           max-width: none;
+        }
+        .infoText p{
+            color: #FFFFFF;
+            font-size: 16px;
+            text-align: justify;
+            line-height: 1.5em;
+        }
+        .infoText{
+            left: 0px;
+            right: 0px;
+            /* width: 100%; */
+            position: absolute;
+        }
+
+        .logoText{
+            /* text-align: center;
+            font-size: 20px; */
+            display: none;
         }
     }    
 
@@ -445,6 +517,19 @@ label{
   font-size: 15px;
   color: #72767b;
 }
+
+.infoText p{
+    color: #FFFFFF;
+    font-size: 16px;
+    text-align: justify;
+    line-height: 1.5em;
+}
+
+.infoText{
+    margin :30px 0px 60px 50px; 
+    width: 400px;
+}
+
 #kc-content-wrapper .row {
   margin-left: 0;
   margin-right: 0;
@@ -486,5 +571,5 @@ label{
     background-color: #f75c69 !important;
 }
 .control-label {
-    color: #363636
+    color: white;
 }

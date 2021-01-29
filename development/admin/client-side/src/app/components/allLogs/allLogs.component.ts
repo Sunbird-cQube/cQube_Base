@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LogsService } from '../../services/logs.service';
+import { getFileNameFromResponseContentDisposition, getMimeTypeFromResponseContentDisposition, saveFile } from 'src/app/services/file-download.service';
 
 @Component({
   selector: 'app-allLogs',
@@ -24,6 +25,10 @@ export class AllLogsComponent implements OnInit {
   errMsg;
   fileSize;
   showErr = true;
+  fileView = false;
+  previousFiles: any[] = [];
+  loadingPreviousFiles = false;
+
   constructor(private router: Router, private service: LogsService) {
     this.showErr = false;
   }
@@ -50,7 +55,10 @@ export class AllLogsComponent implements OnInit {
     this.allLogs = [];
     this.logHide = false;
     this.fileHidden = true;
+    this.fileView = false;
+    this.previousFiles = [];
     this.service.getLogMenu().subscribe((res: any) => {
+      console.log(res);
       res.forEach(element => {
         if (element.name == type) {
           element.children.forEach(item => {
@@ -67,6 +75,8 @@ export class AllLogsComponent implements OnInit {
   getLogPath(type) {
     document.getElementById('spinner').style.display = 'block';
     this.fileHidden = false;
+    this.fileView = false;
+    this.previousFiles = [];
     this.service.showLogs(type).subscribe(res => {
       this.title = res['title'];
       this.logPath = res['path'];
@@ -108,6 +118,23 @@ export class AllLogsComponent implements OnInit {
       });
       document.getElementById('spinner').style.display = 'none';
     })
+  }
+
+  getPreviousFiles(): void {
+    this.fileView = true;
+    this.loadingPreviousFiles = true;
+    this.service.getPreviousFiles().subscribe((res: any) => {
+      this.previousFiles = res;
+      this.loadingPreviousFiles = false;
+    });
+  }
+
+  downloadLogFile(fileName: string): void {
+    this.service.downloadLogFile(fileName).subscribe(res => {
+      const fileName = getFileNameFromResponseContentDisposition(res);
+      const mimeType = getMimeTypeFromResponseContentDisposition(res);
+      saveFile(res.body, fileName, mimeType);
+    });
   }
 
 

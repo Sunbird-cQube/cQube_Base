@@ -34,7 +34,8 @@
 <body class="${properties.kcBodyClass!}">
   <div class="${properties.kcLoginClass!}">
     <div id="kc-header" class="${properties.kcHeaderClass!}">
-      <div id="kc-header-wrapper" class="${properties.kcHeaderWrapperClass!}">${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}</div>
+      <div id="kc-header-wrapper" class="${properties.kcHeaderWrapperClass!}">${kcSanitize(msg("",(realm.displayNameHtml!'')))?no_esc}</div>
+      <div class="logoText" style="font-size:90px; font-spacing:-1px;">cQube</div>
     </div>    
     <div class="${properties.kcFormCardClass!} <#if displayWide>${properties.kcFormCardAccountClass!}</#if>">
       <header class="${properties.kcFormHeaderClass!}">
@@ -137,13 +138,19 @@
               </div>
           </#if>
         </div>
-      </div>
-
+              </div>
+      
+    </div>
+    <div class="infoText">
+        <h1 style="color:white; font-size: 32px; font-weight: bold;font-family: "Noto Sans"; padding-botton: 20px;">Headline text goes here</h1>
+        <p>Ability to break the information at different administrative 
+        levels- District, Block, Cluster and School
+Ability to download data at multiple administrative levels
+Ability to zoom in and out across multiple administrative levels</p>
     </div>
   </div>
-    <div style="color: #FFFFFF;font-size: 16px;margin-left:50px;margin-top:30px;">
-        <p> <b>Utilizing data to drive action on the ground </b> by enabling the <br>ability to <b>see, solve and act</b> </p>
-    </div>
-</body>
+   <br>
+    </body>
+   
 </html>
 </#macro>
