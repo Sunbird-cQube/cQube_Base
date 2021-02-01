@@ -17235,7 +17235,7 @@ ${query_type:startsWith('tch_att_exception_district'):ifElse("exception_list/tea
 ${query_type:startsWith('tch_att_exception_block'):ifElse("exception_list/teacher_attendance_completion/block_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
 ${query_type:startsWith('tch_att_exception_cluster'):ifElse("exception_list/teacher_attendance_completion/cluster_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
 ${query_type:startsWith('tch_att_exception_school'):ifElse("exception_list/teacher_attendance_completion/school_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",'None')} )} )} )} )}
-)} )} )} )} </value>
+)} )} )} )}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -26988,5 +26988,5 @@ VALUES
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/01/2021 17:47:06 IST</timestamp>
+    <timestamp>02/01/2021 19:18:23 IST</timestamp>
 </template>
