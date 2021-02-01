@@ -90,6 +90,48 @@ export class ExceptionReportService {
     return this.http.post(`${this.baseUrl}/patExcetpion/schoolWise/${distId}/${blockId}/${clusterId}`, data);
   }
 
+  //sarException report
+  dist_wise_data(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/distWise`, data);
+  }
+
+  block_wise_data(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/blockWise`, data);
+  }
+
+  cluster_wise_data(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/clusterWise`, data);
+  }
+
+  school_wise_data(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/schoolWise`, data);
+  }
+
+
+  blockPerDist(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/blockPerDist`, data);
+  }
+
+  clusterPerBlock(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/clusterPerBlock`, data);
+  }
+
+  schoolsPerCluster(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/schoolPerCluster`, data);
+  }
+
+  getDateRange() {
+    this.service.logoutOnTokenExpire();
+    return this.http.get(`${this.baseUrl}/sarException/getDateRange`);
+  }
+
   //color gredient generation....
   public exceptionColor() {
     // Converts a #ffffff hex string into an [r,g,b] array

@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit {
   tpdcpTooltip;
   healthCardTooltip;
   patExcptTooltip
+  sarExcptTooltip;
 
   hiddenPass = false;
   edate: Date;
@@ -66,7 +67,8 @@ export class DashboardComponent implements OnInit {
   tpdenrollViews;
   tpdcompViews;
   healthCardViews;
-  patExcptViews
+  patExcptViews;
+  sarExcptViews;
   
 
   //for coming soon page
@@ -226,6 +228,7 @@ export class DashboardComponent implements OnInit {
     this.tpdtpViews = "";
     this.tpdenrollViews = "";
     this.tpdcompViews = "";
+    this.sarExcptViews = "";
 
     var myStr = this.removeUnderscore(views[0].time_range);
     this.timePeriod = " (" + myStr + ")";
@@ -306,6 +309,9 @@ export class DashboardComponent implements OnInit {
       }
       if (element.reportid == 'patExcpt') {
         this.patExcptViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'sarExcpt') {
+        this.sarExcptViews = element.number_of_views + " (" + timeStr + ")";
       }
 
     });

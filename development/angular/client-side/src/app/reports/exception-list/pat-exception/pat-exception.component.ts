@@ -231,15 +231,10 @@ export class PATExceptionComponent implements OnInit {
           this.blockMarkers = [];
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
-          let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = result.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
           this.blockMarkers = result;
-          // var obj = this.blockMarkers.filter(a => { if (a[`block_latitude`] == null) return a });
-          // var index = this.blockMarkers.indexOf(obj[0]);
-          // if (index != -1) {
-          //   this.blockMarkers.splice(index, 1);
-          // }
-
+         
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.colors[i], 3.5, 0.1, 1, options.level);
@@ -312,15 +307,10 @@ export class PATExceptionComponent implements OnInit {
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           this.clusterMarkers = [];
           // generate color gradient
-          let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = result.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
           this.colors = colors;
           this.clusterMarkers = result;
-          // var obj = this.clusterMarkers.filter(a => { if (a[`cluster_latitude`] == null) return a });
-          // var index = this.clusterMarkers.indexOf(obj[0]);
-          // if (index != -1) {
-          //   this.clusterMarkers.splice(index, 1);
-          // }
-
+         
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.colors[i], 1, 0.01, 0.5, options.level);
@@ -390,21 +380,14 @@ export class PATExceptionComponent implements OnInit {
           let result = this.data['data']
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
-          let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = result.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#FF0000', result.length, 'rgb');
           this.colors = colors;
           this.schoolMarkers = result;
-          // var obj = this.schoolMarkers.filter(a => { if (a[`school_latitude`] == null) return a });
-          // var index = this.schoolMarkers.indexOf(obj[0]);
-          // if (index != -1) {
-          //   this.schoolMarkers.splice(index, 1);
-          // }
-
+        
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 0, 0, 0.3, options.level);
-
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "school_latitude", "school_longitude");
-
               // to download the report
               this.fileName = "School_wise_report";
             }
@@ -660,14 +643,14 @@ export class PATExceptionComponent implements OnInit {
       this.markers = data['data']
       this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
       // generate color gradient
-      let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
+      let colors;
+      if (options.level == 'school') {
+        colors = this.markers.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#FF0000', this.markers.length, 'rgb');
+      } else {
+        colors = this.markers.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
+      }
       this.colors = colors;
-      // var obj = this.markers.filter(a => { if (a[`district_latitude`] == null) return a });
-      // var index = this.markers.indexOf(obj[0]);
-      // if (index != -1) {
-      //   this.markers.splice(index, 1);
-      // }
-
+    
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         var lat, strLat; var lng, strLng;

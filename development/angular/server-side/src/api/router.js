@@ -246,4 +246,18 @@ router.use('/tpd', schoolLevel);
 const fileDownload = require('./controller/rawDataDownload');
 router.use('/getDownloadUrl', fileDownload);
 
+
+//Student Attendance Exception
+const sarGetDateRange = require('./controller/completionReports/studentAttendanceException/getDateRange');
+const sarExceptionDistWise = require('./controller/completionReports/studentAttendanceException/dist_wise_data');
+const sarExceptionBlockWise = require('./controller/completionReports/studentAttendanceException/block_wise_data');
+const sarExceptionClusterWise = require('./controller/completionReports/studentAttendanceException/cluster_wise_data');
+const sarExceptionSchoolWise = require('./controller/completionReports/studentAttendanceException/school_wise_data');
+
+router.use('/sarException', sarGetDateRange);
+router.use('/sarException', sarExceptionDistWise);
+router.use('/sarException', sarExceptionBlockWise);
+router.use('/sarException', sarExceptionClusterWise);
+router.use('/sarException', sarExceptionSchoolWise);
+
 module.exports = router;

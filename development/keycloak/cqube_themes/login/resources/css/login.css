@@ -118,7 +118,7 @@ div.kc-logo-text span {
     position :absolute; 
     left:100px !important; 
     top:40px !important;
-    font-family: Dhurjati;
+    font-family: Bahnschrift SemiBold Condensed !important;
     font-size: 90px;
 }
 
@@ -746,7 +746,7 @@ label[for="totp"]:after{
 
 .infoText{
     margin :30px 0px 0px 50px; 
-    width: 400px;
+    width : 530px;
 }
 
 #kc-content-wrapper .row {
