@@ -5,7 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <meta name="robots" content="noindex, nofollow">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     <#if properties.meta?has_content>
         <#list properties.meta?split(' ') as meta>
@@ -29,12 +32,61 @@
             <script src="${script}" type="text/javascript"></script>
         </#list>
     </#if>
+    <script  type="text/javascript">
+    function onChange(){
+        if(document.getElementById("password1").value.length > 0){
+            document.getElementById("togglePassword").style.display = 'block';
+        }else{
+            document.getElementById("togglePassword").style.display = 'none';
+        }
+    }
+
+    function myFun(){
+        if(document.getElementById("password1").value.length > 0 && document.getElementById("username1").value.length > 0){
+            document.getElementById("login").style.backgroundColor = "#31D08C";
+            document.getElementById("login").style.color = "white";
+            document.getElementById("signinSymbol").style.display = "none";
+            document.getElementById("signinSymbolWithInput").style.display = "block"; 
+        }else{
+            document.getElementById("login").style.color = "#899BFF";
+            document.getElementById("login").style.backgroundColor = "transparent";
+            document.getElementById("signinSymbol").style.display = "block";
+            document.getElementById("signinSymbolWithInput").style.display = "none";
+        }
+    }
+    function test(el){
+      $(el).toggleClass('fa-eye-slash');
+      var className = $(el).attr('class');
+   }
+
+  function onClick(el){
+       document.getElementById("kc-form-login1")
+       document.getElementById("kc-login").style.display = "none";
+       var className = $(el).attr('class');
+       console.log(className);
+   }
+   $(window).on('load', function(){
+       if ($('#totp').length){
+           document.getElementById("kc-form-login1").style.display = "none";
+           document.getElementById("kc-login").style.display = "block";
+       }else{
+           document.getElementById("kc-form-login1").style.display = "block";
+       }
+    });
+
+ $(document).ready(function(){
+    $('#totp').on('input', function(){
+        document.getElementsByClassName("btn-primary")[0].style.backgroundColor = "#31D08C";
+     });
+});
+    </script>
 </head>
 
 <body class="${properties.kcBodyClass!}">
   <div class="${properties.kcLoginClass!}">
     <div id="kc-header" class="${properties.kcHeaderClass!}">
-      <div id="kc-header-wrapper" class="${properties.kcHeaderWrapperClass!}">${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}</div>
+      <div id="kc-header-wrapper" class="${properties.kcHeaderWrapperClass!}">${kcSanitize(msg("",(realm.displayNameHtml!'')))?no_esc}</div>
+      <div class="logoText" style="font-size:90px; font-spacing:-1px;">cQube</div>
     </div>    
     <div class="${properties.kcFormCardClass!} <#if displayWide>${properties.kcFormCardAccountClass!}</#if>">
       <header class="${properties.kcFormHeaderClass!}">
@@ -116,7 +168,24 @@
               </div>
           </#if>
 
-          <#nested "form">
+          <#if realm.password>
+            <div>
+               <form autocomplete="off" id="kc-form-login1" class="form" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
+                    <label>User ID </label><br/>
+                    <input id="username1" oninput="myFun();" class="login-field" placeholder="${msg("Enter your user ID")}" type="text" name="username" tabindex="1">
+                    <br/><br/>
+                    <label>Password</label><br/>
+                    <input id="password1" oninput="onChange(); myFun();" class="login-field" placeholder="${msg("Enter your password")}" type="password" name="password" tabindex="2">
+                    <i class="far fa-eye" id="togglePassword" onclick="if (password1.type == 'text') password1.type = 'password';
+                        else password1.type = 'text'; test(this)" style="display:none;"></i>
+                    <br/><br/>
+                    <input class="submit" type="submit" onclick="onClick(this)" id="login" value="Login" tabindex="3">
+                    <img src="${url.resourcesPath}/img/Shape1.svg" aria-hidden="true" id="signinSymbol">
+                    <img src="${url.resourcesPath}/img/Shape.svg" aria-hidden="true" id="signinSymbolWithInput">
+                </form>
+            </div>
+        </#if>
+        <#nested "form">
 
           <#if auth?has_content && auth.showTryAnotherWayLink() && showAnotherWayIfPresent>
           <form id="kc-select-try-another-way-form" action="${url.loginAction}" method="post" <#if displayWide>class="${properties.kcContentWrapperClass!}"</#if>>
@@ -137,13 +206,19 @@
               </div>
           </#if>
         </div>
-      </div>
-
+              </div>
+      
+    </div>
+    <div class="infoText">
+        <h1 style="color:white; font-size: 32px; font-weight: bold;font-family: "Noto Sans"; padding-botton: 20px;">Headline text goes here</h1>
+        <p>Ability to break the information at different administrative 
+        levels- District, Block, Cluster and School
+Ability to download data at multiple administrative levels
+Ability to zoom in and out across multiple administrative levels</p>
     </div>
   </div>
-    <div style="color: #FFFFFF;font-size: 16px;margin-left:50px;margin-top:30px;">
-        <p> <b>Utilizing data to drive action on the ground </b> by enabling the <br>ability to <b>see, solve and act</b> </p>
-    </div>
-</body>
+   <br>
+    </body>
+   
 </html>
 </#macro>

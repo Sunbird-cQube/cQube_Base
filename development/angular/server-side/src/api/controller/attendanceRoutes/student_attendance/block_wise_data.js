@@ -8,10 +8,18 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         logger.info('---Attendance block wise api ---');
         var month = req.body.month;
         var year = req.body.year;
-        let fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `attendance/${timePeriod}/block.json`;
+        } else {
+            fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
 
         var blocksAttendanceData = jsonData.data
+        var dateRange = `${blocksAttendanceData[0]['data_from_date']} to ${blocksAttendanceData[0]['data_upto_date']}`;
+
         var blockData = [];
         for (let i = 0; i < blocksAttendanceData.length; i++) {
             var obj = {
@@ -28,7 +36,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
             blockData.push(obj);
         }
         logger.info('--- Attendance block wise api response sent ---');
-        res.status(200).send({ blockData: blockData, studentCount: jsonData.allBlocksFooter.students, schoolCount: jsonData.allBlocksFooter.schools });
+        res.status(200).send({ blockData: blockData, studentCount: jsonData.allBlocksFooter.students, schoolCount: jsonData.allBlocksFooter.schools, dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -38,16 +46,22 @@ router.post('/blockWise', auth.authController, async (req, res) => {
 router.post('/blockPerDist', auth.authController, async (req, res) => {
     try {
         logger.info('---Attendance blockPerDist api ---');
-        var distId = req.body.data.id;
-        var month = req.body.data.month;
-        var year = req.body.data.year;
-        let fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`
-        var jsonData = await s3File.readS3File(fileName);
+        var distId = req.body.id;
+        var month = req.body.month;
+        var year = req.body.year;
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `attendance/${timePeriod}/block.json`;
+        } else {
+            fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`;
+        } var jsonData = await s3File.readS3File(fileName);
         var blockData = [];
         var filterData = jsonData.data.filter(data => {
             return (data.district_id == distId)
         });
         var blocksAttendanceData = filterData;
+        var dateRange = `${blocksAttendanceData[0]['data_from_date']} to ${blocksAttendanceData[0]['data_upto_date']}`;
         for (let i = 0; i < blocksAttendanceData.length; i++) {
             var obj = {
                 block_id: blocksAttendanceData[i]['x_axis'],
@@ -63,7 +77,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
             blockData.push(obj);
         }
         logger.info('--- Attendance blockPerDist api response sent ---');
-        res.status(200).send({ blockData: blockData, studentCount: jsonData.footer[distId].students, schoolCount: jsonData.footer[distId].schools });
+        res.status(200).send({ blockData: blockData, studentCount: jsonData.footer[distId].students, schoolCount: jsonData.footer[distId].schools,dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

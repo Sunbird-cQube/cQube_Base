@@ -10,7 +10,8 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         var year = req.body.year;
         let fileName = `teacher_attendance/cluster_${year}_${month}.json`;
         var jsonData = await s3File.readS3File(fileName);
-        var clustersAttendanceData = jsonData.data
+        var clustersAttendanceData = jsonData.data;
+        var dateRange = `${clustersAttendanceData[0]['data_from_date']} to ${clustersAttendanceData[0]['data_upto_date']}`;
         var clusterData = [];
         for (let i = 0; i < clustersAttendanceData.length; i++) {
             var obj = {
@@ -29,7 +30,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
             clusterData.push(obj);
         }
         logger.info('--- Attendance cluster wise api response sent ---');
-        res.status(200).send({ clusterData: clusterData, teacherCount: jsonData.allClustersFooter.teachers, schoolCount: jsonData.allClustersFooter.schools });
+        res.status(200).send({ clusterData: clusterData, teacherCount: jsonData.allClustersFooter.teachers, schoolCount: jsonData.allClustersFooter.schools, dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -49,6 +50,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
             return (data.block_id == blockId)
         });
         var clustersAttendanceData = filterData;
+        var dateRange = `${clustersAttendanceData[0]['data_from_date']} to ${clustersAttendanceData[0]['data_upto_date']}`;
         for (let i = 0; i < clustersAttendanceData.length; i++) {
             var obj = {
                 cluster_id: clustersAttendanceData[i]['x_axis'],
@@ -66,7 +68,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
             clusterData.push(obj);
         }
         logger.info('--- Attendance clusterPerDist api response sent ---');
-        res.status(200).send({ clusterDetails: clusterData, teacherCount: jsonData.footer[blockId].teachers, schoolCount: jsonData.footer[blockId].schools });
+        res.status(200).send({ clusterDetails: clusterData, teacherCount: jsonData.footer[blockId].teachers, schoolCount: jsonData.footer[blockId].schools , dateRange: dateRange});
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

@@ -26,4 +26,14 @@ export class LogsService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/logs/showLogs`, { data: data });
   }
+
+  getPreviousFiles() {
+    this.service.logoutOnTokenExpire();
+    return this.http.get(`${this.baseUrl}/logs/getPreviousLogFiles`);
+  }
+
+  downloadLogFile(fileName) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/logs/downloadLogFile`, { fileName }, { observe: 'response', responseType: 'arraybuffer' as 'blob' });
+  }
 }

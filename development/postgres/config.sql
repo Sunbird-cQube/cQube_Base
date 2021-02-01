@@ -5957,3 +5957,427 @@ group by student_uid,school_id,semester,grade
  drop view if exists teacher_attendance_trans_to_aggregate;
 
 insert into school_hierarchy_details values(9999,NULL,'others',NULL,NULL,9999,'others',NULL,9999,'others',9999,'others',NULL,now(),now()) on conflict  ON CONSTRAINT school_hierarchy_details_pkey do nothing;
+
+
+/* Student attendance Exception */
+
+create or replace FUNCTION student_attendance_no_schools(month int,year int)
+RETURNS text AS
+$$
+DECLARE
+student_attendance_no_schools text;
+BEGIN
+student_attendance_no_schools = 'create or replace view student_attendance_exception_data as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,'|| month ||' as month,'|| year ||' as year,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in 
+(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,INITCAP(crc_name)AS crc_name, 
+Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select Data_from_date(Min(year),min(month)) from school_student_total_attendance where year = (select min(year) from school_student_total_attendance) group by year), 
+  (select Data_upto_date(Max(year),max(month)) from school_student_total_attendance where year = (select max(year) from school_student_total_attendance) group by year),
+year,month 
+FROM school_student_total_attendance WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND month = '|| month ||' AND year = '|| year ||'
+AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0
+GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month)as e)
+and cluster_name is not null';
+Execute student_attendance_no_schools;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+/* Student attendance exception timeseries */
+
+create or replace FUNCTION student_attendance_no_schools_timeseries()
+RETURNS text AS
+$$
+DECLARE
+student_attendance_no_schools_overall text;
+student_attendance_no_schools_lastday text;
+student_attendance_no_schools_last7 text;
+student_attendance_no_schools_last30 text;
+BEGIN
+student_attendance_no_schools_lastday = 'create or replace view student_attendance_exception_data_lastday as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,
+Round(Sum(total_present)*100.0/Sum(total_students),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select to_char(min(days_in_period.day),''DD-MM-YYYY'') as data_from_date from (select (generate_series(''now()''::date-''1days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period),
+(select to_char(max(days_in_period.day),''DD-MM-YYYY'') as data_upto_date from (select (generate_series(''now()''::date-''1days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period)
+FROM student_attendance_agg_last_1_day WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_students>0
+GROUP BY school_id,school_name,school_latitude,school_longitude,cluster_id,cluster_name,block_id,block_name,district_id,district_name
+)as e) and cluster_name is not null';
+
+student_attendance_no_schools_last7 = 'create or replace view student_attendance_exception_data_last7 as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,
+Round(Sum(total_present)*100.0/Sum(total_students),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select to_char(min(days_in_period.day),''DD-MM-YYYY'') as data_from_date from (select (generate_series(''now()''::date-''7days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period),
+(select to_char(max(days_in_period.day),''DD-MM-YYYY'') as data_upto_date from (select (generate_series(''now()''::date-''7days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period)
+FROM student_attendance_agg_last_7_days WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_students>0
+GROUP BY school_id,school_name,school_latitude,school_longitude,cluster_id,cluster_name,block_id,block_name,district_id,district_name
+)as e) and cluster_name is not null';
+
+student_attendance_no_schools_last30 = 'create or replace view student_attendance_exception_data_last30 as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,
+Round(Sum(total_present)*100.0/Sum(total_students),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select to_char(min(days_in_period.day),''DD-MM-YYYY'') as data_from_date from (select (generate_series(''now()''::date-''30days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period),
+(select to_char(max(days_in_period.day),''DD-MM-YYYY'') as data_upto_date from (select (generate_series(''now()''::date-''30days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period)
+FROM student_attendance_agg_last_30_days WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_students>0
+GROUP BY school_id,school_name,school_latitude,school_longitude,cluster_id,cluster_name,block_id,block_name,district_id,district_name
+)as e) and cluster_name is not null';
+
+student_attendance_no_schools_overall = 'create or replace view student_attendance_exception_data_overall as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,
+Round(Sum(total_present)*100.0/Sum(total_students),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select Data_from_date(Min(year),min(month))  from student_attendance_trans where year = (select min(year) from student_attendance_trans) group by year) as data_from_date,
+(select   case when year=extract(year from now()) and month=extract(month from now()) then to_char(now(),''DD-MM-YYYY'')   else Data_upto_date(year,month) end as data_upto_date 
+from (select max(month) as month ,max(year) as year from student_attendance_trans where year = (select max(year) from student_attendance_trans)) as matt)
+FROM student_attendance_agg_overall WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_students>0
+GROUP BY school_id,school_name,school_latitude,school_longitude,cluster_id,cluster_name,block_id,block_name,district_id,district_name
+)as e) and cluster_name is not null';
+Execute student_attendance_no_schools_lastday;
+Execute student_attendance_no_schools_last7;
+Execute student_attendance_no_schools_last30;
+Execute student_attendance_no_schools_overall;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+/* Teacher attendance Exception */
+
+Drop view if exists teacher_attendance_exception_data cascade;
+
+create or replace FUNCTION teacher_attendance_no_schools(month int,year int)
+RETURNS text AS
+$$
+DECLARE
+teacher_attendance_no_schools text;
+BEGIN
+teacher_attendance_no_schools = 'create or replace view teacher_attendance_exception_data as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,'|| month ||' as month,'|| year ||' as year,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in 
+(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,INITCAP(crc_name)AS crc_name, 
+round(cast(Sum(total_present)*100.0/Sum(total_working_days) as numeric),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(teachers_count) AS teachers_count,Count(DISTINCT(school_id)) AS total_schools,
+(select Data_from_date(Min(year),min(month)) from school_teacher_total_attendance where year = (select min(year) from school_teacher_total_attendance) group by year), 
+  (select Data_upto_date(Max(year),max(month)) from school_teacher_total_attendance where year = (select max(year) from school_teacher_total_attendance) group by year),
+year,month 
+FROM school_teacher_total_attendance WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0
+GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month)as e)
+and cluster_name is not null';
+Execute teacher_attendance_no_schools;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+
+/* Student attendance Time series */
+
+CREATE OR REPLACE FUNCTION student_attendance_agg_refresh(period text)
+RETURNS text AS
+$$
+DECLARE
+_col_sql text;
+_query_res text;
+two_month_query text;
+cnt_query text;
+_count int;
+month int;
+year int;
+min_month int;
+min_year int;
+max_month int;
+max_year int;
+filter_query text;
+max_filter_query text;
+min_filter_query text;
+_group_query text;
+min_total_present text;
+min_total_students text;
+max_total_present text;
+max_total_students text;
+total_present text;
+total_students text;
+number_of_days text;
+one_month_query text;
+BEGIN
+two_month_query:='select school_id,month,year,
+sum(case when day_1 =1 then 1 else 0 end) as day_1_total_present,
+sum(case when day_1 in (1,2) then 1 else 0 end) as day_1_total_students,
+sum(case when day_2 =1 then 1 else 0 end) as day_2_total_present,
+sum(case when day_2 in (1,2) then 1 else 0 end) as day_2_total_students, 
+sum(case when day_3 =1 then 1 else 0 end) as day_3_total_present,
+sum(case when day_3 in (1,2) then 1 else 0 end) as day_3_total_students,
+sum(case when day_4 =1 then 1 else 0 end) as day_4_total_present,
+sum(case when day_4 in (1,2) then 1 else 0 end) as day_4_total_students, 
+sum(case when day_5 =1 then 1 else 0 end) as day_5_total_present,
+sum(case when day_5 in (1,2) then 1 else 0 end) as day_5_total_students, 
+sum(case when day_6 =1 then 1 else 0 end) as day_6_total_present,
+sum(case when day_6 in (1,2) then 1 else 0 end) as day_6_total_students, 
+sum(case when day_7 =1 then 1 else 0 end) as day_7_total_present,
+sum(case when day_7 in (1,2) then 1 else 0 end) as day_7_total_students,
+sum(case when day_8 =1 then 1 else 0 end) as day_8_total_present,
+sum(case when day_8 in (1,2) then 1 else 0 end) as day_8_total_students, 
+sum(case when day_9 =1 then 1 else 0 end) as day_9_total_present,
+sum(case when day_9 in (1,2) then 1 else 0 end) as day_9_total_students,
+sum(case when day_10 =1 then 1 else 0 end) as day_10_total_present,
+sum(case when day_10 in (1,2) then 1 else 0 end) as day_10_total_students,
+sum(case when day_11 =1 then 1 else 0 end) as day_11_total_present,
+sum(case when day_11 in (1,2) then 1 else 0 end) as day_11_total_students, 
+sum(case when day_12 =1 then 1 else 0 end) as day_12_total_present,
+sum(case when day_12 in (1,2) then 1 else 0 end) as day_12_total_students,
+sum(case when day_13 =1 then 1 else 0 end) as day_13_total_present,
+sum(case when day_13 in (1,2) then 1 else 0 end) as day_13_total_students,
+sum(case when day_14 =1 then 1 else 0 end) as day_14_total_present,
+sum(case when day_14 in (1,2) then 1 else 0 end) as day_14_total_students,
+sum(case when day_15 =1 then 1 else 0 end) as day_15_total_present,
+sum(case when day_15 in (1,2) then 1 else 0 end) as day_15_total_students,
+sum(case when day_16 =1 then 1 else 0 end) as day_16_total_present,
+sum(case when day_16 in (1,2) then 1 else 0 end) as day_16_total_students,
+sum(case when day_17 =1 then 1 else 0 end) as day_17_total_present,
+sum(case when day_17 in (1,2) then 1 else 0 end) as day_17_total_students,
+sum(case when day_18 =1 then 1 else 0 end) as day_18_total_present,
+sum(case when day_18 in (1,2) then 1 else 0 end) as day_18_total_students,
+sum(case when day_19 =1 then 1 else 0 end) as day_19_total_present,
+sum(case when day_19 in (1,2) then 1 else 0 end) as day_19_total_students,
+sum(case when day_20 =1 then 1 else 0 end) as day_20_total_present,
+sum(case when day_20 in (1,2) then 1 else 0 end) as day_20_total_students,
+sum(case when day_21 =1 then 1 else 0 end) as day_21_total_present,
+sum(case when day_21 in (1,2) then 1 else 0 end) as day_21_total_students,
+sum(case when day_22 =1 then 1 else 0 end) as day_22_total_present,
+sum(case when day_22 in (1,2) then 1 else 0 end) as day_22_total_students,
+sum(case when day_23 =1 then 1 else 0 end) as day_23_total_present,
+sum(case when day_23 in (1,2) then 1 else 0 end) as day_23_total_students,
+sum(case when day_24 =1 then 1 else 0 end) as day_24_total_present,
+sum(case when day_24 in (1,2) then 1 else 0 end) as day_24_total_students,
+sum(case when day_25 =1 then 1 else 0 end) as day_25_total_present,
+sum(case when day_25 in (1,2) then 1 else 0 end) as day_25_total_students,
+sum(case when day_26 =1 then 1 else 0 end) as day_26_total_present,
+sum(case when day_26 in (1,2) then 1 else 0 end) as day_26_total_students,
+sum(case when day_27 =1 then 1 else 0 end) as day_27_total_present,
+sum(case when day_27 in (1,2) then 1 else 0 end) as day_27_total_students,
+sum(case when day_28 =1 then 1 else 0 end) as day_28_total_present,
+sum(case when day_28 in (1,2) then 1 else 0 end) as day_28_total_students,
+sum(case when day_29 =1 then 1 else 0 end) as day_29_total_present,
+sum(case when day_29 in (1,2) then 1 else 0 end) as day_29_total_students,
+sum(case when day_30 =1 then 1 else 0 end) as day_30_total_present,
+sum(case when day_30 in (1,2) then 1 else 0 end) as day_30_total_students,
+sum(case when day_31 =1 then 1 else 0 end) as day_31_total_present,
+sum(case when day_31 in (1,2) then 1 else 0 end) as day_31_total_students
+from student_attendance_trans';
+one_month_query:='select school_id,month,year,count(distinct student_id) as students_count,
+sum(case when day_1 =1 then 1 else 0 end) as day_1_total_present,
+sum(case when day_1 in (1,2) then 1 else 0 end) as day_1_total_students,
+sum(case when day_2 =1 then 1 else 0 end) as day_2_total_present,
+sum(case when day_2 in (1,2) then 1 else 0 end) as day_2_total_students, 
+sum(case when day_3 =1 then 1 else 0 end) as day_3_total_present,
+sum(case when day_3 in (1,2) then 1 else 0 end) as day_3_total_students,
+sum(case when day_4 =1 then 1 else 0 end) as day_4_total_present,
+sum(case when day_4 in (1,2) then 1 else 0 end) as day_4_total_students, 
+sum(case when day_5 =1 then 1 else 0 end) as day_5_total_present,
+sum(case when day_5 in (1,2) then 1 else 0 end) as day_5_total_students, 
+sum(case when day_6 =1 then 1 else 0 end) as day_6_total_present,
+sum(case when day_6 in (1,2) then 1 else 0 end) as day_6_total_students, 
+sum(case when day_7 =1 then 1 else 0 end) as day_7_total_present,
+sum(case when day_7 in (1,2) then 1 else 0 end) as day_7_total_students,
+sum(case when day_8 =1 then 1 else 0 end) as day_8_total_present,
+sum(case when day_8 in (1,2) then 1 else 0 end) as day_8_total_students, 
+sum(case when day_9 =1 then 1 else 0 end) as day_9_total_present,
+sum(case when day_9 in (1,2) then 1 else 0 end) as day_9_total_students,
+sum(case when day_10 =1 then 1 else 0 end) as day_10_total_present,
+sum(case when day_10 in (1,2) then 1 else 0 end) as day_10_total_students,
+sum(case when day_11 =1 then 1 else 0 end) as day_11_total_present,
+sum(case when day_11 in (1,2) then 1 else 0 end) as day_11_total_students, 
+sum(case when day_12 =1 then 1 else 0 end) as day_12_total_present,
+sum(case when day_12 in (1,2) then 1 else 0 end) as day_12_total_students,
+sum(case when day_13 =1 then 1 else 0 end) as day_13_total_present,
+sum(case when day_13 in (1,2) then 1 else 0 end) as day_13_total_students,
+sum(case when day_14 =1 then 1 else 0 end) as day_14_total_present,
+sum(case when day_14 in (1,2) then 1 else 0 end) as day_14_total_students,
+sum(case when day_15 =1 then 1 else 0 end) as day_15_total_present,
+sum(case when day_15 in (1,2) then 1 else 0 end) as day_15_total_students,
+sum(case when day_16 =1 then 1 else 0 end) as day_16_total_present,
+sum(case when day_16 in (1,2) then 1 else 0 end) as day_16_total_students,
+sum(case when day_17 =1 then 1 else 0 end) as day_17_total_present,
+sum(case when day_17 in (1,2) then 1 else 0 end) as day_17_total_students,
+sum(case when day_18 =1 then 1 else 0 end) as day_18_total_present,
+sum(case when day_18 in (1,2) then 1 else 0 end) as day_18_total_students,
+sum(case when day_19 =1 then 1 else 0 end) as day_19_total_present,
+sum(case when day_19 in (1,2) then 1 else 0 end) as day_19_total_students,
+sum(case when day_20 =1 then 1 else 0 end) as day_20_total_present,
+sum(case when day_20 in (1,2) then 1 else 0 end) as day_20_total_students,
+sum(case when day_21 =1 then 1 else 0 end) as day_21_total_present,
+sum(case when day_21 in (1,2) then 1 else 0 end) as day_21_total_students,
+sum(case when day_22 =1 then 1 else 0 end) as day_22_total_present,
+sum(case when day_22 in (1,2) then 1 else 0 end) as day_22_total_students,
+sum(case when day_23 =1 then 1 else 0 end) as day_23_total_present,
+sum(case when day_23 in (1,2) then 1 else 0 end) as day_23_total_students,
+sum(case when day_24 =1 then 1 else 0 end) as day_24_total_present,
+sum(case when day_24 in (1,2) then 1 else 0 end) as day_24_total_students,
+sum(case when day_25 =1 then 1 else 0 end) as day_25_total_present,
+sum(case when day_25 in (1,2) then 1 else 0 end) as day_25_total_students,
+sum(case when day_26 =1 then 1 else 0 end) as day_26_total_present,
+sum(case when day_26 in (1,2) then 1 else 0 end) as day_26_total_students,
+sum(case when day_27 =1 then 1 else 0 end) as day_27_total_present,
+sum(case when day_27 in (1,2) then 1 else 0 end) as day_27_total_students,
+sum(case when day_28 =1 then 1 else 0 end) as day_28_total_present,
+sum(case when day_28 in (1,2) then 1 else 0 end) as day_28_total_students,
+sum(case when day_29 =1 then 1 else 0 end) as day_29_total_present,
+sum(case when day_29 in (1,2) then 1 else 0 end) as day_29_total_students,
+sum(case when day_30 =1 then 1 else 0 end) as day_30_total_present,
+sum(case when day_30 in (1,2) then 1 else 0 end) as day_30_total_students,
+sum(case when day_31 =1 then 1 else 0 end) as day_31_total_present,
+sum(case when day_31 in (1,2) then 1 else 0 end) as day_31_total_students
+from student_attendance_trans';
+_group_query:='group by month,year,school_id';
+
+IF period='last_1_day' THEN
+number_of_days:='1day';
+ELSE IF period='last_7_days' THEN
+number_of_days:='7day';
+ELSE IF period='last_30_days' THEN
+number_of_days:='30day';
+ELSE
+return 0;
+END IF;
+END IF;
+END IF;
+
+cnt_query:='select count(distinct extract(month from days_in_period.day)) as cnt from (select (generate_series(now()::date-'''||number_of_days||'''::interval,(now()::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period';
+
+EXECUTE cnt_query into _count;
+
+IF _count > 1 THEN
+select min(extract(month from min_day)) as min_month , min(extract(year from min_day)) as min_year , max(extract(month from max_day)) as max_month , 
+max(extract(year from max_day)) as max_year from (select min(days_in_period.day) min_day ,max(days_in_period.day) max_day into min_month, min_year, max_month, max_year 
+from (select (generate_series('now()'::date-number_of_days::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period) as days_in_period;
+
+max_filter_query:='where month='||max_month||' and year='||max_year;
+min_filter_query:='where month='||min_month||' and year='||min_year;
+
+select string_agg('day_'||date_part('day',days_in_period.day)||'_total_present','+') as total_present, 
+string_agg('day_'||date_part('day',days_in_period.day)||'_total_students','+') as total_students into max_total_present,max_total_students
+from (select (generate_series('now()'::date-number_of_days::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period 
+where extract(month from days_in_period.day) =max_month 
+and extract(year from days_in_period.day) =max_year;
+
+select string_agg('day_'||date_part('day',days_in_period.day)||'_total_present','+') as max_total_present, 
+string_agg('day_'||date_part('day',days_in_period.day)||'_total_students','+') as max_total_students into min_total_present,min_total_students
+from (select (generate_series('now()'::date-number_of_days::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period 
+where extract(month from days_in_period.day)=min_month 
+and extract(year from days_in_period.day)=min_year;
+
+_query_res:='create or replace view student_attendance_agg_'||period||' as select sch_res.school_id,sch_res.total_present,sch_res.total_students,stn_cnt.students_count,
+b.school_name,b.school_latitude,b.school_longitude,b.cluster_id,b.cluster_name,b.cluster_latitude,b.cluster_longitude,
+b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude
+from (
+select school_id,sum(total_present) as total_present,sum(total_students) as total_students from 
+(select school_id,'||max_total_present||' as total_present,'||max_total_students||' as total_students'||' from ('||two_month_query||' '||max_filter_query||' '||_group_query||') as max_temp
+union all
+select school_id,'||min_total_present||' as total_present,'||min_total_students||' as total_students'||' from ('||two_month_query||' '||min_filter_query||' '||_group_query||') as min_temp) as total_att 
+group by school_id) sch_res inner join
+(select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
+a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
+from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
+where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
+)as b on b.school_id=sch_res.school_id
+left join (select school_id,count(distinct student_id) as students_count from student_attendance_trans where (month='||min_month||' and year='||min_year||') or (month='||max_month||' and year='||max_year||') group by school_id) as stn_cnt
+on b.school_id=stn_cnt.school_id';
+
+EXECUTE _query_res;
+ELSE IF _count =1 THEN
+select distinct extract(month from days_in_period.day) as month,extract(year from days_in_period.day) as year into month,year from (select (generate_series('now()'::date-number_of_days::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period;
+
+filter_query:='where month='||month||' and year='||year;
+
+select string_agg('day_'||date_part('day',days_in_period.day)||'_total_present','+') as total_present, 
+string_agg('day_'||date_part('day',days_in_period.day)||'_total_students','+') as total_students into total_present, total_students
+from (select (generate_series('now()'::date-number_of_days::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period 
+where extract(month from days_in_period.day)=month 
+and extract(year from days_in_period.day)=year;
+
+_query_res:='create or replace view student_attendance_agg_'||period||' as select sch_res.school_id,sch_res.total_present,sch_res.total_students,sch_res.students_count,
+b.school_name,b.school_latitude,b.school_longitude,b.cluster_id,b.cluster_name,b.cluster_latitude,b.cluster_longitude,
+b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude
+   from (
+select school_id,'||total_present||' as total_present,'||total_students||' as total_students'||',students_count from ('||one_month_query||' '||filter_query||' '||_group_query||') as att ) as sch_res
+   inner join
+(select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
+a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
+from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
+where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
+)as b on b.school_id=sch_res.school_id';
+EXECUTE _query_res;
+ELSE
+   return 0;
+END IF;
+END IF;
+return 0;
+END;
+$$  LANGUAGE plpgsql;
+
+select student_attendance_agg_refresh('last_1_day');
+select student_attendance_agg_refresh('last_7_days');
+select student_attendance_agg_refresh('last_30_days');
+
+
+
+create or replace view student_attendance_agg_overall as select sch_res.school_id,sch_res.total_present,sch_res.total_students,stn_cnt.students_count,
+b.school_name,b.school_latitude,b.school_longitude,b.cluster_id,b.cluster_name,b.cluster_latitude,b.cluster_longitude,
+b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude
+from 
+(select school_id ,sum(total_present) as total_present,sum(total_working_days) as total_students from school_student_total_attendance  group by school_id) as sch_res
+   inner join
+(select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
+a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
+from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
+where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
+)as b on b.school_id=sch_res.school_id
+left join (select school_id,count(distinct student_id) as students_count from student_attendance_trans group by school_id) as stn_cnt
+on b.school_id=stn_cnt.school_id;
