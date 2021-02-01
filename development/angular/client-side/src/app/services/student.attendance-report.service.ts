@@ -13,6 +13,7 @@ export class AttendanceReportService {
   constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) {
     this.baseUrl = service.baseUrl;
   }
+  
   //Attendance report
   dist_wise_data(data) {
     this.service.logoutOnTokenExpire();
