@@ -210,11 +210,11 @@
       
     </div>
     <div class="infoText">
-        <h1 style="color:white; font-size: 32px; font-weight: bold;font-family: "Noto Sans"; padding-botton: 20px;">Headline text goes here</h1>
+        <h1 style="color:white; font-size: 36px; font-weight: bold;font-family: "Noto Sans"; padding-botton: 20px;">Headline text goes here</h1>
         <p>Ability to break the information at different administrative 
-        levels- District, Block, Cluster and School
-Ability to download data at multiple administrative levels
-Ability to zoom in and out across multiple administrative levels</p>
+        levels- District, Block, Cluster and School <br/>
+        Ability to download data at multiple administrative levels <br/>
+        Ability to zoom in and out across multiple administrative levels</p>
     </div>
   </div>
    <br>
