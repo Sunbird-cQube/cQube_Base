@@ -8,7 +8,13 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         logger.info('---Attendance block wise api ---');
         var month = req.body.month;
         var year = req.body.year;
-        let fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `attendance/${timePeriod}/block.json`;
+        } else {
+            fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
 
         var blocksAttendanceData = jsonData.data
@@ -38,11 +44,16 @@ router.post('/blockWise', auth.authController, async (req, res) => {
 router.post('/blockPerDist', auth.authController, async (req, res) => {
     try {
         logger.info('---Attendance blockPerDist api ---');
-        var distId = req.body.data.id;
-        var month = req.body.data.month;
-        var year = req.body.data.year;
-        let fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`
-        var jsonData = await s3File.readS3File(fileName);
+        var distId = req.body.id;
+        var month = req.body.month;
+        var year = req.body.year;
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `attendance/${timePeriod}/block.json`;
+        } else {
+            fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`;
+        } var jsonData = await s3File.readS3File(fileName);
         var blockData = [];
         var filterData = jsonData.data.filter(data => {
             return (data.district_id == distId)

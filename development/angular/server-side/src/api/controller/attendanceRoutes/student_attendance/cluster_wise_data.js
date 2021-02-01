@@ -8,7 +8,13 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         logger.info('---Attendance cluster wise api ---');
         var month = req.body.month;
         var year = req.body.year;
-        let fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `attendance/${timePeriod}/cluster.json`;
+        } else {
+            fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
         var clustersAttendanceData = jsonData.data
         var clusterData = [];
@@ -39,10 +45,16 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
 router.post('/clusterPerBlock', auth.authController, async (req, res) => {
     try {
         logger.info('---Attendance clusterPerBlock api ---');
-        var blockId = req.body.data.id;
-        var month = req.body.data.month;
-        var year = req.body.data.year;
-        let fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`
+        var blockId = req.body.id;
+        var month = req.body.month;
+        var year = req.body.year;
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `attendance/${timePeriod}/cluster.json`;
+        } else {
+            fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
         var clusterData = [];
         var filterData = jsonData.data.filter(data => {

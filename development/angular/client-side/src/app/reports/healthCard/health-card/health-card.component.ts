@@ -133,6 +133,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   // }
 
   ngAfterViewInit(): void {
+    this.exist = true;
     if (this.params && this.params.level) {
       if (this.params.level != 'state') {
         document.getElementById('home').style.display = "block";
