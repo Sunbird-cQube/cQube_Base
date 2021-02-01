@@ -881,6 +881,8 @@ from  student_attendance_staging_1
         "district_longitude": "data.[&1].district_longitude",
         "district_id": "data.[&1].district_id",
         "district_name": "data.[&1].district_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",		  
         "total_schools": "data.[&1].total_schools",
         "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
         "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
@@ -905,6 +907,8 @@ from  student_attendance_staging_1
           "district_longitude": "data.[&1].district_longitude",
           "district_id": "data.[&1].district_id",
           "district_name": "data.[&1].district_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",
           "total_schools": "data.[&1].total_schools",
           "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
@@ -913,8 +917,7 @@ from  student_attendance_staging_1
       "allDistrictsFooter": "&"
     }
   }
-]
-""",
+]""",
 "stud_att_exception_block_jolt_spec":"""[
   {
     "operation": "shift",
@@ -926,6 +929,8 @@ from  student_attendance_staging_1
         "district_name": "data.[&1].district_name",
         "block_id": "data.[&1].block_id",
         "block_name": "data.[&1].block_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",		  
         "total_schools": "data.[&1].total_schools",
         "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
         "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
@@ -954,6 +959,8 @@ from  student_attendance_staging_1
           "district_name": "data.[&1].district_name",
           "block_id": "data.[&1].block_id",
           "block_name": "data.[&1].block_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",
           "total_schools": "data.[&1].total_schools",
           "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "total_schools_with_missing_data": "allBlocksFooter.total_schools_with_missing_data[]",
@@ -983,6 +990,8 @@ from  student_attendance_staging_1
           "district_name": "data.[&1].district_name",
           "block_id": "data.[&1].block_id",
           "block_name": "data.[&1].block_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",
           "total_schools": "data.[&1].total_schools",
           "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
@@ -992,8 +1001,7 @@ from  student_attendance_staging_1
       "allBlocksFooter": "&"
     }
   }
-]
-""",
+]""",
 "stud_att_exception_cluster_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1007,6 +1015,8 @@ from  student_attendance_staging_1
         "block_name": "data.[&1].block_name",
         "cluster_id": "data.[&1].cluster_id",
         "cluster_name": "data.[&1].cluster_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",
         "total_schools": "data.[&1].total_schools",
         "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
         "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
@@ -1037,6 +1047,8 @@ from  student_attendance_staging_1
           "block_name": "data.[&1].block_name",
           "cluster_id": "data.[&1].cluster_id",
           "cluster_name": "data.[&1].cluster_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",
           "total_schools": "data.[&1].total_schools",
           "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "total_schools_with_missing_data": "allClustersFooter.total_schools_with_missing_data[]",
@@ -1065,6 +1077,8 @@ from  student_attendance_staging_1
           "district_name": "data.[&1].district_name",
           "block_id": "data.[&1].block_id",
           "block_name": "data.[&1].block_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",			
           "cluster_id": "data.[&1].cluster_id",
           "cluster_name": "data.[&1].cluster_name",
           "total_schools": "data.[&1].total_schools",
@@ -1103,6 +1117,8 @@ from  student_attendance_staging_1
         "cluster_name": "data.[&1].cluster_name",
         "school_id": "data.[&1].school_id",
         "school_name": "data.[&1].school_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",		  
         "total_schools": "data.[&1].total_schools",
         "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
         "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
@@ -1135,6 +1151,8 @@ from  student_attendance_staging_1
           "cluster_name": "data.[&1].cluster_name",
           "school_id": "data.[&1].school_id",
           "school_name": "data.[&1].school_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",			
           "total_schools": "data.[&1].total_schools",
           "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "total_schools_with_missing_data": "allSchoolsFooter.total_schools_with_missing_data[]",
@@ -1167,6 +1185,8 @@ from  student_attendance_staging_1
           "cluster_name": "data.[&1].cluster_name",
           "school_id": "data.[&1].school_id",
           "school_name": "data.[&1].school_name",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",			
           "total_schools": "data.[&1].total_schools",
           "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
