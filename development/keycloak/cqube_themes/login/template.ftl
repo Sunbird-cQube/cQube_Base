@@ -5,7 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <meta name="robots" content="noindex, nofollow">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     <#if properties.meta?has_content>
         <#list properties.meta?split(' ') as meta>
@@ -29,6 +32,34 @@
             <script src="${script}" type="text/javascript"></script>
         </#list>
     </#if>
+    <script  type="text/javascript">
+    function onChange(){
+        if(document.getElementById("password1").value.length > 0){
+            document.getElementById("togglePassword").style.display = 'block';
+        }else{
+            document.getElementById("togglePassword").style.display = 'none';
+        }
+    }
+
+    function myFun(){
+        if(document.getElementById("password1").value.length > 0 && document.getElementById("username1").value.length > 0){
+            document.getElementById("login").style.backgroundColor = "#31D08C";
+        }else{
+            document.getElementById("login").style.backgroundColor = "transparent";
+        }
+    }
+    function test(el){
+      $(el).toggleClass('fa-eye-slash');
+      var className = $(el).attr('class');
+   }
+
+  function onClick(el){
+       document.getElementById("kc-form-login1")
+       document.getElementById("kc-login").style.display = "block";
+       var className = $(el).attr('class');
+       console.log(className);
+   }
+    </script>
 </head>
 
 <body class="${properties.kcBodyClass!}">
@@ -117,7 +148,22 @@
               </div>
           </#if>
 
-          <#nested "form">
+          <#if realm.password>
+            <div>
+               <form id="kc-form-login1" class="form" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
+                    <label>User ID </label><br/>
+                    <input id="username1" oninput="myFun();" class="login-field" placeholder="${msg("Enter your user ID")}" type="text" name="username" tabindex="1">
+                    <br/><br/>
+                    <label>Password</label><br/>
+                    <input id="password1" oninput="onChange(); myFun();" class="login-field" placeholder="${msg("Enter your password")}" type="password" name="password" tabindex="2">
+                    <i class="far fa-eye" id="togglePassword" onclick="if (password1.type == 'text') password1.type = 'password';
+                        else password1.type = 'text'; test(this)" style="display:none;"></i>
+                    <br/><br/>
+                    <input class="submit" type="submit" onclick="onClick(this)" id="login" value="${msg("doLogIn")}" tabindex="3">
+                    <img src="${url.resourcesPath}/img/Shape.svg" aria-hidden="true" id="signinSymbol">
+                </form>
+            </div>
+        </#if>
 
           <#if auth?has_content && auth.showTryAnotherWayLink() && showAnotherWayIfPresent>
           <form id="kc-select-try-another-way-form" action="${url.loginAction}" method="post" <#if displayWide>class="${properties.kcContentWrapperClass!}"</#if>>
