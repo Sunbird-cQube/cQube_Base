@@ -44,8 +44,14 @@
     function myFun(){
         if(document.getElementById("password1").value.length > 0 && document.getElementById("username1").value.length > 0){
             document.getElementById("login").style.backgroundColor = "#31D08C";
+            document.getElementById("login").style.color = "white";
+            document.getElementById("signinSymbol").style.display = "none";
+            document.getElementById("signinSymbolWithInput").style.display = "block"; 
         }else{
+            document.getElementById("login").style.color = "#899BFF";
             document.getElementById("login").style.backgroundColor = "transparent";
+            document.getElementById("signinSymbol").style.display = "block";
+            document.getElementById("signinSymbolWithInput").style.display = "none";
         }
     }
     function test(el){
@@ -55,14 +61,28 @@
 
   function onClick(el){
        document.getElementById("kc-form-login1")
-       document.getElementById("kc-login").style.display = "block";
+       document.getElementById("kc-login").style.display = "none";
        var className = $(el).attr('class');
        console.log(className);
    }
+   $(window).on('load', function(){
+       if ($('#totp').length){
+           document.getElementById("kc-form-login1").style.display = "none";
+           document.getElementById("kc-login").style.display = "block";
+       }else{
+           document.getElementById("kc-form-login1").style.display = "block";
+       }
+    });
+
+ $(document).ready(function(){
+    $('#totp').on('input', function(){
+        document.getElementsByClassName("btn-primary")[0].style.backgroundColor = "#31D08C";
+     });
+});
     </script>
 </head>
 
-<body class="${properties.kcBodyClass!}" style="background: url(${url.resourcesPath}/img/Group.svg);object-fit: cover;background-repeat: no-repeat;background-size: cover;">
+<body class="${properties.kcBodyClass!}">
   <div class="${properties.kcLoginClass!}">
     <div id="kc-header" class="${properties.kcHeaderClass!}">
       <div id="kc-header-wrapper" class="${properties.kcHeaderWrapperClass!}">${kcSanitize(msg("",(realm.displayNameHtml!'')))?no_esc}</div>
@@ -150,7 +170,7 @@
 
           <#if realm.password>
             <div>
-               <form id="kc-form-login1" class="form" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
+               <form autocomplete="off" id="kc-form-login1" class="form" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
                     <label>User ID </label><br/>
                     <input id="username1" oninput="myFun();" class="login-field" placeholder="${msg("Enter your user ID")}" type="text" name="username" tabindex="1">
                     <br/><br/>
@@ -159,11 +179,13 @@
                     <i class="far fa-eye" id="togglePassword" onclick="if (password1.type == 'text') password1.type = 'password';
                         else password1.type = 'text'; test(this)" style="display:none;"></i>
                     <br/><br/>
-                    <input class="submit" type="submit" onclick="onClick(this)" id="login" value="${msg("doLogIn")}" tabindex="3">
-                    <img src="${url.resourcesPath}/img/Shape.svg" aria-hidden="true" id="signinSymbol">
+                    <input class="submit" type="submit" onclick="onClick(this)" id="login" value="Login" tabindex="3">
+                    <img src="${url.resourcesPath}/img/Shape1.svg" aria-hidden="true" id="signinSymbol">
+                    <img src="${url.resourcesPath}/img/Shape.svg" aria-hidden="true" id="signinSymbolWithInput">
                 </form>
             </div>
         </#if>
+        <#nested "form">
 
           <#if auth?has_content && auth.showTryAnotherWayLink() && showAnotherWayIfPresent>
           <form id="kc-select-try-another-way-form" action="${url.loginAction}" method="post" <#if displayWide>class="${properties.kcContentWrapperClass!}"</#if>>

@@ -1,9 +1,9 @@
 .login-pf body {
-    /* background: url("../img/Group.svg"); */
-    /* object-fit: cover; */
+    background: url("../img/Group.svg");
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
-
-
 
 .alert-error {
     background-color: #ffffff;
@@ -110,6 +110,8 @@ div.kc-logo-text span {
     margin: 15px 0px 0px 20px;
     padding: 62px 10px 20px;
     white-space: normal;
+    width: 150px;
+    height: 50px !important;
 }
 
 .logoText{
@@ -315,10 +317,12 @@ a.zocial  {
         padding-right: 15px;
         float: none;
         text-align: left;
+        height: 100px;
     }
 
     #kc-header-wrapper {
-      /* margin-top: 60px; */
+        width: 150px;
+        height: 50px !important;
       position: relative;
       background-image: url(../img/GroupLogo.svg);
     }
@@ -367,29 +371,66 @@ a.zocial  {
 
 }
 
+input:-webkit-autofill {
+    background-color: transparent !important;
+    background-image:none !important;
+    color: white !important;
+  }
+
+  input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: -internal-light-dark(white, white) !important;
+}
 
 #kc-login {
+    left: 0px;
+    top: 0px;
+    position: relative;
     height: 40px;
+    width: 100px;
+    border-radius: 20px;
+    /* background-color: #31D08C !important; */
+}
+
+
+
+#kc-cancel{
+    right: 20px;
+    top: 0px;
+    position: absolute;
+    height: 40px;
+    width: 100px;
     border-radius: 20px;
     background-color: #31D08C !important;
 }
+
+#totp{
+
+}
     
-#username1, #password1 {
+#username1, #password1, #totp {
     width: 100%;
     border-radius: 20px !important;
     background-color: transparent;
-    border: 1px solid white;
-    color: white;
+    border: 1px solid #848FFF;
+    color: #ffffff;
     padding: 7px 10px 7px 15px;
     font-weight: bold;
+    border: 1px solid #848FFF;
 }
+
+/* input[type="password"] {
+    font-size:18px;
+} */
 
 #username, #password {
    display: none;
 }
 
 #username1 {
-    border: 1px solid white;
+    border: 1px solid #848FFF;
 }
 
 #login{
@@ -397,9 +438,10 @@ a.zocial  {
     border-radius: 20px !important;
     background-color: transparent;
     border: 1px solid white;
-    color: white;
+    color: #899BFF;
     padding: 8px 10px 8px 15px;
-    font-weight: bold;
+    font-weight:900;
+    border: 1px solid #848FFF;
 }
 
 #togglePassword {
@@ -408,9 +450,10 @@ a.zocial  {
     margin-top: -24px;
     position: relative;
     z-index: 2;
-    color: white;
+    color: #ffffff;
     cursor: pointer;
-}
+ }
+
 input:focus{
     outline: none;
 }
@@ -421,20 +464,31 @@ input:focus{
     margin-top: -29px;
     position: relative;
     z-index: 2;
-    color: white;
+    color: #899BFF;
     cursor: pointer;
 }
 
+#signinSymbolWithInput{
+    float: left;
+    margin-left: 77px;
+    margin-top: -29px;
+    position: relative;
+    z-index: 2;
+    color: #899BFF;
+    cursor: pointer;
+    display: none;
+}
+
 ::-webkit-input-placeholder { /* Edge */
-    color: white;
+    color: #899BFF;
   }
   
   :-ms-input-placeholder { /* Internet Explorer */
-    color: white;
+    color: #899BFF;
   }
   
   ::placeholder {
-    color: white;
+    color: #899BFF;
   }
 
 
@@ -463,9 +517,11 @@ input:focus{
 
 .login-pf-page {
     background: url("../img/back1.png");
-    background-size: 800px 590px;
+    background-size: 800px 600px;
     background-repeat: no-repeat;
     background-position: right;
+    top: 0px;
+    position: relative;
 }
 
 .card-pf {
@@ -480,7 +536,7 @@ input:focus{
   }
     
 label{
-    color: white;
+    color: #ffffff;
 }
 
 #mode-manual{
@@ -507,20 +563,43 @@ label[for="username"], label[for="password"],#kc-login{
     display: none;
 }
 
-@media (max-width: 1125px){
+label[for="totp"]{
+    visibility: hidden;
+    position: relative;
+}
+
+label[for="totp"]:after{
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "Enter OTP";
+}
+
+@media (max-width: 1200px){
     .login-pf-page{
         background: url("../img/back1.png");
-        background-size: 680px;
+        background-size: 750px;
         background-repeat: no-repeat;
         background-position: right;
         position: relative;
     }
 }
 
-@media (max-width: 1060px){
+@media (max-width: 1125px){
     .login-pf-page{
         background: url("../img/back1.png");
-        background-size: 630px;
+        background-size: 700px 600px;
+        background-repeat: no-repeat;
+        background-position: right;
+        position: relative;
+    }
+}
+
+@media (max-width: 1070px){
+    .login-pf-page{
+        background: url("../img/back1.png");
+        background-size: 620px 540px;
         background-repeat: no-repeat;
         background-position: right;
         position: relative;
@@ -530,7 +609,7 @@ label[for="username"], label[for="password"],#kc-login{
 @media (max-width: 1010px){
     .login-pf-page{
         background: url("../img/back1.png");
-        background-size: 600px;
+        background-size: 600px 500px;
         background-repeat: no-repeat;
         background-position: right;
         position: relative;
@@ -540,27 +619,37 @@ label[for="username"], label[for="password"],#kc-login{
 @media (max-width: 980px){
     .login-pf-page{
         background: url("../img/back1.png");
-        background-size: 550px;
+        background-size: 570px 480px;
         background-repeat: no-repeat;
         background-position: right;
         position: relative;
     }
 }
 
-@media (max-width: 930px){
+@media (max-width: 945px){
     .login-pf-page{
         background: url("../img/back1.png");
-        background-size: 510px;
+        background-size: 530px 450px;
         background-repeat: no-repeat;
         background-position: right;
         position: relative;
     }
 }
 
-@media (max-width: 890px){
+@media (max-width: 910px){
     .login-pf-page{
         background: url("../img/back1.png");
-        background-size: 450px;
+        background-size: 500px 430px;
+        background-repeat: no-repeat;
+        background-position: right;
+        position: relative;
+    }
+}
+
+@media (max-width: 880px){
+    .login-pf-page{
+        background: url("../img/back1.png");
+        background-size: 480px 430px;
         background-repeat: no-repeat;
         background-position: right;
         position: relative;
@@ -569,7 +658,7 @@ label[for="username"], label[for="password"],#kc-login{
 
 
     /*tablet*/
-@media (max-width: 840px) {
+@media (max-width: 850px) {
         .card-pf{
           margin: 0px auto;
           position :relative; 
@@ -656,7 +745,7 @@ label[for="username"], label[for="password"],#kc-login{
 }
 
 .infoText{
-    margin :30px 0px 60px 50px; 
+    margin :30px 0px 0px 50px; 
     width: 400px;
 }
 
