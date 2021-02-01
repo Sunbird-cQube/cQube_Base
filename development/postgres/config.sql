@@ -5957,3 +5957,158 @@ group by student_uid,school_id,semester,grade
  drop view if exists teacher_attendance_trans_to_aggregate;
 
 insert into school_hierarchy_details values(9999,NULL,'others',NULL,NULL,9999,'others',NULL,9999,'others',9999,'others',NULL,now(),now()) on conflict  ON CONSTRAINT school_hierarchy_details_pkey do nothing;
+
+
+/* Student attendance Exception */
+
+create or replace FUNCTION student_attendance_no_schools(month int,year int)
+RETURNS text AS
+$$
+DECLARE
+student_attendance_no_schools text;
+BEGIN
+student_attendance_no_schools = 'create or replace view student_attendance_exception_data as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,'|| month ||' as month,'|| year ||' as year,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in 
+(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,INITCAP(crc_name)AS crc_name, 
+Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select Data_from_date(Min(year),min(month)) from school_student_total_attendance where year = (select min(year) from school_student_total_attendance) group by year), 
+  (select Data_upto_date(Max(year),max(month)) from school_student_total_attendance where year = (select max(year) from school_student_total_attendance) group by year),
+year,month 
+FROM school_student_total_attendance WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND month = '|| month ||' AND year = '|| year ||'
+AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0
+GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month)as e)
+and cluster_name is not null';
+Execute student_attendance_no_schools;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+/* Student attendance exception timeseries */
+
+create or replace FUNCTION student_attendance_no_schools_timeseries()
+RETURNS text AS
+$$
+DECLARE
+student_attendance_no_schools_overall text;
+student_attendance_no_schools_lastday text;
+student_attendance_no_schools_last7 text;
+student_attendance_no_schools_last30 text;
+BEGIN
+student_attendance_no_schools_lastday = 'create or replace view student_attendance_exception_data_lastday as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,Round(Sum(total_present)*100.0/Sum(total_students),1)AS x_value,''latitude'' AS y_axis,
+school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select min(days_in_period.day) as data_from_date from (select (generate_series(''now()''::date-''1days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period),
+(select max(days_in_period.day) as data_upto_date from (select (generate_series(''now()''::date-''1days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period)
+FROM student_attendance_agg_last_1_day WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_students>0
+GROUP BY school_id,school_name,school_latitude,school_longitude,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as e) and cluster_name is not null';
+
+student_attendance_no_schools_last7 = 'create or replace view student_attendance_exception_data_last7 as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,
+Round(Sum(total_present)*100.0/Sum(total_students),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select min(days_in_period.day) as data_from_date from (select (generate_series(''now()''::date-''7days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period),
+(select max(days_in_period.day) as data_upto_date from (select (generate_series(''now()''::date-''7days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period)
+FROM student_attendance_agg_last_7_days WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_students>0
+GROUP BY school_id,school_name,school_latitude,school_longitude,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as e) and cluster_name is not null';
+
+student_attendance_no_schools_last30 = 'create or replace view student_attendance_exception_data_last30 as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,
+Round(Sum(total_present)*100.0/Sum(total_students),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select min(days_in_period.day) as data_from_date from (select (generate_series(''now()''::date-''30days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period),
+(select max(days_in_period.day) as data_upto_date from (select (generate_series(''now()''::date-''30days''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period)
+FROM student_attendance_agg_last_30_days WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_students>0
+GROUP BY school_id,school_name,school_latitude,school_longitude,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as e) and cluster_name is not null';
+
+student_attendance_no_schools_overall = 'create or replace view student_attendance_exception_data_overall as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,
+Round(Sum(total_present)*100.0/Sum(total_students),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select Data_from_date(Min(year),min(month))  from student_attendance_trans where year = (select min(year) from student_attendance_trans) group by year) as data_from_date,
+(select   case when year=extract(year from now()) and month=extract(month from now()) then to_char(now(),''DD-MM-YYYY'')   else Data_upto_date(year,month) end as data_upto_date 
+from (select max(month) as month ,max(year) as year from student_attendance_trans where year = (select max(year) from student_attendance_trans)) as matt)
+FROM student_attendance_agg_overall WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_students>0
+GROUP BY school_id,school_name,school_latitude,school_longitude,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as e) and cluster_name is not null';
+Execute student_attendance_no_schools_lastday;
+Execute student_attendance_no_schools_last7;
+Execute student_attendance_no_schools_last30;
+Execute student_attendance_no_schools_overall;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+/* Teacher attendance Exception */
+
+Drop view if exists teacher_attendance_exception_data cascade;
+
+create or replace FUNCTION teacher_attendance_no_schools(month int,year int)
+RETURNS text AS
+$$
+DECLARE
+teacher_attendance_no_schools text;
+BEGIN
+teacher_attendance_no_schools = 'create or replace view teacher_attendance_exception_data as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,'|| month ||' as month,'|| year ||' as year,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in 
+(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+INITCAP(cluster_name) AS cluster_name,INITCAP(crc_name)AS crc_name, 
+round(cast(Sum(total_present)*100.0/Sum(total_working_days) as numeric),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
+Sum(teachers_count) AS teachers_count,Count(DISTINCT(school_id)) AS total_schools,
+(select Data_from_date(Min(year),min(month)) from school_teacher_total_attendance where year = (select min(year) from school_teacher_total_attendance) group by year), 
+  (select Data_upto_date(Max(year),max(month)) from school_teacher_total_attendance where year = (select max(year) from school_teacher_total_attendance) group by year),
+year,month 
+FROM school_teacher_total_attendance WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0
+GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month)as e)
+and cluster_name is not null';
+Execute teacher_attendance_no_schools;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+
