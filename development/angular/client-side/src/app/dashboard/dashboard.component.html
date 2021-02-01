@@ -1,6 +1,6 @@
 <div class="container-fluid" style="background-color: rgb(245, 245, 245);padding-top: 30px; padding-bottom: 10px">
     <div class="row" style="padding: 20px;">
-        <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 25px 0px 25px">
             <div class="headings">School Infrastructure</div>
             <div class="row outer1">
                 <div class="col-lg-4 col-md-12 col-sm-12">
@@ -107,7 +107,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 25px 0px 25px">
             <div class="headings">Composite</div>
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
@@ -149,7 +149,7 @@
         </div>
     </div>
     <div class="row" style="padding: 20px;">
-        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-sm-6" style="padding:  0% 25px 0px 25px">
             <div class="headings">Teacher Professional Development</div>
             <div class="row outer1">
                 <div class="col-lg-6 col-md-12 col-sm-12">
@@ -221,162 +221,8 @@
                     </div>
                 </div>
             </div>
-            <br>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="headings">School Monitoring</div>
-            <div class="row outer12">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background: linear-gradient(135deg, #FF5F55 0%, #FF9E95 100%);"
-                        id="crcr" [routerLink]="!nifi_crc ? ['/coming-soon'] :['/crc/crc-report']"
-                        (click)="fetchTelemetry($event,'crcr')">
-                        <div class="card-body ">
-                            <div class="row">
-                                <app-info [tooltipText]="crcrTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
-                                <div class="col-3 col-md-2">
-                                    <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv" style="background-color: #f23740;">
-                                            <img class="ic-equalizer1" src="../../assets/Group 11.svg" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-9 col-md-10">
-                                    <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">CRC </p>
-                                        <p class="card-title"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="views">
-                                    <p *ngIf="crcrViews;else other_content" id="views">views:
-                                        {{crcrViews}}</p>
-                                    <ng-template #other_content>
-                                        <p id="errViews">views: 0 {{timePeriod}}</p>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="headings">Health Card</div>
-            <div class="row outer12">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background: linear-gradient(135deg, #55ff9c 0%, #95ffb5 100%);"
-                        id="healthCard" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/healthCard']"
-                        (click)="fetchTelemetry($event,'healthCard')">
-                        <div class="card-body ">
-                            <div class="row">
-                                <app-info [tooltipText]="healthCardTooltip"
-                                    style="position: absolute; right:10px; top:0px">
-                                </app-info>
-                                <div class="col-3 col-md-2">
-                                    <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv" style="background-color: #34c72f;">
-                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-9 col-md-10">
-                                    <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">Health Card </p>
-                                        <p class="card-title"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="views">
-                                    <p *ngIf="healthCardViews;else other_content" id="views">views:
-                                        {{healthCardViews}}</p>
-                                    <ng-template #other_content>
-                                        <p id="errViews">views: 0 {{timePeriod}}</p>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row" style="padding: 20px">
-        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
-            <div class="row outer12">
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%)"
-                        id="tdp-cp" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-course-progress']"
-                        (click)="fetchTelemetry($event,'tpd-cp')">
-                        <div class="card-body ">
-                            <div class="row">
-                                <app-info [tooltipText]="tpdcpTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
-                                <div class="col-3 col-md-2">
-                                    <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv" style="background-color: #5700f3;">
-                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-9 col-md-10">
-                                    <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">TPD Course </p>
-                                        <p class="card-title">Progress</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="views">
-                                    <p *ngIf="tpdcpViews;else other_content" id="views">views:
-                                        {{tpdcpViews}}</p>
-                                    <ng-template #other_content>
-                                        <p id="errViews">views: 0 {{timePeriod}}</p>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%)"
-                        id="tpd-tp" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-teacher-percentage']"
-                        (click)="fetchTelemetry($event,'tdp-tp')">
-                        <div class="card-body ">
-                            <div class="row">
-                                <app-info [tooltipText]="tpdtpTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
-                                <div class="col-3 col-md-2">
-                                    <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv" style="background-color: #5700f3;">
-                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-9 col-md-10">
-                                    <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">TPD Teacher </p>
-                                        <p class="card-title">Percentage</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="views">
-                                    <p *ngIf="tpdtpViews;else other_content" id="views">views:
-                                        {{tpdtpViews}}</p>
-                                    <ng-template #other_content>
-                                        <p id="errViews">views: 0 {{timePeriod}}</p>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-sm-6" style="padding: 40px 25px 0px 25px">
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%)"
@@ -448,11 +294,165 @@
                 </div>
             </div>
         </div>
+
+    </div>
+    <div class="row" style="padding: 20px">
+        <div class="col-sm-6" style="padding: 40px 25px 0px 25px">
+            <div class="row outer12">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%)"
+                        id="tdp-cp" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-course-progress']"
+                        (click)="fetchTelemetry($event,'tpd-cp')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="tpdcpTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #5700f3;">
+                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">TPD Course </p>
+                                        <p class="card-title">Progress</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="tpdcpViews;else other_content" id="views">views:
+                                        {{tpdcpViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%)"
+                        id="tpd-tp" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/tpd-teacher-percentage']"
+                        (click)="fetchTelemetry($event,'tdp-tp')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="tpdtpTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #5700f3;">
+                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">TPD Teacher </p>
+                                        <p class="card-title">Percentage</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="tpdtpViews;else other_content" id="views">views:
+                                        {{tpdtpViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 25px 0px 25px">
+            <div class="headings">School Monitoring</div>
+            <div class="row outer12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #FF5F55 0%, #FF9E95 100%);"
+                        id="crcr" [routerLink]="!nifi_crc ? ['/coming-soon'] :['/crc/crc-report']"
+                        (click)="fetchTelemetry($event,'crcr')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="crcrTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #f23740;">
+                                            <img class="ic-equalizer1" src="../../assets/Group 11.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">CRC </p>
+                                        <p class="card-title"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="crcrViews;else other_content" id="views">views:
+                                        {{crcrViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 25px 0px 25px">
+            <div class="headings">Health Card</div>
+            <div class="row outer12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #55ff9c 0%, #95ffb5 100%);"
+                        id="healthCard" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/healthCard']"
+                        (click)="fetchTelemetry($event,'healthCard')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="healthCardTooltip"
+                                    style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #34c72f;">
+                                            <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Health Card </p>
+                                        <p class="card-title"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="healthCardViews;else other_content" id="views">views:
+                                        {{healthCardViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ENERGISED TEXTBOOK USAGE rows -- added two blocks for enabling and disabling -->
     <div *ngIf="diksha_column" class="row" style="padding: 20px">
-        <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 25px 0px 25px">
             <div class="headings">Energised Textbook Usage</div>
             <div class="row outer12">
                 <div class="col-lg-4 col-md-12 col-sm-12">
@@ -562,7 +562,7 @@
     </div>
 
     <div *ngIf="!diksha_column" class="row" style="padding: 20px;">
-        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-sm-6" style="padding:  0% 25px 0px 25px">
             <div class="headings">Energised Textbook Usage</div>
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
@@ -640,7 +640,7 @@
 
 
     <div class="row" style="padding: 20px;">
-        <div class="col-lg-12 col-md-12 col-sm-12" style="padding:  0% 2% 0% 2%">
+        <div class="col-lg-12 col-md-12 col-sm-12" style="padding:  0% 25px 0px 25px">
             <div class="headings">Student Performance</div>
             <div class="row outer12">
                 <div class="col-lg-3 col-md-6 col-sm-6">
@@ -784,7 +784,7 @@
         </div>
     </div>
     <div class="row" style="padding: 20px;">
-        <div class="col-lg-9 col-md-6 col-sm-12" style="padding:  0% 2% 0% 2%">
+        <div class="col-lg-9 col-md-6 col-sm-12" style="padding:  0% 25px 0px 25px">
             <div class="headings">Exception List</div>
             <div class="row outer12">
                 <div class="col-lg-4 col-md-12 col-sm-12">
@@ -860,12 +860,12 @@
 
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);;"
-                        id="patExcpt"
-                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/pat-exception']"
+                        id="patExcpt" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/pat-exception']"
                         (click)="fetchTelemetry($event,'patExcpt')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="patExcptTooltip" style="position: absolute; right:10px; top:0px">
+                                <app-info [tooltipText]="patExcptTooltip"
+                                    style="position: absolute; right:10px; top:0px">
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
@@ -900,7 +900,7 @@
         <!-- </div> -->
     </div>
     <div class="row" style="padding: 20px;">
-        <div class="col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-sm-6" style="padding:  0% 25px 0px 25px">
             <div class="headings">Attendance</div>
             <div class="row outer12">
                 <div class="col-lg-6 col-md-12 col-sm-12">
@@ -973,12 +973,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 2% 0% 2%">
+        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 25px 0px 25px">
             <div class="headings">Telemetry Data</div>
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background: linear-gradient(135deg, #6B76DB 0%, #9E9EF4 100%);" id="telemData"
-                        [routerLink]="!nifi_telemetry ? ['/coming-soon'] :['/telemetry']"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #6B76DB 0%, #9E9EF4 100%);"
+                        id="telemData" [routerLink]="!nifi_telemetry ? ['/coming-soon'] :['/telemetry']"
                         (click)="fetchTelemetry($event,'telemData')">
                         <div class="card-body ">
                             <div class="row">

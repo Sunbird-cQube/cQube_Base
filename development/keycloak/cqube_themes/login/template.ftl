@@ -62,7 +62,7 @@
     </script>
 </head>
 
-<body class="${properties.kcBodyClass!}">
+<body class="${properties.kcBodyClass!}" style="background: url(${url.resourcesPath}/img/Group.svg);object-fit: cover;background-repeat: no-repeat;background-size: cover;">
   <div class="${properties.kcLoginClass!}">
     <div id="kc-header" class="${properties.kcHeaderClass!}">
       <div id="kc-header-wrapper" class="${properties.kcHeaderWrapperClass!}">${kcSanitize(msg("",(realm.displayNameHtml!'')))?no_esc}</div>

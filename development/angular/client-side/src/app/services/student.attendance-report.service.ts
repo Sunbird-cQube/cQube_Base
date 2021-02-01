@@ -37,17 +37,17 @@ export class AttendanceReportService {
 
   blockPerDist(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/attendance/blockPerDist`, { data: data, baseUrl: this.baseUrl });
+    return this.http.post(`${this.baseUrl}/attendance/blockPerDist`, data);
   }
 
   clusterPerBlock(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/attendance/clusterPerBlock`, { data: data, baseUrl: this.baseUrl });
+    return this.http.post(`${this.baseUrl}/attendance/clusterPerBlock`, data);
   }
 
   schoolsPerCluster(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/attendance/schoolPerCluster`, { data: data, baseUrl: this.baseUrl });
+    return this.http.post(`${this.baseUrl}/attendance/schoolPerCluster`, data);
   }
 
   getDateRange() {

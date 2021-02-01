@@ -1,6 +1,6 @@
 .login-pf body {
-    background: url("../img/Group.svg");
-    object-fit: cover;
+    /* background: url("../img/Group.svg"); */
+    /* object-fit: cover; */
 }
 
 
@@ -463,7 +463,7 @@ input:focus{
 
 .login-pf-page {
     background: url("../img/back1.png");
-    background-size: 750px;
+    background-size: 800px 590px;
     background-repeat: no-repeat;
     background-position: right;
 }

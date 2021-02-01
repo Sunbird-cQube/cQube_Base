@@ -8,7 +8,13 @@ router.post('/schoolWise', auth.authController, async function (req, res) {
         logger.info('--- Attendance school wise api ---');
         var month = req.body.month;
         var year = req.body.year;
-        let fileName = `attendance/school_attendance_opt_json_${year}_${month}.json`
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `attendance/${timePeriod}/school.json`;
+        } else {
+            fileName = `attendance/school_attendance_opt_json_${year}_${month}.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
         var schoolsAttendanceData = jsonData.data
         var schoolData = [];
@@ -41,10 +47,17 @@ router.post('/schoolPerCluster', auth.authController, async (req, res) => {
     try {
         logger.info('--- Attendance schoolPerCluster api ---');
 
-        var clusterId = req.body.data.id;
-        var month = req.body.data.month;
-        var year = req.body.data.year;
-        let fileName = `attendance/school_attendance_opt_json_${year}_${month}.json`
+        var clusterId = req.body.id;
+        var month = req.body.month;
+        var year = req.body.year;
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `attendance/${timePeriod}/school.json`;
+        } else {
+            fileName = `attendance/school_attendance_opt_json_${year}_${month}.json`;
+        }
+
         var jsonData = await s3File.readS3File(fileName);
         // res.send(jsonData)
         var schoolsDetails = [];
