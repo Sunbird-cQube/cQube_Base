@@ -5,15 +5,20 @@ const s3File = require('../../../lib/reads3File');
 
 router.post('/clusterWise', auth.authController, async (req, res) => {
     try {
-        logger.info('---SAR Exception cluster wise api ---');
+        logger.info(`---${req.body.report} cluster wise api ---`);
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
+        var report = req.body.report;
         let fileName;
-        if (timePeriod != null) {
-            fileName = `exception_list/student_attendance_completion/${timePeriod}/cluster.json`;
+        if (report == 'sarException') {
+            if (timePeriod != null) {
+                fileName = `exception_list/student_attendance_completion/${timePeriod}/cluster.json`;
+            } else {
+                fileName = `exception_list/student_attendance_completion/cluster_${year}_${month}.json`;
+            }
         } else {
-            fileName = `exception_list/student_attendance_completion/cluster_${year}_${month}.json`;
+            fileName = `exception_list/teacher_attendance_completion/cluster_2019_1.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
         var clustersAttendanceData = jsonData.data
@@ -35,7 +40,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
             }
             clusterData.push(obj);
         }
-        logger.info('--- SAR Exception cluster wise api response sent ---');
+        logger.info(`---${req.body.report} cluster wise api response sent ---`);
         res.status(200).send({ clusterData: clusterData, missingSchoolsCount: jsonData.allClustersFooter.total_schools_with_missing_data });
     } catch (e) {
         logger.error(`Error :: ${e}`)
@@ -45,16 +50,21 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
 
 router.post('/clusterPerBlock', auth.authController, async (req, res) => {
     try {
-        logger.info('---SAR Exception clusterPerBlock api ---');
+        logger.info(`---${req.body.report} clusterPerBlock api ---`);
         var blockId = req.body.id;
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
+        var report = req.body.report;
         let fileName;
-        if (timePeriod != null) {
-            fileName = `exception_list/student_attendance_completion/${timePeriod}/cluster.json`;
+        if (report == 'sarException') {
+            if (timePeriod != null) {
+                fileName = `exception_list/student_attendance_completion/${timePeriod}/cluster.json`;
+            } else {
+                fileName = `exception_list/student_attendance_completion/cluster_${year}_${month}.json`;
+            }
         } else {
-            fileName = `exception_list/student_attendance_completion/cluster_${year}_${month}.json`;
+            fileName = `exception_list/teacher_attendance_completion/cluster_2019_1.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
         var clusterData = [];
@@ -79,8 +89,8 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
             }
             clusterData.push(obj);
         }
-        logger.info('--- SAR Exception clusterPerBlock api response sent ---');
-        res.status(200).send({ clusterDetails: clusterData, missingSchoolsCount: jsonData.footer[blockId].total_schools_with_missing_data});
+        logger.info(`---${req.body.report} clusterPerBlock api response sent ---`);
+        res.status(200).send({ clusterDetails: clusterData, missingSchoolsCount: jsonData.footer[blockId].total_schools_with_missing_data });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

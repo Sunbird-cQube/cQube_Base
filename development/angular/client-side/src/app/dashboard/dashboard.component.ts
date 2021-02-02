@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
   healthCardTooltip;
   patExcptTooltip
   sarExcptTooltip;
+  tarExpTooltip;
 
   hiddenPass = false;
   edate: Date;
@@ -69,6 +70,7 @@ export class DashboardComponent implements OnInit {
   healthCardViews;
   patExcptViews;
   sarExcptViews;
+  tarExpViews;
   
 
   //for coming soon page

@@ -8,13 +8,13 @@ import { KeycloakSecurityService } from '../../../keycloak-security.service';
 import { AppServiceComponent, globalMap } from '../../../app.service';
 
 @Component({
-  selector: 'app-student-attendance-exception',
-  templateUrl: './student-attendance-exception.component.html',
-  styleUrls: ['./student-attendance-exception.component.css'],
+  selector: 'app-teacher-attendance-exception',
+  templateUrl: './teacher-attendance-exception.component.html',
+  styleUrls: ['./teacher-attendance-exception.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class StudentAttendanceExceptionComponent implements OnInit {
+export class TeacherAttendanceExceptionComponent implements OnInit {
   state;
   edate;
   public telemData = {}
@@ -76,13 +76,14 @@ export class StudentAttendanceExceptionComponent implements OnInit {
   params: any;
   yearMonth = true;
 
-  timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
-  period = 'overall';
-  timePeriod = {};
+  // timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
+  // period = 'overall';
+  // timePeriod = {};
 
   constructor(public http: HttpClient, public service: ExceptionReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
 
   }
+
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
@@ -93,10 +94,6 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.skul = true;
-    this.timePeriod = {
-      period: 'overall',
-      report: 'sarException'
-    }
     this.service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -114,8 +111,8 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       this.month = this.months[this.months.length - 1].id;
       if (this.month) {
         this.month_year = {
-          month: null,
-          year: null
+          month: this.month,
+          year: this.year
         };
         this.districtWise();
       }
@@ -126,37 +123,32 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     });
   }
 
-  showYearMonth() {
-    document.getElementById('home').style.display = 'block';
-    this.yearMonth = false;
-    this.month_year = {
-      month: this.month,
-      year: this.year
-    };
-    this.timePeriod = {
-      period: null,
-      report: 'sarException'
-    }
-    this.levelWiseFilter();
-  }
+  // showYearMonth() {
+  //   document.getElementById('home').style.display = 'block';
+  //   this.yearMonth = false;
+  //   this.month_year = {
+  //     month: this.month,
+  //     year: this.year
+  //   };
+  //   this.levelWiseFilter();
+  // }
 
-  onPeriodSelect() {
-    if (this.period != 'overall') {
-      document.getElementById('home').style.display = 'block';
-    } else {
-      document.getElementById('home').style.display = 'none';
-    }
-    this.yearMonth = true;
-    this.timePeriod = {
-      period: this.period,
-      report: 'sarException'
-    }
-    this.month_year = {
-      month: null,
-      year: null
-    };
-    this.levelWiseFilter();
-  }
+  // onPeriodSelect() {
+  //   if (this.period != 'overall') {
+  //     document.getElementById('home').style.display = 'block';
+  //   } else {
+  //     document.getElementById('home').style.display = 'none';
+  //   }
+  //   this.yearMonth = true;
+  //   this.timePeriod = {
+  //     period: this.period
+  //   }
+  //   this.month_year = {
+  //     month: null,
+  //     year: null
+  //   };
+  //   this.levelWiseFilter();
+  // }
 
   public fileName: any;
   public reportData: any = [];
@@ -291,21 +283,6 @@ export class StudentAttendanceExceptionComponent implements OnInit {
   public myData;
   districtData = [];
 
-  onClickHome() {
-    this.yearMonth = true;
-    this.period = 'overall';
-    this.month_year = {
-      month: null,
-      year: null
-    };
-    this.timePeriod = {
-      period: this.period,
-      report: 'sarException'
-    }
-    this.districtWise();
-    document.getElementById('home').style.display = 'none';
-  }
-
   async districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
@@ -315,7 +292,8 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.month_year['report'] = 'tarException';
+      this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.districtData = this.mylatlngData = res['distData'];
         // this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1);
@@ -364,10 +342,11 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       var month = this.months.find(a => a.id === this.month);
       this.fileName = `Block_wise_report_${month.name.trim()}_${this.year}`
 
+      this.month_year['report'] = 'tarException';
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['blockData'];
         // this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1);
@@ -417,10 +396,11 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       var month = this.months.find(a => a.id === this.month);
       this.fileName = `Cluster_wise_report_${month.name.trim()}_${this.year}`
 
+      this.month_year['report'] = 'tarException';
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.cluster_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['clusterData'];
         // this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1)
@@ -482,10 +462,11 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       var month = this.months.find(a => a.id === this.month);
       this.fileName = `School_wise_report_${month.name.trim()}_${this.year}`
 
+      this.month_year['report'] = 'tarException';
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolData'];
         // this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1)
@@ -695,11 +676,12 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       this.myBlock = null;
 
       this.month_year['id'] = data;
+      this.month_year['report'] = 'tarException';
 
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.blockPerDist({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
         this.reportData = this.blockData = this.mylatlngData = res['blockData'];
         // this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -808,7 +790,8 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.month_year['id'] = data;
-      this.myData = this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.month_year['report'] = 'tarException';
+      this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
         this.reportData = this.clusterData = this.mylatlngData = res['clusterDetails'];
         // this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -951,7 +934,8 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       }
 
       this.month_year['id'] = data;
-      this.myData = this.service.schoolsPerCluster({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.month_year['report'] = 'tarException';
+      this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolsDetails'];
         // this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
