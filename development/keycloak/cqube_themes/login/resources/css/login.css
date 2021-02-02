@@ -542,7 +542,7 @@ label[for="totp"]:after{
 @media (max-width: 1550px){
     .background{
         background: url('../img/Group.svg');
-        /* background-size: cover !important;   */
+        background-size: fill !important;  
         background-repeat: no-repeat;
     }
     .backImg {
@@ -555,11 +555,28 @@ label[for="totp"]:after{
         height: 750px !important;
     }
 }
+@media (max-width: 1501px){
+    .background{
+        background: url('../img/Group.svg');
+        background-size: fill !important;  
+        background-repeat: no-repeat;
+    }
+    .backImg {
+        top: 10px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:900px !important;
+        height: 720px !important;
+    }
+}
+
 
 @media (max-width: 1377px){
     .background{
         background: url('../img/Group.svg');
-        background-size: cover !important;  
+        background-size: fill !important;  
         background-repeat: no-repeat;
     }
     .backImg {
@@ -583,6 +600,11 @@ label[for="totp"]:after{
         width:800px !important;
         height: 660px !important;
     }
+    .background{
+        background: url('../img/Group.svg');
+        background-size: fill !important;  
+        background-repeat: no-repeat;
+    }
 }
 
 @media (max-width: 1650px){
@@ -600,6 +622,7 @@ label[for="totp"]:after{
         background-size: cover !important;  
         /* background-repeat: no-repeat; */
     }
+    
 }
 
 @media (max-width: 1125px){
@@ -782,6 +805,9 @@ label[for="totp"]:after{
             background-repeat: no-repeat !important;
             width: 100%;
             height: auto;
+        }
+        #username, #password {
+            display: none;
         }
     }    
 
