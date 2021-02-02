@@ -1,13 +1,8 @@
 .login-pf body {
-    background:  url("../img/back1.png"), url("../img/Group.svg") , linear-gradient(135.84deg, #5421FF 0%, #3D92FF 53.32%, #00DCF8 100%);
-    width: 100%;
+    background: url("../img/Group.svg");
+    object-fit: cover;
     background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: right;
-}
-
-.login-pf {
-    background: transparent
+    background-size: cover;
 }
 
 .alert-error {
@@ -71,24 +66,23 @@ a#kc-current-locale-link::after {
     margin-left: 4px;
 }
 
-.login-pf .container {
-    padding-top: 40px;
-}
-
 .login-pf a:hover {
     color: #0099d3;
 }
 
 #kc-logo {
     width: 100%;
+    position: fixed;
 }
 
 #kc-logo-wrapper {
-    background-image: url(../img/logo.png);
+    position: relative;
+    background-image: url(../img/GroupLogo.svg);
     background-repeat: no-repeat;
     height: 53px;
     width: 300px;
     margin: 62px auto 0;
+    position: fixed;
 }
 
 div.kc-logo-text {
@@ -109,18 +103,23 @@ div.kc-logo-text span {
 }
 
 #kc-header-wrapper {
-    background-image: url(../img/logo.png);
-    content: "cQube";
-    margin: 0px auto;
+    background-image: url(../img/GroupLogo.svg);
     background-repeat: no-repeat;
-    font-size: 0px;
-    text-transform: uppercase;
     position: relative;
     letter-spacing: 0px;
     margin: 15px 0px 0px 20px;
-    /* line-height: 1.2em; */
     padding: 62px 10px 20px;
     white-space: normal;
+    width: 150px;
+    height: 50px !important;
+}
+
+.logoText{
+    position :absolute; 
+    left:100px !important; 
+    top:40px !important;
+    font-family: Bahnschrift SemiBold Condensed !important;
+    font-size: 90px;
 }
 
 #kc-content {
@@ -276,8 +275,8 @@ a.zocial  {
         width: 100%;
     }
 
-    .login-pf .container {
-        padding-right: 80px;
+    .login-pf-page{
+        margin:0px auto;
     }
 
     #kc-locale {
@@ -285,12 +284,32 @@ a.zocial  {
         text-align: right;
         z-index: 9999;
     }
+    .login-pf body {
+        background:  url("../img/Group.svg");
+        height:100%;
+        width: 100%;
+        background-repeat: no-repeat;
+        /* background-attachment: fixed; */
+        /* background-position: right; */
+    }
 }
+
+@media (max-width: 470px){
+    .login-pf-page{
+        margin:0px auto;
+    }
+}
+
 
 @media (max-width: 767px) {
 
     .login-pf body {
-      background: white;
+        background:  url("../img/Group.svg");
+        height:100%;
+        width: 100%;
+        background-repeat: no-repeat;
+        /* background-attachment: fixed;
+        background-position: right; */
     }
 
     #kc-header {
@@ -298,14 +317,14 @@ a.zocial  {
         padding-right: 15px;
         float: none;
         text-align: left;
+        height: 100px;
     }
 
     #kc-header-wrapper {
-      font-size: 16px;
-      font-weight: bold;
-      padding: 20px 60px 0 0;
-      color: #72767b;
-      letter-spacing: 0;
+        width: 150px;
+        height: 50px !important;
+      position: relative;
+      background-image: url(../img/GroupLogo.svg);
     }
 
     div.kc-logo-text {
@@ -315,9 +334,6 @@ a.zocial  {
         background-size: 100%;
     }
 
-    #kc-form {
-        float: none;
-    }
 
     #kc-info-wrapper {
         border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -333,7 +349,7 @@ a.zocial  {
     }
 
     .login-pf .container {
-        padding-top: 15px;
+        /* padding-top: 15px; */
         padding-bottom: 15px;
     }
 
@@ -355,18 +371,126 @@ a.zocial  {
 
 }
 
+input:-webkit-autofill {
+    background-color: transparent !important;
+    background-image:none !important;
+    color: white !important;
+  }
+
+  input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: -internal-light-dark(white, white) !important;
+}
 
 #kc-login {
+    left: 0px;
+    top: 0px;
+    position: relative;
     height: 40px;
+    width: 100px;
+    border-radius: 20px;
+    /* background-color: #31D08C !important; */
+}
+
+
+
+#kc-cancel{
+    right: 20px;
+    top: 0px;
+    position: absolute;
+    height: 40px;
+    width: 100px;
     border-radius: 20px;
     background-color: #31D08C !important;
 }
-    
-#username, #password {
-    height: 40px;
-    border-radius: 20px !important;
-    background-color: rgb(255, 251, 251);
+
+#totp{
+
 }
+    
+#username1, #password1, #totp {
+    width: 100%;
+    border-radius: 20px !important;
+    background-color: transparent;
+    border: 1px solid #848FFF;
+    color: #ffffff;
+    padding: 7px 10px 7px 15px;
+    font-weight: bold;
+    border: 1px solid #848FFF;
+}
+
+/* input[type="password"] {
+    font-size:18px;
+} */
+
+#username, #password {
+   display: none;
+}
+
+#username1 {
+    border: 1px solid #848FFF;
+}
+
+#login{
+    width: 100%;
+    border-radius: 20px !important;
+    background-color: transparent;
+    border: 1px solid white;
+    color: #899BFF;
+    padding: 8px 10px 8px 15px;
+    font-weight:900;
+    border: 1px solid #848FFF;
+}
+
+#togglePassword {
+    float: right;
+    margin-right: 25px;
+    margin-top: -24px;
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+    cursor: pointer;
+ }
+
+input:focus{
+    outline: none;
+}
+
+#signinSymbol{
+    float: left;
+    margin-left: 77px;
+    margin-top: -29px;
+    position: relative;
+    z-index: 2;
+    color: #899BFF;
+    cursor: pointer;
+}
+
+#signinSymbolWithInput{
+    float: left;
+    margin-left: 77px;
+    margin-top: -29px;
+    position: relative;
+    z-index: 2;
+    color: #899BFF;
+    cursor: pointer;
+    display: none;
+}
+
+::-webkit-input-placeholder { /* Edge */
+    color: #899BFF;
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer */
+    color: #899BFF;
+  }
+  
+  ::placeholder {
+    color: #899BFF;
+  }
+
 
 @media (min-height: 646px) {
     #kc-container-wrapper {
@@ -390,28 +514,29 @@ a.zocial  {
     display: none;
 }
 
-#kc-form-buttons {
-  margin-top: 40px;
-}
 
-.login-pf-page .login-pf-brand {
-  margin-top: 20px;
-  max-width: 360px;
-  width: 40%;
+.login-pf-page {
+    background: url("../img/back1.png");
+    background-size: 800px 600px;
+    background-repeat: no-repeat;
+    background-position: right;
+    top: 0px;
+    position: relative;
 }
 
 .card-pf {
     margin-left:50px;
-    height: 360px auto;
-    width: 300px;
-    border-radius: 16px;
-    background-color: rgb(57, 125, 226);;
+    margin-top: 100px;
+    width: 316px;
+    background: linear-gradient(125deg, #4e22ee 10%, #6b6df1 90%);
     opacity: 0.9;
+    border-radius: 16px;
     color: #fff;
+    padding: 0px 40px 30px 40px !important;
   }
     
 label{
-    color: white;
+    color: #ffffff;
 }
 
 #mode-manual{
@@ -420,24 +545,190 @@ label{
 #kc-totp-settings li p{
     color: antiquewhite;
 }
+
+/* label[for="username"]{
+    visibility: hidden;
+    position: relative;
+}
+
+label[for="username"]:after{
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content:'User ID';
+} */
+
+label[for="username"], label[for="password"],#kc-login{
+    display: none;
+}
+
+label[for="totp"]{
+    visibility: hidden;
+    position: relative;
+}
+
+label[for="totp"]:after{
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "Enter OTP";
+}
+
+@media (max-width: 1200px){
+    .login-pf-page{
+        background: url("../img/back1.png");
+        background-size: 750px;
+        background-repeat: no-repeat;
+        background-position: right;
+        position: relative;
+    }
+}
+
+@media (max-width: 1125px){
+    .login-pf-page{
+        background: url("../img/back1.png");
+        background-size: 700px 600px;
+        background-repeat: no-repeat;
+        background-position: right;
+        position: relative;
+    }
+}
+
+@media (max-width: 1070px){
+    .login-pf-page{
+        background: url("../img/back1.png");
+        background-size: 620px 540px;
+        background-repeat: no-repeat;
+        background-position: right;
+        position: relative;
+    }
+}
+
+@media (max-width: 1010px){
+    .login-pf-page{
+        background: url("../img/back1.png");
+        background-size: 600px 500px;
+        background-repeat: no-repeat;
+        background-position: right;
+        position: relative;
+    }
+}
+
+@media (max-width: 980px){
+    .login-pf-page{
+        background: url("../img/back1.png");
+        background-size: 570px 480px;
+        background-repeat: no-repeat;
+        background-position: right;
+        position: relative;
+    }
+}
+
+@media (max-width: 945px){
+    .login-pf-page{
+        background: url("../img/back1.png");
+        background-size: 530px 450px;
+        background-repeat: no-repeat;
+        background-position: right;
+        position: relative;
+    }
+}
+
+@media (max-width: 910px){
+    .login-pf-page{
+        background: url("../img/back1.png");
+        background-size: 500px 430px;
+        background-repeat: no-repeat;
+        background-position: right;
+        position: relative;
+    }
+}
+
+@media (max-width: 880px){
+    .login-pf-page{
+        background: url("../img/back1.png");
+        background-size: 480px 430px;
+        background-repeat: no-repeat;
+        background-position: right;
+        position: relative;
+    }
+}
+
+
     /*tablet*/
-@media (max-width: 840px) {
-        .login-pf-page .card-pf{
-          max-width: none;
-          margin-left: 20px;
-          margin-right: 20px;
-          padding: 20px 20px 30px 20px;
+@media (max-width: 850px) {
+        .card-pf{
+          margin: 0px auto;
+          position :relative; 
+          padding: 0px 40px 30px 40px !important;
         }
+        .logoText{
+            position :absolute !important; 
+            left:0px !important;
+            right: 0px !important; 
+            top:30px !important;
+            font-size: 60px !important;
+        }
+        .login-pf-page {
+            background: url("");
+            background-repeat: no-repeat;
+            background-position: right;
+        }
+        .infoText p{
+            color: #FFFFFF;
+            font-size: 16px;
+            text-align: justify;
+            line-height: 1.5em;
+        }
+        .infoText{
+            width: 60%;
+            margin: 0px auto !important;
+        }
+        
     }
     @media (max-width: 767px) {
-        .login-pf-page .card-pf{
-          max-width: none;
-          margin-left: 0;
-          margin-right: 0;
-          padding-top: 0;
+        .card-pf{
+            margin: 0px auto;
+            position :relative; 
+            padding: 10px 40px 30px 40px !important;
+          }
+          
+          .logoText{
+            display: none;
         }
+    
         .card-pf.login-pf-accounts{
           max-width: none;
+        }
+
+        .infoText{
+            width: 90% !important;
+            margin: 0px auto !important;
+        }
+
+        .infoText p{
+            color: #FFFFFF;
+            font-size: 16px;
+            text-align: justify;
+            line-height: 1.5em;
+        }
+        .infoText{
+            padding: 5px;
+            left: 0px;
+            right: 0px;
+            width: 100%;
+            position: absolute;
+        }
+        #signinSymbol{
+            float: left;
+            margin-left: 77px;
+            margin-top: -29px;
+            position: relative;
+            z-index: 2;
+            color: white;
+            cursor: pointer;
         }
     }    
 
@@ -445,6 +736,19 @@ label{
   font-size: 15px;
   color: #72767b;
 }
+
+.infoText p{
+    color: #FFFFFF;
+    font-size: 16px;
+    /* text-align: cen; */
+    line-height: 1.5em;
+}
+
+.infoText{
+    margin :30px 0px 0px 50px; 
+    width : 530px;
+}
+
 #kc-content-wrapper .row {
   margin-left: 0;
   margin-right: 0;
@@ -486,5 +790,10 @@ label{
     background-color: #f75c69 !important;
 }
 .control-label {
-    color: #363636
+    color: white;
+}
+
+.container i {
+    margin-left: -30px;
+    cursor: pointer;
 }

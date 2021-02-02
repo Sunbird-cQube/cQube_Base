@@ -9,7 +9,7 @@
   margin: 15px 0px 15px 0px;
   height: 90px;
   /* width: 270px; */
-  border-radius: 13px;
+  border-radius: 15px;
   /* background: linear-gradient(135deg, #4266FF 0%, #40A6FF 100%); */
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.02);
 }
@@ -18,16 +18,15 @@
   height: 50px;
   width: 50px;
   border-radius: 6px;
-  background-color: #3257E0;
 }
 
 
-.diksha {
+.headings {
   height: 19px;
   /* width: 51px; */
   color: #20253A;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 17px;
+  /* font-weight: bold; */
   letter-spacing: 0;
   line-height: 19px;
   margin: 0px 0px 20px 0px;
@@ -109,7 +108,7 @@
 
 
 .card {
-  border-radius: 12px;
+  border-radius: 20px;
   box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
   background-color: #FFFFFF;
   color: #252422;
@@ -120,7 +119,8 @@
   transition: transform 300ms cubic-bezier(0.34, 2, 0.6, 1), box-shadow 200ms ease;
   transition: transform 300ms cubic-bezier(0.34, 2, 0.6, 1), box-shadow 200ms ease, -webkit-transform 300ms cubic-bezier(0.34, 2, 0.6, 1); }
   .card .card-body {
-    padding: 15px 15px 10px 15px; }
+    padding: 15px 15px 10px 15px; 
+  }
     .card .card-body.table-full-width {
       padding-left: 0;
       padding-right: 0; }
@@ -200,11 +200,11 @@
 
   .card-stats{
     margin-top: 22px;
-    background-color:rgb(160, 233, 205);
   }
 
 .card-stats .card-body {
-  padding: 15px 15px 0px; }
+  padding: 15px 15px 0px; 
+}
   .card-stats .card-body .numbers {
     font-size: 12px;
       font-weight: bold;
@@ -219,6 +219,7 @@
       font-size: 12px;
       font-weight: bold;
       line-height: 1.4em; 
+      color: white;
     }
 
 .card-stats .card-footer {

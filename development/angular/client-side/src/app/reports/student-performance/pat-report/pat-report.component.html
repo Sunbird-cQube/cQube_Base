@@ -49,11 +49,11 @@
                     </p>
                 </div>
                 <div class="col-sm-5">
-                    <em class="fa fa-download" title="Download Report" id="download"
-                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                    <em class="fa fa-cloud-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                         (click)="downloadReport()"></em>
                     <em class="fa fa-home" id="home" title="Home"
-                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
                         alt="Home" (click)="linkClick()"></em>
                 </div>
             </div>
@@ -138,9 +138,9 @@
                     {{cluster.Details.cluster_name}}
                 </option>
             </select>
-                <a class="float-right" href="javascript: void(0)" id="patHealthcard" (click)="goToHealthCard()"
-                    style="font-weight: bold; text-decoration: underline; font-size: 13px;">Access Health
-                    Card</a>
+            <a class="float-right" href="javascript: void(0)" id="patHealthcard" (click)="goToHealthCard()"
+                style="font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Access Health
+                Card</a>
         </div>
     </div>
     <div class="row">

@@ -35,6 +35,9 @@ export class DashboardComponent implements OnInit {
   tpdtpTooltip;
   tpdcpTooltip;
   healthCardTooltip;
+  patExcptTooltip
+  sarExcptTooltip;
+  tarExpTooltip;
 
   hiddenPass = false;
   edate: Date;
@@ -65,6 +68,9 @@ export class DashboardComponent implements OnInit {
   tpdenrollViews;
   tpdcompViews;
   healthCardViews;
+  patExcptViews;
+  sarExcptViews;
+  tarExpViews;
   
 
   //for coming soon page
@@ -125,6 +131,7 @@ export class DashboardComponent implements OnInit {
     this.tpdtpTooltip = `This dashboard provides details on district-wise TPD course enrolment progress broken at the individual course level.`;
     this.tpdcpTooltip = `This dashboard provides details on district-wise TPD course progress broken at the individual course level.`;
     this.healthCardTooltip = `Healthcard Tooltip`;
+    this.patExcptTooltip = `PAT Exception tooltip`;
   }
 
   changeDataSourceStatus() {
@@ -223,6 +230,7 @@ export class DashboardComponent implements OnInit {
     this.tpdtpViews = "";
     this.tpdenrollViews = "";
     this.tpdcompViews = "";
+    this.sarExcptViews = "";
 
     var myStr = this.removeUnderscore(views[0].time_range);
     this.timePeriod = " (" + myStr + ")";
@@ -300,6 +308,12 @@ export class DashboardComponent implements OnInit {
       }
       if (element.reportid == 'healthCard') {
         this.healthCardViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'patExcpt') {
+        this.patExcptViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'sarExcpt') {
+        this.sarExcptViews = element.number_of_views + " (" + timeStr + ")";
       }
 
     });

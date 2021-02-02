@@ -8,9 +8,16 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         logger.info('---Attendance cluster wise api ---');
         var month = req.body.month;
         var year = req.body.year;
-        let fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `attendance/${timePeriod}/cluster.json`;
+        } else {
+            fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
         var clustersAttendanceData = jsonData.data
+        var dateRange = `${clustersAttendanceData[0]['data_from_date']} to ${clustersAttendanceData[0]['data_upto_date']}`;
         var clusterData = [];
         for (let i = 0; i < clustersAttendanceData.length; i++) {
             var obj = {
@@ -29,7 +36,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
             clusterData.push(obj);
         }
         logger.info('--- Attendance cluster wise api response sent ---');
-        res.status(200).send({ clusterData: clusterData, studentCount: jsonData.allClustersFooter.students, schoolCount: jsonData.allClustersFooter.schools });
+        res.status(200).send({ clusterData: clusterData, studentCount: jsonData.allClustersFooter.students, schoolCount: jsonData.allClustersFooter.schools ,dateRange: dateRange});
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -39,16 +46,23 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
 router.post('/clusterPerBlock', auth.authController, async (req, res) => {
     try {
         logger.info('---Attendance clusterPerBlock api ---');
-        var blockId = req.body.data.id;
-        var month = req.body.data.month;
-        var year = req.body.data.year;
-        let fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`
+        var blockId = req.body.id;
+        var month = req.body.month;
+        var year = req.body.year;
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `attendance/${timePeriod}/cluster.json`;
+        } else {
+            fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
         var clusterData = [];
         var filterData = jsonData.data.filter(data => {
             return (data.block_id == blockId)
         });
         var clustersAttendanceData = filterData;
+        var dateRange = `${clustersAttendanceData[0]['data_from_date']} to ${clustersAttendanceData[0]['data_upto_date']}`;
         for (let i = 0; i < clustersAttendanceData.length; i++) {
             var obj = {
                 cluster_id: clustersAttendanceData[i]['x_axis'],
@@ -66,7 +80,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
             clusterData.push(obj);
         }
         logger.info('--- Attendance clusterPerDist api response sent ---');
-        res.status(200).send({ clusterDetails: clusterData, studentCount: jsonData.footer[blockId].students, schoolCount: jsonData.footer[blockId].schools });
+        res.status(200).send({ clusterDetails: clusterData, studentCount: jsonData.footer[blockId].students, schoolCount: jsonData.footer[blockId].schools ,dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

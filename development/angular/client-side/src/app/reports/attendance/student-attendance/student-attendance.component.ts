@@ -74,6 +74,11 @@ export class StudengtAttendanceComponent implements OnInit {
   public month;
   public element;
   params: any;
+  yearMonth = true;
+
+  timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
+  period = 'overall';
+  timePeriod = {};
 
   constructor(public http: HttpClient, public service: AttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
 
@@ -89,7 +94,9 @@ export class StudengtAttendanceComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.skul = true;
-
+    this.timePeriod = {
+      period: 'overall'
+    }
     this.service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -105,11 +112,11 @@ export class StudengtAttendanceComponent implements OnInit {
         this.months.push(obj);
       });
       this.month = this.months[this.months.length - 1].id;
-      this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
+      // this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
       if (this.month) {
         this.month_year = {
-          month: this.month,
-          year: this.year
+          month: null,
+          year: null
         };
 
         this.params = JSON.parse(sessionStorage.getItem('report-level-info'));
@@ -127,11 +134,11 @@ export class StudengtAttendanceComponent implements OnInit {
             this.myBlock = Number(data.blockId);
             this.myCluster = data.id;
           }
-
           this.getDistricts();
         } else {
           this.districtWise();
         }
+
       }
     }, err => {
       document.getElementById('home').style.display = 'none';
@@ -140,8 +147,38 @@ export class StudengtAttendanceComponent implements OnInit {
     });
   }
 
+  showYearMonth() {
+    document.getElementById('home').style.display = 'block';
+    this.yearMonth = false;
+    this.month_year = {
+      month: this.month,
+      year: this.year
+    };
+    this.timePeriod = {
+      period: null
+    }
+    this.levelWiseFilter();
+  }
+
+  onPeriodSelect() {
+    if (this.period != 'overall') {
+      document.getElementById('home').style.display = 'block';
+    } else {
+      document.getElementById('home').style.display = 'none';
+    }
+    this.yearMonth = true;
+    this.timePeriod = {
+      period: this.period
+    }
+    this.month_year = {
+      month: null,
+      year: null
+    };
+    this.levelWiseFilter();
+  }
+
   getDistricts(): void {
-    this.service.dist_wise_data(this.month_year).subscribe(res => {
+    this.service.dist_wise_data(this.timePeriod).subscribe(res => {
       var sorted = res['distData'].sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
       var distNames = [];
       this.markers = sorted;
@@ -171,7 +208,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   getBlocks(): void {
     this.month_year['id'] = this.myDistrict;
-    this.service.blockPerDist(this.month_year).subscribe(res => {
+    this.service.blockPerDist({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
       let blockData = res['blockData'];
       var uniqueData = blockData.reduce(function (previous, current) {
         var object = previous.filter(object => object['block_id'] === current['block_id']);
@@ -206,7 +243,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   getClusters(): void {
     this.month_year['id'] = this.myBlock;
-    this.service.clusterPerBlock(this.month_year).subscribe(res => {
+    this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
       let clusterData = res['clusterDetails'];
       var uniqueData = clusterData.reduce(function (previous, current) {
         var object = previous.filter(object => object['cluster_id'] === current['cluster_id']);
@@ -318,12 +355,15 @@ export class StudengtAttendanceComponent implements OnInit {
   public month_year;
   getMonth(event) {
     var month = this.getMonthYear[`${this.year}`].find(a => a.month === this.month);
-    this.dateRange = `${month.data_from_date} to ${month.data_upto_date}`;
+    // this.dateRange = `${month.data_from_date} to ${month.data_upto_date}`;
     this.month_year = {
       month: this.month,
       year: this.year
     };
+    this.levelWiseFilter();
+  }
 
+  levelWiseFilter() {
     if (this.skul) {
       if (this.levelWise === "District") {
         this.districtWise();
@@ -362,11 +402,25 @@ export class StudengtAttendanceComponent implements OnInit {
       }
       this.months.push(obj);
     });
-    this.element.disabled = false;
+    // this.element.disabled = false;
   }
 
   public myData;
   districtData = [];
+
+  onClickHome() {
+    this.yearMonth = true;
+    this.period = 'overall';
+    this.month_year = {
+      month: null,
+      year: null
+    };
+    this.timePeriod = {
+      period: this.period
+    }
+    this.districtWise();
+    document.getElementById('home').style.display = 'none';
+  }
 
   async districtWise() {
     this.commonAtStateLevel();
@@ -377,8 +431,9 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
+      this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.districtData = this.mylatlngData = res['distData'];
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
 
         var distNames = [];
@@ -415,7 +470,6 @@ export class StudengtAttendanceComponent implements OnInit {
       this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'none';
   }
 
   blockWise(event) {
@@ -428,8 +482,9 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
+      this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['blockData'];
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
 
         var blockNames = [];
@@ -479,9 +534,9 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.cluster_wise_data(this.month_year).subscribe(res => {
+      this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['clusterData'];
-
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         var clustNames = [];
@@ -543,9 +598,9 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
+      this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolData'];
-
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.studentCount = res['studentCount'];
@@ -579,7 +634,6 @@ export class StudengtAttendanceComponent implements OnInit {
     }
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
-    ;
   }
 
   commonAtStateLevel() {
@@ -757,8 +811,9 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
+      this.myData = this.service.blockPerDist({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.blockData = this.mylatlngData = res['blockData'];
+        this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['block_id'] === current['block_id']);
           if (object.length == 0) previous.push(current);
@@ -866,8 +921,9 @@ export class StudengtAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.month_year['id'] = data;
-      this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
+      this.myData = this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.clusterData = this.mylatlngData = res['clusterDetails'];
+        this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['cluster_id'] === current['cluster_id']);
           if (object.length == 0) previous.push(current);
@@ -1007,8 +1063,9 @@ export class StudengtAttendanceComponent implements OnInit {
       }
 
       this.month_year['id'] = data;
-      this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
+      this.myData = this.service.schoolsPerCluster({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolsDetails'];
+        this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['school_id'] === current['school_id']);
           if (object.length == 0) previous.push(current);

@@ -38,101 +38,126 @@
             <div class="row">
                 <div class="col-sm-6">
                     <p id="errMsg"
-                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
+                        style="display: none; text-align: center;line-height: 1.2em; font-size: 13px; margin-top: 3%; ">
                     </p>
                 </div>
                 <div class="col-sm-6">
-                    <!-- <div *ngIf="skul; else ng_else" style="float: right; " id="select">
-                        <em class="fa fa-download" title="Download Report" id="download1"
-                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
-                            (click)="downloadReportofState(downloadType)"></em>
-                        <select class="dwnld" id="downloader"
-                            style="padding: 5px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                            [(ngModel)]="downloadType" name="downloadType">
-                            <option [value]="downloadType" disabled selected="selected"> Download Report</option>
-                            <option *ngFor="let md of modes, let i = index" [(ngValue)]="modes[i]">
-                                {{md}} Report
-                            </option>
-                        </select>
-                    </div>
-
-                    <ng-template #ng_else> -->
-                    <em class="fa fa-download" title="Download Report" id="download"
-                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                    <em class="fa fa-cloud-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px; color: #3100cc;"
                         (click)="downloadRoport()"></em>
-                    <!-- </ng-template> -->
                     <em class="fa fa-home" id="home" title="Home"
-                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
                         alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <p style="text-align: justify; font-size: 11px;">
-                <strong> About the dashboard:</strong> The dashboard here brings together metrics from other dashboards
-                in order for you to correlate metrics with each other. The data here can be viewed across the district,
-                block and cluster level.
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <button class="btn btn-secondary" id="allBlock" name="block"
-                style="font-size: 11px; width: 70px; float: left;margin: 3px 10px 5px 0px;padding: 1px; background-color: rgb(152, 160, 163);"
-                (click)="blockWise()">&nbsp;<strong id="allBlock">Blocks</strong>
-            </button>
-            <button class="btn btn-secondary" id="allCluster"
-                style="font-size: 11px; width: 70px; float: left;margin: 3px 10px 5px 0px;padding: 1px; background-color: rgb(152, 160, 163);"
-                (click)="clusterWise()">&nbsp;<strong id="allCluster">Clusters</strong>
-            </button>
-            <select id="choose_dist"
-                style="margin-right: 10px; padding: 1.5px;margin-left: 2%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
-                <option [value]="myDistrict" disabled selected="selected">Choose a District
-                </option>
-                <option *ngFor="let dist of SchoolInfrastructureDistrictsNames" [(ngValue)]="dist.district.id"
-                    style=" font-size: 11px;">
-                    {{dist.district.value}}
-                </option>
-            </select>
-
-            <select [hidden]="blockHidden" id="choose_block"
-                style="margin-right: 10px; padding: 1.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
-                <option [value]="myBlock" disabled selected="selected">Choose a Block
-                </option>
-                <option *ngFor="let block of SchoolInfrastructureBlocksNames" [(ngValue)]="block.block.id">
-                    {{block.block.value}}
-                </option>
-            </select>
-
-            <select [hidden]="clusterHidden" id="choose_cluster"
-                style="margin-right: 10px; padding: 1.5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
-                <option [value]="myCluster" disabled selected="selected">Choose a Cluster
-                </option>
-                <option *ngFor="let cluster of SchoolInfrastructureClusterNames" [(ngValue)]="cluster.cluster.id"
-                    style="font-size: 11px; "
-                    [ngStyle]="{'color': cluster.cluster.value !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
-                    {{cluster.cluster.value}}
-                </option>
-            </select>
-        </div>
-    </div>
-    <div class="row" style="margin-top: 20px;">
-        <div class="col-sm-3">
-            <div class="row" style="margin-top: 20px;">
-                <div class="col-sm-12">
-                    X-AXIS: <select id="x_axis"
-                        style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
+    <div class="row flex-column-reverse flex-lg-row">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <div class="row" id="third">
+                <div class="col-lg-9 col-md-12 col-sm-12">
+                    <div style="font-size: 13px;">
+                        <strong> About the dashboard:</strong>
+                        <p style="text-align: justify;">The dashboard here brings together metrics from other
+                            dashboards
+                            in order for you to correlate metrics with each other. The data here can be viewed across
+                            the
+                            district,
+                            block and cluster level.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-12 col-sm-12">
+                            <button class="btn btn-secondary botton" style="width:100%" id="allBlock" name="block"
+                                (click)="blockWise()">&nbsp;<strong id="allBlock">Blocks</strong>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8 col-md-12 col-sm-12">
+                            <button class="btn btn-secondary botton" style="width:100%" id="allCluster"
+                                (click)="clusterWise()">&nbsp;<strong id="allCluster">Clusters</strong>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="fourth" style="margin-bottom: 10px !important;">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <span style="font-size: 13px; font-weight: bold;">X-Axis:</span> <br> <select id="x_axis"
+                        style="padding: 7px; width: 100%;  border-radius: 4px; font-size: 13px; font-weight: bold; background-color: #f5f6fb;"
                         [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
                             x-axis
                         </option>
-                        <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis.key" style=" font-size: 11px;">
+                        <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis.key" style=" font-size: 13px;">
                             {{xaxis.value}}
+                        </option>
+                    </select>
+                </div>
+                <div class=" col-lg-4 col-md-6 col-sm-12">
+                    <span style="font-size: 13px; font-weight: bold;"> Y-Axis:</span> <br><select id="y_axis"
+                        style=" padding: 7px; width: 100%; border-radius: 4px; font-size: 13px; font-weight: bold; background-color: #f5f6fb;"
+                        [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
+                        <option [value]="yAxis" disabled selected="selected">choose
+                            y-axis
+                        </option>
+                        <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key" style=" font-size: 13px;">
+                            {{yaxis.value}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row" id="second">
+                <div class="col-lg-9 col-md-12 col-sm-12">
+                    <div style="padding: 0%;">
+                        <canvas id="myChart" height="50vh" width="100%"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12" id="first">
+            <div class="row">
+                <div class="col col-sm-12">
+                    <div
+                        style="border-radius: 5px; background-color: #f5f6fb; height: 34px; width: 100%; border: 1px solid gray;font-size: 13px;">
+                        <div id="districtSelect"
+                            [ngStyle]="{'background-color' : selected == 'district' ? '#3100cc' : '#f5f6fb'}"
+                            style="border-radius: 5px; height: 32px; width: 33.33%;  float: left;">
+                            <p [ngStyle]="{'color' : selected == 'district' ? 'white' : 'black'}"
+                                style="text-align: center; padding: 6px;">
+                                District</p>
+                        </div>
+                        <div id="blockSelect"
+                            [ngStyle]="{'background-color' : selected == 'block' ? '#3100cc' : '#f5f6fb'}"
+                            style="border-radius: 5px; height: 32px; width: 33.33%;float: left;">
+                            <p [ngStyle]="{'color' : selected == 'block' ? 'white' : 'black'}"
+                                style="text-align: center; padding: 6px;">
+                                Block</p>
+                        </div>
+                        <div id="clusterSelect"
+                            [ngStyle]="{'background-color' : selected == 'cluster' ? '#3100cc' : '#f5f6fb'}"
+                            style="border-radius: 5px;height: 32px; width: 33.33%; float: left;">
+                            <p [ngStyle]="{'color' : selected == 'cluster' ? 'white' : 'black'}"
+                                style="text-align: center; padding: 6px;">
+                                Cluster</p>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <span style="line-height: 1.2em; font-size: 13px;font-weight: bold;">Choose District</span>
+                    <select id="choose_dist"
+                        style=" padding: 7px;width: 100%; border-radius: 4px; font-size: 13px; font-weight: bold; background-color: #f5f6fb;"
+                        [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
+                        <option [value]="myDistrict" disabled selected="selected">Choose a District
+                        </option>
+                        <option *ngFor="let dist of SchoolInfrastructureDistrictsNames" [(ngValue)]="dist.district.id"
+                            style=" font-size: 13px;">
+                            {{dist.district.value}}
                         </option>
                     </select>
                 </div>
@@ -140,21 +165,37 @@
             <br>
             <div class="row">
                 <div class="col-sm-12">
-                    Y-AXIS: <select id="y_axis"
-                        style="margin-right: 10px; padding: 1px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
-                        [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
-                        <option [value]="yAxis" disabled selected="selected">choose
-                            y-axis
+                    <span [hidden]="blockHidden" style="line-height: 1.2em; font-size: 13px;font-weight: bold;">Choose
+                        Block</span>
+                    <select [hidden]="blockHidden" id="choose_block"
+                        style=" padding: 7px; width: 100%; border-radius: 4px; font-size: 13px; font-weight: bold; background-color: #f5f6fb;"
+                        [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
+                        <option [value]="myBlock" disabled selected="selected">Choose a Block
                         </option>
-                        <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key" style=" font-size: 11px;">
-                            {{yaxis.value}}
+                        <option *ngFor="let block of SchoolInfrastructureBlocksNames" [(ngValue)]="block.block.id">
+                            {{block.block.value}}
                         </option>
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-7" style="border: 1px solid gray;padding: 1%;">
-            <canvas id="myChart" height="150vh"></canvas>
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <span [hidden]="clusterHidden"
+                        style="line-height: 1.2em; font-size: 13px; font-weight: bold;">Choose Cluster</span>
+                    <select [hidden]="clusterHidden" id="choose_cluster"
+                        style=" padding: 7px;  width: 100%; border-radius: 4px; font-size: 13px; font-weight: bold; background-color: #f5f6fb;"
+                        [(ngModel)]="myCluster" name="myCluster" (change)="myClusterData(myCluster)">
+                        <option [value]="myCluster" disabled selected="selected">Choose a Cluster
+                        </option>
+                        <option *ngFor="let cluster of SchoolInfrastructureClusterNames"
+                            [(ngValue)]="cluster.cluster.id" style="font-size: 13px; "
+                            [ngStyle]="{'color': cluster.cluster.value !== 'NO NAME FOUND'? 'black' : '#ff3333'}">
+                            {{cluster.cluster.value}}
+                        </option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 </div>

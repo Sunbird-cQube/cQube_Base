@@ -3,12 +3,12 @@
         <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Student Attendance Report for: <span id="state" (click)="districtWise()"
+                    Student Attendance Report for: <span id="state" (click)="onClickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Student Attendance Report for: <span id="state" (click)="districtWise()"
+                    Student Attendance Report for: <span id="state" (click)="onClickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span>
                     <span id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -17,7 +17,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Student Attendance Report for: <span id="state" (click)="districtWise()"
+                    Student Attendance Report for: <span id="state" (click)="onClickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Student Attendance Report for: <span id="state" (click)="districtWise()"
+                    Student Attendance Report for: <span id="state" (click)="onClickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span>
                     <span id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -47,12 +47,12 @@
                     </p>
                 </div>
                 <div class="col-sm-5">
-                    <em class="fa fa-download" title="Download Report" id="download"
-                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                    <em class="fa fa-cloud-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                         (click)="downloadReport($event)"></em>
                     <em class="fa fa-home" id="home" title="Home"
-                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
-                        alt="Home" (click)="districtWise()"></em>
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
+                        alt="Home" (click)="onClickHome()"></em>
                 </div>
             </div>
         </div>
@@ -71,39 +71,50 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
+            <select id="period"
+                style="padding: 5px 2px 5px 2px;float: left;margin: 2px 15px 0px 0px; width: 90px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="period" (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
+                <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
+                <option *ngFor="let period of timeRange,  let i =index" style="width: 100px;" [(ngValue)]="period.key">
+                    {{period.value}}
+                </option>
+            </select>
+            <div [hidden]="yearMonth" style="float: left; margin: 2px 15px 0px 0px;">
+                <select id="year"
+                    style="padding: 5px; color: white; border-radius: 4px; font-size: 11px; width: 80px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    [(ngModel)]="year" name="year" (change)="getYear()">
+                    <option [value]="year" disabled selected="selected">Choose Year
+                    </option>
+                    <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]" style="font-size: 11px; ">
+                        {{years[i]}}
+                    </option>
+                </select>
+                <select id="month"
+                    style="margin-left: 10px; padding: 5px; color: white; border-radius: 4px; width: 80px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    [(ngModel)]="month" name="month" (change)="getMonth($event)">
+                    <option [value]="month" disabled selected="selected">Choose Month
+                    </option>
+                    <option *ngFor="let month of months" [(ngValue)]="month.id" style="font-size: 11px; ">
+                        {{month.name}}
+                    </option>
+                </select>
+            </div>
+
             <button class="btn btn-secondary" id="allBlock" name="block"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 60px; float: left;margin: 2px 10px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="blockWise($event)">&nbsp;<strong id="allBlock">Blocks</strong>
             </button>
             <button class="btn btn-secondary" id="allCluster"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 10px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 60px; float: left;margin: 2px 10px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="clusterWise($event)">&nbsp;<strong id="allCluster">Clusters</strong>
             </button>
             <button class="btn btn-secondary" id="allSchool"
-                style="font-size: 11px; width: 70px; float: left;margin: 2px 0px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
+                style="font-size: 11px; width: 60px; float: left;margin: 2px 0px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise($event)">&nbsp;<strong id="allSchool">Schools</strong>
             </button>
-            <select id="year"
-                style="padding: 5px;margin-left: 4%; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="year" name="year" (change)="getYear()">
-                <option [value]="year" disabled selected="selected">Choose Year
-                </option>
-                <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]" style="font-size: 11px; ">
-                    {{years[i]}}
-                </option>
-            </select>
-            <select id="month"
-                style="margin-left: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="month" name="month" (change)="getMonth($event)">
-                <option [value]="month" disabled selected="selected">Choose Month
-                </option>
-                <option *ngFor="let month of months" [(ngValue)]="month.id" style="font-size: 11px; ">
-                    {{month.name}}
-                </option>
-            </select>
 
             <select id="choose_dist"
-                style="margin: 0px 10px 0px 4%; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin: 2px 10px 0px 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="myDistrict" name="myDistrict" (change)="distSelect($event,myDistrict)">
                 <option [value]="myDistrict" disabled selected="selected" style="color: white;">Choose a District
                 </option>
@@ -134,7 +145,7 @@
             </select>
 
             <a class="float-right" href="javascript: void(0)" id="stdHealthCard" (click)="goToHealthCard()"
-                style="font-weight: bold; text-decoration: underline; font-size: 13px;">Access Health
+                style="font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Access Health
                 Card</a>
         </div>
     </div>

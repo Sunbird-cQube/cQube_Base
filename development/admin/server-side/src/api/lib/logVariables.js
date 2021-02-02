@@ -35,11 +35,13 @@ var filePaths = {
     },
     nifi_app_log: {
         title: 'cQube nifi app log (last 200 lines)',
-        path: `${logBaseDir}/cqube/logs/nifi-app.log`
+        path: `${logBaseDir}/cqube/logs/nifi-app.log`,
+        type: 'nifi-app'
     },
     nifi_bootstrap_log: {
         title: 'cQube nifi bootstrap log (last 200 lines)',
-        path: `${logBaseDir}/cqube/logs/nifi-bootstrap.log`
+        path: `${logBaseDir}/cqube/logs/nifi-bootstrap.log`,
+        type: 'nifi-bootstrap'
     },
     emission_access_log: {
         title: 'cQube emission access log (last 200 lines)',

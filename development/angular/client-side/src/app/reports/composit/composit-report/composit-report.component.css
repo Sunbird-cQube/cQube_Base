@@ -1,0 +1,30 @@
+.botton:hover{
+    color: white;
+}
+
+.botton{
+    font-size: 13px; 
+    width: 100px; 
+    color: black; 
+    float: left;
+    /* margin: 0px auto; */
+    margin: 0px 0px 15px 0px;
+    padding: 6px; 
+    background-color: #f5f6fb;
+}
+
+@media only screen and (max-width: 768px) {
+	#first {
+		order: 2;
+	}
+	#second {
+		order: 4;
+	}
+	#third {
+		order: 1;
+	}
+	#fourth {
+		order: 3;
+	}
+}
+
