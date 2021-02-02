@@ -97,7 +97,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       period: 'overall',
       report: 'sarException'
     }
-    this.service.getDateRange().subscribe(res => {
+    this.service.getDateRange({ report: 'sarException' }).subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
       this.year = this.years[this.years.length - 1];
