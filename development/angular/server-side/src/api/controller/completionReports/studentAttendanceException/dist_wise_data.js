@@ -5,15 +5,20 @@ const s3File = require('../../../lib/reads3File');
 
 router.post('/distWise', auth.authController, async function (req, res) {
     try {
-        logger.info('---SAR Exception  dist wise api ---');
+        logger.info(`---${req.body.report}  dist wise api ---`);
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
+        var report = req.body.report;
         let fileName;
-        if (timePeriod != null) {
-            fileName = `exception_list/student_attendance_completion/${timePeriod}/district.json`;
+        if (report == 'sarException') {
+            if (timePeriod != null) {
+                fileName = `exception_list/student_attendance_completion/${timePeriod}/district.json`;
+            } else {
+                fileName = `exception_list/student_attendance_completion/district_${year}_${month}.json`;
+            }
         } else {
-            fileName = `exception_list/student_attendance_completion/district_${year}_${month}.json`;
+            fileName = `exception_list/teacher_attendance_completion/district_2019_1.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
         var districtAttendanceData = jsonData.data;
@@ -32,7 +37,7 @@ router.post('/distWise', auth.authController, async function (req, res) {
             }
             distData.push(obj);
         }
-        logger.info('--- SAR Exception dist wise api response sent ---');
+        logger.info(`--- ${req.body.report} dist wise api response sent ---`);
         res.status(200).send({ distData: distData, missingSchoolsCount: jsonData.allDistrictsFooter.total_schools_with_missing_data });
     } catch (e) {
         logger.error(`Error :: ${e}`)

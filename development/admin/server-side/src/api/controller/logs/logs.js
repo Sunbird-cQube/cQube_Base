@@ -15,10 +15,47 @@ router.get('/getMenus', auth.authController, async (req, res) => {
     }
 })
 
-router.post('/logType/:logType', auth.authController, async (req, res) => {
+router.post('/logType/:menuType/:logType', auth.authController, async (req, res) => {
     try {
         logger.info('--- log files api ---');
-        res.send(filePaths[req.params.logType])
+        var logsDir = process.env.BASE_DIR + "/cqube/nifi/nifi/logs/";
+        //var logsDir = __basedir + '/data/logs';
+        let files = fs.readdirSync(logsDir);
+
+        let filePath = filePaths[req.params.logType];
+
+        let result = [];
+        if (req.params.menuType === 'Nifi') {
+            files.filter(file => file.indexOf(filePath.type) > -1).forEach((file, index) => {
+                if (index === 0) {
+                    const stats = fs.statSync(`${filePath.path}`);
+                    result.push({
+                        fileName: file,
+                        title: filePath.title,
+                        path: filePath.path,
+                        lastModifiedDate: stats.mtime
+                    });
+                } else {
+                    const stats = fs.statSync(`${logsDir}/${file}`);
+                    result.push({
+                        fileName: file,
+                        title: file.substr(0, file.lastIndexOf('.')),
+                        path: `${logsDir}/${file}`,
+                        lastModifiedDate: stats.mtime
+                    });
+                }
+            });
+        } else {
+            const stats = fs.statSync(`${filePath.path}`);
+
+            result.push({
+                fileName: filePath.path.split('/')[filePath.path.split('/').length - 1],
+                title: filePath.title,
+                path: filePath.path,
+                lastModifiedDate: stats.mtime
+            });
+        }
+        res.send(result);
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -50,7 +87,7 @@ router.post('/showLogs', auth.authController, (req, res) => {
                     res.status(200).json(data);
                 }
             }
-        })
+        });
 
     } catch (e) {
         logger.error(`Error :: ${e}`);
@@ -58,33 +95,10 @@ router.post('/showLogs', auth.authController, (req, res) => {
     }
 });
 
-router.get('/getPreviousLogFiles', auth.authController, (req, res) => {
-    try {
-        logger.info('--- get previous log file ---');
-        var logsDir = process.env.BASE_DIR + "/cqube/nifi/nifi/logs";
-        let files = fs.readdirSync(logsDir);
-
-        let result = [];
-        files.forEach(file => {
-            const stats = fs.statSync(`${logsDir}/${file}`);
-            result.push({
-                fileName: file,
-                lastModifiedDate: stats.mtime
-            });
-        });
-
-        res.send(result);
-    } catch (e) {
-        logger.error(`Error :: ${e}`)
-        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
-    }
-});
-
 router.post('/downloadLogFile', auth.authController, (req, res) => {
     try {
         logger.info('--- downloading log file ---');
-        var logsDir = process.env.BASE_DIR + "/cqube/nifi/nifi/logs/";
-        var filePath = logsDir + req.body.fileName; // Or format the path using the `id` rest param
+        var filePath = req.body.path; // Or format the path using the `id` rest param
         var fileName = req.body.fileName; // The default name the browser will use
 
         res.set("Access-Control-Expose-Headers", "Content-Disposition");
