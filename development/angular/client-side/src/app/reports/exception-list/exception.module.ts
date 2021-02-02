@@ -7,6 +7,7 @@ import { SemesterExceptionComponent } from './semester-exception/semester-except
 import { FormsModule } from '@angular/forms';
 import { PATExceptionComponent } from './pat-exception/pat-exception.component';
 import { StudentAttendanceExceptionComponent } from './student-attendance-exception/student-attendance-exception.component';
+import { TeacherAttendanceExceptionComponent } from './teacher-attendance-exception/teacher-attendance-exception.component';
 
 const exceptionRoutes: Routes = [
   {
@@ -22,6 +23,9 @@ const exceptionRoutes: Routes = [
       },
       {
         path: 'student-attendance-exception', component: StudentAttendanceExceptionComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'teacher-attendance-exception', component: TeacherAttendanceExceptionComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
@@ -32,7 +36,8 @@ const exceptionRoutes: Routes = [
     SemesterExceptionComponent,
     MissingDataComponent,
     PATExceptionComponent,
-    StudentAttendanceExceptionComponent
+    StudentAttendanceExceptionComponent,
+    TeacherAttendanceExceptionComponent
   ],
   imports: [
     CommonModule,

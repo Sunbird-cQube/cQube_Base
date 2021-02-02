@@ -17,9 +17,9 @@ export class LogsService {
     return this.http.get(`${this.baseUrl}/logs/getMenus`);
   }
 
-  showLogs(type) {
+  showLogs(menuType, type) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/logs/logType/${type}`, {});
+    return this.http.post(`${this.baseUrl}/logs/logType/${menuType}/${type}`, {});
   }
 
   getLogData(data) {
@@ -32,8 +32,8 @@ export class LogsService {
     return this.http.get(`${this.baseUrl}/logs/getPreviousLogFiles`);
   }
 
-  downloadLogFile(fileName) {
+  downloadLogFile(file: any) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/logs/downloadLogFile`, { fileName }, { observe: 'response', responseType: 'arraybuffer' as 'blob' });
+    return this.http.post(`${this.baseUrl}/logs/downloadLogFile`, { fileName: file.fileName, path: file.path }, { observe: 'response', responseType: 'arraybuffer' as 'blob' });
   }
 }
