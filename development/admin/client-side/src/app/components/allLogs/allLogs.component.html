@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <h4 style="color: #284d8a;" id="head">Logs: <span *ngIf="!showErr">{{title}}</span></h4>
+            <h4 style="color: #284d8a;" id="head">Logs: <span *ngIf="!showErr">{{ selectedFile?.title }}</span></h4>
         </div>
     </div>
     <div class="row">
@@ -26,6 +26,16 @@
                     {{logs.name}}
                 </option>
             </select>
+
+            <select id="choose_block" [hidden]="previousFiles.length === 0 || logTypeName !== 'Nifi'"
+                style="margin-right: 10px; padding: 3px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(165, 163, 163)"
+                [(ngModel)]="selectedFile" name="logName" (change)="showLog(selectedFile.path)">
+                <option value="" disabled selected="selected" style="color: white;">Choose log file
+                </option>
+                <option *ngFor="let file of previousFiles" [ngValue]="file" style="font-family: Arial;font-size: 11px;">
+                    {{ file.fileName }}
+                </option>
+            </select>
         </div>
 
     </div>
@@ -33,18 +43,18 @@
         <div class="row">
             <div class="col-sm-12" [hidden]="fileHidden">
                 <div id="files"
-                    style="overflow-x:auto; height: 58vh; width: 100%; margin-top: 2%; background-color: rgb(238, 238, 238);" *ngIf="fileHidden">
+                    style="overflow-x:auto; height: 70vh; width: 100%; margin-top: 2%; background-color: rgb(238, 238, 238);">
                     <pre *ngIf="!showErr" style="padding: 2%">{{logData}}</pre>
                     <h3 *ngIf="showErr" style="color: red; text-align: center; margin-top: 15%;">{{errMsg}}</h3>
                 </div>
                 <!-- <p *ngIf="!showErr" style="float: left; margin-top: 2%; color: #284d8a; font-size: 16px;">File Size:
                     {{fileSize}}</p> -->
                 <button id="downld" type="submit" class="btn btn-primary"
-                    style="margin-top: 2%;float: right;" (click)="downloadLogs()">Download Full Log</button>
-                <button class="btn btn-primary mr-2"
-                    style="margin-top: 2%;float: right;" *ngIf="logTypeName === 'Nifi'" (click)="getPreviousFiles()">Show Previous Logs</button>
+                    style="margin-top: 2%;float: right;" (click)="downloadLogFile()">Download Full Log</button>
+                <!-- <button class="btn btn-primary mr-2"
+                    style="margin-top: 2%;float: right;" *ngIf="logTypeName === 'Nifi'" (click)="getPreviousFiles()">Show Previous Logs</button> -->
             </div>
-            <div class="col-sm-12" *ngIf="fileView">
+            <!-- <div class="col-sm-12" *ngIf="fileView">
                 <div class="row">
                     <div class="col-md-12">
                         <div style="overflow-x:auto; height: 58vh; width: 100%; margin-top: 2%; background-color: rgb(238, 238, 238);">
@@ -66,7 +76,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
