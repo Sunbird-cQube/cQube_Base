@@ -127,9 +127,9 @@ export class ExceptionReportService {
     return this.http.post(`${this.baseUrl}/sarException/schoolPerCluster`, data);
   }
 
-  getDateRange() {
+  getDateRange(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/sarException/getDateRange`);
+    return this.http.post(`${this.baseUrl}/sarException/getDateRange`, data);
   }
 
   //color gredient generation....

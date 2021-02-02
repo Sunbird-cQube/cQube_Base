@@ -5,10 +5,17 @@ const auth = require('../../../middleware/check-auth');
 const groupArray = require('group-array');
 const s3File = require('../../../lib/reads3File');
 
-router.get('/getDateRange', auth.authController, function (req, res) {
+router.post('/getDateRange', auth.authController, function (req, res) {
     try {
         logger.info('---getDateRange api ---');
-        const_data['getParams']['Key'] = `attendance/student_attendance_meta.json`;
+        var report = req.body.report;
+        var fileName;
+        if (report == 'sarException') {
+            fileName = `exception_list/student_attendance_completion/metaData.json`;
+        } else {
+            fileName = `exception_list/teacher_attendance_completion/metaData.json`;
+        }
+        const_data['getParams']['Key'] = fileName;
         const_data['s3'].getObject(const_data['getParams'], function (err, data) {
             if (err) {
                 logger.error(err);
