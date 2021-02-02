@@ -838,7 +838,7 @@ Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(parseDouble())""",
           "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
         }
       },
-      "allDistrictsFooter": "&" }}]"""",
+      "allDistrictsFooter": "&" }}]""",
 "pat_exception_block_jolt_spec":"""[
   {
     "operation": "shift",
