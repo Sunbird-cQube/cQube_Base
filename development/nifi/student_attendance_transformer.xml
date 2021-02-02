@@ -8098,7 +8098,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -9647,7 +9647,7 @@ Mirror data validation of file:${filename}.Error while checking mirror data</val
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -11306,7 +11306,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -11678,7 +11678,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -12113,6 +12113,7 @@ ${query_type:startsWith('stud_att_school_last_day'):ifElse('attendance/last_day/
 ${query_type:startsWith('stud_att_school_last_7_days'):ifElse('attendance/last_7_days/school.json',
 ${query_type:startsWith('stud_att_school_last_30_days'):ifElse('attendance/last_30_days/school.json',
 ${query_type:startsWith('stud_att_school_overall'):ifElse('attendance/overall/school.json',
+${query_type:startsWith('stud_att_exception_meta'):ifElse("exception_list/student_attendance_completion/metaData.json",
 ${query_type:startsWith('stud_att_exception_district_by_month_year'):ifElse("exception_list/student_attendance_completion/district_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
 ${query_type:startsWith('stud_att_exception_block_by_month_year'):ifElse("exception_list/student_attendance_completion/block_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
 ${query_type:startsWith('stud_att_exception_cluster_by_month_year'):ifElse("exception_list/student_attendance_completion/cluster_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
@@ -12133,7 +12134,7 @@ ${query_type:startsWith('stud_att_exception_school_last_day'):ifElse('exception_
 ${query_type:startsWith('stud_att_exception_school_last_7_days'):ifElse('exception_list/student_attendance_completion/last_7_days/school.json',
 ${query_type:startsWith('stud_att_exception_school_last_30_days'):ifElse('exception_list/student_attendance_completion/last_30_days/school.json',
 ${query_type:startsWith('stud_att_exception_school_overall'):ifElse('exception_list/student_attendance_completion/overall/school.json','None')} 
-)} )} )} )} )} )} )} )} )}  )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
+)} )} )} )} )} )} )} )} )}  )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -13235,7 +13236,7 @@ ${query_type:startsWith('stud_att_exception_school_overall')
     </entry>
     <entry>
         <key>stud_att_meta</key>
-        <value>${query_type:startsWith('stud_att_meta')}</value>
+        <value>${query_type:startsWith('stud_att_meta'):or(${query_type:startsWith('stud_att_exception_meta')})}</value>
     </entry>
     <entry>
         <key>stud_att_time_series</key>
@@ -13918,7 +13919,7 @@ ${query_type:startsWith('stud_att_exception_school_last'):or(${query_type:starts
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -15327,7 +15328,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
     </entry>
     <entry>
         <key>stud_meta</key>
-        <value>${query_type:startsWith('stud_att_meta')}</value>
+        <value>${query_type:startsWith('stud_att_meta'):or(${query_type:startsWith('stud_att_exception_meta')})}</value>
     </entry>
     <entry>
         <key>stud_time_series</key>
@@ -15361,7 +15362,7 @@ ${query_type:startsWith('stud_att_school_overall')
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -15754,7 +15755,7 @@ Mirror data validation of file:${filename}.Error while selecting unique data</va
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -27410,5 +27411,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/01/2021 19:18:41 IST</timestamp>
+    <timestamp>02/02/2021 13:51:32 IST</timestamp>
 </template>
