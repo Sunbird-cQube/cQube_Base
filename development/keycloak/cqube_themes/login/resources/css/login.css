@@ -1,10 +1,3 @@
-.login-pf body {
-    background: url("../img/Group.svg");
-    object-fit: cover;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
 .alert-error {
     background-color: #ffffff;
     border-color: #cc0000;
@@ -75,16 +68,6 @@ a#kc-current-locale-link::after {
     position: fixed;
 }
 
-#kc-logo-wrapper {
-    position: relative;
-    background-image: url(../img/GroupLogo.svg);
-    background-repeat: no-repeat;
-    height: 53px;
-    width: 300px;
-    margin: 62px auto 0;
-    position: fixed;
-}
-
 div.kc-logo-text {
     /* background-repeat: no-repeat; */
     height: 63px;
@@ -102,24 +85,17 @@ div.kc-logo-text span {
     white-space: nowrap;
 }
 
-#kc-header-wrapper {
-    background-image: url(../img/GroupLogo.svg);
-    background-repeat: no-repeat;
-    position: relative;
-    letter-spacing: 0px;
-    margin: 15px 0px 0px 20px;
-    padding: 62px 10px 20px;
-    white-space: normal;
-    width: 150px;
-    height: 50px !important;
+.logo{
+    margin-left: 50px; 
+    padding: 20px 0px 0px 0px;
 }
 
 .logoText{
-    position :absolute; 
-    left:100px !important; 
-    top:40px !important;
     font-family: Bahnschrift SemiBold Condensed !important;
+    padding: 0px; 
+    margin-left: 80px !important;
     font-size: 90px;
+    color:white;
 }
 
 #kc-content {
@@ -320,13 +296,6 @@ a.zocial  {
         height: 100px;
     }
 
-    #kc-header-wrapper {
-        width: 150px;
-        height: 50px !important;
-      position: relative;
-      background-image: url(../img/GroupLogo.svg);
-    }
-
     div.kc-logo-text {
         margin: 0;
         width: 150px;
@@ -391,12 +360,10 @@ input:-webkit-autofill {
     height: 40px;
     width: 100px;
     border-radius: 20px;
-    /* background-color: #31D08C !important; */
 }
 
 
-
-#kc-cancel{
+#kc-cancel {
     right: 20px;
     top: 0px;
     position: absolute;
@@ -406,11 +373,8 @@ input:-webkit-autofill {
     background-color: #31D08C !important;
 }
 
-#totp{
 
-}
-    
-#username1, #password1, #totp {
+#username1, #password1 {
     width: 100%;
     border-radius: 20px !important;
     background-color: transparent;
@@ -421,26 +385,34 @@ input:-webkit-autofill {
     border: 1px solid #848FFF;
 }
 
-/* input[type="password"] {
-    font-size:18px;
-} */
+#totp {
+    width: 100%;
+    border-radius: 20px !important;
+    background-color: transparent;
+    border: 1px solid #848FFF;
+    color: #ffffff;
+    padding: 18px 10px 18px 15px;
+    font-weight: bold;
+    border: 1px solid #848FFF;
+}
 
-#username, #password {
-   display: none;
+#username,
+#password {
+    display: none;
 }
 
 #username1 {
     border: 1px solid #848FFF;
 }
 
-#login{
+#login {
     width: 100%;
     border-radius: 20px !important;
     background-color: transparent;
     border: 1px solid white;
     color: #899BFF;
     padding: 8px 10px 8px 15px;
-    font-weight:900;
+    font-weight: 900;
     border: 1px solid #848FFF;
 }
 
@@ -452,13 +424,13 @@ input:-webkit-autofill {
     z-index: 2;
     color: #ffffff;
     cursor: pointer;
- }
+}
 
-input:focus{
+input:focus {
     outline: none;
 }
 
-#signinSymbol{
+#signinSymbol {
     float: left;
     margin-left: 77px;
     margin-top: -29px;
@@ -468,7 +440,7 @@ input:focus{
     cursor: pointer;
 }
 
-#signinSymbolWithInput{
+#signinSymbolWithInput {
     float: left;
     margin-left: 77px;
     margin-top: -29px;
@@ -477,6 +449,18 @@ input:focus{
     color: #899BFF;
     cursor: pointer;
     display: none;
+}
+
+.backImg {
+    top: -10px !important;
+    right: 0px !important;
+    position: absolute;
+}
+
+.backImg img {
+    object-fit: fill;
+    width:840px !important;
+    height: 690px !important;
 }
 
 ::-webkit-input-placeholder { /* Edge */
@@ -505,36 +489,27 @@ input:focus{
     }
 }
 
-.card-pf form.form-actions .btn {
-    float: right;
-    margin-left: 10px;
-}
 
 #kc-page-title{
     display: none;
 }
 
-
-.login-pf-page {
-    background: url("../img/back1.png");
-    background-size: 800px 600px;
-    background-repeat: no-repeat;
-    background-position: right;
-    top: 0px;
-    position: relative;
+.background{
+    background: url('../img/Group.svg');
+    background-size: cover !important;  
+    background-repeat: no-repeat !important;
 }
 
 .card-pf {
-    margin-left:50px;
-    margin-top: 100px;
-    width: 316px;
+    margin-left: 50px !important;
+    width: 316px !important;
     background: linear-gradient(125deg, #4e22ee 10%, #6b6df1 90%);
     opacity: 0.9;
     border-radius: 16px;
     color: #fff;
-    padding: 0px 40px 30px 40px !important;
-  }
-    
+    padding: 20px 40px 30px 40px !important;
+}
+
 label{
     color: #ffffff;
 }
@@ -546,18 +521,6 @@ label{
     color: antiquewhite;
 }
 
-/* label[for="username"]{
-    visibility: hidden;
-    position: relative;
-}
-
-label[for="username"]:after{
-    visibility: visible;
-    position: absolute;
-    top: 0;
-    left: 0;
-    content:'User ID';
-} */
 
 label[for="username"], label[for="password"],#kc-login{
     display: none;
@@ -576,105 +539,181 @@ label[for="totp"]:after{
     content: "Enter OTP";
 }
 
-@media (max-width: 1200px){
-    .login-pf-page{
-        background: url("../img/back1.png");
-        background-size: 750px;
+@media (max-width: 1550px){
+    .background{
+        background: url('../img/Group.svg');
+        /* background-size: cover !important;   */
         background-repeat: no-repeat;
-        background-position: right;
-        position: relative;
+    }
+    .backImg {
+        top: 10px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:940px !important;
+        height: 750px !important;
+    }
+}
+
+@media (max-width: 1377px){
+    .background{
+        background: url('../img/Group.svg');
+        background-size: cover !important;  
+        background-repeat: no-repeat;
+    }
+    .backImg {
+        top: 10px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:840px !important;
+        height: 690px !important;
+    }
+}
+
+@media (max-width: 1250px){
+    .backImg {
+        top: 0px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:800px !important;
+        height: 660px !important;
+    }
+}
+
+@media (max-width: 1650px){
+    .background{
+        background: url('../img/Group.svg');
+        background-size: cover !important;  
+        /* background-repeat: no-repeat; */
+    }
+}
+
+
+@media (max-width: 1750px){
+    .background{
+        background: url('../img/Group.svg');
+        background-size: cover !important;  
+        /* background-repeat: no-repeat; */
     }
 }
 
 @media (max-width: 1125px){
-    .login-pf-page{
-        background: url("../img/back1.png");
-        background-size: 700px 600px;
-        background-repeat: no-repeat;
-        background-position: right;
-        position: relative;
+    .backImg {
+        top: 40px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:650px !important;
+        height: 570px !important;
+    }
+    .background{
+        background: url('../img/Group.svg');
+        background-size: fill !important;  
+        object-fit: none !important;
+        height: 700px;
+        width: 100%;
+        height: auto;
     }
 }
 
 @media (max-width: 1070px){
-    .login-pf-page{
-        background: url("../img/back1.png");
-        background-size: 620px 540px;
-        background-repeat: no-repeat;
-        background-position: right;
-        position: relative;
+    .backImg {
+        top: 50px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:610px !important;
+        height: 530px !important;
+    }
+    .background{
+        background: url('../img/Group.svg');
+        background-size: fill !important;  
+        object-fit: none !important;
+        width: 100%;
+        height: auto;
     }
 }
 
 @media (max-width: 1010px){
-    .login-pf-page{
-        background: url("../img/back1.png");
-        background-size: 600px 500px;
-        background-repeat: no-repeat;
-        background-position: right;
-        position: relative;
+    .backImg {
+        top: 60px;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:580px !important;
+    }
+    .background{
+        background: url('../img/Group.svg');
+        background-size: fill !important;  
+        object-fit: none !important;
+        width: 100%;
+        height: auto;
     }
 }
 
-@media (max-width: 980px){
-    .login-pf-page{
-        background: url("../img/back1.png");
-        background-size: 570px 480px;
-        background-repeat: no-repeat;
-        background-position: right;
-        position: relative;
+@media (max-width: 990px){
+    .backImg {
+        top: 0px;
+        right: 0px;
+        position: absolute;
     }
-}
-
-@media (max-width: 945px){
-    .login-pf-page{
-        background: url("../img/back1.png");
-        background-size: 530px 450px;
-        background-repeat: no-repeat;
-        background-position: right;
-        position: relative;
+    .backImg img {
+        display: none !important;
     }
-}
-
-@media (max-width: 910px){
-    .login-pf-page{
-        background: url("../img/back1.png");
-        background-size: 500px 430px;
-        background-repeat: no-repeat;
-        background-position: right;
-        position: relative;
+    .infoText{
+        width: 60%;
+        margin: 0px auto !important;
     }
-}
-
-@media (max-width: 880px){
-    .login-pf-page{
-        background: url("../img/back1.png");
-        background-size: 480px 430px;
-        background-repeat: no-repeat;
-        background-position: right;
-        position: relative;
+    .background{
+        background: url('../img/Group.svg');
+        background-size: fill !important;  
+        background-repeat: no-repeat !important;
+        object-fit: none !important;
+        width: 100%;
+        height: auto;    
     }
+    
+    .card-pf{
+        margin: 0px auto !important;
+        width: 316px !important;
+        background: linear-gradient(125deg, #4e22ee 10%, #6b6df1 90%);
+        opacity: 0.9;
+        border-radius: 16px;
+        color: #fff;
+        padding: 20px 40px 30px 40px !important;
+    }
+    .logoText{
+        margin-left: 0px !important;
+        text-align: center !important;
+        font-size: 90px !important;
+    }
+    
 }
-
 
     /*tablet*/
 @media (max-width: 850px) {
         .card-pf{
-          margin: 0px auto;
-          position :relative; 
-          padding: 0px 40px 30px 40px !important;
+            margin: 0px auto !important;
+            width: 316px !important;
+            background: linear-gradient(125deg, #4e22ee 10%, #6b6df1 90%);
+            opacity: 0.9;
+            border-radius: 16px;
+            color: #fff;
+            padding: 20px 40px 30px 40px !important;
         }
         .logoText{
-            position :absolute !important; 
-            left:0px !important;
-            right: 0px !important; 
-            top:30px !important;
-            font-size: 60px !important;
+            font-size: 90px !important;
         }
-        .login-pf-page {
-            background: url("");
-            background-repeat: no-repeat;
-            background-position: right;
+        .backImg img {
+            display: none;
         }
         .infoText p{
             color: #FFFFFF;
@@ -686,25 +725,35 @@ label[for="totp"]:after{
             width: 60%;
             margin: 0px auto !important;
         }
+        .background{
+            background: url('../img/Group.svg');
+            background-size: fill !important;  
+            background-repeat: no-repeat !important;
+            object-fit: none !important;
+            width: 100%;
+            height: auto;
+        }
         
     }
+
     @media (max-width: 767px) {
         .card-pf{
-            margin: 0px auto;
-            position :relative; 
-            padding: 10px 40px 30px 40px !important;
-          }
+            margin: 0px auto !important;
+            width: 316px !important;
+            background: linear-gradient(125deg, #4e22ee 10%, #6b6df1 90%);
+            opacity: 0.9;
+            border-radius: 16px;
+            color: #fff;
+            padding: 20px 40px 30px 40px !important;
+        }
           
           .logoText{
-            display: none;
+            font-size: 90px;
         }
     
-        .card-pf.login-pf-accounts{
-          max-width: none;
-        }
-
         .infoText{
-            width: 90% !important;
+            padding: 20px;
+            width: 100% !important;
             margin: 0px auto !important;
         }
 
@@ -714,13 +763,6 @@ label[for="totp"]:after{
             text-align: justify;
             line-height: 1.5em;
         }
-        .infoText{
-            padding: 5px;
-            left: 0px;
-            right: 0px;
-            width: 100%;
-            position: absolute;
-        }
         #signinSymbol{
             float: left;
             margin-left: 77px;
@@ -729,6 +771,17 @@ label[for="totp"]:after{
             z-index: 2;
             color: white;
             cursor: pointer;
+        }
+        .logo{
+            margin-left: 0px; 
+            padding: 20px 0px 0px 0px;
+        }
+        .background{
+            background: url('../img/Group.svg');
+            background-size: fill !important;  
+            background-repeat: no-repeat !important;
+            width: 100%;
+            height: auto;
         }
     }    
 
@@ -745,7 +798,7 @@ label[for="totp"]:after{
 }
 
 .infoText{
-    margin :30px 0px 0px 50px; 
+    margin :0px 0px 0px 50px; 
     width : 530px;
 }
 
