@@ -83,11 +83,13 @@
 
         $(document).ready(function() { 
 		var $winwidth = $(window).width();
+        console.log($winwidth);
 		$(".background").attr({
 			width: $winwidth
 		});
 		$(window).bind("resize", function(){ 
 			var $winwidth = $(window).width();
+            console.log($winwidth);
 			$(".background").attr({
 				width: $winwidth
 			});
@@ -96,8 +98,8 @@
     </script>
 </head>
 
-<body class="background">
-    <div class="container-fluid">
+<body class ="background">
+    <div class="container-fluid background">
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="logo">

@@ -496,8 +496,7 @@ input:focus {
 
 .background{
     background: url('../img/Group.svg');
-    /* background-size: fill !important;   */
-    object-fit: cover !important;
+    background-size: cover !important;  
     background-repeat: no-repeat !important;
 }
 
@@ -540,13 +539,68 @@ label[for="totp"]:after{
     content: "Enter OTP";
 }
 
-/* .col-lg */
+@media (max-width: 1550px){
+    .background{
+        background: url('../img/Group.svg');
+        /* background-size: cover !important;   */
+        background-repeat: no-repeat;
+    }
+    .backImg {
+        top: 10px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:940px !important;
+        height: 750px !important;
+    }
+}
+
+@media (max-width: 1377px){
     .background{
         background: url('../img/Group.svg');
         background-size: cover !important;  
         background-repeat: no-repeat;
     }
-/* } */
+    .backImg {
+        top: 10px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:840px !important;
+        height: 690px !important;
+    }
+}
+
+@media (max-width: 1250px){
+    .backImg {
+        top: 0px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:800px !important;
+        height: 660px !important;
+    }
+}
+
+@media (max-width: 1650px){
+    .background{
+        background: url('../img/Group.svg');
+        background-size: cover !important;  
+        /* background-repeat: no-repeat; */
+    }
+}
+
+
+@media (max-width: 1750px){
+    .background{
+        background: url('../img/Group.svg');
+        background-size: cover !important;  
+        /* background-repeat: no-repeat; */
+    }
+}
 
 @media (max-width: 1125px){
     .backImg {
@@ -557,6 +611,14 @@ label[for="totp"]:after{
     .backImg img {
         width:650px !important;
         height: 570px !important;
+    }
+    .background{
+        background: url('../img/Group.svg');
+        background-size: fill !important;  
+        object-fit: none !important;
+        height: 700px;
+        width: 100%;
+        height: auto;
     }
 }
 
@@ -570,6 +632,13 @@ label[for="totp"]:after{
         width:610px !important;
         height: 530px !important;
     }
+    .background{
+        background: url('../img/Group.svg');
+        background-size: fill !important;  
+        object-fit: none !important;
+        width: 100%;
+        height: auto;
+    }
 }
 
 @media (max-width: 1010px){
@@ -580,6 +649,13 @@ label[for="totp"]:after{
     }
     .backImg img {
         width:580px !important;
+    }
+    .background{
+        background: url('../img/Group.svg');
+        background-size: fill !important;  
+        object-fit: none !important;
+        width: 100%;
+        height: auto;
     }
 }
 
@@ -595,6 +671,14 @@ label[for="totp"]:after{
     .infoText{
         width: 60%;
         margin: 0px auto !important;
+    }
+    .background{
+        background: url('../img/Group.svg');
+        background-size: fill !important;  
+        background-repeat: no-repeat !important;
+        object-fit: none !important;
+        width: 100%;
+        height: auto;    
     }
     
     .card-pf{
@@ -641,17 +725,17 @@ label[for="totp"]:after{
             width: 60%;
             margin: 0px auto !important;
         }
+        .background{
+            background: url('../img/Group.svg');
+            background-size: fill !important;  
+            background-repeat: no-repeat !important;
+            object-fit: none !important;
+            width: 100%;
+            height: auto;
+        }
         
     }
-    /* .col-sm-12 .card-pf{
-            margin: 0px auto !important;
-            width: 316px !important;
-            background: linear-gradient(125deg, #4e22ee 10%, #6b6df1 90%);
-            opacity: 0.9;
-            border-radius: 16px;
-            color: #fff;
-            padding: 20px 40px 30px 40px !important;
-    } */
+
     @media (max-width: 767px) {
         .card-pf{
             margin: 0px auto !important;
@@ -691,6 +775,13 @@ label[for="totp"]:after{
         .logo{
             margin-left: 0px; 
             padding: 20px 0px 0px 0px;
+        }
+        .background{
+            background: url('../img/Group.svg');
+            background-size: fill !important;  
+            background-repeat: no-repeat !important;
+            width: 100%;
+            height: auto;
         }
     }    
 
