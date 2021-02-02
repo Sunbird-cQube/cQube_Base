@@ -94,7 +94,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.skul = true;
-    this.service.getDateRange().subscribe(res => {
+    this.service.getDateRange({ report: 'tarException' }).subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
       this.year = this.years[this.years.length - 1];
