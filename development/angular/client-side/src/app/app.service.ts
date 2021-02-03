@@ -213,7 +213,6 @@ export class AppServiceComponent {
                 key = key.replace("Cwsn", "CWSN");
                 updatedKeys.push(key);
             });
-            console.log(updatedKeys);
             const options = {
                 fieldSeparator: ',',
                 quoteStrings: '"',

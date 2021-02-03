@@ -230,7 +230,9 @@ export class DashboardComponent implements OnInit {
     this.tpdtpViews = "";
     this.tpdenrollViews = "";
     this.tpdcompViews = "";
+    this.patExcptViews = "";
     this.sarExcptViews = "";
+    this.tarExpViews = "";
 
     var myStr = this.removeUnderscore(views[0].time_range);
     this.timePeriod = " (" + myStr + ")";
@@ -314,6 +316,9 @@ export class DashboardComponent implements OnInit {
       }
       if (element.reportid == 'sarExcpt') {
         this.sarExcptViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'tarExp') {
+        this.tarExpViews = element.number_of_views + " (" + timeStr + ")";
       }
 
     });
