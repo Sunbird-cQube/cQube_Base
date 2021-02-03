@@ -83,13 +83,11 @@
 
         $(document).ready(function() { 
 		var $winwidth = $(window).width();
-        console.log($winwidth);
 		$(".background").attr({
 			width: $winwidth
 		});
 		$(window).bind("resize", function(){ 
 			var $winwidth = $(window).width();
-            console.log($winwidth);
 			$(".background").attr({
 				width: $winwidth
 			});
