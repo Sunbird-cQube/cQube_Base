@@ -88,6 +88,15 @@ export class UdiseReportComponent implements OnInit {
     commonService.logoutOnTokenExpire();
   }
 
+  selected = "absolute";
+
+  getColor(data) {
+    this.selected = data;
+    this.levelWiseFilter();
+  }
+
+  colorGenData: any = [];
+
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
@@ -328,15 +337,19 @@ export class UdiseReportComponent implements OnInit {
           this.blockMarkers = [];
 
           this.blockMarkers = result;
-
+          this.blockMarkers.forEach(element => {
+            this.colorGenData.push({ ...element.details, ...element.indices });
+          });
+          var sorted = this.colorGenData.sort((a, b) => (parseInt(a[`${this.indiceData}`]) > parseInt(b[`${this.indiceData}`])) ? 1 : -1);
+          this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb'); this.schoolCount = 0;
           this.schoolCount = 0;
           if (this.blockMarkers.length !== 0) {
-            for (let i = 0; i < this.blockMarkers.length; i++) {
+            for (let i = 0; i < sorted.length; i++) {
               this.setColor = this.commonService.colorGredient(this.blockMarkers[i], this.indiceData);
               var markerIcon = L.circleMarker([this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude], {
                 radius: 4,
                 color: "gray",
-                fillColor: this.setColor,
+                fillColor: this.selected == 'absolute' ? this.setColor : this.colors[i],
                 fillOpacity: 1,
                 strokeWeight: 0.01,
                 weight: 1.5
@@ -414,6 +427,11 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
+          this.clusterMarkers.forEach(element => {
+            this.colorGenData.push({ ...element.details, ...element.indices });
+          });
+          var sorted = this.colorGenData.sort((a, b) => (parseInt(a[`${this.indiceData}`]) > parseInt(b[`${this.indiceData}`])) ? 1 : -1);
+          this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb'); this.schoolCount = 0;
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
@@ -421,7 +439,7 @@ export class UdiseReportComponent implements OnInit {
               var markerIcon = L.circleMarker([this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude], {
                 radius: 2,
                 color: "gray",
-                fillColor: this.setColor,
+                fillColor: this.selected == 'absolute' ? this.setColor : this.colors[i],
                 fillOpacity: 1,
                 strokeWeight: 0.01,
                 weight: 0.5
@@ -498,14 +516,20 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
+          this.schoolMarkers.forEach(element => {
+            this.colorGenData.push({ ...element.details, ...element.indices });
+          });
+          var sorted = this.colorGenData.sort((a, b) => (parseInt(a[`${this.indiceData}`]) > parseInt(b[`${this.indiceData}`])) ? 1 : -1);
+          this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          this.schoolCount = 0;
           if (this.schoolMarkers.length !== 0) {
-            for (let i = 0; i < this.schoolMarkers.length; i++) {
+            for (let i = 0; i < sorted.length; i++) {
               this.setColor = this.commonService.colorGredient(this.schoolMarkers[i], this.indiceData);
               var markerIcon = L.circleMarker([this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude], {
                 // renderer: myRenderer,
                 radius: 1,
                 color: "gray",
-                fillColor: this.setColor,
+                fillColor: this.selected == 'absolute' ? this.setColor : this.colors[i],
                 fillOpacity: 1,
                 weight: 0.3,
                 strokeWeight: 0
@@ -771,16 +795,21 @@ export class UdiseReportComponent implements OnInit {
     var myData = data['data'];
     if (myData.length > 0) {
       this.markers = myData;
+      this.colorGenData = [];
+      this.markers.forEach(element => {
+        this.colorGenData.push({ ...element.details, ...element.indices });
+      });
+      var sorted = this.colorGenData.sort((a, b) => (parseInt(a[`${this.indiceData}`]) > parseInt(b[`${this.indiceData}`])) ? 1 : -1);
+      this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb'); this.schoolCount = 0;
       // attach values to markers
-      for (var i = 0; i < this.markers.length; i++) {
-
+      for (var i = 0; i < sorted.length; i++) {
         this.setColor = this.commonService.colorGredient(this.markers[i], this.indiceData);
         var markerIcon: any;
         if (options.weight) {
           markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
             radius: options.radius,
             color: "gray",
-            fillColor: this.setColor,
+            fillColor: this.selected == 'absolute' ? this.setColor : this.colors[i],
             fillOpacity: options.fillOpacity,
             strokeWeight: options.strokeWeight,
             weight: options.weight
@@ -789,7 +818,7 @@ export class UdiseReportComponent implements OnInit {
           markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
             radius: options.radius,
             color: "gray",
-            fillColor: this.setColor,
+            fillColor: this.selected == 'absolute' ? this.setColor : this.colors[i],
             fillOpacity: options.fillOpacity,
             strokeWeight: options.strokeWeight,
             weight: 1.5
@@ -927,6 +956,10 @@ export class UdiseReportComponent implements OnInit {
   public level = '';
   onIndiceSelect(data) {
     this.indiceData = data;
+    this.levelWiseFilter()
+  }
+
+  levelWiseFilter() {
     if (this.level == 'district') {
       this.districtWise();
     }
@@ -1060,7 +1093,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
+        let myobj = { ...orgObject, ...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     } else if (level == "block") {
@@ -1074,7 +1107,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
+        let myobj = { ...orgObject, ...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     }
@@ -1091,7 +1124,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
+        let myobj = { ...orgObject, ...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     } else if (level == "school") {
@@ -1109,7 +1142,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...detailSchool,...markers.rank, ...markers.indices }
+        let myobj = { ...detailSchool, ...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     }
