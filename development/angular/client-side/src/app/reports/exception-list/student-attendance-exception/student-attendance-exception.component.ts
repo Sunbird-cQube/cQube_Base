@@ -329,7 +329,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         // this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         if (this.markers.length > 0) {
           for (var i = 0; i < this.markers.length; i++) {
             // var color = this.commonService.color(this.markers[i], 'attendance');
@@ -385,7 +385,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         // this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             // var color = this.commonService.color(this.markers[i], 'attendance');
@@ -444,7 +444,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             // var color = this.commonService.color(this.markers[i], 'attendance');
@@ -510,7 +510,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         // this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#FF0000', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', sorted.length, 'rgb');
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             // var color = this.commonService.color(this.markers[i], 'attendance');
@@ -737,7 +737,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
         this.markers = sorted;
         this.schoolsWithMissingData = res['missingSchoolsCount'];
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         for (var i = 0; i < this.markers.length; i++) {
           // var color = this.commonService.color(this.markers[i], 'attendance');
           this.blocksIds.push(this.markers[i]['block_id']);
@@ -851,7 +851,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.schoolsWithMissingData = res['missingSchoolsCount'];
         // this.schoolCount = res['schoolCount'];
         // sorted.pop();
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
           // var color = this.commonService.color(this.markers[i], 'attendance');
@@ -997,7 +997,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.schoolsWithMissingData = res['missingSchoolsCount'];
         // this.schoolCount = res['schoolCount'];
 
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#FF0000', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', sorted.length, 'rgb');
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
           // var color = this.commonService.color(this.markers[i], 'attendance');
