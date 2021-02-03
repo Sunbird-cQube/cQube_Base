@@ -97,7 +97,7 @@
 </head>
 
 <body>
-    <div class="container-fluid background">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="logo">
