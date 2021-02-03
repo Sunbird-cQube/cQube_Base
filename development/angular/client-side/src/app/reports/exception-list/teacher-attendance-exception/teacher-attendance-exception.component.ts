@@ -89,7 +89,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
     this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
-    this.commonService.initMap('mapContainer', [[this.lat, this.lng]]);
+    this.commonService.initMap('tarExpMap', [[this.lat, this.lng]]);
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
@@ -303,7 +303,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
         // this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         if (this.markers.length > 0) {
           for (var i = 0; i < this.markers.length; i++) {
             // var color = this.commonService.color(this.markers[i], 'attendance');
@@ -356,7 +356,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
         // this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             // var color = this.commonService.color(this.markers[i], 'attendance');
@@ -412,7 +412,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
 
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             // var color = this.commonService.color(this.markers[i], 'attendance');
@@ -475,7 +475,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
         // this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#FF0000', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', sorted.length, 'rgb');
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             // var color = this.commonService.color(this.markers[i], 'attendance');
@@ -699,7 +699,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
 
         this.markers = sorted;
         this.schoolsWithMissingData = res['missingSchoolsCount'];
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         for (var i = 0; i < this.markers.length; i++) {
           // var color = this.commonService.color(this.markers[i], 'attendance');
           this.blocksIds.push(this.markers[i]['block_id']);
@@ -810,7 +810,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
         this.schoolsWithMissingData = res['missingSchoolsCount'];
         // this.schoolCount = res['schoolCount'];
         // sorted.pop();
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
           // var color = this.commonService.color(this.markers[i], 'attendance');
@@ -953,7 +953,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
         this.schoolsWithMissingData = res['missingSchoolsCount'];
         // this.schoolCount = res['schoolCount'];
 
-        var colors = sorted.length == 1 ? ['red'] : this.service.exceptionColor().generateGradient('#FF0000', '#FF0000', sorted.length, 'rgb');
+        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', sorted.length, 'rgb');
         this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
           // var color = this.commonService.color(this.markers[i], 'attendance');
