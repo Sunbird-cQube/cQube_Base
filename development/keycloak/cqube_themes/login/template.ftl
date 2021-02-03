@@ -165,8 +165,9 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-sm-12">
-                        <div class="infoText" style="color: white; padding: 0px 20px 20px 0px; margin-left: 50px;">
-                            <h1 style="color:white; font-size: 38px; font-weight: bold;">Headline text goes here</h1>
+                        <div class="infoText" style="color: white; padding: 0px 20px 0px 0px; margin-left: 50px;">
+                            <h6 style="color:white; font-size: 16px; font-weight: bold;line-height:1.4em;">Utilizing data to drive action on the ground by enabling the
+ability to see, solve and act</h6>
                             <p>Ability to break the information at different administrative
                                 levels- District, Block, Cluster and School <br />
                                 Ability to download data at multiple administrative levels <br />
