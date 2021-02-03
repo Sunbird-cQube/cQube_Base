@@ -496,7 +496,7 @@ input:focus {
     display: none;
 }
 
-.login-pf body{
+.login-pf body, .background{
     background: url('../img/Group.svg');
     background-size: cover !important;  
     background-repeat: no-repeat !important;
@@ -542,7 +542,7 @@ label[for="totp"]:after{
 }
 
 @media (max-width: 1550px){
-    .login-pf body{
+    .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         background-repeat: no-repeat;
@@ -558,7 +558,7 @@ label[for="totp"]:after{
     }
 }
 @media (max-width: 1501px){
-    .login-pf body{
+    .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         background-repeat: no-repeat;
@@ -576,7 +576,7 @@ label[for="totp"]:after{
 
 
 @media (max-width: 1377px){
-    .login-pf body{
+    .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         background-repeat: no-repeat;
@@ -602,7 +602,7 @@ label[for="totp"]:after{
         width:800px !important;
         height: 660px !important;
     }
-    .login-pf body{
+    .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         background-repeat: no-repeat;
@@ -610,7 +610,7 @@ label[for="totp"]:after{
 }
 
 @media (max-width: 1650px){
-    .login-pf body{
+    .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: cover !important;  
         background-repeat: no-repeat;
@@ -619,7 +619,7 @@ label[for="totp"]:after{
 
 
 @media (max-width: 1750px){
-    .login-pf body{
+    .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: cover !important;  
         background-repeat: no-repeat;
@@ -637,7 +637,7 @@ label[for="totp"]:after{
         width:650px !important;
         height: 570px !important;
     }
-    .login-pf body{
+    .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         object-fit: none !important;
@@ -657,7 +657,7 @@ label[for="totp"]:after{
         width:610px !important;
         height: 530px !important;
     }
-    .login-pf body{
+    .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         object-fit: none !important;
@@ -675,7 +675,7 @@ label[for="totp"]:after{
     .backImg img {
         width:580px !important;
     }
-    .login-pf body{
+    .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         object-fit: none !important;
@@ -697,7 +697,7 @@ label[for="totp"]:after{
         width: 60%;
         margin: 0px auto !important;
     }
-    .login-pf body{
+    .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         background-repeat: no-repeat !important;
@@ -750,7 +750,7 @@ label[for="totp"]:after{
             width: 60%;
             margin: 0px auto !important;
         }
-        .login-pf body{
+        .login-pf body, .background{
             background: url('../img/Group.svg');
             background-size: fill !important;  
             background-repeat: no-repeat !important;
@@ -801,7 +801,7 @@ label[for="totp"]:after{
             margin-left: 0px; 
             padding: 20px 0px 0px 0px;
         }
-        .login-pf body{
+        .login-pf body, .background{
             background: url('../img/Group.svg');
             background-size: fill !important;  
             background-repeat: no-repeat !important;
