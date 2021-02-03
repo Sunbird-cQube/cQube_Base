@@ -1099,6 +1099,325 @@ Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(parseDouble())""",
       "allSchoolsFooter": "&"
     }
   }
+]""",
+"pat_exception_grade_district_jolt_spec":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "grade": "data.[&1].grade",
+        "subject": "data.[&1].subject",
+        "total_schools": "data.[&1].total_schools",
+        "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
+        "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+        "total_schools_with_missing_data": "allDistrictsFooter.total_schools_with_missing_data[]"
+      }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "grade": "data.[&1].grade",
+          "subject": "data.[&1].subject",
+          "total_schools": "data.[&1].total_schools",
+          "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
+        }
+      },
+      "allDistrictsFooter": "&"
+    }
+  }
+]""",
+"pat_exception_grade_block_jolt_spec":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "block_latitude": "data.[&1].block_latitude",
+        "block_longitude": "data.[&1].block_longitude",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "grade": "data.[&1].grade",
+        "subject": "data.[&1].subject",
+        "total_schools": "data.[&1].total_schools",
+        "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
+        "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+        "total_schools_with_missing_data": "footer.@(1,district_id).total_schools_with_missing_data"
+      }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "block_latitude": "data.[&1].block_latitude",
+          "block_longitude": "data.[&1].block_longitude",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "grade": "data.[&1].grade",
+          "subject": "data.[&1].subject",
+          "total_schools": "data.[&1].total_schools",
+          "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "total_schools_with_missing_data": "allBlocksFooter.total_schools_with_missing_data[]",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
+          "semester": "data.[&1].semester"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "block_latitude": "data.[&1].block_latitude",
+          "block_longitude": "data.[&1].block_longitude",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "grade": "data.[&1].grade",
+          "subject": "data.[&1].subject",
+          "total_schools": "data.[&1].total_schools",
+          "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
+        }
+      },
+      "footer": "&",
+      "allBlocksFooter": "&"
+    }
+  }
+]""",
+"pat_exception_grade_cluster_jolt_spec":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "cluster_latitude": "data.[&1].cluster_latitude",
+        "cluster_longitude": "data.[&1].cluster_longitude",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "cluster_id": "data.[&1].cluster_id",
+        "cluster_name": "data.[&1].cluster_name",
+        "grade": "data.[&1].grade",
+        "subject": "data.[&1].subject",
+        "total_schools": "data.[&1].total_schools",
+        "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
+        "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+        "total_schools_with_missing_data": "footer.@(1,block_id).total_schools_with_missing_data"
+      }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "cluster_latitude": "data.[&1].cluster_latitude",
+          "cluster_longitude": "data.[&1].cluster_longitude",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "cluster_id": "data.[&1].cluster_id",
+          "cluster_name": "data.[&1].cluster_name",
+          "grade": "data.[&1].grade",
+          "subject": "data.[&1].subject",
+          "total_schools": "data.[&1].total_schools",
+          "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "total_schools_with_missing_data": "allClustersFooter.total_schools_with_missing_data[]",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "cluster_latitude": "data.[&1].cluster_latitude",
+          "cluster_longitude": "data.[&1].cluster_longitude",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "cluster_id": "data.[&1].cluster_id",
+          "cluster_name": "data.[&1].cluster_name",
+          "grade": "data.[&1].grade",
+          "subject": "data.[&1].subject",
+          "total_schools": "data.[&1].total_schools",
+          "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
+        }
+      },
+      "footer": "&",
+      "allClustersFooter": "&"
+    }
+  }
+]""",
+"pat_exception_grade_school_jolt_spec":"""[{
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "cluster_id": [
+          "=toString",
+          null
+        ]
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "school_latitude": "data.[&1].school_latitude",
+        "school_longitude": "data.[&1].school_longitude",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "cluster_id": "data.[&1].cluster_id",
+        "cluster_name": "data.[&1].cluster_name",
+        "school_id": "data.[&1].school_id",
+        "school_name": "data.[&1].school_name",
+        "grade": "data.[&1].grade",
+        "subject": "data.[&1].subject",
+        "total_schools": "data.[&1].total_schools",
+        "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
+        "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+        "total_schools_with_missing_data": "footer.@(1,cluster_id).total_schools_with_missing_data"
+      }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "school_latitude": "data.[&1].school_latitude",
+          "school_longitude": "data.[&1].school_longitude",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "cluster_id": "data.[&1].cluster_id",
+          "cluster_name": "data.[&1].cluster_name",
+          "school_id": "data.[&1].school_id",
+          "school_name": "data.[&1].school_name",
+          "grade": "data.[&1].grade",
+          "subject": "data.[&1].subject",
+          "total_schools": "data.[&1].total_schools",
+          "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "total_schools_with_missing_data": "allSchoolsFooter.total_schools_with_missing_data[]",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "school_latitude": "data.[&1].school_latitude",
+          "school_longitude": "data.[&1].school_longitude",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "cluster_id": "data.[&1].cluster_id",
+          "cluster_name": "data.[&1].cluster_name",
+          "school_id": "data.[&1].school_id",
+          "school_name": "data.[&1].school_name",
+          "grade": "data.[&1].grade",
+          "subject": "data.[&1].subject",
+          "total_schools": "data.[&1].total_schools",
+          "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
+        }
+      },
+      "footer": "&",
+      "allSchoolsFooter": "&"
+    }
+  }
 ]"""
-
 }
