@@ -427,7 +427,11 @@ export class StudengtAttendanceComponent implements OnInit {
     this.levelWise = "District";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `District_wise_report_${month.name.trim()}_${this.year}`;
+      if (this.month_year.month) {
+        this.fileName = `District_wise_report_${month.name.trim()}_${this.year}`;
+      } else {
+        this.fileName = `District_wise_report_${this.period}`;
+      }
       if (this.myData) {
         this.myData.unsubscribe();
       }
@@ -477,7 +481,11 @@ export class StudengtAttendanceComponent implements OnInit {
     this.levelWise = "Block";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Block_wise_report_${month.name.trim()}_${this.year}`
+      if (this.month_year.month) {
+        this.fileName = `Block_wise_report_${month.name.trim()}_${this.year}`
+      } else {
+        this.fileName = `Block_wise_report_${this.period}`
+      }
 
       if (this.myData) {
         this.myData.unsubscribe();
@@ -529,7 +537,11 @@ export class StudengtAttendanceComponent implements OnInit {
     this.levelWise = "Cluster";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Cluster_wise_report_${month.name.trim()}_${this.year}`
+      if (this.month_year.month) {
+        this.fileName = `Cluster_wise_report_${month.name.trim()}_${this.year}`
+      } else {
+        this.fileName = `Cluster_wise_report_${this.period}`
+      }
 
       if (this.myData) {
         this.myData.unsubscribe();
@@ -593,7 +605,11 @@ export class StudengtAttendanceComponent implements OnInit {
     this.levelWise = "school";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `School_wise_report_${month.name.trim()}_${this.year}`
+      if (this.month_year.month) {
+        this.fileName = `School_wise_report_${month.name.trim()}_${this.year}`
+      } else {
+        this.fileName = `School_wise_report_${this.period}`
+      }
 
       if (this.myData) {
         this.myData.unsubscribe();
@@ -797,7 +813,11 @@ export class StudengtAttendanceComponent implements OnInit {
     this.hierName = '';
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Block_per_district_report_${month.name.trim()}_${this.year}`;
+      if (this.month_year.month) {
+        this.fileName = `Block_per_district_report_${month.name}_${this.year}`;
+      } else {
+        this.fileName = `Block_per_district_report_${this.period}`;
+      }
       this.distName = { district_id: data, district_name: obj.name };
       this.hierName = obj.name;
       localStorage.setItem('dist', obj.name);
@@ -894,7 +914,11 @@ export class StudengtAttendanceComponent implements OnInit {
     this.blockHidden = false;
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Cluster_per_block_report_${month.name.trim()}_${this.year}`;
+      if (this.month_year.month) {
+        this.fileName = `Cluster_per_block_report_${month.name.trim()}_${this.year}`;
+      } else {
+        this.fileName = `Cluster_per_block_report_${this.period}`;
+      }
       var blockNames = [];
       this.blocksNames.forEach(item => {
         if (item.distId && item.distId === Number(localStorage.getItem('distId'))) {
@@ -1011,7 +1035,11 @@ export class StudengtAttendanceComponent implements OnInit {
     this.blockHidden = false;
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Schools_per_cluster_report_${month.name.trim()}_${this.year}`;
+      if (this.month_year.month) {
+        this.fileName = `Schools_per_cluster_report_${month.name.trim()}_${this.year}`;
+      } else {
+        this.fileName = `Schools_per_cluster_report_${this.period}`;
+      }
 
       let obj = this.clusterNames.find(o => o.id == data);
       var blockNames = [];

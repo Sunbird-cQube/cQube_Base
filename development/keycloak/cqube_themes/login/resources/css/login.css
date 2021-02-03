@@ -265,6 +265,7 @@ a.zocial  {
         height:100%;
         width: 100%;
         background-repeat: no-repeat;
+        background-size: cover !important;
         /* background-attachment: fixed; */
         /* background-position: right; */
     }
@@ -284,6 +285,7 @@ a.zocial  {
         height:100%;
         width: 100%;
         background-repeat: no-repeat;
+        background-size: cover !important;
         /* background-attachment: fixed;
         background-position: right; */
     }
@@ -494,7 +496,7 @@ input:focus {
     display: none;
 }
 
-.background{
+.login-pf body{
     background: url('../img/Group.svg');
     background-size: cover !important;  
     background-repeat: no-repeat !important;
@@ -540,7 +542,7 @@ label[for="totp"]:after{
 }
 
 @media (max-width: 1550px){
-    .background{
+    .login-pf body{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         background-repeat: no-repeat;
@@ -556,7 +558,7 @@ label[for="totp"]:after{
     }
 }
 @media (max-width: 1501px){
-    .background{
+    .login-pf body{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         background-repeat: no-repeat;
@@ -574,7 +576,7 @@ label[for="totp"]:after{
 
 
 @media (max-width: 1377px){
-    .background{
+    .login-pf body{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         background-repeat: no-repeat;
@@ -600,7 +602,7 @@ label[for="totp"]:after{
         width:800px !important;
         height: 660px !important;
     }
-    .background{
+    .login-pf body{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         background-repeat: no-repeat;
@@ -608,19 +610,19 @@ label[for="totp"]:after{
 }
 
 @media (max-width: 1650px){
-    .background{
+    .login-pf body{
         background: url('../img/Group.svg');
         background-size: cover !important;  
-        /* background-repeat: no-repeat; */
+        background-repeat: no-repeat;
     }
 }
 
 
 @media (max-width: 1750px){
-    .background{
+    .login-pf body{
         background: url('../img/Group.svg');
         background-size: cover !important;  
-        /* background-repeat: no-repeat; */
+        background-repeat: no-repeat;
     }
     
 }
@@ -635,7 +637,7 @@ label[for="totp"]:after{
         width:650px !important;
         height: 570px !important;
     }
-    .background{
+    .login-pf body{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         object-fit: none !important;
@@ -655,7 +657,7 @@ label[for="totp"]:after{
         width:610px !important;
         height: 530px !important;
     }
-    .background{
+    .login-pf body{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         object-fit: none !important;
@@ -673,7 +675,7 @@ label[for="totp"]:after{
     .backImg img {
         width:580px !important;
     }
-    .background{
+    .login-pf body{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         object-fit: none !important;
@@ -695,7 +697,7 @@ label[for="totp"]:after{
         width: 60%;
         margin: 0px auto !important;
     }
-    .background{
+    .login-pf body{
         background: url('../img/Group.svg');
         background-size: fill !important;  
         background-repeat: no-repeat !important;
@@ -748,7 +750,7 @@ label[for="totp"]:after{
             width: 60%;
             margin: 0px auto !important;
         }
-        .background{
+        .login-pf body{
             background: url('../img/Group.svg');
             background-size: fill !important;  
             background-repeat: no-repeat !important;
@@ -799,7 +801,7 @@ label[for="totp"]:after{
             margin-left: 0px; 
             padding: 20px 0px 0px 0px;
         }
-        .background{
+        .login-pf body{
             background: url('../img/Group.svg');
             background-size: fill !important;  
             background-repeat: no-repeat !important;

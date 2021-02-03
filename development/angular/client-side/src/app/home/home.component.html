@@ -198,6 +198,18 @@
                     (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'isdata')" id="cmplnErr"
                     (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Download Exception
                       List</span></a>
+                  <a mat-list-item
+                    [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/pat-exception']"
+                    (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'patExcpt')" id="patexp"
+                    (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">PAT Exception</span></a>
+                  <a mat-list-item
+                    [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/student-attendance-exception']"
+                    (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'sarExcpt')" id="sarExp"
+                    (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Student Attendance Exception</span></a>
+                  <a mat-list-item
+                    [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/teacher-attendance-exception']"
+                    (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'tarExp')" id="tarExcpt"
+                    (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Teacher Attendance Exception</span></a>
                 </div>
               </mat-nav-list>
 
