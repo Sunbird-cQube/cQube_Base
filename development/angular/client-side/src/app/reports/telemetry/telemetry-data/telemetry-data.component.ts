@@ -709,6 +709,7 @@ export class TelemetryDataComponent implements OnInit {
     Object.keys(details).forEach(key => {
       if (key !== lng) {
         orgObject[key] = details[key];
+       
       }
     });
     var yourData;

@@ -47,6 +47,7 @@ export class DikshaTableComponent implements OnInit {
     this.collectionWise();
   }
 
+
   loaderAndErr() {
     if (this.result.length !== 0) {
       document.getElementById('spinner').style.display = 'none';
@@ -121,6 +122,8 @@ export class DikshaTableComponent implements OnInit {
       this.loaderAndErr();
     })
   }
+
+
 
   districtWise(districtId) {
     this.errMsg();
@@ -306,7 +309,7 @@ export class DikshaTableComponent implements OnInit {
       $(`#table`).empty();
       $(`#table`).append(headers);
       $(`#table`).append(body);
-      $(`#table`).DataTable({
+      var table = $(`#table`).DataTable({
         "order": [[my_columns.length - 5, "desc"]],
         destroy: true, bLengthChange: false, bInfo: false,
         bPaginate: false, scrollY: "60vh", scrollX: true,
@@ -315,6 +318,9 @@ export class DikshaTableComponent implements OnInit {
           leftColumns: 1
         },
         oSearch: { "bSmart": false }
+      });
+      $('#search-inp').on('keyup', function () {
+        table.search($(this).val()).draw();
       });
       $('input.global_filter').on('keyup click', function () {
         filterGlobal();

@@ -96,7 +96,7 @@
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-5">
-                    X-AXIS: &nbsp;<select id="x_axis"
+                    <span style="font-size: 13px; font-weight: bold;">X-Axis:</span> &nbsp;<select id="x_axis"
                         style="padding: 4px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
@@ -108,7 +108,7 @@
                     </select>
                 </div>
                 <div class="col-sm-5">
-                    Y-AXIS: &nbsp;<select id="y_axis"
+                    <span style="font-size: 13px; font-weight: bold;">Y-Axis:</span> &nbsp;<select id="y_axis"
                         style="padding: 4px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
                         <option [value]="yAxis" disabled selected="selected">choose

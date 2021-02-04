@@ -878,6 +878,7 @@ export class UdiseReportComponent implements OnInit {
     var schoolData1 = {};
     var schoolData2 = {};
     var schoolData3 = {};
+    var schoolData4 = {};
     var yourData1;
     if (level == "school") {
       Object.keys(orgObject).forEach(key => {
@@ -900,7 +901,12 @@ export class UdiseReportComponent implements OnInit {
           schoolData3[key] = schoolData2[key];
         }
       });
-      yourData1 = this.getInfoFrom(schoolData3, indiceName, colorText, level).join(" <br>");
+      Object.keys(schoolData3).forEach(key => {
+        if (key !== "school_id") {
+          schoolData4[key] = schoolData3[key];
+        }
+      });
+      yourData1 = this.getInfoFrom(schoolData4, indiceName, colorText, level).join(" <br>");
     } else if (level == 'district') {
       Object.keys(orgObject).forEach(key => {
         if (key !== "district_id") {
@@ -997,11 +1003,19 @@ export class UdiseReportComponent implements OnInit {
               if (txt.includes("Index")) {
                 txt = txt.replace('Index', '')
               }
-              return txt.replace(/_/g, ' ');
+              txt = txt.replace(/_/g, ' ');
+              return toTitleCase(txt);
             })
           + "</b>" + ": " + object[key] + `</span>`;
       }
       popupFood.push(stringLine);
+    }
+    function toTitleCase(phrase) {
+      return phrase
+        .toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
     }
     return popupFood;
   }
