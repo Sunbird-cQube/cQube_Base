@@ -18,10 +18,11 @@ router.post('/blockWise', auth.authController, async (req, res) => {
                 fileName = `exception_list/student_attendance_completion/block_${year}_${month}.json`;
             }
         } else {
-            fileName = `exception_list/teacher_attendance_completion/block_2019_1.json`;
+            fileName = `exception_list/teacher_attendance_completion/block_${year}_${month}.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
         var blocksAttendanceData = jsonData.data;
+        var dateRange = `${schoolsAttendanceData[0]['data_from_date']} to ${schoolsAttendanceData[0]['data_upto_date']}`;
         var blockData = [];
         for (let i = 0; i < blocksAttendanceData.length; i++) {
             var obj = {
@@ -39,7 +40,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
             blockData.push(obj);
         }
         logger.info(`---${req.body.report} block wise api response sent ---`);
-        res.status(200).send({ blockData: blockData, missingSchoolsCount: jsonData.allBlocksFooter.total_schools_with_missing_data });
+        res.status(200).send({ blockData: blockData, missingSchoolsCount: jsonData.allBlocksFooter.total_schools_with_missing_data,dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -62,7 +63,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
                 fileName = `exception_list/student_attendance_completion/block_${year}_${month}.json`;
             }
         } else {
-            fileName = `exception_list/teacher_attendance_completion/block_2019_1.json`;
+            fileName = `exception_list/teacher_attendance_completion/block_${year}_${month}.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
         var blockData = [];
@@ -70,6 +71,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
             return (data.district_id == distId)
         });
         var blocksAttendanceData = filterData;
+        var dateRange = `${schoolsAttendanceData[0]['data_from_date']} to ${schoolsAttendanceData[0]['data_upto_date']}`;
         for (let i = 0; i < blocksAttendanceData.length; i++) {
             var obj = {
                 block_id: blocksAttendanceData[i]['block_id'],
@@ -86,7 +88,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
             blockData.push(obj);
         }
         logger.info(`---${req.body.report} blockPerDist api response sent ---`);
-        res.status(200).send({ blockData: blockData, missingSchoolsCount: jsonData.footer[distId].total_schools_with_missing_data });
+        res.status(200).send({ blockData: blockData, missingSchoolsCount: jsonData.footer[distId].total_schools_with_missing_data,dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ExportToCsv } from 'export-to-csv';
 import { Router } from '@angular/router';
 import { ExceptionReportService } from '../../../services/exception-report.service';
+import { AppServiceComponent } from '../../../app.service';
 declare const $;
 
 @Component({
@@ -13,7 +14,7 @@ declare const $;
 export class MissingDataComponent implements OnInit {
   fileName: any;
   reportData: any = [];
-  constructor(private router: Router, private service: ExceptionReportService) { }
+  constructor(private router: Router, private service: ExceptionReportService,public commonService: AppServiceComponent) { }
 
   ngOnInit(): void {
     document.getElementById('homeBtn').style.display = 'block';
@@ -45,20 +46,7 @@ export class MissingDataComponent implements OnInit {
 
   // to download the excel report
   downloadReport() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      title: 'My Awesome CSV',
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true,
-      filename: this.fileName
-    };
-    const csvExporter = new ExportToCsv(options);
-    csvExporter.generateCsv(this.reportData);
+    this.commonService.download(this.fileName, this.reportData);
   }
 
 }
