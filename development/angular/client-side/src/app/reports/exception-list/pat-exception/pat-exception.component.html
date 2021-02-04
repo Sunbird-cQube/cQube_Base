@@ -3,12 +3,12 @@
         <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Periodic Assessment Test Exception Report for: <span (click)="districtWise()"
+                    Periodic Assessment Test Exception Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Periodic Assessment Test Exception Report for: <span (click)="districtWise()"
+                    Periodic Assessment Test Exception Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -16,7 +16,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Periodic Assessment Test Exception Report for: <span (click)="districtWise()"
+                    Periodic Assessment Test Exception Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Periodic Assessment Test Exception Report for: <span (click)="districtWise()"
+                    Periodic Assessment Test Exception Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -52,7 +52,7 @@
                         (click)="downloadReport()"></em>
                     <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
-                        alt="Home" (click)="districtWise()"></em>
+                        alt="Home" (click)="homeClick()"></em>
                 </div>
             </div>
         </div>
@@ -69,13 +69,32 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-5">
+        <div class="col-sm-12">
             <select id="period"
                 style="padding: 5px 2px 5px 2px;float: left;width: 100px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="period" (change)="onPeriodSelect()">
                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
                 <option *ngFor="let period of timeRange,  let i =index" style="width: 100px;" [(ngValue)]="period.key">
                     {{period.value}}
+                </option>
+            </select>
+            <select id="grades"
+                style="margin-left: 10px; padding: 5px;float: left; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="grade" (change)="onGradeSelect(grade)">
+                <option [value]="grade" disabled selected="selected">Choose a Grade</option>
+                <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="grade.grade">
+                    <span *ngIf="grade.grade == 'all'; else other_content">
+                        All Grades
+                    </span>
+                    <ng-template #other_content> {{grade.grade}}</ng-template>
+                </option>
+            </select>
+            <select [hidden]="true" id="subjects"
+                style="margin-left: 10px; padding: 5px;float: left; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="subject" (change)="onSubjectSelect(subject)">
+                <option [value]="subject" disabled selected="selected">Choose a Subject</option>
+                <option *ngFor="let subject of allSubjects,  let i =index" [(ngValue)]="allSubjects[i]">
+                    {{allSubjects[i]}}
                 </option>
             </select>
             <button class="btn btn-secondary" id="block"
@@ -88,10 +107,10 @@
                 style="font-size: 11px; width: 65px; float: left;margin: 0px 0px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise()">&nbsp;<strong>Schools</strong> </button>
 
-        </div>
-        <div class="col-sm-7">
+        <!-- </div>
+        <div class="col-sm-6"> -->
             <select id="choose_dist"
-                style="margin: 0px 10px 10px 0px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin: 0px 10px 10px 20px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.district_id" style=" font-size: 11px;">
