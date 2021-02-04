@@ -1105,6 +1105,8 @@ Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(parseDouble())""",
     "operation": "shift",
     "spec": {
       "*": {
+        "district_latitude": "data.[&1].district_latitude",
+        "district_longitude": "data.[&1].district_longitude",
         "district_id": "data.[&1].district_id",
         "district_name": "data.[&1].district_name",
         "grade": "data.[&1].grade",
@@ -1129,6 +1131,8 @@ Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(parseDouble())""",
     "spec": {
       "data": {
         "*": {
+          "district_latitude": "data.[&1].district_latitude",
+          "district_longitude": "data.[&1].district_longitude",
           "district_id": "data.[&1].district_id",
           "district_name": "data.[&1].district_name",
           "grade": "data.[&1].grade",
