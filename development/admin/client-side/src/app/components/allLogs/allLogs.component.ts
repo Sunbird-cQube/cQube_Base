@@ -77,6 +77,7 @@ export class AllLogsComponent implements OnInit {
     this.fileHidden = false;
     this.fileView = false;
     this.previousFiles = [];
+    this.logData = "";
     this.service.showLogs(this.logTypeName, type).subscribe((res: any) => {
       this.previousFiles = res;
       this.selectedFile = res[0];
