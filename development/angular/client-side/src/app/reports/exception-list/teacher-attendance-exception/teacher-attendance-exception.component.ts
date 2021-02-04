@@ -295,7 +295,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
       this.month_year['report'] = 'tarException';
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.districtData = this.mylatlngData = res['distData'];
-        // this.dateRange = res['dateRange'];
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1);
 
         var distNames = [];
@@ -348,7 +348,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
       }
       this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['blockData'];
-        // this.dateRange = res['dateRange'];
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1);
 
         var blockNames = [];
@@ -402,7 +402,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
       }
       this.myData = this.service.cluster_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['clusterData'];
-        // this.dateRange = res['dateRange'];
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1)
 
         var clustNames = [];
@@ -468,7 +468,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
       }
       this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolData'];
-        // this.dateRange = res['dateRange'];
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1)
 
         this.schoolsWithMissingData = res['missingSchoolsCount'];
@@ -683,7 +683,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
       }
       this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
         this.reportData = this.blockData = this.mylatlngData = res['blockData'];
-        // this.dateRange = res['dateRange'];
+        this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['block_id'] === current['block_id']);
           if (object.length == 0) previous.push(current);
@@ -793,7 +793,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
       this.month_year['report'] = 'tarException';
       this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
         this.reportData = this.clusterData = this.mylatlngData = res['clusterDetails'];
-        // this.dateRange = res['dateRange'];
+        this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['cluster_id'] === current['cluster_id']);
           if (object.length == 0) previous.push(current);
@@ -937,7 +937,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
       this.month_year['report'] = 'tarException';
       this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolsDetails'];
-        // this.dateRange = res['dateRange'];
+        this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['school_id'] === current['school_id']);
           if (object.length == 0) previous.push(current);

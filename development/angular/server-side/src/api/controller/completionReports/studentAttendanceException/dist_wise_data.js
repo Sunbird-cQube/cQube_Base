@@ -18,11 +18,11 @@ router.post('/distWise', auth.authController, async function (req, res) {
                 fileName = `exception_list/student_attendance_completion/district_${year}_${month}.json`;
             }
         } else {
-            fileName = `exception_list/teacher_attendance_completion/district_2019_1.json`;
+            fileName = `exception_list/teacher_attendance_completion/district_${year}_${month}.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
         var districtAttendanceData = jsonData.data;
-        // var dateRange = `${districtAttendanceData[0]['data_from_date']} to ${districtAttendanceData[0]['data_upto_date']}`;
+        var dateRange = `${districtAttendanceData[0]['data_from_date']} to ${districtAttendanceData[0]['data_upto_date']}`;
         var distData = [];
         for (let i = 0; i < districtAttendanceData.length; i++) {
             var obj = {
@@ -38,7 +38,7 @@ router.post('/distWise', auth.authController, async function (req, res) {
             distData.push(obj);
         }
         logger.info(`--- ${req.body.report} dist wise api response sent ---`);
-        res.status(200).send({ distData: distData, missingSchoolsCount: jsonData.allDistrictsFooter.total_schools_with_missing_data });
+        res.status(200).send({ distData: distData, missingSchoolsCount: jsonData.allDistrictsFooter.total_schools_with_missing_data, dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

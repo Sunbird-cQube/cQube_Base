@@ -57,10 +57,10 @@
                     <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
                         alt="Home" (click)="homeClick()"></em>
-                        <span id="rawDownload" *ngIf="reportData.length > 0"
-                            style="color: #284d8a;cursor: pointer; float: right; margin: 8px 20px 0px 0px; text-decoration: underline; font-size: 13px;"
-                            (click)="downloadRawFile()"><strong>Download Raw
-                                File</strong></span>
+                    <span id="rawDownload" *ngIf="reportData.length > 0"
+                        style="color: #284d8a;cursor: pointer; float: right; margin: 8px 20px 0px 0px; text-decoration: underline; font-size: 13px;"
+                        (click)="downloadRawFile()"><strong>Download Raw
+                            File</strong></span>
                 </div>
             </div>
         </div>
@@ -134,7 +134,8 @@
                 </option>
             </select>
 
-            <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total {{type}}:</strong>
+            <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total
+                    {{type.charAt(0).toUpperCase() + type.substr(1)}}:</strong>
                 {{footer}}</span>
         </div>
     </div>

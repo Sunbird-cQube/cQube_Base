@@ -63,7 +63,7 @@
                 <select id="coll_name"
                     style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                     [(ngModel)]="collectionName" name="collectionName" (change)="getDataBasedOnCollections()">
-                    <option [value]="collectionName" disabled selected="selected">Choose textbook name
+                    <option [value]="collectionName" disabled selected="selected">Choose Textbook Name
                     </option>
                     <option *ngFor="let collectionName of collectionNames; let i = index"
                         [(ngValue)]="collectionNames[i]" style=" font-size: 11px;">

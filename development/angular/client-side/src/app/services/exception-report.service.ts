@@ -132,5 +132,10 @@ export class ExceptionReportService {
     return this.http.post(`${this.baseUrl}/sarException/getDateRange`, data);
   }
 
+  gradeMetaData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/grades`, { data });
+  }
+
 
 }

@@ -18,10 +18,11 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
                 fileName = `exception_list/student_attendance_completion/cluster_${year}_${month}.json`;
             }
         } else {
-            fileName = `exception_list/teacher_attendance_completion/cluster_2019_1.json`;
+            fileName = `exception_list/teacher_attendance_completion/cluster_${year}_${month}.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
         var clustersAttendanceData = jsonData.data
+        var dateRange = `${schoolsAttendanceData[0]['data_from_date']} to ${schoolsAttendanceData[0]['data_upto_date']}`;
         var clusterData = [];
         for (let i = 0; i < clustersAttendanceData.length; i++) {
             var obj = {
@@ -41,7 +42,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
             clusterData.push(obj);
         }
         logger.info(`---${req.body.report} cluster wise api response sent ---`);
-        res.status(200).send({ clusterData: clusterData, missingSchoolsCount: jsonData.allClustersFooter.total_schools_with_missing_data });
+        res.status(200).send({ clusterData: clusterData, missingSchoolsCount: jsonData.allClustersFooter.total_schools_with_missing_data,dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -64,7 +65,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
                 fileName = `exception_list/student_attendance_completion/cluster_${year}_${month}.json`;
             }
         } else {
-            fileName = `exception_list/teacher_attendance_completion/cluster_2019_1.json`;
+            fileName = `exception_list/teacher_attendance_completion/cluster_${year}_${month}.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
         var clusterData = [];
@@ -72,6 +73,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
             return (data.block_id == blockId)
         });
         var clustersAttendanceData = filterData;
+        var dateRange = `${schoolsAttendanceData[0]['data_from_date']} to ${schoolsAttendanceData[0]['data_upto_date']}`;
         for (let i = 0; i < clustersAttendanceData.length; i++) {
             var obj = {
                 cluster_id: clustersAttendanceData[i]['cluster_id'],
@@ -90,7 +92,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
             clusterData.push(obj);
         }
         logger.info(`---${req.body.report} clusterPerBlock api response sent ---`);
-        res.status(200).send({ clusterDetails: clusterData, missingSchoolsCount: jsonData.footer[blockId].total_schools_with_missing_data });
+        res.status(200).send({ clusterDetails: clusterData, missingSchoolsCount: jsonData.footer[blockId].total_schools_with_missing_data,dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
