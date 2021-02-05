@@ -538,7 +538,7 @@
                                     </strong>
                                     <div style="height: 80px; width: 80px ;font-weight: bold; ">
                                         <app-progress-circle
-                                            [value]="healthCardData['pat_performance']['school_performance']"
+                                            [value]=" level == 'state' ? healthCardData['pat_performance']['school_performance'] : healthCardData['pat_performance'][level+'_performance']"
                                             [color]="patColor"></app-progress-circle>
                                     </div>
                                 </div>

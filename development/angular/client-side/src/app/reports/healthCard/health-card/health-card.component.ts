@@ -106,7 +106,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   progress = 50.5;
   progressBar = document.querySelector('.progress-bar');
 
-  constructor(public commonService: AppServiceComponent, public service: HealthCardService, private readonly _router: Router, private readonly _cd: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef, public commonService: AppServiceComponent, public service: HealthCardService, private readonly _router: Router, private readonly _cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     document.getElementById('backBtn').style.display = 'none';
@@ -134,6 +134,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.exist = true;
+    this.cdr.detectChanges();
     if (this.params && this.params.level) {
       if (this.params.level != 'state') {
         document.getElementById('home').style.display = "block";
@@ -211,6 +212,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     document.getElementById('download').style.display = 'block';
     document.getElementById('spinner').style.display = 'block';
     this.exist = false;
+    this.cdr.detectChanges();
     this.districtName = document.getElementById('myInput')['value'];
     var id;
     if (this.ids.includes(this.districtName) || this.names.includes(this.districtName)) {
@@ -665,7 +667,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     document.getElementById('download').style.display = 'none';
 
     this.exist = true;
-
+    this.cdr.detectChanges();
     this.val = document.getElementById('myInput')['value'];
     this.len = this.val.length;
     this.showAll = false;
@@ -689,6 +691,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     document.getElementById('home').style.display = 'none';
     document.getElementById('download').style.display = 'none';
     this.exist = true;
+    this.cdr.detectChanges();
     document.getElementById('spinner').style.display = 'block';
     sessionStorage.removeItem('health-card-info');
     this.allData = [];
