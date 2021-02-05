@@ -15,10 +15,10 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
             fileName = `exception_list/pat_exception/${timePeriod}/district.json`
         }
         var districtData = await s3File.readS3File(fileName);
-        // console.log(districtData);
         var Subjects = [];
+        var sortedData;
         if (districtData) {
-            var sortedData = districtData['data'].sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1);
+            sortedData = districtData['data'].sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1);
             if (grade && grade != 'all') {
                 sortedData.map(item => {
                     Object.keys(item.subjects[0]).map(key => {
