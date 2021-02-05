@@ -326,6 +326,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
         this.changeDetection.markForCheck();
       }, err => {
         this.markers = [];
+        this.districtsNames =[];
         this.commonService.loaderAndErr(this.markers);
       });
     } else {

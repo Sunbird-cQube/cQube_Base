@@ -22,7 +22,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         }
         var jsonData = await s3File.readS3File(fileName);
         var clustersAttendanceData = jsonData.data
-        var dateRange = `${schoolsAttendanceData[0]['data_from_date']} to ${schoolsAttendanceData[0]['data_upto_date']}`;
+        var dateRange = `${clustersAttendanceData[0]['data_from_date']} to ${clustersAttendanceData[0]['data_upto_date']}`;
         var clusterData = [];
         for (let i = 0; i < clustersAttendanceData.length; i++) {
             var obj = {
@@ -73,7 +73,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
             return (data.block_id == blockId)
         });
         var clustersAttendanceData = filterData;
-        var dateRange = `${schoolsAttendanceData[0]['data_from_date']} to ${schoolsAttendanceData[0]['data_upto_date']}`;
+        var dateRange = `${clustersAttendanceData[0]['data_from_date']} to ${clustersAttendanceData[0]['data_upto_date']}`;
         for (let i = 0; i < clustersAttendanceData.length; i++) {
             var obj = {
                 cluster_id: clustersAttendanceData[i]['cluster_id'],

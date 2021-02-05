@@ -461,9 +461,15 @@ export class CompositReportComponent implements OnInit {
       l = 4;
     }
 
+    var replace = ['_', ' %']
+
     for (i = l; i < Object.keys(result[0]).length; i++) {
       this.xAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ') });
       this.yAxisFilter.push({ key: Object.keys(result[0])[i], value: Object.keys(result[0])[i].replace(/_/g, ' ') });
+    }
+    for (i = 0; i < this.xAxisFilter.length; i++) {
+      this.xAxisFilter[i].value = this.xAxisFilter[i].value.replace('(%)', " (%)");
+      this.yAxisFilter[i].value = this.yAxisFilter[i].value.replace('(%)', " (%)");
     }
 
     var labels = [];

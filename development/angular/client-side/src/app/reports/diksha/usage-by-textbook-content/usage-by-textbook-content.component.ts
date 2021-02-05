@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from '../../../services/diksha-report.service';
 import { Router } from '@angular/router';
@@ -311,7 +311,7 @@ export class UsageByTextbookContentComponent implements OnInit {
       $(`#table`).empty();
       $(`#table`).append(headers);
       $(`#table`).append(body);
-      $(`#table`).DataTable({
+     var table= $(`#table`).DataTable({
         "order": [[my_columns.length - 5, "desc"]],
         destroy: true, bLengthChange: false, bInfo: false,
         bPaginate: false, scrollY: "60vh", scrollX: true,
@@ -320,6 +320,9 @@ export class UsageByTextbookContentComponent implements OnInit {
           leftColumns: 1
         },
         oSearch: { "bSmart": false },
+      });
+      $('#search-inp').on('keyup', function () {
+        table.search($(this).val()).draw();
       });
       $('input.global_filter').on('keyup click', function () {
         filterGlobal();

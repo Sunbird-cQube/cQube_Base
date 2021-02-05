@@ -878,7 +878,14 @@ export class InfraMapVisualisationComponent implements OnInit {
     } else {
       yourData1 = this.commonService.getInfoFrom(orgObject, "", level, "infra-map", infraName, colorText).join(" <br>");
     }
-    var yourData = this.commonService.getInfoFrom(markers.metrics, "", level, "infra-map", infraName, colorText).join(" <br>");
+    const ordered = Object.keys(markers.metrics).sort().reduce(
+      (obj, key) => {
+        obj[key] = markers.metrics[key];
+        return obj;
+      },
+      {}
+    );
+    var yourData = this.commonService.getInfoFrom(ordered, "", level, "infra-map", infraName, colorText).join(" <br>");
 
 
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(

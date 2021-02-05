@@ -106,7 +106,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-5 col-sm-12">
+            <div class="col-lg-6 col-sm-12">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="logoText">
@@ -165,19 +165,14 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-sm-12">
-                        <div class="infoText" style="color: white; padding: 0px 20px 0px 0px; margin-left: 50px;">
+                        <div class="infoText" style="color: white; padding: 0px 20px 0px 0px;">
                             <h6 style="color:white; font-size: 16px; font-weight: bold;line-height:1.4em;">Utilizing data to drive action on the ground by enabling the
 ability to see, solve and act</h6>
-                            <p>Ability to break the information at different administrative
-                                levels- District, Block, Cluster and School <br />
-                                Ability to download data at multiple administrative levels <br />
-                                Ability to zoom in and out across multiple administrative levels
-                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-7 col-sm-12">
+            <div class="col-lg-6 col-sm-12">
                 <div class="backImg">
                     <img src="${url.resourcesPath}/img/back1.png"">
                 </div>

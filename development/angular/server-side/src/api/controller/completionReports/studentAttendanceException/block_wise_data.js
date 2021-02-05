@@ -22,7 +22,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         }
         var jsonData = await s3File.readS3File(fileName);
         var blocksAttendanceData = jsonData.data;
-        var dateRange = `${schoolsAttendanceData[0]['data_from_date']} to ${schoolsAttendanceData[0]['data_upto_date']}`;
+        var dateRange = `${blocksAttendanceData[0]['data_from_date']} to ${blocksAttendanceData[0]['data_upto_date']}`;
         var blockData = [];
         for (let i = 0; i < blocksAttendanceData.length; i++) {
             var obj = {
@@ -71,7 +71,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
             return (data.district_id == distId)
         });
         var blocksAttendanceData = filterData;
-        var dateRange = `${schoolsAttendanceData[0]['data_from_date']} to ${schoolsAttendanceData[0]['data_upto_date']}`;
+        var dateRange = `${blocksAttendanceData[0]['data_from_date']} to ${blocksAttendanceData[0]['data_upto_date']}`;
         for (let i = 0; i < blocksAttendanceData.length; i++) {
             var obj = {
                 block_id: blocksAttendanceData[i]['block_id'],

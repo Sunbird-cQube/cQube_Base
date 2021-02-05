@@ -89,7 +89,7 @@
                     <ng-template #other_content> {{grade.grade}}</ng-template>
                 </option>
             </select>
-            <select [hidden]="true" id="subjects"
+            <select [hidden]="grade == 'all'" id="subjects"
                 style="margin-left: 10px; padding: 5px;float: left; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="subject" (change)="onSubjectSelect(subject)">
                 <option [value]="subject" disabled selected="selected">Choose a Subject</option>
