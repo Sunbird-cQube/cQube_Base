@@ -94,7 +94,7 @@ export class AllLogsComponent implements OnInit {
     document.getElementById('spinner').style.display = 'block';
     this.filePath = path;
     this.logData = "";
-    this.service.getLogData({ path: path, download: this.show_download }).subscribe(res => {
+    this.service.getLogData({ path: path, download: this.show_download, gz: this.selectedFile.gz }).subscribe(res => {
       if (res['errMsg']) {
         this.errMsg = res['errMsg'];
         this.showErr = true;
