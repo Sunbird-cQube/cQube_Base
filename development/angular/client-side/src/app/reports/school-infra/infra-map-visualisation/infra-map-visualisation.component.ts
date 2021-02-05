@@ -771,7 +771,8 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.markers.forEach(element => {
         this.colorGenData.push({ ...element.details, ...element.metrics });
       });
-      var sorted = this.colorGenData.sort((a, b) => (parseInt(a[`${this.infraData}`]) > parseInt(b[`${this.infraData}`])) ? 1 : -1);
+      var sorted = this.colorGenData.sort((a, b) => (parseInt(a[`infrastructure_score`]) > parseInt(b[`infrastructure_score`])) ? 1 : -1);
+      // console.log(sorted);
       this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
       // attach values to markers
       for (var i = 0; i < sorted.length; i++) {
