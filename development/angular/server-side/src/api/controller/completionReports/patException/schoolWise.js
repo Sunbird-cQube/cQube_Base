@@ -8,11 +8,31 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- pat exception school wise api ---');
         var timePeriod = req.body.timePeriod;
-        let fileName = `exception_list/pat_exception/${timePeriod}/school.json`;
+        var grade = req.body.grade;
+        let fileName;
+        if (grade && grade != 'all') {
+            fileName = `exception_list/pat_exception/grade/${timePeriod}/school/${grade}.json`
+        } else {
+            fileName = `exception_list/pat_exception/${timePeriod}/school.json`
+        }
         var schoolData = await s3File.readS3File(fileName);
-        var sortedData = schoolData['data'].sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1)
+        var Subjects = [];
+        var sortedData;
+        if (schoolData) {
+            sortedData = schoolData['data'].sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1);
+            if (grade && grade != 'all') {
+                sortedData.map(item => {
+                    if (item.subjects) {
+                        Object.keys(item.subjects[0]).map(key => {
+                            Subjects.push(key);
+                        })
+                    }
+                });
+                Subjects = [...new Set(Subjects)];
+            }
+        }
         logger.info('--- pat exception school wise api response sent---');
-        res.status(200).send({ data: sortedData, footer: schoolData.allSchoolsFooter.total_schools_with_missing_data });
+        res.status(200).send({ data: sortedData, footer: schoolData.allSchoolsFooter.total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -23,7 +43,13 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
     try {
         logger.info('--- pat exception schoolPerCluster api ---');
         var timePeriod = req.body.timePeriod;
-        let fileName = `exception_list/pat_exception/${timePeriod}/school.json`;
+        var grade = req.body.grade;
+        let fileName;
+        if (grade && grade != 'all') {
+            fileName = `exception_list/pat_exception/grade/${timePeriod}/school/${grade}.json`
+        } else {
+            fileName = `exception_list/pat_exception/${timePeriod}/school.json`
+        }
         var schoolData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId;
@@ -34,9 +60,23 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
             return (obj.district_id == distId && obj.block_id == blockId && parseInt(obj.cluster_id) == clusterId)
         })
 
-        var sortedData = filterData.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1)
+        var Subjects = [];
+        var sortedData;
+        if (filterData) {
+            sortedData = filterData.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1);
+            if (grade && grade != 'all') {
+                sortedData.map(item => {
+                    if (item.subjects) {
+                        Object.keys(item.subjects[0]).map(key => {
+                            Subjects.push(key);
+                        })
+                    }
+                });
+                Subjects = [...new Set(Subjects)];
+            }
+        }
         logger.info('--- pat exception schoolPerCluster api response sent---');
-        res.status(200).send({ data: sortedData, footer: schoolData.footer[`${clusterId}`].total_schools_with_missing_data });
+        res.status(200).send({ data: sortedData, footer: schoolData.footer[`${clusterId}`].total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
     } catch (e) {
         logger.error(e);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

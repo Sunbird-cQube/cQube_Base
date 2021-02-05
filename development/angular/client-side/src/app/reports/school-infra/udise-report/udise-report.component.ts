@@ -338,8 +338,8 @@ export class UdiseReportComponent implements OnInit {
 
           this.blockMarkers = result;
           var sorted = [];
-          if (this.indiceData == 'infrastructure_score') {
-            sorted = this.blockMarkers.sort((a, b) => (parseInt(a.details[`infrastructure_score`]) > parseInt(b.details[`infrastructure_score`])) ? 1 : -1);
+          if (this.indiceData == 'Infrastructure_Score') {
+            sorted = this.blockMarkers.sort((a, b) => (parseInt(a.details[`Infrastructure_Score`]) > parseInt(b.details[`Infrastructure_Score`])) ? 1 : -1);
           } else {
             sorted = this.blockMarkers.sort((a, b) => (parseInt(a.indices[`${this.indiceData}`]) > parseInt(b.indices[`${this.indiceData}`])) ? 1 : -1);
           }
@@ -430,8 +430,8 @@ export class UdiseReportComponent implements OnInit {
           this.clusterMarkers = [];
           this.clusterMarkers = result;
           var sorted = [];
-          if (this.indiceData == 'infrastructure_score') {
-            sorted = this.clusterMarkers.sort((a, b) => (parseInt(a.details[`infrastructure_score`]) > parseInt(b.details[`infrastructure_score`])) ? 1 : -1);
+          if (this.indiceData == 'Infrastructure_Score') {
+            sorted = this.clusterMarkers.sort((a, b) => (parseInt(a.details[`Infrastructure_Score`]) > parseInt(b.details[`Infrastructure_Score`])) ? 1 : -1);
           } else {
             sorted = this.clusterMarkers.sort((a, b) => (parseInt(a.indices[`${this.indiceData}`]) > parseInt(b.indices[`${this.indiceData}`])) ? 1 : -1);
           }
@@ -521,8 +521,8 @@ export class UdiseReportComponent implements OnInit {
           this.schoolCount = 0;
           this.schoolMarkers = result;
           var sorted = [];
-          if (this.indiceData == 'infrastructure_score') {
-            sorted = this.schoolMarkers.sort((a, b) => (parseInt(a.details[`infrastructure_score`]) > parseInt(b.details[`infrastructure_score`])) ? 1 : -1);
+          if (this.indiceData == 'Infrastructure_Score') {
+            sorted = this.schoolMarkers.sort((a, b) => (parseInt(a.details[`Infrastructure_Score`]) > parseInt(b.details[`Infrastructure_Score`])) ? 1 : -1);
           } else {
             sorted = this.schoolMarkers.sort((a, b) => (parseInt(a.indices[`${this.indiceData}`]) > parseInt(b.indices[`${this.indiceData}`])) ? 1 : -1);
           }
@@ -802,8 +802,8 @@ export class UdiseReportComponent implements OnInit {
     if (myData.length > 0) {
       this.markers = myData;
       var sorted = [];
-      if (this.indiceData == 'infrastructure_score') {
-        sorted = this.markers.sort((a, b) => (parseInt(a.details[`infrastructure_score`]) > parseInt(b.details[`infrastructure_score`])) ? 1 : -1);
+      if (this.indiceData == 'Infrastructure_Score') {
+        sorted = this.markers.sort((a, b) => (parseInt(a.details[`Infrastructure_Score`]) > parseInt(b.details[`Infrastructure_Score`])) ? 1 : -1);
       } else {
         sorted = this.markers.sort((a, b) => (parseInt(a.indices[`${this.indiceData}`]) > parseInt(b.indices[`${this.indiceData}`])) ? 1 : -1);
       }
