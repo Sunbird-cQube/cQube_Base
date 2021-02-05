@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400&family=Roboto+Condensed&display=swap');
 .login-pf{
     background: none;
 }
@@ -94,13 +97,13 @@ div.kc-logo-text span {
 }
 
 .logoText{
-    font-family: Bahnschrift SemiBold Condensed !important;
-    padding: 0px; 
-    margin-left: 110px !important;
-    font-size: 90px;
+    font-family:  'Oswald', sans-serif !important;
+    margin-left: 130px !important;
+    font-size: 84px !important;
     color:white;
 }
 .logoText p{
+    margin-top: 20px;
     line-height: 1.4em;
 }
 
@@ -506,6 +509,7 @@ input:focus {
     background: url('../img/Group.svg');
     background-size: cover !important;  
     background-repeat: no-repeat !important;
+    font-family: 'Noto Sans', sans-serif !important;
 }
 
 .card-pf {
@@ -721,7 +725,6 @@ label[for="totp"]:after{
     .logoText{
         margin-left: 0px !important;
         text-align: center !important;
-        font-size: 90px !important;
     }
     
 }
@@ -736,9 +739,6 @@ label[for="totp"]:after{
             border-radius: 16px;
             color: #fff;
             padding: 20px 40px 30px 40px !important;
-        }
-        .logoText{
-            font-size: 90px !important;
         }
         .backImg img {
             display: none;
@@ -771,9 +771,6 @@ label[for="totp"]:after{
             padding: 20px 40px 30px 40px !important;
         }
           
-          .logoText{
-            font-size: 90px;
-        }
     
         .infoText{
             margin-top: 20px;
