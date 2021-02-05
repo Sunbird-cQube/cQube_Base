@@ -120,6 +120,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.districtWise();
       }
     }, err => {
+      this.dateRange = ''; this.changeDetection.detectChanges();
       document.getElementById('home').style.display = 'none';
       this.getMonthYear = {};
       this.commonService.loaderAndErr(this.markers);
@@ -351,6 +352,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.districtsNames = [];
         this.commonService.loaderAndErr(this.markers);
@@ -407,6 +409,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -475,6 +478,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -530,6 +534,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -757,6 +762,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -877,6 +883,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -1014,6 +1021,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });

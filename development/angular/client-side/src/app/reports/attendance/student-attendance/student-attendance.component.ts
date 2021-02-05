@@ -147,6 +147,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
       }
     }, err => {
+      this.dateRange = ''; this.changeDetection.detectChanges();
       document.getElementById('home').style.display = 'none';
       this.getMonthYear = {};
       this.commonService.loaderAndErr(this.markers);
@@ -473,6 +474,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.districtsNames = [];
         this.commonService.loaderAndErr(this.markers);
@@ -529,6 +531,7 @@ export class StudengtAttendanceComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -597,6 +600,7 @@ export class StudengtAttendanceComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -652,6 +656,7 @@ export class StudengtAttendanceComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -881,6 +886,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -1001,6 +1007,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -1138,6 +1145,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -1230,6 +1238,7 @@ export class StudengtAttendanceComponent implements OnInit {
       }
       this.service.telemetrySar(dateObj).subscribe(res => {
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         console.log(err);
       });
     }

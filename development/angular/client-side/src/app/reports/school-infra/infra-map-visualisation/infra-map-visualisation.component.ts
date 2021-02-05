@@ -251,12 +251,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             centerLng: this.lng,
             level: 'district'
           }
-          // var MylatLng = [];
-          // globalMap.on('click', function (e) {
-          //   // console.log('[' + e.latlng.lng + ',' + e.latlng.lat + ']');
-          //   MylatLng.push('[' + e.latlng.lng + ',' + e.latlng.lat + ']');
-          // });
-          // this.latLngArr = MylatLng;
+
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
           globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
@@ -281,10 +276,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
   }
 
-  // latLngArr = [];
-  // showArr() {
-  //   console.log(this.latLngArr)
-  // }
 
   // to load all the blocks for state data on the map
   blockWise() {
@@ -329,18 +320,19 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.blockMarkers = [];
 
           this.blockMarkers = result;
-          this.colorGenData = [];
-          this.blockMarkers.forEach(element => {
-            this.colorGenData.push({ ...element.details, ...element.metrics });
-          });
-          var sorted = this.colorGenData.sort((a, b) => (parseInt(a[`${this.infraData}`]) > parseInt(b[`${this.infraData}`])) ? 1 : -1);
-          this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb'); this.schoolCount = 0;
+          var sorted = [];
+          if (this.infraData == 'infrastructure_score') {
+            sorted = this.blockMarkers.sort((a, b) => (parseInt(a.details[`infrastructure_score`]) > parseInt(b.details[`infrastructure_score`])) ? 1 : -1);
+          } else {
+            sorted = this.blockMarkers.sort((a, b) => (parseInt(a.metrics[`${this.infraData}`]) > parseInt(b.metrics[`${this.infraData}`])) ? 1 : -1);
+          }
+          this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var color = this.commonService.colorGredient(this.blockMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, this.selected == 'absolute' ? color : this.colors[i], 3.5, 0.01, 1, options.level);
+              var markerIcon = this.commonService.initMarkers(sorted[i].details.latitude, sorted[i].details.longitude, this.selected == 'absolute' ? color : this.colors[i], 3.5, 0.01, 1, options.level);
 
-              this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
+              this.generateToolTip(sorted[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.blockMarkers[i], options.level);
             }
             this.commonService.restrictZoom(globalMap);
@@ -409,19 +401,20 @@ export class InfraMapVisualisationComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
-          this.colorGenData = [];
-          this.clusterMarkers.forEach(element => {
-            this.colorGenData.push({ ...element.details, ...element.metrics });
-          });
-          var sorted = this.colorGenData.sort((a, b) => (parseInt(a[`${this.infraData}`]) > parseInt(b[`${this.infraData}`])) ? 1 : -1);
+          var sorted = [];
+          if (this.infraData == 'infrastructure_score') {
+            sorted = this.clusterMarkers.sort((a, b) => (parseInt(a.details[`infrastructure_score`]) > parseInt(b.details[`infrastructure_score`])) ? 1 : -1);
+          } else {
+            sorted = this.clusterMarkers.sort((a, b) => (parseInt(a.metrics[`${this.infraData}`]) > parseInt(b.metrics[`${this.infraData}`])) ? 1 : -1);
+          }
           this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < sorted.length; i++) {
               var color = this.commonService.colorGredient(this.clusterMarkers[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, this.selected == 'absolute' ? color : this.colors[i], 1, 0.01, .5, options.level);
+              var markerIcon = this.commonService.initMarkers(sorted[i].details.latitude, sorted[i].details.longitude, this.selected == 'absolute' ? color : this.colors[i], 1, 0.01, .5, options.level);
 
-              this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
+              this.generateToolTip(sorted[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.clusterMarkers[i], options.level);
             }
 
@@ -490,18 +483,19 @@ export class InfraMapVisualisationComponent implements OnInit {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
-          this.colorGenData = [];
-          this.schoolMarkers.forEach(element => {
-            this.colorGenData.push({ ...element.details, ...element.metrics });
-          });
-          var sorted = this.colorGenData.sort((a, b) => (parseInt(a[`${this.infraData}`]) > parseInt(b[`${this.infraData}`])) ? 1 : -1);
+          var sorted = [];
+          if (this.infraData == 'infrastructure_score') {
+            sorted = this.schoolMarkers.sort((a, b) => (parseInt(a.details[`infrastructure_score`]) > parseInt(b.details[`infrastructure_score`])) ? 1 : -1);
+          } else {
+            sorted = this.schoolMarkers.sort((a, b) => (parseInt(a.metrics[`${this.infraData}`]) > parseInt(b.metrics[`${this.infraData}`])) ? 1 : -1);
+          }
           this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < sorted.length; i++) {
               var color = this.commonService.colorGredient(sorted[i], this.infraData);
-              var markerIcon = this.commonService.initMarkers(sorted[i].latitude, sorted[i].longitude, this.selected == 'absolute' ? color : this.colors[i], 0, 0, 0.3, options.level);
+              var markerIcon = this.commonService.initMarkers(sorted[i].details.latitude, sorted[i].details.longitude, this.selected == 'absolute' ? color : this.colors[i], 0, 0, 0.3, options.level);
 
-              this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
+              this.generateToolTip(sorted[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
             globalMap.doubleClickZoom.enable();
@@ -767,20 +761,21 @@ export class InfraMapVisualisationComponent implements OnInit {
     var myData = data['data'];
     if (myData.length > 0) {
       this.markers = myData;
-      this.colorGenData = [];
-      this.markers.forEach(element => {
-        this.colorGenData.push({ ...element.details, ...element.metrics });
-      });
-      var sorted = this.colorGenData.sort((a, b) => (parseInt(a[`infrastructure_score`]) > parseInt(b[`infrastructure_score`])) ? 1 : -1);
-      // console.log(sorted);
+      var sorted = [];
+      if (this.infraData == 'infrastructure_score') {
+        sorted = this.markers.sort((a, b) => (parseInt(a.details[`infrastructure_score`]) > parseInt(b.details[`infrastructure_score`])) ? 1 : -1);
+      } else {
+        sorted = this.markers.sort((a, b) => (parseInt(a.metrics[`${this.infraData}`]) > parseInt(b.metrics[`${this.infraData}`])) ? 1 : -1);
+      }
       this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+
       // attach values to markers
       for (var i = 0; i < sorted.length; i++) {
         var color = this.commonService.colorGredient(this.markers[i], this.infraData);
-        var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, this.selected == 'absolute' ? color : this.colors[i], options.radius, options.strokeWeight, 1, options.level);
+        var markerIcon = this.selected != 'absolute' ? this.commonService.initMarkers(sorted[i].details.latitude, sorted[i].details.longitude, this.colors[i], options.radius, options.strokeWeight, 1, options.level) : this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, color, options.radius, options.strokeWeight, 1, options.level);
 
         // data to show on the tooltip for the desired levels
-        this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
+        this.generateToolTip(this.selected != 'absolute' ? sorted[i] : this.markers[i], options.level, markerIcon, "latitude", "longitude");
 
         // to download the report
         this.fileName = fileName;
