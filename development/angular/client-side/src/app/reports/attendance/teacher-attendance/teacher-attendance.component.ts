@@ -139,6 +139,7 @@ export class TeacherAttendanceComponent implements OnInit {
         }
       }
     }, err => {
+      this.dateRange = ''; this.changeDetection.detectChanges();
       document.getElementById('home').style.display = 'none';
       this.getMonthYear = {};
       this.commonService.loaderAndErr(this.markers);
@@ -418,6 +419,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -470,6 +472,7 @@ export class TeacherAttendanceComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -534,6 +537,7 @@ export class TeacherAttendanceComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -585,6 +589,7 @@ export class TeacherAttendanceComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -811,6 +816,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -927,6 +933,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -1060,6 +1067,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -1152,6 +1160,7 @@ export class TeacherAttendanceComponent implements OnInit {
       }
       this.service.telemetrySar(dateObj).subscribe(res => {
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         console.log(err);
       });
     }
