@@ -696,7 +696,50 @@ export class PATExceptionComponent implements OnInit {
 
     if (data['data'].length > 0) {
       this.markers = data['data']
-      this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+      var updatedMarkers = [];
+      var markersWithSubject = [];
+
+      this.markers.map(item => {
+        var keys = Object.keys(item);
+        var start;
+        if (options.level == 'district') {
+          start = 4;
+        }
+        if (options.level == 'block') {
+          start = 6;
+        }
+        if (options.level == 'cluster') {
+          start = 8;
+        }
+        if (options.level == 'school') {
+          start = 10;
+        }
+        if (this.grade && this.grade != 'all') {
+          var obj1 = {}
+          for (let i = 0; i <= start; i++) {
+            obj1[`${keys[i]}`] = item[`${keys[i]}`];
+          }
+          // if (this.subject) {
+          //   obj1['subject'] = this.subject;
+          //   var keys2 = Object.keys(item.subjects[0][`${this.subject}`]);
+          //   for (let i = 0; i < keys2.length; i++) {
+          //     obj1[`${keys2[i]}`] = item.subjects[0][`${this.subject}`][`${keys2[i]}`];
+          //   }
+          // }
+          // console.log(obj1);
+        }
+
+        var obj = {};
+        Object.keys(item).forEach(key => {
+          if (key !== 'subjects') {
+            obj[key] = item[key];
+          }
+        });
+        updatedMarkers.push(obj);
+      })
+      // console.log(updatedMarkers);
+      updatedMarkers = updatedMarkers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+      this.markers = updatedMarkers;
       // generate color gradient
       let colors;
       if (options.level == 'school') {
@@ -773,6 +816,7 @@ export class PATExceptionComponent implements OnInit {
 
   subject;
   onSubjectSelect(data) {
+    this.levelWiseFilter();
     // this.subject = data;
     // let options = {
     //   radius: 3.5,

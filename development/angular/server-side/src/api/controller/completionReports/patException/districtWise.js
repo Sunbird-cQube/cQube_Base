@@ -21,7 +21,9 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
             var sortedData = districtData['data'].sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1);
             if (grade && grade != 'all') {
                 sortedData.map(item => {
-                    Subjects.push(item.subject);
+                    Object.keys(item.subjects[0]).map(key => {
+                        Subjects.push(key);
+                    })
                 });
                 Subjects = [...new Set(Subjects)];
             }
