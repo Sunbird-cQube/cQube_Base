@@ -89,16 +89,19 @@ div.kc-logo-text span {
 }
 
 .logo{
-    margin-left: 50px; 
+    margin-left: 80px; 
     padding: 20px 0px 0px 0px;
 }
 
 .logoText{
     font-family: Bahnschrift SemiBold Condensed !important;
     padding: 0px; 
-    margin-left: 80px !important;
+    margin-left: 110px !important;
     font-size: 90px;
     color:white;
+}
+.logoText p{
+    line-height: 1.4em;
 }
 
 #kc-content {
@@ -403,7 +406,7 @@ input:-webkit-autofill {
 
 #username,
 #password {
-    display: none;
+    display: none !important;
 }
 
 #username1 {
@@ -457,15 +460,15 @@ input:focus {
 }
 
 .backImg {
-    top: -10px !important;
+    top: -60px !important;
     right: 0px !important;
     position: absolute;
 }
 
 .backImg img {
-    object-fit: fill;
-    width:840px !important;
-    height: 690px !important;
+    background-size: cover;
+    width:780px;
+    height: 600px;
 }
 
 ::-webkit-input-placeholder { /* Edge */
@@ -506,7 +509,7 @@ input:focus {
 }
 
 .card-pf {
-    margin-left: 50px !important;
+    margin-left: 80px !important;
     width: 316px !important;
     background: linear-gradient(125deg, #4e22ee 10%, #6b6df1 90%);
     opacity: 0.9;
@@ -544,107 +547,101 @@ label[for="totp"]:after{
     content: "Enter OTP";
 }
 
-@media (max-width: 1550px){
-    .login-pf body, .background{
-        background: url('../img/Group.svg');
-        background-size: fill !important;  
-        background-repeat: no-repeat;
-    }
+@media (max-width: 1710px){
     .backImg {
-        top: 10px !important;
+        top: -50px !important;
         right: 0px;
         position: absolute;
     }
     .backImg img {
-        width:940px !important;
-        height: 750px !important;
+        width:890px !important;
+        height: 740px !important;
     }
-}
-@media (max-width: 1501px){
     .login-pf body, .background{
         background: url('../img/Group.svg');
-        background-size: fill !important;  
-        background-repeat: no-repeat;
-    }
-    .backImg {
-        top: 10px !important;
-        right: 0px;
-        position: absolute;
-    }
-    .backImg img {
-        width:900px !important;
-        height: 720px !important;
+        background-size: cover !important;  
+        object-fit: none !important;
+        height: 100% !important;
+        width: 100%;
+        height: auto;
     }
 }
 
-
-@media (max-width: 1377px){
-    .login-pf body, .background{
-        background: url('../img/Group.svg');
-        background-size: fill !important;  
-        background-repeat: no-repeat;
-    }
+@media (max-width: 1520px){
     .backImg {
-        top: 10px !important;
-        right: 0px;
-        position: absolute;
-    }
-    .backImg img {
-        width:840px !important;
-        height: 690px !important;
-    }
-}
-
-@media (max-width: 1250px){
-    .backImg {
-        top: 0px !important;
+        top: -50px !important;
         right: 0px;
         position: absolute;
     }
     .backImg img {
         width:800px !important;
-        height: 660px !important;
+        height: 630px !important;
     }
-    .login-pf body, .background{
-        background: url('../img/Group.svg');
-        background-size: fill !important;  
-        background-repeat: no-repeat;
-    }
-}
-
-@media (max-width: 1650px){
     .login-pf body, .background{
         background: url('../img/Group.svg');
         background-size: cover !important;  
-        background-repeat: no-repeat;
+        object-fit: none !important;
+        height: 100% !important;
+        width: 100%;
+        height: auto;
     }
 }
 
-
-@media (max-width: 1750px){
-    .login-pf body, .background{
-        background: url('../img/Group.svg');
-        background-size: cover !important;  
-        background-repeat: no-repeat;
-    }
-    
-}
-
-@media (max-width: 1125px){
+@media (max-width: 1360px){
     .backImg {
-        top: 40px !important;
+        top: -50px !important;
         right: 0px;
         position: absolute;
     }
     .backImg img {
-        width:650px !important;
-        height: 570px !important;
+        width:790px !important;
+        height: 630px !important;
     }
     .login-pf body, .background{
         background: url('../img/Group.svg');
-        background-size: fill !important;  
+        background-size: cover !important;  
         object-fit: none !important;
-        height: 700px;
+        height: 100% !important;
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 1250px){
+    .backImg {
+        top: -50px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:700px !important;
+        height: 560px !important;
+    }
+    .login-pf body, .background{
+        background: url('../img/Group.svg');
+        background-size: cover !important;  
+        object-fit: none !important;
+        height: 100% !important;
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 1125px){
+    .backImg {
+        top: -30px !important;
+        right: 0px;
+        position: absolute;
+    }
+    .backImg img {
+        width:590px !important;
+        height: 500px !important;
+    }
+    .login-pf body, .background{
+        background: url('../img/Group.svg');
+        background-size: cover !important;  
+        object-fit: none !important;
+        height: 100% !important;
         width: 100%;
         height: auto;
     }
@@ -652,13 +649,13 @@ label[for="totp"]:after{
 
 @media (max-width: 1070px){
     .backImg {
-        top: 50px !important;
+        top: 0px !important;
         right: 0px;
         position: absolute;
     }
     .backImg img {
-        width:610px !important;
-        height: 530px !important;
+        width:590px !important;
+        height: 460px !important;
     }
     .login-pf body, .background{
         background: url('../img/Group.svg');
@@ -671,42 +668,45 @@ label[for="totp"]:after{
 
 @media (max-width: 1010px){
     .backImg {
-        top: 60px;
+        top: 0px;
         right: 0px;
         position: absolute;
     }
     .backImg img {
-        width:580px !important;
+        width:560px !important;
     }
     .login-pf body, .background{
         background: url('../img/Group.svg');
-        background-size: fill !important;  
+        background-size: cover !important;  
         object-fit: none !important;
         width: 100%;
         height: auto;
     }
 }
 
-@media (max-width: 990px){
+@media (max-width: 991px){
     .backImg {
-        top: 0px;
+        top: px;
         right: 0px;
         position: absolute;
     }
     .backImg img {
         display: none !important;
+        width: 0px;
+        height: 0px;
     }
     .infoText{
+        padding: 20px;
         width: 60%;
         margin: 0px auto !important;
     }
     .login-pf body, .background{
         background: url('../img/Group.svg');
-        background-size: fill !important;  
+        background-size: cover !important;  
         background-repeat: no-repeat !important;
         object-fit: none !important;
         width: 100%;
-        height: auto;    
+        height: 100% auto;    
     }
     
     .card-pf{
@@ -743,13 +743,9 @@ label[for="totp"]:after{
         .backImg img {
             display: none;
         }
-        .infoText p{
-            color: #FFFFFF;
-            font-size: 16px;
-            text-align: justify;
-            line-height: 1.5em;
-        }
+  
         .infoText{
+            padding: 20px;
             width: 60%;
             margin: 0px auto !important;
         }
@@ -780,16 +776,10 @@ label[for="totp"]:after{
         }
     
         .infoText{
+            margin-top: 20px;
             padding: 20px;
             width: 100% !important;
             margin: 0px auto !important;
-        }
-
-        .infoText p{
-            color: #FFFFFF;
-            font-size: 16px;
-            text-align: justify;
-            line-height: 1.5em;
         }
         #signinSymbol{
             float: left;
@@ -812,7 +802,7 @@ label[for="totp"]:after{
             height: auto;
         }
         #username, #password {
-            display: none;
+            display: none !important;
         }
     }    
 
@@ -821,16 +811,10 @@ label[for="totp"]:after{
   color: #72767b;
 }
 
-.infoText p{
-    color: #FFFFFF;
-    font-size: 16px;
-    /* text-align: cen; */
-    line-height: 1.5em;
-}
 
 .infoText{
-    margin :0px 0px 0px 50px; 
-    width : 530px;
+    margin-left :80px; 
+    width : 80%;
 }
 
 #kc-content-wrapper .row {

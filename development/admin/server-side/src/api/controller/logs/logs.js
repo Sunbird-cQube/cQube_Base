@@ -18,14 +18,14 @@ router.get('/getMenus', auth.authController, async (req, res) => {
 router.post('/logType/:menuType/:logType', auth.authController, async (req, res) => {
     try {
         logger.info('--- log files api ---');
-        var logsDir = process.env.BASE_DIR + "/cqube/nifi/nifi/logs/";
-        //var logsDir = __basedir + '/data/logs';
-        let files = fs.readdirSync(logsDir);
-
-        let filePath = filePaths[req.params.logType];
-
         let result = [];
         if (req.params.menuType === 'Nifi') {
+            var logsDir = process.env.BASE_DIR + "/cqube/nifi/nifi/logs/";
+            //var logsDir = __basedir + '/data/logs';
+            let files = fs.readdirSync(logsDir);
+
+            let filePath = filePaths[req.params.logType];
+
             files.filter(file => file.indexOf(filePath.type) > -1).forEach((file, index) => {
                 if (index === 0) {
                     const stats = fs.statSync(`${filePath.path}`);
@@ -45,6 +45,32 @@ router.post('/logType/:menuType/:logType', auth.authController, async (req, res)
                     });
                 }
             });
+        } else if (req.params.menuType === 'PostgreSql') {
+            var logsDir = "/var/log/postgresql/";
+            //var logsDir = __basedir + '/data/postgresql/';
+            let files = fs.readdirSync(logsDir);
+
+            let filePath = filePaths[req.params.logType];
+
+            files.forEach((file, index) => {
+                if (index === 0) {
+                    const stats = fs.statSync(`${filePath.path}`);
+
+                    result.push({
+                        fileName: filePath.path.split('/')[filePath.path.split('/').length - 1],
+                        title: filePath.title,
+                        path: filePath.path,
+                        lastModifiedDate: stats.mtime
+                    });
+                }
+                const stats = fs.statSync(`${logsDir}/${file}`);
+                result.push({
+                    fileName: file,
+                    title: file.substr(0, file.lastIndexOf('.')),
+                    path: `${logsDir}/${file}`,
+                    lastModifiedDate: stats.mtime
+                });
+            });
         } else {
             const stats = fs.statSync(`${filePath.path}`);
 
@@ -55,6 +81,7 @@ router.post('/logType/:menuType/:logType', auth.authController, async (req, res)
                 lastModifiedDate: stats.mtime
             });
         }
+
         res.send(result);
     } catch (e) {
         logger.error(`Error :: ${e}`)

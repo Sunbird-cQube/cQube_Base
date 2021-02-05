@@ -135,7 +135,7 @@ export class PATExceptionComponent implements OnInit {
     }
   }
 
-  homeClick(){
+  homeClick() {
     this.grade = 'all';
     this.period = 'overall';
     this.districtWise();
@@ -176,9 +176,9 @@ export class PATExceptionComponent implements OnInit {
         this.myData = this.service.patExceptionDistWise({ grade: this.grade, timePeriod: this.period }).subscribe(res => {
           this.data = res;
           // to show only in dropdowns
-          this.districtMarkers = this.data['data'];
-          if (this.grade) {
-            this.allSubjects = this.data.Subjects;
+          this.markers = this.districtMarkers = this.data['data'];
+          if (this.grade != 'all') {
+            this.allSubjects = this.data['subjects'];
           }
           // options to set for markers in the map
           let options = {
@@ -265,7 +265,7 @@ export class PATExceptionComponent implements OnInit {
             // generate color gradient
             let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
             this.colors = colors;
-            this.blockMarkers = result;
+            this.markers = this.blockMarkers = result;
 
             if (this.blockMarkers.length !== 0) {
               for (let i = 0; i < this.blockMarkers.length; i++) {
@@ -351,7 +351,7 @@ export class PATExceptionComponent implements OnInit {
             // generate color gradient
             let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
             this.colors = colors;
-            this.clusterMarkers = result;
+            this.markers = this.clusterMarkers = result;
 
             if (this.clusterMarkers.length !== 0) {
               for (let i = 0; i < this.clusterMarkers.length; i++) {
@@ -434,7 +434,7 @@ export class PATExceptionComponent implements OnInit {
             // generate color gradient
             let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', result.length, 'rgb');
             this.colors = colors;
-            this.schoolMarkers = result;
+            this.markers = this.schoolMarkers = result;
 
             if (this.schoolMarkers.length !== 0) {
               for (let i = 0; i < this.schoolMarkers.length; i++) {
@@ -489,7 +489,7 @@ export class PATExceptionComponent implements OnInit {
     this.myData = this.service.patExceptionBlockPerDist(districtId, { grade: this.grade, timePeriod: this.period }).subscribe(res => {
       this.data = res;
 
-      this.blockMarkers = this.data['data'];
+      this.markers = this.blockMarkers = this.data['data'];
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data['data'][0].district_id,
@@ -549,7 +549,7 @@ export class PATExceptionComponent implements OnInit {
     }
     this.myData = this.service.patExceptionClusterPerBlock(this.districtHierarchy.distId, blockId, { grade: this.grade, timePeriod: this.period }).subscribe(res => {
       this.data = res;
-      this.clusterMarkers = this.data['data'];
+      this.markers = this.clusterMarkers = this.data['data'];
       var myBlocks = [];
       this.blockMarkers.forEach(element => {
         if (element.district_id === this.districtHierarchy.distId) {
@@ -617,7 +617,7 @@ export class PATExceptionComponent implements OnInit {
     this.myData = this.service.patExceptionBlock({ grade: this.grade, timePeriod: this.period }).subscribe(result => {
       this.myData = this.service.patExceptionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { grade: this.grade, timePeriod: this.period }).subscribe(res => {
         this.data = res;
-        this.schoolMarkers = this.data['data'];
+        this.markers = this.schoolMarkers = this.data['data'];
 
         var markers = result['data'];
         var myBlocks = [];
@@ -707,38 +707,13 @@ export class PATExceptionComponent implements OnInit {
       this.colors = colors;
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-        var lat, strLat; var lng, strLng;
-        if (options.level == "district") {
-          lat = this.markers[i].district_latitude;
-          strLat = "district_latitude";
-          lng = this.markers[i].district_longitude;
-          strLng = "district_longitude";
-        }
-        if (options.level == "block") {
-          lat = this.markers[i].block_latitude;
-          strLat = "block_latitude";
-          lng = this.markers[i].block_longitude;
-          strLng = "block_longitude";
-        }
-        if (options.level == "cluster") {
-          lat = this.markers[i].cluster_latitude;
-          strLat = "cluster_latitude";
-          lng = this.markers[i].cluster_longitude;
-          strLng = "cluster_longitude";
-        }
-        if (options.level == "school") {
-          lat = this.markers[i].school_latitude;
-          strLat = "school_latitude";
-          lng = this.markers[i].school_longitude;
-          strLng = "school_longitude";
-        }
-
+        this.getLatLng(options.level, this.markers[i]);
         var markerIcon;
-        markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
+        markerIcon = this.commonService.initMarkers(this.latitude, this.longitude, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {
-          this.generateToolTip(this.markers[i], options.level, markerIcon, strLat, strLng);
+          this.generateToolTip(this.markers[i], options.level, markerIcon, this.strLat, this.strLng);
           // to download the report
           this.fileName = fileName;
         }
@@ -748,6 +723,35 @@ export class PATExceptionComponent implements OnInit {
       this.changeDetection.markForCheck();
     }
     this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+  }
+
+
+  latitude; strLat; longitude; strLng;
+  getLatLng(level, marker) {
+    if (level == "district") {
+      this.latitude = marker.district_latitude;
+      this.strLat = "district_latitude";
+      this.longitude = marker.district_longitude;
+      this.strLng = "district_longitude";
+    }
+    if (level == "block") {
+      this.latitude = marker.block_latitude;
+      this.strLat = "block_latitude";
+      this.longitude = marker.block_longitude;
+      this.strLng = "block_longitude";
+    }
+    if (level == "cluster") {
+      this.latitude = marker.cluster_latitude;
+      this.strLat = "cluster_latitude";
+      this.longitude = marker.cluster_longitude;
+      this.strLng = "cluster_longitude";
+    }
+    if (level == "school") {
+      this.latitude = marker.school_latitude;
+      this.strLat = "school_latitude";
+      this.longitude = marker.school_longitude;
+      this.strLng = "school_longitude";
+    }
   }
 
   popups(markerIcon, markers, level) {
@@ -768,8 +772,50 @@ export class PATExceptionComponent implements OnInit {
   }
 
   subject;
-  onSubjectSelect(data){
+  onSubjectSelect(data) {
+    // this.subject = data;
+    // let options = {
+    //   radius: 3.5,
+    //   fillOpacity: 1,
+    //   strokeWeight: 0.01,
+    //   weight: 1,
+    //   mapZoom: this.commonService.zoomLevel,
+    //   centerLat: this.lat,
+    //   centerLng: this.lng,
+    //   level: this.levelWise
+    // }
+    // // console.log(this.markers);
+    // var filtered = this.markers.filter(a => {
+    //   console.log(a.subject == this.subject)
+    //   return (a.subject == this.subject)
+    // });
+    // console.log(filtered);
+    // if (this.markers.length > 0) {
+    //   this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+    //   // generate color gradient
+    //   let colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', this.markers.length, 'rgb');
+    //   this.colors = colors;
 
+    //   if (this.markers.length !== 0) {
+    //     for (let i = 0; i < this.markers.length; i++) {
+    //       var markerIcon;
+    //       markerIcon = this.commonService.initMarkers(this.latitude, this.longitude, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
+    //       this.generateToolTip(this.markers[i], options.level, markerIcon, this.strLat, this.strLng);
+    //       // to download the report
+    //       this.fileName = `Subject_wise_data_${this.levelWise}`;
+    //     }
+
+    //     globalMap.doubleClickZoom.enable();
+    //     globalMap.scrollWheelZoom.enable();
+    //     globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+    //     globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+
+    //     this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+
+    //     this.commonService.loaderAndErr(this.data);
+    //     this.changeDetection.markForCheck();
+    //   }
+    // }
   }
 
   //Showing tooltips on markers on mouse hover...
