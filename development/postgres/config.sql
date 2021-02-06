@@ -6381,3 +6381,113 @@ where a.school_name is not null and a.cluster_name is not null and b.school_lati
 )as b on b.school_id=sch_res.school_id
 left join (select school_id,count(distinct student_id) as students_count from student_attendance_trans group by school_id) as stn_cnt
 on b.school_id=stn_cnt.school_id;
+
+CREATE OR REPLACE FUNCTION public.pat_no_schools_grade()
+ RETURNS text
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+pat_grade_no_schools_all text;
+pat_grade_no_schools_last7 text;
+pat_grade_no_schools_last30 text;
+BEGIN
+
+if EXISTS (select * from school_grade_enrolment)  then
+pat_grade_no_schools_all = 'create or replace view pat_exception_grade_data_all as
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+inner join (select sm.*,sd.subject from (select school_id,grade from school_grade_enrolment) sm inner join subject_details sd on sd.grade=sm.grade 
+ inner join periodic_exam_mst  pem on pem.subject_id=sd.subject_id and sd.grade=pem.standard
+ except select school_id,grade,subject from periodic_exam_school_result
+union
+select distinct sma.*,''grade'' as subject from (select school_id,grade from school_grade_enrolment) sma inner join periodic_exam_mst  pm on sma.grade=pm.standard
+ except select school_id,grade,''grade'' as subject from periodic_exam_school_result) as d on a.school_id = d.school_id';
+
+pat_grade_no_schools_last7 = 'create or replace view pat_exception_grade_data_last7 as
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+inner join (select sm.*,sd.subject from (select school_id,grade from school_grade_enrolment) sm inner join subject_details sd on sd.grade=sm.grade 
+ inner join periodic_exam_mst  pem on pem.subject_id=sd.subject_id and sd.grade=pem.standard where exam_code in(select exam_code from pat_date_range where date_range=''last7days'')
+ except select school_id,grade,subject from periodic_exam_school_result 
+union
+select distinct sma.*,''grade'' as subject from (select school_id,grade from school_grade_enrolment) sma inner join periodic_exam_mst  pm on sma.grade=pm.standard where exam_code in(select exam_code from pat_date_range where date_range=''last7days'')
+ except select school_id,grade,''grade'' as subject from periodic_exam_school_result) as d on a.school_id = d.school_id';
+
+
+
+pat_grade_no_schools_last30 = 'create or replace view pat_exception_grade_data_last30 as
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+inner join (select sm.*,sd.subject from (select school_id,grade from school_grade_enrolment) sm inner join subject_details sd on sd.grade=sm.grade 
+ inner join periodic_exam_mst  pem on pem.subject_id=sd.subject_id and sd.grade=pem.standard where exam_code in(select exam_code from pat_date_range where date_range=''last30days'')
+ except select school_id,grade,subject from periodic_exam_school_result 
+union
+select distinct sma.*,''grade'' as subject from (select school_id,grade from school_grade_enrolment) sma inner join periodic_exam_mst  pm on sma.grade=pm.standard where exam_code in(select exam_code from pat_date_range where date_range=''last30days'')
+ except select school_id,grade,''grade'' as subject from periodic_exam_school_result) as d on a.school_id = d.school_id';
+
+
+Execute pat_grade_no_schools_all;
+Execute pat_grade_no_schools_last7;
+Execute pat_grade_no_schools_last30;
+
+else
+pat_grade_no_schools_all = 'create or replace view pat_exception_grade_data_all as
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+inner join (select sm.*,sd.subject from (select school_id,generate_series(school_lowest_class,school_highest_class) as grade from school_master) sm inner join subject_details sd on sd.grade=sm.grade 
+ inner join periodic_exam_mst  pem on pem.subject_id=sd.subject_id and sd.grade=pem.standard
+ except select school_id,grade,subject from periodic_exam_school_result
+union
+select distinct sma.*,''grade'' as subject from (select school_id,generate_series(school_lowest_class,school_highest_class) as grade from school_master) sma inner join periodic_exam_mst  pm on sma.grade=pm.standard
+ except select school_id,grade,''grade'' as subject from periodic_exam_school_result) as d on a.school_id = d.school_id';
+
+
+pat_grade_no_schools_last7 = 'create or replace view pat_exception_grade_data_last7 as
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+inner join (select sm.*,sd.subject from (select school_id,generate_series(school_lowest_class,school_highest_class) as grade from school_master) sm inner join subject_details sd on sd.grade=sm.grade 
+ inner join periodic_exam_mst  pem on pem.subject_id=sd.subject_id and sd.grade=pem.standard where exam_code in(select exam_code from pat_date_range where date_range=''last7days'')
+ except select school_id,grade,subject from periodic_exam_school_result 
+union
+select distinct sma.*,''grade'' as subject from (select school_id,generate_series(school_lowest_class,school_highest_class) as grade from school_master) sma inner join periodic_exam_mst  pm on sma.grade=pm.standard where exam_code in(select exam_code from pat_date_range where date_range=''last7days'')
+ except select school_id,grade,''grade'' as subject from periodic_exam_school_result) as d on a.school_id = d.school_id';
+
+
+
+pat_grade_no_schools_last30 = 'create or replace view pat_exception_grade_data_last30 as
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+inner join (select sm.*,sd.subject from (select school_id,generate_series(school_lowest_class,school_highest_class) as grade from school_master) sm inner join subject_details sd on sd.grade=sm.grade 
+ inner join periodic_exam_mst  pem on pem.subject_id=sd.subject_id and sd.grade=pem.standard where exam_code in(select exam_code from pat_date_range where date_range=''last30days'')
+ except select school_id,grade,subject from periodic_exam_school_result 
+union
+select distinct sma.*,''grade'' as subject from (select school_id,generate_series(school_lowest_class,school_highest_class) as grade from school_master) sma inner join periodic_exam_mst  pm on sma.grade=pm.standard where exam_code in(select exam_code from pat_date_range where date_range=''last30days'')
+ except select school_id,grade,''grade'' as subject from periodic_exam_school_result) as d on a.school_id = d.school_id';
+
+
+Execute pat_grade_no_schools_all;
+Execute pat_grade_no_schools_last7;
+Execute pat_grade_no_schools_last30;
+
+END IF;
+return 0;
+END;
+$function$;
