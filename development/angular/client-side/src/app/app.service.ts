@@ -311,7 +311,7 @@ export class AppServiceComponent {
         }
         return setColor;
     }
-    
+
 
     //capturing telemetry.....
     telemetry(date) {
@@ -409,7 +409,7 @@ export class AppServiceComponent {
         94: '#89ea00',
         96: '#87ef00',
         98: '#84f500',
-        100: '#7fff00',
+        100: '#00FF00',
     }
     //color gredient generation....
     public exceptionColor() {
