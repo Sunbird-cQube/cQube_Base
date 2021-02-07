@@ -337,28 +337,26 @@ export class UdiseReportComponent implements OnInit {
           this.blockMarkers = [];
 
           this.blockMarkers = result;
-          var sorted = [];
-          if (this.indiceData == 'Infrastructure_Score') {
-            sorted = this.blockMarkers.sort((a, b) => (parseInt(a.details[`Infrastructure_Score`]) > parseInt(b.details[`Infrastructure_Score`])) ? 1 : -1);
-          } else {
-            sorted = this.blockMarkers.sort((a, b) => (parseInt(a.indices[`${this.indiceData}`]) > parseInt(b.indices[`${this.indiceData}`])) ? 1 : -1);
-          }
-          this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          var colors = this.getRelativeColors(this.markers);
           this.schoolCount = 0;
           if (this.blockMarkers.length !== 0) {
-            for (let i = 0; i < sorted.length; i++) {
-              this.setColor = this.commonService.colorGredient(this.blockMarkers[i], this.indiceData);
-              var markerIcon = L.circleMarker([sorted[i].details.latitude, sorted[i].details.longitude], {
+            for (let i = 0; i < this.blockMarkers.length; i++) {
+              if (this.selected == 'absolute') {
+                this.setColor = this.commonService.colorGredient(this.blockMarkers[i], this.indiceData);
+              } else {
+                this.setColor = this.commonService.relativeColorGredient(this.blockMarkers[i], this.indiceData, colors);
+              }
+              var markerIcon = L.circleMarker([this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude], {
                 radius: 4,
                 color: "gray",
-                fillColor: this.selected == 'absolute' ? this.setColor : this.colors[i],
+                fillColor: this.setColor,
                 fillOpacity: 1,
                 strokeWeight: 0.01,
                 weight: 1.5
               }).addTo(globalMap);
 
               // data to show on the tooltip for the desired levels
-              this.generateToolTip(sorted[i], options.level, markerIcon, "latitude", "longitude");
+              this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
 
               //download report
               this.getDownloadableData(this.blockMarkers[i], options.level);
@@ -429,28 +427,26 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
-          var sorted = [];
-          if (this.indiceData == 'Infrastructure_Score') {
-            sorted = this.clusterMarkers.sort((a, b) => (parseInt(a.details[`Infrastructure_Score`]) > parseInt(b.details[`Infrastructure_Score`])) ? 1 : -1);
-          } else {
-            sorted = this.clusterMarkers.sort((a, b) => (parseInt(a.indices[`${this.indiceData}`]) > parseInt(b.indices[`${this.indiceData}`])) ? 1 : -1);
-          }
-          this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          var colors = this.getRelativeColors(this.markers);
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
-            for (let i = 0; i < sorted.length; i++) {
-              this.setColor = this.commonService.colorGredient(this.clusterMarkers[i], this.indiceData);
-              var markerIcon = L.circleMarker([sorted[i].details.latitude, sorted[i].details.longitude], {
+            for (let i = 0; i < this.clusterMarkers.length; i++) {
+              if (this.selected == 'absolute') {
+                this.setColor = this.commonService.colorGredient(this.clusterMarkers[i], this.indiceData);
+              } else {
+                this.setColor = this.commonService.relativeColorGredient(this.clusterMarkers[i], this.indiceData, colors);
+              }
+              var markerIcon = L.circleMarker([this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude], {
                 radius: 2,
                 color: "gray",
-                fillColor: this.selected == 'absolute' ? this.setColor : this.colors[i],
+                fillColor: this.setColor,
                 fillOpacity: 1,
                 strokeWeight: 0.01,
                 weight: 0.5
               }).addTo(globalMap);
 
               // data to show on the tooltip for the desired levels
-              this.generateToolTip(sorted[i], options.level, markerIcon, "latitude", "longitude");
+              this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
 
               //download report
               this.getDownloadableData(this.clusterMarkers[i], options.level);
@@ -520,29 +516,27 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
-          var sorted = [];
-          if (this.indiceData == 'Infrastructure_Score') {
-            sorted = this.schoolMarkers.sort((a, b) => (parseInt(a.details[`Infrastructure_Score`]) > parseInt(b.details[`Infrastructure_Score`])) ? 1 : -1);
-          } else {
-            sorted = this.schoolMarkers.sort((a, b) => (parseInt(a.indices[`${this.indiceData}`]) > parseInt(b.indices[`${this.indiceData}`])) ? 1 : -1);
-          }
-          this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+          var colors = this.getRelativeColors(this.markers);
           this.schoolCount = 0;
           if (this.schoolMarkers.length !== 0) {
-            for (let i = 0; i < sorted.length; i++) {
-              this.setColor = this.commonService.colorGredient(this.schoolMarkers[i], this.indiceData);
-              var markerIcon = L.circleMarker([sorted[i].details.latitude, sorted[i].details.longitude], {
+            for (let i = 0; i < this.schoolMarkers.length; i++) {
+              if (this.selected == 'absolute') {
+                this.setColor = this.commonService.colorGredient(this.schoolMarkers[i], this.indiceData);
+              } else {
+                this.setColor = this.commonService.relativeColorGredient(this.schoolMarkers[i], this.indiceData, colors);
+              }
+              var markerIcon = L.circleMarker([this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude], {
                 // renderer: myRenderer,
                 radius: 1,
                 color: "gray",
-                fillColor: this.selected == 'absolute' ? this.setColor : this.colors[i],
+                fillColor: this.setColor,
                 fillOpacity: 1,
                 weight: 0.3,
                 strokeWeight: 0
               }).addTo(globalMap);
 
               // data to show on the tooltip for the desired levels
-              this.generateToolTip(sorted[i], options.level, markerIcon, "latitude", "longitude");
+              this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
 
               //download report
               this.getDownloadableData(this.schoolMarkers[i], options.level);
@@ -801,32 +795,30 @@ export class UdiseReportComponent implements OnInit {
     var myData = data['data'];
     if (myData.length > 0) {
       this.markers = myData;
-      var sorted = [];
-      if (this.indiceData == 'Infrastructure_Score') {
-        sorted = this.markers.sort((a, b) => (parseInt(a.details[`Infrastructure_Score`]) > parseInt(b.details[`Infrastructure_Score`])) ? 1 : -1);
-      } else {
-        sorted = this.markers.sort((a, b) => (parseInt(a.indices[`${this.indiceData}`]) > parseInt(b.indices[`${this.indiceData}`])) ? 1 : -1);
-      }
-      this.colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', sorted.length, 'rgb');
+      var colors = this.getRelativeColors(this.markers);
       this.schoolCount = 0;
       // attach values to markers
-      for (var i = 0; i < sorted.length; i++) {
-        this.setColor = this.commonService.colorGredient(this.markers[i], this.indiceData);
+      for (var i = 0; i < this.markers.length; i++) {
+        if (this.selected == 'absolute') {
+          this.setColor = this.commonService.colorGredient(this.markers[i], this.indiceData);
+        } else {
+          this.setColor = this.commonService.relativeColorGredient(this.markers[i], this.indiceData, colors);
+        }
         var markerIcon: any;
         if (options.weight) {
-          markerIcon = L.circleMarker([sorted[i].details.latitude, sorted[i].details.longitude], {
+          markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
             radius: options.radius,
             color: "gray",
-            fillColor: this.selected == 'absolute' ? this.setColor : this.colors[i],
+            fillColor: this.setColor,
             fillOpacity: options.fillOpacity,
             strokeWeight: options.strokeWeight,
             weight: options.weight
           })
         } else {
-          markerIcon = L.circleMarker([sorted[i].details.latitude, sorted[i].details.longitude], {
+          markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
             radius: options.radius,
             color: "gray",
-            fillColor: this.selected == 'absolute' ? this.setColor : this.colors[i],
+            fillColor: this.setColor,
             fillOpacity: options.fillOpacity,
             strokeWeight: options.strokeWeight,
             weight: 1.5
@@ -836,7 +828,7 @@ export class UdiseReportComponent implements OnInit {
         // data to show on the tooltip for the desired levels
         if (options.level) {
           // data to show on the tooltip for the desired levels
-          this.generateToolTip(sorted[i], options.level, markerIcon, "latitude", "longitude");
+          this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
 
           this.fileName = fileName;
           this.getDownloadableData(this.markers[i], options.level);
@@ -858,6 +850,25 @@ export class UdiseReportComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
     }
+  }
+
+  getRelativeColors(markers) {
+    var values = [];
+    markers.map(item => {
+      if (this.indiceData == 'Infrastructure_Score') {
+        values.push(item.details[`Infrastructure_Score`]);
+      } else {
+        values.push(item.indices[`${this.indiceData}`]);
+      }
+    });
+    let uniqueItems = [...new Set(values)];
+    uniqueItems = uniqueItems.sort(function (a, b) { return a - b });
+    var colorsArr = markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', uniqueItems.length, 'rgb');
+    var colors = {};
+    uniqueItems.map((a, i) => {
+      colors[`${a}`] = colorsArr[i]
+    });
+    return colors;
   }
 
   //generate tooltip........
