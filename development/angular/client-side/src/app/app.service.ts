@@ -285,6 +285,34 @@ export class AppServiceComponent {
         return setColor;
     }
 
+    //generating relative colors
+    // color gredient based on intervals
+    relativeColorGredient(data, infraData, colors) {
+        var keys = Object.keys(colors);
+        var dataSet = {};
+        var setColor = '';
+        if (infraData == 'Infrastructure_Score' || infraData == 'infrastructure_score') {
+            dataSet = data.details;
+        } else {
+            if (data.indices) {
+                dataSet = data.indices;
+            } else {
+                dataSet = data.metrics;
+            }
+        }
+        for (let i = 0; i < keys.length; i++) {
+            if (dataSet[infraData] <= parseFloat(keys[i])) {
+                setColor = colors[keys[i]];
+                break;
+            } else if (dataSet[infraData] > parseFloat(keys[i]) && dataSet[infraData] <= parseFloat(keys[i + 1])) {
+                setColor = colors[keys[i + 1]];
+                break;
+            }
+        }
+        return setColor;
+    }
+    
+
     //capturing telemetry.....
     telemetry(date) {
         this.logoutOnTokenExpire();
