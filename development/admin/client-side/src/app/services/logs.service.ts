@@ -34,6 +34,6 @@ export class LogsService {
 
   downloadLogFile(file: any) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/logs/downloadLogFile`, { fileName: file.fileName, path: file.path }, { observe: 'response', responseType: 'arraybuffer' as 'blob' });
+    return this.http.post(`${this.baseUrl}/logs/downloadLogFile`, { fileName: file.fileName, path: file.path, gz: file.gz }, { observe: 'response', responseType: 'arraybuffer' as 'blob' });
   }
 }
