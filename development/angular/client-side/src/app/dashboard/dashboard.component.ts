@@ -35,6 +35,9 @@ export class DashboardComponent implements OnInit {
   tpdtpTooltip;
   tpdcpTooltip;
   healthCardTooltip;
+  patExcptTooltip
+  sarExcptTooltip;
+  tarExpTooltip;
 
   hiddenPass = false;
   edate: Date;
@@ -65,7 +68,10 @@ export class DashboardComponent implements OnInit {
   tpdenrollViews;
   tpdcompViews;
   healthCardViews;
-  
+  patExcptViews;
+  sarExcptViews;
+  tarExpViews;
+
 
   //for coming soon page
   nifi_crc;
@@ -123,8 +129,11 @@ export class DashboardComponent implements OnInit {
     this.heatChartTooltip = `This dashboard provides insights on student performance at the question level.`;
     this.lotableTooltip = `This dashboard provides insights on student performance at the learning outcome level.`;
     this.tpdtpTooltip = `This dashboard provides details on district-wise TPD course enrolment progress broken at the individual course level.`;
-    this.tpdcpTooltip = `This dashboard provides details on district-wise TPD course progress broken at the individual course level.`;
-    this.healthCardTooltip = `Healthcard Tooltip`;
+    this.tpdcpTooltip = `This dashboard provides details on district-wise TPD course enrolment progress broken at the individual course level.`;
+    this.healthCardTooltip = `This dashboard brings metrics from other dashboards and allows users to correlate various metrics among each other.`;
+    this.patExcptTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their periodic assessment scores.`;
+    this.tarExpTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their teacher attendance data.`;
+    this.sarExcptTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their student attendance data.`;
   }
 
   changeDataSourceStatus() {
@@ -223,6 +232,9 @@ export class DashboardComponent implements OnInit {
     this.tpdtpViews = "";
     this.tpdenrollViews = "";
     this.tpdcompViews = "";
+    this.patExcptViews = "";
+    this.sarExcptViews = "";
+    this.tarExpViews = "";
 
     var myStr = this.removeUnderscore(views[0].time_range);
     this.timePeriod = " (" + myStr + ")";
@@ -300,6 +312,15 @@ export class DashboardComponent implements OnInit {
       }
       if (element.reportid == 'healthCard') {
         this.healthCardViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'patExcpt') {
+        this.patExcptViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'sarExcpt') {
+        this.sarExcptViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'tarExp') {
+        this.tarExpViews = element.number_of_views + " (" + timeStr + ")";
       }
 
     });

@@ -59,4 +59,83 @@ export class ExceptionReportService {
     return this.http.post(`${this.baseUrl}/sem/metadata`, {});
   }
 
+  patExceptionDistWise(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/patExcetpion/allDistrictWise`, data);
+  }
+
+  patExceptionBlock(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/patExcetpion/allBlockWise`, data);
+  }
+  patExceptionCluster(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/patExcetpion/allClusterWise`, data);
+  }
+  patExceptionSchool(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/patExcetpion/allSchoolWise`, data);
+  }
+
+  patExceptionBlockPerDist(distId, data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/patExcetpion/blockWise/${distId}`, data);
+  }
+  patExceptionClusterPerBlock(distId, blockId, data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/patExcetpion/clusterWise/${distId}/${blockId}`, data);
+  }
+  patExceptionSchoolPerClustter(distId, blockId, clusterId, data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/patExcetpion/schoolWise/${distId}/${blockId}/${clusterId}`, data);
+  }
+
+  //sarException report
+  dist_wise_data(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/distWise`, data);
+  }
+
+  block_wise_data(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/blockWise`, data);
+  }
+
+  cluster_wise_data(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/clusterWise`, data);
+  }
+
+  school_wise_data(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/schoolWise`, data);
+  }
+
+
+  blockPerDist(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/blockPerDist`, data);
+  }
+
+  clusterPerBlock(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/clusterPerBlock`, data);
+  }
+
+  schoolsPerCluster(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/schoolPerCluster`, data);
+  }
+
+  getDateRange(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/sarException/getDateRange`, data);
+  }
+
+  gradeMetaData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/grades`, { data });
+  }
+
+
 }

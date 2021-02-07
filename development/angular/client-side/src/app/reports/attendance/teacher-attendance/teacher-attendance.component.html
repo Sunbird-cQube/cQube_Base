@@ -47,11 +47,11 @@
                     </p>
                 </div>
                 <div class="col-sm-5">
-                    <em class="fa fa-download" title="Download Report" id="download"
-                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                    <em class="fa fa-cloud-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                         (click)="downloadReport($event)"></em>
                     <em class="fa fa-home" id="home" title="Home"
-                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
                         alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
@@ -134,7 +134,7 @@
             </select>
 
             <!-- <a class="float-right" href="javascript: void(0)" id="stdHealthCard" (click)="goToHealthCard()"
-                style="font-weight: bold; text-decoration: underline; font-size: 13px;">Access Health
+                style="font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Access Health
                 Card</a> -->
         </div>
     </div>
@@ -145,13 +145,32 @@
     </div>
     <div class="row"
         style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;padding: 2px 0px 2px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
+            <div
+                style="border-radius: 15px; background-color: #f5f6fb; height: 22px; width: 150px; border: 1px solid gray;font-size: 13px;">
+                <div id="absolute" (click)="getColor('absolute')"
+                    [ngStyle]="{'background-color' : selected == 'absolute' ? '#3100cc' : '#f5f6fb'}"
+                    style="border-radius: 15px; height: 20px; width: 50%;  float: left; cursor: pointer;">
+                    <p [ngStyle]="{'color' : selected == 'absolute' ? 'white' : 'black'}"
+                        style="text-align: center; padding: 0px;">
+                        Absolute</p>
+                </div>
+                <div id="relative" (click)="getColor('relative')"
+                    [ngStyle]="{'background-color' : selected == 'relative' ? '#3100cc' : '#f5f6fb'}"
+                    style="border-radius: 15px; height: 20px; width: 50%;float: left;cursor: pointer;">
+                    <p [ngStyle]="{'color' : selected == 'relative' ? 'white' : 'black'}"
+                        style="text-align: center; padding: 0px;">
+                        Relative</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
             <span id="students">Number of teachers: {{teacherCount}}</span>
         </div>
-        <div class="col-sm-4">
-            <span id="schools" style="text-align: center;">Number of schools: {{schoolCount}}</span>
+        <div class="col-sm-3">
+            <span id="schools" style="text-align: center;">Number of Schools: {{schoolCount}}</span>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <span id="dateRange" style="float: right;">Date range: {{dateRange}}</span>
         </div>
     </div>

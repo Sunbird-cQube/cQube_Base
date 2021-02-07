@@ -473,20 +473,20 @@ or Latitude IS NULL
 or Longitude IS NULL
 """,
 "crc_trans_to_crc_visits_frequency_pre_query":"""create or replace view crc_trans_to_aggregate as 
-select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b.district_name)as district_name,b.block_id,
+ select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b.district_name)as district_name,b.block_id,
   INITCAP(b.block_name)as block_name,b.cluster_id,
   INITCAP(b.cluster_name)as cluster_name ,INITCAP(b.crc_name)as crc_name,
   sum(cast((case when in_school_location='true' or in_school_location='t' then 1 else 0 end ) as int)) as visit_count,
-  sum(cast((case when in_school_location='false' or in_school_location='f' then 1 else 0 end ) as int)) as missed_visit_count,
+  sum(cast((case when in_school_location is null or in_school_location ='f' or in_school_location='false' then 1 else 0 end ) as int)) as missed_visit_count,
       a.month,
     a.year,
   now() as created_on,
   now() as updated_on
-  from crc_location_trans as a left join school_hierarchy_details as b on a.school_id=b.school_id
-  where a.school_id<>0 and a.inspection_id<>0 and b.cluster_name is not null and b.district_name is not null and b.block_name is not null
-  and b.school_name is not null
-  group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id,
-b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year""",
+  from (select crc_inspection_id as inspection_id, clt.school_id,month,year,bool_or(in_school_location) as in_school_location
+ from crc_inspection_trans cit inner join crc_location_trans clt on clt.inspection_id=cit.crc_inspection_id 
+ group by crc_inspection_id, clt.school_id,month,year) as a left join school_hierarchy_details as b on a.school_id=b.school_id
+  where a.school_id<>0 and a.inspection_id<>0 and b.school_id<>9999 and b.cluster_name is not null and b.district_name is not null and b.block_name is not null and b.school_name is not null
+  group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id, b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year""",
 "district_filename":"""district_crc_opt_json""",
 "crc_inspec_trans_table_name":"""crc_inspection_trans""",
 "crc_loc_duplicate_data":"""select UserLocationMasterId as "crc_location_id",UserMasterId as "crc_id",SchoolId as "school_id",InspectionId as "inspection_id",Latitude as "latitude",Longitude as "longitude",InSchoolLocation as "in_school_location",CreatedOn as "created_on",count(UserLocationMasterId)-1  num_of_times

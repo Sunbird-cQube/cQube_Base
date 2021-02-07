@@ -47,11 +47,11 @@
                     </p>
                 </div>
                 <div class="col-sm-5">
-                    <em class="fa fa-download" title="Download Report" id="download"
-                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                    <em class="fa fa-cloud-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                         (click)="downloadReport()"></em>
                     <em class="fa fa-home" id="home" title="Home"
-                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
                         alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
@@ -79,7 +79,7 @@
             <button class="btn btn-secondary" id="school"
                 style="font-size: 11px; width: 70px; margin: 2px 15px 0px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
                 (click)="schoolWise()">&nbsp;<strong>Schools</strong> </button>
-            <span style="font-size: 12px;">Select Semester ➝</span>
+            <span style="font-size: 12px;"> </span>
             <select id="choose_semester"
                 style=" padding: 5px;margin:0px 25px 4px 10px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="semester" (change)="semSelect()">
@@ -129,7 +129,7 @@
     <div class="row"
         style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px; padding: 2px 0px 2px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
         <div class="col-sm-6">
-            <span id="schools" style="text-align: center;">Total School Not Received: {{schoolCount}}</span>
+            <span id="schools" style="text-align: center;">Total School Not Received Data: {{schoolCount}}</span>
         </div>
     </div>
 </div>

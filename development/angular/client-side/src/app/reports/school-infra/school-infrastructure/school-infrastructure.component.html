@@ -43,8 +43,8 @@
                 </div>
                 <div class="col-sm-6">
                     <div *ngIf="skul; else ng_else" style="float: right; " id="select">
-                        <em class="fa fa-download" title="Download Report" id="download1"
-                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                        <em class="fa fa-cloud-download" title="Download Report" id="download1"
+                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                             (click)="downloadReportofState(downloadType)"></em>
                         <select class="dwnld" id="downloader"
                             style="padding: 5px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
@@ -57,12 +57,12 @@
                     </div>
 
                     <ng-template #ng_else>
-                        <em class="fa fa-download" title="Download Report" id="download"
-                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                        <em class="fa fa-cloud-download" title="Download Report" id="download"
+                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                             (click)="downloadRoport()"></em>
                     </ng-template>
                     <em class="fa fa-home" id="home" title="Home"
-                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
                         alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
@@ -92,7 +92,7 @@
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-4">
-                        X-AXIS: <select id="x_axis"
+                        <span style="font-size: 13px; font-weight: bold;">X-Axis: &nbsp;</span> <select id="x_axis"
                             style="padding: 4px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                             [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
                             <option [value]="xAxis" disabled selected="selected">choose
@@ -104,7 +104,7 @@
                         </select>
                     </div>
                     <div class="col-sm-4">
-                        Y-AXIS: <select id="y_axis"
+                        <span style="font-size: 13px; font-weight: bold;">Y-Axis: &nbsp;</span> <select id="y_axis"
                             style="padding: 4px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                             [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
                             <option [value]="yAxis" disabled selected="selected">choose
@@ -117,7 +117,8 @@
                     </div>
                 </div>
                 <p style="text-align: justify; font-size: 11px; margin-top: 5px;">
-                    <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the dropdown above. You can
+                    <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
+                    dropdown above. You can
                     alter the metrics to update the scatter plot.
                 </p>
                 <div class="row">

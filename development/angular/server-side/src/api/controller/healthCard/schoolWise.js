@@ -17,6 +17,7 @@ router.post('/schoolWise', auth.authController, async (req, res) => {
         });
         logger.info('--- healthCard school wise api response sent ---');
         if (schoolData.length > 0) {
+            schoolData[0] = deleteProps(schoolData[0], ['total_schools']);
             res.status(200).send({ schoolData });
         } else {
             res.status(403).json({ errMessage: "Data not available" });
@@ -26,5 +27,15 @@ router.post('/schoolWise', auth.authController, async (req, res) => {
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 });
+
+function deleteProps(obj, props) {
+    if (!Array.isArray(props)) props = [props];
+    return Object.keys(obj).reduce((newObj, prop) => {
+        if (!props.includes(prop)) {
+            newObj[prop] = obj[prop];
+        }
+        return newObj;
+    }, {});
+}
 
 module.exports = router;

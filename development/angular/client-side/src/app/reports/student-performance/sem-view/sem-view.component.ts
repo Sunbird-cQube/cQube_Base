@@ -107,6 +107,13 @@ export class SemViewComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  selected = "absolute";
+
+  getColor(data) {
+    this.selected = data;
+    this.levelWiseFilter();
+  }
+
   ngOnDestroy() { }
 
   ngOnInit() {
@@ -224,6 +231,10 @@ export class SemViewComponent implements OnInit, OnDestroy {
   }
 
   semSelect() {
+    this.levelWiseFilter();
+  }
+
+  levelWiseFilter() {
     if (this.skul) {
       if (this.levelWise === "district") {
         this.districtWise();
@@ -330,7 +341,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.levelWise = "block";
       this.fileName = "block_wise_sem_report"
       this.reportData = [];
-      this.districtMarkers = [];
+      // this.districtMarkers = [];
       this.blockMarkers = [];
       this.schoolCount = '';
       this.studentCount = '';
@@ -362,11 +373,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
           let result = this.data['sortedData']
           this.blockMarkers = [];
           this.blockMarkers = result;
-
+          this.colors = this.blockMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.blockMarkers.length, 'rgb');
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var color = this.commonService.color(this.blockMarkers[i], 'semester_performance');
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, color, 3.5, 1, 1, this.levelWise);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 3.5, 1, 1, this.levelWise);
               this.generateToolTip(markerIcon, this.blockMarkers[i], this.levelWise);
             }
             this.commonService.restrictZoom(globalMap);
@@ -404,7 +415,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.commonService.errMsg();
       this.levelWise = "cluster";
       this.fileName = "cluster_wise_sem_report";
-      this.districtMarkers = [];
+      // this.districtMarkers = [];
       this.blockMarkers = [];
       this.clusterMarkers = [];
       this.reportData = [];
@@ -441,11 +452,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
           this.clusterMarkers = [];
 
           this.clusterMarkers = result;
-
+          this.colors = this.clusterMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.clusterMarkers.length, 'rgb');
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               var color = this.commonService.color(this.clusterMarkers[i], 'semester_performance');
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, color, 1, 0.01, 0.5, this.levelWise);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 1, 0.01, 0.5, this.levelWise);
               this.generateToolTip(markerIcon, this.clusterMarkers[i], this.levelWise);
             }
             this.commonService.restrictZoom(globalMap);
@@ -484,7 +495,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.commonService.errMsg();
       this.levelWise = "school";
       this.fileName = "school_wise_sem_report";
-      this.districtMarkers = [];
+      // this.districtMarkers = [];
       this.blockMarkers = [];
       this.clusterMarkers = [];
       this.schoolMarkers = [];
@@ -517,10 +528,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
           let result = this.data['sortedData']
 
           this.schoolMarkers = result;
+          this.colors = this.schoolMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.schoolMarkers.length, 'rgb');
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var color = this.commonService.color(this.schoolMarkers[i], 'semester_performance');
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, color, 0, 0, 0.3, this.levelWise);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 0, 0, 0.3, this.levelWise);
               this.generateToolTip(markerIcon, this.schoolMarkers[i], this.levelWise);
             }
 
@@ -831,11 +843,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
     if (data['sortedData'].length > 0) {
       this.markers = data['sortedData']
-
+      this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         var color = this.commonService.color(this.markers[i], 'semester_performance');
-        var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, options.radius, options.strokeWeight, 1, options.level);
+        var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.colors[i], options.radius, options.strokeWeight, 1, options.level);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {

@@ -30,6 +30,9 @@ base_dir:                                  # provide the absolute path where cqu
 db_user:                                   # Enter existing cqube database user name.
 db_name:                                   # Enter existing cqube database name.
 db_password:                               # Enter existing cqube database passsword.
+read_only_db_user:                         # Create your own username for the read only access of cQube database
+read_only_db_password:                     # Create your own password for the read only user, password should contain atleast 1 lower,upper,number,special character and minimum 8 characters
+
 
 s3_input_bucket:                            # Enter s3 input bucket name used to store cQube raw input data.
 s3_output_bucket:                           # Enter s3 output bucket name used to store the cQube processed output data.
@@ -40,6 +43,7 @@ aws_default_region: 'ap-south-1'            # AWS default region of s3 bucket.
 
 api_endpoint:                               # Enter domain.com. ( Example: cqubeprojects.com )
 local_ipv4_address:                         # Enter the private ip of this server. To find the ip address. Use `ip addr` or `ifconfig`.
+vpn_local_ipv4_address:                     # enter the private ip of vpn server. To find the ip address. Use `ip addr` or `ifconfig`
 keycloak_adm_user:                          # Enter existing keycloak admin user.
 keycloak_adm_passwd:                        # Enter existing keycloak admin password.
 keycloak_config_otp:                        # Enter true or false to enable OTP authentication for all users 

@@ -50,6 +50,10 @@ export class CreateUserComponent implements OnInit {
     formData.resetForm();
   }
 
+  msgHide(){
+    this.errUsername = '';
+    this.err = '';
+  }
 
   onSubmit(formData: NgForm) {
     var currUser = this.logData;
@@ -67,6 +71,9 @@ export class CreateUserComponent implements OnInit {
           formData.resetForm();
           document.getElementById('spinner').style.display = 'none';
           document.getElementById('success').style.display = "block";
+          setTimeout(() => {
+            document.getElementById('success').style.display = "none";
+          }, 4000);
         }
       }, err => {
 

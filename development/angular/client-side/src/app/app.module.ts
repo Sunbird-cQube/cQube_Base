@@ -22,6 +22,10 @@ import { InfoComponent } from './common/info/info.component';
 import { DikshaChartComponent } from './reports/diksha/diksha-chart/diksha-chart.component';
 import { HealthCardComponent } from './reports/healthCard/health-card/health-card.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import { BubblesComponent } from './reports/healthCard/bubbles/bubbles.component';
+import { ProgressCircleComponent } from './reports/healthCard/progress-circle/progress-circle.component';
+
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -35,7 +39,9 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     HomePageComponent,
     InfoComponent,
     DikshaChartComponent,
-    HealthCardComponent
+    HealthCardComponent,
+    BubblesComponent,
+    ProgressCircleComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +58,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     ChartsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    NgCircleProgressModule.forRoot({})
   ],
   exports: [
     MatTableModule,

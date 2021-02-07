@@ -43,8 +43,8 @@
                 </div>
                 <div class="col-sm-7">
                     <div *ngIf="skul; else ng_else" style="float: right; " id="select">
-                        <em class="fa fa-download" title="Download Report" id="download"
-                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                        <em class="fa fa-cloud-download" title="Download Report" id="download"
+                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                             (click)="downloadReportofState(downloadType)"></em>
                         <select class="dwnld" id="downloader"
                             style="padding: 5px; color: white; border-radius: 4px;margin: 5px 0px 0px 8px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
@@ -57,12 +57,12 @@
                     </div>
 
                     <ng-template #ng_else>
-                        <em class="fa fa-download" title="Download Report" id="download"
-                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: rgb(39, 194, 233);"
+                        <em class="fa fa-cloud-download" title="Download Report" id="download"
+                            style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                             (click)="downloadReport()"></em>
                     </ng-template>
                     <em class="fa fa-home" id="home" title="Home"
-                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: rgb(39, 194, 233); display: none;"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
                         alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
@@ -96,7 +96,7 @@
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-5">
-                    X-AXIS: &nbsp;<select id="x_axis"
+                    <span style="font-size: 13px; font-weight: bold;">X-Axis:</span> &nbsp;<select id="x_axis"
                         style="padding: 4px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
@@ -108,7 +108,7 @@
                     </select>
                 </div>
                 <div class="col-sm-5">
-                    Y-AXIS: &nbsp;<select id="y_axis"
+                    <span style="font-size: 13px; font-weight: bold;">Y-Axis:</span> &nbsp;<select id="y_axis"
                         style="padding: 4px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
                         <option [value]="yAxis" disabled selected="selected">choose
@@ -163,8 +163,9 @@
                         {{cluster.clusterName}}
                     </option>
                 </select>
-                    <a class="float-right" href="javascript: void(0)" id="crcHealthcard" (click)="goToHealthCard()"
-                    style="font-weight: bold; text-decoration: underline; font-size: 13px;">Access Health
+                <a class="float-right" href="javascript: void(0)" id="crcHealthcard" (click)="goToHealthCard()"
+                    style="font-weight: bold;right: 15px; position: absolute; text-decoration: underline; font-size: 13px; color: #3100cc">Access
+                    Health
                     Card</a>
             </div>
             <p style="text-align: justify; font-size: 11px;padding-top: 10px;">
@@ -184,7 +185,7 @@
             <span id="visits">Total Number of visits: {{visitCount}}</span>
         </div>
         <div style="margin-right: 7%;">
-            <span id="schools" style="text-align: center;">Total Number of schools: {{schoolCount}}</span>
+            <span id="schools" style="text-align: center;">Total Number of Schools: {{schoolCount}}</span>
         </div>
         <div style="margin-right:7%;">
             <span id="visited" style="float: right;">Total schools visited: {{visitedSchools}}</span>
