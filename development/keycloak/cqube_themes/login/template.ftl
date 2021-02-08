@@ -63,11 +63,10 @@
    }
 
   function onClick(el){
-       document.getElementById("kc-form-login1")
        document.getElementById("kc-login").style.display = "none";
    }
    $(window).on('load', function(){
-       if ($('#totp').length){
+       if ($('#totp').length || $('#otp').length){
            document.getElementById("kc-form-login1").style.display = "none";
            document.getElementById("kc-login").style.display = "block";
        }else{

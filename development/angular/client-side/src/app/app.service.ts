@@ -136,7 +136,7 @@ export class AppServiceComponent {
         var stringLine;
         var selected = '';
         for (var key in object) {
-            if (typeof object[key] != 'number' && object[key].includes('%')) {
+            if (object[key] && typeof object[key] != 'number' && object[key].includes('%')) {
                 var split = object[key].split("% ");
                 object[`${key}`] = parseFloat(split[0].replace(` `, '')).toFixed(1) + ' % ' + split[1];
             }
@@ -311,7 +311,7 @@ export class AppServiceComponent {
         }
         return setColor;
     }
-    
+
 
     //capturing telemetry.....
     telemetry(date) {
@@ -409,7 +409,7 @@ export class AppServiceComponent {
         94: '#89ea00',
         96: '#87ef00',
         98: '#84f500',
-        100: '#7fff00',
+        100: '#00FF00',
     }
     //color gredient generation....
     public exceptionColor() {

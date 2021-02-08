@@ -795,7 +795,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     });
     let uniqueItems = [...new Set(values)];
     uniqueItems = uniqueItems.sort(function (a, b) { return a - b });
-    var colorsArr = markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', uniqueItems.length, 'rgb');
+    var colorsArr = uniqueItems.length == 1 ? ['#00FF00'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', uniqueItems.length, 'rgb');
     var colors = {};
     uniqueItems.map((a, i) => {
       colors[`${a}`] = colorsArr[i]
