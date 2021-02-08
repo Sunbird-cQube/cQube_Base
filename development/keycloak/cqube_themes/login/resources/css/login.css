@@ -406,7 +406,7 @@ input:-webkit-autofill {
     border: 1px solid #848FFF;
 }
 
-#totp {
+#totp,#otp {
     width: 100%;
     border-radius: 20px !important;
     background-color: transparent;
