@@ -260,11 +260,11 @@ export class AppServiceComponent {
     }
 
     // color gredient based on intervals
-    colorGredient(data, infraData) {
+    colorGredient(data, filter) {
         var keys = Object.keys(this.colors);
         var dataSet = {};
         var setColor = '';
-        if (infraData == 'Infrastructure_Score' || infraData == 'infrastructure_score') {
+        if (filter == 'Infrastructure_Score' || filter == 'infrastructure_score') {
             dataSet = data.details;
         } else {
             if (data.indices) {
@@ -274,10 +274,10 @@ export class AppServiceComponent {
             }
         }
         for (let i = 0; i < keys.length; i++) {
-            if (dataSet[infraData] <= parseInt(keys[i])) {
+            if (dataSet[filter] <= parseInt(keys[i])) {
                 setColor = this.colors[keys[i]];
                 break;
-            } else if (dataSet[infraData] > parseInt(keys[i]) && dataSet[infraData] <= parseInt(keys[i + 1])) {
+            } else if (dataSet[filter] > parseInt(keys[i]) && dataSet[filter] <= parseInt(keys[i + 1])) {
                 setColor = this.colors[keys[i + 1]];
                 break;
             }
@@ -287,29 +287,64 @@ export class AppServiceComponent {
 
     //generating relative colors
     // color gredient based on intervals
-    relativeColorGredient(data, infraData, colors) {
+    relativeColorGredient(data, filter, colors) {
         var keys = Object.keys(colors);
         var dataSet = {};
         var setColor = '';
-        if (infraData == 'Infrastructure_Score' || infraData == 'infrastructure_score') {
-            dataSet = data.details;
-        } else {
-            if (data.indices) {
-                dataSet = data.indices;
+        if (!filter.report) {
+            if (filter == 'Infrastructure_Score' || filter == 'infrastructure_score') {
+                dataSet = data.details;
             } else {
-                dataSet = data.metrics;
+                if (data.indices) {
+                    dataSet = data.indices;
+                } else {
+                    dataSet = data.metrics;
+                }
             }
+        } else {
+            dataSet = data;
+        }
+        if (filter.report == 'exception') {
+            keys = keys.sort(function (a: any, b: any) { return (a - b) });
         }
         for (let i = 0; i < keys.length; i++) {
-            if (dataSet[infraData] <= parseFloat(keys[i])) {
+            let val = filter.value ? filter.value : filter;
+            if (parseFloat(dataSet[val]) <= parseFloat(keys[i])) {
                 setColor = colors[keys[i]];
                 break;
-            } else if (dataSet[infraData] > parseFloat(keys[i]) && dataSet[infraData] <= parseFloat(keys[i + 1])) {
+            } else if (parseFloat(dataSet[val]) > parseFloat(keys[i]) && parseFloat(dataSet[val]) <= parseFloat(keys[i + 1])) {
                 setColor = colors[keys[i + 1]];
                 break;
             }
         }
         return setColor;
+    }
+
+    getRelativeColors(markers, filter) {
+        var values = [];
+        markers.map(item => {
+            if (!filter.report) {
+                if (filter == 'infrastructure_score' || filter == 'Infrastructure_Score') {
+                    values.push(item.details[`${filter}`]);
+                } else {
+                    if (item.matrics) {
+                        values.push(item.metrics[`${filter}`]);
+                    } else {
+                        values.push(item.indices[`${filter}`]);
+                    }
+                }
+            } else {
+                values.push(item[`${filter.value}`]);
+            }
+        });
+        let uniqueItems = [...new Set(values)];
+        uniqueItems = uniqueItems.sort(function (a, b) { return filter.report != 'exception' ? a - b : b - a });
+        var colorsArr = uniqueItems.length == 1 ? ['#00FF00'] : this.exceptionColor().generateGradient('#FF0000', '#00FF00', uniqueItems.length, 'rgb');
+        var colors = {};
+        uniqueItems.map((a, i) => {
+            colors[`${a}`] = colorsArr[i]
+        });
+        return colors;
     }
 
 
