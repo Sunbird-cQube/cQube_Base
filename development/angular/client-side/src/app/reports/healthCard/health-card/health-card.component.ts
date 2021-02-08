@@ -456,7 +456,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   patPerformTooltip = [];
   patPerformTooltipKeys = [];
   infraTooltipMetrics = [];
-  semPerformancePercent = ['percent_below_33', 'percent_between_33_60', 'percent_between_60_75', 'percent_above_75'];
+  semPerformancePercent = ['percent_below_33', 'percent_between_33_60', 'percent_between_60_75', 'percent_above_75', 'state_level_score'];
   stdAttdRankMatrixColor;
   semRankMatrixColor;
   patRankMatrixColor;

@@ -70,7 +70,7 @@ export class HealthCardService {
     90: '#8fe000',
     94: '#89ea00',
     98: '#84f500',
-    100: '#7fff00',
+    100: '#00FF00',
   }
 
   public colors1 = {
@@ -94,7 +94,7 @@ export class HealthCardService {
     15: '#8fe000',
     10: '#89ea00',
     5: '#84f500',
-    0: '#7fff00',
+    0: '#00FF00',
   }
 
   public colors2 = {
