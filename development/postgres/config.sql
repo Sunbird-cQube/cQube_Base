@@ -6362,10 +6362,16 @@ return 0;
 END;
 $$  LANGUAGE plpgsql;
 
+
+drop view if exists student_attendance_agg_last_1_day cascade;
+drop view if exists student_attendance_agg_last_30_days cascade;
+drop view if exists student_attendance_agg_last_7_days cascade;
+drop view if exists student_attendance_agg_overall cascade;
+
+
 select student_attendance_agg_refresh('last_1_day');
 select student_attendance_agg_refresh('last_7_days');
 select student_attendance_agg_refresh('last_30_days');
-
 
 
 create or replace view student_attendance_agg_overall as select sch_res.school_id,sch_res.total_present,sch_res.total_students,stn_cnt.students_count,
