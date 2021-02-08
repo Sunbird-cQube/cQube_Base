@@ -323,20 +323,19 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.districtData = this.mylatlngData = res['distData'];
         this.dateRange = res['dateRange'];
-        var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1);
+        var sorted = this.mylatlngData;
 
         var distNames = [];
         this.schoolsWithMissingData = res['missingSchoolsCount'];
-        // this.schoolCount = res['schoolCount'];
+        
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', sorted.length, 'rgb');
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'percentage_schools_with_missing_data', report: 'exception' }); 
         if (this.markers.length > 0) {
           for (var i = 0; i < this.markers.length; i++) {
-            // var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(this.markers[i]['district_id']);
             distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, colors[i], 5, 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 5, 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
         }
@@ -381,20 +380,19 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['blockData'];
         this.dateRange = res['dateRange'];
-        var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1);
+        var sorted = this.mylatlngData;;
 
         var blockNames = [];
         this.schoolsWithMissingData = res['missingSchoolsCount'];
-        // this.schoolCount = res['schoolCount'];
+        
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', sorted.length, 'rgb');
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'percentage_schools_with_missing_data', report: 'exception' });
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
-            // var color = this.commonService.color(this.markers[i], 'attendance');
             this.blocksIds.push(this.markers[i]['block_id']);
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, colors[i], 3.5, 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -439,19 +437,15 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['clusterData'];
         this.dateRange = res['dateRange'];
-        var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1)
+        var sorted = this.mylatlngData;
 
         var clustNames = [];
         var blockNames = [];
         this.schoolsWithMissingData = res['missingSchoolsCount'];
-        // this.schoolCount = res['schoolCount']
-
-
+        
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', sorted.length, 'rgb');
-        if (this.markers.length !== 0) {
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'percentage_schools_with_missing_data', report: 'exception' }); if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
-            // var color = this.commonService.color(this.markers[i], 'attendance');
             this.clusterIds.push(this.markers[i]['cluster_id']);
             this.blocksIds.push(this.markers[i]['block_id']);
             if (this.markers[i]['cluster_name'] !== null) {
@@ -460,7 +454,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
               clustNames.push({ id: this.markers[i]['cluster_id'], name: 'NO NAME FOUND', blockId: this.markers[i]['block_id'] });
             }
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, colors[i], 1, 0.01, 0.5, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 1, 0.01, 0.5, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
@@ -509,18 +503,16 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolData'];
         this.dateRange = res['dateRange'];
-        var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1)
+        var sorted = this.mylatlngData;
 
         this.schoolsWithMissingData = res['missingSchoolsCount'];
-        // this.schoolCount = res['schoolCount'];
+        
 
         this.markers = sorted;
-        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', sorted.length, 'rgb');
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
-            // var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(sorted[i]['district_id']);
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, colors[i], 0, 0, 0.3, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, 'red', 0, 0, 0.3, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
@@ -740,16 +732,14 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
         var blokName = [];
 
-        var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1)
+        var sorted = this.mylatlngData;
 
         this.markers = sorted;
         this.schoolsWithMissingData = res['missingSchoolsCount'];
-        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', sorted.length, 'rgb');
-        for (var i = 0; i < this.markers.length; i++) {
-          // var color = this.commonService.color(this.markers[i], 'attendance');
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'percentage_schools_with_missing_data', report: 'exception' }); for (var i = 0; i < this.markers.length; i++) {
           this.blocksIds.push(this.markers[i]['block_id']);
           blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, colors[i], 3.5, 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -853,23 +843,20 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.lng = Number(this.mylatlngData[0]['lng']);
         var clustNames = [];
 
-        var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1)
+        var sorted = this.mylatlngData;
 
         this.markers = [];
         this.schoolsWithMissingData = res['missingSchoolsCount'];
-        // this.schoolCount = res['schoolCount'];
-        // sorted.pop();
-        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', sorted.length, 'rgb');
-        this.markers = sorted;
+        
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'percentage_schools_with_missing_data', report: 'exception' }); this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
-          // var color = this.commonService.color(this.markers[i], 'attendance');
           this.clusterIds.push(sorted[i]['cluster_id']);
           if (sorted[i]['name'] !== null) {
             clustNames.push({ id: sorted[i]['cluster_id'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
           } else {
             clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
           }
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, colors[i], 3.5, 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
 
@@ -1000,17 +987,15 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.lat = Number(this.mylatlngData[0]['lat']);
         this.lng = Number(this.mylatlngData[0]['lng']);
 
-        var sorted = this.mylatlngData.sort((a, b) => (a.percentage_schools_with_missing_data < b.percentage_schools_with_missing_data) ? 1 : -1)
+        var sorted = this.mylatlngData;
 
         this.markers = [];
         this.schoolsWithMissingData = res['missingSchoolsCount'];
-        // this.schoolCount = res['schoolCount'];
+        
 
-        var colors = sorted.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', sorted.length, 'rgb');
-        this.markers = sorted;
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'percentage_schools_with_missing_data', report: 'exception' }); this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
-          // var color = this.commonService.color(this.markers[i], 'attendance');
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, colors[i], 3.5, 0.1, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.1, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         globalMap.doubleClickZoom.enable();
