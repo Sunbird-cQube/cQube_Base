@@ -373,11 +373,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
           let result = this.data['sortedData']
           this.blockMarkers = [];
           this.blockMarkers = result;
-          this.colors = this.blockMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.blockMarkers.length, 'rgb');
+          let colors = this.commonService.getRelativeColors(this.blockMarkers, { value: 'semester_performance', report: 'reports' });
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var color = this.commonService.color(this.blockMarkers[i], 'semester_performance');
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 3.5, 1, 1, this.levelWise);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(this.blockMarkers[i], { value: 'semester_performance', report: 'reports' }, colors), 3.5, 1, 1, this.levelWise);
               this.generateToolTip(markerIcon, this.blockMarkers[i], this.levelWise);
             }
             this.commonService.restrictZoom(globalMap);
@@ -452,11 +452,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
           this.clusterMarkers = [];
 
           this.clusterMarkers = result;
-          this.colors = this.clusterMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.clusterMarkers.length, 'rgb');
+          let colors = this.commonService.getRelativeColors(this.clusterMarkers, { value: 'semester_performance', report: 'reports' });
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               var color = this.commonService.color(this.clusterMarkers[i], 'semester_performance');
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 1, 0.01, 0.5, this.levelWise);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(this.clusterMarkers[i], { value: 'semester_performance', report: 'reports' }, colors), 1, 0.01, 0.5, this.levelWise);
               this.generateToolTip(markerIcon, this.clusterMarkers[i], this.levelWise);
             }
             this.commonService.restrictZoom(globalMap);
@@ -528,11 +528,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
           let result = this.data['sortedData']
 
           this.schoolMarkers = result;
-          this.colors = this.schoolMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.schoolMarkers.length, 'rgb');
+          let colors = this.commonService.getRelativeColors(this.schoolMarkers, { value: 'semester_performance', report: 'reports' });
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var color = this.commonService.color(this.schoolMarkers[i], 'semester_performance');
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 0, 0, 0.3, this.levelWise);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(this.schoolMarkers[i], { value: 'semester_performance', report: 'reports' }, colors), 0, 0, 0.3, this.levelWise);
               this.generateToolTip(markerIcon, this.schoolMarkers[i], this.levelWise);
             }
 
@@ -843,11 +843,11 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
     if (data['sortedData'].length > 0) {
       this.markers = data['sortedData']
-      this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.markers.length, 'rgb');
+      let colors = this.commonService.getRelativeColors(this.markers, { value: 'semester_performance', report: 'reports' });
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         var color = this.commonService.color(this.markers[i], 'semester_performance');
-        var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.colors[i], options.radius, options.strokeWeight, 1, options.level);
+        var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(this.markers[i], { value: 'semester_performance', report: 'reports' }, colors), options.radius, options.strokeWeight, 1, options.level);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {
