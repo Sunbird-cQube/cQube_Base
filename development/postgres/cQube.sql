@@ -5482,3 +5482,19 @@ create table IF NOT EXISTS diksha_tpd_staging(
   created_on TIMESTAMP without time zone,
   updated_on TIMESTAMP without time zone 
   );
+
+/* PAT exception tables */
+
+create table IF NOT EXISTS school_grade_enrolment(
+  school_id bigint,
+  grade int,
+  students_count int,
+  primary key(school_id,grade)
+);
+
+create table IF NOT EXISTS subject_details(
+  subject_id int,
+  grade int,
+  subject varchar(100),
+  primary key(subject_id,grade)
+);

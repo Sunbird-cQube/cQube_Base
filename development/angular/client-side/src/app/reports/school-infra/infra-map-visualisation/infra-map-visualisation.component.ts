@@ -78,6 +78,8 @@ export class InfraMapVisualisationComponent implements OnInit {
   public lat: any;
   public lng: any;
 
+  colorGenData: any = [];
+
 
   constructor(
     public http: HttpClient,
@@ -89,6 +91,13 @@ export class InfraMapVisualisationComponent implements OnInit {
   ) {
   }
 
+  selected = "absolute";
+
+  getColor(data) {
+    this.selected = data;
+    this.levelWiseFilter();
+  }
+
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
@@ -98,7 +107,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    
+
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
 
     if (params && params.level) {
@@ -242,12 +251,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             centerLng: this.lng,
             level: 'district'
           }
-          // var MylatLng = [];
-          // globalMap.on('click', function (e) {
-          //   // console.log('[' + e.latlng.lng + ',' + e.latlng.lat + ']');
-          //   MylatLng.push('[' + e.latlng.lng + ',' + e.latlng.lat + ']');
-          // });
-          // this.latLngArr = MylatLng;
+
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
           globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
@@ -272,10 +276,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
   }
 
-  // latLngArr = [];
-  // showArr() {
-  //   console.log(this.latLngArr)
-  // }
 
   // to load all the blocks for state data on the map
   blockWise() {
@@ -320,11 +320,15 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.blockMarkers = [];
 
           this.blockMarkers = result;
-
-          this.schoolCount = 0;
+          var colors = this.getRelativeColors(this.blockMarkers);
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              var color = this.commonService.colorGredient(this.blockMarkers[i], this.infraData);
+              var color;
+              if (this.selected == 'absolute') {
+                color = this.commonService.colorGredient(this.blockMarkers[i], this.infraData);
+              } else {
+                color = this.commonService.relativeColorGredient(this.blockMarkers[i], this.infraData, colors);
+              }
               var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, color, 3.5, 0.01, 1, options.level);
 
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
@@ -396,10 +400,16 @@ export class InfraMapVisualisationComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
+          var colors = this.getRelativeColors(this.clusterMarkers);
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var color = this.commonService.colorGredient(this.clusterMarkers[i], this.infraData);
+              var color;
+              if (this.selected == 'absolute') {
+                color = this.commonService.colorGredient(this.clusterMarkers[i], this.infraData);
+              } else {
+                color = this.commonService.relativeColorGredient(this.clusterMarkers[i], this.infraData, colors);
+              }
               var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, color, 1, 0.01, .5, options.level);
 
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
@@ -471,9 +481,15 @@ export class InfraMapVisualisationComponent implements OnInit {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
+          var colors = this.getRelativeColors(this.schoolMarkers);
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var color = this.commonService.colorGredient(this.schoolMarkers[i], this.infraData);
+              var color;
+              if (this.selected == 'absolute') {
+                color = this.commonService.colorGredient(this.schoolMarkers[i], this.infraData);
+              } else {
+                color = this.commonService.relativeColorGredient(this.schoolMarkers[i], this.infraData, colors);
+              }
               var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, color, 0, 0, 0.3, options.level);
 
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
@@ -742,9 +758,15 @@ export class InfraMapVisualisationComponent implements OnInit {
     var myData = data['data'];
     if (myData.length > 0) {
       this.markers = myData;
+      var colors = this.getRelativeColors(this.markers);
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-        var color = this.commonService.colorGredient(this.markers[i], this.infraData);
+        var color;
+        if (this.selected == 'absolute') {
+          color = this.commonService.colorGredient(this.markers[i], this.infraData);
+        } else {
+          color = this.commonService.relativeColorGredient(this.markers[i], this.infraData, colors);
+        }
         var markerIcon = this.commonService.initMarkers(this.markers[i].details.latitude, this.markers[i].details.longitude, color, options.radius, options.strokeWeight, 1, options.level);
 
         // data to show on the tooltip for the desired levels
@@ -760,6 +782,25 @@ export class InfraMapVisualisationComponent implements OnInit {
     //schoolCount
     this.schoolCount = data['footer'];
     this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+  }
+
+  getRelativeColors(markers) {
+    var values = [];
+    markers.map(item => {
+      if (this.infraData == 'infrastructure_score') {
+        values.push(item.details[`infrastructure_score`]);
+      } else {
+        values.push(item.metrics[`${this.infraData}`]);
+      }
+    });
+    let uniqueItems = [...new Set(values)];
+    uniqueItems = uniqueItems.sort(function (a, b) { return a - b });
+    var colorsArr = markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', uniqueItems.length, 'rgb');
+    var colors = {};
+    uniqueItems.map((a, i) => {
+      colors[`${a}`] = colorsArr[i]
+    });
+    return colors;
   }
 
   //infra filters.....
@@ -787,8 +828,13 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   public infraData = 'infrastructure_score';
   public level = '';
+
   oninfraSelect(data) {
     this.infraData = data;
+    this.levelWiseFilter();
+  }
+
+  levelWiseFilter() {
     if (this.level == 'district') {
       this.districtWise();
     }
@@ -842,7 +888,14 @@ export class InfraMapVisualisationComponent implements OnInit {
     } else {
       yourData1 = this.commonService.getInfoFrom(orgObject, "", level, "infra-map", infraName, colorText).join(" <br>");
     }
-    var yourData = this.commonService.getInfoFrom(markers.metrics, "", level, "infra-map", infraName, colorText).join(" <br>");
+    const ordered = Object.keys(markers.metrics).sort().reduce(
+      (obj, key) => {
+        obj[key] = markers.metrics[key];
+        return obj;
+      },
+      {}
+    );
+    var yourData = this.commonService.getInfoFrom(ordered, "", level, "infra-map", infraName, colorText).join(" <br>");
 
 
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(

@@ -73,6 +73,10 @@ export class PATExceptionComponent implements OnInit {
 
   timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: 'last_30_days', value: "Last 30 Days" }];
   period = 'overall';
+  allGrades: any;
+  grade = 'all';
+  allSubjects: string[];
+  subject = '';
 
   constructor(
     public http: HttpClient,
@@ -97,6 +101,12 @@ export class PATExceptionComponent implements OnInit {
   }
 
   onPeriodSelect() {
+    this.levelWiseFilter();
+  }
+
+  onGradeSelect(data) {
+    this.grade = data;
+    this.subject = '';
     this.levelWiseFilter();
   }
 
@@ -127,6 +137,13 @@ export class PATExceptionComponent implements OnInit {
     }
   }
 
+  homeClick() {
+    this.grade = 'all';
+    this.period = 'overall';
+    this.subject = '';
+    this.districtWise();
+  }
+
   // to load all the districts for state data on the map
   districtWise() {
     try {
@@ -149,36 +166,49 @@ export class PATExceptionComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      // api call to get all the districts data
-      if (this.myData) {
-        this.myData.unsubscribe();
-      }
-      this.myData = this.service.patExceptionDistWise({ timePeriod: this.period }).subscribe(res => {
-        this.data = res;
-        // to show only in dropdowns
-        this.districtMarkers = this.data['data'];
-
-        // options to set for markers in the map
-        let options = {
-          radius: 5,
-          fillOpacity: 1,
-          strokeWeight: 0.01,
-          weight: 1,
-          mapZoom: this.commonService.zoomLevel,
-          centerLat: this.lat,
-          centerLng: this.lng,
-          level: 'district'
+      this.service.gradeMetaData(this.period).subscribe(res => {
+        if (res['data']['district']) {
+          this.allGrades = res['data']['district'];
+          this.allGrades = [{ grade: "all" }, ...this.allGrades.filter(item => item !== { grade: "all" })];
         }
+        this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
+        // api call to get all the districts data
+        if (this.myData) {
+          this.myData.unsubscribe();
+        }
+        this.myData = this.service.patExceptionDistWise({ grade: this.grade, timePeriod: this.period }).subscribe(res => {
+          this.data = res;
+          // to show only in dropdowns
+          this.markers = this.districtMarkers = this.data['data'];
+          this.allSubjects = [];
+          if (this.grade != 'all') {
+            this.allSubjects = this.data['subjects'];
+          }
+          // options to set for markers in the map
+          let options = {
+            radius: 5,
+            fillOpacity: 1,
+            strokeWeight: 0.01,
+            weight: 1,
+            mapZoom: this.commonService.zoomLevel,
+            centerLat: this.lat,
+            centerLng: this.lng,
+            level: 'district'
+          }
 
-        this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-        var fileName = "District_wise_report";
-        this.genericFun(this.data, options, fileName);
+          this.commonService.restrictZoom(globalMap);
+          globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+          globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+          var fileName = "District_wise_report";
+          this.genericFun(this.data, options, fileName);
 
-        // sort the districtname alphabetically
-        this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
-      }, err => {
+          // sort the districtname alphabetically
+          this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
+        }, err => {
+          this.data = [];
+          this.commonService.loaderAndErr(this.data);
+        });
+      }, error => {
         this.data = [];
         this.commonService.loaderAndErr(this.data);
       });
@@ -214,52 +244,102 @@ export class PATExceptionComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      // api call to get the all clusters data
-      if (this.myData) {
-        this.myData.unsubscribe();
-      }
-      this.myData = this.service.patExceptionBlock({ timePeriod: this.period }).subscribe(res => {
-        this.data = res
-        let options = {
-          mapZoom: this.commonService.zoomLevel,
-          centerLat: this.lat,
-          centerLng: this.lng,
-          level: "Block"
+      this.service.gradeMetaData(this.period).subscribe(res => {
+        if (res['data']['block']) {
+          this.allGrades = res['data']['block'];
+          this.allGrades = [{ grade: "all" }, ...this.allGrades.filter(item => item !== { grade: "all" })];
         }
-        if (this.data['data'].length > 0) {
-          let result = this.data['data']
-          this.blockMarkers = [];
-          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
-          // generate color gradient
-          let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
-          this.blockMarkers = result;
-          // var obj = this.blockMarkers.filter(a => { if (a[`block_latitude`] == null) return a });
-          // var index = this.blockMarkers.indexOf(obj[0]);
-          // if (index != -1) {
-          //   this.blockMarkers.splice(index, 1);
-          // }
-
-          if (this.blockMarkers.length !== 0) {
-            for (let i = 0; i < this.blockMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.colors[i], 3.5, 0.1, 1, options.level);
-              this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "block_latitude", "block_longitude");
-
-              // to download the report
-              this.fileName = "Block_wise_report";
-            }
-
-            this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
-
-            this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
-            this.commonService.loaderAndErr(this.data);
-            this.changeDetection.markForCheck();
+        this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
+        // api call to get the all clusters data
+        if (this.myData) {
+          this.myData.unsubscribe();
+        }
+        this.myData = this.service.patExceptionBlock({ grade: this.grade, timePeriod: this.period }).subscribe(res => {
+          this.data = res
+          let options = {
+            mapZoom: this.commonService.zoomLevel,
+            centerLat: this.lat,
+            centerLng: this.lng,
+            level: "Block"
           }
-        }
-      }, err => {
+          if (this.data['data'].length > 0) {
+            let result = this.data['data']
+            this.blockMarkers = [];
+            result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+            // generate color gradient
+            let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+            this.colors = colors;
+            this.markers = this.blockMarkers = result;
+            this.allSubjects = [];
+            if (this.grade != 'all') {
+              this.allSubjects = this.data['subjects'];
+            }
+            var updatedMarkers = [];
+            var markersWithSubject = [];
+            this.markers.map(item => {
+              var keys = Object.keys(item);
+              var start = 7;
+              if (this.grade && this.grade != 'all') {
+                var obj1 = {}
+                if (this.subject != '') {
+                  if (item.subjects && item.subjects[0][`${this.subject}`] && Object.keys(item.subjects[0]).includes(this.subject)) {
+                    for (let i = 0; i < start; i++) {
+                      obj1[`${keys[i]}`] = item[`${keys[i]}`];
+                    }
+                    obj1['subject'] = this.subject;
+                    var keys2 = Object.keys(item.subjects[0][`${this.subject}`]);
+                    for (let i = 0; i < keys2.length; i++) {
+                      obj1[`${keys2[i]}`] = item.subjects[0][`${this.subject}`][`${keys2[i]}`];
+                    }
+                    markersWithSubject.push(obj1);
+                  } else if (!item.subjects) {
+                    markersWithSubject.push(item);
+                  }
+                }
+              }
+              var obj = {};
+              Object.keys(item).forEach(key => {
+                if (key !== 'subjects') {
+                  obj[key] = item[key];
+                }
+              });
+              updatedMarkers.push(obj);
+            })
+
+            if (this.grade != 'all' && this.subject != '') {
+              markersWithSubject = markersWithSubject.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+              this.markers = markersWithSubject;
+            } else if (this.grade != 'all' && this.subject == '') {
+              updatedMarkers = updatedMarkers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+              this.markers = updatedMarkers;
+            } else {
+              this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+            }
+            this.blockMarkers = this.markers;
+            if (this.blockMarkers.length !== 0) {
+              for (let i = 0; i < this.blockMarkers.length; i++) {
+                var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.colors[i], 3.5, 0.1, 1, options.level);
+                this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "block_latitude", "block_longitude");
+
+                // to download the report
+                this.fileName = "Block_wise_report";
+              }
+
+              this.commonService.restrictZoom(globalMap);
+              globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+              globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+
+              this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+
+              this.commonService.loaderAndErr(this.data);
+              this.changeDetection.markForCheck();
+            }
+          }
+        }, err => {
+          this.data = [];
+          this.commonService.loaderAndErr(this.data);
+        });
+      }, error => {
         this.data = [];
         this.commonService.loaderAndErr(this.data);
       });
@@ -295,53 +375,103 @@ export class PATExceptionComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      // api call to get the all clusters data
-      if (this.myData) {
-        this.myData.unsubscribe();
-      }
-      this.myData = this.service.patExceptionCluster({ timePeriod: this.period }).subscribe(res => {
-        this.data = res
-        let options = {
-          mapZoom: this.commonService.zoomLevel,
-          centerLat: this.lat,
-          centerLng: this.lng,
-          level: "Cluster"
+      this.service.gradeMetaData(this.period).subscribe(res => {
+        if (res['data']['cluster']) {
+          this.allGrades = res['data']['cluster'];
+          this.allGrades = [{ grade: "all" }, ...this.allGrades.filter(item => item !== { grade: "all" })];
         }
-        if (this.data['data'].length > 0) {
-          let result = this.data['data'];
-          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
-          this.clusterMarkers = [];
-          // generate color gradient
-          let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
-          this.clusterMarkers = result;
-          // var obj = this.clusterMarkers.filter(a => { if (a[`cluster_latitude`] == null) return a });
-          // var index = this.clusterMarkers.indexOf(obj[0]);
-          // if (index != -1) {
-          //   this.clusterMarkers.splice(index, 1);
-          // }
-
-          if (this.clusterMarkers.length !== 0) {
-            for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.colors[i], 1, 0.01, 0.5, options.level);
-
-              this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "cluster_latitude", "cluster_longitude");
-
-              // to download the report
-              this.fileName = "Cluster_wise_report";
-            }
-
-            this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
-
-            this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
-            this.commonService.loaderAndErr(this.data);
-            this.changeDetection.markForCheck();
+        this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
+        // api call to get the all clusters data
+        if (this.myData) {
+          this.myData.unsubscribe();
+        }
+        this.myData = this.service.patExceptionCluster({ grade: this.grade, timePeriod: this.period }).subscribe(res => {
+          this.data = res
+          let options = {
+            mapZoom: this.commonService.zoomLevel,
+            centerLat: this.lat,
+            centerLng: this.lng,
+            level: "Cluster"
           }
-        }
-      }, err => {
+          if (this.data['data'].length > 0) {
+            let result = this.data['data'];
+            result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+            this.clusterMarkers = [];
+            // generate color gradient
+            let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+            this.colors = colors;
+            this.markers = this.clusterMarkers = result;
+            this.allSubjects = [];
+            if (this.grade != 'all') {
+              this.allSubjects = this.data['subjects'];
+            }
+            var updatedMarkers = [];
+            var markersWithSubject = [];
+            this.markers.map(item => {
+              var keys = Object.keys(item);
+              var start = 9;
+              if (this.grade && this.grade != 'all') {
+                var obj1 = {}
+                if (this.subject != '') {
+                  if (item.subjects && item.subjects[0][`${this.subject}`] && Object.keys(item.subjects[0]).includes(this.subject)) {
+                    for (let i = 0; i < start; i++) {
+                      obj1[`${keys[i]}`] = item[`${keys[i]}`];
+                    }
+                    obj1['subject'] = this.subject;
+                    var keys2 = Object.keys(item.subjects[0][`${this.subject}`]);
+                    for (let i = 0; i < keys2.length; i++) {
+                      obj1[`${keys2[i]}`] = item.subjects[0][`${this.subject}`][`${keys2[i]}`];
+                    }
+                    markersWithSubject.push(obj1);
+                  } else if (!item.subjects) {
+                    markersWithSubject.push(item);
+                  }
+                }
+              }
+              var obj = {};
+              Object.keys(item).forEach(key => {
+                if (key !== 'subjects') {
+                  obj[key] = item[key];
+                }
+              });
+              updatedMarkers.push(obj);
+            })
+
+            if (this.grade != 'all' && this.subject != '') {
+              markersWithSubject = markersWithSubject.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+              this.markers = markersWithSubject;
+            } else if (this.grade != 'all' && this.subject == '') {
+              updatedMarkers = updatedMarkers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+              this.markers = updatedMarkers;
+            } else {
+              this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+            }
+            this.clusterMarkers = this.markers;
+            if (this.clusterMarkers.length !== 0) {
+              for (let i = 0; i < this.clusterMarkers.length; i++) {
+                var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.colors[i], 1, 0.01, 0.5, options.level);
+
+                this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "cluster_latitude", "cluster_longitude");
+
+                // to download the report
+                this.fileName = "Cluster_wise_report";
+              }
+
+              this.commonService.restrictZoom(globalMap);
+              globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+              globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+
+              this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+
+              this.commonService.loaderAndErr(this.data);
+              this.changeDetection.markForCheck();
+            }
+          }
+        }, err => {
+          this.data = [];
+          this.commonService.loaderAndErr(this.data);
+        });
+      }, error => {
         this.data = [];
         this.commonService.loaderAndErr(this.data);
       });
@@ -373,58 +503,105 @@ export class PATExceptionComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      // api call to get the all schools data
-      if (this.myData) {
-        this.myData.unsubscribe();
-      }
-      this.myData = this.service.patExceptionSchool({ timePeriod: this.period }).subscribe(res => {
-        this.data = res
-        let options = {
-          mapZoom: this.commonService.zoomLevel,
-          centerLat: this.lat,
-          centerLng: this.lng,
-          level: 'school'
+      this.service.gradeMetaData(this.period).subscribe(res => {
+        if (res['data']['school']) {
+          this.allGrades = res['data']['school'];
+          this.allGrades = [{ grade: "all" }, ...this.allGrades.filter(item => item !== { grade: "all" })];
         }
-        this.schoolMarkers = [];
-        if (this.data['data'].length > 0) {
-          let result = this.data['data']
-          result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
-          // generate color gradient
-          let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
-          this.colors = colors;
-          this.schoolMarkers = result;
-          // var obj = this.schoolMarkers.filter(a => { if (a[`school_latitude`] == null) return a });
-          // var index = this.schoolMarkers.indexOf(obj[0]);
-          // if (index != -1) {
-          //   this.schoolMarkers.splice(index, 1);
-          // }
-
-          if (this.schoolMarkers.length !== 0) {
-            for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 0, 0, 0.3, options.level);
-
-              this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "school_latitude", "school_longitude");
-
-              // to download the report
-              this.fileName = "School_wise_report";
-            }
-
-            globalMap.doubleClickZoom.enable();
-            globalMap.scrollWheelZoom.enable();
-            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
-
-            this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
-            this.commonService.loaderAndErr(this.data);
-            this.changeDetection.markForCheck();
+        this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
+        // api call to get the all schools data
+        if (this.myData) {
+          this.myData.unsubscribe();
+        }
+        this.myData = this.service.patExceptionSchool({ grade: this.grade, timePeriod: this.period }).subscribe(res => {
+          this.data = res
+          let options = {
+            mapZoom: this.commonService.zoomLevel,
+            centerLat: this.lat,
+            centerLng: this.lng,
+            level: 'school'
           }
-        }
-      }, err => {
+          this.schoolMarkers = [];
+          if (this.data['data'].length > 0) {
+            let result = this.data['data']
+            result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+            // generate color gradient
+            let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', result.length, 'rgb');
+            this.colors = colors;
+            this.markers = this.schoolMarkers = result;
+            this.allSubjects = [];
+            if (this.grade != 'all') {
+              this.allSubjects = this.data['subjects'];
+            }
+            var updatedMarkers = [];
+            var markersWithSubject = [];
+            this.markers.map(item => {
+              var keys = Object.keys(item);
+              var start = 11;
+              if (this.grade && this.grade != 'all') {
+                var obj1 = {}
+                if (this.subject != '') {
+                  if (item.subjects && item.subjects[0][`${this.subject}`] && Object.keys(item.subjects[0]).includes(this.subject)) {
+                    for (let i = 0; i < start; i++) {
+                      obj1[`${keys[i]}`] = item[`${keys[i]}`];
+                    }
+                    obj1['subject'] = this.subject;
+                    var keys2 = Object.keys(item.subjects[0][`${this.subject}`]);
+                    for (let i = 0; i < keys2.length; i++) {
+                      obj1[`${keys2[i]}`] = item.subjects[0][`${this.subject}`][`${keys2[i]}`];
+                    }
+                    markersWithSubject.push(obj1);
+                  } else if (!item.subjects) {
+                    markersWithSubject.push(item);
+                  }
+                }
+              }
+              var obj = {};
+              Object.keys(item).forEach(key => {
+                if (key !== 'subjects') {
+                  obj[key] = item[key];
+                }
+              });
+              updatedMarkers.push(obj);
+            })
+
+            if (this.grade != 'all' && this.subject != '') {
+              markersWithSubject = markersWithSubject.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+              this.markers = markersWithSubject;
+            } else if (this.grade != 'all' && this.subject == '') {
+              updatedMarkers = updatedMarkers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+              this.markers = updatedMarkers;
+            } else {
+              this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+            }
+            this.schoolMarkers = this.markers;
+            if (this.schoolMarkers.length !== 0) {
+              for (let i = 0; i < this.schoolMarkers.length; i++) {
+                var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 0, 0, 0.3, options.level);
+                this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "school_latitude", "school_longitude");
+                // to download the report
+                this.fileName = "School_wise_report";
+              }
+
+              globalMap.doubleClickZoom.enable();
+              globalMap.scrollWheelZoom.enable();
+              globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+              globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+
+              this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+
+              this.commonService.loaderAndErr(this.data);
+              this.changeDetection.markForCheck();
+            }
+          }
+        }, err => {
+          this.data = [];
+          this.commonService.loaderAndErr(this.data);
+        });
+      }, error => {
         this.data = [];
         this.commonService.loaderAndErr(this.data);
       });
-
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
     } catch (e) {
@@ -448,10 +625,14 @@ export class PATExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.patExceptionBlockPerDist(districtId, { timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.patExceptionBlockPerDist(districtId, { grade: this.grade, timePeriod: this.period }).subscribe(res => {
       this.data = res;
 
-      this.blockMarkers = this.data['data'];
+      this.markers = this.blockMarkers = this.data['data'];
+      this.allSubjects = [];
+      if (this.grade != 'all') {
+        this.allSubjects = this.data['subjects'];
+      }
       // set hierarchy values
       this.districtHierarchy = {
         distId: this.data['data'][0].district_id,
@@ -509,9 +690,13 @@ export class PATExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.patExceptionClusterPerBlock(this.districtHierarchy.distId, blockId, { timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.patExceptionClusterPerBlock(this.districtHierarchy.distId, blockId, { grade: this.grade, timePeriod: this.period }).subscribe(res => {
       this.data = res;
-      this.clusterMarkers = this.data['data'];
+      this.markers = this.clusterMarkers = this.data['data'];
+      this.allSubjects = [];
+      if (this.grade != 'all') {
+        this.allSubjects = this.data['subjects'];
+      }
       var myBlocks = [];
       this.blockMarkers.forEach(element => {
         if (element.district_id === this.districtHierarchy.distId) {
@@ -576,11 +761,14 @@ export class PATExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.patExceptionBlock({ timePeriod: this.period }).subscribe(result => {
-      this.myData = this.service.patExceptionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.patExceptionBlock({ grade: this.grade, timePeriod: this.period }).subscribe(result => {
+      this.myData = this.service.patExceptionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { grade: this.grade, timePeriod: this.period }).subscribe(res => {
         this.data = res;
-        this.schoolMarkers = this.data['data'];
-
+        this.markers = this.schoolMarkers = this.data['data'];
+        this.allSubjects = [];
+        if (this.grade != 'all') {
+          this.allSubjects = this.data['subjects'];
+        }
         var markers = result['data'];
         var myBlocks = [];
         markers.forEach(element => {
@@ -655,53 +843,80 @@ export class PATExceptionComponent implements OnInit {
   genericFun(data, options, fileName) {
     this.reportData = [];
     this.schoolCount = '';
-
     if (data['data'].length > 0) {
       this.markers = data['data']
-      this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
-      // generate color gradient
-      let colors = this.service.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
-      this.colors = colors;
-      // var obj = this.markers.filter(a => { if (a[`district_latitude`] == null) return a });
-      // var index = this.markers.indexOf(obj[0]);
-      // if (index != -1) {
-      //   this.markers.splice(index, 1);
-      // }
 
+      var updatedMarkers = [];
+      var markersWithSubject = [];
+      this.markers.map(item => {
+        var keys = Object.keys(item);
+        var start;
+        if (options.level == 'district') {
+          start = 4;
+        }
+        if (options.level == 'block') {
+          start = 6;
+        }
+        if (options.level == 'cluster') {
+          start = 8;
+        }
+        if (options.level == 'school') {
+          start = 10;
+        }
+        if (this.grade && this.grade != 'all') {
+          var obj1 = {}
+          if (this.subject != '') {
+            if (item.subjects && item.subjects[0][`${this.subject}`] && Object.keys(item.subjects[0]).includes(this.subject)) {
+              for (let i = 0; i <= start; i++) {
+                obj1[`${keys[i]}`] = item[`${keys[i]}`];
+              }
+              obj1['subject'] = this.subject;
+              var keys2 = Object.keys(item.subjects[0][`${this.subject}`]);
+              for (let i = 0; i < keys2.length; i++) {
+                obj1[`${keys2[i]}`] = item.subjects[0][`${this.subject}`][`${keys2[i]}`];
+              }
+              markersWithSubject.push(obj1);
+            } else if (!item.subjects) {
+              markersWithSubject.push(item);
+            }
+          }
+        }
+        var obj = {};
+        Object.keys(item).forEach(key => {
+          if (key !== 'subjects') {
+            obj[key] = item[key];
+          }
+        });
+        updatedMarkers.push(obj);
+      })
+
+      if (this.grade != 'all' && this.subject != '') {
+        markersWithSubject = markersWithSubject.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+        this.markers = markersWithSubject;
+      } else if (this.grade != 'all' && this.subject == '') {
+        updatedMarkers = updatedMarkers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+        this.markers = updatedMarkers;
+      } else {
+        this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
+      }
+
+      // generate color gradient
+      let colors;
+      if (options.level == 'school') {
+        colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', this.markers.length, 'rgb');
+      } else {
+        colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
+      }
+      this.colors = colors;
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-        var lat, strLat; var lng, strLng;
-        if (options.level == "district") {
-          lat = this.markers[i].district_latitude;
-          strLat = "district_latitude";
-          lng = this.markers[i].district_longitude;
-          strLng = "district_longitude";
-        }
-        if (options.level == "block") {
-          lat = this.markers[i].block_latitude;
-          strLat = "block_latitude";
-          lng = this.markers[i].block_longitude;
-          strLng = "block_longitude";
-        }
-        if (options.level == "cluster") {
-          lat = this.markers[i].cluster_latitude;
-          strLat = "cluster_latitude";
-          lng = this.markers[i].cluster_longitude;
-          strLng = "cluster_longitude";
-        }
-        if (options.level == "school") {
-          lat = this.markers[i].school_latitude;
-          strLat = "school_latitude";
-          lng = this.markers[i].school_longitude;
-          strLng = "school_longitude";
-        }
-
+        this.getLatLng(options.level, this.markers[i]);
         var markerIcon;
-        markerIcon = this.commonService.initMarkers(lat, lng, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
+        markerIcon = this.commonService.initMarkers(this.latitude, this.longitude, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {
-          this.generateToolTip(this.markers[i], options.level, markerIcon, strLat, strLng);
+          this.generateToolTip(this.markers[i], options.level, markerIcon, this.strLat, this.strLng);
           // to download the report
           this.fileName = fileName;
         }
@@ -711,6 +926,35 @@ export class PATExceptionComponent implements OnInit {
       this.changeDetection.markForCheck();
     }
     this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+  }
+
+
+  latitude; strLat; longitude; strLng;
+  getLatLng(level, marker) {
+    if (level == "district") {
+      this.latitude = marker.district_latitude;
+      this.strLat = "district_latitude";
+      this.longitude = marker.district_longitude;
+      this.strLng = "district_longitude";
+    }
+    if (level == "block") {
+      this.latitude = marker.block_latitude;
+      this.strLat = "block_latitude";
+      this.longitude = marker.block_longitude;
+      this.strLng = "block_longitude";
+    }
+    if (level == "cluster") {
+      this.latitude = marker.cluster_latitude;
+      this.strLat = "cluster_latitude";
+      this.longitude = marker.cluster_longitude;
+      this.strLng = "cluster_longitude";
+    }
+    if (level == "school") {
+      this.latitude = marker.school_latitude;
+      this.strLat = "school_latitude";
+      this.longitude = marker.school_longitude;
+      this.strLng = "school_longitude";
+    }
   }
 
   popups(markerIcon, markers, level) {
@@ -728,6 +972,10 @@ export class PATExceptionComponent implements OnInit {
       }
       markerIcon.myJsonData = markers;
     }
+  }
+
+  onSubjectSelect(data) {
+    this.levelWiseFilter();
   }
 
   //Showing tooltips on markers on mouse hover...

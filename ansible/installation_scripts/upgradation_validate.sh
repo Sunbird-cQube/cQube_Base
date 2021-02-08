@@ -115,7 +115,7 @@ fi
 # getting this release version
 if [[ -e ".version" ]]; then
     this_version=$(awk ''/^cqube_version:' /{ if ($2 !~ /#.*/) {print $2}}' .version)
-
+    this_version=$(sed -e 's/^"//' -e 's/"$//' <<<"$this_version")
     if [[ $this_version == "" ]] || [[ ! `echo $this_version | grep -E '^[0-9]{1,2}\.[0-9]{1,2}\.?[0-9]{1,2}?$'` ]]; then
        echo "Error - cQube's constant settings are affected. Re-clone the repository again";
        exit 1 
@@ -375,7 +375,7 @@ db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=1.8.1
+version_upgradable_from=1.9
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file

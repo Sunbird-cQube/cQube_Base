@@ -18,6 +18,8 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         var jsonData = await s3File.readS3File(fileName);
 
         var blocksAttendanceData = jsonData.data
+        var dateRange = `${blocksAttendanceData[0]['data_from_date']} to ${blocksAttendanceData[0]['data_upto_date']}`;
+
         var blockData = [];
         for (let i = 0; i < blocksAttendanceData.length; i++) {
             var obj = {
@@ -34,7 +36,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
             blockData.push(obj);
         }
         logger.info('--- Attendance block wise api response sent ---');
-        res.status(200).send({ blockData: blockData, studentCount: jsonData.allBlocksFooter.students, schoolCount: jsonData.allBlocksFooter.schools });
+        res.status(200).send({ blockData: blockData, studentCount: jsonData.allBlocksFooter.students, schoolCount: jsonData.allBlocksFooter.schools, dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -59,6 +61,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
             return (data.district_id == distId)
         });
         var blocksAttendanceData = filterData;
+        var dateRange = `${blocksAttendanceData[0]['data_from_date']} to ${blocksAttendanceData[0]['data_upto_date']}`;
         for (let i = 0; i < blocksAttendanceData.length; i++) {
             var obj = {
                 block_id: blocksAttendanceData[i]['x_axis'],
@@ -74,7 +77,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
             blockData.push(obj);
         }
         logger.info('--- Attendance blockPerDist api response sent ---');
-        res.status(200).send({ blockData: blockData, studentCount: jsonData.footer[distId].students, schoolCount: jsonData.footer[distId].schools });
+        res.status(200).send({ blockData: blockData, studentCount: jsonData.footer[distId].students, schoolCount: jsonData.footer[distId].schools,dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

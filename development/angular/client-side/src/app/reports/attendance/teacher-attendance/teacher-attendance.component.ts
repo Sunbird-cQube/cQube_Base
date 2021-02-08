@@ -73,9 +73,15 @@ export class TeacherAttendanceComponent implements OnInit {
   public month;
   public element;
   params: any;
+  selected = "absolute";
 
   constructor(public http: HttpClient, public service: TeacherAttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
 
+  }
+
+  getColor(data) {
+    this.selected = data;
+    this.levelWiseFilter();
   }
 
   ngOnInit() {
@@ -104,7 +110,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.months.push(obj);
       });
       this.month = this.months[this.months.length - 1].id;
-      this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
+      // this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
       if (this.month) {
         this.month_year = {
           month: this.month,
@@ -133,6 +139,7 @@ export class TeacherAttendanceComponent implements OnInit {
         }
       }
     }, err => {
+      this.dateRange = ''; this.changeDetection.detectChanges();
       document.getElementById('home').style.display = 'none';
       this.getMonthYear = {};
       this.commonService.loaderAndErr(this.markers);
@@ -317,12 +324,16 @@ export class TeacherAttendanceComponent implements OnInit {
   public month_year;
   getMonth(event) {
     var month = this.getMonthYear[`${this.year}`].find(a => a.month === this.month);
-    this.dateRange = `${month.data_from_date} to ${month.data_upto_date}`;
+    // this.dateRange = `${month.data_from_date} to ${month.data_upto_date}`;
     this.month_year = {
       month: this.month,
       year: this.year
     };
+    this.levelWiseFilter();
 
+  }
+
+  levelWiseFilter() {
     if (this.skul) {
       if (this.levelWise === "District") {
         this.districtWise();
@@ -378,6 +389,7 @@ export class TeacherAttendanceComponent implements OnInit {
       }
       this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.districtData = this.mylatlngData = res['distData'];
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
 
         var distNames = [];
@@ -385,12 +397,13 @@ export class TeacherAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
+        this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
         if (this.markers.length > 0) {
           for (var i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(this.markers[i]['district_id']);
             distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 5, 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 5, 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
         }
@@ -406,6 +419,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -429,6 +443,7 @@ export class TeacherAttendanceComponent implements OnInit {
       }
       this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['blockData'];
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
 
         var blockNames = [];
@@ -436,12 +451,13 @@ export class TeacherAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
+        this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
             this.blocksIds.push(this.markers[i]['block_id']);
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 3.5, 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 3.5, 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -456,6 +472,7 @@ export class TeacherAttendanceComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -480,7 +497,7 @@ export class TeacherAttendanceComponent implements OnInit {
       }
       this.myData = this.service.cluster_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['clusterData'];
-
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         var clustNames = [];
@@ -490,6 +507,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
 
         this.markers = sorted;
+        this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
@@ -501,7 +519,7 @@ export class TeacherAttendanceComponent implements OnInit {
               clustNames.push({ id: this.markers[i]['cluster_id'], name: 'NO NAME FOUND', blockId: this.markers[i]['block_id'] });
             }
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 1, 0.01, 0.5, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 1, 0.01, 0.5, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
@@ -519,6 +537,7 @@ export class TeacherAttendanceComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -544,18 +563,19 @@ export class TeacherAttendanceComponent implements OnInit {
       }
       this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolData'];
-
+        this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.teacherCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
+        this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(sorted[i]['district_id']);
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 0, 0, 0.3, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 0, 0, 0.3, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
@@ -569,6 +589,7 @@ export class TeacherAttendanceComponent implements OnInit {
           this.changeDetection.markForCheck();
         }
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -758,6 +779,7 @@ export class TeacherAttendanceComponent implements OnInit {
       }
       this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
         this.reportData = this.blockData = this.mylatlngData = res['blockData'];
+        this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['block_id'] === current['block_id']);
           if (object.length == 0) previous.push(current);
@@ -772,6 +794,7 @@ export class TeacherAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.markers = sorted;
+        this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
         this.teacherCount = res['teacherCount'];
         this.schoolCount = res['schoolCount'];
 
@@ -779,7 +802,7 @@ export class TeacherAttendanceComponent implements OnInit {
           var color = this.commonService.color(this.markers[i], 'attendance');
           this.blocksIds.push(this.markers[i]['block_id']);
           blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 3.5, 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 3.5, 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -793,6 +816,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -867,6 +891,7 @@ export class TeacherAttendanceComponent implements OnInit {
       this.month_year['id'] = data;
       this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
         this.reportData = this.clusterData = this.mylatlngData = res['clusterDetails'];
+        this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['cluster_id'] === current['cluster_id']);
           if (object.length == 0) previous.push(current);
@@ -884,6 +909,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
         // sorted.pop();
         this.markers = sorted;
+        this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
         for (var i = 0; i < sorted.length; i++) {
           var color = this.commonService.color(this.markers[i], 'attendance');
           this.clusterIds.push(sorted[i]['cluster_id']);
@@ -892,7 +918,7 @@ export class TeacherAttendanceComponent implements OnInit {
           } else {
             clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
           }
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 3.5, 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 3.5, 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
 
@@ -907,6 +933,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -1008,6 +1035,7 @@ export class TeacherAttendanceComponent implements OnInit {
       this.month_year['id'] = data;
       this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolsDetails'];
+        this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
           var object = previous.filter(object => object['school_id'] === current['school_id']);
           if (object.length == 0) previous.push(current);
@@ -1024,9 +1052,10 @@ export class TeacherAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
+        this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
         for (var i = 0; i < sorted.length; i++) {
           var color = this.commonService.color(this.markers[i], 'attendance');
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, color, 3.5, 0.1, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.colors[i], 3.5, 0.1, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         globalMap.doubleClickZoom.enable();
@@ -1038,6 +1067,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.commonService.loaderAndErr(this.markers);
         this.changeDetection.markForCheck();
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
@@ -1130,6 +1160,7 @@ export class TeacherAttendanceComponent implements OnInit {
       }
       this.service.telemetrySar(dateObj).subscribe(res => {
       }, err => {
+        this.dateRange = ''; this.changeDetection.detectChanges();
         console.log(err);
       });
     }

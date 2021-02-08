@@ -41,12 +41,15 @@
         </div>
         <div class="col-sm-4">
             <div class="row">
-                <div class="col-sm-7">
+                <div class="col-sm-0">
+
+                </div>
+                <div class="col-sm-6">
                     <p id="errMsg"
                         style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                     <em class="fa fa-cloud-download" title="Download Report" id="download"
                         style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                         (click)="downloadReport($event)"></em>
@@ -72,7 +75,7 @@
     <div class="row">
         <div class="col-sm-12">
             <select id="period"
-                style="padding: 5px 2px 5px 2px;float: left;margin: 2px 15px 0px 0px; width: 90px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="padding: 5px 2px 5px 2px;float: left;margin: 2px 15px 0px 0px; width: 100px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="period" (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
                 <option *ngFor="let period of timeRange,  let i =index" style="width: 100px;" [(ngValue)]="period.key">
@@ -81,7 +84,7 @@
             </select>
             <div [hidden]="yearMonth" style="float: left; margin: 2px 15px 0px 0px;">
                 <select id="year"
-                    style="padding: 5px; color: white; border-radius: 4px; font-size: 11px; width: 80px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    style="padding: 5px 2px 5px 2px; color: white; border-radius: 4px; font-size: 11px; width: 100px; font-weight: bold; background-color: rgb(152, 160, 163)"
                     [(ngModel)]="year" name="year" (change)="getYear()">
                     <option [value]="year" disabled selected="selected">Choose Year
                     </option>
@@ -90,7 +93,7 @@
                     </option>
                 </select>
                 <select id="month"
-                    style="margin-left: 10px; padding: 5px; color: white; border-radius: 4px; width: 80px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    style="margin-left: 10px; padding: 5px 2px 5px 2px; color: white; border-radius: 4px; width: 100px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                     [(ngModel)]="month" name="month" (change)="getMonth($event)">
                     <option [value]="month" disabled selected="selected">Choose Month
                     </option>
@@ -156,13 +159,32 @@
     </div>
     <div class="row"
         style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px;padding: 2px 0px 2px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
-        <div class="col-sm-4">
-            <span id="students">Number of students: {{studentCount}}</span>
+        <div class="col-sm-3">
+            <div
+                style="border-radius: 15px; background-color: #f5f6fb; height: 22px; width: 150px; border: 1px solid gray;font-size: 13px;">
+                <div id="absolute" (click)="getColor('absolute')"
+                    [ngStyle]="{'background-color' : selected == 'absolute' ? '#3100cc' : '#f5f6fb'}"
+                    style="border-radius: 15px; height: 20px; width: 50%;  float: left; cursor: pointer;">
+                    <p [ngStyle]="{'color' : selected == 'absolute' ? 'white' : 'black'}"
+                        style="text-align: center; padding: 0px;">
+                        Absolute</p>
+                </div>
+                <div id="relative" (click)="getColor('relative')"
+                    [ngStyle]="{'background-color' : selected == 'relative' ? '#3100cc' : '#f5f6fb'}"
+                    style="border-radius: 15px; height: 20px; width: 50%;float: left;cursor: pointer;">
+                    <p [ngStyle]="{'color' : selected == 'relative' ? 'white' : 'black'}"
+                        style="text-align: center; padding: 0px;">
+                        Relative</p>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-4">
-            <span id="schools" style="text-align: center;">Number of schools: {{schoolCount}}</span>
+        <div class="col-sm-3">
+            <span id="students">Number of Students: {{studentCount}}</span>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
+            <span id="schools" style="text-align: center;">Number of Schools: {{schoolCount}}</span>
+        </div>
+        <div class="col-sm-3">
             <span id="dateRange" style="float: right;">Date range: {{dateRange}}</span>
         </div>
     </div>

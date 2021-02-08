@@ -136,6 +136,10 @@ export class AppServiceComponent {
         var stringLine;
         var selected = '';
         for (var key in object) {
+            if (typeof object[key] != 'number' && object[key].includes('%')) {
+                var split = object[key].split("% ");
+                object[`${key}`] = parseFloat(split[0].replace(` `, '')).toFixed(1) + ' % ' + split[1];
+            }
             if (object.hasOwnProperty(key)) {
                 if (key == value) {
                     if (reportType == "infra-map" || reportType == "patReport") {
@@ -145,10 +149,13 @@ export class AppServiceComponent {
                         key.replace(
                             /\w\S*/g,
                             function (txt) {
+                                txt = txt.replace('Id', '_id');
+                                txt = txt.replace('Name', '_name');
                                 txt = txt.replace(/_/g, ' ');
                                 if (txt.includes('percent') && txt != 'percentage schools with missing data') {
                                     txt = txt.replace('percent', '(%)');
                                 }
+                                txt = txt == 'students count' ? 'student count' : txt;
                                 if (txt.includes('id')) {
                                     return txt.charAt(0).toUpperCase();
                                 } else {
@@ -164,10 +171,13 @@ export class AppServiceComponent {
                         key.replace(
                             /\w\S*/g,
                             function (txt) {
+                                txt = txt.replace('Id', '_id');
+                                txt = txt.replace('Name', '_name');
                                 txt = txt.replace(/_/g, ' ');
                                 if (txt.includes('percent') && txt != 'percentage schools with missing data') {
                                     txt = txt.replace('percent', '(%)');
                                 }
+                                txt = txt == 'students count' ? 'student count' : txt;
                                 if (txt.includes('id')) {
                                     txt = txt.replace('id', 'ID');
                                     return txt.charAt(0).toUpperCase() + txt.substr(1);
@@ -204,16 +214,15 @@ export class AppServiceComponent {
                     .split(' ')
                     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(' ');
-
                 key = key.replace("Id", "ID");
                 key = key.replace("Nsqf", "NSQF");
                 key = key.replace("Ict", "ICT");
                 key = key.replace("Crc", "CRC");
                 key = key.replace("Cctv", "CCTV");
                 key = key.replace("Cwsn", "CWSN");
+                key = key.replace("Ff Uuid", "UUID");
                 updatedKeys.push(key);
             });
-            console.log(updatedKeys);
             const options = {
                 fieldSeparator: ',',
                 quoteStrings: '"',
@@ -275,6 +284,34 @@ export class AppServiceComponent {
         }
         return setColor;
     }
+
+    //generating relative colors
+    // color gredient based on intervals
+    relativeColorGredient(data, infraData, colors) {
+        var keys = Object.keys(colors);
+        var dataSet = {};
+        var setColor = '';
+        if (infraData == 'Infrastructure_Score' || infraData == 'infrastructure_score') {
+            dataSet = data.details;
+        } else {
+            if (data.indices) {
+                dataSet = data.indices;
+            } else {
+                dataSet = data.metrics;
+            }
+        }
+        for (let i = 0; i < keys.length; i++) {
+            if (dataSet[infraData] <= parseFloat(keys[i])) {
+                setColor = colors[keys[i]];
+                break;
+            } else if (dataSet[infraData] > parseFloat(keys[i]) && dataSet[infraData] <= parseFloat(keys[i + 1])) {
+                setColor = colors[keys[i + 1]];
+                break;
+            }
+        }
+        return setColor;
+    }
+    
 
     //capturing telemetry.....
     telemetry(date) {
@@ -373,5 +410,69 @@ export class AppServiceComponent {
         96: '#87ef00',
         98: '#84f500',
         100: '#7fff00',
+    }
+    //color gredient generation....
+    public exceptionColor() {
+        // Converts a #ffffff hex string into an [r,g,b] array
+        function hex2rgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? [
+                parseInt(result[1], 16),
+                parseInt(result[2], 16),
+                parseInt(result[3], 16)
+            ] : null;
+        }
+
+        // Inverse of the above
+        function rgb2hex(rgb) {
+            return '#' + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+        }
+
+        // Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
+
+        function _interpolateRgb(color1, color2, factor) {
+            if (arguments.length < 3) { factor = 0.5; }
+
+            let result = color1.slice();
+
+            for (let i = 0; i < 3; i++) {
+                result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+            }
+            return result;
+        }
+
+        function generateGradient(color1, color2, total, interpolation) {
+            const colorStart = typeof color1 === 'string' ? hex2rgb(color1) : color1;
+            const colorEnd = typeof color2 === 'string' ? hex2rgb(color2) : color2;
+
+            // will the gradient be via RGB or HSL
+            switch (interpolation) {
+                case 'rgb':
+                    return colorsToGradientRgb(colorStart, colorEnd, total);
+                case 'hsl':
+                //   return colorsToGradientHsl(colorStart, colorEnd, total);
+                default:
+                    return false;
+            }
+        }
+
+        function colorsToGradientRgb(startColor, endColor, steps) {
+            // returns array of hex values for color, since rgb would be an array of arrays and not strings, easier to handle hex strings
+            let arrReturnColors = [];
+            let interimColorRGB;
+            let interimColorHex;
+            const totalColors = steps;
+            const factorStep = 1 / (totalColors - 1);
+
+            for (let idx = 0; idx < totalColors; idx++) {
+                interimColorRGB = _interpolateRgb(startColor, endColor, factorStep * idx);
+                interimColorHex = rgb2hex(interimColorRGB);
+                arrReturnColors.push(interimColorHex);
+            }
+            return arrReturnColors;
+        }
+        return {
+            generateGradient
+        };
     }
 }

@@ -88,6 +88,15 @@ export class UdiseReportComponent implements OnInit {
     commonService.logoutOnTokenExpire();
   }
 
+  selected = "absolute";
+
+  getColor(data) {
+    this.selected = data;
+    this.levelWiseFilter();
+  }
+
+  colorGenData: any = [];
+
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
@@ -328,11 +337,15 @@ export class UdiseReportComponent implements OnInit {
           this.blockMarkers = [];
 
           this.blockMarkers = result;
-
+          var colors = this.getRelativeColors(this.markers);
           this.schoolCount = 0;
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
-              this.setColor = this.commonService.colorGredient(this.blockMarkers[i], this.indiceData);
+              if (this.selected == 'absolute') {
+                this.setColor = this.commonService.colorGredient(this.blockMarkers[i], this.indiceData);
+              } else {
+                this.setColor = this.commonService.relativeColorGredient(this.blockMarkers[i], this.indiceData, colors);
+              }
               var markerIcon = L.circleMarker([this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude], {
                 radius: 4,
                 color: "gray",
@@ -414,10 +427,15 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
+          var colors = this.getRelativeColors(this.markers);
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
-              this.setColor = this.commonService.colorGredient(this.clusterMarkers[i], this.indiceData);
+              if (this.selected == 'absolute') {
+                this.setColor = this.commonService.colorGredient(this.clusterMarkers[i], this.indiceData);
+              } else {
+                this.setColor = this.commonService.relativeColorGredient(this.clusterMarkers[i], this.indiceData, colors);
+              }
               var markerIcon = L.circleMarker([this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude], {
                 radius: 2,
                 color: "gray",
@@ -498,9 +516,15 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
+          var colors = this.getRelativeColors(this.markers);
+          this.schoolCount = 0;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
-              this.setColor = this.commonService.colorGredient(this.schoolMarkers[i], this.indiceData);
+              if (this.selected == 'absolute') {
+                this.setColor = this.commonService.colorGredient(this.schoolMarkers[i], this.indiceData);
+              } else {
+                this.setColor = this.commonService.relativeColorGredient(this.schoolMarkers[i], this.indiceData, colors);
+              }
               var markerIcon = L.circleMarker([this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude], {
                 // renderer: myRenderer,
                 radius: 1,
@@ -771,10 +795,15 @@ export class UdiseReportComponent implements OnInit {
     var myData = data['data'];
     if (myData.length > 0) {
       this.markers = myData;
+      var colors = this.getRelativeColors(this.markers);
+      this.schoolCount = 0;
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-
-        this.setColor = this.commonService.colorGredient(this.markers[i], this.indiceData);
+        if (this.selected == 'absolute') {
+          this.setColor = this.commonService.colorGredient(this.markers[i], this.indiceData);
+        } else {
+          this.setColor = this.commonService.relativeColorGredient(this.markers[i], this.indiceData, colors);
+        }
         var markerIcon: any;
         if (options.weight) {
           markerIcon = L.circleMarker([this.markers[i].details.latitude, this.markers[i].details.longitude], {
@@ -823,6 +852,25 @@ export class UdiseReportComponent implements OnInit {
     }
   }
 
+  getRelativeColors(markers) {
+    var values = [];
+    markers.map(item => {
+      if (this.indiceData == 'Infrastructure_Score') {
+        values.push(item.details[`Infrastructure_Score`]);
+      } else {
+        values.push(item.indices[`${this.indiceData}`]);
+      }
+    });
+    let uniqueItems = [...new Set(values)];
+    uniqueItems = uniqueItems.sort(function (a, b) { return a - b });
+    var colorsArr = markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', uniqueItems.length, 'rgb');
+    var colors = {};
+    uniqueItems.map((a, i) => {
+      colors[`${a}`] = colorsArr[i]
+    });
+    return colors;
+  }
+
   //generate tooltip........
   generateToolTip(markers, level, markerIcon, lat, lng) {
     this.popups(markerIcon, markers, level);
@@ -849,6 +897,7 @@ export class UdiseReportComponent implements OnInit {
     var schoolData1 = {};
     var schoolData2 = {};
     var schoolData3 = {};
+    var schoolData4 = {};
     var yourData1;
     if (level == "school") {
       Object.keys(orgObject).forEach(key => {
@@ -871,7 +920,12 @@ export class UdiseReportComponent implements OnInit {
           schoolData3[key] = schoolData2[key];
         }
       });
-      yourData1 = this.getInfoFrom(schoolData3, indiceName, colorText, level).join(" <br>");
+      Object.keys(schoolData3).forEach(key => {
+        if (key !== "school_id") {
+          schoolData4[key] = schoolData3[key];
+        }
+      });
+      yourData1 = this.getInfoFrom(schoolData4, indiceName, colorText, level).join(" <br>");
     } else if (level == 'district') {
       Object.keys(orgObject).forEach(key => {
         if (key !== "district_id") {
@@ -927,6 +981,10 @@ export class UdiseReportComponent implements OnInit {
   public level = '';
   onIndiceSelect(data) {
     this.indiceData = data;
+    this.levelWiseFilter()
+  }
+
+  levelWiseFilter() {
     if (this.level == 'district') {
       this.districtWise();
     }
@@ -964,11 +1022,19 @@ export class UdiseReportComponent implements OnInit {
               if (txt.includes("Index")) {
                 txt = txt.replace('Index', '')
               }
-              return txt.replace(/_/g, ' ');
+              txt = txt.replace(/_/g, ' ');
+              return toTitleCase(txt);
             })
           + "</b>" + ": " + object[key] + `</span>`;
       }
       popupFood.push(stringLine);
+    }
+    function toTitleCase(phrase) {
+      return phrase
+        .toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
     }
     return popupFood;
   }
@@ -1060,7 +1126,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
+        let myobj = { ...orgObject, ...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     } else if (level == "block") {
@@ -1074,7 +1140,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
+        let myobj = { ...orgObject, ...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     }
@@ -1091,7 +1157,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...orgObject,...markers.rank, ...markers.indices }
+        let myobj = { ...orgObject, ...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     } else if (level == "school") {
@@ -1109,7 +1175,7 @@ export class UdiseReportComponent implements OnInit {
         }
         this.reportData.push(obj);
       } else {
-        let myobj = { ...detailSchool,...markers.rank, ...markers.indices }
+        let myobj = { ...detailSchool, ...markers.rank, ...markers.indices }
         this.reportData.push(myobj);
       }
     }

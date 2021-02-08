@@ -30,7 +30,7 @@
                                     <label for="username" style="color: blue; font-family: Arial;">Enter the Username
                                         <span style="color:red">*</span></label>
                                     <input id="username" type="text" #username="ngModel" [(ngModel)]="logData.username"
-                                        class="form-control form-control-user" name="username" required
+                                        class="form-control form-control-user" name="username" required (input)="msgHide()"
                                         [ngClass]="{'invalid-textbox' :formData.submitted && !username.valid }">
                                     <div *ngIf="formData.submitted && username?.errors">
                                         <label *ngIf="username.errors.required" class="validation-message">This field is

@@ -412,7 +412,7 @@
             <div class="headings">Health Card</div>
             <div class="row outer12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background: linear-gradient(135deg, #55ff9c 0%, #95ffb5 100%);"
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #04be1d 0%, #2df547 100%);"
                         id="healthCard" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/healthCard']"
                         (click)="fetchTelemetry($event,'healthCard')">
                         <div class="card-body ">
@@ -422,7 +422,7 @@
                                 </app-info>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv" style="background-color: #34c72f;">
+                                        <div class="iconDiv" style="background-color: #32ac2e;">
                                             <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
                                         </div>
                                     </div>
@@ -784,10 +784,10 @@
         </div>
     </div>
     <div class="row" style="padding: 20px;">
-        <div class="col-lg-9 col-md-6 col-sm-12" style="padding:  0% 25px 0px 25px">
+        <div class="col-lg-12 col-md-12 col-sm-12" style="padding:  0% 25px 0px 25px">
             <div class="headings">Exception List</div>
             <div class="row outer12">
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);"
                         id="SemExp" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/sem-exception']"
                         (click)="fetchTelemetry($event,'SemExp')">
@@ -822,7 +822,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-3 col-md-6  col-sm-6">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);;"
                         id="isdata"
                         [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/download-missing-data']"
@@ -858,7 +858,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-3 col-md-6  col-sm-6">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);;"
                         id="patExcpt" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/pat-exception']"
                         (click)="fetchTelemetry($event,'patExcpt')">
@@ -870,7 +870,7 @@
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #0093d0;">
-                                            <img class="ic-equalizer1" src="../../assets/ic_cloud_download.svg" alt="">
+                                            <img class="ic-equalizer1" src="../../assets/ic_assignment_24px.svg" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -893,11 +893,83 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-lg-3 col-md-6  col-sm-6">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);;"
+                        id="sarExcpt"
+                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/student-attendance-exception']"
+                        (click)="fetchTelemetry($event,'sarExcpt')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="sarExcptTooltip"
+                                    style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #0093d0;">
+                                            <img class="ic-equalizer1" src="../../assets/ic_assignment_24px.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Student Attendance <br></p>
+                                        <p class="card-title">Exception</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="sarExcptViews;else other_content" id="views">views:
+                                        {{sarExcptViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- <div class="col-sm-6"> -->
-
-        <!-- </div> -->
+        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  20px 25px 0px 25px">
+            <div class="row outer12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);"
+                        id="tarExp" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/teacher-attendance-exception']"
+                        (click)="fetchTelemetry($event,'tarExp')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="tarExpTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #0093d0;">
+                                            <img class="ic-equalizer1" src="../../assets/ic_assignment_24px.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Teacher Attendance</p>
+                                        <p class="card-title">Exception</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="tarExpViews;else other_content" id="views">views:
+                                        {{tarExpViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row" style="padding: 20px;">
         <div class="col-sm-6" style="padding:  0% 25px 0px 25px">
