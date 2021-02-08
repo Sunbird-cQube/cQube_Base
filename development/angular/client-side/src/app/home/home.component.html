@@ -198,18 +198,19 @@
                     (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'isdata')" id="cmplnErr"
                     (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Download Exception
                       List</span></a>
-                  <a mat-list-item
-                    [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/pat-exception']"
+                  <a mat-list-item [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/pat-exception']"
                     (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'patExcpt')" id="patexp"
                     (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">PAT Exception</span></a>
                   <a mat-list-item
                     [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/student-attendance-exception']"
                     (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'sarExcpt')" id="sarExp"
-                    (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Student Attendance Exception</span></a>
+                    (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Student Attendance
+                      Exception</span></a>
                   <a mat-list-item
                     [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/teacher-attendance-exception']"
                     (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'tarExp')" id="tarExcpt"
-                    (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Teacher Attendance Exception</span></a>
+                    (click)="showSubmenu4 = !showSubmenu4"><span style="margin-left: 50px;">Teacher Attendance
+                      Exception</span></a>
                 </div>
               </mat-nav-list>
 
@@ -273,8 +274,8 @@
     </div>
     <hr>
     <div>
-      <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.9 </span>
-      <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 13/01/2021</span>
+      <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.10 </span>
+      <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 05/02/2021</span>
     </div>
   </mat-sidenav>
 

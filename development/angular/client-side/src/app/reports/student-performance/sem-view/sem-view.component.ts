@@ -373,7 +373,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
           let result = this.data['sortedData']
           this.blockMarkers = [];
           this.blockMarkers = result;
-          this.colors = this.blockMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.blockMarkers.length, 'rgb');
+          this.colors = this.blockMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.blockMarkers.length, 'rgb');
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var color = this.commonService.color(this.blockMarkers[i], 'semester_performance');
@@ -452,7 +452,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
           this.clusterMarkers = [];
 
           this.clusterMarkers = result;
-          this.colors = this.clusterMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.clusterMarkers.length, 'rgb');
+          this.colors = this.clusterMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.clusterMarkers.length, 'rgb');
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               var color = this.commonService.color(this.clusterMarkers[i], 'semester_performance');
@@ -528,7 +528,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
           let result = this.data['sortedData']
 
           this.schoolMarkers = result;
-          this.colors = this.schoolMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.schoolMarkers.length, 'rgb');
+          this.colors = this.schoolMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.schoolMarkers.length, 'rgb');
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var color = this.commonService.color(this.schoolMarkers[i], 'semester_performance');
@@ -843,7 +843,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
     if (data['sortedData'].length > 0) {
       this.markers = data['sortedData']
-      this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
+      this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.markers.length, 'rgb');
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         var color = this.commonService.color(this.markers[i], 'semester_performance');
