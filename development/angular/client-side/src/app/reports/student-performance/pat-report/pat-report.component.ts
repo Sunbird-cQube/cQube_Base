@@ -429,7 +429,7 @@ export class PATReportComponent implements OnInit {
               this.blockMarkers.sort((a, b) => (a.Details['Performance'] > b.Details['Performance']) ? 1 : ((b.Details['Performance'] > a.Details['Performance']) ? -1 : 0));
             }
 
-            this.colors = this.blockMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.blockMarkers.length, 'rgb');
+            this.colors = this.blockMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.blockMarkers.length, 'rgb');
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var color;
               if (!this.grade && !this.subject) {
@@ -559,7 +559,7 @@ export class PATReportComponent implements OnInit {
             } else {
               this.clusterMarkers.sort((a, b) => (a.Details['Performance'] > b.Details['Performance']) ? 1 : ((b.Details['Performance'] > a.Details['Performance']) ? -1 : 0));
             }
-            this.colors = this.clusterMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.clusterMarkers.length, 'rgb');
+            this.colors = this.clusterMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.clusterMarkers.length, 'rgb');
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               var color = this.commonService.color(this.clusterMarkers[i].Details, 'Performance');
               if (this.grade) {
@@ -683,7 +683,7 @@ export class PATReportComponent implements OnInit {
             } else {
               this.schoolMarkers.sort((a, b) => (a.Details['Performance'] > b.Details['Performance']) ? 1 : ((b.Details['Performance'] > a.Details['Performance']) ? -1 : 0));
             }
-            this.colors = this.schoolMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.schoolMarkers.length, 'rgb');
+            this.colors = this.schoolMarkers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.schoolMarkers.length, 'rgb');
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var color = this.commonService.color(this.schoolMarkers[i].Details, 'Performance');
               if (this.grade) {
@@ -1094,7 +1094,7 @@ export class PATReportComponent implements OnInit {
         }
       }
 
-      this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
+      this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.markers.length, 'rgb');
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
         var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, this.selected == 'absolute' ? colors[i] : this.colors[i], options.radius, options.strokeWeight, 1, options.level);

@@ -5498,3 +5498,15 @@ create table IF NOT EXISTS subject_details(
   subject varchar(100),
   primary key(subject_id,grade)
 );
+
+
+alter table pat_null_col add column  IF NOT EXISTS count_null_grade int;
+
+create table if not exists pat_subject_details_dup(subject_id int,subject varchar(100),grade smallint,num_of_times int,
+ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
+
+create table if not exists pat_school_grade_enrolment_dup(school_id bigint,grade smallint,students_count int,num_of_times int,
+ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
+
+alter table diksha_api_meta add column if not exists total_files int, add column if not exists files_processed int,add column if not exists files_emitted int;
+

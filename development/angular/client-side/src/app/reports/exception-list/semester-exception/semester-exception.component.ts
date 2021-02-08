@@ -233,7 +233,7 @@ export class SemesterExceptionComponent implements OnInit {
           this.blockMarkers = [];
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           // generate color gradient
-          let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', result.length, 'rgb');
           this.colors = colors;
           this.blockMarkers = result;
 
@@ -309,7 +309,7 @@ export class SemesterExceptionComponent implements OnInit {
           result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
           this.clusterMarkers = [];
           // generate color gradient
-          let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', result.length, 'rgb');
+          let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', result.length, 'rgb');
           this.colors = colors;
           this.clusterMarkers = result;
 
@@ -651,7 +651,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (options.level == 'school') {
         colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', this.markers.length, 'rgb');
       } else {
-        colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#7FFF00', this.markers.length, 'rgb');
+        colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.markers.length, 'rgb');
       }
       this.colors = colors;
 
