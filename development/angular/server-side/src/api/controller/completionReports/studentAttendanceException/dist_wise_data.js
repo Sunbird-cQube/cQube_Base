@@ -22,6 +22,7 @@ router.post('/distWise', auth.authController, async function (req, res) {
         }
         var jsonData = await s3File.readS3File(fileName);
         var districtAttendanceData = jsonData.data;
+        console.log(districtAttendanceData)
         var dateRange = `${districtAttendanceData[0]['data_from_date']} to ${districtAttendanceData[0]['data_upto_date']}`;
         var distData = [];
         for (let i = 0; i < districtAttendanceData.length; i++) {
