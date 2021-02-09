@@ -1,9 +1,9 @@
 [
-{ "crc_district_agg":"Select * from hc_crc_district"
+{ "crc_district_agg":"Select * from hc_crc_district where district_id!=9999"
 },
-{"crc_block_agg":"Select * from hc_crc_block"
+{"crc_block_agg":"Select * from hc_crc_block where block_id!=9999"
 },
-{"crc_cluster_agg":"Select * from hc_crc_cluster"
+{"crc_cluster_agg":"Select * from hc_crc_cluster where cluster_id!=9999"
 },
-{"crc_schools_agg":"Select * from hc_crc_school"
+{"crc_schools_agg":"Select * from hc_crc_school where school_id!=9999"
 }]
