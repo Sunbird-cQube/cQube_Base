@@ -611,7 +611,7 @@ export class PATExceptionComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
     this.blockId = undefined;
-
+    this.schoolCount = '';
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = true;
@@ -676,7 +676,7 @@ export class PATExceptionComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
     this.clusterId = undefined;
-
+    this.schoolCount = '';
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -749,7 +749,7 @@ export class PATExceptionComponent implements OnInit {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
-
+    this.schoolCount = '';
     this.blockHidden = false;
     this.clusterHidden = false;
     // api call to get the schoolwise data for selected district, block, cluster
@@ -837,7 +837,6 @@ export class PATExceptionComponent implements OnInit {
   // common function for all the data to show in the map
   genericFun(data, options, fileName) {
     this.reportData = [];
-    this.schoolCount = '';
     if (data['data'].length > 0) {
       this.markers = data['data']
 
@@ -897,11 +896,7 @@ export class PATExceptionComponent implements OnInit {
 
       // generate color gradient
       let colors;
-      if (options.level == 'school') {
-        colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', this.markers.length, 'rgb');
-      } else {
-        colors = this.commonService.getRelativeColors(this.markers, { value: 'percentage_schools_with_missing_data', report: 'exception' });
-      }
+      colors = this.commonService.getRelativeColors(this.markers, { value: 'percentage_schools_with_missing_data', report: 'exception' });
       this.colors = colors;
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
