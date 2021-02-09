@@ -302,6 +302,10 @@ export class AppServiceComponent {
                 }
             }
         } else {
+            var objkeys = Object.keys(data);
+            if (!objkeys.includes(filter.value)) {
+                filter.value = `total_schools_with_missing_data`;
+            }
             dataSet = data;
         }
         if (filter.report == 'exception') {
@@ -327,19 +331,25 @@ export class AppServiceComponent {
                 if (filter == 'infrastructure_score' || filter == 'Infrastructure_Score') {
                     values.push(item.details[`${filter}`]);
                 } else {
-                    if (item.matrics) {
+                    if (item.metrics) {
                         values.push(item.metrics[`${filter}`]);
                     } else {
                         values.push(item.indices[`${filter}`]);
                     }
                 }
             } else {
-                values.push(item[`${filter.value}`]);
+                var keys = Object.keys(item);
+                if (keys.includes(filter.value)) {
+                    values.push(item[`${filter.value}`]);
+                } else {
+                    values.push(item[`total_schools_with_missing_data`]);
+                }
+
             }
         });
         let uniqueItems = [...new Set(values)];
         uniqueItems = uniqueItems.sort(function (a, b) { return filter.report != 'exception' ? a - b : b - a });
-        var colorsArr = uniqueItems.length == 1 ? ['#00FF00'] : this.exceptionColor().generateGradient('#FF0000', '#00FF00', uniqueItems.length, 'rgb');
+        var colorsArr = uniqueItems.length == 1 ? (filter.report != 'exception' ? ['#00FF00'] : ['red']) : this.exceptionColor().generateGradient('#FF0000', '#00FF00', uniqueItems.length, 'rgb');
         var colors = {};
         uniqueItems.map((a, i) => {
             colors[`${a}`] = colorsArr[i]
