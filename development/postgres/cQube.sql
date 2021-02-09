@@ -1532,6 +1532,8 @@ primary key(school_id,month,year)
 
 create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
 
+Drop view if exists teacher_attendance_exception_data cascade;
+
 alter table school_teacher_total_attendance drop constraint if exists school_teacher_total_attendance_pkey;
 alter table school_teacher_total_attendance add primary key(school_id,month,year);
 alter table school_teacher_total_attendance drop COLUMN if exists total_training;
