@@ -18,6 +18,10 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   name: string;
   level = '';
 
+  height = screen.height;
+  width = screen.width;
+  innerWidth = screen.availWidth;
+
   blockHidden = true;
   clusterHidden = true;
 
@@ -86,6 +90,10 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   shareCheckedList(item: any[]) {
     this.selectedCourses = item;
     this.levelWiseFilter();
+  }
+
+  getHeight(event) {
+    this.height = event.target.innerHeight;
   }
 
   onChangePage() {
