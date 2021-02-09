@@ -646,11 +646,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
       // generate color gradient
       let colors;
-      if (options.level == 'school') {
-        colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', this.markers.length, 'rgb');
-      } else {
-        colors = this.commonService.getRelativeColors(this.markers, { value: 'percentage_schools_with_missing_data', report: 'exception' });      
-      }
+      colors = this.commonService.getRelativeColors(this.markers, { value: 'percentage_schools_with_missing_data', report: 'exception' });
       this.colors = colors;
 
       // attach values to markers
