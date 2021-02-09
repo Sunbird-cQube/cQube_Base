@@ -701,7 +701,6 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
         this.fileName = `Block_per_district_report_${month.name.trim()}_${this.year}`;
-        console.log(this.fileName);
       } else {
         this.fileName = `Block_per_district_report_${this.period}`;
       }
