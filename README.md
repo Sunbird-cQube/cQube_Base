@@ -33,7 +33,7 @@ Note: For <b>Installation:</b> follow the below steps directly, for upgradation 
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.9
+git checkout release-1.10
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
@@ -128,6 +128,12 @@ cqube_emission
 ├── diksha
 │   └── diksha_api_progress_exhaust_batch_ids.zip
 │       └── diksha_api_progress_exhaust_batch_ids.csv
+├── pat
+│   └── subject_details.zip
+│       └── subject_details.csv
+├── pat
+│   └── subject_grade_enrolment.zip
+│       └── subject_grade_enrolment.csv
 ```
 
 Transactional Files:
@@ -181,7 +187,7 @@ python3 client.py
 - Navigate to the directory where cQube has been downloaded or cloned
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.9
+git checkout release-1.10
 ```
 - Copy the upgradation_config.yml.template to upgradation_config.yml 
 `cp upgradation_config.yml.template upgradation_config.yml`
