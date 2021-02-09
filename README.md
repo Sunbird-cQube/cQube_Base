@@ -129,11 +129,11 @@ cqube_emission
 │   └── diksha_api_progress_exhaust_batch_ids.zip
 │       └── diksha_api_progress_exhaust_batch_ids.csv
 ├── pat
-│   └── subject_details.zip
-│       └── subject_details.csv
+│   └── periodic_exam_subject_details.zip
+│       └── periodic_exam_subject_details.csv
 ├── pat
-│   └── subject_grade_enrolment.zip
-│       └── subject_grade_enrolment.csv
+│   └── periodic_exam_grade_details.zip
+│       └── periodic_exam_grade_details.csv
 ```
 
 Transactional Files:
