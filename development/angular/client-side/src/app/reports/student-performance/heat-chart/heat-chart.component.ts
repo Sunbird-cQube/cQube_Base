@@ -216,8 +216,6 @@ export class HeatChartComponent implements OnInit {
     for (let i = 0; i < xLabel.length; i++) {
       xLabel[i] = xLabel[i].substr(0, 15);
     }
-    console.log(this.height);
-    // var options: Highcharts.Options = 
     this.chart = Highcharts.chart('container', {
       chart: {
         type: 'heatmap'
