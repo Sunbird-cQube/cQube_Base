@@ -151,7 +151,7 @@
         </div>
     </div>
     <div class="row">
-        <div id="scrolly" [ngStyle]="{width: width,height: '68vh'}">
+        <div id="scrolly" [ngStyle]="{width: width,height: height > 700 ? '72vh' : '68vh'}">
             <div class="col-md-12" id="container" [ngStyle]="{height: '100%', minWidth: (innerWidth-15)+'px'}">
             </div>
         </div>

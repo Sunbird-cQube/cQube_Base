@@ -302,22 +302,27 @@ export class AppServiceComponent {
                 }
             }
         } else {
-            var objkeys = Object.keys(data);
-            if (!objkeys.includes(filter.value)) {
-                filter.value = `total_schools_with_missing_data`;
+            if (!filter.selected) {
+                var objkeys = Object.keys(data);
+                if (!objkeys.includes(filter.value)) {
+                    filter.value = `total_schools_with_missing_data`;
+                }
+                dataSet = data;
+            } else {
+                if (filter.selected == 'G' || filter.selected == 'GS') {
+                    dataSet = data.Subjects;
+                } else {
+                    dataSet = data.Details;
+                }
             }
-            dataSet = data;
         }
         if (filter.report == 'exception') {
             keys = keys.sort(function (a: any, b: any) { return (a - b) });
         }
         for (let i = 0; i < keys.length; i++) {
             let val = filter.value ? filter.value : filter;
-            if (parseFloat(dataSet[val]) <= parseFloat(keys[i])) {
+            if (parseFloat(dataSet[val]) == parseFloat(keys[i])) {
                 setColor = colors[keys[i]];
-                break;
-            } else if (parseFloat(dataSet[val]) > parseFloat(keys[i]) && parseFloat(dataSet[val]) <= parseFloat(keys[i + 1])) {
-                setColor = colors[keys[i + 1]];
                 break;
             }
         }
@@ -338,17 +343,25 @@ export class AppServiceComponent {
                     }
                 }
             } else {
-                var keys = Object.keys(item);
-                if (keys.includes(filter.value)) {
-                    values.push(item[`${filter.value}`]);
+                if (!filter.selected) {
+                    var keys = Object.keys(item);
+                    if (keys.includes(filter.value)) {
+                        values.push(item[`${filter.value}`]);
+                    } else {
+                        values.push(item[`total_schools_with_missing_data`]);
+                    }
                 } else {
-                    values.push(item[`total_schools_with_missing_data`]);
+                    if (filter.selected == 'G' || filter.selected == 'GS') {
+                        values.push(item.Subjects[`${filter.value}`]);
+                    } else {
+                        values.push(item.Details[`${filter.value}`]);
+                    }
                 }
 
             }
         });
         let uniqueItems = [...new Set(values)];
-        uniqueItems = uniqueItems.sort(function (a, b) { return filter.report != 'exception' ? a - b : b - a });
+        uniqueItems = uniqueItems.sort(function (a, b) { return filter.report != 'exception' ? parseFloat(a) - parseFloat(b) : parseFloat(b) - parseFloat(a) });
         var colorsArr = uniqueItems.length == 1 ? (filter.report != 'exception' ? ['#00FF00'] : ['red']) : this.exceptionColor().generateGradient('#FF0000', '#00FF00', uniqueItems.length, 'rgb');
         var colors = {};
         uniqueItems.map((a, i) => {

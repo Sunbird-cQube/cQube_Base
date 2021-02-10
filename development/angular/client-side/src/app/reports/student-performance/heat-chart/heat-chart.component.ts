@@ -77,6 +77,7 @@ export class HeatChartComponent implements OnInit {
 
   getHeight(event) {
     this.height = event.target.innerHeight;
+    this.onChangePage();
   }
   constructor(
     public http: HttpClient,
@@ -206,7 +207,8 @@ export class HeatChartComponent implements OnInit {
       scrollBarX = true
     }
 
-    if (yLabel1.length <= 12) {
+    var scrollLimit = this.height > 800 ? 20 : this.height > 650 && this.height < 800 ? 15 : this.height < 500 ? 8 : 12;
+    if (yLabel1.length <= scrollLimit) {
       scrollBarY = false
     } else {
       scrollBarY = true
@@ -214,6 +216,7 @@ export class HeatChartComponent implements OnInit {
     for (let i = 0; i < xLabel.length; i++) {
       xLabel[i] = xLabel[i].substr(0, 15);
     }
+    console.log(this.height);
     // var options: Highcharts.Options = 
     this.chart = Highcharts.chart('container', {
       chart: {
@@ -280,7 +283,7 @@ export class HeatChartComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: 11,
+        max: this.height == screen.height ? 11 : this.height > 800 ? 19 : this.height > 650 && this.height < 800 ? 14 : this.height < 500 ? 7 : 11,
         scrollbar: {
           enabled: scrollBarY
         }
@@ -364,12 +367,15 @@ export class HeatChartComponent implements OnInit {
         obj = `<b>SchoolName: ${name}</b>`
 
       }
+
+       // <br> <b>Total Schools: ${totalSchools}</b>
+        // <br> <b>Total Students: ${totalStudents}</b>
+        
       obj += `<br> <b>Grade: ${grade}</b>
         <br> <b>Subject: ${subject}</b>
         <br> <b>ExamDate: ${exam_date}</b>
         <br> ${grades != "all" ? viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>` : ''}
-        <br> <b>Total Schools: ${totalSchools}</b>
-        <br> <b>Total Students: ${totalStudents}</b>
+       
         <br> <b>Students Attended: ${studentAttended}</b>
         <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
       return obj

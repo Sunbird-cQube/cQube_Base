@@ -110,7 +110,7 @@
         </div>
     </div>
     <div class="row">
-        <div id="scrolly" [ngStyle]="{width: width,height: '65vh'}">
+        <div id="scrolly" [ngStyle]="{width: width,height: height > 700 ? '70vh' : '65vh'}">
             <div class="col-md-12" id="container" [ngStyle]="{height: '100%', minWidth: (innerWidth-15)+'px'}"></div>
         </div>
     </div>
