@@ -19,6 +19,9 @@ export class HeatChartComponent implements OnInit {
 
   blockHidden = true;
   clusterHidden = true;
+  height = window.screen.height;
+  width = screen.width;
+  innerWidth = screen.availWidth;
 
   // For filter implementation
   districtNames = [];
@@ -72,7 +75,9 @@ export class HeatChartComponent implements OnInit {
   pageSize = 40;
   currentPage = 1;
 
-
+  getHeight(event) {
+    this.height = event.target.innerHeight;
+  }
   constructor(
     public http: HttpClient,
     public service: PatReportService,
@@ -101,7 +106,7 @@ export class HeatChartComponent implements OnInit {
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
       this.commonFunc();
-    },err=>{
+    }, err => {
       this.metaData = [];
       this.commonService.loaderAndErr(this.metaData);
     })
