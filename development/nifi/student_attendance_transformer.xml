@@ -3905,13 +3905,21 @@
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>2176.0</x>
+<y>24.0</y>
+                            </bends>
+                            <bends>
+<x>2176.0</x>
+<y>-344.0</y>
+                            </bends>
                             <destination>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
-<id>aaa28a99-9fde-3a72-0000-000000000000</id>
+<id>cbf3209e-5724-3e3e-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
+                            <labelIndex>0</labelIndex>
                             <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                             <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -5502,8 +5510,8 @@
                             <id>009d3e98-381d-31ce-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>2288.0</x>
-<y>-536.0</y>
+<x>2160.0</x>
+<y>-528.0</y>
                             </position>
                             <height>40.0</height>
                             <label>Partition by  year and month</label>
@@ -8046,7 +8054,18 @@ where ff_uuid= '${zip_identifier}'
     </entry>
     <entry>
         <key>sql-pre-query</key>
-        <value>select student_attendance_no_schools(${hd:substringAfter('|')},${hd:substringBefore('|')})</value>
+        <value>select student_attendance_no_schools(${hd:substringAfter('|')},${hd:substringBefore('|')});
+insert into student_attendance_exception_agg as a (school_id,year,month,school_name,block_id,block_name,district_id,district_name,cluster_id,cluster_name,
+	school_latitude,school_longitude,district_latitude,district_longitude,block_latitude,block_longitude,cluster_latitude,cluster_longitude,
+	created_on,updated_on)
+select school_id,year,month,school_name,block_id,block_name,district_id,district_name,cluster_id,cluster_name,
+	school_latitude,school_longitude,district_latitude,district_longitude,block_latitude,block_longitude,cluster_latitude,cluster_longitude,now(),now() from student_attendance_exception_data
+on conflict (school_id,month,year)
+do update set school_id=excluded.school_id,school_name=excluded.school_name,year=excluded.year,month=excluded.month,block_id=excluded.block_id,
+block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,district_id=excluded.district_id,district_name=excluded.district_name,
+school_latitude=excluded.school_latitude,school_longitude=excluded.school_longitude,cluster_latitude=excluded.cluster_latitude,
+cluster_longitude=excluded.cluster_longitude,block_latitude=excluded.block_latitude,block_longitude=excluded.block_longitude,district_latitude=excluded.district_latitude,
+district_longitude=excluded.district_longitude,created_on=excluded.created_on,updated_on=now();</value>
     </entry>
     <entry>
         <key>SQL select query</key>
@@ -8098,7 +8117,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -11306,7 +11325,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -11678,7 +11697,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -12114,10 +12133,10 @@ ${query_type:startsWith('stud_att_school_last_7_days'):ifElse('attendance/last_7
 ${query_type:startsWith('stud_att_school_last_30_days'):ifElse('attendance/last_30_days/school.json',
 ${query_type:startsWith('stud_att_school_overall'):ifElse('attendance/overall/school.json',
 ${query_type:startsWith('stud_att_exception_meta'):ifElse("exception_list/student_attendance_completion/metaData.json",
-${query_type:startsWith('stud_att_exception_district_by_month_year'):ifElse("exception_list/student_attendance_completion/district_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
-${query_type:startsWith('stud_att_exception_block_by_month_year'):ifElse("exception_list/student_attendance_completion/block_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
-${query_type:startsWith('stud_att_exception_cluster_by_month_year'):ifElse("exception_list/student_attendance_completion/cluster_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
-${query_type:startsWith('stud_att_exception_school_by_month_year'):ifElse("exception_list/student_attendance_completion/school_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
+${query_type:startsWith('stud_att_exception_district_by_month_year'):ifElse("exception_list/student_attendance_completion/district_${year}_${month}.json",
+${query_type:startsWith('stud_att_exception_block_by_month_year'):ifElse("exception_list/student_attendance_completion/block_${year}_${month}.json",
+${query_type:startsWith('stud_att_exception_cluster_by_month_year'):ifElse("exception_list/student_attendance_completion/cluster_${year}_${month}.json",
+${query_type:startsWith('stud_att_exception_school_by_month_year'):ifElse("exception_list/student_attendance_completion/school_${year}_${month}.json",
 ${query_type:startsWith('stud_att_exception_district_last_day'):ifElse('exception_list/student_attendance_completion/last_day/district.json',
 ${query_type:startsWith('stud_att_exception_district_last_7_days'):ifElse('exception_list/student_attendance_completion/last_7_days/district.json',
 ${query_type:startsWith('stud_att_exception_district_last_30_days'):ifElse('exception_list/student_attendance_completion/last_30_days/district.json',
@@ -13919,7 +13938,7 @@ ${query_type:startsWith('stud_att_exception_school_last'):or(${query_type:starts
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -14521,7 +14540,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -15362,7 +15381,7 @@ ${query_type:startsWith('stud_att_school_overall')
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -15755,7 +15774,7 @@ Mirror data validation of file:${filename}.Error while selecting unique data</va
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -27411,5 +27430,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/02/2021 13:51:32 IST</timestamp>
+    <timestamp>02/11/2021 18:49:14 IST</timestamp>
 </template>

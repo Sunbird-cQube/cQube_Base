@@ -2759,6 +2759,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>ab4060af-ef01-374a-0000-000000000000</id>
+                            <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>72a4be39-4f24-3978-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>tch_att_time_range</selectedRelationships>
+                            <source>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>cf9e739b-0b76-3519-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>ac3d002e-bafb-3037-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -3615,9 +3640,17 @@
 <x>3464.0</x>
 <y>48.0</y>
                             </bends>
+                            <bends>
+<x>2200.0</x>
+<y>32.0</y>
+                            </bends>
+                            <bends>
+<x>2160.0</x>
+<y>-376.0</y>
+                            </bends>
                             <destination>
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
-<id>72a4be39-4f24-3978-0000-000000000000</id>
+<id>2e32a213-650a-37d9-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -8401,7 +8434,7 @@ WHERE filename like 'teacher_attendance%';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -10407,7 +10440,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>Database Connection Pooling Service</key>
@@ -10525,7 +10558,7 @@ where ff_uuid= '${files_uuid}'</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -10617,11 +10650,15 @@ where ff_uuid= '${files_uuid}'</value>
 ${query_type:startsWith('tch_att_block'):ifElse(#{teacher_attendance_jolt_block},
 ${query_type:startsWith('tch_att_cluster'):ifElse(#{teacher_attendance_jolt_cluster},
 ${query_type:startsWith('tch_att_school'):ifElse(#{teacher_attendance_jolt_school},
+${query_type:startsWith('tch_att_district_last'):or(${query_type:startsWith('tch_att_district_overall')}):ifElse(#{teacher_attendance_jolt_district},
+${query_type:startsWith('tch_att_block_last'):or(${query_type:startsWith('tch_att_block_overall')}):ifElse(#{teacher_attendance_jolt_block},
+${query_type:startsWith('tch_att_cluster_last'):or(${query_type:startsWith('tch_att_cluster_overall')}):ifElse(#{teacher_attendance_jolt_cluster},
+${query_type:startsWith('tch_att_school_last'):or(${query_type:startsWith('tch_att_school_overall')}):ifElse(#{teacher_attendance_jolt_school},
 ${query_type:startsWith('tch_att_exception_district'):ifElse(#{tch_att_exception_district_jolt_spec},
 ${query_type:startsWith('tch_att_exception_block'):ifElse(#{tch_att_exception_block_jolt_spec},
 ${query_type:startsWith('tch_att_exception_cluster'):ifElse(#{tch_att_exception_cluster_jolt_spec},
 ${query_type:startsWith('tch_att_exception_school'):ifElse(#{tch_att_exception_school_jolt_spec},'None')}
-)} )} )} )} )} )} )}</value>
+)} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
     <entry>
         <key>Transform Cache Size</key>
@@ -10647,7 +10684,7 @@ ${query_type:startsWith('tch_att_exception_school'):ifElse(#{tch_att_exception_s
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -10945,8 +10982,8 @@ ${query_type:startsWith('tch_att_exception_school'):ifElse(#{tch_att_exception_s
                             <id>743e3d5b-495c-3dce-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>1680.0</x>
-<y>-296.0</y>
+<x>1480.0</x>
+<y>-320.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -11745,7 +11782,18 @@ WHERE ff_uuid='${zip_identifier}'</value>
     </entry>
     <entry>
         <key>sql-pre-query</key>
-        <value>select teacher_attendance_no_schools(${hd:substringAfter('|')},${hd:substringBefore('|')})</value>
+        <value>select teacher_attendance_no_schools(${hd:substringAfter('|')},${hd:substringBefore('|')});
+insert into teacher_attendance_exception_agg as a (school_id,year,month,school_name,block_id,block_name,district_id,district_name,cluster_id,cluster_name,
+	school_latitude,school_longitude,district_latitude,district_longitude,block_latitude,block_longitude,cluster_latitude,cluster_longitude,
+	created_on,updated_on)
+select school_id,year,month,school_name,block_id,block_name,district_id,district_name,cluster_id,cluster_name,
+	school_latitude,school_longitude,district_latitude,district_longitude,block_latitude,block_longitude,cluster_latitude,cluster_longitude,now(),now() from teacher_attendance_exception_data
+on conflict (school_id,month,year)
+do update set school_id=excluded.school_id,school_name=excluded.school_name,year=excluded.year,month=excluded.month,block_id=excluded.block_id,
+block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,district_id=excluded.district_id,district_name=excluded.district_name,
+school_latitude=excluded.school_latitude,school_longitude=excluded.school_longitude,cluster_latitude=excluded.cluster_latitude,
+cluster_longitude=excluded.cluster_longitude,block_latitude=excluded.block_latitude,block_longitude=excluded.block_longitude,district_latitude=excluded.district_latitude,
+district_longitude=excluded.district_longitude,created_on=excluded.created_on,updated_on=now();</value>
     </entry>
     <entry>
         <key>SQL select query</key>
@@ -11797,7 +11845,7 @@ WHERE ff_uuid='${zip_identifier}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -12855,7 +12903,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -14448,6 +14496,12 @@ same id data validation of file:${filename}, same id records not found </value>
         </value>
     </entry>
     <entry>
+        <key>tch_att_time_range</key>
+        <value>
+            <name>tch_att_time_range</name>
+        </value>
+    </entry>
+    <entry>
         <key>tch_attendance_meta</key>
         <value>
             <name>tch_attendance_meta</name>
@@ -14463,17 +14517,33 @@ same id data validation of file:${filename}, same id records not found </value>
         <value>Route to Property name</value>
     </entry>
     <entry>
+        <key>tch_att_time_range</key>
+        <value>${query_type:startsWith('tch_att_district_last'):or(
+${query_type:startsWith('tch_att_district_overall'):or(
+${query_type:startsWith('tch_att_block_last'):or(
+${query_type:startsWith('tch_att_block_overall'):or(
+${query_type:startsWith('tch_att_cluster_last'):or(
+${query_type:startsWith('tch_att_cluster_overall'):or(
+${query_type:startsWith('tch_att_school_last'):or(
+${query_type:startsWith('tch_att_school_overall')
+})})})})})})})}</value>
+    </entry>
+    <entry>
         <key>tch_attendance_meta</key>
         <value>${query_type:startsWith('tch_att_meta'):or(${query_type:startsWith('tch_att_exception_meta')})}</value>
     </entry>
 </properties>
 <runDurationMillis>25</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>RouteOnAttribute</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>tch_att_time_range</name>
+                            </relationships>
                             <relationships>
 <autoTerminate>false</autoTerminate>
 <name>tch_attendance_meta</name>
@@ -17082,17 +17152,33 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <properties>
     <entry>
         <key>Object Key</key>
-        <value>${query_type:startsWith('tch_att_district'):ifElse('teacher_attendance/district_${year}_${month}.json',
-${query_type:startsWith('tch_att_block'):ifElse('teacher_attendance/block_${year}_${month}.json',
-${query_type:startsWith('tch_att_cluster'):ifElse('teacher_attendance/cluster_${year}_${month}.json',
-${query_type:startsWith('tch_att_school'):ifElse('teacher_attendance/school_${year}_${month}.json',
-${query_type:startsWith('tch_att_meta'):ifElse('teacher_attendance/teacher_attendance_meta.json',
-${query_type:startsWith('tch_att_exception_meta'):ifElse("exception_list/teacher_attendance_completion/metaData.json",
-${query_type:startsWith('tch_att_exception_district'):ifElse("exception_list/teacher_attendance_completion/district_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
-${query_type:startsWith('tch_att_exception_block'):ifElse("exception_list/teacher_attendance_completion/block_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
-${query_type:startsWith('tch_att_exception_cluster'):ifElse("exception_list/teacher_attendance_completion/cluster_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",
-${query_type:startsWith('tch_att_exception_school'):ifElse("exception_list/teacher_attendance_completion/school_${hd:substringBefore('|')}_${hd:substringAfter('|')}.json",'None')} )} )} )} )}
-)} )} )} )} )}</value>
+        <value>${query_type:startsWith('tch_att_meta'):ifElse('teacher_attendance/teacher_attendance_meta.json',
+${query_type:startsWith('tch_att_district_by_month_year'):ifElse('teacher_attendance/district_${year}_${month}.json',
+${query_type:startsWith('tch_att_block_by_month_year'):ifElse('teacher_attendance/block_${year}_${month}.json',
+${query_type:startsWith('tch_att_cluster_by_month_year'):ifElse('teacher_attendance/cluster_${year}_${month}.json',
+${query_type:startsWith('tch_att_school_by_month_year'):ifElse('teacher_attendance/school_${year}_${month}.json',
+    ${query_type:startsWith('tch_att_district_last_day'):ifElse('teacher_attendance/last_day/district.json',
+    ${query_type:startsWith('tch_att_district_last_7_days'):ifElse('teacher_attendance/last_7_days/district.json',
+    ${query_type:startsWith('tch_att_district_last_30_days'):ifElse('teacher_attendance/last_30_days/district.json',
+    ${query_type:startsWith('tch_att_district_overall'):ifElse('teacher_attendance/overall/district.json',  
+    ${query_type:startsWith('tch_att_block_last_day'):ifElse('teacher_attendance/last_day/block.json',
+    ${query_type:startsWith('tch_att_block_last_7_days'):ifElse('teacher_attendance/last_7_days/block.json',
+    ${query_type:startsWith('tch_att_block_last_30_days'):ifElse('teacher_attendance/last_30_days/block.json',
+    ${query_type:startsWith('tch_att_block_overall'):ifElse('teacher_attendance/overall/block.json', 
+    ${query_type:startsWith('tch_att_cluster_last_day'):ifElse('teacher_attendance/last_day/cluster.json',
+    ${query_type:startsWith('tch_att_cluster_last_7_days'):ifElse('teacher_attendance/last_7_days/cluster.json',
+    ${query_type:startsWith('tch_att_cluster_last_30_days'):ifElse('teacher_attendance/last_30_days/cluster.json',
+    ${query_type:startsWith('tch_att_cluster_overall'):ifElse('teacher_attendance/overall/cluster.json',   
+    ${query_type:startsWith('tch_att_school_last_day'):ifElse('teacher_attendance/last_day/school.json',
+    ${query_type:startsWith('tch_att_school_last_7_days'):ifElse('teacher_attendance/last_7_days/school.json',
+    ${query_type:startsWith('tch_att_school_last_30_days'):ifElse('teacher_attendance/last_30_days/school.json',
+    ${query_type:startsWith('tch_att_school_overall'):ifElse('teacher_attendance/overall/school.json',   
+    ${query_type:startsWith('tch_att_exception_meta'):ifElse("exception_list/teacher_attendance_completion/metaData.json",
+    ${query_type:startsWith('tch_att_exception_district'):ifElse("exception_list/teacher_attendance_completion/district_${year}_${month}.json",
+    ${query_type:startsWith('tch_att_exception_block'):ifElse("exception_list/teacher_attendance_completion/block_${year}_${month}.json",
+    ${query_type:startsWith('tch_att_exception_cluster'):ifElse("exception_list/teacher_attendance_completion/cluster_${year}_${month}.json",
+    ${query_type:startsWith('tch_att_exception_school'):ifElse("exception_list/teacher_attendance_completion/school_${year}_${month}.json",'None')} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )})} )} )} 
+    )} )} )} )} )} )}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -26748,5 +26834,5 @@ VALUES
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/02/2021 13:51:46 IST</timestamp>
+    <timestamp>02/11/2021 18:57:04 IST</timestamp>
 </template>
