@@ -94,6 +94,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
 
   getHeight(event) {
     this.height = event.target.innerHeight;
+    this.onChangePage();
   }
 
   onChangePage() {
@@ -174,8 +175,8 @@ export class DikshaTPDContentProgressComponent implements OnInit {
     } else {
       scrollBarX = true
     }
-
-    if (yLabel1.length <= 12) {
+    var scrollLimit = this.height > 800 ? 20 : this.height > 650 && this.height < 800 ? 15 : this.height < 500 ? 8 : 12;
+    if (yLabel1.length <= scrollLimit) {
       scrollBarY = false
     } else {
       scrollBarY = true
@@ -243,7 +244,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: 9,
+        max: this.height == screen.height ? 11 : this.height > 800 ? 19 : this.height > 650 && this.height < 800 ? 14 : this.height < 500 ? 7 : 11,
         scrollbar: {
           enabled: scrollBarY
         }

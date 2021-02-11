@@ -253,6 +253,7 @@ export class PATReportComponent implements OnInit {
   linkClick() {
     document.getElementById('home').style.display = 'none';
     this.grade = undefined;
+    this.subject = undefined;
     this.subjectHidden = true;
     this.districtWise();
   }
@@ -1094,10 +1095,12 @@ export class PATReportComponent implements OnInit {
         }
       }
 
-      this.colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.markers.length, 'rgb');
+      if (this.selected != 'absolute') {
+        this.colors = this.commonService.getRelativeColors(this.markers, { value: this.grade ? 'Grade Performance' : this.grade && this.subject ? this.subject : 'Performance', selected: this.grade ? 'G' : this.grade && this.subject ? 'GS' : 'all', report: 'reports' });
+      }
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
-        var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, this.selected == 'absolute' ? colors[i] : this.colors[i], options.radius, options.strokeWeight, 1, options.level);
+        var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, this.selected == 'absolute' ? colors[i] : this.commonService.relativeColorGredient(this.markers[i], { value: this.grade ? 'Grade Performance' : this.grade && this.subject ? this.subject : 'Performance', selected: this.grade ? 'G' : this.grade && this.subject ? 'GS' : 'all', report: 'reports' }, this.colors), options.radius, options.strokeWeight, 1, options.level);
         // data to show on the tooltip for the desired levels
         this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
 
@@ -1124,14 +1127,28 @@ export class PATReportComponent implements OnInit {
     let colorText = `style='color:blue !important;'`;
     var details = {};
     var orgObject = {};
+    var data1 = {};
+    var data2 = {};
+    // student_count, total_schools
+
     Object.keys(markers.Details).forEach(key => {
       if (key !== lat) {
         details[key] = markers.Details[key];
       }
     });
     Object.keys(details).forEach(key => {
+      if (key !== 'students_count') {
+        data1[key] = details[key];
+      }
+    });
+    Object.keys(data1).forEach(key => {
+      if (key !== 'total_schools') {
+        data2[key] = data1[key];
+      }
+    });
+    Object.keys(data2).forEach(key => {
       if (key !== lng) {
-        orgObject[key] = details[key];
+        orgObject[key] = data2[key];
       }
     });
     if (level != 'school') {
@@ -1189,7 +1206,6 @@ export class PATReportComponent implements OnInit {
         yourData = this.commonService.getInfoFrom(ordered, "Performance", level, "patReport", '', colorText).join(" <br>");
       }
     }
-
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       "<b><u>Details</u></b>" +
       "<br>" + yourData1 +
