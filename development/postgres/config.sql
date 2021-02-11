@@ -6086,7 +6086,6 @@ $$LANGUAGE plpgsql;
 
 Drop view if exists teacher_attendance_exception_data cascade;
 
-
 create or replace FUNCTION teacher_attendance_no_schools(month int,year int)
 RETURNS text AS
 $$
@@ -6100,18 +6099,16 @@ initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as dist
  b.district_latitude,b.district_longitude from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 where a.school_id!=9999 AND a.school_id not in 
-(select distinct school_id from (SELECT school_id,year,month 
+(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,year,month 
 FROM school_teacher_total_attendance WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
-AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND month = '|| month ||' AND year = '|| year ||'
 AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0
-GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month
-)as e)
+GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month)as e)
 and cluster_name is not null';
 Execute teacher_attendance_no_schools;
 return 0;
 END;
 $$LANGUAGE plpgsql;
-
 
 
 /* Student attendance Time series */
