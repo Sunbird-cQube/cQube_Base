@@ -73,12 +73,13 @@ day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day
 ,count(*) over (partition by attendance_id,student_id,school_id,year,month,ff_uuid) as rn  from student_attendance_staging_2)as a
 where a.rn=1
 ''',
-"save-to-school_student_total_att_pre_query":'''create or replace view attendance_trans_to_aggregate as
-    select ll.year,ll.month,ll.school_id,hr.school_name,
+"save-to-school_student_total_att_pre_query":'''create or replace view attendance_trans_to_aggregate as 
+	select ll.year,ll.month,ll.school_id,hr.school_name,
 ll.school_latitude,ll.school_longitude,ll.district_id,hr.district_name,ll.district_latitude,
 ll.district_longitude,ll.block_id,hr.block_name,'NA' as brc_name,ll.block_latitude,ll.block_longitude,ll.cluster_id,
 hr.cluster_name,hr.crc_name,ll.cluster_latitude,ll.cluster_longitude,
 cast(ll.present_sum as int) as total_present,cast(ll.working_days as int) as total_working_days,ll.students_count
+
 from (select at.present_sum,at.working_days,at.month,at.year,at.students_count,at.school_id,
 sg.school_latitude,sg.school_longitude,sg.district_id,sg.district_latitude,sg.district_longitude,sg.block_id,sg.block_latitude,sg.block_longitude,
 sg.cluster_id,sg.cluster_latitude,sg.cluster_longitude
@@ -147,22 +148,20 @@ case when day_31=2 or day_31=1 then 1 else 0 end )  as float)) as working_days
 ,school_id,month,year,count(distinct(student_id)) as students_count
 from student_attendance_trans group by school_id,year,month) as at left join school_geo_master as sg on at.school_id=sg.school_id) as ll left join
 school_hierarchy_details as hr on ll.school_id=hr.school_id;
-
 insert into school_student_total_attendance as a (year,month,school_id,school_name,school_latitude,school_longitude,district_id,district_name,district_latitude,district_longitude,
 block_id,block_name,brc_name,block_latitude,block_longitude,cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,total_present,total_working_days,
-students_count)
+students_count,created_on,updated_on)
 select year,month,school_id,school_name,school_latitude,school_longitude,district_id,district_name,district_latitude,district_longitude,
 block_id,block_name,brc_name,block_latitude,block_longitude,cluster_id,cluster_name,crc_name,cluster_latitude,cluster_longitude,total_present,total_working_days,
-students_count from attendance_trans_to_aggregate
+students_count,now() as created_on,now() as updated_on from attendance_trans_to_aggregate
 on conflict (month,year,school_id)
-do update set year= a.year,month=a.month,school_id=a.school_id,school_name=a.school_name,
-school_latitude=a.school_latitude,school_longitude=a.school_longitude,district_id=a.district_id,
-district_name=a.district_name,district_latitude=a.district_latitude,district_longitude=a.district_longitude,
-block_id=a.block_id,block_name=a.block_name,brc_name=a.brc_name,block_latitude=a.block_latitude,
-block_longitude=a.block_longitude,cluster_id=a.cluster_id,cluster_name=a.cluster_name,crc_name=a.crc_name,
-cluster_latitude=a.cluster_latitude,cluster_longitude=a.cluster_longitude,total_present=a.total_present,total_working_days=a.total_working_days,
-students_count=a.students_count
-''',
+do update set year= excluded.year,month=excluded.month,school_id=excluded.school_id,school_name=excluded.school_name,
+school_latitude=excluded.school_latitude,school_longitude=excluded.school_longitude,district_id=excluded.district_id,
+district_name=excluded.district_name,district_latitude=excluded.district_latitude,district_longitude=excluded.district_longitude,
+block_id=excluded.block_id,block_name=excluded.block_name,brc_name=excluded.brc_name,block_latitude=excluded.block_latitude,
+block_longitude=excluded.block_longitude,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
+cluster_latitude=excluded.cluster_latitude,cluster_longitude=excluded.cluster_longitude,total_present=excluded.total_present,total_working_days=excluded.total_working_days,
+students_count=excluded.students_count,created_on=excluded.created_on,updated_on=now();''',
 "save-to-school_student_total_att_select_query":"select * from school_student_total_attendance limit 1",
 "save-to-stud_att_temp_tb_name":"student_attendance_temp",
 "stud_att_district-wise-per":'''SELECT district_id AS x_axis,INITCAP(district_name) AS district_name, 
