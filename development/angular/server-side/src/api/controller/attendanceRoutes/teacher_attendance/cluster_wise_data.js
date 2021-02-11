@@ -8,7 +8,13 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         logger.info('---Attendance cluster wise api ---');
         var month = req.body.month;
         var year = req.body.year;
-        let fileName = `teacher_attendance/cluster_${year}_${month}.json`;
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `teacher_attendance/${timePeriod}/cluster.json`;
+        } else {
+            fileName = `teacher_attendance/cluster_${year}_${month}.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
         var clustersAttendanceData = jsonData.data;
         var dateRange = `${clustersAttendanceData[0]['data_from_date']} to ${clustersAttendanceData[0]['data_upto_date']}`;
@@ -40,10 +46,16 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
 router.post('/clusterPerBlock', auth.authController, async (req, res) => {
     try {
         logger.info('---Attendance clusterPerBlock api ---');
-        var blockId = req.body.data.id;
-        var month = req.body.data.month;
-        var year = req.body.data.year;
-        let fileName = `teacher_attendance/cluster_${year}_${month}.json`;
+        var blockId = req.body.id;
+        var month = req.body.month;
+        var year = req.body.year;
+        var timePeriod = req.body.period;
+        let fileName;
+        if (timePeriod != null) {
+            fileName = `teacher_attendance/${timePeriod}/cluster.json`;
+        } else {
+            fileName = `teacher_attendance/cluster_${year}_${month}.json`;
+        };
         var jsonData = await s3File.readS3File(fileName);
         var clusterData = [];
         var filterData = jsonData.data.filter(data => {
@@ -68,7 +80,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
             clusterData.push(obj);
         }
         logger.info('--- Attendance clusterPerDist api response sent ---');
-        res.status(200).send({ clusterDetails: clusterData, teacherCount: jsonData.footer[blockId].teachers, schoolCount: jsonData.footer[blockId].schools , dateRange: dateRange});
+        res.status(200).send({ clusterDetails: clusterData, teacherCount: jsonData.footer[blockId].teachers, schoolCount: jsonData.footer[blockId].schools, dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
