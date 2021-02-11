@@ -66,9 +66,10 @@
        document.getElementById("kc-login").style.display = "none";
    }
    $(window).on('load', function(){
-       if ($('#totp').length || $('#otp').length){
+       if ($('#totp').length || $('#otp').length || $('#kc-passwd-update-form').length){
            document.getElementById("kc-form-login1").style.display = "none";
            document.getElementById("kc-login").style.display = "block";
+           document.getElementById('kc-passwd-update-form).style.display = 'block';
        }else{
            document.getElementById("kc-form-login1").style.display = "block";
        }

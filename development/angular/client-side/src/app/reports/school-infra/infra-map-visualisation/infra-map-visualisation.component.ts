@@ -272,6 +272,8 @@ export class InfraMapVisualisationComponent implements OnInit {
       document.getElementById('home').style.display = 'none';
 
     } catch (e) {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
       console.log(e);
     }
   }
@@ -320,7 +322,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           this.blockMarkers = [];
 
           this.blockMarkers = result;
-          var colors = this.getRelativeColors(this.blockMarkers);
+          var colors = this.commonService.getRelativeColors(this.blockMarkers, this.infraData);
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var color;
@@ -354,6 +356,8 @@ export class InfraMapVisualisationComponent implements OnInit {
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
     } catch (e) {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
       console.log(e);
     }
   }
@@ -400,7 +404,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
-          var colors = this.getRelativeColors(this.clusterMarkers);
+          var colors = this.commonService.getRelativeColors(this.clusterMarkers, this.infraData);
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
@@ -434,6 +438,8 @@ export class InfraMapVisualisationComponent implements OnInit {
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
     } catch (e) {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
       console.log(e);
     }
   }
@@ -481,7 +487,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
-          var colors = this.getRelativeColors(this.schoolMarkers);
+          var colors = this.commonService.getRelativeColors(this.schoolMarkers, this.infraData);
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var color;
@@ -516,6 +522,8 @@ export class InfraMapVisualisationComponent implements OnInit {
       globalMap.addLayer(this.layerMarkers);
       document.getElementById('home').style.display = 'block';
     } catch (e) {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
       console.log(e);
     }
   }
@@ -758,7 +766,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     var myData = data['data'];
     if (myData.length > 0) {
       this.markers = myData;
-      var colors = this.getRelativeColors(this.markers);
+      var colors = this.commonService.getRelativeColors(this.markers, this.infraData);
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         var color;
@@ -782,25 +790,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     //schoolCount
     this.schoolCount = data['footer'];
     this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-  }
-
-  getRelativeColors(markers) {
-    var values = [];
-    markers.map(item => {
-      if (this.infraData == 'infrastructure_score') {
-        values.push(item.details[`infrastructure_score`]);
-      } else {
-        values.push(item.metrics[`${this.infraData}`]);
-      }
-    });
-    let uniqueItems = [...new Set(values)];
-    uniqueItems = uniqueItems.sort(function (a, b) { return a - b });
-    var colorsArr = uniqueItems.length == 1 ? ['#00FF00'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', uniqueItems.length, 'rgb');
-    var colors = {};
-    uniqueItems.map((a, i) => {
-      colors[`${a}`] = colorsArr[i]
-    });
-    return colors;
   }
 
   //infra filters.....

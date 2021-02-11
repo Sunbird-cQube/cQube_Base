@@ -6099,23 +6099,17 @@ initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as dist
  b.district_latitude,b.district_longitude from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 where a.school_id!=9999 AND a.school_id not in 
-(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
-INITCAP(cluster_name) AS cluster_name,INITCAP(crc_name)AS crc_name, 
-round(cast(Sum(total_present)*100.0/Sum(total_working_days) as numeric),1)AS x_value,''latitude'' AS y_axis,school_latitude AS y_value,''longitude'' AS z_axis,school_longitude AS z_value,
-Sum(teachers_count) AS teachers_count,Count(DISTINCT(school_id)) AS total_schools,
-(select Data_from_date(year,month)), 
-  (select case when year=extract(year from now()) and month=extract(month from now()) then to_char(now(),''YYYY-MM-DD'') else Data_upto_date(year,month) end as Data_upto_date),
-year,month 
+(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis,year,month 
 FROM school_teacher_total_attendance WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
-AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND month = '|| month ||' AND year = '|| year ||'
 AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0
-GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month
-)as e)
+GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,month,cluster_id,cluster_name,crc_name,block_id,block_name,district_id,district_name,year,month)as e)
 and cluster_name is not null';
 Execute teacher_attendance_no_schools;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
 
 /* Student attendance Time series */
 
@@ -6362,10 +6356,16 @@ return 0;
 END;
 $$  LANGUAGE plpgsql;
 
+
+drop view if exists student_attendance_agg_last_1_day cascade;
+drop view if exists student_attendance_agg_last_30_days cascade;
+drop view if exists student_attendance_agg_last_7_days cascade;
+drop view if exists student_attendance_agg_overall cascade;
+
+
 select student_attendance_agg_refresh('last_1_day');
 select student_attendance_agg_refresh('last_7_days');
 select student_attendance_agg_refresh('last_30_days');
-
 
 
 create or replace view student_attendance_agg_overall as select sch_res.school_id,sch_res.total_present,sch_res.total_students,stn_cnt.students_count,

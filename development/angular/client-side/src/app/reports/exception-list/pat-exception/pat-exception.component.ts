@@ -265,9 +265,8 @@ export class PATExceptionComponent implements OnInit {
           if (this.data['data'].length > 0) {
             let result = this.data['data']
             this.blockMarkers = [];
-            result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
             // generate color gradient
-            let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', result.length, 'rgb');
+            let colors = this.commonService.getRelativeColors(result, { value: 'percentage_schools_with_missing_data', report: 'exception' });
             this.colors = colors;
             this.markers = this.blockMarkers = result;
             this.allSubjects = [];
@@ -318,7 +317,7 @@ export class PATExceptionComponent implements OnInit {
             this.blockMarkers = this.markers;
             if (this.blockMarkers.length !== 0) {
               for (let i = 0; i < this.blockMarkers.length; i++) {
-                var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.colors[i], 3.5, 0.1, 1, options.level);
+                var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.commonService.relativeColorGredient(this.blockMarkers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.1, 1, options.level);
                 this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "block_latitude", "block_longitude");
 
                 // to download the report
@@ -398,7 +397,7 @@ export class PATExceptionComponent implements OnInit {
             result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
             this.clusterMarkers = [];
             // generate color gradient
-            let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', result.length, 'rgb');
+            let colors = this.commonService.getRelativeColors(result, { value: 'percentage_schools_with_missing_data', report: 'exception' });
             this.colors = colors;
             this.markers = this.clusterMarkers = result;
             this.allSubjects = [];
@@ -449,10 +448,8 @@ export class PATExceptionComponent implements OnInit {
             this.clusterMarkers = this.markers;
             if (this.clusterMarkers.length !== 0) {
               for (let i = 0; i < this.clusterMarkers.length; i++) {
-                var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.colors[i], 1, 0.01, 0.5, options.level);
-
+                var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.commonService.relativeColorGredient(this.clusterMarkers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 1, 0.01, 0.5, options.level);
                 this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "cluster_latitude", "cluster_longitude");
-
                 // to download the report
                 this.fileName = "Cluster_wise_report";
               }
@@ -526,8 +523,6 @@ export class PATExceptionComponent implements OnInit {
             let result = this.data['data']
             result = result.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
             // generate color gradient
-            let colors = result.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', result.length, 'rgb');
-            this.colors = colors;
             this.markers = this.schoolMarkers = result;
             this.allSubjects = [];
             if (this.grade != 'all') {
@@ -577,7 +572,7 @@ export class PATExceptionComponent implements OnInit {
             this.schoolMarkers = this.markers;
             if (this.schoolMarkers.length !== 0) {
               for (let i = 0; i < this.schoolMarkers.length; i++) {
-                var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 0, 0, 0.3, options.level);
+                var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, 'red', 0, 0, 0.3, options.level);
                 this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "school_latitude", "school_longitude");
                 // to download the report
                 this.fileName = "School_wise_report";
@@ -616,7 +611,7 @@ export class PATExceptionComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
     this.blockId = undefined;
-
+    this.schoolCount = '';
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = true;
@@ -681,7 +676,7 @@ export class PATExceptionComponent implements OnInit {
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
     this.clusterId = undefined;
-
+    this.schoolCount = '';
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -754,7 +749,7 @@ export class PATExceptionComponent implements OnInit {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
-
+    this.schoolCount = '';
     this.blockHidden = false;
     this.clusterHidden = false;
     // api call to get the schoolwise data for selected district, block, cluster
@@ -842,7 +837,6 @@ export class PATExceptionComponent implements OnInit {
   // common function for all the data to show in the map
   genericFun(data, options, fileName) {
     this.reportData = [];
-    this.schoolCount = '';
     if (data['data'].length > 0) {
       this.markers = data['data']
 
@@ -902,17 +896,13 @@ export class PATExceptionComponent implements OnInit {
 
       // generate color gradient
       let colors;
-      if (options.level == 'school') {
-        colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#FF0000', this.markers.length, 'rgb');
-      } else {
-        colors = this.markers.length == 1 ? ['red'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', this.markers.length, 'rgb');
-      }
+      colors = this.commonService.getRelativeColors(this.markers, { value: 'percentage_schools_with_missing_data', report: 'exception' });
       this.colors = colors;
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
         this.getLatLng(options.level, this.markers[i]);
         var markerIcon;
-        markerIcon = this.commonService.initMarkers(this.latitude, this.longitude, this.colors[i], options.radius, options.strokeWeight, options.weight, options.level);
+        markerIcon = this.commonService.initMarkers(this.latitude, this.longitude, this.commonService.relativeColorGredient(this.markers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), options.radius, options.strokeWeight, options.weight, options.level);
 
         // data to show on the tooltip for the desired levels
         if (options.level) {

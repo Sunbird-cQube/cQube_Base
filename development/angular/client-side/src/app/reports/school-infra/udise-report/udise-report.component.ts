@@ -337,7 +337,7 @@ export class UdiseReportComponent implements OnInit {
           this.blockMarkers = [];
 
           this.blockMarkers = result;
-          var colors = this.getRelativeColors(this.markers);
+          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
           this.schoolCount = 0;
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
@@ -427,7 +427,7 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
-          var colors = this.getRelativeColors(this.markers);
+          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
@@ -516,7 +516,7 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
-          var colors = this.getRelativeColors(this.markers);
+          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
           this.schoolCount = 0;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
@@ -795,7 +795,7 @@ export class UdiseReportComponent implements OnInit {
     var myData = data['data'];
     if (myData.length > 0) {
       this.markers = myData;
-      var colors = this.getRelativeColors(this.markers);
+      var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
       this.schoolCount = 0;
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
@@ -852,24 +852,24 @@ export class UdiseReportComponent implements OnInit {
     }
   }
 
-  getRelativeColors(markers) {
-    var values = [];
-    markers.map(item => {
-      if (this.indiceData == 'Infrastructure_Score') {
-        values.push(item.details[`Infrastructure_Score`]);
-      } else {
-        values.push(item.indices[`${this.indiceData}`]);
-      }
-    });
-    let uniqueItems = [...new Set(values)];
-    uniqueItems = uniqueItems.sort(function (a, b) { return a - b });
-    var colorsArr = uniqueItems.length == 1 ? ['#00FF00'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', uniqueItems.length, 'rgb');
-    var colors = {};
-    uniqueItems.map((a, i) => {
-      colors[`${a}`] = colorsArr[i]
-    });
-    return colors;
-  }
+  // getRelativeColors(markers) {
+  //   var values = [];
+  //   markers.map(item => {
+  //     if (this.indiceData == 'Infrastructure_Score') {
+  //       values.push(item.details[`Infrastructure_Score`]);
+  //     } else {
+  //       values.push(item.indices[`${this.indiceData}`]);
+  //     }
+  //   });
+  //   let uniqueItems = [...new Set(values)];
+  //   uniqueItems = uniqueItems.sort(function (a, b) { return a - b });
+  //   var colorsArr = uniqueItems.length == 1 ? ['#00FF00'] : this.commonService.exceptionColor().generateGradient('#FF0000', '#00FF00', uniqueItems.length, 'rgb');
+  //   var colors = {};
+  //   uniqueItems.map((a, i) => {
+  //     colors[`${a}`] = colorsArr[i]
+  //   });
+  //   return colors;
+  // }
 
   //generate tooltip........
   generateToolTip(markers, level, markerIcon, lat, lng) {

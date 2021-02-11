@@ -373,7 +373,7 @@ input:-webkit-autofill {
     border-radius: 20px;
 }
 
-#saveTOTPBtn {
+#saveTOTPBtn, input.btn.btn-primary.btn-block.btn-lg {
     left: 0px;
     top: 0px;
     position: relative;
@@ -406,7 +406,7 @@ input:-webkit-autofill {
     border: 1px solid #848FFF;
 }
 
-#totp {
+#totp,#otp ,#password-new, #password-confirm{
     width: 100%;
     border-radius: 20px !important;
     background-color: transparent;
@@ -496,6 +496,9 @@ input:focus {
     color: #899BFF;
   }
 
+  #kc-passwd-update-form{
+      margin-top: 15px;
+  }
 
 @media (min-height: 646px) {
     #kc-container-wrapper {

@@ -1532,6 +1532,8 @@ primary key(school_id,month,year)
 
 create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
 
+Drop view if exists teacher_attendance_exception_data cascade;
+
 alter table school_teacher_total_attendance drop constraint if exists school_teacher_total_attendance_pkey;
 alter table school_teacher_total_attendance add primary key(school_id,month,year);
 alter table school_teacher_total_attendance drop COLUMN if exists total_training;
@@ -5509,4 +5511,54 @@ create table if not exists pat_school_grade_enrolment_dup(school_id bigint,grade
 ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
 alter table diksha_api_meta add column if not exists total_files int, add column if not exists files_processed int,add column if not exists files_emitted int;
+
+create table if not exists student_attendance_exception_agg
+  (
+	    school_id bigint,
+	    year int,
+	    month int,
+	    school_name varchar(300),
+	    block_id bigint,
+	    block_name varchar(100),
+	    district_id bigint,
+	    district_name varchar(100),
+	    cluster_id bigint,
+	    cluster_name varchar(100),
+	school_latitude  double precision,
+	school_longitude  double precision,
+	district_latitude  double precision,
+	district_longitude  double precision,
+	block_latitude  double precision,
+	block_longitude  double precision,
+	cluster_latitude  double precision,
+	cluster_longitude  double precision,
+	created_on TIMESTAMP without time zone,
+	updated_on TIMESTAMP without time zone,
+primary key(school_id,month,year));
+
+create table if not exists teacher_attendance_exception_agg
+  (
+	    school_id bigint,
+	    year int,
+	    month int,
+	    school_name varchar(300),
+	    block_id bigint,
+	    block_name varchar(100),
+	    district_id bigint,
+	    district_name varchar(100),
+	    cluster_id bigint,
+	    cluster_name varchar(100),
+	school_latitude  double precision,
+	school_longitude  double precision,
+	district_latitude  double precision,
+	district_longitude  double precision,
+	block_latitude  double precision,
+	block_longitude  double precision,
+	cluster_latitude  double precision,
+	cluster_longitude  double precision,
+	created_on TIMESTAMP without time zone,
+	updated_on TIMESTAMP without time zone,
+primary key(school_id,month,year));
+
+
 
