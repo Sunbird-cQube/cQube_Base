@@ -19,7 +19,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
   public xAxisLabel: String = "Total Content Plays";
   public yAxisLabel: String = "District Names"
 
-  public collection_type: String = 'textbook';
+  public collection_type = 'textbook';
 
   public result: any = [];
   public timePeriod = 'all';
@@ -41,6 +41,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
   reportData: any = [];
   y_axisValue;
   state: string;
+  public reportName = "usage_by_textbook";
 
   constructor(
     public http: HttpClient,
@@ -94,7 +95,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
 
     this.collectionName = '';
     this.footer = '';
-    this.fileName = `collectionType_${this.collection_type}_data`;
+    this.fileName = `${this.reportName}_${this.timePeriod}_${this.commonService.dateAndTime}`;
     this.result = [];
     this.all = true
     this.dist = false;
@@ -168,7 +169,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
     this.reportData = [];
     document.getElementById('home').style.display = "block";
     this.commonService.errMsg();
-    this.fileName = `collectionType_${this.collection_type}_data_of_${this.collectionName}`;
+    this.fileName = `${this.reportName}_${this.timePeriod}_${this.commonService.dateAndTime}`;
     this.footer = '';
     this.result = [];
     this.all = true

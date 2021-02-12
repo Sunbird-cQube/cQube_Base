@@ -1297,15 +1297,27 @@ export class PATReportComponent implements OnInit {
     }
     var details = {};
     var orgObject = {};
+    var data1 = {};
+    var data2 = {};
     Object.keys(markers.Details).forEach(key => {
       if (key !== "latitude") {
         details[key] = markers.Details[key];
       }
     });
     Object.keys(details).forEach(key => {
+      if (key !== 'students_count') {
+        data1[key] = details[key];
+      }
+    });
+    Object.keys(data1).forEach(key => {
+      if (key !== 'total_schools') {
+        data2[key] = data1[key];
+      }
+    });
+    Object.keys(data2).forEach(key => {
       var str = key.charAt(0).toUpperCase() + key.substr(1).toLowerCase();
       if (key !== "longitude") {
-        orgObject[`${str}`] = details[key];
+        orgObject[`${str}`] = data2[key];
       }
     });
     var ordered = {};

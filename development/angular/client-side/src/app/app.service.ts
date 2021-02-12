@@ -23,10 +23,13 @@ export class AppServiceComponent {
     mapCenterLatlng = config.default[`${environment.stateName}`];
 
     public state = this.mapCenterLatlng.name;
+    date = new Date();
+    dateAndTime: string;
 
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
         this.token = keyCloakService.kc.token;
         localStorage.setItem('token', this.token);
+        this.dateAndTime = `${("0" + (this.date.getDate())).slice(-2)}-${("0" + (this.date.getMonth() + 1)).slice(-2)}-${this.date.getFullYear()}`;
     }
 
 

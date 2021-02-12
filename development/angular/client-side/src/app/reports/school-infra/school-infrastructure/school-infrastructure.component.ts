@@ -73,6 +73,9 @@ export class SchoolInfrastructureComponent implements OnInit {
   public chartData: any = [];
   public modes: any
 
+  reportName = 'composite_report';
+
+
   districtWise() {
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
@@ -82,8 +85,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'dist';
     this.tableHead = "District Name";
-    this.fileName = "Dist_level_report";
-    this.fileName = "Dist_level_Report";
+    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
 
     this.myDistrict = '';
     this.downloadType = '';
@@ -132,7 +134,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'block';
     this.tableHead = "Block Name";
-    this.fileName = "blockPerDistrict_report";
+    this.fileName = `${this.reportName}_${this.downloadLevel}s_of_district_${data}_${this.commonService.dateAndTime}`;
 
     this.dist = true;
     this.blok = false;
@@ -188,7 +190,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'cluster';
     this.tableHead = "Cluster Name";
-    this.fileName = "clusterPerBlock_report";
+    this.fileName = `${this.reportName}_${this.downloadLevel}s_of_block_${data}_${this.commonService.dateAndTime}`;
     this.commonService.errMsg();
     this.dist = false;
     this.blok = true;
@@ -247,7 +249,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'school';
     this.tableHead = "School Name";
-    this.fileName = "schoolPerCluster_report";
+    this.fileName = `${this.reportName}_${this.downloadLevel}s_of_cluster_${data}_${this.commonService.dateAndTime}`;
 
     this.dist = false;
     this.blok = false;
@@ -300,7 +302,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "Dist_level_Infra_Report";
+    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -323,7 +325,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "Block_level_Infra_Report";
+    this.fileName = `${this.reportName}_all_blocks_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -346,7 +348,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "Cluster_level_Infra_Report";
+    this.fileName = `${this.reportName}_all_clusters_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -369,7 +371,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "School_level_Infra_Report";
+    this.fileName = `${this.reportName}_all_schools_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -669,23 +671,6 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   downloadRoport() {
-    if (this.reportData.length == 0) {
-      alert("No data found to download");
-    } else {
-      const options = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        showTitle: false,
-        title: 'My Awesome CSV',
-        useTextFile: false,
-        useBom: true,
-        useKeysAsHeaders: true,
-        filename: this.fileName
-      };
-      const csvExporter = new ExportToCsv(options);
-      csvExporter.generateCsv(this.reportData);
-    }
+    this.commonService.download(this.fileName, this.reportData);
   }
 }

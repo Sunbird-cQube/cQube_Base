@@ -30,6 +30,7 @@ export class UsageByTextbookContentComponent implements OnInit {
   reportData: any = [];
   header = '';
   state: string;
+  public reportName = "usage_by_textbook_content";
 
   constructor(
     public http: HttpClient,
@@ -97,7 +98,7 @@ export class UsageByTextbookContentComponent implements OnInit {
     // }
     // this.header = this.header;
     this.service.dikshaAllTableData({ collectionType: this.collectionType }).subscribe(res => {
-      this.fileName = `Diksha_All_Data_${this.timePeriod}`;
+      this.fileName = `${this.reportName}_${this.timePeriod}_${this.commonService.dateAndTime}`;
       this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
       this.fileToDownload = `diksha_raw_data/table_reports/textbook/${this.time}/${this.time}.csv`;
       this.result = res;
@@ -161,7 +162,7 @@ export class UsageByTextbookContentComponent implements OnInit {
       this.result = [];
       this.reportData = [];
       this.service.dikshaDistrictTableData({ districtId: districtId, collectionType: this.collectionType }).subscribe(res => {
-        this.fileName = `Diksha_Dist_Data_${this.timePeriod}`;
+        this.fileName = `${this.reportName}_${this.timePeriod}_${districtId}_${this.commonService.dateAndTime}`;
         this.result = res;
         this.tableCreation(this.result);
 
@@ -197,7 +198,7 @@ export class UsageByTextbookContentComponent implements OnInit {
       this.tableCreation(this.result);
       if (this.hierName) {
         this.reportData = this.result;
-        this.fileName = `Diksha_${this.hierName}_Dist_Data_${this.timePeriod}`;
+        this.fileName = `${this.reportName}_${this.timePeriod}_${this.commonService.dateAndTime}`;
       } else {
         this.result.forEach(element => {
           var obj1 = {};
@@ -214,7 +215,7 @@ export class UsageByTextbookContentComponent implements OnInit {
           });
           this.reportData.push(obj2);
         });
-        this.fileName = `Diksha_${this.collectionType}_Dist_Data_${this.timePeriod}`;
+        this.fileName = `${this.reportName}_${this.timePeriod}_${this.commonService.dateAndTime}`;
       }
 
       document.getElementById('spinner').style.display = 'none';
@@ -233,24 +234,7 @@ export class UsageByTextbookContentComponent implements OnInit {
 
 
   downloadRoport() {
-    if (this.reportData.length <= 0) {
-      alert("No data found to download");
-    } else {
-      const options = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        showTitle: false,
-        title: 'My Awesome CSV',
-        useTextFile: false,
-        useBom: true,
-        useKeysAsHeaders: true,
-        filename: this.fileName
-      };
-      const csvExporter = new ExportToCsv(options);
-      csvExporter.generateCsv(this.reportData);
-    }
+    this.commonService.download(this.fileName, this.reportData);
   }
   changeingStringCases(str) {
     return str.replace(
