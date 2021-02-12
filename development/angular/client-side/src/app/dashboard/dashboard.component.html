@@ -840,7 +840,7 @@
                                 </div>
                                 <div class="col-9 col-md-10">
                                     <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">Periodic Assessment  <br> Test </p>
+                                        <p class="card-category">Periodic Assessment <br> Test </p>
                                         <p class="card-title">Exception</p>
                                     </div>
                                 </div>
@@ -897,40 +897,6 @@
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12" style="padding:  20px 25px 0px 25px">
             <div class="row outer12">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);"
-                        id="tarExp" [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/teacher-attendance-exception']"
-                        (click)="fetchTelemetry($event,'tarExp')">
-                        <div class="card-body ">
-                            <div class="row">
-                                <app-info [tooltipText]="tarExpTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
-                                <div class="col-3 col-md-2">
-                                    <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv" style="background-color: #0093d0;">
-                                            <img class="ic-equalizer1" src="../../assets/ic_assignment_24px.svg" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-9 col-md-10">
-                                    <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">Teacher Attendance</p>
-                                        <p class="card-title">Exception</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="views">
-                                    <p *ngIf="tarExpViews;else other_content" id="views">views:
-                                        {{tarExpViews}}</p>
-                                    <ng-template #other_content>
-                                        <p id="errViews">views: 0 {{timePeriod}}</p>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-lg-6 col-md-6  col-sm-6">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);;"
                         id="sarExcpt"
@@ -959,6 +925,41 @@
                                 <div class="views">
                                     <p *ngIf="sarExcptViews;else other_content" id="views">views:
                                         {{sarExcptViews}}</p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);"
+                        id="tarExp"
+                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/teacher-attendance-exception']"
+                        (click)="fetchTelemetry($event,'tarExp')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <app-info [tooltipText]="tarExpTooltip" style="position: absolute; right:10px; top:0px">
+                                </app-info>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #0093d0;">
+                                            <img class="ic-equalizer1" src="../../assets/ic_assignment_24px.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Teacher Attendance</p>
+                                        <p class="card-title">Exception</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="tarExpViews;else other_content" id="views">views:
+                                        {{tarExpViews}}</p>
                                     <ng-template #other_content>
                                         <p id="errViews">views: 0 {{timePeriod}}</p>
                                     </ng-template>

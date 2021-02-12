@@ -79,6 +79,9 @@ export class InfraMapVisualisationComponent implements OnInit {
   public lng: any;
 
   colorGenData: any = [];
+  reportName = 'infrastructure_access_by_location';
+  date = new Date();
+  dateAndTime;
 
 
   constructor(
@@ -109,7 +112,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     document.getElementById('backBtn').style.display = 'none';
 
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
-
+    this.dateAndTime = `${this.date.getFullYear()}-${("0" + (this.date.getMonth() + 1)).slice(-2)}-${("0" + (this.date.getDate())).slice(-2)}`;
     if (params && params.level) {
       let data = params.data;
       if (params.level === 'district') {
@@ -196,7 +199,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.districtId = undefined;
       this.commonService.errMsg();
       this.level = 'district';
-      this.fileName = "Dist_wise_report";
+      this.fileName = `${this.reportName}_all_districts_${this.dateAndTime}`;
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -290,7 +293,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.districtId = undefined;
       this.blockId = undefined;
       this.level = 'block_wise';
-      this.fileName = "Block_wise_report";
+      this.fileName = `${this.reportName}_all_blocks_${this.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -374,7 +377,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = "cluster_wise";
-      this.fileName = "Cluster_wise_report";
+      this.fileName = `${this.reportName}_all_clusters_${this.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -456,7 +459,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = 'school_wise';
-      this.fileName = "School_wise_report";
+      this.fileName = `${this.reportName}_all_schools_${this.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -538,7 +541,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     this.blockId = undefined;
     this.reportData = [];
     this.level = 'block';
-    var fileName = "Block_per_dist_report";
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -554,6 +556,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         distId: this.data[0].details.district_id,
         districtName: this.data[0].details.district_name
       }
+      this.fileName = `${this.reportName}_${this.level}s_of_district_${this.districtHierarchy.districtName}_${this.dateAndTime}`;
 
       // to show and hide the dropdowns
       this.blockHidden = false;
@@ -580,7 +583,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      this.genericFun(res, options, fileName);
+      this.genericFun(res, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));
     }, err => {
@@ -601,7 +604,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     this.clusterId = undefined;
     this.reportData = [];
     this.level = 'cluster';
-    var fileName = "Cluster_per_block_report";
 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
@@ -628,6 +630,8 @@ export class InfraMapVisualisationComponent implements OnInit {
         blockId: this.data[0].details.block_id,
         blockName: this.data[0].details.block_name
       }
+      this.fileName = `${this.reportName}_${this.level}s_of_block_${this.blockHierarchy.blockName}_${this.dateAndTime}`;
+
 
       // to show and hide the dropdowns
       this.blockHidden = false;
@@ -656,7 +660,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      this.genericFun(res, options, fileName);
+      this.genericFun(res, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.details.cluster_name > b.details.cluster_name) ? 1 : ((b.details.cluster_name > a.details.cluster_name) ? -1 : 0));
     }, err => {
@@ -712,6 +716,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           clusterId: this.data[0].details.cluster_id,
           clusterName: this.data[0].details.cluster_name,
         }
+        this.fileName = `${this.reportName}_${this.level}s_of_cluster_${this.clusterHierarchy.clusterName}_${this.dateAndTime}`;
 
         this.blockHidden = false;
         this.clusterHidden = false;
@@ -745,8 +750,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
         this.level = options.level;
-        var fileName = "School_per_cluster_report";
-        this.genericFun(res, options, fileName);
+        this.genericFun(res, options, this.fileName);
       }, err => {
         this.data = [];
         this.commonService.loaderAndErr(this.data);

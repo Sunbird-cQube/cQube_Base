@@ -6,8 +6,8 @@ const s3File = require('../../lib/reads3File');
 router.post('/districtWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all district wise api ---');
-
-        let fileName = `crc/district_crc_opt_json.json`;
+        var timePeriod = req.body.timePeriod;
+        let fileName = `crc/${timePeriod}/district.json`;
         var jsonData = await s3File.readS3File(fileName);
         var districtData = jsonData
 

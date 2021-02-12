@@ -3,19 +3,19 @@
         <div class="col-sm-7">
             <div *ngIf='skul'>
                 <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    CRC Report for: <span (click)="districtWise()"
+                    CRC Report for: <span (click)="onClockHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    CRC Report for: <span (click)="districtWise()"
+                    CRC Report for: <span (click)="onClockHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div>
             <div *ngIf="blok">
                 <p id="cluster_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    CRC Report for: <span (click)="districtWise()"
+                    CRC Report for: <span (click)="onClockHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
@@ -25,7 +25,7 @@
 
             <div *ngIf="clust">
                 <p id="school_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    CRC Report for: <span (click)="districtWise()"
+                    CRC Report for: <span (click)="onClockHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
@@ -63,7 +63,7 @@
                     </ng-template>
                     <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
-                        alt="Home" (click)="districtWise()"></em>
+                        alt="Home" (click)="onClockHome()"></em>
                 </div>
             </div>
         </div>
@@ -131,6 +131,15 @@
         </div>
         <div class="col-sm-6">
             <div class="row">
+                <select id="period"
+                    style="padding: 5px 2px 5px 2px;float: left;margin: 2px 15px 0px 0px; width: 100px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                    [(ngModel)]="period" (change)="onPeriodSelect()">
+                    <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
+                    <option *ngFor="let period of timeRange,  let i =index" style="width: 100px;"
+                        [(ngValue)]="period.key">
+                        {{period.value}}
+                    </option>
+                </select>
                 <select id="dist"
                     style="margin-right: 10px;margin-left: 10px; padding: 4px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                     [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">

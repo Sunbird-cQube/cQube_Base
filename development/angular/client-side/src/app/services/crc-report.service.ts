@@ -15,37 +15,37 @@ export class CrcReportService {
   }
 
   // crc new apis
-  crcDistWiseData() {
+  crcDistWiseData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/districtWise`, {});
+    return this.http.post(`${this.baseUrl}/crc/districtWise`, data);
   }
-  crcBlockWiseData(distId) {
+  crcBlockWiseData(distId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/blockWise/${distId}`, {});
+    return this.http.post(`${this.baseUrl}/crc/blockWise/${distId}`, data);
   }
-  crcClusterWiseData(distId, blockId) {
+  crcClusterWiseData(distId, blockId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/clusterWise/${distId}/${blockId}`, {});
-  }
-
-  crcSchoolWiseData(distId, blockId, clusterId) {
-    this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/schoolWise/${distId}/${blockId}/${clusterId}`, {});
+    return this.http.post(`${this.baseUrl}/crc/clusterWise/${distId}/${blockId}`, data);
   }
 
-  crcAllBlockWiseData() {
+  crcSchoolWiseData(distId, blockId, clusterId,data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/allBlockWise`, {});
+    return this.http.post(`${this.baseUrl}/crc/schoolWise/${distId}/${blockId}/${clusterId}`, data);
   }
 
-  crcAllClusterWiseData() {
+  crcAllBlockWiseData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/allClusterWise`, {});
+    return this.http.post(`${this.baseUrl}/crc/allBlockWise`, data);
   }
 
-  crcAllSchoolWiseData() {
+  crcAllClusterWiseData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/crc/allSchoolWise`, {});
+    return this.http.post(`${this.baseUrl}/crc/allClusterWise`, data);
+  }
+
+  crcAllSchoolWiseData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/crc/allSchoolWise`, data);
   }
 
 }

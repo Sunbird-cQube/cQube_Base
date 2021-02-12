@@ -7,7 +7,8 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all school wise api ---');
 
-        let fileName = `crc/school_crc_opt_json.json`;
+        var timePeriod = req.body.timePeriod;
+        let fileName = `crc/${timePeriod}/school.json`;
         var jsonData = await s3File.readS3File(fileName);
 
         var schoolData = jsonData.data;
@@ -23,7 +24,8 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc school per cluster api ---');
-        let fileName = `crc/school_crc_opt_json.json`;
+        var timePeriod = req.body.timePeriod;
+        let fileName = `crc/${timePeriod}/school.json`;
         var jsonData = await s3File.readS3File(fileName);
 
         var schoolData = jsonData
