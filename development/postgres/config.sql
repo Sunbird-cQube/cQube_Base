@@ -4755,34 +4755,33 @@ left join
     where visit_count>0 and  cluster_name is not null group by district_id)as scl_v
 on spd.district_id=scl_v.district_id;
 
-
 CREATE OR REPLACE FUNCTION infra_areas_to_focus()
 RETURNS text AS
 $$
 DECLARE
 school_atf text:='select ''select school_id, array[''||string_agg(''case when ''||
-replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<30 then ''''''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<(select abs(avg(coalesce(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent,0))::int-5) from infra_district_table_view)  then ''''''||
  case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
 else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
 '']as areas_to_focus from infra_school_table_view'' 
 from infrastructure_master where status = true order by 1';
 school_atf_value text; 
 cluster_atf text:='select ''select cluster_id, array[''||string_agg(''case when ''||
-replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<30 then ''''''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<(select abs(avg(coalesce(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent,0))::int-5) from infra_district_table_view)  then ''''''||
 case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
 else replace(trim(initcap(infrastructure_name)),''_'','' '') end||'''''' else ''''0'''' end'','','')||
 '']as areas_to_focus from infra_cluster_table_view'' 
 from infrastructure_master where status = true order by 1';
 cluster_atf_value text; 
 block_atf text:='select ''select block_id, array[''||string_agg(''case when ''||
-replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<30 then ''''''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<(select abs(avg(coalesce(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent,0))::int-5) from infra_district_table_view)  then ''''''||
 case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
 else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
 '']as areas_to_focus from infra_block_table_view'' 
 from infrastructure_master where status = true order by 1';
 block_atf_value text; 
 district_atf text:='select ''select district_id, array[''||string_agg(''case when ''||
-replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<30 then ''''''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<(select abs(avg(coalesce(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent,0))::int-5) from infra_district_table_view)  then ''''''||
 case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
 else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
 '']as areas_to_focus from infra_district_table_view'' 
@@ -4790,19 +4789,19 @@ from infrastructure_master where status = true order by 1';
 district_atf_value text; 
 query text;
 BEGIN
+Execute district_atf into district_atf_value;
 Execute school_atf into school_atf_value;
 Execute cluster_atf into cluster_atf_value;
 Execute block_atf into block_atf_value;
-Execute district_atf into district_atf_value;
 IF school_atf <> '' THEN 
-query='create or replace view infra_school_atf as 
+query='create or replace view infra_district_atf as 
+select district_id,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||district_atf_value||') as a;
+create or replace view infra_school_atf as 
 select school_id,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||school_atf_value||') as a;
 create or replace view infra_cluster_atf as 
 select cluster_id,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||cluster_atf_value||') as a;
 create or replace view infra_block_atf as 
-select block_id,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||block_atf_value||') as a;
-create or replace view infra_district_atf as 
-select district_id,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||district_atf_value||') as a;';
+select block_id,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||block_atf_value||') as a;';
 Execute query; 
 END IF;
 return 0;
@@ -6815,4 +6814,303 @@ where a.school_name is not null and a.cluster_name is not null and b.school_lati
 )as b on b.school_id=tch_res.school_id
 left join (select school_id,count(distinct teacher_id) as teachers_count from teacher_attendance_trans group by school_id) as tch_cnt
 on b.school_id=tch_cnt.school_id;
+
+
+/* CRC time selection */
+
+create or replace view crc_trans_to_aggregate_with_date as 
+select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b.district_name)as district_name,b.block_id,
+  INITCAP(b.block_name)as block_name,b.cluster_id,
+  INITCAP(b.cluster_name)as cluster_name ,INITCAP(b.crc_name)as crc_name,
+  sum(cast((case when in_school_location='true' or in_school_location='t' then 1 else 0 end ) as int)) as visit_count,
+  sum(cast((case when in_school_location is null or in_school_location ='f' or in_school_location='false' then 1 else 0 end ) as int)) as missed_visit_count,
+      a.month,
+    a.year,a.visit_date,
+  now() as created_on,
+  now() as updated_on
+  from (select crc_inspection_id as inspection_id, clt.school_id,month,year,bool_or(in_school_location) as in_school_location,visit_date
+ from crc_inspection_trans cit inner join crc_location_trans clt on clt.inspection_id=cit.crc_inspection_id 
+ group by crc_inspection_id, clt.school_id,month,year) as a left join school_hierarchy_details as b on a.school_id=b.school_id
+  where a.school_id<>0 and a.inspection_id<>0 and b.school_id<>9999 and b.cluster_name is not null and b.district_name is not null and b.block_name is not null and b.school_name is not null and visit_date is NOT NULL
+  group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id, b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year,a.visit_date
+  order by school_id desc ;
+
+
+/* school */
+
+CREATE OR REPLACE FUNCTION crc_time_selection_school(period text)
+RETURNS text AS
+$$
+DECLARE
+crc_res text;
+number_of_days text;
+BEGIN
+
+IF period='last_1_day' THEN
+number_of_days:='1day';
+ELSE IF period='last_7_days' THEN
+number_of_days:='7day';
+ELSE IF period='last_30_days' THEN
+number_of_days:='30day';
+ELSE
+return 0;
+END IF;
+END IF;
+END IF;
+
+crc_res:='create or replace view crc_school_report_'||period||' as
+select spd.district_id,initcap(spd.district_name)as district_name,spd.block_id,initcap(spd.block_name) as block_name,spd.cluster_id,initcap(spd.cluster_name)as cluster_name,spd.school_id,
+initcap(spd.school_name) as school_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,
+coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
+coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school,
+(select to_char(min(days_in_period.day),''DD-MM-YYYY'') as data_from_date from (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-'''||number_of_days||'''::interval)::date,'''||number_of_days||'''::interval)::date) as day) as days_in_period),
+(select to_char(max(days_in_period.day),''DD-MM-YYYY'') as data_upto_date from (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period)
+from (
+(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,
+  count(distinct school_id) as total_schools,
+round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc
+    from school_hierarchy_details  where cluster_name is not null and block_name is not null
+    and school_name is not null and district_name is not null
+    group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name) s left join
+(select school_id as schl_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10
+from
+(select school_id,sum(visit_count)as visit_count,count(distinct(school_id))*sum(visit_count) as school_count,
+case when sum(visit_count) between 1 and 2 then count(distinct(school_id)) end as schools_1_2,
+case when sum(visit_count) between 3 and 5 then count(distinct(school_id)) end as schools_3_5,
+case when sum(visit_count) between 6 and 10 then count(distinct(school_id)) end as schools_6_10,
+case when sum(visit_count) >10 then count(distinct(school_id)) end as schools_10
+from crc_trans_to_aggregate_with_date
+where visit_count>0 and cluster_name is not null and school_id!=9999 and visit_date is not null and visit_date in (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date))
+group by school_id) d group by school_id) t on s.school_id=t.schl_id) spd
+left join
+(select school_id,count(distinct(school_id))as visited_school_count from crc_trans_to_aggregate_with_date
+  where visit_count>0  and cluster_name is not null and school_id!=9999 and visit_date in (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date)) group by school_id)as scl_v
+on spd.school_id=scl_v.school_id where spd.school_id!=9999';
+
+EXECUTE crc_res;
+return 0;
+END;
+$$ LANGUAGE plpgsql;
+
+drop view if exists crc_school_report_last_1_day cascade;
+drop view if exists crc_school_report_last_7_days cascade;
+drop view if exists crc_school_report_last_30_days cascade;
+
+select crc_time_selection_school('last_1_day');
+select crc_time_selection_school('last_7_days');
+select crc_time_selection_school('last_30_days');
+
+
+/* cluster */
+
+CREATE OR REPLACE FUNCTION crc_time_selection_cluster(period text)
+RETURNS text AS
+$$
+DECLARE
+crc_res text;
+number_of_days text;
+BEGIN
+
+IF period='last_1_day' THEN
+number_of_days:='1day';
+ELSE IF period='last_7_days' THEN
+number_of_days:='7day';
+ELSE IF period='last_30_days' THEN
+number_of_days:='30day';
+ELSE
+return 0;
+END IF;
+END IF;
+END IF;
+
+crc_res:='create or replace view crc_cluster_report_'||period||' as
+select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.cluster_id,
+initcap(spd.cluster_name)as cluster_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
+coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school,
+COALESCE(1-round(spd.schools_0 ::numeric / spd.total_schools::numeric, 1), 0::numeric) AS state_level_score,
+(select to_char(min(days_in_period.day),''DD-MM-YYYY'') as data_from_date from (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-'''||number_of_days||'''::interval)::date,'''||number_of_days||'''::interval)::date) as day) as days_in_period),
+(select to_char(max(days_in_period.day),''DD-MM-YYYY'') as data_upto_date from (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period)
+
+from (
+(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,count(distinct school_id) as total_schools,
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc
+     from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+      group by district_id,district_name,block_id,block_name,cluster_id,cluster_name) s left join 
+(select cluster_id as clt_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10
+from
+(select cluster_id,sum(total_crc_visits)as school_count, 
+sum(case when schools_0>0 then 1 else 0 end) as schools_0,
+  sum(case when schools_1_2>0 then 1 else 0 end) as schools_1_2,
+ sum(case when schools_3_5>0 then 1 else 0 end) as schools_3_5,
+ sum(case when schools_6_10>0 then 1 else 0 end) as schools_6_10,
+ sum(case when schools_10>0 then 1 else 0 end) as schools_10
+ from crc_school_report_'||period||' where  cluster_name is not null 
+group by cluster_id) d group by cluster_id) t on s.cluster_id=t.clt_id) spd
+left join 
+(select cluster_id,count(distinct(school_id))as visited_school_count from crc_trans_to_aggregate_with_date
+    where visit_count>0 and cluster_name is not null and visit_date in (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date)) group by cluster_id)as scl_v
+on spd.cluster_id=scl_v.cluster_id where spd.cluster_id!=9999';
+
+EXECUTE crc_res;
+return 0;
+END;
+$$ LANGUAGE plpgsql;
+
+drop view if exists crc_cluster_report_last_1_day;
+drop view if exists crc_cluster_report_last_7_days;
+drop view if exists crc_cluster_report_last_30_days;
+
+select crc_time_selection_cluster('last_1_day');
+select crc_time_selection_cluster('last_7_days');
+select crc_time_selection_cluster('last_30_days');
+
+
+/* block */
+
+CREATE OR REPLACE FUNCTION crc_time_selection_block(period text)
+RETURNS text AS
+$$
+DECLARE
+crc_res text;
+number_of_days text;
+BEGIN
+
+IF period='last_1_day' THEN
+number_of_days:='1day';
+ELSE IF period='last_7_days' THEN
+number_of_days:='7day';
+ELSE IF period='last_30_days' THEN
+number_of_days:='30day';
+ELSE
+return 0;
+END IF;
+END IF;
+END IF;
+
+crc_res:='create or replace view crc_block_report_'||period||' as
+select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school,
+COALESCE(1-round(spd.schools_0 ::numeric / spd.total_schools::numeric, 1), 0::numeric) AS state_level_score,
+(select to_char(min(days_in_period.day),''DD-MM-YYYY'') as data_from_date from (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-'''||number_of_days||'''::interval)::date,'''||number_of_days||'''::interval)::date) as day) as days_in_period),
+(select to_char(max(days_in_period.day),''DD-MM-YYYY'') as data_upto_date from (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period)
+from (
+(select district_id,district_name,block_id,block_name,count(distinct school_id) as total_schools,
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc 
+    from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+     group by district_id,district_name,block_id,block_name) s left join 
+(select block_id as blk_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10
+from
+(select block_id,sum(total_crc_visits)as school_count, 
+sum(case when schools_0>0 then 1 else 0 end) as schools_0,
+  sum(case when schools_1_2>0 then 1 else 0 end) as schools_1_2,
+ sum(case when schools_3_5>0 then 1 else 0 end) as schools_3_5,
+ sum(case when schools_6_10>0 then 1 else 0 end) as schools_6_10,
+ sum(case when schools_10>0 then 1 else 0 end) as schools_10
+ from crc_school_report_'||period||' where  cluster_name is not null
+group by block_id) d group by block_id) t on s.block_id=t.blk_id) spd
+left join 
+(select block_id,count(distinct(school_id))as visited_school_count from crc_trans_to_aggregate_with_date
+    where visit_count>0  and cluster_name is not null and visit_date in (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date)) group by block_id)as scl_v
+on spd.block_id=scl_v.block_id  where spd.block_id!=9999';
+
+EXECUTE crc_res;
+return 0;
+END;
+$$ LANGUAGE plpgsql;
+
+drop view if exists crc_block_report_last_1_day;
+drop view if exists crc_block_report_last_7_days;
+drop view if exists crc_block_report_last_30_days;
+
+select crc_time_selection_block('last_1_day');
+select crc_time_selection_block('last_7_days');
+select crc_time_selection_block('last_30_days');
+
+/* district */
+
+CREATE OR REPLACE FUNCTION crc_time_selection_district(period text)
+RETURNS text AS
+$$
+DECLARE
+crc_res text;
+number_of_days text;
+BEGIN
+
+IF period='last_1_day' THEN
+number_of_days:='1day';
+ELSE IF period='last_7_days' THEN
+number_of_days:='7day';
+ELSE IF period='last_30_days' THEN
+number_of_days:='30day';
+ELSE
+return 0;
+END IF;
+END IF;
+END IF;
+
+crc_res:='create or replace view crc_district_report_'||period||' as
+select spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school,
+COALESCE(1-round(spd.schools_0 ::numeric / spd.total_schools::numeric, 1), 0::numeric) AS state_level_score,
+(select to_char(min(days_in_period.day),''DD-MM-YYYY'') as data_from_date from (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-'''||number_of_days||'''::interval)::date,'''||number_of_days||'''::interval)::date) as day) as days_in_period),
+(select to_char(max(days_in_period.day),''DD-MM-YYYY'') as data_upto_date from (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date) as day) as days_in_period)
+ from 
+((select count(distinct school_id) as total_schools,district_id,district_name,
+    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1)) as no_of_schools_per_crc 
+    from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+    group by district_id,district_name) s left join 
+(select district_id as dist_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10 from
+ (select district_id,sum(total_crc_visits)as school_count, 
+sum(case when schools_0>0 then 1 else 0 end) as schools_0,
+  sum(case when schools_1_2>0 then 1 else 0 end) as schools_1_2,
+ sum(case when schools_3_5>0 then 1 else 0 end) as schools_3_5,
+ sum(case when schools_6_10>0 then 1 else 0 end) as schools_6_10,
+ sum(case when schools_10>0 then 1 else 0 end) as schools_10
+ from crc_school_report_'||period||' where  cluster_name is not null
+group by district_id)as d group by district_id)as t  on s.district_id=t.dist_id)as spd
+left join 
+(select district_id,count(distinct(school_id))as visited_school_count from crc_trans_to_aggregate_with_date 
+    where visit_count>0 and  cluster_name is not null and visit_date in (select (generate_series(''now()''::date-'''||number_of_days||'''::interval,(''now()''::date-''1day''::interval)::date,''1day''::interval)::date)) group by district_id)as scl_v
+on spd.district_id=scl_v.district_id  where spd.district_id!=9999';
+
+EXECUTE crc_res;
+return 0;
+END;
+$$ LANGUAGE plpgsql;
+
+drop view if exists crc_district_report_last_1_day;
+drop view if exists crc_district_report_last_7_days;
+drop view if exists crc_district_report_last_30_days;
+
+
+select crc_time_selection_district('last_1_day');
+select crc_time_selection_district('last_7_days');
+select crc_time_selection_district('last_30_days');
+
 
