@@ -85,7 +85,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'dist';
     this.tableHead = "District Name";
-    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allDistricts_${this.commonService.dateAndTime}`;
 
     this.myDistrict = '';
     this.downloadType = '';
@@ -302,7 +302,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allDistricts_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -325,7 +325,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_all_blocks_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allBlocks_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -348,7 +348,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_all_clusters_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allClusters_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -371,7 +371,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_all_schools_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allSchools_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }

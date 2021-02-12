@@ -111,7 +111,7 @@ export class CompositReportComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'dist';
     this.tableHead = "District Name";
-    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allDistricts_${this.commonService.dateAndTime}`;
     this.selected = '';
     this.myDistrict = '';
     this.downloadType = '';
@@ -318,7 +318,7 @@ export class CompositReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allDistricts_${this.commonService.dateAndTime}`;
     this.selected = '';
     if (this.myData) {
       this.myData.unsubscribe();
@@ -345,7 +345,7 @@ export class CompositReportComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'block';
     this.tableHead = "Block Name";
-    this.fileName = `${this.reportName}_all_blocks_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allBlocks_${this.commonService.dateAndTime}`;
     this.selected = '';
     this.myDistrict = '';
 
@@ -383,7 +383,7 @@ export class CompositReportComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'cluster';
     this.tableHead = "Cluster Name";
-    this.fileName = `${this.reportName}_all_clusters_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allClusters_${this.commonService.dateAndTime}`;
 
     this.myDistrict = '';
 
