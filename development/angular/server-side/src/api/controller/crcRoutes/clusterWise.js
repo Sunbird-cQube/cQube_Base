@@ -7,7 +7,8 @@ const s3File = require('../../lib/reads3File');
 router.post('/allClusterWise', auth.authController, async (req, res) => {
   try {
     logger.info('--- crc all cluster wise api ---');
-    let fileName = `crc/cluster_crc_opt_json.json`;
+    var timePeriod = req.body.timePeriod;
+    let fileName = `crc/${timePeriod}/cluster.json`;
     var jsonData = await s3File.readS3File(fileName);
 
     var clusterData = jsonData.data;
@@ -25,7 +26,8 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
 router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
   try {
     logger.info('--- crc cluster per block api ---');
-    let fileName = `crc/cluster_crc_opt_json.json`;
+    var timePeriod = req.body.timePeriod;
+    let fileName = `crc/${timePeriod}/cluster.json`;
     var jsonData = await s3File.readS3File(fileName);
 
     var clusterData = jsonData
