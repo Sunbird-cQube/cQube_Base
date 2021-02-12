@@ -20,6 +20,8 @@
         "schools_10": "data.[&1].visit_10_more",
         "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
         "visit_percent_per_school": "data.[&1].visits_per_school",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
         "@total_schools": "data.[&1].totalSchools",
         "@visited_school_count": "data.[&1].visitedSchoolCount",
         "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
@@ -61,6 +63,8 @@
           "visit_10_more": "data.[&1].visit_10_more",
           "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
           "visits_per_school": "data.[&1].visits_per_school",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
           "@totalSchools": "data.[&1].totalSchools",
           "@visitedSchoolCount": "data.[&1].visitedSchoolCount",
           "@totalVisits": "data.[&1].totalVisits",
@@ -84,9 +88,7 @@
       }
     }
  }
-
-]
-""",
+]""",
 "crc_inspec_duplicate_data":"""Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
 BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
 ActualClassRooms as "actual_class_rooms",
@@ -108,22 +110,11 @@ where SchoolId IS NULL
 or InspectionId IS NULL""",
 "crc_loc_trans_table_name":"""crc_location_trans""",
 "crc_inpsec_master_column_change":"""Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
-BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
+BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",visitdate as "visit_date", VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
 ActualClassRooms as "actual_class_rooms",
 TotalSuggestionLastMonth as "total_suggestion_last_month",ResolvedFromThat as "resolved_from_that",IsInspection as "is_inspection",ReasonType as "reason_type",ReasonDesc as "reason_desc",
 TotalScore as "total_score",Score as "score",IsOffline as "is_offline"
-FROM flowfile
-""",
-"crc_trans_to_crc_visits_frequency_insert_query":"""insert into crc_visits_frequency as a (year,month,school_id,school_name,district_id,district_name,
-block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on)
-select year,month,school_id,school_name,district_id,district_name,
-block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on from crc_trans_to_aggregate
-on conflict (month,year,school_id)
-do update set year= excluded.year,month=excluded.month,school_id=excluded.school_id,school_name=excluded.school_name,
-district_id=excluded.district_id,district_name=excluded.district_name,
-block_id=excluded.block_id,block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
-visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,updated_on=now(),created_on=excluded.created_on
-""",
+FROM flowfile""",
 "school_filename":"""school_crc_opt_json""",
 "crc_loc_null_log_summary":"""update log_summary
 SET school_id = crc_loc_null_col.count_null_schoolid,
@@ -140,7 +131,6 @@ where crc_loc_null_col.ff_uuid = log_summary.ff_uuid""",
     "spec": {
       "*": {
         "cluster_id": ["=toString", null]
-       
       }
     }
   },
@@ -155,7 +145,7 @@ where crc_loc_null_col.ff_uuid = log_summary.ff_uuid""",
         "block_name": "data.[&1].blockName",
         "cluster_id": "data.[&1].clusterId",
         "cluster_name": "data.[&1].clusterName",
-"school_id": "data.[&1].schoolId",
+        "school_id": "data.[&1].schoolId",
         "school_name": "data.[&1].schoolName",
         "schools_0": "data.[&1].visit_0",
         "schools_1_2": "data.[&1].visit_1_2",
@@ -164,6 +154,8 @@ where crc_loc_null_col.ff_uuid = log_summary.ff_uuid""",
         "schools_10": "data.[&1].visit_10_more",
         "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
         "visit_percent_per_school": "data.[&1].visits_per_school",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
         "@total_schools": "data.[&1].totalSchools",
         "@visited_school_count": "data.[&1].visitedSchoolCount",
         "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
@@ -199,9 +191,9 @@ where crc_loc_null_col.ff_uuid = log_summary.ff_uuid""",
           "blockId": "data.[&1].blockId",
           "blockName": "data.[&1].blockName",
           "clusterId": "data.[&1].clusterId",
-        "clusterName": "data.[&1].clusterName",
+          "clusterName": "data.[&1].clusterName",
           "schoolId": "data.[&1].schoolId",
-        "schoolName": "data.[&1].schoolName",
+          "schoolName": "data.[&1].schoolName",
           "visit_0": "data.[&1].visit_0",
           "visit_1_2": "data.[&1].visit_1_2",
           "visit_3_5": "data.[&1].visit_3_5",
@@ -209,6 +201,8 @@ where crc_loc_null_col.ff_uuid = log_summary.ff_uuid""",
           "visit_10_more": "data.[&1].visit_10_more",
           "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
           "visits_per_school": "data.[&1].visits_per_school",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
           "@totalSchools": "data.[&1].totalSchools",
           "@visitedSchoolCount": "data.[&1].visitedSchoolCount",
           "@totalVisits": "data.[&1].totalVisits",
@@ -232,9 +226,7 @@ where crc_loc_null_col.ff_uuid = log_summary.ff_uuid""",
       }
     }
  }
-
-]
-""",
+]""",
 "crc_not_null":"""select * from flowfile 
 where SchoolId IS NOT NULL
 AND InspectionId IS NOT NULL
@@ -342,6 +334,8 @@ group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id
         "schools_10": "data.[&1].visit_10_more",
         "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
         "visit_percent_per_school": "data.[&1].visits_per_school",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
         "@total_schools": "data.[&1].totalSchools",
         "@visited_school_count": "data.[&1].visitedSchoolCount",
         "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
@@ -377,7 +371,7 @@ group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id
           "blockId": "data.[&1].blockId",
           "blockName": "data.[&1].blockName",
           "clusterId": "data.[&1].clusterId",
-        "clusterName": "data.[&1].clusterName",
+          "clusterName": "data.[&1].clusterName",
           "visit_0": "data.[&1].visit_0",
           "visit_1_2": "data.[&1].visit_1_2",
           "visit_3_5": "data.[&1].visit_3_5",
@@ -385,6 +379,8 @@ group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id
           "visit_10_more": "data.[&1].visit_10_more",
           "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
           "visits_per_school": "data.[&1].visits_per_school",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
           "@totalSchools": "data.[&1].totalSchools",
           "@visitedSchoolCount": "data.[&1].visitedSchoolCount",
           "@totalVisits": "data.[&1].totalVisits",
@@ -408,9 +404,7 @@ group by school_id,visit_count) d group by school_id) t on s.school_id=t.schl_id
       }
     }
  }
-
-]
-""",
+]""",
 "crc_inspec_null_log_summary":"""update log_summary
 SET school_id = crc_inspec_null_col.count_null_schoolid,
 inspection_id = crc_inspec_null_col.count_null_inspectionid
@@ -521,52 +515,44 @@ SUM(CASE when  Longitude IS NULL THEN 1 ELSE 0 END) AS count_longitude
 from flowfile)
 """,
 "crc_transform_district_wise_jolt":"""[{
-        "operation": "shift",
-        "spec": {
-            "*": {
-                
-                "district_name": "data.[&1].districtName",
-                "district_id": "data.[&1].districtId",
-              "schools_0": "data.[&1].visit_0",
-              "schools_1_2": "data.[&1].visit_1_2",
-              "schools_3_5": "data.[&1].visit_3_5",
-              "schools_6_10": "data.[&1].visit_6_10",
-              "schools_10": "data.[&1].visit_10_more",
-              "total_crc_visits": "data.[&1].totalVisits",
-              "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
-              "visit_percent_per_school": "data.[&1].visits_per_school",
-              
-              
-                
-                
-               
-                "@total_schools": "data.[&1].totalSchools",
-                "@visited_school_count": "data.[&1].visitedSchoolCount",
-              "@total_crc_visits": "data.[&1].totalVisits",
-                "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
-                "total_schools": "allDistrictsFooter.totalNumberOfSchools[]",
-                "total_crc_visits": "allDistrictsFooter.totalNumberOfVisits[]",
-                "visited_school_count": "allDistrictsFooter.totalSchoolsVisited[]",
-                "not_visited_school_count": "allDistrictsFooter.totalSchoolsNotVisited[]"
-              
-              
-              
-            }
-        }
-    }, {
-        "operation": "modify-overwrite-beta",
-        "spec": {
-            "*": {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "district_name": "data.[&1].districtName",
+        "district_id": "data.[&1].districtId",
+        "schools_0": "data.[&1].visit_0",
+        "schools_1_2": "data.[&1].visit_1_2",
+        "schools_3_5": "data.[&1].visit_3_5",
+        "schools_6_10": "data.[&1].visit_6_10",
+        "schools_10": "data.[&1].visit_10_more",
+        "total_crc_visits": "data.[&1].totalVisits",
+        "no_of_schools_per_crc": "data.[&1].no_of_schools_per_crc",
+        "visit_percent_per_school": "data.[&1].visits_per_school",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "@total_schools": "data.[&1].totalSchools",
+        "@visited_school_count": "data.[&1].visitedSchoolCount",
+        "@total_crc_visits": "data.[&1].totalVisits",
+        "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
+        "total_schools": "allDistrictsFooter.totalNumberOfSchools[]",
+        "total_crc_visits": "allDistrictsFooter.totalNumberOfVisits[]",
+        "visited_school_count": "allDistrictsFooter.totalSchoolsVisited[]",
+        "not_visited_school_count": "allDistrictsFooter.totalSchoolsNotVisited[]"
+      }
+    }
+	}, {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
         "totalNumberOfVisits": "=intSum(@(1,totalNumberOfVisits))",
         "totalSchoolsVisited": "=intSum(@(1,totalSchoolsVisited))",
         "totalNumberOfSchools": "=intSum(@(1,totalNumberOfSchools))",
         "totalSchoolsNotVisited": "=intSum(@(1,totalSchoolsNotVisited))"
-            }
-        }
+      }
     }
+	}
 
-]
-""",
+]""",
 "crc_inspec_check_for_non_blank":"""Select  inspectionid,observerid,observername,schoolid,beginningstandard ,endstandard ,totalclassrooms ,visitstarttime ,visitendtime ,
 actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc ,totalscore,score,isoffline
 from flowfile where has_records = non_empty_records
