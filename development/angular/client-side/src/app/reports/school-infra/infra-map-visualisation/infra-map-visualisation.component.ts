@@ -197,7 +197,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.districtId = undefined;
       this.commonService.errMsg();
       this.level = 'district';
-      this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_allDistricts_${this.commonService.dateAndTime}`;
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -291,7 +291,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.districtId = undefined;
       this.blockId = undefined;
       this.level = 'block_wise';
-      this.fileName = `${this.reportName}_all_blocks_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_allBlocks_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -375,7 +375,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = "cluster_wise";
-      this.fileName = `${this.reportName}_all_clusters_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_allClusters_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -457,7 +457,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = 'school_wise';
-      this.fileName = `${this.reportName}_all_schools_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_allSchools_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -676,7 +676,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
-
+    this.level = 'school';
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();

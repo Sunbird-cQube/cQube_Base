@@ -309,7 +309,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
 
-        this.fileName = `${this.reportName}_${this.semester}nd_sem_all_districts_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_${this.semester}nd_sem_allDistricts_${this.commonService.dateAndTime}`;
         this.genericFun(this.data, options, this.fileName);
 
         // sort the districtname alphabetically
@@ -340,7 +340,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "block";
-      this.fileName = `${this.reportName}_${this.semester}nd_sem_all_blocks_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_allBlocks_${this.commonService.dateAndTime}`;
       this.reportData = [];
       // this.districtMarkers = [];
       this.blockMarkers = [];
@@ -415,7 +415,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "cluster";
-      this.fileName = `${this.reportName}_${this.semester}nd_sem_all_clusters_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_allClusters_${this.commonService.dateAndTime}`;
       // this.districtMarkers = [];
       this.blockMarkers = [];
       this.clusterMarkers = [];
@@ -495,7 +495,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "school";
-      this.fileName = `${this.reportName}_${this.semester}nd_sem_all_schools_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_allSchools_${this.commonService.dateAndTime}`;
       // this.districtMarkers = [];
       this.blockMarkers = [];
       this.clusterMarkers = [];

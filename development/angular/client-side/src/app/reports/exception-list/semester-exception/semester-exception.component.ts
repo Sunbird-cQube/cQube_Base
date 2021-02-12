@@ -74,6 +74,8 @@ export class SemesterExceptionComponent implements OnInit {
   public lat: any;
   public lng: any;
 
+  reportName = 'semester_exception';
+
   constructor(
     public http: HttpClient,
     public service: ExceptionReportService,
@@ -175,8 +177,8 @@ export class SemesterExceptionComponent implements OnInit {
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-        var fileName = "District_wise_report";
-        this.genericFun(this.data, options, fileName);
+        this.fileName = `${this.reportName}_${this.semester}nd_sem_allDistricts_${this.commonService.dateAndTime}`;
+        this.genericFun(this.data, options, this.fileName);
 
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
@@ -201,6 +203,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "block";
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_allBlocks_${this.commonService.dateAndTime}`;
       this.schoolCount = '';
 
       this.reportData = [];
@@ -240,9 +243,6 @@ export class SemesterExceptionComponent implements OnInit {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.commonService.relativeColorGredient(this.blockMarkers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.1, 1, options.level);
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "block_latitude", "block_longitude");
-
-              // to download the report
-              this.fileName = "Block_wise_report";
             }
 
             this.commonService.restrictZoom(globalMap);
@@ -275,6 +275,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.commonService.errMsg();
       this.levelWise = "cluster";
       this.schoolCount = '';
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_allClusters_${this.commonService.dateAndTime}`;
 
       this.reportData = [];
       this.districtId = undefined;
@@ -316,9 +317,6 @@ export class SemesterExceptionComponent implements OnInit {
               var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.commonService.relativeColorGredient(this.clusterMarkers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 1, 0.01, 0.5, options.level);
 
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "cluster_latitude", "cluster_longitude");
-
-              // to download the report
-              this.fileName = "Cluster_wise_report";
             }
 
             this.commonService.restrictZoom(globalMap);
@@ -351,6 +349,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.commonService.errMsg();
       this.levelWise = "school";
       this.schoolCount = '';
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_allSchools_${this.commonService.dateAndTime}`;
 
       this.reportData = [];
       // these are for showing the hierarchy names based on selection
@@ -389,9 +388,6 @@ export class SemesterExceptionComponent implements OnInit {
               var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, this.colors[i], 0, 0, 0.3, options.level);
 
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "school_latitude", "school_longitude");
-
-              // to download the report
-              this.fileName = "School_wise_report";
             }
 
             globalMap.doubleClickZoom.enable();
@@ -466,8 +462,8 @@ export class SemesterExceptionComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      var fileName = "Block_per_dist_report";
-      this.genericFun(this.data, options, fileName);
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
+      this.genericFun(this.data, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }, err => {
@@ -536,8 +532,8 @@ export class SemesterExceptionComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      var fileName = "Cluster_per_block_report";
-      this.genericFun(this.data, options, fileName);
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
+      this.genericFun(this.data, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }, err => {
@@ -622,8 +618,8 @@ export class SemesterExceptionComponent implements OnInit {
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-        var fileName = "School_per_cluster_report";
-        this.genericFun(this.data, options, fileName);
+        this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
+        this.genericFun(this.data, options, this.fileName);
       }, err => {
         this.data = [];
         this.commonService.loaderAndErr(this.data);
