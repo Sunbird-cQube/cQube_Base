@@ -33,6 +33,8 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   clusterNames = [];
   cluster;
 
+  public reportName = "TPD_teacher_percentage";
+
   reportType = "percentage_teachers";
   timePeriod = 'All';
   timePeriods = [{ key: "Last_Day", value: "Last Day" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_30_Day", value: "Last 30 Days" }, { key: "All", value: "Overall" }]
@@ -115,7 +117,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   resetToInitPage() {
-    this.fileName = "District_wise_report";
+    this.fileName = `${this.reportName}_all_district_${this.timePeriod}_${this.commonService.dateAndTime}`;
     this.skul = true;
     this.dist = false;
     this.blok = false;
@@ -138,6 +140,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   commonFunc = () => {
+    this.fileName = `${this.reportName}_all_district_${this.timePeriod}_${this.commonService.dateAndTime}`;
     this.commonService.errMsg();
     this.level = 'district';
     this.reportData = [];
@@ -322,7 +325,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   selectedDistrict(districtId) {
-    this.fileName = "Block_wise_report";
+    this.fileName = `${this.reportName}_${this.timePeriod}_${districtId}_${this.commonService.dateAndTime}`;
     this.level = 'block';
     this.block = undefined;
     this.cluster = undefined;
@@ -363,7 +366,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
-    this.fileName = "Cluster_wise_report";
+    this.fileName = `${this.reportName}_${this.timePeriod}_${blockId}_${this.commonService.dateAndTime}`;
     this.level = 'cluster';
     this.cluster = undefined;
     this.blockHidden = false;
@@ -407,7 +410,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
-    this.fileName = "School_wise_report";
+    this.fileName = `${this.reportName}_${this.timePeriod}_${clusterId}_${this.commonService.dateAndTime}`;
     this.level = 'school';
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();

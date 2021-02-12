@@ -42,6 +42,8 @@ export class DikshaBarChartComponent implements OnInit {
   y_axisValue;
   state: string;
 
+  reportName = 'usage_by_course';
+
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
@@ -93,7 +95,7 @@ export class DikshaBarChartComponent implements OnInit {
 
     this.collectionName = '';
     this.footer = '';
-    this.fileName = `collectionType_${this.collection_type}_data`;
+    this.fileName = `${this.reportName}_${this.timePeriod}_${this.commonService.dateAndTime}`;
     this.result = [];
     this.all = true
     this.dist = false;
@@ -170,7 +172,7 @@ export class DikshaBarChartComponent implements OnInit {
     this.reportData = [];
     document.getElementById('home').style.display = "block";
     this.commonService.errMsg();
-    this.fileName = `collectionType_${this.collection_type}_data_of_${this.collectionName}`;
+    this.fileName = `${this.reportName}_${this.timePeriod}_${this.commonService.dateAndTime}`;
     this.footer = '';
     this.result = [];
     this.all = true

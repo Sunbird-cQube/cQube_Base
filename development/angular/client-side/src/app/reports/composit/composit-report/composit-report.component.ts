@@ -100,6 +100,8 @@ export class CompositReportComponent implements OnInit {
   public chartData: any = [];
   public modes: any
 
+  reportName = 'composite_report_across_metrics';
+
   districtWise() {
     if (this.chartData.length !== 0) {
       this.scatterChart.destroy();
@@ -109,7 +111,7 @@ export class CompositReportComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'dist';
     this.tableHead = "District Name";
-    this.fileName = "Dist_level_report";
+    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
     this.selected = '';
     this.myDistrict = '';
     this.downloadType = '';
@@ -155,7 +157,7 @@ export class CompositReportComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'block';
     this.tableHead = "Block Name";
-    this.fileName = "blockPerDistrict_report";
+    this.fileName = `${this.reportName}_${this.downloadLevel}s_of_district_${data}_${this.commonService.dateAndTime}`;
     this.selected = 'district';
     this.dist = true;
     this.blok = false;
@@ -209,7 +211,7 @@ export class CompositReportComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'cluster';
     this.tableHead = "Cluster Name";
-    this.fileName = "clusterPerBlock_report";
+    this.fileName = `${this.reportName}_${this.downloadLevel}s_of_block_${data}_${this.commonService.dateAndTime}`;
     this.selected = 'block';
     this.commonService.errMsg();
     this.dist = false;
@@ -268,7 +270,7 @@ export class CompositReportComponent implements OnInit {
     this.downloadLevel = 'school';
     this.tableHead = "School Name";
     this.selected = 'cluster';
-    this.fileName = "schoolPerCluster_report";
+    this.fileName = `${this.reportName}_${this.downloadLevel}s_of_cluster_${data}_${this.commonService.dateAndTime}`;
 
     this.dist = false;
     this.blok = false;
@@ -316,7 +318,7 @@ export class CompositReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "Dist_level_Report";
+    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
     this.selected = '';
     if (this.myData) {
       this.myData.unsubscribe();
@@ -343,7 +345,7 @@ export class CompositReportComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'block';
     this.tableHead = "Block Name";
-    this.fileName = "Block_level_report";
+    this.fileName = `${this.reportName}_all_blocks_${this.commonService.dateAndTime}`;
     this.selected = '';
     this.myDistrict = '';
 
@@ -381,7 +383,7 @@ export class CompositReportComponent implements OnInit {
     this.yAxisFilter = [];
     this.downloadLevel = 'cluster';
     this.tableHead = "Cluster Name";
-    this.fileName = "Cluster_level_report";
+    this.fileName = `${this.reportName}_all_clusters_${this.commonService.dateAndTime}`;
 
     this.myDistrict = '';
 
@@ -542,11 +544,11 @@ export class CompositReportComponent implements OnInit {
 
   selectAxis() {
     if (this.skul) {
-      if (this.fileName == "Dist_level_report") {
+      if (this.downloadLevel == "dist") {
         this.districtWise();
-      } else if (this.fileName == "Block_level_report") {
+      } else if (this.downloadLevel == "block") {
         this.blockWise();
-      } else if (this.fileName == "Cluster_level_report") {
+      } else if (this.downloadLevel == "cluster") {
         this.clusterWise();
       }
       // else if (this.fileName == "School_level_report") {

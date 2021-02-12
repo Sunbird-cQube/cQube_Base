@@ -210,7 +210,8 @@ export class CrcReportComponent implements OnInit {
 
   public tableHead: any;
   public chartData: any = [];
-  public modes: any
+  public modes: any;
+  reportName = 'crc_report';
 
 
   onPeriodSelect() {
@@ -243,7 +244,7 @@ export class CrcReportComponent implements OnInit {
     this.scatterChart.destroy();
     this.reportData = [];
     this.tableHead = "District Name";
-    this.fileName = "Dist_level_CRC_Report";
+    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
     this.blockHidden = true;
     this.clusterHidden = true;
     this.crcDistrictsNames = [];
@@ -342,7 +343,7 @@ export class CrcReportComponent implements OnInit {
 
   distWise() {
     this.reportData = [];
-    this.fileName = "District_level_CRC_Report";
+    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
     if (JSON.parse(localStorage.getItem('resData')) !== null) {
       this.chartData = [];
       this.result = JSON.parse(localStorage.getItem('resData'));
@@ -359,7 +360,7 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "Block_level_CRC_Report";
+    this.fileName = `${this.reportName}_all_blocks_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -383,7 +384,7 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "Cluster_level_CRC_Report";
+    this.fileName = `${this.reportName}_all_clusters_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -407,7 +408,7 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "School_level_CRC_Report";
+    this.fileName = `${this.reportName}_all_schools_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -434,7 +435,7 @@ export class CrcReportComponent implements OnInit {
     this.downloadType = '';
     this.blockHidden = false;
     this.clusterHidden = true;
-    this.fileName = "Block_level_CRC_Report"
+    this.fileName = `${this.reportName}_blocks_of_district_${data}_${this.commonService.dateAndTime}`;
     this.myBlock = '';
     this.crcBlocksNames = [];
     this.visitedSchools = 0;
@@ -539,7 +540,7 @@ export class CrcReportComponent implements OnInit {
     this.downloadType = '';
     this.clusterHidden = false;
     this.blockHidden = false;
-    this.fileName = "Cluster_level_CRC_Report"
+    this.fileName = `${this.reportName}_clusters_of_block_${data}_${this.commonService.dateAndTime}`;
     this.myCluster = '';
     this.crcClusterNames = [];
     this.visitedSchools = 0;
@@ -650,7 +651,7 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
-    this.fileName = "School_level_CRC_Report"
+    this.fileName = `${this.reportName}_schools_of_cluster_${data}_${this.commonService.dateAndTime}`;
     this.crcSchoolNames = [];
     this.visitedSchools = 0;
     this.notVisitedSchools = 0;
@@ -848,24 +849,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   downloadReport() {
-    if (this.reportData.length <= 0) {
-      alert("No data found to download");
-    } else {
-      const options = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        showTitle: false,
-        title: 'My Awesome CSV',
-        useTextFile: false,
-        useBom: true,
-        useKeysAsHeaders: true,
-        filename: this.fileName
-      };
-      const csvExporter = new ExportToCsv(options);
-      csvExporter.generateCsv(this.reportData);
-    }
+    this.commonService.download(this.fileName, this.reportData);
   }
 
   selectAxis() {
