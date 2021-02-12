@@ -122,10 +122,10 @@ export class TeacherAttendanceComponent implements OnInit {
       // this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
       if (this.month) {
         this.month_year = {
-          month: this.month,
-          year: this.year
+          month: null,
+          year: null
         };
-
+        
         this.params = JSON.parse(sessionStorage.getItem('report-level-info'));
         let params = this.params;
 
