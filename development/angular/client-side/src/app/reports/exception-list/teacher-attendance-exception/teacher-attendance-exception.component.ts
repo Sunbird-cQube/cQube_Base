@@ -76,6 +76,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
   params: any;
   yearMonth = true;
 
+  reportName = 'teacher_attendance_exception';
   // timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
   // period = 'overall';
   // timePeriod = {};
@@ -289,7 +290,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.levelWise = "District";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `District_wise_report_${month.name.trim()}_${this.year}`;
+      this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
       if (this.myData) {
         this.myData.unsubscribe();
       }
@@ -341,7 +342,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.levelWise = "Block";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Block_wise_report_${month.name.trim()}_${this.year}`
+      this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
 
       this.month_year['report'] = 'tarException';
       if (this.myData) {
@@ -394,7 +395,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.levelWise = "Cluster";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Cluster_wise_report_${month.name.trim()}_${this.year}`
+      this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
 
       this.month_year['report'] = 'tarException';
       if (this.myData) {
@@ -460,7 +461,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.levelWise = "school";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `School_wise_report_${month.name.trim()}_${this.year}`
+      this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
 
       this.month_year['report'] = 'tarException';
       if (this.myData) {
@@ -664,7 +665,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.hierName = '';
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Block_per_district_report_${month.name.trim()}_${this.year}`;
+      this.fileName = `${this.reportName}_${this.levelWise}s_of_district_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
       this.distName = { district_id: data, district_name: obj.name };
       this.hierName = obj.name;
       localStorage.setItem('dist', obj.name);
@@ -761,7 +762,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.blockHidden = false;
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Cluster_per_block_report_${month.name.trim()}_${this.year}`;
+      this.fileName = `${this.reportName}_${this.levelWise}s_of_block_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
       var blockNames = [];
       this.blocksNames.forEach(item => {
         if (item.distId && item.distId === Number(localStorage.getItem('distId'))) {
@@ -879,7 +880,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.blockHidden = false;
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Schools_per_cluster_report_${month.name.trim()}_${this.year}`;
+      this.fileName = `${this.reportName}_${this.levelWise}s_of_cluster_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
 
       let obj = this.clusterNames.find(o => o.id == data);
       var blockNames = [];

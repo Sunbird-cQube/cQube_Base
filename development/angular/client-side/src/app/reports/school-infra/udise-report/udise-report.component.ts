@@ -77,6 +77,9 @@ export class UdiseReportComponent implements OnInit {
   public lat: any;
   public lng: any;
 
+  reportName = 'UDISE_report';
+
+
   constructor(
     public http: HttpClient,
     public commonService: AppServiceComponent,
@@ -214,7 +217,7 @@ export class UdiseReportComponent implements OnInit {
       this.errMsg();
       this.indiceFilter = [];
       this.level = 'district';
-      var fileName = "District_wise_report";
+      this.fileName = `${this.reportName}_${this.indiceData}_allDistricts_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -243,7 +246,7 @@ export class UdiseReportComponent implements OnInit {
           level: 'district'
         }
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-        this.genericFun(this.myDistData, options, fileName);
+        this.genericFun(this.myDistData, options, this.fileName);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.details.District_Name > b.details.District_Name) ? 1 : ((b.details.District_Name > a.details.District_Name) ? -1 : 0));
 
@@ -273,7 +276,7 @@ export class UdiseReportComponent implements OnInit {
 
           this.data.sort((a, b) => (`${a[this.indiceData]}` > `${b[this.indiceData]}`) ? 1 : ((`${b[this.indiceData]}` > `${a[this.indiceData]}`) ? -1 : 0));
           globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-          this.genericFun(this.myDistData, options, fileName);
+          this.genericFun(this.myDistData, options, this.fileName);
 
           // sort the districtname alphabetically
           this.districtMarkers.sort((a, b) => (a.details.District_Name > b.details.District_Name) ? 1 : ((b.details.District_Name > a.details.District_Name) ? -1 : 0));
@@ -305,7 +308,7 @@ export class UdiseReportComponent implements OnInit {
       this.districtId = undefined;
       this.blockId = undefined;
       this.level = 'block_wise';
-      this.fileName = "Block_wise_report";
+      this.fileName = `${this.reportName}_${this.indiceData}_allBlocks_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -337,7 +340,7 @@ export class UdiseReportComponent implements OnInit {
           this.blockMarkers = [];
 
           this.blockMarkers = result;
-          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
+          var colors = this.commonService.getRelativeColors(this.blockMarkers, this.indiceData);
           this.schoolCount = 0;
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
@@ -397,7 +400,7 @@ export class UdiseReportComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = "cluster_wise";
-      this.fileName = "Cluster_wise_report";
+      this.fileName = `${this.reportName}_${this.indiceData}_allClusters_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -427,7 +430,7 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
-          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
+          var colors = this.commonService.getRelativeColors(this.clusterMarkers, this.indiceData);
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
@@ -486,7 +489,7 @@ export class UdiseReportComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = 'school_wise';
-      this.fileName = "School_wise_report";
+      this.fileName = `${this.reportName}_${this.indiceData}_allSchools_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -516,7 +519,7 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
-          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
+          var colors = this.commonService.getRelativeColors(this.schoolMarkers, this.indiceData);
           this.schoolCount = 0;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
@@ -576,7 +579,7 @@ export class UdiseReportComponent implements OnInit {
     this.indiceFilter = [];
 
     this.level = 'block';
-    var fileName = "Block_per_dist_report";
+    this.fileName = `${this.reportName}_${this.indiceData}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -616,7 +619,7 @@ export class UdiseReportComponent implements OnInit {
         level: 'block'
       }
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      this.genericFun(res, options, fileName);
+      this.genericFun(res, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.details.Block_Name > b.details.Block_Name) ? 1 : ((b.details.Block_Name > a.details.Block_Name) ? -1 : 0));
     }, err => {
@@ -638,7 +641,7 @@ export class UdiseReportComponent implements OnInit {
     this.indiceFilter = [];
 
     this.level = 'cluster';
-    var fileName = "Cluster_per_block_report";
+    this.fileName = `${this.reportName}_${this.indiceData}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
@@ -689,7 +692,7 @@ export class UdiseReportComponent implements OnInit {
         level: 'cluster'
       }
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      this.genericFun(res, options, fileName);
+      this.genericFun(res, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.details.Cluster_Name > b.details.Cluster_Name) ? 1 : ((b.details.Cluster_Name > a.details.Cluster_Name) ? -1 : 0));
     }, err => {
@@ -709,7 +712,7 @@ export class UdiseReportComponent implements OnInit {
     this.reportData = [];
     this.indiceFilter = [];
     this.level = 'school';
-    var fileName = "School_per_block_report";
+    this.fileName = `${this.reportName}_${this.indiceData}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
@@ -775,7 +778,7 @@ export class UdiseReportComponent implements OnInit {
           level: 'school'
         }
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-        this.genericFun(res, options, fileName);
+        this.genericFun(res, options, this.fileName);
       }, err => {
         this.data = [];
         this.loaderAndErr();

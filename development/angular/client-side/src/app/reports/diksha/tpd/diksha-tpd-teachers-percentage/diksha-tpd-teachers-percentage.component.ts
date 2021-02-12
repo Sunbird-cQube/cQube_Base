@@ -18,6 +18,10 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   name: string;
   level = '';
 
+  height = window.screen.height;
+  width = screen.width;
+  innerWidth = screen.availWidth;
+
   blockHidden = true;
   clusterHidden = true;
 
@@ -28,6 +32,8 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   block;
   clusterNames = [];
   cluster;
+
+  public reportName = "TPD_teacher_percentage";
 
   reportType = "percentage_teachers";
   timePeriod = 'All';
@@ -87,6 +93,11 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
     this.levelWiseFilter();
   }
 
+  getHeight(event) {
+    this.height = event.target.innerHeight;
+    this.onChangePage();
+  }
+
   onChangePage() {
     this.scousesTOShow = this.courses;
     let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
@@ -106,7 +117,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   resetToInitPage() {
-    this.fileName = "District_wise_report";
+    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.commonService.dateAndTime}`;
     this.skul = true;
     this.dist = false;
     this.blok = false;
@@ -129,6 +140,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   commonFunc = () => {
+    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.commonService.dateAndTime}`;
     this.commonService.errMsg();
     this.level = 'district';
     this.reportData = [];
@@ -164,7 +176,8 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       scrollBarX = true
     }
 
-    if (yLabel1.length <= 12) {
+    var scrollLimit = this.height > 800 ? 20 : this.height > 650 && this.height < 800 ? 15 : this.height < 500 ? 8 : 12;
+    if (yLabel1.length <= scrollLimit) {
       scrollBarY = false
     } else {
       scrollBarY = true
@@ -232,7 +245,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: 9,
+        max: this.height == screen.height ? 11 : this.height > 800 ? 19 : this.height > 650 && this.height < 800 ? 14 : this.height < 500 ? 7 : 11,
         scrollbar: {
           enabled: scrollBarY
         }
@@ -312,8 +325,8 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   selectedDistrict(districtId) {
-    this.fileName = "Block_wise_report";
     this.level = 'block';
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
     this.block = undefined;
     this.cluster = undefined;
     this.blockHidden = false;
@@ -353,8 +366,8 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
-    this.fileName = "Cluster_wise_report";
     this.level = 'cluster';
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
     this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -397,8 +410,8 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
-    this.fileName = "School_wise_report";
     this.level = 'school';
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
     this.reportData = [];

@@ -108,9 +108,8 @@ export class CrcReportComponent implements OnInit {
     { key: "totalVisits", value: "Total visits" }
   ]
 
-  // { title: "Visited schools count", data: "visitedSchoolCount" },
-  //         { title: "Total schools", data: "totalSchools" },
-  //         { title: "Total visits", data: "totalVisits" }
+  timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }];
+  period = 'overall';
 
   myData;
   state: string;
@@ -150,7 +149,7 @@ export class CrcReportComponent implements OnInit {
 
   getDistricts(level): void {
     this.scatterChart.destroy();
-    this.service.crcDistWiseData().subscribe(res => {
+    this.service.crcDistWiseData({ timePeriod: this.period }).subscribe(res => {
       localStorage.setItem('resData', JSON.stringify(res));
       this.result = res;
       let a = this.result.schoolsVisitedCount
@@ -174,7 +173,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   getBlocks(distId, blockId?: any): void {
-    this.service.crcBlockWiseData(distId).subscribe((result: any) => {
+    this.service.crcBlockWiseData(distId, { timePeriod: this.period }).subscribe((result: any) => {
       this.crcBlocksNames = result;
       this.reportData = this.crcBlocksNames = this.crcBlocksNames.visits;
 
@@ -194,7 +193,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   getClusters(distId, blockId, clusterId): void {
-    this.service.crcClusterWiseData(distId, blockId).subscribe((result: any) => {
+    this.service.crcClusterWiseData(distId, blockId, { timePeriod: this.period }).subscribe((result: any) => {
       this.crcClusterNames = result.visits;
       this.reportData = this.crcClusterNames;
 
@@ -211,7 +210,31 @@ export class CrcReportComponent implements OnInit {
 
   public tableHead: any;
   public chartData: any = [];
-  public modes: any
+  public modes: any;
+  reportName = 'crc_report';
+
+
+  onPeriodSelect() {
+    if (this.period != 'overall') {
+      document.getElementById('home').style.display = 'block';
+    } else {
+      document.getElementById('home').style.display = 'none';
+    }
+    if (this.skul) {
+      this.districtWise();
+    } else if (this.dist) {
+      this.myDistData(this.distName);
+    } else if (this.blok) {
+      this.myBlockData(this.blockName);
+    } else if (this.clust) {
+      this.myClusterData(this.clustName);
+    }
+  }
+  onClockHome() {
+    this.period = 'overall';
+    document.getElementById('home').style.display = 'none';
+    this.districtWise();
+  }
 
   districtWise() {
     if (this.result.length! > 0) {
@@ -221,7 +244,7 @@ export class CrcReportComponent implements OnInit {
     this.scatterChart.destroy();
     this.reportData = [];
     this.tableHead = "District Name";
-    this.fileName = "Dist_level_CRC_Report";
+    this.fileName = `${this.reportName}_${this.period}_allDistricts_${this.commonService.dateAndTime}`;
     this.blockHidden = true;
     this.clusterHidden = true;
     this.crcDistrictsNames = [];
@@ -236,156 +259,91 @@ export class CrcReportComponent implements OnInit {
 
     this.schoolCount = 0;
     this.visitCount = 0;
-    document.getElementById('home').style.display = 'none';
 
     this.tableData = [];
 
     this.dateRange = localStorage.getItem('dateRange');
-    if (JSON.parse(localStorage.getItem('resData')) !== null) {
-      this.chartData = [];
-      var labels = [];
-      this.result = JSON.parse(localStorage.getItem('resData'));
+    this.schoolCount = 0;
+    this.visitCount = 0;
+    this.chartData = []
+
+    if (this.myData) {
+      this.myData.unsubscribe();
+    }
+    this.myData = this.service.crcDistWiseData({ timePeriod: this.period }).subscribe(res => {
+      localStorage.setItem('resData', JSON.stringify(res));
+      this.result = res;
       let a = this.result.schoolsVisitedCount
       this.result = this.result.visits;
 
       this.modes = ['District Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
-
-      this.reportData = this.crcDistrictsNames = this.result;
-      for (var i = 0; i < this.result.length; i++) {
-        this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
-        labels.push(this.result[i].districtName);
-        this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
-      }
-
-      this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
-      this.countVisitedAndNotVisited(a);
-
-      let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-      let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-      let obj = {
-        xAxis: x_axis.value,
-        yAxis: y_axis.value
-      }
-
-      this.createChart(labels, this.chartData, this.tableHead, obj);
-
-      this.tableData = this.result;
-      this.dtOptions = {
-        data: this.tableData,
-        iDisplayLength: this.result.length,
-        "bLengthChange": false,
-        "bInfo": false,
-        "bPaginate": false,
-        scrollY: "35vh",
-        scrollX: true,
-        scrollCollapse: true,
-        paging: false,
-        "searching": false,
-        fixedColumns: {
-          leftColumns: 1,
-          rightColumns: 1
-        },
-        columns: [
-          { title: 'District Name', data: 'districtName' },
-          { title: 'Visit-0 times (%)', data: 'visit_0' },
-          { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
-          { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
-          { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
-          { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
-          { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-          { title: "Visits per schools", data: "visits_per_school" },
-          { title: "Visited schools count", data: "visitedSchoolCount" },
-          { title: "Total schools", data: "totalSchools" },
-          { title: "Total visits", data: "totalVisits" }
-        ]
-      };
-      this.dataTable = $(this.table.nativeElement);
-      this.dataTable.DataTable(this.dtOptions);
-      this.commonService.loaderAndErr(this.chartData);
-
-    } else {
-      this.schoolCount = 0;
-      this.visitCount = 0;
-      this.chartData = []
-
-      if (this.myData) {
-        this.myData.unsubscribe();
-      }
-      this.myData = this.service.crcDistWiseData().subscribe(res => {
-        localStorage.setItem('resData', JSON.stringify(res));
-        this.result = res;
-        let a = this.result.schoolsVisitedCount
-        this.result = this.result.visits;
-
-        this.modes = ['District Wise', 'Block Wise', 'Cluster Wise', 'School Wise'];
-        this.reportData = [];
-        if (this.result.length > 0) {
-          var labels = [];
-          this.reportData = this.crcDistrictsNames = this.result;
-          for (var i = 0; i < this.result.length; i++) {
-            this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
-            labels.push(this.result[i].districtName);
-            this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
-          }
-          this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
-
-          this.countVisitedAndNotVisited(a);
-
-          let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
-          let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
-          let obj = {
-            xAxis: x_axis.value,
-            yAxis: y_axis.value
-          }
-
-          this.createChart(labels, this.chartData, this.tableHead, obj);
-          this.tableData = this.result;
-          this.dtOptions = {
-            data: this.tableData,
-            iDisplayLength: this.result.length,
-            "bLengthChange": false,
-            "bInfo": false,
-            "bPaginate": false,
-            scrollY: "35vh",
-            scrollX: true,
-            scrollCollapse: true,
-            paging: false,
-            "searching": false,
-            fixedColumns: {
-              leftColumns: 1
-            },
-            columns: [
-              { title: 'District Name', data: 'districtName' },
-              { title: 'Visit-0 times (%)', data: 'visit_0' },
-              { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
-              { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
-              { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
-              { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
-              { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
-              { title: "Visits per schools", data: "visits_per_school" },
-              { title: "Visited schools count", data: "visitedSchoolCount" },
-              { title: "Total schools", data: "totalSchools" },
-              { title: "Total visits", data: "totalVisits" }
-            ]
-          };
-          this.dataTable = $(this.table.nativeElement);
-          this.dataTable.DataTable(this.dtOptions);
-
-          this.commonService.loaderAndErr(this.chartData);
-          this.changeDetection.markForCheck();
+      this.reportData = [];
+      if (this.result.length > 0) {
+        var labels = [];
+        this.reportData = this.crcDistrictsNames = this.result;
+        for (var i = 0; i < this.result.length; i++) {
+          this.districtsNames.push({ id: this.result[i].districtId, name: this.result[i].districtName });
+          labels.push(this.result[i].districtName);
+          this.chartData.push({ x: Number(this.result[i][this.xAxis]), y: Number(this.result[i][this.yAxis]) });
         }
-      }, err => {
-        this.chartData = [];
-        this.createChart(["clg"], [], '', {});
-        $('#table').empty();
+        this.crcDistrictsNames.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
+
+        this.countVisitedAndNotVisited(a);
+
+        let x_axis = this.xAxisFilter.find(o => o.key == this.xAxis);
+        let y_axis = this.yAxisFilter.find(o => o.key == this.yAxis);
+        let obj = {
+          xAxis: x_axis.value,
+          yAxis: y_axis.value
+        }
+
+        this.createChart(labels, this.chartData, this.tableHead, obj);
+        this.tableData = this.result;
+        this.dtOptions = {
+          data: this.tableData,
+          iDisplayLength: this.result.length,
+          "bLengthChange": false,
+          "bInfo": false,
+          "bPaginate": false,
+          scrollY: "35vh",
+          scrollX: true,
+          scrollCollapse: true,
+          paging: false,
+          "searching": false,
+          fixedColumns: {
+            leftColumns: 1
+          },
+          columns: [
+            { title: 'District Name', data: 'districtName' },
+            { title: 'Visit-0 times (%)', data: 'visit_0' },
+            { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
+            { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
+            { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
+            { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+            { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
+            { title: "Visits per schools", data: "visits_per_school" },
+            { title: "Visited schools count", data: "visitedSchoolCount" },
+            { title: "Total schools", data: "totalSchools" },
+            { title: "Total visits", data: "totalVisits" }
+          ]
+        };
+        this.dataTable = $(this.table.nativeElement);
+        this.dataTable.DataTable(this.dtOptions);
+
         this.commonService.loaderAndErr(this.chartData);
-      });
-    }
+        this.changeDetection.markForCheck();
+      }
+    }, err => {
+      this.chartData = [];
+      this.createChart(["clg"], [], '', {});
+      $('#table').empty();
+      this.commonService.loaderAndErr(this.chartData);
+    });
   }
 
   distWise() {
     this.reportData = [];
-    this.fileName = "District_level_CRC_Report";
+    this.fileName = `${this.reportName}_${this.period}_allDistricts_${this.commonService.dateAndTime}`;
     if (JSON.parse(localStorage.getItem('resData')) !== null) {
       this.chartData = [];
       this.result = JSON.parse(localStorage.getItem('resData'));
@@ -402,11 +360,11 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "Block_level_CRC_Report";
+    this.fileName = `${this.reportName}_${this.period}_allBlocks_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcAllBlockWiseData().subscribe(res => {
+    this.myData = this.service.crcAllBlockWiseData({ timePeriod: this.period }).subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -426,11 +384,11 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "Cluster_level_CRC_Report";
+    this.fileName = `${this.reportName}_${this.period}_allClusters_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcAllClusterWiseData().subscribe(res => {
+    this.myData = this.service.crcAllClusterWiseData({ timePeriod: this.period }).subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -450,11 +408,11 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = "School_level_CRC_Report";
+    this.fileName = `${this.reportName}_${this.period}_allSchools_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcAllSchoolWiseData().subscribe(res => {
+    this.myData = this.service.crcAllSchoolWiseData({ timePeriod: this.period }).subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -477,7 +435,7 @@ export class CrcReportComponent implements OnInit {
     this.downloadType = '';
     this.blockHidden = false;
     this.clusterHidden = true;
-    this.fileName = "Block_level_CRC_Report"
+    this.fileName = `${this.reportName}_${this.period}_blocks_of_district_${data}_${this.commonService.dateAndTime}`;
     this.myBlock = '';
     this.crcBlocksNames = [];
     this.visitedSchools = 0;
@@ -502,7 +460,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcBlockWiseData(data).subscribe((result: any) => {
+    this.myData = this.service.crcBlockWiseData(data, { timePeriod: this.period }).subscribe((result: any) => {
       if (!fromParam) {
         $('#table').DataTable().destroy();
         $('#table').empty();
@@ -582,7 +540,7 @@ export class CrcReportComponent implements OnInit {
     this.downloadType = '';
     this.clusterHidden = false;
     this.blockHidden = false;
-    this.fileName = "Cluster_level_CRC_Report"
+    this.fileName = `${this.reportName}_${this.period}_clusters_of_block_${data}_${this.commonService.dateAndTime}`;
     this.myCluster = '';
     this.crcClusterNames = [];
     this.visitedSchools = 0;
@@ -610,7 +568,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcClusterWiseData(localStorage.getItem('distId'), data).subscribe((result: any) => {
+    this.myData = this.service.crcClusterWiseData(localStorage.getItem('distId'), data, { timePeriod: this.period }).subscribe((result: any) => {
       if (!fromParam) {
         $('#table').DataTable().destroy();
         $('#table').empty();
@@ -693,7 +651,7 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
-    this.fileName = "School_level_CRC_Report"
+    this.fileName = `${this.reportName}_${this.period}_schools_of_cluster_${data}_${this.commonService.dateAndTime}`;
     this.crcSchoolNames = [];
     this.visitedSchools = 0;
     this.notVisitedSchools = 0;
@@ -721,7 +679,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcSchoolWiseData(distId, blockId, data).subscribe(async (result: any) => {
+    this.myData = this.service.crcSchoolWiseData(distId, blockId, data, { timePeriod: this.period }).subscribe(async (result: any) => {
       if (!fromParam) {
         $('#table').DataTable().destroy();
         $('#table').empty();
@@ -891,24 +849,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   downloadReport() {
-    if (this.reportData.length <= 0) {
-      alert("No data found to download");
-    } else {
-      const options = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        showTitle: false,
-        title: 'My Awesome CSV',
-        useTextFile: false,
-        useBom: true,
-        useKeysAsHeaders: true,
-        filename: this.fileName
-      };
-      const csvExporter = new ExportToCsv(options);
-      csvExporter.generateCsv(this.reportData);
-    }
+    this.commonService.download(this.fileName, this.reportData);
   }
 
   selectAxis() {

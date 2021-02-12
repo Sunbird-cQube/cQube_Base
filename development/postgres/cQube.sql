@@ -1364,6 +1364,9 @@ updated_on  TIMESTAMP without time zone
 create index if not exists crc_inspection_trans_id on crc_inspection_trans(school_id,crc_id);
 
 
+alter table crc_inspection_trans add column  IF NOT EXISTS visit_date date;
+alter table crc_inspection_dup add column  IF NOT EXISTS visit_date date;
+
 
 /* crc_location_trans */
 
@@ -1531,6 +1534,14 @@ primary key(school_id,month,year)
 );
 
 create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
+
+Drop view if exists teacher_attendance_exception_data cascade;
+
+drop view if exists teacher_attendance_agg_last_1_day cascade;
+drop view if exists teacher_attendance_agg_last_30_days cascade;
+drop view if exists teacher_attendance_agg_last_7_days cascade;
+drop view if exists teacher_attendance_agg_overall cascade;
+
 
 alter table school_teacher_total_attendance drop constraint if exists school_teacher_total_attendance_pkey;
 alter table school_teacher_total_attendance add primary key(school_id,month,year);
@@ -4781,7 +4792,7 @@ primary key(collection_id,uuid,school_id,enrolment_date,batch_id)
   );
 
 alter table diksha_tpd_trans drop constraint if exists diksha_tpd_trans_pkey;
-alter table diksha_tpd_trans add primary key(collection_id,uuid,enrolment_date,batch_id);
+alter table diksha_tpd_trans add primary key(collection_id,uuid,batch_id);
 
 alter table log_summary add column IF NOT EXISTS collection_id int;
 alter table log_summary add column IF NOT EXISTS uuid int;
@@ -5509,4 +5520,54 @@ create table if not exists pat_school_grade_enrolment_dup(school_id bigint,grade
 ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
 
 alter table diksha_api_meta add column if not exists total_files int, add column if not exists files_processed int,add column if not exists files_emitted int;
+
+create table if not exists student_attendance_exception_agg
+  (
+	    school_id bigint,
+	    year int,
+	    month int,
+	    school_name varchar(300),
+	    block_id bigint,
+	    block_name varchar(100),
+	    district_id bigint,
+	    district_name varchar(100),
+	    cluster_id bigint,
+	    cluster_name varchar(100),
+	school_latitude  double precision,
+	school_longitude  double precision,
+	district_latitude  double precision,
+	district_longitude  double precision,
+	block_latitude  double precision,
+	block_longitude  double precision,
+	cluster_latitude  double precision,
+	cluster_longitude  double precision,
+	created_on TIMESTAMP without time zone,
+	updated_on TIMESTAMP without time zone,
+primary key(school_id,month,year));
+
+create table if not exists teacher_attendance_exception_agg
+  (
+	    school_id bigint,
+	    year int,
+	    month int,
+	    school_name varchar(300),
+	    block_id bigint,
+	    block_name varchar(100),
+	    district_id bigint,
+	    district_name varchar(100),
+	    cluster_id bigint,
+	    cluster_name varchar(100),
+	school_latitude  double precision,
+	school_longitude  double precision,
+	district_latitude  double precision,
+	district_longitude  double precision,
+	block_latitude  double precision,
+	block_longitude  double precision,
+	cluster_latitude  double precision,
+	cluster_longitude  double precision,
+	created_on TIMESTAMP without time zone,
+	updated_on TIMESTAMP without time zone,
+primary key(school_id,month,year));
+
+
 

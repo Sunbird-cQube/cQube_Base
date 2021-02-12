@@ -18,6 +18,10 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   name: string;
   level = '';
 
+  height = screen.height;
+  width = screen.width;
+  innerWidth = screen.availWidth;
+
   blockHidden = true;
   clusterHidden = true;
 
@@ -48,7 +52,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   data;
 
   // to download the excel report
-  public fileName: any = `District_wise_report`
+  public fileName;
   public reportData: any = [];
 
   public metaData: any;
@@ -56,6 +60,8 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   state: string;
   courses: any;
   course;
+
+  public reportName = "TPD_course_progress";
 
   //For pagination.....
   items = [];
@@ -88,6 +94,11 @@ export class DikshaTPDContentProgressComponent implements OnInit {
     this.levelWiseFilter();
   }
 
+  getHeight(event) {
+    this.height = event.target.innerHeight;
+    this.onChangePage();
+  }
+
   onChangePage() {
     this.scousesTOShow = this.courses;
     let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
@@ -107,7 +118,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   }
 
   resetToInitPage() {
-    this.fileName = "District_wise_report";
+    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.commonService.dateAndTime}`;
     this.skul = true;
     this.dist = false;
     this.blok = false;
@@ -120,16 +131,18 @@ export class DikshaTPDContentProgressComponent implements OnInit {
     this.timePeriod = 'All';
     document.getElementById('home').style.display = 'none';
     this.selectedCourses = [];
-    this.courses = this.courses.map(course => {
+    var courses = this.courses.map(course => {
       course.status = false;
       return course;
     });
+    this.courses = courses;
     if (this.multiSelect)
       this.multiSelect.checkedList = [];
     this.commonFunc();
   }
 
   commonFunc = () => {
+    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.commonService.dateAndTime}`;
     this.commonService.errMsg();
     this.level = 'district';
     this.reportData = [];
@@ -166,8 +179,8 @@ export class DikshaTPDContentProgressComponent implements OnInit {
     } else {
       scrollBarX = true
     }
-
-    if (yLabel1.length <= 12) {
+    var scrollLimit = this.height > 800 ? 20 : this.height > 650 && this.height < 800 ? 15 : this.height < 500 ? 8 : 12;
+    if (yLabel1.length <= scrollLimit) {
       scrollBarY = false
     } else {
       scrollBarY = true
@@ -235,7 +248,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
         title: null,
         reversed: true,
         min: 0,
-        max: 9,
+        max: this.height == screen.height ? 11 : this.height > 800 ? 19 : this.height > 650 && this.height < 800 ? 14 : this.height < 500 ? 7 : 11,
         scrollbar: {
           enabled: scrollBarY
         }
@@ -319,8 +332,8 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   }
 
   selectedDistrict(districtId) {
-    this.fileName = "Block_wise_report";
     this.level = 'block';
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
     this.block = undefined;
     this.cluster = undefined;
     this.blockHidden = false;
@@ -361,8 +374,8 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
-    this.fileName = "Cluster_wise_report";
     this.level = 'cluster';
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
     this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -406,8 +419,8 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
-    this.fileName = "School_wise_report";
     this.level = 'school';
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
     this.reportData = [];
