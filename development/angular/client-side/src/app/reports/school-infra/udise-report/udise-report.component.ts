@@ -340,7 +340,7 @@ export class UdiseReportComponent implements OnInit {
           this.blockMarkers = [];
 
           this.blockMarkers = result;
-          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
+          var colors = this.commonService.getRelativeColors(this.blockMarkers, this.indiceData);
           this.schoolCount = 0;
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
@@ -430,7 +430,7 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
-          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
+          var colors = this.commonService.getRelativeColors(this.clusterMarkers, this.indiceData);
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
@@ -519,7 +519,7 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
-          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
+          var colors = this.commonService.getRelativeColors(this.schoolMarkers, this.indiceData);
           this.schoolCount = 0;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {

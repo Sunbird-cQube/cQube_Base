@@ -4138,7 +4138,7 @@ count(distinct(uuid)) as total_enrolled,'Last_Day' as time_range,
 tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
-where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date = (select now()::DATE)
+where collection_name is not null and enrolment_date = (select now()::DATE)
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
 union
 select collection_id,collection_name,
@@ -4146,7 +4146,7 @@ count(distinct(uuid)) as total_enrolled,'Last_7_Day' as time_range,
 tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
-where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '7 DAY')::Date) and 
+where collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '7 DAY')::Date) and 
 (select (now()::Date))
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
 union
@@ -4155,7 +4155,7 @@ count(distinct(uuid)) as total_enrolled,'Last_30_Day' as time_range,
 tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
-where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '30 DAY')::Date) and 
+where collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '30 DAY')::Date) and 
 (select (now()::Date))
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
 union
@@ -4164,7 +4164,7 @@ count(distinct(uuid)) as total_enrolled,'All' as time_range,
 tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
-where org_name='DIKSHA Custodian Org' and collection_name is not null 
+where collection_name is not null 
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id) as a
 left join school_teachers_count as cnt on a.school_id=cnt.school_id;
 
