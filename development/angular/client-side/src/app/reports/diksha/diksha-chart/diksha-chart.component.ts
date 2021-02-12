@@ -72,6 +72,7 @@ export class DikshaChartComponent implements OnInit {
   y_axisValue;
   footer;
   state: string;
+  public reportName = "usage_by_user_profile";
 
   constructor(
     public http: HttpClient,
@@ -450,8 +451,7 @@ export class DikshaChartComponent implements OnInit {
       this.service.dikshaDataDownload({ districtId: this.districtId, timePeriod: this.timePeriod }).subscribe(res => {
         if (this.districtId == '' || this.districtId == undefined || this.hierName == undefined) {
           if (res['All'][`${type}`]) {
-            this.fileName = `Diksha_${this.timePeriod}_data_${type}`;
-            // this.reportData = res['All'][`${type}`];
+            this.fileName = `${this.reportName}_${type}_${this.timePeriod}_${this.commonService.dateAndTime}`;
             res['All'][`${type}`].forEach(element => {
               var obj1 = {};
               var obj2 = {};
@@ -476,7 +476,7 @@ export class DikshaChartComponent implements OnInit {
 
         } else {
           if (res[`${this.districtId}`][`${type}`]) {
-            this.fileName = `Diksha_${this.hierName}_data_${type}`;
+            this.fileName = `${this.reportName}_${type}_${this.timePeriod}_${this.districtId}_${this.commonService.dateAndTime}`;
             this.reportData = res[`${this.districtId}`][`${type}`];
             this.downloadRoport();
           } else {
@@ -500,24 +500,7 @@ export class DikshaChartComponent implements OnInit {
   }
 
   downloadRoport() {
-    if (this.reportData.length <= 0) {
-      alert("No data found to download");
-    } else {
-      const options = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        showTitle: false,
-        title: 'My Awesome CSV',
-        useTextFile: false,
-        useBom: true,
-        useKeysAsHeaders: true,
-        filename: this.fileName
-      };
-      const csvExporter = new ExportToCsv(options);
-      csvExporter.generateCsv(this.reportData);
-    }
+    this.commonService.download(this.fileName, this.reportData);
   }
 
   changeingStringCases(str) {

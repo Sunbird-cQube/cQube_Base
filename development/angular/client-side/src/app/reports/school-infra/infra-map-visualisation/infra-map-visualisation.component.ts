@@ -80,7 +80,6 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   colorGenData: any = [];
   reportName = 'infrastructure_access_by_location';
-  date = new Date();
   dateAndTime;
 
 
@@ -112,7 +111,6 @@ export class InfraMapVisualisationComponent implements OnInit {
     document.getElementById('backBtn').style.display = 'none';
 
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
-    this.dateAndTime = `${this.date.getFullYear()}-${("0" + (this.date.getMonth() + 1)).slice(-2)}-${("0" + (this.date.getDate())).slice(-2)}`;
     if (params && params.level) {
       let data = params.data;
       if (params.level === 'district') {
@@ -199,7 +197,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.districtId = undefined;
       this.commonService.errMsg();
       this.level = 'district';
-      this.fileName = `${this.reportName}_all_districts_${this.dateAndTime}`;
+      this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -293,7 +291,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.districtId = undefined;
       this.blockId = undefined;
       this.level = 'block_wise';
-      this.fileName = `${this.reportName}_all_blocks_${this.dateAndTime}`;
+      this.fileName = `${this.reportName}_all_blocks_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -377,7 +375,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = "cluster_wise";
-      this.fileName = `${this.reportName}_all_clusters_${this.dateAndTime}`;
+      this.fileName = `${this.reportName}_all_clusters_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -459,7 +457,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = 'school_wise';
-      this.fileName = `${this.reportName}_all_schools_${this.dateAndTime}`;
+      this.fileName = `${this.reportName}_all_schools_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -556,7 +554,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         distId: this.data[0].details.district_id,
         districtName: this.data[0].details.district_name
       }
-      this.fileName = `${this.reportName}_${this.level}s_of_district_${this.districtHierarchy.districtName}_${this.dateAndTime}`;
+      this.fileName = `${this.reportName}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
 
       // to show and hide the dropdowns
       this.blockHidden = false;
@@ -630,7 +628,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         blockId: this.data[0].details.block_id,
         blockName: this.data[0].details.block_name
       }
-      this.fileName = `${this.reportName}_${this.level}s_of_block_${this.blockHierarchy.blockName}_${this.dateAndTime}`;
+      this.fileName = `${this.reportName}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
 
 
       // to show and hide the dropdowns
@@ -716,7 +714,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           clusterId: this.data[0].details.cluster_id,
           clusterName: this.data[0].details.cluster_name,
         }
-        this.fileName = `${this.reportName}_${this.level}s_of_cluster_${this.clusterHierarchy.clusterName}_${this.dateAndTime}`;
+        this.fileName = `${this.reportName}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
 
         this.blockHidden = false;
         this.clusterHidden = false;

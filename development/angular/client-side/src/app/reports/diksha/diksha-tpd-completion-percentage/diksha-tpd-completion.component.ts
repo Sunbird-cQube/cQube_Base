@@ -18,7 +18,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
   public chartData: Number[] = [];
   public xAxisLabel: String = "Completion Percentage";
   public yAxisLabel: String;
-  public reportName: String = "completion";
+  public reportName = "completion_percentage";
 
   districts = [];
   districtId;
@@ -114,7 +114,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
     this.collectionNames = [];
     this.collectionName = '';
     this.footer = '';
-    this.fileName = `overall_data`;
+    this.fileName = `${this.reportName}_all_district_${this.timePeriod}_${this.commonService.dateAndTime}`;
     this.result = [];
     this.all = true;
     this.skul = true;
@@ -205,7 +205,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
         distId: res['downloadData'][0].district_id,
         districtName: res['downloadData'][0].district_name
       }
-      this.fileName = `TPD_data_of_district_${this.districtHierarchy.districtName}`;
+      this.fileName = `${this.reportName}_${this.timePeriod}_${districtId}_${this.commonService.dateAndTime}`;
       this.blocks = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.getBarChartData();
@@ -241,7 +241,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
         blockId: res['downloadData'][0].block_id,
         blockName: res['downloadData'][0].block_name
       }
-      this.fileName = `TPD_data_of_block_${this.blockHierarchy.blockName}`;
+      this.fileName = `${this.reportName}_${this.timePeriod}_${blockId}_${this.commonService.dateAndTime}`;
       this.clusters = this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.getBarChartData();
@@ -275,7 +275,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
         clusterId: res['downloadData'][0].cluster_id,
         clusterName: res['downloadData'][0].cluster_name
       }
-      this.fileName = `TPD_data_of_cluster_${this.clusterHierarchy.clusterName}`;
+      this.fileName = `${this.reportName}_${this.timePeriod}_${clusterId}_${this.commonService.dateAndTime}`;
       this.reportData = res['downloadData'];
       // this.footer = result['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.getBarChartData();
@@ -292,7 +292,7 @@ export class DikshaTpdCompletionComponent implements OnInit {
     this.reportData = [];
     document.getElementById('home').style.display = "block";
     this.commonService.errMsg();
-    this.fileName = `TPD_data_of_${this.collectionName}`;
+    this.fileName = `${this.reportName}_${this.timePeriod}_${this.globalId}_${this.commonService.dateAndTime}`;
     this.footer = '';
     this.service.getCollectionData({ timePeriod: this.timePeriod, collection_name: this.collectionName, level: this.level, id: this.globalId, clusterId: this.clusterId }).subscribe(async (res) => {
       this.result = res['chartData'];

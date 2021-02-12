@@ -108,6 +108,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
   }
 
   selected = "absolute";
+  reportName = 'semester_report';
 
   getColor(data) {
     this.selected = data;
@@ -308,7 +309,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
 
-        this.fileName = "district_wise_sem_report";
+        this.fileName = `${this.reportName}_${this.semester}nd_sem_all_districts_${this.commonService.dateAndTime}`;
         this.genericFun(this.data, options, this.fileName);
 
         // sort the districtname alphabetically
@@ -339,7 +340,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "block";
-      this.fileName = "block_wise_sem_report"
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_all_blocks_${this.commonService.dateAndTime}`;
       this.reportData = [];
       // this.districtMarkers = [];
       this.blockMarkers = [];
@@ -414,7 +415,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "cluster";
-      this.fileName = "cluster_wise_sem_report";
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_all_clusters_${this.commonService.dateAndTime}`;
       // this.districtMarkers = [];
       this.blockMarkers = [];
       this.clusterMarkers = [];
@@ -494,7 +495,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.layerMarkers.clearLayers();
       this.commonService.errMsg();
       this.levelWise = "school";
-      this.fileName = "school_wise_sem_report";
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_all_schools_${this.commonService.dateAndTime}`;
       // this.districtMarkers = [];
       this.blockMarkers = [];
       this.clusterMarkers = [];
@@ -616,7 +617,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      this.fileName = "Blocks_per_district_sem_report";
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
       this.genericFun(this.data, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
@@ -708,7 +709,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      this.fileName = "clusters_per_block_sem_report";
+      this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
       this.genericFun(this.data, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
@@ -816,7 +817,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-        this.fileName = "Schools_per_cluster_sem_report";
+        this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
         this.genericFun(this.data, options, this.fileName);
       }, err => {
         this.blockHidden = true;
