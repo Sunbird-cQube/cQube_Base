@@ -1,18 +1,4 @@
-{"diksha_data_summary_less_select_unique_record":"""select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid
-from (SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid,
-row_number() over (partition by content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid) as rn from diksha_content_staging) sq Where rn =1""",
+{
 "diksha_tpd_jolt_for_log_summary":"""[{
 		"operation": "shift",
 		"spec": {
@@ -38,13 +24,6 @@ collection_created_for,total_count,total_time_spent,ff_uuid) as rn from diksha_c
 		}
 	}
 ]""",
-"diksha_tpd_check_same_records":"""SELECT collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,
-enrolment_date,completion_date,progress,certificate_status,total_score,ff_uuid
-,count(*)-1  num_of_times
-FROM diksha_tpd_staging
-GROUP BY collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,
-enrolment_date,completion_date,progress,certificate_status,total_score,ff_uuid
-HAVING  COUNT(*) > 1""",
 "diksha_data_summary_all_tmp_to_trans":"""select insert_diksha_trans()""",
 "diksha_stack_jolt":"""[
   {
@@ -97,11 +76,6 @@ HAVING  COUNT(*) > 1""",
 ]""",
 "select_diksha_tpd_files_from_log_db":"""select * from log_summary where filename like '%diksha_tpd%'""",
 "save_to_diksha_total_content_fn":"""select insert_diksha_agg()""",
-"diksha_tpd_delete_null_values_qry":"""delete from diksha_tpd_staging
-where collection_id IS NULL
-OR uuid IS NULL""",
-"diksha_queries_all_filename":"""diksha_queries_all.json""",
-"diksha_data_summary_less_tmp_to_trans":"""select insert_diksha_trans()""",
 "save_to_diksha_tpd_dup":"""diksha_tpd_dup""",
 "diksha_data_summary_all_datatype_validation":"""Optional(ParseDate("yyyy-MM-dd")),Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty()),
 Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty()),
@@ -151,35 +125,7 @@ enrolled_date=excluded.enrolled_date,updated_on=now()""",
       }
    }
 ]""",
-"diksha_data_summary_less_null_count_log":"""update log_summary
-SET content_view_date = diksha_null_col.count_null_content_view_date,
-dimensions_pdata_id = diksha_null_col.count_null_dimensions_pdata_id,
-dimensions_pdata_pid = diksha_null_col.count_null_dimensions_pdata_pid,
-content_name = diksha_null_col.count_null_content_name,
-content_board = diksha_null_col.count_null_content_board,
-content_mimetype = diksha_null_col.count_null_content_mimetype,
-content_medium = diksha_null_col.count_null_content_medium,
-content_subject = diksha_null_col.count_null_content_subject,
-content_created_for = diksha_null_col.count_null_content_created_for,
-object_id = diksha_null_col.count_null_object_id,
-object_rollup_l1 = diksha_null_col.count_null_object_rollup_l1,
-derived_loc_state = diksha_null_col.count_null_derived_loc_state,
-derived_loc_district = diksha_null_col.count_null_derived_loc_district,
-user_signin_type = diksha_null_col.count_null_user_signin_type,
-user_login_type = diksha_null_col.count_null_user_login_type,
-collection_type = diksha_null_col.count_null_collection_type,
-collection_created_for = diksha_null_col.count_null_collection_created_for,
-total_count = diksha_null_col.count_null_total_count,
-total_time_spent = diksha_null_col.count_null_total_time_spent
-from diksha_null_col
-where diksha_null_col.ff_uuid = log_summary.ff_uuid         """,
 "diksha_sum_of_dup":"""select sum(num_of_times) from flowfile""",
-"diksha_tpd_unique_records_same_records":"""select collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,
-enrolment_date,completion_date,progress,certificate_status,total_score,ff_uuid
-from (SELECT collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,
-enrolment_date,completion_date,progress,certificate_status,total_score,ff_uuid,
-row_number() over (partition by collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,
-enrolment_date,completion_date,progress,certificate_status,total_score,ff_uuid) as rn from diksha_tpd_staging) sq Where rn =1""",
 "diksha_meta_jolt":"""[
   {
     "operation": "shift",
@@ -200,21 +146,6 @@ content_mimetype,content_medium,content_subject,content_created_for,
 object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
 collection_name,collection_board,collection_type,collection_medium,collection_subject,
 collection_created_for,total_count,total_timespent as total_time_spent from flowfile""",
-"diksha_data_summary_all_select_unique_record":"""select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid
-from (SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid,
-row_number() over (partition by content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid) as rn from diksha_content_staging) sq Where rn =1""",
 "diksha_tpd_temp_tb":"""diksha_tpd_content_temp""",
 "diksha_tpd_null_to_log_db":"""update log_summary
 SET collection_id = diksha_null_col.count_null_collection_id,
@@ -275,86 +206,7 @@ SUM(CASE when "collection_type" IS NULL THEN 1 ELSE 0 END) AS count_null_collect
 SUM(CASE when "collection_created_for" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_created_for,
 SUM(CASE when "total_count" IS NULL THEN 1 ELSE 0 END) AS count_null_total_count,
 SUM(CASE when "total_time_spent" IS NULL THEN 1 ELSE 0 END) AS count_null_total_time_spent from diksha_content_staging)""",
-"diksha_data_summary_less_null_delete":"""delete  from diksha_content_staging 
-where content_view_date IS NULL
- OR dimensions_pdata_id IS NULL
- OR dimensions_pdata_pid IS NULL
- OR content_name IS NULL
- OR content_board IS NULL
- OR content_mimetype IS NULL
- OR content_medium IS NULL
- OR content_subject IS NULL
- OR content_created_for IS NULL
- OR object_id IS NULL
- OR object_rollup_l1 IS NULL
- OR derived_loc_state IS NULL
- OR derived_loc_dIStrict IS NULL
- OR user_signin_type IS NULL
- OR user_login_type IS NULL
- OR collection_type IS NULL
- OR collection_created_for IS NULL
- OR total_count IS NULL
- OR total_time_spent IS NULL""",
 "diksha_queries_less_filename":"""diksha_queries_less.json""",
-"diksha_data_summary_all_null_validation":"""select * from diksha_content_staging
-where content_view_date IS NULL
- OR dimensions_pdata_id IS NULL
- OR dimensions_pdata_pid IS NULL
- OR content_name IS NULL
- OR content_board IS NULL
- OR content_mimetype IS NULL
- OR content_medium IS NULL
- OR content_gradelevel IS NULL
- OR content_subject IS NULL
- OR content_created_for IS NULL
- OR object_id IS NULL
- OR object_rollup_l1 IS NULL
- OR derived_loc_state IS NULL
- OR derived_loc_dIStrict IS NULL
- OR user_signin_type IS NULL
- OR user_login_type IS NULL
- OR collection_type IS NULL
- OR collection_created_for IS NULL
- OR total_count IS NULL
- OR total_time_spent IS NULL""",
-"diksha_tpd_check_if_null":"""select ff_uuid,collection_id,collection_name,batch_id,batch_name,uuid,state,org_name,
-enrolment_date,completion_date,progress,certificate_status,total_score from diksha_tpd_staging
-where collection_id IS NULL
-OR uuid IS NULL""",
-"diksha_data_summary_less_check_same_record":"""SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid
-,count(*)-1  num_of_times
-FROM diksha_content_staging
-GROUP BY content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid
-HAVING  COUNT(*) > 1""",
-"diksha_data_summary_all_null_count":"""(select
-SUM(CASE when content_view_date IS NULL THEN 1 ELSE 0 END) AS count_null_content_view_date,
-SUM(CASE when dimensions_pdata_id IS NULL THEN 1 ELSE 0 END) AS count_null_dimensions_pdata_id,
-SUM(CASE when dimensions_pdata_pid IS NULL THEN 1 ELSE 0 END) AS count_null_dimensions_pdata_pid,
-SUM(CASE when content_name IS NULL THEN 1 ELSE 0 END) AS count_null_content_name,
-SUM(CASE when content_board IS NULL THEN 1 ELSE 0 END) AS count_null_content_board,
-SUM(CASE when "content_mimetype" IS NULL THEN 1 ELSE 0 END) AS count_null_content_mimetype,
-SUM(CASE when "content_medium" IS NULL THEN 1 ELSE 0 END) AS count_null_content_medium,
-SUM(CASE when "content_gradelevel" IS NULL THEN 1 ELSE 0 END) AS count_null_content_gradelevel,
-SUM(CASE when "content_subject" IS NULL THEN 1 ELSE 0 END) AS count_null_content_subject,
-SUM(CASE when "content_created_for" IS NULL THEN 1 ELSE 0 END) AS count_null_content_created_for,
-SUM(CASE when "object_id" IS NULL THEN 1 ELSE 0 END) AS count_null_object_id,
-SUM(CASE when "object_rollup_l1" IS NULL THEN 1 ELSE 0 END) AS count_null_object_rollup_l1,
-SUM(CASE when "derived_loc_state" IS NULL THEN 1 ELSE 0 END) AS count_null_derived_loc_state,
-SUM(CASE when "derived_loc_district" IS NULL THEN 1 ELSE 0 END) AS count_null_derived_loc_district,
-SUM(CASE when "user_signin_type" IS NULL THEN 1 ELSE 0 END) AS count_null_user_signin_type,
-SUM(CASE when "user_login_type" IS NULL THEN 1 ELSE 0 END) AS count_null_user_login_type,
-SUM(CASE when "collection_type" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_type,
-SUM(CASE when "collection_created_for" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_created_for,
-SUM(CASE when "total_count" IS NULL THEN 1 ELSE 0 END) AS count_null_total_count,
-SUM(CASE when "total_time_spent" IS NULL THEN 1 ELSE 0 END) AS count_null_total_time_spent from diksha_content_staging)""",
 "diksha_jolt_for_log_summary":"""[{
 		"operation": "shift",
 		"spec": {
@@ -392,52 +244,6 @@ SUM(CASE when "total_time_spent" IS NULL THEN 1 ELSE 0 END) AS count_null_total_
 		}
 	}
 ]""",
-"diksha_data_summary_less_null_validation":"""select * from diksha_content_staging
-where content_view_date IS NULL
- OR dimensions_pdata_id IS NULL
- OR dimensions_pdata_pid IS NULL
- OR content_name IS NULL
- OR content_board IS NULL
- OR content_mimetype IS NULL
- OR content_medium IS NULL
- OR content_subject IS NULL
- OR content_created_for IS NULL
- OR object_id IS NULL
- OR object_rollup_l1 IS NULL
- OR derived_loc_state IS NULL
- OR derived_loc_dIStrict IS NULL
- OR user_signin_type IS NULL
- OR user_login_type IS NULL
- OR collection_type IS NULL
- OR collection_created_for IS NULL
- OR total_count IS NULL
- OR total_time_spent IS NULL """,
-"diksha_tpd_count_null_value":"""(select
-SUM(CASE when "collection_id" IS NULL THEN 1 ELSE 0 END) AS count_null_collection_id,
-SUM(CASE when "uuid" IS NULL THEN 1 ELSE 0 END) AS count_null_uuid
-from diksha_tpd_staging)""",
-"save_to_diksha_total_content_pre_query":"""drop view if exists insert_diksha_trans_view""",
-"diksha_data_summary_all_null_delete":"""delete  from diksha_content_staging
-where content_view_date IS NULL
- OR dimensions_pdata_id IS NULL
- OR dimensions_pdata_pid IS NULL
- OR content_name IS NULL
- OR content_board IS NULL
- OR content_mimetype IS NULL
- OR content_medium IS NULL
- OR content_gradelevel IS NULL
- OR content_subject IS NULL
- OR content_created_for IS NULL
- OR object_id IS NULL
- OR object_rollup_l1 IS NULL
- OR derived_loc_state IS NULL
- OR derived_loc_dIStrict IS NULL
- OR user_signin_type IS NULL
- OR user_login_type IS NULL
- OR collection_type IS NULL
- OR collection_created_for IS NULL
- OR total_count IS NULL
- OR total_time_spent IS NULL""",
 "diksha_tpd_block_r2_jolt":"""[
   {
     "operation": "shift",
@@ -543,19 +349,6 @@ Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(ParseBigDecimal())""
 
 ]""",
 "diksha_save_null_tb_name":"""diksha_null_col""",
-"diksha_data_summary_all_check_same_record":"""SELECT content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid
-,count(*)-1  num_of_times
-FROM diksha_content_staging
-GROUP BY content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,
-content_mimetype,content_medium,content_gradelevel,content_subject,content_created_for,
-object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
-collection_name,collection_board,collection_type,collection_medium,collection_gradelevel,collection_subject,
-collection_created_for,total_count,total_time_spent,ff_uuid
-HAVING  COUNT(*) > 1""",
 "diksha_data_summary_staging_table_name":"""diksha_content_staging""",
 "diksha_tpd_staging_table_name":"""diksha_tpd_staging"""
 }
