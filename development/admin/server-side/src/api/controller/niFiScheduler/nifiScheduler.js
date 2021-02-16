@@ -117,7 +117,7 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
         var job = await schedule.scheduledJobs[groupName];
 
         if (job != undefined) {
-            job.cancel();
+            await job.cancel();
             let obj = {
                 groupId: groupId,
                 groupName: groupName,
@@ -356,7 +356,7 @@ router.post('/scheduleNiFiProcessor/:id/:name', async (req, res) => {
         var job = await schedule.scheduledJobs[groupName];
 
         if (job != undefined) {
-            job.cancel();
+            await job.cancel();
             let obj = {
                 groupId: groupId,
                 groupName: groupName,

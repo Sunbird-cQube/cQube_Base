@@ -31,7 +31,7 @@ exports.restartNifiProcess = async function () {
                 stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
             }
 
-            if (myJob.state == "RUNNING") {
+            // if (myJob.state == "RUNNING") {
                 logger.info('Rescheduling jobs due to nodejs restart');
 
                 await schedule.scheduleJob(myJob.groupName, schedulerTime, async function () {
@@ -82,7 +82,7 @@ exports.restartNifiProcess = async function () {
                     logger.info(`--- ${myJob.groupName} - Nifi processor group scheduling stopping completed ---`);
                 });
 
-            }
+            // }
         });
     } catch (e) {
         logger.error(`Error :: ${e}`);
