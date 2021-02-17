@@ -21,18 +21,18 @@
                         <td>Student Attendance</td>
                         <td>
                             <div style="margin: 0px auto; width: 350px;">
-                                <select class="time" required id="year"
-                                    [ngStyle]="{float: months.length > 0 ? 'left' : ''}"
+                                <select class="time" required id="stdyear"
+                                    [ngStyle]="{float: months1.length > 0 ? 'left' : ''}"
                                     style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
-                                    (change)="onSelectYear($event.target.value)">
-                                    <option *ngFor="let year of years; let i = index;" [value]="year.value"
+                                    (change)="onSelectStdYear($event.target.value)">
+                                    <option *ngFor="let year of years1; let i = index;" [value]="year.value"
                                         [selected]="i==0">
                                         {{year.value}}</option>
                                 </select>
                                 <app-multi-select *ngIf="months1.length > 0" #multiSelect
                                     style="float: left; margin-left: 30px;margin-top: 1px; width: 120px;"
-                                    [list]="months1" [checkedList]="selectedMonths"
-                                    (shareCheckedList)="shareCheckedList($event)">
+                                    [list]="months1" [checkedList]="selectedMonths1"
+                                    (shareCheckedList)="shareCheckedList1($event)">
                                 </app-multi-select>
                             </div>
                         </td>
@@ -41,18 +41,18 @@
                         <td>Teacher Attendance</td>
                         <td>
                             <div style="margin: 0px auto; width: 350px;">
-                                <select class="time" required id="year"
-                                    [ngStyle]="{float: months.length > 0 ? 'left' : ''}"
+                                <select class="time" required id="tchryear"
+                                    [ngStyle]="{float: months2.length > 0 ? 'left' : ''}"
                                     style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
-                                    (change)="onSelectYear($event.target.value)">
-                                    <option *ngFor="let year of years; let i = index;" [value]="year.value"
+                                    (change)="onSelectTchrYear($event.target.value)">
+                                    <option *ngFor="let year of years2; let i = index;" [value]="year.value"
                                         [selected]="i==0">
                                         {{year.value}}</option>
                                 </select>
-                                <app-multi-select *ngIf="months.length > 0" #multiSelect
+                                <app-multi-select *ngIf="months2.length > 0" #multiSelect
                                     style="float: left; margin-left: 30px;margin-top: 1px; width: 120px;"
-                                    [list]="months" [checkedList]="selectedMonths"
-                                    (shareCheckedList)="shareCheckedList($event)">
+                                    [list]="months2" [checkedList]="selectedMonths2"
+                                    (shareCheckedList)="shareCheckedList2($event)">
                                 </app-multi-select>
                             </div>
                         </td>
@@ -63,23 +63,30 @@
                             <div style="margin: 0px auto; width: 500px;">
                                 <div style="float: left;">
                                     <span style="float: left;margin: 8px 5px 0px 0px;">From Date:</span> <input
-                                        type="text" (bsValueChange)="onSelectDate()"
+                                        type="text" (bsValueChange)="onSelectFromDate()"
                                         style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
                                         placeholder="Select from date" class="form-control" #dp="bsDatepicker"
-                                        bsDatepicker [(ngModel)]="fromDate" [bsConfig]="'DD/MM'">
+                                        bsDatepicker [(ngModel)]="fromDate"
+                                        [bsConfig]="{dateInputFormat: 'DD-MM-YYYY'}">
                                 </div>
                                 <div style="float: left; margin-left: 30px;">
                                     <span style="float: left;margin: 8px 5px 0px 0px;">To Date:</span> <input
-                                        type="text" (bsValueChange)="onSelectDate()"
+                                        [disabled]="fromDate == undefined" type="text"
+                                        (bsValueChange)="onSelectToDate()"
                                         style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
                                         placeholder="Select to date" class="form-control" #dp="bsDatepicker"
-                                        bsDatepicker [(ngModel)]="toDate" [bsConfig]="'DD/MM'">
+                                        bsDatepicker [(ngModel)]="toDate" [bsConfig]="{dateInputFormat: 'DD-MM-YYYY'}">
                                 </div>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-primary" (click)="onSubmit()" style="float: right;">Submit</button>
+                <button class="btn btn-secondary" (click)="onCancel()" style="margin-right: 30px;float: right;">
+                    Cancel</button>
+            </div>
         </div>
     </div>
 </div>
