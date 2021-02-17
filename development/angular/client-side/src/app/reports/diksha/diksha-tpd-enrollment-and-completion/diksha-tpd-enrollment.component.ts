@@ -20,7 +20,8 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   public chartData: Number[] = [];
   public xAxisLabel: String = "Enrollment";
   public yAxisLabel: String;
-  public reportName: String = "tpd";
+  public reportName: String = "enrollment_completion";
+  report  = 'enroll/comp';
 
   enrollTypes = [{ key: 'enrollment', name: 'Enrollment' }, { key: 'completion', name: 'Completion' }];
   type = 'enrollment';
